@@ -4,9 +4,9 @@ Kiln is a monorepo of published `@mitcsutt/kiln-*` packages: a themeable React d
 
 ## Current state
 
-The workspace foundation is in place: a pnpm workspace (shared versions in the `pnpm-workspace.yaml` catalog), Turborepo, and the three config packages in `packages/eslint-config`, `packages/prettier-config` and `packages/tsconfig`. `ui`, `forms`, the docs site, Storybook and the release pipeline haven't been ported or scaffolded yet. Your job is to bring the repo to the end state in `docs/target-state.md`.
+The workspace foundation is in place: a pnpm workspace (shared versions in the `pnpm-workspace.yaml` catalog), Turborepo, and the three config packages in `packages/eslint-config`, `packages/prettier-config` and `packages/tsconfig`. `@mitcsutt/kiln-ui` is ported to `packages/ui`: read `DESIGN.md` and `packages/ui/AGENTS.md` before touching it. `forms`, the docs site, Storybook and the release pipeline haven't been ported or scaffolded yet. Your job is to bring the repo to the end state in `docs/target-state.md`.
 
-- **Commands** (from the root, Node from `.nvmrc`, pnpm through Corepack): `pnpm lint` (ESLint plus `prettier --check .`), `pnpm typecheck`, `pnpm test`, `pnpm build`, `pnpm format`. CI runs the first four on every PR and on `main`.
+- **Commands** (from the root, Node from `.nvmrc`, pnpm through Corepack): `pnpm lint` (ESLint plus `prettier --check .`), `pnpm typecheck`, `pnpm test`, `pnpm build`, `pnpm test:react18`, `pnpm check:package` (publint and attw), `pnpm size` (budgets and tree-shaking checks), `pnpm format`. CI runs all but `format` on every PR and on `main`.
 - **Lint and format config:** one root `eslint.config.js` built from `@mitcsutt/kiln-eslint-config` serves every package; Prettier reads `@mitcsutt/kiln-prettier-config` from the root `package.json`. Every package `tsconfig.json` extends a `@mitcsutt/kiln-tsconfig` preset.
 
 - **`docs/target-state.md` is the spec.** It defines _done_ as acceptance criteria. Order, approach and tooling details are yours to choose, within its criteria.
