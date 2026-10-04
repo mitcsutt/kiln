@@ -1,0 +1,22 @@
+---
+title: View mode
+description: Render the same form definition as read-only text, for detail pages and the review step of a wizard.
+---
+
+A form in view mode renders each field as its label and its value, formatted for reading, in a description list. The same JSX (or schema) serves the edit page and the read-only detail page.
+
+<Example name="forms/getting-started/view-mode" />
+
+Select fields show the option's label, amounts are formatted for their currency, switches read "Yes" or "No", and anything empty reads "Not provided". Passwords are always a fixed-length mask, so the view doesn't even leak the length.
+
+## Three ways in
+
+- `<Form mode="view">` for a whole form.
+- [`FormReview`](/docs/forms/layouts/form-review) for part of one, like the last step of a wizard repeating earlier answers.
+- `FieldPresentation mode="view"`, for custom layouts.
+
+## No field instances
+
+In view mode no TanStack field is created for a path. A review step that repeats an earlier step's fields doesn't take over those fields' validators or state. Fields that load options (a combobox with `loadOptions`) make no request.
+
+If you use TanStack's render-prop `form.AppField` in view mode, its `field` is a read-only stand-in: it has the value and the kit's field components, but setting values does nothing and it has no array helpers.

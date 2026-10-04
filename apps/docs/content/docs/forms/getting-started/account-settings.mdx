@@ -1,0 +1,16 @@
+---
+title: Account settings
+description: A settings page that saves as you type, with sections in a label column and the password in a form of its own.
+---
+
+Profile and alerts save themselves as they change, and the header says so. The password lives in a separate form with an explicit button, because a half-typed password should never autosave.
+
+<Example name="forms/getting-started/account-settings" layout="bleed" />
+
+## How it's built
+
+- **`useAutosave`** saves after 700ms of quiet, aborts a save that a newer one supersedes, and skips saving while a field is invalid. After each save, the saved values become the new clean state.
+- **`FormStatus`** reports "Saving…", "Saved" or "Couldn't save" in a polite live region, so screen readers hear it without losing their place.
+- **`FormAside`** puts each section's heading and the reason for it in a column beside the fields: the settings layout.
+- **`FormRows`** lines the switches up as label-left rows.
+- **Two forms.** The password form uses `afterSubmit: 'reset'`, so it empties itself after a successful change.

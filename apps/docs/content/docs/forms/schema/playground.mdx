@@ -1,0 +1,10 @@
+---
+title: Playground
+description: Edit a schema as JSON and watch it parse, render and submit.
+---
+
+The schema on the left goes through `parseFormSchema` against the default kit, and a valid schema renders on the right. Break it (misspell a `kind`, remove a `name`) to see the issues it reports, each with its path. Submit the form to see what `onSubmit` receives.
+
+<Example name="forms/schema/playground" />
+
+Pattern rules are allowed here, because you're the one typing them. For JSON from anywhere else, read [Untrusted schemas](/docs/forms/schema/untrusted-schemas).

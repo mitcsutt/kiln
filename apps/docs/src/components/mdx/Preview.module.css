@@ -1,6 +1,6 @@
 /* One frame around the live example and its source, ruled between them. */
 .preview {
-  margin: 0;
+  margin-inline: 0;
   border: var(--border-width) solid var(--color-line);
   border-radius: var(--radius-surface);
   overflow: hidden;

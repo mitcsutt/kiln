@@ -1,0 +1,37 @@
+---
+title: ChipsField
+description: Any number of choices from a row of chips.
+exports: [FormChipsField]
+---
+
+It renders kiln-ui's [ChipGroupField](/docs/ui/inputs/chip-group-field) with `type="multiple"`.
+
+| Kind    | Shorthand         | Export           | Value                               | Empty |
+| ------- | ----------------- | ---------------- | ----------------------------------- | ----- |
+| `chips` | `form.ChipsField` | `FormChipsField` | an array of the options' value type | `[]`  |
+
+<Example name="forms/fields/chips-field/usage" />
+
+Exported as `FormChipsField`, named after its kind.
+
+## In a schema
+
+```json
+{
+  "kind": "chips",
+  "name": "days",
+  "label": "Days you travel",
+  "options": [
+    {
+      "value": "mon",
+      "label": "Mon"
+    }
+  ]
+}
+```
+
+## API
+
+Every bound field also takes `name` (a path to a value it can hold), `validators`, `listeners` and `defaultValue`, plus `warn` for advice that never blocks. `excluded` keeps a field visible but leaves it out of validation and submits its default.
+
+<ApiTable of="FormChipsFieldProps" />

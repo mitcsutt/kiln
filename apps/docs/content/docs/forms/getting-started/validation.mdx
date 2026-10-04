@@ -1,0 +1,86 @@
+---
+title: Validation
+description: Field validators, whole-form schemas, warnings that never block, async checks and errors from your server.
+exports: [applyServerErrors, focusField, focusFirstInvalid, normaliseError]
+---
+
+kiln-forms validates with plain functions, any [Standard Schema](https://standardschema.dev) (zod, valibot, arktype), or both. No validation library is a dependency: use whichever your app already has.
+
+<Example name="forms/getting-started/validation" />
+
+Try `Ines` as the username (taken, and a warning about case), leave seats empty, and submit with a promo code other than `BAYLINE` to see a server error land on its field.
+
+## When validation runs
+
+By default a field validates when it's left, and live on every change after that, or after any submit attempt. Its error shows at the same moments. That's "reward early, punish late": nobody is told off for an email address they haven't finished typing, and an error disappears the moment it's fixed. Change it with `validateOn` (`'blur'`, `'change'` or `'submit'`) and `errorVisibility` on `useAppForm`.
+
+## Field validators
+
+Pass `validators` to a bound field. `onDynamic` follows the timing above and is where most rules belong; `onDynamicAsync` is for checks against a server, and is debounced. TanStack's own slots (`onChange`, `onBlur`, `onSubmit` and their async forms) keep their usual meaning. Return a message to fail, or `undefined` to pass.
+
+```tsx
+<form.TextField
+  name="username"
+  label="Username"
+  validators={{
+    onDynamic: ({ value }) =>
+      /^[a-z0-9]+$/i.test(value) ? undefined : 'Use letters and numbers only',
+    onDynamicAsync: async ({ value }) =>
+      (await isTaken(value)) ? 'That username is taken' : undefined,
+  }}
+/>
+```
+
+A validator that depends on another field lists it in `onChangeListenTo`, so it re-runs when that field changes.
+
+## A schema for the whole form
+
+Pass a Standard Schema as `schema`. Its issues are routed to the fields they belong to, and issues without a path become a form-level error. `onSubmit` receives the schema's parsed `output` (with any transforms applied) alongside `value`.
+
+```tsx
+const schema = z.object({
+  email: z.email('Enter an email address'),
+  seats: z.number().int().min(1, 'Book at least one seat'),
+})
+
+const form = useAppForm({
+  defaultValues: { email: '', seats: 1 },
+  schema,
+  onSubmit: ({ output }) => book(output),
+})
+```
+
+## Warnings
+
+`warn` returns advice that shows in the caution tone and never blocks submission: "Usernames are case-sensitive", "That's further than most people walk". An error replaces the warning while it shows.
+
+## Errors from the server
+
+Throw a `FormSubmitError` from `onSubmit` and its errors land on the fields (and the form) they name. The form stays unsubmitted, focus moves to the first error, and the reader can fix it and resubmit. Any other error thrown from `onSubmit` is caught: it goes to `onSubmitError`, and by default shows "Something went wrong and we couldn't send this. Try again." as a form-level error. A submit never ends in an unhandled rejection.
+
+```ts
+throw new FormSubmitError({
+  form: 'This sailing filled up while you were booking',
+  fields: { seats: 'Only 2 seats are left' },
+})
+```
+
+`applyServerErrors(form, errors)` does the same outside `onSubmit`, for errors that arrive another way.
+
+<ApiSignature of="applyServerErrors" />
+
+## Showing errors
+
+- Each field shows its own error under the control.
+- [`ErrorSummary`](/docs/forms/layouts/error-summary) lists every error after a submit attempt, each a link to its field, the pattern GOV.UK uses. Place it at the top of the form.
+- On an invalid submit, focus moves to the summary if there is one, else to the first invalid field in document order, after revealing the tab, accordion item or step it's in.
+
+`focusFirstInvalid(form)` and `focusField(form, name)` do that by hand, from your own controls.
+
+<ApiSignature of="focusFirstInvalid" />
+
+<ApiSignature of="focusField" />
+
+`normaliseError` turns whatever a validator returned (a string, a Standard Schema issue, an array of them) into one shape, for custom fields and layouts that show errors themselves.
+
+<ApiSignature of="normaliseError" />

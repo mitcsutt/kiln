@@ -1,0 +1,14 @@
+{
+  "title": "Getting started",
+  "pages": [
+    "component-mode",
+    "schema-mode",
+    "validation",
+    "view-mode",
+    "custom-fields",
+    "---Recipes---",
+    "account-settings",
+    "onboarding",
+    "savings-goal"
+  ]
+}

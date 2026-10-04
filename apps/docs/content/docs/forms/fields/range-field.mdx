@@ -1,0 +1,34 @@
+---
+title: RangeField
+description: A low and high value on one track.
+exports: [FormRangeField]
+---
+
+It renders kiln-ui's [RangeSliderField](/docs/ui/inputs/range-slider-field).
+
+| Kind    | Shorthand         | Export           | Value              | Empty                       |
+| ------- | ----------------- | ---------------- | ------------------ | --------------------------- |
+| `range` | `form.RangeField` | `FormRangeField` | `[number, number]` | none: it always has a value |
+
+<Example name="forms/fields/range-field/usage" />
+
+Exported as `FormRangeField`, named after its kind.
+
+## In a schema
+
+```json
+{
+  "kind": "range",
+  "name": "window",
+  "label": "Departure window",
+  "min": 5,
+  "max": 23,
+  "thumbLabels": ["Earliest", "Latest"]
+}
+```
+
+## API
+
+Every bound field also takes `name` (a path to a value it can hold), `validators`, `listeners` and `defaultValue`, plus `warn` for advice that never blocks. `excluded` keeps a field visible but leaves it out of validation and submits its default.
+
+<ApiTable of="FormRangeFieldProps" />

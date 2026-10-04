@@ -1,0 +1,38 @@
+---
+title: MultiSelectField
+description: A searchable multiple choice, a combobox whose chosen values become removable chips.
+exports: [FormMultiSelectField]
+---
+
+It renders kiln-ui's [ComboboxField](/docs/ui/inputs/combobox-field) with `multiple`.
+
+| Kind          | Shorthand               | Export                 | Value                               | Empty |
+| ------------- | ----------------------- | ---------------------- | ----------------------------------- | ----- |
+| `multiSelect` | `form.MultiSelectField` | `FormMultiSelectField` | an array of the options' value type | `[]`  |
+
+<Example name="forms/fields/multi-select-field/usage" />
+
+It takes `options` or `loadOptions` like the combobox field, and `maxSelected` caps the choice. Free text isn't allowed: `creatable` is single-choice only.
+
+## In a schema
+
+```json
+{
+  "kind": "multiSelect",
+  "name": "stops",
+  "label": "Favourite stops",
+  "maxSelected": 3,
+  "options": [
+    {
+      "value": "harbour",
+      "label": "Harbour Square"
+    }
+  ]
+}
+```
+
+## API
+
+Every bound field also takes `name` (a path to a value it can hold), `validators`, `listeners` and `defaultValue`, plus `warn` for advice that never blocks. `excluded` keeps a field visible but leaves it out of validation and submits its default.
+
+<ApiTable of="FormMultiSelectFieldProps" />

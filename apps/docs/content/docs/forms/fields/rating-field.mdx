@@ -1,0 +1,29 @@
+---
+title: RatingField
+description: A star rating bound to a `number` path. Clearing it writes `null`.
+exports: [FormRatingField]
+---
+
+It renders kiln-ui's [RatingField](/docs/ui/inputs/rating-field).
+
+| Kind     | Shorthand          | Export            | Value            | Empty  |
+| -------- | ------------------ | ----------------- | ---------------- | ------ |
+| `rating` | `form.RatingField` | `FormRatingField` | `number \| null` | `null` |
+
+<Example name="forms/fields/rating-field/usage" />
+
+## In a schema
+
+```json
+{
+  "kind": "rating",
+  "name": "rating",
+  "label": "How was your crossing?"
+}
+```
+
+## API
+
+Every bound field also takes `name` (a path to a value it can hold), `validators`, `listeners` and `defaultValue`, plus `warn` for advice that never blocks. `excluded` keeps a field visible but leaves it out of validation and submits its default.
+
+<ApiTable of="FormRatingFieldProps" />

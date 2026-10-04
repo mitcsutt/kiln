@@ -1,0 +1,29 @@
+---
+title: TimeField
+description: A native time input bound to an ISO time string.
+exports: [FormTimeField]
+---
+
+| Kind   | Shorthand        | Export          | Value              | Empty |
+| ------ | ---------------- | --------------- | ------------------ | ----- |
+| `time` | `form.TimeField` | `FormTimeField` | `string` (`HH:mm`) | `''`  |
+
+<Example name="forms/fields/time-field/usage" />
+
+It renders kiln-ui's [TextField](/docs/ui/inputs/text-field) with `type="time"`. `step` is in seconds.
+
+## In a schema
+
+```json
+{
+  "kind": "time",
+  "name": "departs",
+  "label": "Departs"
+}
+```
+
+## API
+
+Every bound field also takes `name` (a path to a value it can hold), `validators`, `listeners` and `defaultValue`, plus `warn` for advice that never blocks. `excluded` keeps a field visible but leaves it out of validation and submits its default.
+
+<ApiTable of="FormTimeFieldProps" />

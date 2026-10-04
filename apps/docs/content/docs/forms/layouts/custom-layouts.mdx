@@ -1,0 +1,53 @@
+---
+title: Custom layouts
+description: Write a layout of your own that counts errors, reveals fields on an invalid submit and works in view mode and schema mode.
+exports:
+  [
+    FieldScope,
+    useFieldScope,
+    useScopeErrors,
+    FieldPresentation,
+    useFieldPresentation,
+    FieldViewListBoundary,
+    useFormContext,
+  ]
+---
+
+Any component can be a layout. Kiln's own layouts are built from four pieces you can use too.
+
+<Example name="forms/layouts/custom-layouts/usage" />
+
+Submit it empty and each panel counts its own errors.
+
+## The pieces
+
+- **`FieldScope`** collects the names of the fields mounted inside it. Nested scopes form a chain, and a scope's `reveal` (open the tab, select the step) runs before focus moves to a field inside it on an invalid submit.
+- **`useScopeErrors(scope)`** returns how many visible errors a scope holds, as a number, so a badge re-renders only when the count changes. `useFieldScope()` returns the nearest scope.
+- **`FieldPresentation`** tells the fields below it how to render: `layout`, `labelHidden`, `errorPlacement`, `mode`, `disabled`, `readOnly`. It merges with any presentation above it. `useFieldPresentation()` reads it.
+- **`FieldViewListBoundary`** keeps view mode valid: fields below it render their own description lists instead of adding items to a list above.
+
+`useFormContext()` returns the form inside any `Form`, for a layout that needs form state without a `form` prop.
+
+<ApiSignature of="useScopeErrors" />
+
+<ApiSignature of="useFieldScope" />
+
+## Keeping hidden fields alive
+
+A layout that hides fields (tabs, accordion items, steps) should keep them mounted with `hidden` rather than unmounting them, so they keep validating, counting and holding values. Pass a `reveal` to the scope that shows them.
+
+## In schema mode
+
+Register the layout with the kit, and it becomes a schema `layout` key. A custom layout receives `{ node, form, children }`, with `children` already rendered:
+
+```ts
+export const { useAppForm, SchemaForm } = kit.extend({ layouts: { leg: LegLayout } })
+```
+
+```json
+{ "layout": "leg", "title": "Outward", "children": [] }
+```
+
+## API
+
+<ApiTable of="FieldScopeProps, FieldPresentationProps" />

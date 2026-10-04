@@ -1,0 +1,26 @@
+{
+  "title": "Layouts",
+  "pages": [
+    "form",
+    "submit-button",
+    "reset-button",
+    "error-summary",
+    "form-status",
+    "---Layouts---",
+    "form-grid",
+    "form-section",
+    "form-aside",
+    "form-rows",
+    "form-panels",
+    "form-tabs",
+    "form-accordion",
+    "form-steps",
+    "repeater",
+    "form-sentence",
+    "form-review",
+    "form-actions",
+    "when",
+    "stack-and-inline",
+    "custom-layouts"
+  ]
+}

@@ -1,0 +1,21 @@
+---
+title: Content nodes
+description: Headings, text, alerts and dividers, and the submit, reset, error summary and status components, in a schema.
+---
+
+Content nodes are the parts of a form that aren't fields: the words around them and the form's own components.
+
+<Example name="forms/schema/content-nodes" />
+
+| Node                                                                | Renders                                           |
+| ------------------------------------------------------------------- | ------------------------------------------------- |
+| `{ "content": "heading", "text": "…", "level": 3 }`                 | kiln-ui `Heading`                                 |
+| `{ "content": "text", "text": "…" }`                                | kiln-ui `Text` (inline inside a `sentence`)       |
+| `{ "content": "alert", "tone": "info", "title": "…", "text": "…" }` | kiln-ui `Alert`                                   |
+| `{ "content": "divider" }`                                          | kiln-ui `Divider`                                 |
+| `{ "content": "submit", "label": "…" }`                             | [SubmitButton](/docs/forms/layouts/submit-button) |
+| `{ "content": "reset", "label": "…" }`                              | [ResetButton](/docs/forms/layouts/reset-button)   |
+| `{ "content": "errorSummary" }`                                     | [ErrorSummary](/docs/forms/layouts/error-summary) |
+| `{ "content": "status" }`                                           | [FormStatus](/docs/forms/layouts/form-status)     |
+
+Text is always text: content nodes never render HTML from the schema.

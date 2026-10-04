@@ -1,0 +1,21 @@
+---
+title: FormReview
+description: The same fields, rendered as a list of answers to check. For the last step of a wizard.
+exports: [FormReview]
+---
+
+`FormReview` renders the fields inside it in view mode: a description list of labels and formatted values. Reuse the JSX (or schema subtree) of earlier steps to build a "check your answers" step.
+
+<Example name="forms/layouts/form-review/usage" />
+
+`onEdit` with `step` adds an Edit button that takes the reader back to that step. No field instances are created in view mode, so a review never interferes with the fields it repeats.
+
+## In a schema
+
+```json
+{ "layout": "review", "title": "Your booking", "children": [] }
+```
+
+## API
+
+<ApiTable of="FormReviewProps" />

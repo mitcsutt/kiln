@@ -1,0 +1,14 @@
+{
+  "title": "Schema",
+  "pages": [
+    "index",
+    "nodes",
+    "content-nodes",
+    "conditions",
+    "rules",
+    "registries",
+    "untrusted-schemas",
+    "server-validation",
+    "playground"
+  ]
+}

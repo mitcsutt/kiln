@@ -1,0 +1,33 @@
+{
+  "title": "Fields",
+  "pages": [
+    "text-field",
+    "textarea-field",
+    "password-field",
+    "number-field",
+    "amount-field",
+    "select-field",
+    "combobox-field",
+    "multi-select-field",
+    "radio-field",
+    "segmented-field",
+    "choice-cards-field",
+    "multi-choice-cards-field",
+    "checkbox-field",
+    "switch-field",
+    "checkbox-group-field",
+    "chips-field",
+    "slider-field",
+    "range-field",
+    "rating-field",
+    "date-field",
+    "time-field",
+    "date-time-field",
+    "date-range-field",
+    "one-time-code-field",
+    "color-field",
+    "tags-field",
+    "file-field",
+    "hidden-field"
+  ]
+}

@@ -1,0 +1,32 @@
+---
+title: FileField
+description: File picking bound to an array of files. Files are held in the form, not uploaded.
+exports: [FormFileField]
+---
+
+It renders kiln-ui's [FileField](/docs/ui/inputs/file-field).
+
+| Kind   | Shorthand        | Export          | Value                               | Empty |
+| ------ | ---------------- | --------------- | ----------------------------------- | ----- |
+| `file` | `form.FileField` | `FormFileField` | `ReadonlyArray<File \| StoredFile>` | `[]`  |
+
+<Example name="forms/fields/file-field/usage" />
+
+Upload in `onSubmit`, where you have the `File` objects. Files that were uploaded earlier come back in as `StoredFile`s (`{ id, name, size, type }`), so an edit form can show what's already saved. Files rejected for type, size or count become a field error.
+
+## In a schema
+
+```json
+{
+  "kind": "file",
+  "name": "photo",
+  "label": "Photo for your pass",
+  "accept": "image/jpeg,image/png"
+}
+```
+
+## API
+
+Every bound field also takes `name` (a path to a value it can hold), `validators`, `listeners` and `defaultValue`, plus `warn` for advice that never blocks. `excluded` keeps a field visible but leaves it out of validation and submits its default.
+
+<ApiTable of="FormFileFieldProps" />

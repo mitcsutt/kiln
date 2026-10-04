@@ -1,0 +1,37 @@
+---
+title: Untrusted schemas
+description: Validate schema JSON from a CMS, a database or a client before rendering it, with every problem reported at its path.
+exports: [parseFormSchema]
+---
+
+A schema that arrives at runtime (from a CMS, a database, an API) could be wrong, or hostile. Run it through `parseFormSchema` before rendering it, or before using it on a server. It never throws: every problem comes back as an issue with the exact path where it was found.
+
+<Example name="forms/schema/untrusted" />
+
+```ts
+import { parseFormSchema } from '@mitcsutt/kiln-forms/schema'
+
+const result = parseFormSchema(json, { kinds: ['text', 'select', 'checkbox'], loaders: ['stops'] })
+if (!result.ok) report(result.issues)
+else render(result.schema)
+```
+
+The second argument lists the keys the schema may reference: field kinds, layouts, loaders, validators, computers and custom nodes.
+
+## What a valid result guarantees
+
+- Every key it references is registered, and every node, rule and condition has the right shape. Field names and ids are unique, and every repeater has a `newItem`.
+- Every prop name is a camelCase React prop, so attributes like `aria-*` and `data-*` can't be set from JSON.
+- No prop can reach a DOM sink: `dangerouslySetInnerHTML`, `ref`, `style`, `className`, any `on…` handler, form retargeting (`action`, `formAction`…), and `javascript:`, `vbscript:` and `data:` URLs are all rejected.
+- No field `type` of `submit`, `reset`, `button`, `image`, `file` or `hidden`, and no `pattern` prop.
+- It's bounded: 64 levels deep, 2,000 nodes.
+- No literal `pattern` rules, because no check can promise a regular expression is fast. Register a validator for formats instead. For a source you trust (your own fixtures), pass `{ allowPatterns: true }`: the patterns are then screened by a heuristic, which isn't a guarantee.
+
+## What it doesn't do
+
+- It checks that props are safe, not that they make sense for the component.
+- A custom node's `props` aren't filtered. A custom node that spreads them onto the DOM must filter them itself.
+
+The renderer strips the same unsafe props again, as a second line of defence for schemas that skip the parser.
+
+<ApiSignature of="parseFormSchema" />

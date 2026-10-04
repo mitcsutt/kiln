@@ -1,0 +1,28 @@
+---
+title: HiddenField
+description: A hidden input that carries a `string` value into the form's native `FormData`.
+exports: [FormHiddenField]
+---
+
+| Kind     | Shorthand          | Export            | Value    | Empty |
+| -------- | ------------------ | ----------------- | -------- | ----- |
+| `hidden` | `form.HiddenField` | `FormHiddenField` | `string` | `''`  |
+
+<Example name="forms/fields/hidden-field/usage" />
+
+It's the only markup kiln-forms renders itself, and it renders nothing in view mode. You rarely need it: values that aren't typed by the reader can simply be form values. Use it when a native form submission must include the value.
+
+## In a schema
+
+```json
+{
+  "kind": "hidden",
+  "name": "source"
+}
+```
+
+## API
+
+Every bound field also takes `name` (a path to a value it can hold), `validators`, `listeners` and `defaultValue`, plus `warn` for advice that never blocks. `excluded` keeps a field visible but leaves it out of validation and submits its default.
+
+<ApiTable of="FormHiddenFieldProps" />

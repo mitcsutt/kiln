@@ -1,0 +1,51 @@
+---
+title: Schema mode
+description: Describe a form as JSON and render it with SchemaForm. Same fields, layouts and rules as component mode, and the schema can come from anywhere.
+exports: [SchemaForm, SchemaNode, defineFormSchema]
+---
+
+In schema mode, a form is a JSON object: a tree of field nodes (`{ kind: 'text', name: 'email' }`), layout nodes (`{ layout: 'grid' }`) and content nodes (`{ content: 'heading' }`). `SchemaForm` renders it with the same components component mode uses, so the two produce the same markup.
+
+<Example name="forms/getting-started/schema-form" />
+
+Tick "Email me if it turns up" and the email field appears; untick it and the field is removed, its rules stop running, and its value goes back to its default before submission.
+
+## Typed schemas
+
+`defineFormSchema<T>()(schema)` checks a schema written in code against your values: field names, option values, condition paths and rule names are all type-checked, and a typo like `lable` is an error. It's curried so that `T` is explicit while the schema still gets excess-property checks.
+
+```ts
+const schema = defineFormSchema<LostProperty>()({
+  version: 1,
+  root: {
+    layout: 'stack',
+    children: [{ kind: 'text', name: 'item', label: 'What did you lose?' }],
+  },
+})
+```
+
+A schema from a server or a CMS isn't known at build time, so it can't be typed this way. Validate it with [`parseFormSchema`](/docs/forms/schema/untrusted-schemas) before rendering it.
+
+## Rendering part of a schema
+
+`SchemaNode` renders one node by its `id`, so a schema-driven section can sit inside a hand-written form:
+
+```tsx
+<Form form={form}>
+  <form.TextField name="name" label="Full name" />
+  <SchemaNode form={form} schema={schema} id="contact-details" />
+</Form>
+```
+
+## Context
+
+`SchemaForm context={{ mode: 'edit' }}` passes values that conditions can read but that aren't form values: whether the form is creating or editing, the reader's role.
+
+## The rest of schema mode
+
+- [Nodes](/docs/forms/schema/nodes): every kind of node and the props it takes.
+- [Conditions](/docs/forms/schema/conditions): `when`, `requiredWhen` and friends.
+- [Rules](/docs/forms/schema/rules): validation in JSON, and the same rules on your server.
+- [Registries](/docs/forms/schema/registries): functions (loaders, validators, computed values, custom nodes) referenced by key.
+
+<ApiTable of="SchemaFormProps, SchemaNodeProps" />
