@@ -5,6 +5,7 @@ packages:
 # One version of each shared dependency for the whole workspace (ADR 0006).
 # Reference these from package.json as "catalog:".
 catalog:
+  '@changesets/cli': ^3.0.3
   '@commitlint/cli': ^21.2.3
   '@commitlint/config-conventional': ^21.2.3
   '@eslint/js': ^10.0.1

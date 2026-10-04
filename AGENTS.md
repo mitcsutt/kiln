@@ -4,9 +4,9 @@ Kiln is a monorepo of published `@mitcsutt/kiln-*` packages: a themeable React d
 
 ## Current state
 
-The workspace foundation is in place: a pnpm workspace (shared versions in the `pnpm-workspace.yaml` catalog), Turborepo, and the three config packages in `packages/eslint-config`, `packages/prettier-config` and `packages/tsconfig`. `ui`, `forms`, the docs site, Storybook and the release pipeline haven't been ported or scaffolded yet. Your job is to bring the repo to the end state in `docs/target-state.md`.
+The workspace foundation is in place: a pnpm workspace (shared versions in the `pnpm-workspace.yaml` catalog), Turborepo, and the three config packages in `packages/eslint-config`, `packages/prettier-config` and `packages/tsconfig`. Changesets and the release workflow are configured (`docs/releasing.md`), with publishing switched off. `ui`, `forms`, the docs site and Storybook haven't been ported or scaffolded yet. Your job is to bring the repo to the end state in `docs/target-state.md`.
 
-- **Commands** (from the root, Node from `.nvmrc`, pnpm through Corepack): `pnpm lint` (ESLint plus `prettier --check .`), `pnpm typecheck`, `pnpm test`, `pnpm build`, `pnpm format`. CI runs the first four on every PR and on `main`.
+- **Commands** (from the root, Node from `.nvmrc`, pnpm through Corepack): `pnpm lint` (ESLint plus `prettier --check .`), `pnpm typecheck`, `pnpm test`, `pnpm build`, `pnpm format`. CI runs the first four on every PR and on `main`, plus `pnpm changeset status` on PRs. Add a changeset with `pnpm changeset`.
 - **Lint and format config:** one root `eslint.config.js` built from `@mitcsutt/kiln-eslint-config` serves every package; Prettier reads `@mitcsutt/kiln-prettier-config` from the root `package.json`. Every package `tsconfig.json` extends a `@mitcsutt/kiln-tsconfig` preset.
 
 - **`docs/target-state.md` is the spec.** It defines _done_ as acceptance criteria. Order, approach and tooling details are yours to choose, within its criteria.
