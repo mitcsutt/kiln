@@ -1,0 +1,35 @@
+{
+  "checks": [
+    {
+      "name": "Forms core (createFormKit, Form, SubmitButton)",
+      "import": "{ createFormKit, Form, SubmitButton }",
+      "from": "dist/index.js",
+      "budget": 26000
+    },
+    {
+      "name": "import { FormTextField }",
+      "import": "{ FormTextField }",
+      "from": "dist/index.js",
+      "isolatedTo": "dist/fields/FormTextField/FormTextField.js",
+      "budget": 4800
+    },
+    {
+      "name": "Default kit (useAppForm, every field)",
+      "import": "{ useAppForm }",
+      "from": "dist/index.js",
+      "budget": 28500
+    },
+    {
+      "name": "Schema entry (import * from ./schema)",
+      "import": "* as schema",
+      "from": "dist/schema/core/index.js",
+      "budget": 9500
+    },
+    {
+      "name": "Everything (import *)",
+      "import": "* as forms",
+      "from": "dist/index.js",
+      "budget": 36000
+    }
+  ]
+}
