@@ -222,7 +222,8 @@ For SSR without a flash, `themeScript('harbour')` works the same way as for a bu
 
 ```tsx
 <ThemeScope theme="harbour">
-  </ThemeScope>
+  <TimetablePanel />
+</ThemeScope>
 ```
 
 `useTheme()` reads and changes the theme and mode from anywhere inside a `ThemeProvider`:

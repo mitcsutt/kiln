@@ -122,13 +122,13 @@ export const { useAppForm, defineFormSchema, SchemaForm } = kit.extend({
 ```
 
 ```ts
-defineLoader<V extends Primitive>(fn: OptionsLoader<V>) => OptionsLoader<V>
+declare function defineLoader<V extends Primitive>(fn: OptionsLoader<V>): OptionsLoader<V>
 ```
 
 Registers an options loader for `optionsFrom: { loader: key }` (§10.5). Identity at runtime.
 
 ```ts
-defineValidator<V = unknown>(fn: (value: V, ctx: ValidatorContext) => ValidatorResult | Promise<ValidatorResult>, opts?: { async?: boolean | undefined; }) => NamedValidator<V>
+declare function defineValidator<V = unknown>(fn: (value: V, ctx: ValidatorContext) => ValidatorResult | Promise<ValidatorResult>, opts?: { async?: boolean | undefined; }): NamedValidator<V>
 ```
 
 Registers a validator for `{ rule: 'custom', validator: key, args? }` (§10.5). Return a message to
@@ -137,13 +137,13 @@ fail, nothing to pass. `async: true` runs it in the async channel (debounced, ab
 A validator returns a message to fail and nothing to pass. With `{ async: true }` it runs on the async channel, debounced and abortable. It receives the form's values and the rule's `args`.
 
 ```ts
-defineComputer<Out>(fn: (values: unknown) => Out) => Computer<Out>
+declare function defineComputer<Out>(fn: (values: unknown) => Out): Computer<Out>
 ```
 
 Registers a derived-value function for `compute: { computer: key, from }` (§10.5).
 
 ```ts
-defineCustomNode<P extends JsonObject = JsonObject>(component: (props: CustomNodeProps<P>) => ReactNode) => CustomNodeComponent<P>
+declare function defineCustomNode<P extends JsonObject = JsonObject>(component: (props: CustomNodeProps<P>) => ReactNode): CustomNodeComponent<P>
 ```
 
 A schema custom node (§10.5): `{ custom: key, props }` renders this component with

@@ -75,7 +75,7 @@ The second argument lists the keys the schema may reference: field kinds, layout
 The renderer strips the same unsafe props again, as a second line of defence for schemas that skip the parser.
 
 ```ts
-parseFormSchema(json: unknown, registry: SchemaRegistryNames, options?: ParseFormSchemaOptions) => ParseFormSchemaResult
+declare function parseFormSchema(json: unknown, registry: SchemaRegistryNames, options?: ParseFormSchemaOptions): ParseFormSchemaResult
 ```
 
 Validates untrusted JSON as a form schema (§10.8) against the kit's registered keys: node shapes,

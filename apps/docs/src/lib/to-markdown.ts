@@ -6,6 +6,14 @@ function attribute(tag: string, name: string): string | undefined {
   return new RegExp(`${name}="([^"]*)"`).exec(tag)?.[1]
 }
 
+/** Applies `edit` to the Markdown outside fenced code blocks. */
+export function outsideCode(markdown: string, edit: (text: string) => string): string {
+  return markdown
+    .split(/(^```[\s\S]*?^```)/m)
+    .map((part, index) => (index % 2 ? part : edit(part)))
+    .join('')
+}
+
 function cell(text: string): string {
   return text.replace(/\|/g, '\\|').replace(/\n+/g, ' ')
 }
@@ -39,8 +47,9 @@ export function apiMarkdown(entry: ApiEntry): string {
  * and each API table becomes a Markdown table, read from the same data the page renders.
  */
 export function toMarkdown(processed: string): string {
-  return (
-    processed
+  // Code is left as written: a JSX comment or self-closing element in an example is code.
+  const expanded = outsideCode(processed, (text) =>
+    text
       .replace(/<Example\b[^>]*\/>/g, (tag) => {
         const name = attribute(tag, 'name')
         return name ? `\`\`\`tsx\n${getExampleSource(name).trimEnd()}\n\`\`\`` : ''
@@ -100,10 +109,13 @@ export function toMarkdown(processed: string): string {
             .filter(Boolean)
             .join('\n')
         },
-      )
+      ),
+  )
+  return outsideCode(expanded, (text) =>
+    text
       // MDX comments, such as a generated page's header, are for whoever edits the source.
       .replace(/\{\/\*[\s\S]*?\*\/\}\n*/g, '')
       // Visual specimens (colour swatches, the type scale, theme previews) have no Markdown form.
-      .replace(/<[A-Z]\w*\b[^>]*\/>\n?/g, '')
+      .replace(/<[A-Z]\w*\b[^>]*\/>\n?/g, ''),
   )
 }

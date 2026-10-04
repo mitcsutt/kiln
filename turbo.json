@@ -38,6 +38,10 @@
       "dependsOn": ["build"],
       "outputs": []
     },
+    "check:skills": {
+      "dependsOn": ["transit"],
+      "outputs": []
+    },
     "size": {
       "dependsOn": ["build"],
       "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/size-report.ts"],

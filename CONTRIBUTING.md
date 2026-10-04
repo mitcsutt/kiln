@@ -55,6 +55,7 @@ Run these from the repo root. Turborepo runs each one across the workspace and c
 | `pnpm test:storybook`  | Every story as a browser test: render, `play` function and axe        |
 | `pnpm check:links`     | Builds the docs site, serves it and fails on any broken internal link |
 | `pnpm check:package`   | `publint` and `@arethetypeswrong/cli` on each packed package          |
+| `pnpm check:skills`    | `intent validate` on each package's agent skills, examples included   |
 | `pnpm size`            | Size report against each package's budgets, with tree-shaking checks  |
 | `pnpm format`          | Formats the whole repo with Prettier                                  |
 | `pnpm generate:skills` | Rebuilds the agent skills in `packages/*/skills` from the docs pages  |

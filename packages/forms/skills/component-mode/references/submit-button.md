@@ -21,7 +21,8 @@ export default function Usage() {
     <Form form={form} aria-label="Route nickname">
       <Stack gap={5}>
         <form.TextField name="nickname" label="Nickname" />
-                <SubmitButton requireChanges>Save nickname</SubmitButton>
+        {/* Change the name to enable it. It stays focusable while it waits. */}
+        <SubmitButton requireChanges>Save nickname</SubmitButton>
       </Stack>
     </Form>
   )

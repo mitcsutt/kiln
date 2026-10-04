@@ -68,7 +68,9 @@ function Example({ state }: { state: 'disabled' | 'readOnly' }) {
 export default function States() {
   return (
     <Grid columns={{ base: 1, sm: 2 }} gap={6}>
-                </Grid>
+      <Example state="disabled" />
+      <Example state="readOnly" />
+    </Grid>
   )
 }
 ```

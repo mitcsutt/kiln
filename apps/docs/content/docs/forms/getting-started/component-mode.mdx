@@ -9,16 +9,20 @@ In component mode, `useAppForm` takes your default values and returns a form obj
 ```tsx
 import { Form, SubmitButton, useAppForm } from '@mitcsutt/kiln-forms'
 
-const form = useAppForm({
-  defaultValues: { name: '', seats: null as number | null },
-  onSubmit: async ({ value }) => save(value),
-})
+export function BookSeats() {
+  const form = useAppForm({
+    defaultValues: { name: '', seats: null as number | null },
+    onSubmit: async ({ value }) => save(value),
+  })
 
-<Form form={form} aria-label="Book seats">
-  <form.TextField name="name" label="Full name" />
-  <form.NumberField name="seats" label="Seats" min={1} />
-  <SubmitButton>Book</SubmitButton>
-</Form>
+  return (
+    <Form form={form} aria-label="Book seats">
+      <form.TextField name="name" label="Full name" />
+      <form.NumberField name="seats" label="Seats" min={1} />
+      <SubmitButton>Book</SubmitButton>
+    </Form>
+  )
+}
 ```
 
 ## Types do the checking

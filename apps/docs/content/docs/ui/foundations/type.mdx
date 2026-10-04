@@ -32,8 +32,10 @@ Sizes are a modular scale: `--type-base × --type-ratio^n`. The display steps ar
 Every number that aligns or updates uses tabular, lining figures: scores, money, tables, dates. `Numeral` and `Amount` do it for you, and so does `Table.Cell numeric`.
 
 ```tsx
-<Amount value={-1240.5} currency="GBP" accounting />
-<Numeral value={0.284} format={{ style: 'percent', maximumFractionDigits: 1 }} />
+;<>
+  <Amount value={-1240.5} currency="GBP" accounting />
+  <Numeral value={0.284} format={{ style: 'percent', maximumFractionDigits: 1 }} />
+</>
 ```
 
 ## Rules

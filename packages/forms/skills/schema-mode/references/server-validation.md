@@ -73,12 +73,15 @@ The phone field is hidden (contact is off), so it isn't validated, and `isAdmin`
 ```ts title="api/feedback.ts"
 import { parseFormSchema, toStandardSchema } from '@mitcsutt/kiln-forms/schema'
 
-const parsed = parseFormSchema(storedJson, { kinds: ['text', 'checkbox'] })
-if (!parsed.ok) throw new Error('Stored schema is invalid')
+export async function POST(request: Request) {
+  const parsed = parseFormSchema(storedJson, { kinds: ['text', 'checkbox'] })
+  if (!parsed.ok) throw new Error('Stored schema is invalid')
 
-const result = await toStandardSchema(parsed.schema)['~standard'].validate(await request.json())
-if (result.issues) return Response.json({ issues: result.issues }, { status: 422 })
-await save(result.value)
+  const result = await toStandardSchema(parsed.schema)['~standard'].validate(await request.json())
+  if (result.issues) return Response.json({ issues: result.issues }, { status: 422 })
+  await save(result.value)
+  return new Response(null, { status: 204 })
+}
 ```
 
 ## Trust the output, not the input
@@ -88,7 +91,7 @@ The successful `value` holds only the fields the form itself would validate. Fie
 Custom validators run if you pass them: `toStandardSchema(schema, { validators: { bookingReference } })`.
 
 ```ts
-toStandardSchema(schema: UntypedFormSchema, opts?: ToStandardSchemaOptions) => StandardSchemaV1<unknown, unknown>
+declare function toStandardSchema(schema: UntypedFormSchema, opts?: ToStandardSchemaOptions): StandardSchemaV1<unknown, unknown>
 ```
 
 The schema's rules as a Standard Schema (§10.9), React-free: use it on the server
@@ -113,7 +116,7 @@ repeater keeps one object per input item with that item's active fields.
 `schemaDefaultValues(schema, empties)` builds starting values for a schema whose shape isn't known at build time: each field's `defaultValue`, else the empty value you give for its kind.
 
 ```ts
-schemaDefaultValues(schema: UntypedFormSchema, empties?: Readonly<Record<string, unknown>>) => Record<string, unknown>
+declare function schemaDefaultValues(schema: UntypedFormSchema, empties?: Readonly<Record<string, unknown>>): Record<string, unknown>
 ```
 
 Initial values for a schema of unknown shape (server-driven forms, §10.8): each root-scope field
@@ -124,7 +127,7 @@ gets its `defaultValue`, else `empties[kind]` when given; each repeater gets `[]
 `defineSchemaFor<Registry, Extras>()` returns a `defineFormSchema` bound to a kit's registries, for code that defines schemas without importing the kit itself. An extended kit exposes the same thing as `kit.defineFormSchema`.
 
 ```ts
-defineSchemaFor<R, X = EmptyObject>() => <T, C = EmptyObject>() => (schema: FormSchema<T, R, X, C>) => FormSchema<T, R, X, C>
+declare function defineSchemaFor<R, X = EmptyObject>(): <T, C = EmptyObject>() => (schema: FormSchema<T, R, X, C>) => FormSchema<T, R, X, C>
 ```
 
 `defineSchemaFor<R, X>()` → a `defineFormSchema` bound to a kit's registries (the kit

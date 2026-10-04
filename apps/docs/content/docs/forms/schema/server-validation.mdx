@@ -13,12 +13,15 @@ The phone field is hidden (contact is off), so it isn't validated, and `isAdmin`
 ```ts title="api/feedback.ts"
 import { parseFormSchema, toStandardSchema } from '@mitcsutt/kiln-forms/schema'
 
-const parsed = parseFormSchema(storedJson, { kinds: ['text', 'checkbox'] })
-if (!parsed.ok) throw new Error('Stored schema is invalid')
+export async function POST(request: Request) {
+  const parsed = parseFormSchema(storedJson, { kinds: ['text', 'checkbox'] })
+  if (!parsed.ok) throw new Error('Stored schema is invalid')
 
-const result = await toStandardSchema(parsed.schema)['~standard'].validate(await request.json())
-if (result.issues) return Response.json({ issues: result.issues }, { status: 422 })
-await save(result.value)
+  const result = await toStandardSchema(parsed.schema)['~standard'].validate(await request.json())
+  if (result.issues) return Response.json({ issues: result.issues }, { status: 422 })
+  await save(result.value)
+  return new Response(null, { status: 204 })
+}
 ```
 
 ## Trust the output, not the input

@@ -40,7 +40,8 @@ export default function Validation() {
   return (
     <Form form={form} aria-label="Create an account">
       <Stack gap={5}>
-                <form.TextField
+        <ErrorSummary />
+        <form.TextField
           name="username"
           label="Username"
           description="Letters and numbers only"
@@ -132,7 +133,7 @@ throw new FormSubmitError({
 `applyServerErrors(form, errors)` does the same outside `onSubmit`, for errors that arrive another way.
 
 ```ts
-applyServerErrors<A extends AnyKitForm>(target: A, errors: ServerErrors<ValuesOfForm<A>>) => void
+declare function applyServerErrors<A extends AnyKitForm>(target: A, errors: ServerErrors<ValuesOfForm<A>>): void
 ```
 
 Applies server errors: field messages → each field's `onServer` slot (source `field`, so other
@@ -148,14 +149,14 @@ fields' edits don't clear them); the form message (plus any message for a path w
 `focusFirstInvalid(form)` and `focusField(form, name)` do that by hand, from your own controls.
 
 ```ts
-focusFirstInvalid(form: AnyKitForm, within?: ScopeHandle | undefined) => Promise<boolean>
+declare function focusFirstInvalid(form: AnyKitForm, within?: ScopeHandle | undefined): Promise<boolean>
 ```
 
 After a frame (so `aria-invalid` is committed), focuses the first invalid field in DOM order,
 revealing its tab/accordion/step first. Resolves `true` when something got focus.
 
 ```ts
-focusField(form: AnyKitForm, name: string) => Promise<boolean>
+declare function focusField(form: AnyKitForm, name: string): Promise<boolean>
 ```
 
 Reveals the field's tab/accordion/step chain, then focuses its control (§5.6).
@@ -163,7 +164,7 @@ Reveals the field's tab/accordion/step chain, then focuses its control (§5.6).
 `normaliseError` turns whatever a validator returned (a string, a Standard Schema issue, an array of them) into one shape, for custom fields and layouts that show errors themselves.
 
 ```ts
-normaliseError(e: unknown) => NormalisedError | null
+declare function normaliseError(e: unknown): NormalisedError | null
 ```
 
 Turns any validator output into `{ message, code?, params?, path? }`: strings, Standard Schema

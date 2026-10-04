@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { parse, stringify } from 'yaml'
 import { SITE_URL } from '@/lib/site'
-import { toMarkdown } from '@/lib/to-markdown'
+import { outsideCode, toMarkdown } from '@/lib/to-markdown'
 import { skills, type SkillSpec } from './manifest'
 
 const appDir = join(import.meta.dirname, '../..')
@@ -46,14 +46,6 @@ function slug(path: string): string {
   const segments = path.split('/')
   const last = segments.at(-1) === 'index' ? segments.at(-2) : segments.at(-1)
   return last ?? path
-}
-
-/** Applies `edit` to the Markdown outside fenced code blocks. */
-function outsideCode(markdown: string, edit: (text: string) => string): string {
-  return markdown
-    .split(/(^```[\s\S]*?^```)/m)
-    .map((part, index) => (index % 2 ? part : edit(part)))
-    .join('')
 }
 
 /**

@@ -1,3 +1,4 @@
+/// <reference path="./stylesheets.d.ts" preserve="true" />
 /*
  * @mitcsutt/kiln-ui public API. Everything a consumer may import lives here — no deep imports.
  * Keep sections in the same order as DESIGN.md §6 (Component catalogue).

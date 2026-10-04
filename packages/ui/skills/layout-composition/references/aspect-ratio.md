@@ -30,7 +30,8 @@ export default function Usage() {
     <Grid columns={{ base: 1, sm: 3 }} gap={4}>
       {(['16/9', '4/3', '1/1'] as const).map((ratio) => (
         <AspectRatio key={ratio} ratio={ratio}>
-                  </AspectRatio>
+          <Chart label={`Passengers per hour, framed ${ratio}`} />
+        </AspectRatio>
       ))}
     </Grid>
   )

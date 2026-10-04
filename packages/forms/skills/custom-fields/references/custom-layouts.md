@@ -36,7 +36,8 @@ function Leg({ title, children }: { title: string; children: ReactNode }) {
         <Stack gap={4}>
           <Inline justify="between">
             <Text weight="strong">{title}</Text>
-                      </Inline>
+            <Count />
+          </Inline>
           <FieldViewListBoundary>{children}</FieldViewListBoundary>
         </Stack>
       </Box>
@@ -53,7 +54,8 @@ export default function Usage() {
   return (
     <Form form={form} aria-label="Return journey">
       <Stack gap={5}>
-                <Leg title="Outward">
+        <ErrorSummary />
+        <Leg title="Outward">
           <form.TextField
             name="outFrom"
             label="From"
@@ -96,14 +98,14 @@ Submit it empty and each panel counts its own errors.
 `useFormContext()` returns the form inside any `Form`, for a layout that needs form state without a `form` prop.
 
 ```ts
-useScopeErrors(scope: ScopeHandle | null, form?: AnyKitForm | undefined) => number
+declare function useScopeErrors(scope: ScopeHandle | null, form?: AnyKitForm | undefined): number
 ```
 
 The number of **visible** errors (per the form's visibility policy) among the scope's fields.
 A primitive selector — re-renders only when the count changes.
 
 ```ts
-useFieldScope() => ScopeHandle | null
+declare function useFieldScope(): ScopeHandle | null
 ```
 
 The nearest scope, or `null`.
