@@ -23,5 +23,6 @@ Each record captures one decision: the context, what was decided, and what follo
 | [0017](0017-kiln-forms-port.md)            | How `kiln-forms` was ported: names, entries, checks    | Accepted                  |
 | [0018](0018-storybook-workbench.md)        | How the Storybook workbench is built and tested        | Accepted                  |
 | [0019](0019-docs-site.md)                  | How the docs site is built: Fumadocs core, Kiln chrome | Accepted                  |
+| [0020](0020-agent-skills.md)               | How the agent skills are built from the docs           | Accepted                  |
 
 New records use the next number and the same headings: Status, Context, Decision, Consequences.
