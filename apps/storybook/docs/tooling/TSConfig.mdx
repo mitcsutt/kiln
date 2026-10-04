@@ -1,0 +1,18 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="Tooling/TSConfig" />
+
+# TSConfig
+
+`@mitcsutt/kiln-tsconfig` holds the TypeScript presets every Kiln package and app extends: `base`, `react`, `library`, `app` and `node`. It has no components to show here; the full guide is on the [docs site](https://kiln.mitchellsutton.com).
+
+```sh
+pnpm add -D @mitcsutt/kiln-tsconfig typescript
+```
+
+```json
+{
+  "extends": ["@mitcsutt/kiln-tsconfig/app", "@mitcsutt/kiln-tsconfig/react"],
+  "include": ["src"]
+}
+```

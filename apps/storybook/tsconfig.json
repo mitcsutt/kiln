@@ -1,7 +1,7 @@
 {
   "extends": ["@mitcsutt/kiln-tsconfig/app", "@mitcsutt/kiln-tsconfig/react"],
   "compilerOptions": {
-    "types": ["node", "vite/client"]
+    "types": ["node", "vite/client", "vitest/globals"]
   },
   "include": [".storybook/**/*", "*.ts"]
 }
