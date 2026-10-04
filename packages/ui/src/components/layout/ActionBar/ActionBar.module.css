@@ -1,0 +1,63 @@
+/*
+ * Component tokens:
+ *   --action-bar-surface   sticky background, default var(--color-surface)
+ *   --action-bar-line      sticky top hairline, default var(--color-line)
+ *
+ * Responsive prop: gap → --action-bar-gap-{base,sm,md,lg,xl} (registered in
+ * tokens/responsive-props.css), same cascade pattern as layout/Inline.
+ */
+.bar {
+  --_gap: var(--action-bar-gap-base, var(--space-3));
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: var(--_gap);
+  row-gap: var(--space-2);
+  min-inline-size: 0;
+}
+
+.bar[data-align='start'] {
+  justify-content: flex-start;
+}
+.bar[data-align='end'] {
+  justify-content: flex-end;
+}
+.bar[data-align='between'] {
+  justify-content: space-between;
+}
+
+.bar[data-sticky] {
+  position: sticky;
+  inset-block-end: 0;
+  z-index: var(--z-sticky);
+  padding-block: var(--space-3);
+  border-block-start: var(--border-width) solid var(--action-bar-line, var(--color-line));
+  background: var(--action-bar-surface, var(--color-surface));
+}
+
+@media (min-width: 40em) {
+  .bar {
+    --_gap: var(--action-bar-gap-sm, var(--space-3));
+  }
+}
+@media (min-width: 48em) {
+  .bar {
+    --_gap: var(--action-bar-gap-md, var(--space-3));
+  }
+}
+@media (min-width: 64em) {
+  .bar {
+    --_gap: var(--action-bar-gap-lg, var(--space-3));
+  }
+}
+@media (min-width: 80em) {
+  .bar {
+    --_gap: var(--action-bar-gap-xl, var(--space-3));
+  }
+}
+
+/* `hidden` wins over the display above (author CSS otherwise beats the UA [hidden] rule). */
+.bar[hidden] {
+  display: none;
+}

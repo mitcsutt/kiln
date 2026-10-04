@@ -1,0 +1,104 @@
+{
+  "name": "@mitcsutt/kiln-ui",
+  "version": "0.1.0",
+  "description": "Kiln: a themeable React design system on Radix primitives, plain CSS and design tokens",
+  "keywords": [
+    "kiln",
+    "react",
+    "design-system",
+    "components",
+    "ui",
+    "radix",
+    "css-modules",
+    "design-tokens",
+    "theming"
+  ],
+  "homepage": "https://kiln.mitchellsutton.com",
+  "bugs": "https://github.com/mitcsutt/kiln/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mitcsutt/kiln.git",
+    "directory": "packages/ui"
+  },
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "imports": {
+    "#*": [
+      "./src/*",
+      "./src/*.ts",
+      "./src/*.tsx",
+      "./src/*/index.ts",
+      "./src/*/index.tsx"
+    ]
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./styles.css": "./src/styles/index.css",
+    "./themes/monograph.css": "./src/themes/monograph.css",
+    "./themes/ledger.css": "./src/themes/ledger.css",
+    "./themes/fiesta.css": "./src/themes/fiesta.css",
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./styles.css": "./dist/styles.css",
+      "./themes/monograph.css": "./dist/themes/monograph.css",
+      "./themes/ledger.css": "./dist/themes/ledger.css",
+      "./themes/fiesta.css": "./dist/themes/fiesta.css",
+      "./package.json": "./package.json"
+    },
+    "imports": {}
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "check:package": "pnpm pack --out node_modules/.cache/kiln-pack/package.tgz > /dev/null && publint --pack pnpm --strict && attw node_modules/.cache/kiln-pack/package.tgz --profile esm-only --exclude-entrypoints ./styles.css ./themes/monograph.css ./themes/ledger.css ./themes/fiesta.css",
+    "lint": "eslint --max-warnings=0 .",
+    "size": "node ../../size-report.ts",
+    "test": "vitest run",
+    "test:react18": "vitest run --config vitest.react18.config.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "radix-ui": "catalog:"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "catalog:",
+    "@mitcsutt/kiln-testing-react18": "workspace:*",
+    "@mitcsutt/kiln-tsconfig": "workspace:*",
+    "@storybook/react-vite": "catalog:",
+    "@testing-library/jest-dom": "catalog:",
+    "@testing-library/react": "catalog:",
+    "@testing-library/user-event": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "eslint": "catalog:",
+    "jsdom": "catalog:",
+    "publint": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "storybook": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:"
+  },
+  "peerDependencies": {
+    "react": "^18.3.0 || ^19.0.0",
+    "react-dom": "^18.3.0 || ^19.0.0"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

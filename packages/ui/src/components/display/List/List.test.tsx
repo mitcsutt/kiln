@@ -1,0 +1,85 @@
+import { render, screen, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { createRef } from 'react'
+import { List } from './List'
+
+describe('List', () => {
+  it('is a list of list items and forwards refs', () => {
+    const ref = createRef<HTMLUListElement>()
+    render(
+      <List ref={ref} density="compact">
+        <List.Item>
+          <List.Content>Mexico</List.Content>
+        </List.Item>
+        <List.Item>
+          <List.Content>Canada</List.Content>
+        </List.Item>
+      </List>,
+    )
+    const list = screen.getByRole('list')
+    expect(ref.current).toBe(list)
+    expect(list).toHaveAttribute('data-density', 'compact')
+    expect(list).toHaveAttribute('data-divided')
+    expect(within(list).getAllByRole('listitem')).toHaveLength(2)
+  })
+
+  it('renders an ordered list when as="ol"', () => {
+    const { container } = render(<List as="ol" />)
+    expect(container.querySelector('ol')).toHaveAttribute('role', 'list')
+  })
+
+  it('makes the whole row a single link with asChild — inside the li, no nested anchors', () => {
+    render(
+      <List>
+        <List.Item asChild highlighted>
+          <a href="/members/noor">
+            <List.Leading>1</List.Leading>
+            <List.Content>
+              Noor<List.Description>Coast path, Ridge loop</List.Description>
+            </List.Content>
+            <List.Trailing>42</List.Trailing>
+          </a>
+        </List.Item>
+      </List>,
+    )
+    const item = screen.getByRole('listitem')
+    const link = within(item).getByRole('link')
+    expect(link).toHaveAttribute('href', '/members/noor')
+    expect(link).toHaveTextContent('Noor')
+    expect(link).toHaveTextContent('42')
+    expect(link.querySelector('a')).toBeNull()
+    expect(item).toHaveAttribute('data-interactive')
+    expect(item).toHaveAttribute('data-highlighted')
+  })
+
+  it('supports a button row that is keyboard operable', async () => {
+    const onClick = vi.fn()
+    render(
+      <List>
+        <List.Item asChild>
+          <button type="button" onClick={onClick}>
+            <List.Content>Groceries</List.Content>
+          </button>
+        </List.Item>
+      </List>,
+    )
+    const button = screen.getByRole('button', { name: 'Groceries' })
+    button.focus()
+    await userEvent.keyboard('{Enter}')
+    expect(onClick).toHaveBeenCalledTimes(1)
+  })
+
+  it('renders static rows without interactive affordance', () => {
+    render(
+      <List divided={false}>
+        <List.Item selected>
+          <List.Content>Budget</List.Content>
+        </List.Item>
+      </List>,
+    )
+    const item = screen.getByRole('listitem')
+    expect(item).not.toHaveAttribute('data-interactive')
+    expect(item).toHaveAttribute('data-selected')
+    expect(screen.getByRole('list')).not.toHaveAttribute('data-divided')
+  })
+})

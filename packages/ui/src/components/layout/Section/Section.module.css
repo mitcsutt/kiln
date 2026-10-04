@@ -1,0 +1,124 @@
+/*
+ * Responsive pattern: see layout/Stack/Stack.module.css.
+ *
+ * Component tokens:
+ *   --section-fill / --section-on   (read-only) the band's fill and ink on inverse/accent
+ *   --section-space-default   block padding when `space` is unset (default var(--space-8))
+ *   --section-divider-color   hairline colour for `divider` (default var(--color-line))
+ */
+.section {
+  --_space: var(--section-space-base, var(--section-space-default, var(--space-8)));
+  --_rule: var(--border-width) solid var(--section-divider-color, var(--color-line));
+
+  display: block;
+  position: relative;
+  min-inline-size: 0;
+  padding-block: var(--_space);
+}
+
+@media (min-width: 40em) {
+  .section {
+    --_space: var(--section-space-sm, var(--section-space-default, var(--space-8)));
+  }
+}
+@media (min-width: 48em) {
+  .section {
+    --_space: var(--section-space-md, var(--section-space-default, var(--space-8)));
+  }
+}
+@media (min-width: 64em) {
+  .section {
+    --_space: var(--section-space-lg, var(--section-space-default, var(--space-8)));
+  }
+}
+@media (min-width: 80em) {
+  .section {
+    --_space: var(--section-space-xl, var(--section-space-default, var(--space-8)));
+  }
+}
+
+.section[data-divider='top'],
+.section[data-divider='both'] {
+  border-block-start: var(--_rule);
+}
+.section[data-divider='bottom'],
+.section[data-divider='both'] {
+  border-block-end: var(--_rule);
+}
+
+/* Surfaces */
+.section[data-surface='canvas'] {
+  background-color: var(--color-canvas);
+  background-image: var(--canvas-image);
+  background-size: var(--canvas-image-size);
+  color: var(--color-ink);
+}
+.section[data-surface='surface'] {
+  background-color: var(--color-surface);
+  color: var(--color-ink);
+}
+.section[data-surface='sunken'] {
+  background-color: var(--color-surface-sunken);
+  color: var(--color-ink);
+}
+
+/*
+ * Inverse and accent bands re-point the colour roles for every descendant, so text,
+ * hairlines, focus rings and nested controls (an outline or solid Button) stay legible
+ * without per-child props. Mixes are taken against the band's own fill.
+ *
+ * Swapping a pair (e.g. ink <-> ink-inverse) can't happen on one element — it would be
+ * a var() cycle — so the band publishes its fill/ink as --section-fill/--section-on and
+ * the swapped roles are set on its children.
+ */
+.section[data-surface='inverse'] {
+  --section-fill: var(--color-surface-inverse);
+  --section-on: var(--color-ink-inverse);
+}
+.section[data-surface='accent'] {
+  --section-fill: var(--color-accent);
+  --section-on: var(--color-accent-ink);
+}
+.section:is([data-surface='inverse'], [data-surface='accent']) {
+  --color-ink: var(--section-on);
+  --color-ink-muted: color-mix(in oklab, var(--section-on) 76%, var(--section-fill));
+  --color-ink-subtle: color-mix(in oklab, var(--section-on) 60%, var(--section-fill));
+  --color-line: color-mix(in oklab, var(--section-on) 22%, var(--section-fill));
+  --color-line-strong: color-mix(in oklab, var(--section-on) 45%, var(--section-fill));
+  --color-canvas: var(--section-fill);
+  --color-surface: color-mix(in oklab, var(--section-on) 7%, var(--section-fill));
+  --color-surface-sunken: color-mix(in oklab, var(--section-on) 12%, var(--section-fill));
+  --color-surface-raised: color-mix(in oklab, var(--section-on) 4%, var(--section-fill));
+  --color-focus: var(--section-on);
+  --color-accent-text: var(--section-on);
+  --canvas-image: none;
+
+  background-color: var(--section-fill);
+  color: var(--section-on);
+}
+/* An accent fill only clears AA against its own ink (~4.5-5:1), so there is no headroom
+   for muted/subtle steps there: secondary text uses the full band ink, and nested
+   surfaces stay the band fill (edges come from the line tokens) so text on them keeps AA. */
+.section[data-surface='accent'] {
+  --color-ink-muted: var(--section-on);
+  --color-ink-subtle: var(--section-on);
+  --color-surface: var(--section-fill);
+  --color-surface-sunken: var(--section-fill);
+  --color-surface-raised: var(--section-fill);
+}
+.section[data-surface='inverse'] > * {
+  --color-surface-inverse: var(--section-on);
+  --color-ink-inverse: var(--section-fill);
+}
+/* On an accent band the accent itself becomes the band's ink, so a primary action still stands out. */
+.section[data-surface='accent'] > * {
+  --color-accent: var(--section-on);
+  --color-accent-hover: color-mix(in oklab, var(--section-on) 82%, var(--section-fill));
+  --color-accent-ink: var(--section-fill);
+  --color-accent-soft: color-mix(in oklab, var(--section-on) 12%, var(--section-fill));
+}
+
+/* `hidden` wins over the display above (author CSS otherwise beats the UA [hidden] rule). */
+.section[hidden] {
+  display: none;
+}

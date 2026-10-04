@@ -1,0 +1,136 @@
+/*
+ * Component tokens (themes may set any of these on [data-theme]):
+ *   --tag-radius   default var(--radius-chip)
+ *
+ * Quieter than Badge: text weight, no status colour. Neutral tags are a hairline;
+ * categorical tags are a flat fill of --color-cat-N with --color-cat-ink (AA on all 8).
+ */
+.tag {
+  --_bg: transparent;
+  --_ink: var(--color-ink-muted);
+  --_border: var(--color-line);
+
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-1);
+  min-block-size: calc(var(--space-5) * 0.9);
+  padding-inline: var(--space-2);
+  border: var(--border-width) solid var(--_border);
+  border-radius: var(--tag-radius, var(--radius-chip));
+  background: var(--_bg);
+  color: var(--_ink);
+  font-family: var(--font-text);
+  font-size: var(--text-xs);
+  font-weight: 450;
+  line-height: 1;
+  white-space: nowrap;
+  text-decoration: none;
+  vertical-align: middle;
+  transition:
+    background-color var(--dur-1) var(--ease-out),
+    border-color var(--dur-1) var(--ease-out),
+    color var(--dur-1) var(--ease-out);
+}
+
+.tag[data-removable] {
+  padding-inline-end: calc(var(--space-1) / 2);
+}
+
+.tag[data-color] {
+  --_ink: var(--color-cat-ink);
+  --_border: var(--_bg);
+}
+.tag[data-color='1'] {
+  --_bg: var(--color-cat-1);
+}
+.tag[data-color='2'] {
+  --_bg: var(--color-cat-2);
+}
+.tag[data-color='3'] {
+  --_bg: var(--color-cat-3);
+}
+.tag[data-color='4'] {
+  --_bg: var(--color-cat-4);
+}
+.tag[data-color='5'] {
+  --_bg: var(--color-cat-5);
+}
+.tag[data-color='6'] {
+  --_bg: var(--color-cat-6);
+}
+.tag[data-color='7'] {
+  --_bg: var(--color-cat-7);
+}
+.tag[data-color='8'] {
+  --_bg: var(--color-cat-8);
+}
+
+/* As a link (asChild): the edge firms up on hover. */
+@media (hover: hover) {
+  a.tag:hover {
+    --_border: var(--color-line-strong);
+    --_ink: var(--color-ink);
+  }
+  a.tag[data-color]:hover {
+    --_border: var(--color-cat-ink);
+    --_ink: var(--color-cat-ink);
+  }
+}
+.tag:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.remove {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  inline-size: 1.5em;
+  block-size: 1.5em;
+  padding: 0;
+  border: 0;
+  border-radius: var(--tag-radius, var(--radius-chip));
+  background: transparent;
+  color: inherit;
+  font-size: inherit;
+  opacity: 0.7;
+  cursor: pointer;
+  transition:
+    opacity var(--dur-1) var(--ease-out),
+    background-color var(--dur-1) var(--ease-out);
+}
+/* Larger hit target than the glyph, without growing the tag. */
+.remove::after {
+  content: '';
+  position: absolute;
+  inset: -0.35em;
+}
+.remove > svg {
+  inline-size: 1.1em;
+  block-size: 1.1em;
+}
+@media (hover: hover) {
+  .remove:hover {
+    opacity: 1;
+    background: color-mix(in oklch, currentColor 14%, transparent);
+  }
+}
+.remove:focus-visible {
+  opacity: 1;
+  outline: 2px solid var(--color-focus);
+  outline-offset: 1px;
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.list > li {
+  display: flex;
+}

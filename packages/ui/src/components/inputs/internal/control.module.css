@@ -1,0 +1,79 @@
+/*
+ * The field box shared by Input, Textarea and Select's trigger, so all three share
+ * one border, one radius and one set of states.
+ *
+ * Component tokens (themes may set any of these on [data-theme]):
+ *   --field-bg            default var(--color-surface)
+ *   --field-border        default var(--color-line-control) (≥ 3:1)
+ *   --field-radius        default var(--radius-field)
+ *   --field-shadow        default none
+ *
+ * Focus is the neutral ink ring, outside the border — it never tints the border.
+ * Only validation (data-invalid) changes the border colour.
+ */
+.box {
+  --_h: var(--control-md);
+  --_px: var(--space-3);
+  --_fs: var(--text-md);
+  --_border: var(--field-border, var(--color-line-control));
+
+  position: relative;
+  box-sizing: border-box;
+  min-block-size: var(--_h);
+  margin: 0;
+  border: var(--border-width) solid var(--_border);
+  border-radius: var(--field-radius, var(--radius-field));
+  background-color: var(--field-bg, var(--color-surface));
+  color: var(--color-ink);
+  box-shadow: var(--field-shadow, none);
+  font-family: var(--font-text);
+  font-size: var(--_fs);
+  line-height: var(--leading-snug);
+  transition:
+    border-color var(--dur-1) var(--ease-out),
+    background-color var(--dur-1) var(--ease-out),
+    outline-color var(--dur-1) var(--ease-out);
+}
+
+.box[data-size='sm'] {
+  --_h: var(--control-sm);
+  --_px: var(--space-2);
+  --_fs: var(--text-sm);
+}
+.box[data-size='lg'] {
+  --_h: var(--control-lg);
+  --_px: var(--space-4);
+  --_fs: var(--text-lg);
+}
+
+/* Hover firms the line toward ink (a no-op where the line already is ink). */
+@media (hover: hover) {
+  .box:hover:not([data-disabled], [data-invalid]) {
+    --_border: color-mix(
+      in oklab,
+      var(--field-border, var(--color-line-control)),
+      var(--color-ink) 35%
+    );
+  }
+}
+
+.box:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.box[data-invalid] {
+  --_border: var(--tone-critical);
+}
+
+.box[data-readonly] {
+  background-color: var(--color-surface-sunken);
+}
+
+.box[data-disabled] {
+  --_border: var(--color-line);
+  background-color: var(--color-surface-sunken);
+  color: var(--color-ink-subtle);
+  box-shadow: none;
+  cursor: not-allowed;
+}

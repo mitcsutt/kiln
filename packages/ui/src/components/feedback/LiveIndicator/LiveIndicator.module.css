@@ -1,0 +1,105 @@
+/*
+ * Component tokens (themes may set any of these on [data-theme]):
+ *   --live-dot-size      default 0.5em
+ *   --live-dot-radius    default 50%
+ *   --live-pulse-scale   how far the ring swells, default 2.6
+ *   --live-pill-radius   default var(--radius-chip)
+ *
+ *   --live-label-color   default var(--_t): the tone's text colour. Set to currentColor
+ *                        to let the label follow its container (e.g. on a filled band).
+ *
+ * Tones map to a dot colour (--_c) and a text colour (--_t).
+ *   --live-dot-ring     keyline around the dot, default calc(var(--border-width) - 1px)
+ */
+.live {
+  --_c: var(--color-accent);
+  --_t: var(--color-accent-text);
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  font-family: var(--font-text);
+  font-size: var(--text-sm);
+  font-weight: var(--label-weight);
+  letter-spacing: var(--label-tracking);
+  text-transform: var(--label-transform);
+  line-height: 1;
+  font-variant-numeric: tabular-nums lining-nums;
+  white-space: nowrap;
+  color: var(--live-label-color, var(--_t));
+  vertical-align: middle;
+}
+
+.live[data-size='sm'] {
+  font-size: var(--text-xs);
+}
+
+.live[data-tone='neutral'] {
+  --_c: var(--color-ink-muted);
+  --_t: var(--color-ink-muted);
+}
+.live[data-tone='positive'] {
+  --_c: var(--tone-positive);
+  --_t: var(--tone-positive-text);
+}
+.live[data-tone='caution'] {
+  --_c: var(--tone-caution);
+  --_t: var(--tone-caution-text);
+}
+.live[data-tone='critical'] {
+  --_c: var(--tone-critical);
+  --_t: var(--tone-critical-text);
+}
+.live[data-tone='info'] {
+  --_c: var(--tone-info);
+  --_t: var(--tone-info-text);
+}
+
+/* Pill: a keylined chip. The label goes to ink so the dot carries the colour. */
+.live[data-variant='pill'] {
+  padding-block: 0.4em;
+  padding-inline: 0.6em 0.75em;
+  border: var(--border-width) solid var(--color-line-strong);
+  border-radius: var(--live-pill-radius, var(--radius-chip));
+  background: var(--color-surface);
+  color: var(--color-ink);
+}
+
+.dot {
+  /* Keyline ring: 0 in hairline themes, 1px of ink where the theme draws 2px rules. */
+  box-shadow: 0 0 0 var(--live-dot-ring, calc(var(--border-width) - 1px)) var(--color-line-strong);
+  position: relative;
+  flex: none;
+  inline-size: var(--live-dot-size, 0.5em);
+  block-size: var(--live-dot-size, 0.5em);
+  border-radius: var(--live-dot-radius, 50%);
+  background: var(--_c);
+}
+
+.live[data-pulse] .dot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--_c);
+  animation: ring calc(var(--dur-3) * 5) var(--ease-out) infinite;
+}
+
+@keyframes ring {
+  0% {
+    scale: 1;
+    opacity: 0.55;
+  }
+  70%,
+  100% {
+    scale: var(--live-pulse-scale, 2.6);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .live[data-pulse] .dot::after {
+    animation: none;
+    opacity: 0;
+  }
+}

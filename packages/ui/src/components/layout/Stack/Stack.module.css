@@ -1,0 +1,62 @@
+/*
+ * Responsive pattern (copy this): the component writes cascaded vars
+ * --stack-gap-{base,sm,md,lg,xl} (see utils/responsive.ts). CSS resolves them into a
+ * private --_gap per breakpoint and every rule reads --_gap. Because the JS cascades
+ * values upward, each breakpoint only needs a fallback to the default.
+ */
+.stack {
+  --_gap: var(--stack-gap-base, 0px);
+  --_align: var(--stack-align-base, stretch);
+
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+  gap: var(--_gap);
+  align-items: var(--_align);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 40em) {
+  .stack {
+    --_gap: var(--stack-gap-sm, 0px);
+    --_align: var(--stack-align-sm, stretch);
+  }
+}
+@media (min-width: 48em) {
+  .stack {
+    --_gap: var(--stack-gap-md, 0px);
+    --_align: var(--stack-align-md, stretch);
+  }
+}
+@media (min-width: 64em) {
+  .stack {
+    --_gap: var(--stack-gap-lg, 0px);
+    --_align: var(--stack-align-lg, stretch);
+  }
+}
+@media (min-width: 80em) {
+  .stack {
+    --_gap: var(--stack-gap-xl, 0px);
+    --_align: var(--stack-align-xl, stretch);
+  }
+}
+
+/* Dividers: a rule centred in the gap, drawn on every child after the first. */
+.stack[data-dividers] > * + * {
+  position: relative;
+}
+.stack[data-dividers] > * + *::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: calc(var(--_gap) / -2 - var(--border-width) / 2);
+  border-block-start: var(--border-width) solid var(--color-line);
+  pointer-events: none;
+}
+
+/* `hidden` wins over the display above (author CSS otherwise beats the UA [hidden] rule). */
+.stack[hidden] {
+  display: none;
+}

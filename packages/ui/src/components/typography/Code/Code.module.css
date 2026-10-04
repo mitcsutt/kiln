@@ -1,0 +1,29 @@
+/*
+ * Component tokens:
+ *   --code-radius   default half of --radius-field
+ *   --code-bg       default var(--color-surface-sunken)
+ */
+.code {
+  --_bg: var(--code-bg, var(--color-surface-sunken));
+  --_ink: var(--color-ink);
+
+  padding: 0.12em 0.36em;
+  border-radius: var(--code-radius, calc(var(--radius-field) / 2));
+  background: var(--_bg);
+  color: var(--_ink);
+  font-family: var(--font-mono);
+  font-size: 0.84em;
+  font-stretch: var(--mono-stretch);
+  font-weight: 400;
+  font-variant-ligatures: none;
+  letter-spacing: 0;
+  text-transform: none;
+  overflow-wrap: anywhere;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+.code[data-tone='accent'] {
+  --_bg: var(--color-accent-soft);
+  --_ink: var(--color-accent-text);
+}

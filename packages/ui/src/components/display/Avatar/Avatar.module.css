@@ -1,0 +1,116 @@
+/*
+ * Component tokens (themes may set any of these on [data-theme]):
+ *   --avatar-radius       default var(--radius-avatar)
+ *   --avatar-edge         default line-strong at 70% — inner keyline (ink in Fiesta)
+ *   --avatar-ring-color   default var(--color-accent) — the "you" ring
+ *   --avatar-cutout       default var(--color-canvas) — gap between ring/stack and avatar
+ */
+.avatar {
+  --_size: var(--control-md);
+  --_bg: var(--color-cat-8);
+
+  position: relative;
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  inline-size: var(--_size);
+  block-size: var(--_size);
+  border-radius: var(--avatar-radius, var(--radius-avatar));
+  background: var(--_bg);
+  color: var(--color-cat-ink);
+  vertical-align: middle;
+  user-select: none;
+}
+
+/* Inner keyline drawn over the image, so photos and fills share one edge. */
+.avatar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 var(--border-width)
+    var(--avatar-edge, color-mix(in oklch, var(--color-line-strong) 70%, transparent));
+  pointer-events: none;
+}
+
+.avatar[data-size='xs'] {
+  --_size: var(--space-5);
+}
+.avatar[data-size='sm'] {
+  --_size: var(--control-sm);
+}
+.avatar[data-size='md'] {
+  --_size: var(--control-md);
+}
+.avatar[data-size='lg'] {
+  --_size: var(--control-lg);
+}
+.avatar[data-size='xl'] {
+  --_size: var(--space-8);
+}
+
+.avatar[data-color='1'] {
+  --_bg: var(--color-cat-1);
+}
+.avatar[data-color='2'] {
+  --_bg: var(--color-cat-2);
+}
+.avatar[data-color='3'] {
+  --_bg: var(--color-cat-3);
+}
+.avatar[data-color='4'] {
+  --_bg: var(--color-cat-4);
+}
+.avatar[data-color='5'] {
+  --_bg: var(--color-cat-5);
+}
+.avatar[data-color='6'] {
+  --_bg: var(--color-cat-6);
+}
+.avatar[data-color='7'] {
+  --_bg: var(--color-cat-7);
+}
+.avatar[data-color='8'] {
+  --_bg: var(--color-cat-8);
+}
+
+/* "You": a cut-out gap, then the ring. */
+.avatar[data-ring] {
+  box-shadow:
+    0 0 0 2px var(--avatar-cutout, var(--color-canvas)),
+    0 0 0 calc(2px + var(--border-width-strong) + 1px) var(--avatar-ring-color, var(--color-accent));
+}
+
+.image {
+  grid-area: 1 / 1;
+  inline-size: 100%;
+  block-size: 100%;
+  border-radius: inherit;
+  object-fit: cover;
+}
+
+.fallback {
+  grid-area: 1 / 1;
+  display: grid;
+  place-items: center;
+  inline-size: 100%;
+  block-size: 100%;
+  border-radius: inherit;
+  font-family: var(--heading-font);
+  font-weight: var(--heading-weight);
+  text-transform: var(--heading-transform);
+  font-size: calc(var(--_size) * 0.38);
+  letter-spacing: 0;
+  line-height: 1;
+}
+.avatar[data-size='xs'] .fallback {
+  font-size: calc(var(--_size) * 0.46);
+}
+/* Three-letter codes ("GER", "CRC") shrink so they clear the frame and the keyline. */
+.fallback[data-glyphs='many'] {
+  font-size: calc(var(--_size) * 0.3);
+  letter-spacing: -0.02em;
+}
+.avatar[data-size='xs'] .fallback[data-glyphs='many'] {
+  font-size: calc(var(--_size) * 0.34);
+}

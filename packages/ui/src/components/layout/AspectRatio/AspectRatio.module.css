@@ -1,0 +1,22 @@
+.frame {
+  position: relative;
+  inline-size: 100%;
+  aspect-ratio: var(--aspect-ratio, 16 / 9);
+  overflow: hidden;
+}
+
+/* Direct children fill the frame; replaced elements crop rather than distort. */
+.frame > * {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+}
+.frame > :is(img, video, picture, canvas, svg) {
+  object-fit: cover;
+}
+.frame > picture > img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}

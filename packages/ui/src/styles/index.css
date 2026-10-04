@@ -1,0 +1,25 @@
+/*
+ * @mitcsutt/kiln-ui stylesheet. Import it ONCE at the app root, before any app CSS:
+ *
+ *   import '@mitcsutt/kiln-ui/styles.css'
+ *   import '@mitcsutt/kiln-ui/themes/fiesta.css' // optional: any preset you use
+ *
+ * It holds the reset, the tokens, the default Paper theme and the fonts Paper,
+ * Monograph and Ledger use. Presets (Monograph, Ledger, Fiesta) are separate opt-in
+ * stylesheets, so an app pays only for the themes it imports. The published file also
+ * carries every component's CSS; in the workspace each component imports its own.
+ *
+ * Reset, tokens and themes live in cascade layers (lowest priority), so app CSS
+ * always beats them. Component CSS Modules are deliberately UNLAYERED: a layered
+ * rule loses to *any* unlayered rule, so a typical app reset like
+ * `button { color: inherit }` would silently break every component. Unlayered
+ * single-class selectors beat element resets and tie with a consumer's className,
+ * which wins because app CSS loads after this file.
+ */
+@layer kiln.reset, kiln.tokens, kiln.themes;
+
+@import '../tokens/fonts.css';
+@import '../tokens/responsive-props.css';
+@import '../tokens/foundation.css';
+@import '../tokens/base.css';
+@import '../themes/paper.css';

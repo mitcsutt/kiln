@@ -1,0 +1,67 @@
+/*
+ * Label and help sit tight together; the control keeps a little more air above it so
+ * the header reads as one unit. Error text sits directly under the control.
+ *
+ * Component tokens:
+ *   --field-gap   default var(--space-2) — space around the control
+ *
+ * `data-layout='stack'` (default) keeps the plain flex column below: the slot wrappers
+ * (.controlSlot/.warningSlot/.errorSlot) are `display: contents` so they don't add a box.
+ * `data-layout='horizontal'` turns them into real grid cells (label column | control
+ * column) at and above `sm`; below it, everything stacks in DOM order.
+ * `data-layout='inline'` forces the label hidden (see Field.tsx) and lays the root out
+ * as an inline-flex run, for a control sitting in a sentence or a table cell.
+ */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--field-gap, var(--space-2));
+  min-inline-size: 0;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+/* A hidden label leaves no visible header row — drop the wrapper from the flow. */
+.field[data-label-hidden] > .header {
+  display: contents;
+}
+
+.controlSlot,
+.warningSlot,
+.errorSlot {
+  display: contents;
+}
+
+.field[data-layout='inline'] {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-2);
+}
+
+.field[data-layout='horizontal'] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-2);
+}
+
+@media (min-width: 40em) {
+  .field[data-layout='horizontal'] {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    column-gap: var(--space-4);
+    row-gap: var(--space-1);
+    align-items: start;
+  }
+  .field[data-layout='horizontal'] > .header {
+    grid-column: 1;
+  }
+  .field[data-layout='horizontal'] > .controlSlot,
+  .field[data-layout='horizontal'] > .warningSlot,
+  .field[data-layout='horizontal'] > .errorSlot {
+    display: block;
+    grid-column: 2;
+  }
+}

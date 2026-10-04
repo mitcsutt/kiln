@@ -1,0 +1,63 @@
+/*
+ * Intrinsic layout, no breakpoint: the text block and actions share a wrapping flex
+ * row. With room (≈ md and up, or a wide container), actions sit right, bottom-aligned
+ * with the text so they read as the section's verb; when the text block would drop
+ * below its minimum measure, actions wrap underneath.
+ *
+ * Component tokens:
+ *   --section-header-gap   space between text block and actions, default var(--space-5)
+ */
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4) var(--section-header-gap, var(--space-5));
+}
+
+.header[data-divider] {
+  padding-block-end: var(--space-5);
+  border-block-end: var(--border-width) solid var(--color-line);
+}
+
+.titles {
+  flex: 999 1 min(100%, 22rem);
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+  margin: 0;
+}
+
+.kicker {
+  margin: 0 0 var(--space-2);
+  color: var(--color-ink-muted);
+  font-family: var(--font-text);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  line-height: var(--leading-snug);
+}
+
+.title {
+  max-inline-size: 24em;
+}
+
+.description {
+  max-inline-size: 60ch;
+  margin-block-start: var(--space-3);
+  color: var(--color-ink-muted);
+  font-family: var(--font-text);
+  font-size: var(--text-md);
+  line-height: var(--leading-body);
+  text-wrap: pretty;
+}
+.description > :where(p) {
+  margin: 0;
+}
+
+.actions {
+  flex: 0 1 auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}

@@ -1,0 +1,79 @@
+/*
+ * A row of stars. Stars up to the rating (or the hovered star, while previewing) fill with
+ * the accent; the rest are outlines.
+ *
+ * Component tokens:
+ *   --rating-fill    default var(--color-accent) — filled stars
+ *   --rating-empty   default var(--color-line-control) — empty star outline (≥ 3:1)
+ *   --rating-gap     default var(--space-1)
+ */
+.rating {
+  --_s: 1.5rem;
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--rating-gap, var(--space-1));
+  vertical-align: middle;
+}
+.rating[data-size='sm'] {
+  --_s: 1.25rem;
+}
+.rating[data-size='lg'] {
+  --_s: 2rem;
+}
+
+.star {
+  --_ink: var(--rating-empty, var(--color-line-control));
+  --_fill: transparent;
+
+  all: unset;
+  box-sizing: border-box;
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  border-radius: var(--radius-chip);
+  color: var(--_ink);
+  font-size: var(--_s);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: color var(--dur-1) var(--ease-out);
+}
+
+/* Fill the gap between stars into the hit area, so the pointer never falls through. */
+.star::before {
+  content: '';
+  position: absolute;
+  inset: calc(var(--space-1) * -0.5);
+}
+
+.star[data-filled] {
+  --_ink: var(--rating-fill, var(--color-accent));
+  --_fill: var(--rating-fill, var(--color-accent));
+}
+
+/* While previewing, the stars that would be chosen show at a lighter weight than a real rating. */
+.rating[data-previewing] .star[data-filled] {
+  --_fill: color-mix(in oklch, var(--rating-fill, var(--color-accent)) 45%, transparent);
+}
+
+.rating[data-invalid] .star:not([data-filled]) {
+  --_ink: var(--tone-critical);
+}
+
+.glyph {
+  fill: var(--_fill);
+  transition: fill var(--dur-1) var(--ease-out);
+}
+
+.star:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.star[data-disabled] {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+.rating[data-readonly] .star {
+  cursor: default;
+}

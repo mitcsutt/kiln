@@ -1,0 +1,114 @@
+/*
+ * Component tokens (themes may set any of these on [data-theme]):
+ *   --progress-radius         default var(--radius-chip)
+ *   --progress-track          track fill, default var(--color-surface-sunken)
+ *   --progress-track-edge     track keyline, default var(--color-line-strong)
+ *
+ * Written by the component: --progress-fraction (0–1) on the indicator.
+ */
+.progress {
+  --_c: var(--color-accent);
+  --_h: var(--space-2);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-inline-size: 0;
+  font-family: var(--font-text);
+}
+
+.progress[data-size='sm'] {
+  --_h: var(--space-1);
+}
+.progress[data-size='lg'] {
+  --_h: var(--space-3);
+}
+
+.progress[data-tone='neutral'] {
+  --_c: var(--color-ink);
+}
+.progress[data-tone='positive'] {
+  --_c: var(--tone-positive);
+}
+.progress[data-tone='caution'] {
+  --_c: var(--tone-caution);
+}
+.progress[data-tone='critical'] {
+  --_c: var(--tone-critical);
+}
+.progress[data-tone='info'] {
+  --_c: var(--tone-info);
+}
+
+.header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+}
+
+.label {
+  color: var(--color-ink);
+  font-weight: var(--label-weight);
+  letter-spacing: var(--label-tracking);
+  text-transform: var(--label-transform);
+}
+
+.value {
+  margin-inline-start: auto;
+  color: var(--color-ink-muted);
+  font-family: var(--font-numeric);
+  font-weight: var(--label-weight);
+  font-stretch: var(--numeric-stretch);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.track {
+  position: relative;
+  overflow: hidden;
+  block-size: calc(var(--_h) + var(--border-width) * 2);
+  border: var(--border-width) solid var(--progress-track-edge, var(--color-line-strong));
+  border-radius: var(--progress-radius, var(--radius-chip));
+  background: var(--progress-track, var(--color-surface-sunken));
+  /* keep the fill's corners inside the keyline */
+  isolation: isolate;
+}
+
+.indicator {
+  block-size: 100%;
+  inline-size: 100%;
+  background: var(--_c);
+  transform-origin: left;
+  scale: var(--progress-fraction, 0) 1;
+  transition: scale var(--dur-3) var(--ease-out);
+}
+.indicator:dir(rtl) {
+  transform-origin: right;
+}
+
+/* Indeterminate: a third-width slug that travels the track. */
+.track[data-state='indeterminate'] .indicator {
+  inline-size: 35%;
+  scale: 1;
+  border-radius: inherit;
+  animation: travel calc(var(--dur-3) * 4) var(--ease-in-out) infinite;
+}
+
+@keyframes travel {
+  from {
+    translate: -100% 0;
+  }
+  to {
+    translate: 290% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track[data-state='indeterminate'] .indicator {
+    animation: none;
+    inline-size: 100%;
+    opacity: 0.35;
+  }
+}

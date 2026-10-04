@@ -1,0 +1,5 @@
+export { Avatar } from './Avatar'
+export type { AvatarProps } from './Avatar'
+export { AvatarSizeContext } from './AvatarContext'
+export { getInitials, avatarColor } from './avatarUtils'
+export type { AvatarSize, AvatarColor } from './avatarUtils'

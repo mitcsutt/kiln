@@ -1,0 +1,106 @@
+/*
+ * Component tokens (themes may set any of these on [data-theme]):
+ *   --meter-radius        default var(--radius-chip)
+ *   --meter-track         track fill, default var(--color-surface-sunken)
+ *   --meter-track-edge    track keyline, default var(--color-line-strong)
+ *   --meter-tick-color    segment ticks, default var(--color-canvas)
+ *   --meter-neutral       fill for tone="neutral", default var(--color-ink-subtle)
+ *
+ * Written by the component: --meter-fraction (0–1) on the root, --meter-tick on each tick.
+ */
+.meter {
+  --_c: var(--color-accent);
+  --_text: var(--color-ink-muted);
+  --_h: var(--space-2);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-inline-size: 0;
+  font-family: var(--font-text);
+}
+
+.meter[data-size='sm'] {
+  --_h: var(--space-1);
+}
+.meter[data-size='lg'] {
+  --_h: var(--space-3);
+}
+
+/* Neutral is a quiet grey, not solid ink: it's the "nothing to report" bar (≥ 3:1 on the track). */
+.meter[data-tone='neutral'] {
+  --_c: var(--meter-neutral, var(--color-ink-subtle));
+}
+.meter[data-tone='info'] {
+  --_c: var(--tone-info);
+}
+.meter[data-tone='positive'] {
+  --_c: var(--tone-positive);
+}
+.meter[data-tone='caution'] {
+  --_c: var(--tone-caution);
+  --_text: var(--tone-caution-text);
+}
+.meter[data-tone='critical'] {
+  --_c: var(--tone-critical);
+  --_text: var(--tone-critical-text);
+}
+
+.header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+}
+
+.label {
+  min-inline-size: 0;
+  color: var(--color-ink);
+  font-weight: var(--label-weight);
+  letter-spacing: var(--label-tracking);
+  text-transform: var(--label-transform);
+}
+
+.value {
+  margin-inline-start: auto;
+  color: var(--_text);
+  font-family: var(--font-numeric);
+  font-weight: var(--label-weight);
+  font-stretch: var(--numeric-stretch);
+  font-variant-numeric: tabular-nums lining-nums;
+  white-space: nowrap;
+}
+
+.track {
+  position: relative;
+  overflow: hidden;
+  block-size: calc(var(--_h) + var(--border-width) * 2);
+  border: var(--border-width) solid var(--meter-track-edge, var(--color-line-strong));
+  border-radius: var(--meter-radius, var(--radius-chip));
+  background: var(--meter-track, var(--color-surface-sunken));
+}
+
+.fill {
+  block-size: 100%;
+  inline-size: 100%;
+  background: var(--_c);
+  transform-origin: left;
+  scale: var(--meter-fraction, 0) 1;
+  transition:
+    scale var(--dur-3) var(--ease-out),
+    background-color var(--dur-2) var(--ease-out);
+}
+.fill:dir(rtl) {
+  transform-origin: right;
+}
+
+.tick {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: calc(var(--meter-tick) * 100%);
+  inline-size: calc(var(--border-width) * 2);
+  translate: -50% 0;
+  background: var(--meter-tick-color, var(--color-canvas));
+}

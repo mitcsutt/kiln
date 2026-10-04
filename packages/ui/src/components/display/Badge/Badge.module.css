@@ -1,0 +1,104 @@
+/*
+ * Component tokens (themes may set any of these on [data-theme]):
+ *   --badge-radius   default var(--radius-chip)
+ *   --badge-weight   default var(--label-weight)
+ */
+.badge {
+  --_c: var(--color-surface-inverse);
+  --_c-ink: var(--color-ink-inverse);
+  --_c-text: var(--color-ink-muted);
+  --_c-soft: var(--color-surface-sunken);
+  --_bg: var(--_c-soft);
+  --_ink: var(--_c-text);
+  --_border: transparent;
+  --_h: calc(var(--space-5) * 0.9);
+  --_px: var(--space-2);
+  --_fs: var(--text-xs);
+
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 0.4em;
+  min-block-size: var(--_h);
+  padding-inline: var(--_px);
+  border: var(--border-width) solid var(--_border);
+  border-radius: var(--badge-radius, var(--radius-chip));
+  background: var(--_bg);
+  color: var(--_ink);
+  font-family: var(--font-text);
+  font-size: var(--_fs);
+  font-weight: var(--badge-weight, var(--label-weight));
+  letter-spacing: var(--label-tracking);
+  text-transform: var(--label-transform);
+  font-variant-numeric: tabular-nums lining-nums;
+  line-height: 1;
+  white-space: nowrap;
+  vertical-align: middle;
+}
+
+.badge[data-size='md'] {
+  --_h: calc(var(--space-5) * 1.1);
+  --_px: calc(var(--space-2) * 1.25);
+  --_fs: var(--text-sm);
+}
+
+.badge[data-tone='accent'] {
+  --_c: var(--color-accent);
+  --_c-ink: var(--color-accent-ink);
+  --_c-text: var(--color-accent-text);
+  --_c-soft: var(--color-accent-soft);
+}
+.badge[data-tone='positive'] {
+  --_c: var(--tone-positive);
+  --_c-ink: var(--tone-positive-ink);
+  --_c-text: var(--tone-positive-text);
+  --_c-soft: var(--tone-positive-soft);
+}
+.badge[data-tone='caution'] {
+  --_c: var(--tone-caution);
+  --_c-ink: var(--tone-caution-ink);
+  --_c-text: var(--tone-caution-text);
+  --_c-soft: var(--tone-caution-soft);
+}
+.badge[data-tone='critical'] {
+  --_c: var(--tone-critical);
+  --_c-ink: var(--tone-critical-ink);
+  --_c-text: var(--tone-critical-text);
+  --_c-soft: var(--tone-critical-soft);
+}
+.badge[data-tone='info'] {
+  --_c: var(--tone-info);
+  --_c-ink: var(--tone-info-ink);
+  --_c-text: var(--tone-info-text);
+  --_c-soft: var(--tone-info-soft);
+}
+
+.badge[data-variant='solid'] {
+  --_bg: var(--_c);
+  --_ink: var(--_c-ink);
+  --_border: var(--badge-solid-border, var(--_c));
+}
+.badge[data-variant='outline'] {
+  --_bg: transparent;
+  --_ink: var(--_c-text);
+  --_border: currentColor;
+}
+.badge[data-tone='neutral'][data-variant='outline'] {
+  --_border: var(--color-line-strong);
+}
+
+.dot {
+  --_dot: 0.5em;
+
+  flex: none;
+  inline-size: var(--_dot);
+  block-size: var(--_dot);
+  border-radius: 50%;
+  background: var(--_c);
+}
+.badge[data-tone='neutral'] .dot {
+  background: var(--color-ink-subtle);
+}
+.badge[data-variant='solid'] .dot {
+  background: currentColor;
+}

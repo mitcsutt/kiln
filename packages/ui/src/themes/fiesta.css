@@ -1,0 +1,169 @@
+/*
+ * FIESTA — preset (opt-in: import '@mitcsutt/kiln-ui/themes/fiesta.css')
+ *
+ * Idea: a screen-printed matchday poster / sticker album. Screen printing can't do
+ * gradients, so neither do we: flat spot inks (coral, gold, teal) on apricot stock,
+ * everything outlined in aubergine ink, and a hard misregistered offset instead of a
+ * soft shadow. Stadium-signage numerals (Big Shoulders) for scores and headings; an
+ * ink-trapped grotesk (Bricolage) with a bit of mischief for text. Motion overshoots.
+ * Light-first ("day match"); dark is the floodlit night game.
+ */
+
+@layer kiln.reset, kiln.tokens, kiln.themes;
+
+@import '../tokens/fonts-fiesta.css';
+
+@layer kiln.themes {
+  [data-theme='fiesta'] {
+    /* ── Type roles ─────────────────────────────────────────────────────── */
+    --font-display: 'Big Shoulders', 'Arial Narrow', ui-sans-serif, sans-serif;
+    --font-text: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif;
+    --font-prose: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif;
+    --font-mono: 'Martian Mono', ui-monospace, Menlo, monospace;
+    --font-numeric: 'Big Shoulders', 'Arial Narrow', ui-sans-serif, sans-serif;
+
+    --type-base: 1rem;
+    --display-scale: 1;
+    --type-ratio: 1.28;
+
+    --display-weight: 850;
+    --display-style: normal;
+    --display-stretch: 100%;
+    --display-transform: uppercase;
+    --display-tracking: 0.005em;
+    --display-opsz: 72;
+    --heading-font: var(--font-display);
+    --heading-weight: 800;
+    --heading-tracking: 0.01em;
+    --heading-transform: uppercase;
+    --label-weight: 650;
+    --label-tracking: 0;
+    --label-transform: none;
+    --numeric-stretch: 100%;
+    --numeral-weight: 600; /* Big Shoulders reads thin at text sizes */
+    --numeral-scale: 1.12;
+    --mono-stretch: 75%;
+    --table-head-font: var(--font-display); /* stadium-signage caps over the columns */
+
+    --leading-tight: 0.9;
+    --leading-snug: 1.1;
+    --leading-body: 1.5;
+    --prose-size: 1.0625rem;
+    --prose-leading: 1.55;
+
+    /* ── Structure & temperament ────────────────────────────────────────── */
+    --density: 0.92;
+    --motion-scale: 0.9;
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1); /* overshoot — things land with a bump */
+
+    --icon-stroke: 2.25;
+    --border-width: 2px;
+    --border-width-strong: 3px;
+
+    --radius-action: 999px;
+    --radius-field: 0.75rem;
+    --radius-surface: 1.125rem;
+    --radius-media: 0.75rem;
+    --radius-chip: 999px;
+    --radius-avatar: 50%;
+
+    /* ── Colour ─────────────────────────────────────────────────────────── */
+    /* Stock: apricot poster paper by day, aubergine night by floodlight. */
+    --color-canvas: light-dark(oklch(0.85 0.105 62), oklch(0.2 0.055 305));
+    --color-surface: light-dark(oklch(0.985 0.012 90), oklch(0.265 0.065 305));
+    --color-surface-sunken: light-dark(oklch(0.945 0.03 80), oklch(0.225 0.055 305));
+    --color-surface-raised: light-dark(oklch(0.99 0.01 90), oklch(0.3 0.07 305));
+    --color-surface-inverse: light-dark(oklch(0.25 0.065 300), oklch(0.96 0.02 90));
+
+    --color-ink: light-dark(oklch(0.25 0.065 300), oklch(0.97 0.015 90));
+    --color-ink-muted: light-dark(oklch(0.4 0.055 300), oklch(0.84 0.03 90));
+    --color-ink-subtle: light-dark(
+      oklch(0.45 0.045 300),
+      oklch(0.7 0.04 300)
+    ); /* AA on apricot stock */
+    --color-ink-inverse: light-dark(oklch(0.97 0.015 90), oklch(0.25 0.065 300));
+
+    /* Outlines are ink — the poster's keyline. Soft lines divide inside surfaces. */
+    --color-line: light-dark(oklch(0.86 0.03 70), oklch(0.36 0.06 305));
+    --color-line-strong: var(--color-ink);
+    --section-divider-color: var(--color-ink); /* section rules are poster keylines */
+    --control-checked-border: var(--color-ink); /* checked boxes keep their keyline */
+    --marquee-edge: var(--color-ink);
+
+    /* Coral spot ink. Ink text on coral: white fails AA at text sizes. */
+    --color-accent: light-dark(oklch(0.66 0.215 12), oklch(0.7 0.2 12));
+    --color-accent-hover: light-dark(
+      oklch(0.7 0.2 14),
+      oklch(0.75 0.19 14)
+    ); /* lighter, not darker: ink sits on it */
+    --color-accent-ink: oklch(0.22 0.065 300);
+    --color-accent-text: light-dark(
+      oklch(0.465 0.19 12),
+      oklch(0.78 0.16 14)
+    ); /* AA on apricot stock */
+    --color-accent-soft: light-dark(oklch(0.92 0.06 15), oklch(0.36 0.1 10));
+
+    /* Gold spot ink — "you", winners, stickers */
+    --color-highlight: light-dark(oklch(0.88 0.165 92), oklch(0.86 0.16 92));
+    --color-highlight-ink: oklch(0.22 0.065 300);
+    /* Tone text on a gold row (Table/List highlighted): gold is the same in both modes, so
+       the day-match text inks are used — the night ones are pale and vanish on gold. */
+    --highlight-tone-positive-text: oklch(0.42 0.09 190);
+    --highlight-tone-caution-text: oklch(0.44 0.1 75);
+    --highlight-tone-critical-text: oklch(0.45 0.19 25);
+    --highlight-tone-info-text: oklch(0.43 0.12 245);
+    --highlight-accent-text: oklch(0.45 0.19 12);
+
+    --color-focus: var(--color-ink);
+    --color-selection: light-dark(oklch(0.88 0.165 92), oklch(0.55 0.15 12));
+    --color-scrim: light-dark(oklch(0.25 0.065 300 / 0.5), oklch(0.08 0.04 305 / 0.7));
+
+    --tone-positive: light-dark(oklch(0.72 0.12 185), oklch(0.76 0.12 185)); /* teal spot ink */
+    --tone-positive-soft: light-dark(oklch(0.92 0.05 185), oklch(0.34 0.06 190));
+    --tone-positive-text: light-dark(oklch(0.43 0.09 190), oklch(0.82 0.1 185));
+    --tone-positive-ink: oklch(0.22 0.065 300);
+
+    --tone-caution: light-dark(oklch(0.88 0.165 92), oklch(0.86 0.16 92));
+    --tone-caution-soft: light-dark(oklch(0.95 0.08 95), oklch(0.36 0.07 90));
+    --tone-caution-text: light-dark(oklch(0.45 0.1 75), oklch(0.88 0.14 92));
+    --tone-caution-ink: oklch(0.22 0.065 300);
+
+    --tone-critical: light-dark(oklch(0.58 0.22 25), oklch(0.66 0.21 25));
+    --tone-critical-soft: light-dark(oklch(0.92 0.05 25), oklch(0.36 0.1 25));
+    --tone-critical-text: light-dark(oklch(0.465 0.19 25), oklch(0.8 0.14 22));
+    --tone-critical-ink: light-dark(oklch(0.985 0.01 25), oklch(0.18 0.04 25));
+
+    --tone-info: light-dark(oklch(0.62 0.12 240), oklch(0.74 0.11 238));
+    --tone-info-soft: light-dark(oklch(0.92 0.04 240), oklch(0.34 0.07 245));
+    --tone-info-text: light-dark(oklch(0.445 0.12 245), oklch(0.82 0.09 238));
+    --tone-info-ink: oklch(0.22 0.065 300);
+
+    /* Categorical: poster inks, bright enough for aubergine ink on every one */
+    --color-cat-1: oklch(0.72 0.19 12);
+    --color-cat-2: oklch(0.86 0.16 92);
+    --color-cat-3: oklch(0.76 0.12 185);
+    --color-cat-4: oklch(0.76 0.15 55);
+    --color-cat-5: oklch(0.78 0.11 240);
+    --color-cat-6: oklch(0.8 0.15 135);
+    --color-cat-7: oklch(0.76 0.12 330);
+    --color-cat-8: oklch(0.82 0.06 70);
+    --color-cat-ink: oklch(0.22 0.065 300);
+
+    /* ── Edges & depth ──────────────────────────────────────────────────── */
+    /* The misregistered offset. Solid, never blurred. Presses flat on :active. */
+    --shadow-surface: 4px 4px 0 0 light-dark(oklch(0.25 0.065 300), oklch(0.08 0.04 305));
+    --active-shift: 2px; /* how far pressed things travel toward their shadow */
+    --shadow-active: 2px 2px 0 0 light-dark(oklch(0.25 0.065 300), oklch(0.08 0.04 305));
+    --shadow-float: 5px 5px 0 0 light-dark(oklch(0.25 0.065 300), oklch(0.08 0.04 305));
+    --shadow-overlay: 8px 8px 0 0 light-dark(oklch(0.25 0.065 300), oklch(0.08 0.04 305));
+    /* Halftone dot screen — print texture, 6% ink */
+    --canvas-image: radial-gradient(
+      circle at 1px 1px,
+      light-dark(oklch(0.25 0.065 300 / 0.07), oklch(0.97 0.015 90 / 0.05)) 1px,
+      transparent 1.4px
+    );
+    --canvas-image-size: 7px 7px;
+  }
+}

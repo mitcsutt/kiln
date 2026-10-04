@@ -1,0 +1,147 @@
+/*
+ * MONOGRAPH — preset (opt-in: import '@mitcsutt/kiln-ui/themes/monograph.css')
+ *
+ * Idea: a scholarly monograph read under a desk lamp at night ("modern nostalgia").
+ * Blue-slate, not black; one ember accent that behaves like phosphor (it marks *live*
+ * and *current* things, never decoration). Serif display set big and tight; a newsroom
+ * grotesk for everything you read quickly. Hairline structure, pill actions, quiet
+ * motion. Dark-first: pair it with `defaultMode="dark"`.
+ *
+ * Every theme sets every token in the contract (DESIGN.md §3.2). Colours are authored in
+ * OKLCH; each pair is light-dark(<light>, <dark>).
+ */
+
+@layer kiln.reset, kiln.tokens, kiln.themes;
+
+@layer kiln.themes {
+  [data-theme='monograph'] {
+    /* ── Type roles ─────────────────────────────────────────────────────── */
+    --font-display: 'Newsreader', 'Iowan Old Style', Georgia, serif;
+    --font-text: 'Schibsted Grotesk', ui-sans-serif, system-ui, sans-serif;
+    --font-prose: 'Newsreader', 'Iowan Old Style', Georgia, serif;
+    --font-mono: 'Martian Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+    /* Newsreader's tabular figures: Schibsted's tnum sets , and . at full digit width */
+    --font-numeric: 'Newsreader', 'Iowan Old Style', Georgia, serif;
+
+    --type-base: 1.0625rem; /* 17px */
+    --display-scale: 1;
+    --type-ratio: 1.25;
+
+    --display-weight: 430;
+    --display-style: normal;
+    --display-stretch: 100%;
+    --display-transform: none;
+    --display-tracking: -0.035em;
+    --display-opsz: 72;
+    --heading-font: var(--font-display);
+    --heading-weight: 480;
+    --heading-tracking: -0.018em;
+    --heading-transform: none;
+    --label-weight: 560;
+    --label-tracking: 0;
+    --label-transform: none;
+    --numeric-stretch: 100%;
+    --mono-stretch: 87.5%;
+
+    --leading-tight: 1.02;
+    --leading-snug: 1.2;
+    --leading-body: 1.55;
+    --prose-size: 1.1875rem;
+    --prose-leading: 1.62;
+
+    /* ── Structure & temperament ────────────────────────────────────────── */
+    --density: 1.05;
+    --motion-scale: 1.1;
+    --ease-out: cubic-bezier(0.23, 1, 0.32, 1); /* quint out: arrives, doesn't bounce */
+    --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+    --ease-spring: var(--ease-out); /* Monograph doesn't bounce */
+
+    --icon-stroke: 1.5;
+    --border-width: 1px;
+    --border-width-strong: 1px;
+
+    --radius-action: 999px; /* pill buttons */
+    --radius-field: 0.5rem;
+    --radius-surface: 0.75rem;
+    --radius-media: 0.5rem;
+    --radius-chip: 999px;
+    --radius-avatar: 28%; /* rounded square, never a circle */
+
+    /* ── Colour ─────────────────────────────────────────────────────────── */
+    /* Neutrals: blue-slate, hue 255, chroma ≤ 0.02. Never #000/#fff. */
+    --color-canvas: light-dark(oklch(0.972 0.005 250), oklch(0.178 0.013 257));
+    --color-surface: light-dark(oklch(0.993 0.003 250), oklch(0.208 0.015 257));
+    --color-surface-sunken: light-dark(oklch(0.952 0.007 250), oklch(0.158 0.012 257));
+    --color-surface-raised: light-dark(oklch(0.997 0.002 250), oklch(0.238 0.016 257));
+    --color-surface-inverse: light-dark(oklch(0.22 0.018 257), oklch(0.93 0.008 250));
+
+    --color-ink: light-dark(oklch(0.225 0.02 257), oklch(0.94 0.008 250));
+    --color-ink-muted: light-dark(oklch(0.44 0.018 257), oklch(0.75 0.013 250));
+    --color-ink-subtle: light-dark(
+      oklch(0.525 0.014 257),
+      oklch(0.625 0.013 252)
+    ); /* AA on sunken/raised: it sets placeholders and meta text */
+    --color-ink-inverse: light-dark(oklch(0.96 0.006 250), oklch(0.2 0.018 257));
+
+    --color-line: light-dark(oklch(0.895 0.008 250), oklch(0.29 0.015 257));
+    --color-line-strong: light-dark(oklch(0.79 0.012 250), oklch(0.39 0.016 257));
+
+    /* Ember — the only accent. ~5% of pixels: primary action, current, live. */
+    --color-accent: light-dark(oklch(0.565 0.158 44), oklch(0.72 0.15 52));
+    --color-accent-hover: light-dark(oklch(0.52 0.15 42), oklch(0.77 0.14 55));
+    --color-accent-ink: light-dark(oklch(0.985 0.01 60), oklch(0.19 0.03 45));
+    --color-accent-text: light-dark(oklch(0.53 0.15 42), oklch(0.78 0.13 56));
+    --color-accent-soft: light-dark(oklch(0.94 0.035 60), oklch(0.29 0.055 48));
+
+    /* Highlight: a cool counterweight for "you"/selected rows, not a second brand colour */
+    --color-highlight: light-dark(oklch(0.93 0.02 230), oklch(0.3 0.03 240));
+    --color-highlight-ink: var(--color-ink);
+
+    --color-focus: var(--color-ink); /* neutral — focus must never look like validation */
+    --color-selection: light-dark(oklch(0.88 0.07 58), oklch(0.42 0.09 50));
+    --color-scrim: light-dark(oklch(0.25 0.02 257 / 0.42), oklch(0.08 0.01 257 / 0.66));
+
+    /* Tones — same L/C family as the brand so status colours don't shout */
+    --tone-positive: light-dark(oklch(0.52 0.11 155), oklch(0.72 0.12 158));
+    --tone-positive-soft: light-dark(oklch(0.94 0.035 155), oklch(0.28 0.045 158));
+    --tone-positive-text: light-dark(oklch(0.45 0.1 155), oklch(0.78 0.11 158));
+    --tone-positive-ink: light-dark(oklch(0.985 0.01 155), oklch(0.18 0.03 158));
+
+    --tone-caution: light-dark(oklch(0.72 0.14 80), oklch(0.8 0.13 85));
+    --tone-caution-soft: light-dark(oklch(0.95 0.05 88), oklch(0.3 0.05 80));
+    --tone-caution-text: light-dark(oklch(0.5 0.1 70), oklch(0.84 0.11 88));
+    --tone-caution-ink: light-dark(oklch(0.22 0.04 70), oklch(0.2 0.04 80));
+
+    --tone-critical: light-dark(oklch(0.54 0.19 22), oklch(0.68 0.17 22));
+    --tone-critical-soft: light-dark(oklch(0.94 0.035 20), oklch(0.29 0.06 22));
+    --tone-critical-text: light-dark(oklch(0.5 0.18 22), oklch(0.76 0.14 22));
+    --tone-critical-ink: light-dark(oklch(0.985 0.01 20), oklch(0.18 0.03 22));
+
+    --tone-info: light-dark(oklch(0.52 0.08 235), oklch(0.72 0.08 232));
+    --tone-info-soft: light-dark(oklch(0.94 0.02 235), oklch(0.28 0.035 235));
+    --tone-info-text: light-dark(oklch(0.46 0.08 235), oklch(0.78 0.07 232));
+    --tone-info-ink: light-dark(oklch(0.985 0.01 235), oklch(0.18 0.03 235));
+
+    /* Categorical (people, series). Muted, evenly spaced lightness, readable ink on all. */
+    --color-cat-1: light-dark(oklch(0.78 0.09 50), oklch(0.7 0.1 50));
+    --color-cat-2: light-dark(oklch(0.8 0.07 160), oklch(0.7 0.08 160));
+    --color-cat-3: light-dark(oklch(0.8 0.06 235), oklch(0.7 0.07 235));
+    --color-cat-4: light-dark(oklch(0.84 0.09 95), oklch(0.74 0.1 95));
+    --color-cat-5: light-dark(oklch(0.79 0.07 15), oklch(0.69 0.08 15));
+    --color-cat-6: light-dark(oklch(0.8 0.05 195), oklch(0.7 0.06 195));
+    --color-cat-7: light-dark(oklch(0.82 0.06 125), oklch(0.72 0.07 125));
+    --color-cat-8: light-dark(oklch(0.78 0.03 257), oklch(0.68 0.03 257));
+    --color-cat-ink: oklch(0.22 0.02 257);
+
+    /* ── Edges & depth ──────────────────────────────────────────────────── */
+    /* Static things get hairlines. Only floating things get shadows. */
+    --shadow-surface: none;
+    --active-shift: 0px; /* how far pressed things travel toward their shadow */
+    --shadow-active: none;
+    --shadow-float:
+      0 1px 2px oklch(0.2 0.02 257 / 0.12), 0 10px 28px -6px oklch(0.2 0.03 257 / 0.22);
+    --shadow-overlay:
+      0 2px 4px oklch(0.15 0.02 257 / 0.14), 0 24px 64px -12px oklch(0.15 0.03 257 / 0.36);
+    --canvas-image: none;
+  }
+}

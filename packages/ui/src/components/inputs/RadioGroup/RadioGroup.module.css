@@ -1,0 +1,142 @@
+/*
+ * Component tokens:
+ *   --control-checked-bg       default var(--color-accent)   (shared with Checkbox, Switch)
+ *   --control-checked-border   default var(--color-accent)
+ *   --control-checked-ink      default var(--color-accent-ink) (the centre dot)
+ *   --control-border           default var(--color-line-control) (unchecked edge, ≥ 3:1)
+ *   --control-shadow           default var(--shadow-active)
+ */
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.group[data-orientation='horizontal'] {
+  flex-direction: row;
+  flex-wrap: wrap;
+  column-gap: var(--space-5);
+  row-gap: var(--space-3);
+}
+
+.item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: var(--space-3);
+  align-items: start;
+  font-size: var(--text-md);
+  line-height: var(--leading-snug);
+}
+
+/* One line tall, so the radio centres on the label's first line however long it wraps. */
+.slot {
+  display: flex;
+  align-items: center;
+  block-size: 1lh;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-inline-size: 0;
+}
+
+.label {
+  color: var(--color-ink);
+  cursor: pointer;
+}
+.item[data-disabled] .label {
+  color: var(--color-ink-subtle);
+  cursor: not-allowed;
+}
+
+.radio {
+  --_s: calc(var(--control-sm) * 0.5625);
+  /* An unchecked box is identified only by its edge, so it needs 3:1 (WCAG 1.4.11):
+     line-strong alone is a ~2:1 hairline in the quieter themes. */
+  --_border: var(--control-border, var(--color-line-control));
+
+  all: unset;
+  box-sizing: border-box;
+  position: relative;
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  inline-size: var(--_s);
+  block-size: var(--_s);
+  border: var(--border-width) solid var(--_border);
+  border-radius: 50%;
+  background-color: var(--color-surface);
+  box-shadow: var(--control-shadow, var(--shadow-active));
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--dur-1) var(--ease-out),
+    border-color var(--dur-1) var(--ease-out),
+    box-shadow var(--dur-1) var(--ease-out),
+    translate var(--dur-1) var(--ease-spring);
+}
+.group[data-size='sm'] .radio {
+  --_s: calc(var(--control-sm) * 0.5);
+}
+.group[data-size='lg'] .radio {
+  --_s: calc(var(--control-sm) * 0.6875);
+}
+
+.radio::before {
+  content: '';
+  position: absolute;
+  inset: calc(var(--space-2) * -1);
+}
+
+@media (hover: hover) {
+  .radio:hover:not([data-disabled], [data-state='checked']) {
+    --_border: color-mix(in oklch, var(--color-line-strong), var(--color-ink) 65%);
+  }
+}
+
+.radio[data-state='checked'] {
+  --_border: var(--control-checked-border, var(--color-accent));
+  background-color: var(--control-checked-bg, var(--color-accent));
+}
+
+.group[data-invalid] .radio:not([data-state='checked']) {
+  --_border: var(--tone-critical);
+}
+
+.radio:active:not([data-disabled]) {
+  translate: var(--active-shift) var(--active-shift);
+  box-shadow: none;
+}
+
+.radio:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.radio[data-disabled] {
+  cursor: not-allowed;
+  opacity: 0.45;
+  box-shadow: none;
+}
+
+.dot {
+  display: block;
+  inline-size: 38%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background-color: var(--control-checked-ink, var(--color-accent-ink));
+  animation: dot-in var(--dur-2) var(--ease-spring);
+}
+
+@keyframes dot-in {
+  from {
+    scale: 0.2;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dot {
+    animation: none;
+  }
+}

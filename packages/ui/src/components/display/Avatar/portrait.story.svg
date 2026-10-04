@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" width="320" height="320" role="img" aria-label="Illustrated portrait">
+  <!-- Story-only placeholder portrait: an abstract illustration, not a real person. -->
+  <rect width="320" height="320" fill="#c9d6cf"/>
+  <circle cx="250" cy="70" r="38" fill="#e8c27a"/>
+  <path d="M0 250 Q80 205 160 230 T320 215 V320 H0Z" fill="#8fa89a"/>
+  <path d="M62 320 Q70 238 160 228 Q250 238 258 320Z" fill="#3f4a5c"/>
+  <rect x="140" y="192" width="40" height="44" rx="14" fill="#b9825f"/>
+  <ellipse cx="160" cy="150" rx="54" ry="62" fill="#c9926b"/>
+  <path d="M104 140 Q106 84 162 84 Q216 86 216 140 Q200 108 160 106 Q122 108 104 140Z" fill="#2e2a2b"/>
+  <circle cx="140" cy="152" r="5" fill="#2e2a2b"/>
+  <circle cx="180" cy="152" r="5" fill="#2e2a2b"/>
+  <path d="M146 182 Q160 192 174 182" stroke="#7a4a36" stroke-width="5" fill="none" stroke-linecap="round"/>
+</svg>

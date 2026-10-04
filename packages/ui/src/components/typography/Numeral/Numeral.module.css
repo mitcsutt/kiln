@@ -1,0 +1,94 @@
+/*
+ * Figures: --font-numeric, stretched per theme (Ledger's condensed receipt-tape mono),
+ * tabular + lining so columns align and live values don't jiggle.
+ *
+ * Component tokens:
+ *   --numeral-display-weight   default var(--display-weight)
+ *   --numeral-tracking         default 0 (display sizes tighten slightly)
+ *   --numeral-weight           default inherits (a condensed numeric face may want more)
+ *   --numeral-scale            size relative to surrounding text when no `size`, default 1
+ */
+.numeral {
+  font-family: var(--font-numeric);
+  font-stretch: var(--numeric-stretch);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings:
+    'tnum' 1,
+    'lnum' 1;
+  font-size: calc(1em * var(--numeral-scale, 1));
+  /* No fallback on purpose: unset → the inherited weight */
+  font-weight: var(--numeral-weight);
+  letter-spacing: var(--numeral-tracking, 0);
+  white-space: nowrap;
+}
+
+.numeral[data-tone] {
+  color: var(--_ink);
+}
+.numeral[data-tone='default'] {
+  --_ink: var(--color-ink);
+}
+.numeral[data-tone='muted'] {
+  --_ink: var(--color-ink-muted);
+}
+.numeral[data-tone='accent'] {
+  --_ink: var(--color-accent-text);
+}
+.numeral[data-tone='positive'] {
+  --_ink: var(--tone-positive-text);
+}
+.numeral[data-tone='caution'] {
+  --_ink: var(--tone-caution-text);
+}
+.numeral[data-tone='critical'] {
+  --_ink: var(--tone-critical-text);
+}
+
+.numeral[data-size] {
+  font-size: var(--_fs);
+  line-height: var(--leading-snug);
+}
+.numeral[data-size='xs'] {
+  --_fs: var(--text-xs);
+}
+.numeral[data-size='sm'] {
+  --_fs: var(--text-sm);
+}
+.numeral[data-size='md'] {
+  --_fs: var(--text-md);
+}
+.numeral[data-size='lg'] {
+  --_fs: var(--text-lg);
+}
+.numeral[data-size='xl'] {
+  --_fs: var(--text-xl);
+}
+.numeral[data-size='2xl'] {
+  --_fs: var(--text-2xl);
+}
+.numeral[data-size='3xl'] {
+  --_fs: var(--text-3xl);
+}
+.numeral[data-size='display-sm'] {
+  --_fs: var(--text-display-sm);
+}
+.numeral[data-size='display-md'] {
+  --_fs: var(--text-display-md);
+}
+.numeral[data-size='display-lg'] {
+  --_fs: var(--text-display-lg);
+}
+
+.numeral:is([data-size='2xl'], [data-size='3xl'], [data-size^='display']) {
+  font-weight: var(--numeral-display-weight, var(--display-weight));
+  letter-spacing: var(--numeral-tracking, -0.015em);
+  line-height: max(var(--leading-tight), 1);
+}
+
+/* Separators, currency and units: proportional, so they don't open gaps between digits */
+.mark {
+  font-variant-numeric: proportional-nums lining-nums;
+  font-feature-settings:
+    'tnum' 0,
+    'lnum' 1;
+}

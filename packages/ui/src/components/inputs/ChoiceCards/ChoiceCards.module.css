@@ -1,0 +1,192 @@
+/*
+ * Choices as cards. Each card is the radio (single) or checkbox (multiple) itself, so
+ * the whole card is the hit target.
+ *
+ * ┌───────────────────┐  ┌───────────────────┐
+ * │ £10            (●)│  │ £20            ( )│   ← selected: accent edge, pressed flat
+ * * │ Five projects     │  │ Unlimited         │
+ * │ £120 a year       │  │ £240 a year       │   ← meta: tabular figures at the foot
+ * └───────────────────┘  └───────────────────┘
+ *
+ * Component tokens:
+ *   --choice-card-radius   default var(--radius-surface)
+ *   --choice-card-bg       default var(--color-surface)
+ *   --choice-card-line     default var(--color-line-strong) — the resting edge
+ *   --choice-card-shadow   default var(--shadow-active) — Fiesta's offset, none elsewhere
+ *   --choice-cards-min     default 12rem — card width when `columns` isn't set
+ *   --choice-cards-gap     default var(--space-3)
+ *
+ * The selected card changes one thing: its edge becomes the accent (drawn 2px thick with an
+ * inset ring so it reads at a glance), and where the theme has a press shadow it sits flat.
+ *
+ * Responsive `columns`: the component writes --choice-cards-columns-{bp}; they resolve into
+ * --_cols here (see layout/Stack/Stack.module.css for the pattern).
+ */
+.cards {
+  --_gap: var(--choice-cards-gap, var(--space-3));
+  --_cols: repeat(auto-fill, minmax(min(var(--choice-cards-min, 12rem), 100%), 1fr));
+
+  display: grid;
+  grid-template-columns: var(--_cols);
+  gap: var(--_gap);
+  min-inline-size: 0;
+}
+
+.cards[data-columns] {
+  --_cols: var(--choice-cards-columns-base, minmax(0, 1fr));
+}
+@media (min-width: 40em) {
+  .cards[data-columns] {
+    --_cols: var(--choice-cards-columns-sm, minmax(0, 1fr));
+  }
+}
+@media (min-width: 48em) {
+  .cards[data-columns] {
+    --_cols: var(--choice-cards-columns-md, minmax(0, 1fr));
+  }
+}
+@media (min-width: 64em) {
+  .cards[data-columns] {
+    --_cols: var(--choice-cards-columns-lg, minmax(0, 1fr));
+  }
+}
+@media (min-width: 80em) {
+  .cards[data-columns] {
+    --_cols: var(--choice-cards-columns-xl, minmax(0, 1fr));
+  }
+}
+
+.card {
+  --_line: var(--choice-card-line, var(--color-line-strong));
+  --_ring: transparent;
+  --_shadow: var(--choice-card-shadow, var(--shadow-active));
+
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-inline-size: 0;
+  padding: var(--space-4);
+  border: var(--border-width) solid var(--_line);
+  border-radius: var(--choice-card-radius, var(--radius-surface));
+  background-color: var(--choice-card-bg, var(--color-surface));
+  box-shadow:
+    inset 0 0 0 1px var(--_ring),
+    var(--_shadow);
+  color: var(--color-ink);
+  text-align: start;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    border-color var(--dur-1) var(--ease-out),
+    box-shadow var(--dur-1) var(--ease-out),
+    translate var(--dur-2) var(--ease-spring);
+}
+
+@media (hover: hover) {
+  .card:hover:not([data-disabled], [data-state='checked']) {
+    --_line: var(--color-ink-subtle);
+  }
+}
+
+.card[data-state='checked'] {
+  --_line: var(--color-accent);
+  --_ring: var(--color-accent);
+  --_shadow: 0 0 0 0 transparent;
+
+  translate: var(--active-shift) var(--active-shift);
+}
+
+.cards[data-invalid] .card:not([data-state='checked']) {
+  --_line: var(--tone-critical);
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.card[data-disabled] {
+  cursor: not-allowed;
+  opacity: 0.45;
+  --_shadow: 0 0 0 0 transparent;
+}
+
+.cards[data-readonly] .card {
+  cursor: default;
+}
+
+.head {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.label {
+  font-size: var(--text-md);
+  font-weight: var(--label-weight);
+  line-height: var(--leading-snug);
+}
+
+.description {
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+}
+
+.meta {
+  margin-block-start: auto;
+  padding-block-start: var(--space-2);
+  color: var(--color-ink);
+  font-family: var(--font-numeric);
+  font-stretch: var(--numeric-stretch);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-size: var(--text-sm);
+}
+
+/* The corner mark: a ring for single, a box with a check for multiple. */
+.mark {
+  --_s: calc(var(--control-sm) * 0.5);
+
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  inline-size: var(--_s);
+  block-size: var(--_s);
+  margin-block-start: calc((1lh - var(--_s)) / 2);
+  border: var(--border-width) solid var(--color-line-control);
+  border-radius: 50%;
+  background-color: var(--color-surface);
+  color: var(--color-accent-ink);
+  transition:
+    background-color var(--dur-1) var(--ease-out),
+    border-color var(--dur-1) var(--ease-out);
+}
+.mark[data-kind='checkbox'] {
+  border-radius: calc(var(--radius-field) * 0.4);
+}
+.mark[data-kind='radio']::after {
+  content: '';
+  inline-size: 38%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background-color: transparent;
+}
+
+.card[data-state='checked'] .mark {
+  border-color: var(--color-accent);
+  background-color: var(--color-accent);
+}
+.card[data-state='checked'] .mark[data-kind='radio']::after {
+  background-color: var(--color-accent-ink);
+}
+
+.check {
+  font-size: calc(var(--_s) * 0.8);
+  opacity: 0;
+}
+.card[data-state='checked'] .check {
+  opacity: 1;
+}

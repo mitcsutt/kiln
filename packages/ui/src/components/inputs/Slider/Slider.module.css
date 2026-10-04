@@ -1,0 +1,140 @@
+/*
+ * Slider and RangeSlider (both render SliderBase, so they share this module).
+ *
+ *   ━━━━━━━━━━●━━━━━━━━━━━━━   £2,500      ← output (showValue), tabular figures
+ *   £500         £2,500     £5,000         ← marks, centred under where the thumb would sit
+ *
+ * Component tokens:
+ *   --slider-track        default var(--color-surface-sunken)
+ *   --slider-track-line   default var(--color-line-control) — the track's edge
+ *   --slider-range        default var(--color-accent) — the filled part
+ *   --slider-thumb-bg     default var(--color-surface)
+ *   --slider-thumb-line   default var(--color-accent)
+ *   --slider-thumb-shadow default var(--shadow-active)
+ *
+ * Mark geometry: Radix keeps the thumb inside the track, so a thumb at p% has its centre at
+ * p% + thumb × (0.5 − p/100). Marks use the same formula (--_p is written per mark).
+ */
+.slider {
+  --_thumb: calc(var(--control-sm) * 0.625);
+  --_track: calc(var(--space-1) * 1.5);
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  column-gap: var(--space-4);
+  row-gap: var(--space-1);
+  min-inline-size: 0;
+}
+.slider[data-size='sm'] {
+  --_thumb: calc(var(--control-sm) * 0.5);
+  --_track: var(--space-1);
+}
+.slider[data-show-value] {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.control {
+  position: relative;
+  display: flex;
+  align-items: center;
+  block-size: max(var(--_thumb), var(--control-sm));
+  touch-action: none;
+  user-select: none;
+  cursor: pointer;
+}
+.slider[data-disabled] .control {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+.slider[data-readonly] .control {
+  cursor: default;
+}
+
+.track {
+  position: relative;
+  flex-grow: 1;
+  overflow: hidden;
+  block-size: var(--_track);
+  border-radius: var(--_track);
+  background-color: var(--slider-track, var(--color-surface-sunken));
+  box-shadow: inset 0 0 0 1px var(--slider-track-line, var(--color-line-control));
+}
+.slider[data-invalid] .track {
+  box-shadow: inset 0 0 0 1px var(--tone-critical);
+}
+
+.range {
+  position: absolute;
+  block-size: 100%;
+  background-color: var(--slider-range, var(--color-accent));
+}
+
+.thumb {
+  box-sizing: border-box;
+  display: block;
+  inline-size: var(--_thumb);
+  block-size: var(--_thumb);
+  border: calc(var(--border-width) * 2) solid var(--slider-thumb-line, var(--color-accent));
+  border-radius: 50%;
+  background-color: var(--slider-thumb-bg, var(--color-surface));
+  box-shadow: var(--slider-thumb-shadow, var(--shadow-active));
+  transition:
+    border-color var(--dur-1) var(--ease-out),
+    scale var(--dur-1) var(--ease-spring);
+}
+.slider[data-invalid] .thumb {
+  border-color: var(--tone-critical);
+}
+@media (hover: hover) {
+  .slider:not([data-disabled], [data-readonly]) .thumb:hover {
+    scale: 1.1;
+  }
+}
+.thumb:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.output {
+  min-inline-size: 4ch;
+  color: var(--color-ink);
+  font-family: var(--font-numeric);
+  font-stretch: var(--numeric-stretch);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-size: var(--text-sm);
+  text-align: end;
+  white-space: nowrap;
+}
+
+.marks {
+  position: relative;
+  grid-column: 1;
+  block-size: 1lh;
+  color: var(--color-ink-muted);
+  font-size: var(--text-xs);
+  line-height: var(--leading-snug);
+}
+
+.mark {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: calc(var(--_p) * 1% + var(--_thumb) * (0.5 - var(--_p) / 100));
+  translate: -50% 0;
+  font-family: var(--font-numeric);
+  font-stretch: var(--numeric-stretch);
+  font-variant-numeric: tabular-nums lining-nums;
+  white-space: nowrap;
+}
+[dir='rtl'] .mark {
+  translate: 50% 0;
+}
+.mark[data-edge='start'] {
+  inset-inline-start: 0;
+  translate: none;
+}
+.mark[data-edge='end'] {
+  inset-inline-start: auto;
+  inset-inline-end: 0;
+  translate: none;
+}

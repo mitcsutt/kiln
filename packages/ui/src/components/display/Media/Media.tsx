@@ -1,0 +1,114 @@
+import {
+  forwardRef,
+  useEffect,
+  useRef,
+  useState,
+  type HTMLAttributes,
+  type ImgHTMLAttributes,
+  type ReactNode,
+} from 'react'
+import { cx } from '#utils/cx'
+import styles from './Media.module.css'
+
+export type MediaRatio = '1/1' | '4/3' | '3/2' | '16/9' | '21/9' | '3/4' | '2/3' | 'auto'
+export type MediaFit = 'cover' | 'contain'
+export type MediaRadius = 'none' | 'media' | 'surface'
+
+export interface MediaProps extends Omit<HTMLAttributes<HTMLElement>, 'children'> {
+  src: string
+  /** Required. Describe the image; pass `""` only when it's purely decorative. */
+  alt: string
+  /** Frame ratio. The image is fitted inside. Default `auto` (the image's own ratio). */
+  ratio?: MediaRatio
+  /** Default `cover`. Use `contain` for logos, diagrams and screenshots that must not crop. */
+  fit?: MediaFit
+  /** Corner role. Default `media`. */
+  radius?: MediaRadius
+  /** Renders a `<figure>` with this as its `<figcaption>`. */
+  caption?: ReactNode
+  /** Shown inside the frame if the image fails to load. Default: an empty sunken frame. */
+  fallback?: ReactNode
+  /** Default `lazy`. Use `eager` for the image above the fold. */
+  loading?: 'lazy' | 'eager'
+  /** Extra attributes for the `<img>` (srcSet, sizes, width/height, fetchPriority). */
+  imgProps?: Omit<ImgHTMLAttributes<HTMLImageElement>, 'src' | 'alt' | 'loading'>
+}
+
+/**
+ * A framed image: fixed ratio, fitted, lazy by default, with a caption and a graceful
+ * failure state. Screenshots of work, team crests, receipts.
+ *
+ * <Media src="/images/dashboard.png" alt="Spending dashboard, September" ratio="16/9" caption="Dashboard, 2026" />
+ */
+export const Media = forwardRef<HTMLElement, MediaProps>(function Media(
+  {
+    src,
+    alt,
+    ratio = 'auto',
+    fit = 'cover',
+    radius = 'media',
+    caption,
+    fallback,
+    loading = 'lazy',
+    imgProps,
+    className,
+    ...rest
+  },
+  ref,
+) {
+  const [failed, setFailed] = useState(false)
+  const imgRef = useRef<HTMLImageElement>(null)
+
+  // Reset when the source changes; also catch an error that fired before hydration.
+  useEffect(() => {
+    const img = imgRef.current
+    setFailed(
+      Boolean(
+        img?.complete &&
+        img.naturalWidth === 0 &&
+        typeof img.currentSrc === 'string' &&
+        img.currentSrc !== '',
+      ),
+    )
+  }, [src])
+
+  const Root = caption !== undefined ? 'figure' : 'div'
+  return (
+    <Root
+      // @ts-expect-error — polymorphic ref across figure/div is safe here
+      ref={ref}
+      className={cx(styles.media, className)}
+      data-ratio={ratio}
+      data-fit={fit}
+      data-radius={radius}
+      data-failed={failed || undefined}
+      {...rest}
+    >
+      <div className={styles.frame}>
+        {failed ? (
+          <div
+            className={styles.fallback}
+            role={alt ? 'img' : undefined}
+            aria-label={alt || undefined}
+          >
+            {fallback}
+          </div>
+        ) : (
+          <img
+            ref={imgRef}
+            className={styles.image}
+            src={src}
+            alt={alt}
+            loading={loading}
+            decoding="async"
+            onError={() => {
+              setFailed(true)
+            }}
+            {...imgProps}
+          />
+        )}
+      </div>
+      {caption !== undefined ? <figcaption className={styles.caption}>{caption}</figcaption> : null}
+    </Root>
+  )
+})

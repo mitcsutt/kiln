@@ -1,0 +1,74 @@
+/*
+ * An inverse chip: the one place the theme's ink becomes the surface.
+ *
+ * Component tokens (themes may set any of these on [data-theme]):
+ *   --tooltip-radius    default min(var(--radius-field), var(--radius-chip))
+ *   --tooltip-surface   default var(--color-surface-inverse)
+ *   --tooltip-ink       default var(--color-ink-inverse)
+ */
+.content {
+  --_surface: var(--tooltip-surface, var(--color-surface-inverse));
+
+  z-index: var(--z-popover);
+  max-inline-size: min(
+    calc(var(--width-narrow) * 0.5),
+    var(--radix-tooltip-content-available-width, 100vw)
+  );
+  padding: calc(var(--space-1) * 1.5) var(--space-2);
+  border-radius: var(--tooltip-radius, min(var(--radius-field), var(--radius-chip)));
+  background: var(--_surface);
+  color: var(--tooltip-ink, var(--color-ink-inverse));
+  font-family: var(--font-text);
+  font-size: var(--text-xs);
+  font-weight: var(--label-weight);
+  line-height: var(--leading-snug);
+  text-wrap: pretty;
+  transform-origin: var(--radix-tooltip-content-transform-origin);
+  user-select: none;
+}
+
+.content[data-state='delayed-open'],
+.content[data-state='instant-open'] {
+  animation: tip-in var(--dur-1) var(--ease-out);
+}
+.content[data-state='closed'] {
+  animation: tip-out var(--dur-1) var(--ease-out);
+}
+/* Nudge in from the trigger's direction. */
+.content {
+  --_from: 0 0;
+}
+.content[data-side='top'] {
+  --_from: 0 calc(var(--space-1) * 0.5);
+}
+.content[data-side='bottom'] {
+  --_from: 0 calc(var(--space-1) * -0.5);
+}
+.content[data-side='left'] {
+  --_from: calc(var(--space-1) * 0.5) 0;
+}
+.content[data-side='right'] {
+  --_from: calc(var(--space-1) * -0.5) 0;
+}
+
+.arrow {
+  fill: var(--tooltip-surface, var(--color-surface-inverse));
+}
+
+@keyframes tip-in {
+  from {
+    opacity: 0;
+    translate: var(--_from);
+  }
+}
+@keyframes tip-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .content[data-state] {
+    animation: none;
+  }
+}

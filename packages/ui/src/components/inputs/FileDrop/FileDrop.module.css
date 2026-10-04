@@ -1,0 +1,228 @@
+/*
+ * A dashed drop zone above the chosen files. The real control is the visually hidden
+ * file input inside the zone; the zone draws its focus ring.
+ *
+ * Component tokens (themes may set any of these on [data-theme]):
+ *   --file-drop-radius      default var(--field-radius, var(--radius-field))
+ *   --file-drop-bg          default var(--field-bg, var(--color-surface))
+ *   --file-drop-border      default var(--field-border, var(--color-line-control))
+ *   --file-drop-active-bg   default var(--color-surface-sunken) — while dragging over
+ */
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  inline-size: 100%;
+  font-family: var(--font-text);
+}
+
+/* ── Zone ── */
+.zone {
+  --_border: var(--file-drop-border, var(--field-border, var(--color-line-control)));
+
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  box-sizing: border-box;
+  min-block-size: calc(var(--control-lg) * 2);
+  padding: var(--space-4);
+  border: var(--border-width) dashed var(--_border);
+  border-radius: var(--file-drop-radius, var(--field-radius, var(--radius-field)));
+  background-color: var(--file-drop-bg, var(--field-bg, var(--color-surface)));
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+  text-align: center;
+  cursor: pointer;
+  transition:
+    border-color var(--dur-1) var(--ease-out),
+    background-color var(--dur-1) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .zone:hover:not([data-disabled], [data-readonly], [data-invalid]) {
+    --_border: color-mix(
+      in oklab,
+      var(--file-drop-border, var(--field-border, var(--color-line-control))),
+      var(--color-ink) 35%
+    );
+  }
+}
+
+/* Focus is on the hidden input; the zone shows the neutral ring. */
+.zone:has(.input:focus-visible) {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.zone[data-dragging] {
+  --_border: var(--color-ink);
+  border-style: solid;
+  background-color: var(--file-drop-active-bg, var(--color-surface-sunken));
+  color: var(--color-ink);
+}
+
+.zone[data-invalid] {
+  --_border: var(--tone-critical);
+}
+
+.zone[data-readonly] {
+  background-color: var(--color-surface-sunken);
+  cursor: default;
+}
+
+.zone[data-disabled] {
+  --_border: var(--color-line);
+  background-color: var(--color-surface-sunken);
+  color: var(--color-ink-subtle);
+  cursor: not-allowed;
+}
+
+.icon {
+  flex: none;
+  inline-size: 1.25em;
+  block-size: 1.25em;
+}
+
+.browse {
+  color: var(--color-ink);
+  font-weight: var(--label-weight);
+  text-decoration: underline;
+  text-decoration-thickness: var(--border-width);
+  text-underline-offset: 0.2em;
+}
+.zone[data-disabled] .browse {
+  color: inherit;
+}
+
+.input {
+  /* visually hidden comes from messages.module.css; this keeps it out of hit-testing. */
+  pointer-events: none;
+}
+
+/* ── Files ── */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.list[data-preview='thumbnails'] {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+  gap: var(--space-2);
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-block-size: var(--control-md);
+  padding-inline: var(--space-3) var(--space-1);
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--file-drop-radius, var(--field-radius, var(--radius-field)));
+  background-color: var(--color-surface);
+  color: var(--color-ink);
+  font-size: var(--text-sm);
+}
+.list[data-preview='thumbnails'] .item {
+  position: relative;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-1) var(--space-2);
+}
+
+.thumb {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: max(2px, calc(var(--field-radius, var(--radius-field)) - var(--space-1)));
+  background-color: var(--color-surface-sunken);
+}
+
+.image {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+.ext {
+  color: var(--color-ink-subtle);
+  font-family: var(--font-numeric);
+  font-size: var(--text-xs);
+  font-weight: var(--label-weight);
+  letter-spacing: var(--label-tracking);
+}
+
+.meta {
+  display: flex;
+  flex: 1;
+  align-items: baseline;
+  gap: var(--space-2);
+  min-inline-size: 0;
+}
+.list[data-preview='thumbnails'] .meta {
+  flex-direction: column;
+  gap: 0;
+  padding-inline: var(--space-1);
+}
+
+.name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.list[data-preview='thumbnails'] .name {
+  max-inline-size: 100%;
+}
+
+.size {
+  flex: none;
+  color: var(--color-ink-subtle);
+  font-family: var(--font-numeric);
+  font-stretch: var(--numeric-stretch);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.remove {
+  position: relative;
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  inline-size: var(--control-sm);
+  block-size: var(--control-sm);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-chip);
+  background: transparent;
+  color: var(--color-ink-muted);
+  cursor: pointer;
+}
+.list[data-preview='thumbnails'] .remove {
+  position: absolute;
+  inset-block-start: var(--space-2);
+  inset-inline-end: var(--space-2);
+  background-color: var(--color-surface-raised);
+  box-shadow: var(--shadow-float);
+}
+.remove > svg {
+  inline-size: 1.1em;
+  block-size: 1.1em;
+}
+@media (hover: hover) {
+  .remove:hover {
+    color: var(--color-ink);
+    background-color: var(--color-surface-sunken);
+  }
+}
+.remove:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 1px;
+}
