@@ -28,7 +28,8 @@ export default function Usage() {
   return (
     <Form form={form} aria-label="New member">
       <Stack gap={5}>
-                <FormTabs label="Member details">
+        <ErrorSummary />
+        <FormTabs label="Member details">
           <FormTab value="person" label="Person">
             <form.TextField name="name" label="Full name" validators={required('Enter a name')} />
             <form.TextField name="email" label="Email" validators={required('Enter an email')} />

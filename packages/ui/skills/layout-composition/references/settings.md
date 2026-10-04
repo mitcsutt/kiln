@@ -42,13 +42,47 @@ export default function Settings() {
           </NavLinks>
           <Stack gap={7}>
             <Stack gap={5} as="section" aria-labelledby="profile">
-                                                                    </Stack>
-                        <Fieldset legend="Notifications" description="Sent to ines@example.com.">
+              <SectionHeader
+                level={2}
+                size="xl"
+                titleId="profile"
+                title="Profile"
+                description="Shown to the people you share routes with."
+              />
+              <TextField label="Display name" defaultValue="Ines Varga" />
+              <TextareaField
+                label="About"
+                description="A sentence or two. Plain text."
+                defaultValue="Commutes by ferry, weekends on the coast path."
+                showCount
+                maxLength={160}
+              />
+              <SelectField
+                label="Home station"
+                defaultValue="harbour"
+                options={[
+                  { value: 'harbour', label: 'Harbour Square' },
+                  { value: 'northpoint', label: 'Northpoint Library' },
+                  { value: 'kelso', label: 'Kelso Bay Pier' },
+                ]}
+              />
+            </Stack>
+            <Divider />
+            <Fieldset legend="Notifications" description="Sent to ines@example.com.">
               <Stack gap={4}>
-                                                              </Stack>
+                <SwitchField label="Weekly ride summary" defaultChecked />
+                <SwitchField
+                  label="Station alerts"
+                  description="When your home station runs low."
+                  defaultChecked
+                />
+                <SwitchField label="Product news" />
+              </Stack>
             </Fieldset>
-                        <Stack gap={4} as="section" aria-labelledby="account">
-                            <Text tone="muted">
+            <Divider />
+            <Stack gap={4} as="section" aria-labelledby="account">
+              <SectionHeader level={2} size="xl" titleId="account" title="Account" />
+              <Text tone="muted">
                 Deleting your account ends any active hire and removes your ride history.
               </Text>
               <Dialog>

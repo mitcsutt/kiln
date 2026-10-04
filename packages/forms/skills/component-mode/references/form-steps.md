@@ -110,10 +110,12 @@ export default function CustomNav() {
       <FormSteps label="Setup" nav="none" headingLevel={3}>
         <FormStep value="name" title="Your name">
           <form.TextField name="name" label="Name" />
-                  </FormStep>
+          <Nav />
+        </FormStep>
         <FormStep value="stop" title="Home stop">
           <form.TextField name="stop" label="Stop" />
-                  </FormStep>
+          <Nav />
+        </FormStep>
       </FormSteps>
     </Form>
   )
@@ -121,7 +123,7 @@ export default function CustomNav() {
 ```
 
 ```ts
-useFormSteps() => StepsApi
+declare function useFormSteps(): StepsApi
 ```
 
 The steps API inside `FormSteps` — for custom chrome (§9.8).

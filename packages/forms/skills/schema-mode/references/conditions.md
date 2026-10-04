@@ -68,7 +68,8 @@ export default function Conditions() {
   })
   return (
     <Form form={form} aria-label="Book a sailing">
-          </Form>
+      <SchemaForm form={form} schema={schema} context={{ member: false }} />
+    </Form>
   )
 }
 ```
@@ -98,7 +99,7 @@ A node whose `when` is false is unmounted: its rules stop running, its errors cl
 `evaluateCondition(condition, values, context)` is pure and React-free, for code that needs the same answer outside a form.
 
 ```ts
-evaluateCondition(c: UntypedCondition, values: unknown, context?: Record<string, unknown>) => boolean
+declare function evaluateCondition(c: UntypedCondition, values: unknown, context?: Record<string, unknown>): boolean
 ```
 
 Evaluates a JSON condition (§10.3) against form values (root paths) and the render context.

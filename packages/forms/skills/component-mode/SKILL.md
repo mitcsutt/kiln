@@ -61,7 +61,8 @@ export default function FirstForm() {
   return (
     <Form form={form} aria-label="Book a ferry ticket">
       <Stack gap={5}>
-                <form.TextField name="name" label="Full name" autoComplete="name" required />
+        <ErrorSummary />
+        <form.TextField name="name" label="Full name" autoComplete="name" required />
         <form.TextField name="email" label="Email" type="email" autoComplete="email" required />
         <form.SegmentedField
           name="ticket"
@@ -128,16 +129,20 @@ In component mode, `useAppForm` takes your default values and returns a form obj
 ```tsx
 import { Form, SubmitButton, useAppForm } from '@mitcsutt/kiln-forms'
 
-const form = useAppForm({
-  defaultValues: { name: '', seats: null as number | null },
-  onSubmit: async ({ value }) => save(value),
-})
+export function BookSeats() {
+  const form = useAppForm({
+    defaultValues: { name: '', seats: null as number | null },
+    onSubmit: async ({ value }) => save(value),
+  })
 
-<Form form={form} aria-label="Book seats">
-  <form.TextField name="name" label="Full name" />
-  <form.NumberField name="seats" label="Seats" min={1} />
-  <SubmitButton>Book</SubmitButton>
-</Form>
+  return (
+    <Form form={form} aria-label="Book seats">
+      <form.TextField name="name" label="Full name" />
+      <form.NumberField name="seats" label="Seats" min={1} />
+      <SubmitButton>Book</SubmitButton>
+    </Form>
+  )
+}
 ```
 
 ### Types do the checking
@@ -229,7 +234,8 @@ export default function WithForm() {
   return (
     <Form form={form} aria-label="Passenger">
       <Stack gap={5}>
-                <SubmitButton>Continue</SubmitButton>
+        <ContactDetails form={form} title="Lead passenger" />
+        <SubmitButton>Continue</SubmitButton>
       </Stack>
     </Form>
   )
@@ -280,7 +286,8 @@ export default function FieldGroup() {
   return (
     <Form form={form} aria-label="Change password">
       <Stack gap={5}>
-                <SubmitButton>Change password</SubmitButton>
+        <NewPassword form={form} fields="password" />
+        <SubmitButton>Change password</SubmitButton>
       </Stack>
     </Form>
   )
@@ -288,7 +295,7 @@ export default function FieldGroup() {
 ```
 
 ```ts
-useFields<A extends { AppField: unknown; state: { values: unknown; }; }>(api: A) => BoundFields<ValuesOf<A>, { text: FieldDef<ExactContract<string>, FormTextFieldProps>; textarea: FieldDef<ExactContract<string>, FormTextareaFieldProps>; select: FieldDef<OptionContract<Primitive>, FormSelectFieldProps>; checkbox: FieldDef<ExactContract<boolean>, FormCheckboxFieldProps>; date: FieldDef<ExactContract<string>, FormDateFieldProps>; time: FieldDef<ExactContract<string>, FormTimeFieldProps>; dateTime: FieldDef<ExactContract<string>, FormDateTimeFieldProps>; hidden: FieldDef<ExactContract<string>, FormHiddenFieldProps>; password: FieldDef<ExactContract<string>, FormPasswordFieldProps>; number: FieldDef<ExactContract<number>, FormNumberFieldProps>; amount: FieldDef<ExactContract<number>, FormAmountFieldProps>; oneTimeCode: FieldDef<ExactContract<string>, FormOneTimeCodeFieldProps>; color: FieldDef<ExactContract<string>, FormColorFieldProps>; switch: FieldDef<ExactContract<boolean>, FormSwitchFieldProps>; dateRange: FieldDef<ExactContract<DateRangeValue>, FormDateRangeFieldProps>; radio: FieldDef<OptionContract<Primitive>, FormRadioFieldProps>; segmented: FieldDef<OptionContract<SegmentedValue>, FormSegmentedFieldProps>; choiceCards: FieldDef<OptionContract<ChoiceCardValue>, FormChoiceCardsFieldProps>; multiChoiceCards: FieldDef<OptionsContract<MultiChoiceCardValue>, FormMultiChoiceCardsFieldProps>; checkboxGroup: FieldDef<OptionsContract<CheckboxGroupValue>, FormCheckboxGroupFieldProps>; chips: FieldDef<OptionsContract<ChipsValue>, FormChipsFieldProps>; slider: FieldDef<ExactContract<number>, FormSliderFieldProps>; range: FieldDef<ExactContract<[number, number]>, FormRangeFieldProps>; rating: FieldDef<ExactContract<number>, FormRatingFieldProps>; combobox: FieldDef<OptionContract<ComboboxValue>, FormComboboxFieldProps>; multiSelect: FieldDef<OptionsContract<MultiSelectValue>, FormMultiSelectFieldProps>; tags: FieldDef<ExactContract<readonly string[]>, FormTagsFieldProps>; file: FieldDef<ExactContract<readonly FileValue[]>, FormFileFieldProps>; }>
+declare function useFields<A extends { AppField: unknown; state: { values: unknown; }; }>(api: A): BoundFields<ValuesOf<A>, { text: FieldDef<ExactContract<string>, FormTextFieldProps>; textarea: FieldDef<ExactContract<string>, FormTextareaFieldProps>; select: FieldDef<OptionContract<Primitive>, FormSelectFieldProps>; checkbox: FieldDef<ExactContract<boolean>, FormCheckboxFieldProps>; date: FieldDef<ExactContract<string>, FormDateFieldProps>; time: FieldDef<ExactContract<string>, FormTimeFieldProps>; dateTime: FieldDef<ExactContract<string>, FormDateTimeFieldProps>; hidden: FieldDef<ExactContract<string>, FormHiddenFieldProps>; password: FieldDef<ExactContract<string>, FormPasswordFieldProps>; number: FieldDef<ExactContract<number>, FormNumberFieldProps>; amount: FieldDef<ExactContract<number>, FormAmountFieldProps>; oneTimeCode: FieldDef<ExactContract<string>, FormOneTimeCodeFieldProps>; color: FieldDef<ExactContract<string>, FormColorFieldProps>; switch: FieldDef<ExactContract<boolean>, FormSwitchFieldProps>; dateRange: FieldDef<ExactContract<DateRangeValue>, FormDateRangeFieldProps>; radio: FieldDef<OptionContract<Primitive>, FormRadioFieldProps>; segmented: FieldDef<OptionContract<SegmentedValue>, FormSegmentedFieldProps>; choiceCards: FieldDef<OptionContract<ChoiceCardValue>, FormChoiceCardsFieldProps>; multiChoiceCards: FieldDef<OptionsContract<MultiChoiceCardValue>, FormMultiChoiceCardsFieldProps>; checkboxGroup: FieldDef<OptionsContract<CheckboxGroupValue>, FormCheckboxGroupFieldProps>; chips: FieldDef<OptionsContract<ChipsValue>, FormChipsFieldProps>; slider: FieldDef<ExactContract<number>, FormSliderFieldProps>; range: FieldDef<ExactContract<[number, number]>, FormRangeFieldProps>; rating: FieldDef<ExactContract<number>, FormRatingFieldProps>; combobox: FieldDef<OptionContract<ComboboxValue>, FormComboboxFieldProps>; multiSelect: FieldDef<OptionsContract<MultiSelectValue>, FormMultiSelectFieldProps>; tags: FieldDef<ExactContract<readonly string[]>, FormTagsFieldProps>; file: FieldDef<ExactContract<readonly FileValue[]>, FormFileFieldProps>; }>
 ```
 
 ### useAppForm options

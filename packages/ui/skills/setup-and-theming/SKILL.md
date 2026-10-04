@@ -43,9 +43,10 @@ import '@mitcsutt/kiln-ui/styles.css'
 
 ```tsx title="src/App.tsx"
 import { ThemeProvider } from '@mitcsutt/kiln-ui'
+import type { ReactNode } from 'react'
 
-export function App() {
-  return <ThemeProvider></ThemeProvider>
+export function App({ children }: { children: ReactNode }) {
+  return <ThemeProvider>{children}</ThemeProvider>
 }
 ```
 
@@ -145,13 +146,15 @@ Anything that navigates takes `asChild`, so your router's link keeps doing the r
 import NextLink from 'next/link'
 import { Button, Link, NavLinks } from '@mitcsutt/kiln-ui'
 
-<Button asChild>
-  <NextLink href="/work">See the work</NextLink>
-</Button>
+;<>
+  <Button asChild>
+    <NextLink href="/work">See the work</NextLink>
+  </Button>
 
-<NavLinks.Item asChild active={pathname === '/work'}>
-  <NextLink href="/work">Work</NextLink>
-</NavLinks.Item>
+  <NavLinks.Item asChild active={pathname === '/work'}>
+    <NextLink href="/work">Work</NextLink>
+  </NavLinks.Item>
+</>
 ```
 
 ## What every component promises
@@ -173,7 +176,7 @@ import { cx } from '@mitcsutt/kiln-ui'
 ```
 
 ```ts
-cx(...classes: (string | false | null | undefined)[]) => string
+declare function cx(...classes: (string | false | null | undefined)[]): string
 ```
 
 Merges class names, filtering falsy values.

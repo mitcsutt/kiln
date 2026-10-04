@@ -42,7 +42,38 @@ export default function Checkout() {
             <Heading level={2} size="2xl">
               Checkout
             </Heading>
-                                              </Stack>
+            <TextField
+              label="Email"
+              type="email"
+              autoComplete="email"
+              placeholder="ines@example.com"
+            />
+            <ChoiceCardsField
+              label="Collection"
+              type="single"
+              defaultValue="station"
+              columns={{ base: 1, sm: 2 }}
+              options={[
+                {
+                  value: 'station',
+                  label: 'Collect at a station',
+                  description: 'Ready from tomorrow, 08:00',
+                  meta: 'Free',
+                },
+                {
+                  value: 'post',
+                  label: 'Post it to me',
+                  description: 'Two to three working days',
+                  meta: '£3.20',
+                },
+              ]}
+            />
+            <TextField
+              label="Discount code"
+              optional
+              description="From your employer's cycle scheme, if you have one."
+            />
+          </Stack>
           <Stack gap={5}>
             <Text weight="strong">Your order</Text>
             <List divided>
@@ -53,18 +84,22 @@ export default function Checkout() {
                     <List.Description>{item.detail}</List.Description>
                   </List.Content>
                   <List.Trailing>
-                                      </List.Trailing>
+                    <Amount value={item.price} currency="GBP" />
+                  </List.Trailing>
                 </List.Item>
               ))}
             </List>
-                        <DataList orientation="horizontal">
+            <Divider />
+            <DataList orientation="horizontal">
               <DataList.Item label="Subtotal">
-                              </DataList.Item>
+                <Amount value={subtotal} currency="GBP" />
+              </DataList.Item>
               <DataList.Item label="Collection">Free</DataList.Item>
             </DataList>
             <Inline justify="between" align="baseline">
               <Text weight="strong">Total</Text>
-                          </Inline>
+              <Amount value={subtotal} currency="GBP" size="2xl" />
+            </Inline>
             <Button fullWidth size="lg">
               Pay £120.50
             </Button>

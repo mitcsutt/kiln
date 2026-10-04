@@ -49,7 +49,7 @@ To reset a dependent field when its parent changes, use a field listener, as the
 Read values where they're used: a small component that calls `useFieldValue` re-renders alone, while calling it at the top of a big form re-renders the whole form on each change.
 
 ```ts
-useFieldValue<A extends AnyKitForm, N extends DeepKeys<A['state']['values']>>(form: A, name: N) => DeepValue<A['state']['values'], N>
+declare function useFieldValue<A extends AnyKitForm, N extends DeepKeys<A['state']['values']>>(form: A, name: N): DeepValue<A['state']['values'], N>
 ```
 
 One path's value, subscribed with a single selector — for sibling-aware rendering.

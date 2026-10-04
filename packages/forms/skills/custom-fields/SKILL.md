@@ -110,7 +110,7 @@ The helpers do nothing at runtime; they only carry the type.
 Call `useFieldBinding` with the field's props, a runtime guard (`accepts.string`, `accepts.number`…) and the value it writes when cleared (`empty`). Spread `binding.fieldProps` and `binding.ref` onto the kiln-ui field, and wire `value`, `setValue` and `onBlur`.
 
 ```ts
-useFieldBinding<V>(options: FieldBindingOptions<V>) => FieldBinding<V>
+declare function useFieldBinding<V>(options: FieldBindingOptions<V>): FieldBinding<V>
 ```
 
 THE binding hook (§4): ids, error visibility + normalisation, warnings, disabled/readOnly/excluded
@@ -119,7 +119,7 @@ semantics, focus registration and view mode, for the field in context.
 Option fields map their values through `useOptionMapping`, so numbers and booleans survive the string-only controls underneath.
 
 ```ts
-useOptionMapping<V extends Primitive>(options: readonly FieldOption<V>[] | undefined, opts?: OptionMappingOptions<V>) => OptionMapping<V>
+declare function useOptionMapping<V extends Primitive>(options: readonly FieldOption<V>[] | undefined, opts?: OptionMappingOptions<V>): OptionMapping<V>
 ```
 
 Hook form of `createOptionMapping`, memoised on the options array and `emptyOption` (and

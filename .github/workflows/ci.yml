@@ -108,6 +108,17 @@ jobs:
       - name: Build the docs site and check its links
         run: pnpm check:links
 
+  # The skills kiln-ui and kiln-forms ship pass TanStack Intent's validator: their
+  # frontmatter and size, and every code block compiles against the package (ADR 0020).
+  skills:
+    name: Agent skills
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup
+      - name: intent validate
+        run: pnpm check:skills
+
   package:
     name: Package checks
     runs-on: ubuntu-latest

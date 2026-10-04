@@ -16,9 +16,16 @@ import '@mitcsutt/kiln-ui/styles.css'
 import '@mitcsutt/kiln-ui/themes/monograph.css'
 import { ThemeProvider, themeScript } from '@mitcsutt/kiln-ui'
 
-<script dangerouslySetInnerHTML={{ __html: themeScript('monograph', 'dark') }} />
-
-<ThemeProvider theme="monograph" defaultMode="dark">…</ThemeProvider>
+;<html lang="en">
+  <head>
+    <script dangerouslySetInnerHTML={{ __html: themeScript('monograph', 'dark') }} />
+  </head>
+  <body>
+    <ThemeProvider theme="monograph" defaultMode="dark">
+      …
+    </ThemeProvider>
+  </body>
+</html>
 ```
 
 ## The idea, applied

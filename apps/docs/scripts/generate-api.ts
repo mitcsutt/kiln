@@ -75,6 +75,9 @@ const PRINT: ts.TypeFormatFlags =
   ts.TypeFormatFlags.NoTruncation |
   ts.TypeFormatFlags.UseSingleQuotesForStringLiteralType |
   ts.TypeFormatFlags.WriteArrowStyleSignature
+// A function's signature is printed as a declaration (no arrow), so it's TypeScript that compiles.
+const DECLARATION: ts.TypeFormatFlags =
+  ts.TypeFormatFlags.NoTruncation | ts.TypeFormatFlags.UseSingleQuotesForStringLiteralType
 
 function docs(symbol: ts.Symbol): string {
   return ts.displayPartsToString(symbol.getDocumentationComment(checker)).trim()
@@ -353,7 +356,10 @@ for (const entry of entries) {
         kind: 'function',
         description,
         signature: signatures
-          .map((s) => `${name}${checker.signatureToString(s, undefined, PRINT)}`)
+          .map(
+            (s) =>
+              `declare function ${name}${checker.signatureToString(s, undefined, DECLARATION)}`,
+          )
           .join('\n'),
       }
       continue

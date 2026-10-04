@@ -22,7 +22,6 @@ Write a complete theme as one CSS file against the token contract and select it 
 A Kiln theme is one CSS file. It sets the tokens in the [contract](references/tokens.md#the-theme-contract), and nothing else: no component changes, no JavaScript, no build plugin. This guide writes one from scratch. It's called Harbour, it lives in these docs (not in kiln-ui), and you can see it working below.
 
 ```tsx
-import '@/styles/harbour.css'
 import { Box, Button, Heading, Inline, Stack, Text, ThemeScope } from '@mitcsutt/kiln-ui'
 
 export default function CustomTheme() {
@@ -208,11 +207,11 @@ The whole Harbour file is in the repository at [`apps/docs/src/styles/harbour.cs
 
 ## 4. Load it and select it
 
-Import your theme after Kiln's stylesheet, then name it. `ThemeName` accepts any string, so there's no type to extend and nothing to register:
+Import your theme after Kiln's stylesheet (`import './harbour.css'` on the next line: your bundler loads your own CSS as it does any other), then name it. `ThemeName` accepts any string, so there's no type to extend and nothing to register:
 
 ```tsx title="app root"
 import '@mitcsutt/kiln-ui/styles.css'
-import './harbour.css'
+// import './harbour.css'
 import { ThemeProvider } from '@mitcsutt/kiln-ui'
 
 ;<ThemeProvider theme="harbour">…</ThemeProvider>
@@ -222,7 +221,8 @@ For SSR without a flash, `themeScript('harbour')` works the same way as for a bu
 
 ```tsx
 <ThemeScope theme="harbour">
-  </ThemeScope>
+  <TimetablePanel />
+</ThemeScope>
 ```
 
 `useTheme()` reads and changes the theme and mode from anywhere inside a `ThemeProvider`:

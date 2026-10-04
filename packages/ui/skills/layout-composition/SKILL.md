@@ -59,7 +59,8 @@ export default function Density() {
             <Text size="sm" tone="muted">
               {density ?? 'Theme default'}
             </Text>
-                        <Button size="sm">Board now</Button>
+            <TextField label="Berth" defaultValue="3" />
+            <Button size="sm">Board now</Button>
           </Stack>
         </div>
       ))}

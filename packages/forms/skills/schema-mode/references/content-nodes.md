@@ -49,7 +49,8 @@ export default function ContentNodes() {
   const form = useAppForm<Feedback>({ defaultValues: { rating: null, comments: '' } })
   return (
     <Form form={form} aria-label="Rate your crossing">
-          </Form>
+      <SchemaForm form={form} schema={schema} />
+    </Form>
   )
 }
 ```
