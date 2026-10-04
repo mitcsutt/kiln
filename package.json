@@ -19,6 +19,7 @@
   },
   "prettier": "@mitcsutt/kiln-prettier-config",
   "devDependencies": {
+    "@changesets/cli": "catalog:",
     "@commitlint/cli": "catalog:",
     "@commitlint/config-conventional": "catalog:",
     "@mitcsutt/kiln-eslint-config": "workspace:*",
