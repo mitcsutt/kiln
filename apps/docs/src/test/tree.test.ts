@@ -1,7 +1,7 @@
-import { existsSync } from 'node:fs'
+import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { allApi } from '@/lib/api'
-import { contentDir, contentPages, storyTitles, titleToPath } from './content'
+import { contentDir, contentPages, repoDir, storyTitles, titleToPath } from './content'
 
 const pages = contentPages()
 const paths = new Set(pages.map((page) => page.path))
@@ -15,8 +15,41 @@ describe('one tree for the docs and Storybook', () => {
     expect(stories.length).toBeGreaterThan(150)
   })
 
-  it.each(stories)('$title has a docs page', ({ title }) => {
-    expect(paths.has(pagePath(titleToPath(title)))).toBe(true)
+  // A title is a page (`UI/Actions/Button`), or a docs folder whose stories are its pages
+  // (`UI/Themes` with stories `Paper`, `Fiesta`…, which Storybook lists as `UI/Themes/Paper`).
+  it.each(stories)('$title has a docs page', ({ title, stories: names }) => {
+    const path = titleToPath(title)
+    if (paths.has(pagePath(path))) return
+    expect(names.length, `${path} is neither a page nor a folder of pages`).toBeGreaterThan(0)
+    for (const name of names) expect(paths.has(`${path}/${titleToPath(name)}`), name).toBe(true)
+  })
+
+  // docs/tree.json is the 0010 tree, which Storybook's tree test reads too.
+  it('has the sidebar groups of docs/tree.json, in order', () => {
+    const tree = JSON.parse(readFileSync(join(repoDir, 'docs/tree.json'), 'utf8')) as Record<
+      string,
+      string[]
+    >
+    const meta = (dir: string) =>
+      JSON.parse(readFileSync(join(contentDir, dir, 'meta.json'), 'utf8')) as {
+        title?: string
+        pages?: string[]
+      }
+    const titleOf = (dir: string, slug: string) =>
+      existsSync(join(contentDir, dir, slug, 'meta.json'))
+        ? meta(join(dir, slug)).title
+        : pages.find((page) => page.path === `${dir}/${slug}`)?.frontmatter.title
+    const sidebar = Object.fromEntries(
+      (meta('.').pages ?? [])
+        .filter((slug) => slug !== 'index')
+        .map((slug) => [
+          meta(slug).title,
+          (meta(slug).pages ?? [])
+            .filter((child) => child !== 'index')
+            .map((child) => titleOf(slug, child)),
+        ]),
+    )
+    expect(sidebar).toEqual(tree)
   })
 
   it('nests every docs page under UI, Forms or Tooling', () => {

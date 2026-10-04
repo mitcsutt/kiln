@@ -1,0 +1,27 @@
+{
+  "UI": [
+    "Foundations",
+    "Actions",
+    "Inputs",
+    "Layout",
+    "Display",
+    "Navigation",
+    "Feedback",
+    "Overlays",
+    "Typography",
+    "Themes",
+    "Patterns"
+  ],
+  "Forms": [
+    "Getting started",
+    "Fields",
+    "Layouts",
+    "Hooks",
+    "Schema"
+  ],
+  "Tooling": [
+    "ESLint config",
+    "Prettier config",
+    "TSConfig"
+  ]
+}

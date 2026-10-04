@@ -9,12 +9,16 @@
  * `/docs/<page>.md`, `llms.txt` and the search index are crawled like any other page.
  */
 import { spawn } from 'node:child_process'
+import { createRequire } from 'node:module'
 import { createServer } from 'node:net'
 import { resolve } from 'node:path'
 import { parse } from 'node-html-parser'
 
 const app = resolve(import.meta.dirname, '..')
 const CONCURRENCY = 8
+/** Every request, and the whole run, gives up rather than hang. */
+const REQUEST_TIMEOUT_MS = 30_000
+const RUN_TIMEOUT_MS = 5 * 60_000
 /** Where the site will be served. Absolute links to it (llms.txt uses them) are checked locally. */
 const SITE_URL = 'https://kiln.mitchellsutton.com'
 
@@ -34,15 +38,34 @@ function freePort(): Promise<number> {
 
 const port = await freePort()
 const origin = `http://127.0.0.1:${String(port)}`
-const next = spawn('pnpm', ['exec', 'next', 'start', '-p', String(port), '-H', '127.0.0.1'], {
+// Next's own binary, not `pnpm exec`, in its own process group: killing a wrapper would
+// leave the server running and holding this process open.
+const nextBin = createRequire(resolve(app, 'package.json')).resolve('next/dist/bin/next')
+const next = spawn(process.execPath, [nextBin, 'start', '-p', String(port), '-H', '127.0.0.1'], {
   cwd: app,
-  stdio: ['ignore', 'pipe', 'inherit'],
+  stdio: ['ignore', 'ignore', 'inherit'],
+  detached: true,
 })
+
+function stopServer(): void {
+  if (next.pid === undefined || next.exitCode !== null) return
+  try {
+    process.kill(-next.pid, 'SIGTERM')
+  } catch {
+    // already gone
+  }
+}
+
+const deadline = setTimeout(() => {
+  console.error(`The link check took longer than ${String(RUN_TIMEOUT_MS / 60_000)} minutes.`)
+  stopServer()
+  process.exit(1)
+}, RUN_TIMEOUT_MS)
 
 async function waitForServer(): Promise<void> {
   for (let attempt = 0; attempt < 120; attempt++) {
     try {
-      const response = await fetch(origin)
+      const response = await fetch(origin, { signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS) })
       if (response.status < 500) return
     } catch {
       // not listening yet
@@ -97,7 +120,10 @@ function load(path: string): Promise<Fetched> {
   const existing = fetched.get(path)
   if (existing) return existing
   const pending = (async () => {
-    const response = await fetch(origin + path, { redirect: 'follow' })
+    const response = await fetch(origin + path, {
+      redirect: 'follow',
+      signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    })
     const type = response.headers.get('content-type') ?? ''
     if (type.includes('text/markdown')) {
       return {
@@ -164,5 +190,7 @@ try {
     console.log(`Checked ${String(checked)} internal links: none broken.`)
   }
 } finally {
-  next.kill()
+  clearTimeout(deadline)
+  stopServer()
 }
+process.exit(process.exitCode ?? 0)

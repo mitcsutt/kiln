@@ -46,11 +46,12 @@ export function titleToPath(title: string): string {
 }
 
 /** Every story file's `title`, read from the source of both packages. */
-export function storyTitles(): { title: string; file: string }[] {
+export function storyTitles(): { title: string; file: string; stories: string[] }[] {
   const files = globSync('packages/*/src/**/*.stories.tsx', { cwd: repoDir })
   return files.flatMap((file) => {
     const source = readFileSync(join(repoDir, file), 'utf8')
     const title = /^const meta = \{[\s\S]*?^\s{2}title: '([^']+)'/m.exec(source)?.[1]
-    return title ? [{ title, file }] : []
+    const stories = [...source.matchAll(/^export const (\w+): Story/gm)].map((m) => m[1] ?? '')
+    return title ? [{ title, file, stories }] : []
   })
 }

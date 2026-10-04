@@ -15,24 +15,11 @@ import type { StoryIndex } from 'storybook/internal/types'
 
 const ROOT = join(import.meta.dirname, '../..')
 
-/** The ADR 0010 tree: top-level nodes and the groups under each. */
-const TREE: Record<string, readonly string[]> = {
-  UI: [
-    'Foundations',
-    'Actions',
-    'Inputs',
-    'Layout',
-    'Display',
-    'Navigation',
-    'Feedback',
-    'Overlays',
-    'Typography',
-    'Themes',
-    'Patterns',
-  ],
-  Forms: ['Getting started', 'Fields', 'Layouts', 'Hooks', 'Schema'],
-  Tooling: ['ESLint config', 'Prettier config', 'TSConfig'],
-}
+/** The ADR 0010 tree: top-level nodes and the groups under each, shared with the docs site. */
+const TREE = JSON.parse(readFileSync(join(ROOT, 'docs/tree.json'), 'utf8')) as Record<
+  string,
+  readonly string[]
+>
 
 /** Pages that sit outside the tree. */
 const STANDALONE = ['Introduction']
