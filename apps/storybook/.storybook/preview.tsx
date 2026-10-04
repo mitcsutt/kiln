@@ -78,6 +78,7 @@ const preview: Preview = {
           'UI',
           [
             'Foundations',
+            ['Tokens', 'Colour', 'Type', 'Spacing', 'Motion', 'Theming'],
             'Actions',
             'Inputs',
             'Layout',

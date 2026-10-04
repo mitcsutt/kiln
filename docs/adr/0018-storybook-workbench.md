@@ -31,9 +31,9 @@
 
 **Accessibility exceptions**
 
-Three stories turn off an axe rule, scoped to that story, with the reason beside it. Nothing else is excepted.
+Two kinds of story turn off axe rules, scoped to those stories, with the reason beside them. Nothing else is excepted.
 
-- The forms parity stories render the same form twice by design, so the landmarks inside the two copies share names. They turn off `landmark-unique`, a best-practice rule rather than a WCAG one.
+- The forms parity stories (every story built with `parityStory`, which applies `parityParameters`) render the same form twice by design, so the landmarks inside the two copies share names. They turn off `landmark-unique`, a best-practice rule rather than a WCAG one.
 - The always-open Select story shows a modal list: Radix hides the rest of the page with `aria-hidden` and traps focus in the list, and arrow keys move through it. axe sees a hidden focusable trigger and a scrolling region with no tab stop, but not the trap. It turns off `aria-hidden-focus` and `scrollable-region-focusable`.
 
 **Content**
