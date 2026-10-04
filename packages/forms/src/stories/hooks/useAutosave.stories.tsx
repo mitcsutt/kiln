@@ -1,6 +1,7 @@
 import { Stack } from '@mitcsutt/kiln-ui'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect, userEvent, within } from 'storybook/test'
+import { storyRoot } from '#stories/_kit'
 import { Form } from '#components/Form'
 import { FormStatus } from '#components/FormStatus'
 import { useAutosave } from '#core/hooks'
@@ -34,7 +35,7 @@ function MeetingNotes() {
 export const Playground: Story = {
   render: () => <MeetingNotes />,
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
+    const canvas = within(storyRoot(canvasElement))
     await userEvent.type(
       canvas.getByLabelText("Notes from Tuesday's planning meeting"),
       'Move the launch to March.',

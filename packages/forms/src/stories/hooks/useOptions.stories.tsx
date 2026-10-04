@@ -2,6 +2,7 @@ import { List, Stack, Text, TextField } from '@mitcsutt/kiln-ui'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useState } from 'react'
 import { expect, userEvent, within } from 'storybook/test'
+import { storyRoot } from '#stories/_kit'
 import { useOptions, type OptionsLoader } from '#core/hooks'
 
 const meta = {
@@ -71,7 +72,7 @@ function StationSearch() {
 export const Playground: Story = {
   render: () => <StationSearch />,
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
+    const canvas = within(storyRoot(canvasElement))
     await userEvent.type(canvas.getByLabelText('Station'), 'li')
     await expect(await canvas.findByText('Liverpool Street')).toBeInTheDocument()
     await expect(canvas.getByText('Lisson Grove')).toBeInTheDocument()

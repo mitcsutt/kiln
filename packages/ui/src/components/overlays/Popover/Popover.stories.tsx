@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect, screen, userEvent, waitFor, within } from 'storybook/test'
+import { storyRoot } from '#components/_story/storyRoot'
 import { Button } from '#components/actions/Button'
 import { Inline } from '#components/layout/Inline'
 import { Stack } from '#components/layout/Stack'
@@ -57,7 +58,9 @@ function MatchDetails({ open, ...args }: PopoverContentProps & { open?: boolean 
 export const Playground: Story = {
   render: (args) => <MatchDetails {...args} />,
   play: async ({ canvasElement }) => {
-    const trigger = within(canvasElement).getByRole('button', { name: 'Hawks v Millpond' })
+    const trigger = within(storyRoot(canvasElement)).getByRole('button', {
+      name: 'Hawks v Millpond',
+    })
     await userEvent.click(trigger)
     const details = await screen.findByRole('dialog', { name: 'Match details' })
     await userEvent.click(within(details).getByRole('button', { name: 'Dismiss' }))

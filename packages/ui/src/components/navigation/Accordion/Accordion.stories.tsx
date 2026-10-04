@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect, userEvent, within } from 'storybook/test'
+import { storyRoot } from '#components/_story/storyRoot'
 import { Accordion } from './Accordion'
 
 const meta = {
@@ -41,7 +42,7 @@ type Story = StoryObj<typeof meta>
 /** One section open at a time: opening another closes the first. */
 export const Playground: Story = {
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
+    const canvas = within(storyRoot(canvasElement))
     const scoring = canvas.getByRole('button', { name: 'How does scoring work?' })
     const ties = canvas.getByRole('button', { name: 'What happens on a tie?' })
     await expect(scoring).toHaveAttribute('aria-expanded', 'true')

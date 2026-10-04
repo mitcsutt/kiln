@@ -1,6 +1,7 @@
 import { Amount, Stack, Text } from '@mitcsutt/kiln-ui'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect, userEvent, within } from 'storybook/test'
+import { storyRoot } from '#stories/_kit'
 import { Form } from '#components/Form'
 import { useFieldValue } from '#core/hooks'
 import { kit } from '#kit'
@@ -43,7 +44,7 @@ function PlanPicker() {
 export const Playground: Story = {
   render: () => <PlanPicker />,
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
+    const canvas = within(storyRoot(canvasElement))
     await expect(canvas.getByText(/a month/)).toHaveTextContent('£6')
     await userEvent.click(canvas.getByRole('radio', { name: 'Team, up to 10 people' }))
     await expect(canvas.getByText(/a month/)).toHaveTextContent('£24')

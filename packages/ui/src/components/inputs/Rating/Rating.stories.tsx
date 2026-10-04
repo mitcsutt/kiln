@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect, userEvent, waitFor, within } from 'storybook/test'
+import { storyRoot } from '#components/_story/storyRoot'
 import { Stack } from '#components/layout/Stack'
 import { Rating } from './Rating'
 
@@ -24,7 +25,7 @@ type Story = StoryObj<typeof meta>
 /** Each star is a radio: click one, or hold an arrow key to move and choose. */
 export const Playground: Story = {
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
+    const canvas = within(storyRoot(canvasElement))
     await userEvent.click(canvas.getByRole('radio', { name: '2 of 5' }))
     await expect(canvas.getByRole('radio', { name: '2 of 5' })).toHaveAttribute(
       'aria-checked',

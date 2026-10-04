@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect, screen, userEvent, waitFor, within } from 'storybook/test'
+import { storyRoot } from '#components/_story/storyRoot'
 import { Button } from '#components/actions/Button'
 import { Inline } from '#components/layout/Inline'
 import { Stack } from '#components/layout/Stack'
@@ -42,7 +43,7 @@ export const Playground: Story = {
   play: async ({ canvasElement }) => {
     await userEvent.tab()
     await expect(
-      within(canvasElement).getByRole('button', { name: 'Copy share link' }),
+      within(storyRoot(canvasElement)).getByRole('button', { name: 'Copy share link' }),
     ).toHaveFocus()
     await expect(await screen.findByRole('tooltip')).toHaveTextContent('Copy share link')
     await userEvent.keyboard('{Escape}')

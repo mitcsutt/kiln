@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect, userEvent, within } from 'storybook/test'
+import { storyRoot } from '#components/_story/storyRoot'
 import { Stack } from '#components/layout/Stack'
 import { PasswordInput } from './PasswordInput'
 
@@ -26,7 +27,7 @@ type Story = StoryObj<typeof meta>
 /** The toggle shows the password and hides it again. */
 export const Playground: Story = {
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
+    const canvas = within(storyRoot(canvasElement))
     const input = canvas.getByLabelText('Password')
     await userEvent.type(input, 'harbour-lights-1450')
     await expect(input).toHaveAttribute('type', 'password')

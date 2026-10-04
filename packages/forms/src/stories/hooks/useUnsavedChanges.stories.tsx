@@ -1,6 +1,7 @@
 import { Badge, Inline, Stack } from '@mitcsutt/kiln-ui'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect, userEvent, within } from 'storybook/test'
+import { storyRoot } from '#stories/_kit'
 import { Form } from '#components/Form'
 import { ResetButton } from '#components/ResetButton'
 import { SubmitButton } from '#components/SubmitButton'
@@ -49,7 +50,7 @@ function EditTalk() {
 export const Playground: Story = {
   render: () => <EditTalk />,
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
+    const canvas = within(storyRoot(canvasElement))
     await userEvent.type(canvas.getByLabelText('Talk title'), ', revised')
     await expect(canvas.getByText('Unsaved changes')).toBeInTheDocument()
     await userEvent.click(canvas.getByRole('button', { name: 'Discard' }))

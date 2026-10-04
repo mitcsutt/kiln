@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect, userEvent, within } from 'storybook/test'
+import { storyRoot } from '#components/_story/storyRoot'
 import { Stack } from '#components/layout/Stack'
 import { NumberInput } from './NumberInput'
 
@@ -30,7 +31,7 @@ type Story = StoryObj<typeof meta>
 /** The stepper buttons move by `step` and stop at `min` and `max`. */
 export const Playground: Story = {
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
+    const canvas = within(storyRoot(canvasElement))
     const input = canvas.getByRole('spinbutton', { name: 'Guests' })
     await userEvent.click(canvas.getByRole('button', { name: 'Increase' }))
     await expect(input).toHaveValue('5')

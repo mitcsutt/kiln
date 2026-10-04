@@ -8,7 +8,7 @@ import {
   repeaterTableFixture,
   repeaterTableSchema,
 } from '#stories/fixtures/collections'
-import { StoryForm } from '#stories/_kit'
+import { StoryForm, storyRoot } from '#stories/_kit'
 import { parityStory } from '#stories/parity'
 import { Repeater } from './Repeater'
 
@@ -48,7 +48,7 @@ export const Playground: Story = {
     </StoryForm>
   ),
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
+    const canvas = within(storyRoot(canvasElement))
     await expect(canvas.getAllByRole('textbox', { name: /^Name/ })).toHaveLength(1)
     await userEvent.click(canvas.getByRole('button', { name: 'Add guest' }))
     await expect(canvas.getAllByRole('textbox', { name: /^Name/ })).toHaveLength(2)

@@ -2,6 +2,7 @@ import { Button, Stack, Text } from '@mitcsutt/kiln-ui'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useState } from 'react'
 import { expect, userEvent, within } from 'storybook/test'
+import { storyRoot } from '#stories/_kit'
 import { Form } from '#components/Form'
 import { useServerValues } from '#core/hooks'
 import { kit } from '#kit'
@@ -61,7 +62,7 @@ function VenueEditor() {
 export const Playground: Story = {
   render: () => <VenueEditor />,
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
+    const canvas = within(storyRoot(canvasElement))
     const name = canvas.getByLabelText('Venue name')
     await userEvent.clear(name)
     await userEvent.type(name, 'Mill Lane main hall')

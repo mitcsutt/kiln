@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect, userEvent, within } from 'storybook/test'
+import { storyRoot } from '#components/_story/storyRoot'
 import { Stack } from '#components/layout/Stack'
 import { Tabs } from './Tabs'
 
@@ -29,7 +30,7 @@ type Story = StoryObj<typeof meta>
 /** Arrow keys move between tabs, and the panel follows. */
 export const Playground: Story = {
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
+    const canvas = within(storyRoot(canvasElement))
     await userEvent.click(canvas.getByRole('tab', { name: 'Matches' }))
     await userEvent.keyboard('{ArrowRight}')
     await expect(canvas.getByRole('tab', { name: 'Players' })).toHaveAttribute(

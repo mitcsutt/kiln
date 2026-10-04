@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect, userEvent, within } from 'storybook/test'
 import { whenFixture, whenSchema } from '#stories/fixtures/flow'
-import { StoryForm } from '#stories/_kit'
+import { StoryForm, storyRoot } from '#stories/_kit'
 import { parityStory } from '#stories/parity'
 import { When } from './When'
 
@@ -36,7 +36,7 @@ export const Playground: Story = {
     </StoryForm>
   ),
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
+    const canvas = within(storyRoot(canvasElement))
     await expect(canvas.getByLabelText('Delivery address')).toBeInTheDocument()
     await userEvent.click(canvas.getByRole('radio', { name: 'Collect from the shop' }))
     await expect(canvas.queryByLabelText('Delivery address')).not.toBeInTheDocument()

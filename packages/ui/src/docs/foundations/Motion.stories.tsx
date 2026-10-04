@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useState } from 'react'
 import { expect, userEvent, within } from 'storybook/test'
+import { storyRoot } from '#components/_story/storyRoot'
 import { Button } from '#components/actions/Button'
 import { Stack } from '#components/layout/Stack'
 import { Code } from '#components/typography/Code'
@@ -64,7 +65,7 @@ export const Durations: Story = {
     />
   ),
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
+    const canvas = within(storyRoot(canvasElement))
     const toggle = canvas.getByRole('button', { name: 'Move to the end' })
     await userEvent.click(toggle)
     await expect(toggle).toHaveAttribute('aria-pressed', 'true')

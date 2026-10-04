@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect, screen, userEvent, waitFor, within } from 'storybook/test'
+import { storyRoot } from '#components/_story/storyRoot'
 import { Button } from '#components/actions/Button'
 import { Stack } from '#components/layout/Stack'
 import { ArrowUpRightIcon, ChevronDownIcon, CopyIcon, MoreIcon } from '#icons'
@@ -64,7 +65,7 @@ function MemberActions({ open, ...args }: DropdownMenuContentProps & { open?: bo
 export const Playground: Story = {
   render: (args) => <MemberActions {...args} />,
   play: async ({ canvasElement }) => {
-    const trigger = within(canvasElement).getByRole('button', { name: 'Noor' })
+    const trigger = within(storyRoot(canvasElement)).getByRole('button', { name: 'Noor' })
     await userEvent.click(trigger)
     const menu = await screen.findByRole('menu')
     await expect(

@@ -1,6 +1,7 @@
 import { DataList, Stack } from '@mitcsutt/kiln-ui'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect, userEvent, within } from 'storybook/test'
+import { storyRoot } from '#stories/_kit'
 import { Form } from '#components/Form'
 import { SubmitButton } from '#components/SubmitButton'
 import { useFormStatus } from '#core/hooks'
@@ -44,7 +45,7 @@ function RenameProject() {
 export const Playground: Story = {
   render: () => <RenameProject />,
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
+    const canvas = within(storyRoot(canvasElement))
     await expect(canvas.getByText('As loaded')).toBeInTheDocument()
     await userEvent.type(canvas.getByLabelText('Project name'), ' 2027')
     await expect(canvas.getByText('Edited')).toBeInTheDocument()
