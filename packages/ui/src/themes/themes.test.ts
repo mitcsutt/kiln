@@ -3,7 +3,7 @@ import { resolve } from 'node:path'
 import { must } from '#test/must'
 
 /*
- * QA-A11Y-6: custom properties inherit, so a token only fiesta sets (its gold-row text inks)
+ * Custom properties inherit, so a token only fiesta sets (its gold-row text inks)
  * leaked into a nested `<ThemeScope theme="ledger">` and failed contrast. Every token a theme
  * sets must be set by every other theme too, or reset on `[data-theme]` in foundation.css.
  */

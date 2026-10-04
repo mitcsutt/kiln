@@ -15,7 +15,7 @@ describe('RadioGroupField', () => {
     const fieldset = screen.getByRole('group', { name: 'Pay period' })
     const group = screen.getByRole('radiogroup')
     expect(fieldset).toContainElement(group)
-    // The legend already names the fieldset: the radiogroup doesn't repeat it (QA-A11Y-3).
+    // The legend already names the fieldset: the radiogroup doesn't repeat it.
     expect(group).not.toHaveAttribute('aria-labelledby')
     expect(group).toHaveAttribute('aria-required', 'true')
     expect(screen.getByRole('radio', { name: 'Monthly' })).toBeChecked()
@@ -116,7 +116,7 @@ describe('RadioGroupField', () => {
     expect(onBlur).toHaveBeenCalledTimes(1)
   })
 
-  it('passes layout to the fieldset (QA-LAYOUT-1)', () => {
+  it('passes layout to the fieldset', () => {
     render(<RadioGroupField label="Pay period" options={periods} layout="horizontal" />)
     expect(screen.getByRole('group', { name: 'Pay period' })).toHaveAttribute(
       'data-layout',

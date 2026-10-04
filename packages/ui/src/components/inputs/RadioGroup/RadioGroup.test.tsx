@@ -85,7 +85,7 @@ describe('RadioGroup', () => {
     expect(group).not.toHaveAttribute('id')
   })
 
-  it('inside a Fieldset, leaves the name to the legend (named once, QA-A11Y-3)', () => {
+  it('inside a Fieldset, leaves the name to the legend (named once)', () => {
     render(
       <Fieldset legend="Pay period">
         <RadioGroup>

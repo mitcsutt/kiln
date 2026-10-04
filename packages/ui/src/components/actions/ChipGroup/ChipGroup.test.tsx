@@ -113,7 +113,7 @@ describe('ChipGroup', () => {
       </>,
     )
     expect(ref.current).toHaveAttribute('aria-invalid', 'true')
-    // The fieldset's legend names the set; the inner group doesn't repeat it (QA-A11Y-3).
+    // The fieldset's legend names the set; the inner group doesn't repeat it.
     expect(screen.getByRole('group', { name: 'Match alerts' })).toContainElement(ref.current)
     expect(ref.current).not.toHaveAttribute('aria-labelledby')
     expect(screen.getByRole('button', { name: 'Own goal' })).toHaveAttribute('data-invalid')

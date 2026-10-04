@@ -1,7 +1,7 @@
 /**
- * Wave E QA — deferred A.2 item: "a disabled control submits nothing in native FormData,
- * including our own hidden inputs" — checked across every ui choice / composite control, bare
- * and as a `*Field`. readOnly must still submit (a native readonly input does).
+ * A disabled control submits nothing in native FormData, including our own hidden inputs.
+ * Checked across every ui choice / composite control, bare and as a `*Field`. readOnly must
+ * still submit (a native readonly input does).
  */
 import type { ReactNode } from 'react'
 import { render } from '@testing-library/react'
@@ -104,11 +104,11 @@ function submitted(node: ReactNode): string[] {
 }
 
 /**
- * QA-FORM-1 (fixed): the bare controls used to render `<input type="hidden">` without `disabled`,
+ * The bare controls once rendered `<input type="hidden">` without `disabled`,
  * so a disabled control still posted its value. Every emitted hidden input now carries the
  * control's `disabled`; the Fieldset-based *Fields also get it from `<fieldset disabled>`.
  */
-describe('QA: native FormData from ui choice controls', () => {
+describe('native FormData from ui choice controls', () => {
   for (const [name, build] of Object.entries(cases)) {
     it(`${name}: enabled submits its value`, () => {
       expect(submitted(build({})).length).toBeGreaterThan(0)
@@ -116,7 +116,7 @@ describe('QA: native FormData from ui choice controls', () => {
     it(`${name}: readOnly still submits its value`, () => {
       expect(submitted(build({ readOnly: true })).length).toBeGreaterThan(0)
     })
-    it(`${name}: disabled submits nothing (QA-FORM-1)`, () => {
+    it(`${name}: disabled submits nothing`, () => {
       expect(submitted(build({ disabled: true }))).toEqual([])
     })
   }

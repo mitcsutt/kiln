@@ -297,7 +297,7 @@ const CheckboxGroupRoot = forwardRef<HTMLDivElement, CheckboxGroupProps>(functio
   const layout = columns !== undefined ? 'columns' : orientation
 
   return (
-    // aria-invalid on the group, not on each checkbox: the error belongs to the set (QA-A11Y-3).
+    // aria-invalid on the group, not on each checkbox: the error belongs to the set.
     // eslint-disable-next-line jsx-a11y/role-supports-aria-props
     <div
       ref={ref}

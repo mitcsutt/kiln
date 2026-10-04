@@ -164,7 +164,7 @@ describe('CheckboxGroup', () => {
         <CheckboxGroup options={topics} />
       </Fieldset>,
     )
-    // Only the fieldset carries the legend's name; the group inside doesn't repeat it (QA-A11Y-3).
+    // Only the fieldset carries the legend's name; the group inside doesn't repeat it.
     expect(screen.getAllByRole('group', { name: 'Notify me about' })).toHaveLength(1)
     const group = screen.getAllByRole('group').find((el) => el.tagName === 'DIV')
     expect(group).not.toHaveAttribute('aria-labelledby')

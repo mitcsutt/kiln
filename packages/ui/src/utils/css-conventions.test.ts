@@ -31,7 +31,7 @@ describe('component CSS conventions', () => {
 
   it('lets `hidden` win on every layout component whose root sets display', () => {
     // Author `display` beats the UA `[hidden] { display: none }`, so `<Stack hidden>` would
-    // stay on screen (QA-STEPS-1). Each root that sets display needs `.root[hidden]`.
+    // stay on screen. Each root that sets display needs `.root[hidden]`.
     const layout = files.filter((f) => f.includes('/layout/') && !f.includes('/_story/'))
     const offenders = layout.flatMap((f) => {
       const css = readFileSync(f, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '')

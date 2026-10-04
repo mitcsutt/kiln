@@ -1,10 +1,11 @@
 /**
- * Wave E QA — QA-STEPS-1 root cause: ui layout primitives defeat the `hidden` attribute.
+ * Layout primitives must honour the `hidden` attribute.
  *
  * Each primitive's root class sets `display` (`.stack { display: flex }` …). Author CSS beats the
- * UA `[hidden] { display: none }`, so `<Stack hidden>` stays on screen. `@mitcsutt/kiln-forms` FormSteps
- * relies on `<Stack hidden>` for inactive steps. jsdom loads no stylesheets in this package's
- * tests, so the real module CSS is injected here (class names are non-scoped in this config).
+ * UA `[hidden] { display: none }`, so without a `.root[hidden]` rule `<Stack hidden>` would stay
+ * on screen. `@mitcsutt/kiln-forms` FormSteps relies on `<Stack hidden>` for inactive steps.
+ * jsdom loads no stylesheets in this package's tests, so the real module CSS is injected here
+ * (class names are non-scoped in this config).
  */
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
@@ -42,9 +43,9 @@ function inject(name: string) {
   styles.push(style)
 }
 
-describe('QA: layout primitives honour `hidden`', () => {
+describe('layout primitives honour `hidden`', () => {
   for (const [name, Component] of cases) {
-    it(`${name} hidden computes display: none (QA-STEPS-1 root cause)`, () => {
+    it(`${name} hidden computes display: none`, () => {
       inject(name)
       const { container } = render(<Component hidden>Content</Component>)
       const element = container.firstElementChild as HTMLElement
