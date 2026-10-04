@@ -10,6 +10,11 @@
       "dependsOn": ["transit"],
       "env": ["STORYBOOK_THEME", "STORYBOOK_MODE"],
       "outputs": []
+    },
+    "test": {
+      "dependsOn": ["transit"],
+      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/DESIGN.md", "$TURBO_ROOT$/docs/tree.json"],
+      "outputs": []
     }
   }
 }
