@@ -6,7 +6,8 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "generate": "node scripts/generate-api.ts && node scripts/generate-tokens.ts && node scripts/generate-examples.ts && fumadocs-mdx",
+    "generate": "node scripts/generate-api.ts && node scripts/generate-tokens.ts && node scripts/generate-design-rules.ts && node scripts/generate-examples.ts && fumadocs-mdx",
+    "generate:skills": "pnpm generate && vitest run src/skills --update",
     "dev": "pnpm generate && next dev",
     "build": "pnpm generate && next build",
     "start": "next start",

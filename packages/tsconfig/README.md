@@ -10,11 +10,11 @@ pnpm add -D @mitcsutt/kiln-tsconfig typescript
 
 ## Usage
 
-Extend one preset, or combine several (later presets win):
+Extend one preset, or combine several. Later presets win, and every preset carries `base`'s `lib`, so put `react` last to keep the DOM libraries:
 
 ```json
 {
-  "extends": ["@mitcsutt/kiln-tsconfig/react", "@mitcsutt/kiln-tsconfig/library"],
+  "extends": ["@mitcsutt/kiln-tsconfig/library", "@mitcsutt/kiln-tsconfig/react"],
   "include": ["src"]
 }
 ```

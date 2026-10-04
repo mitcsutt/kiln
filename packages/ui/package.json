@@ -11,7 +11,8 @@
     "radix",
     "css-modules",
     "design-tokens",
-    "theming"
+    "theming",
+    "tanstack-intent"
   ],
   "homepage": "https://kiln.mitchellsutton.com",
   "bugs": "https://github.com/mitcsutt/kiln/issues",
@@ -58,7 +59,8 @@
     "imports": {}
   },
   "files": [
-    "dist"
+    "dist",
+    "skills"
   ],
   "scripts": {
     "build": "vite build",

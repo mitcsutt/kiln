@@ -17,7 +17,8 @@
     "test:storybook": "turbo run test:storybook",
     "check:package": "turbo run check:package",
     "check:links": "turbo run check:links",
-    "size": "turbo run size"
+    "size": "turbo run size",
+    "generate:skills": "pnpm --filter @mitcsutt/kiln-docs generate:skills"
   },
   "prettier": "@mitcsutt/kiln-prettier-config",
   "devDependencies": {

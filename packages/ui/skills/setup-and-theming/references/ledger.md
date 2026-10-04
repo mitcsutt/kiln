@@ -1,0 +1,32 @@
+<!-- Generated from the Kiln docs by apps/docs/src/skills. Edit the docs pages, then run `pnpm generate:skills`. -->
+
+# Ledger
+
+> An accountant's ruled book. Green-grey paper, bank-note green, accounting red, and figures set like receipt tape.
+
+Source: https://kiln.mitchellsutton.com/docs/ui/themes/ledger
+
+_An accountant's ruled book._ Quiet, dense and numeric. In Ledger the numbers are the content, so they get their own face: a condensed monospace, always tabular, like receipt tape.
+
+
+## Use it
+
+```tsx
+import '@mitcsutt/kiln-ui/styles.css'
+import '@mitcsutt/kiln-ui/themes/ledger.css'
+import { ThemeProvider } from '@mitcsutt/kiln-ui'
+
+;<ThemeProvider theme="ledger" defaultMode="light">
+  …
+</ThemeProvider>
+```
+
+Ledger is light-first. It suits screens that are mostly tables and totals: budgets, invoices, timesheets.
+
+## The idea, applied
+
+- **Colour.** Faint green-grey ledger paper, a bank-note green accent, accounting red for negatives and a highlighter-yellow highlight.
+- **Type.** Schibsted Grotesk throughout, and Martian Mono at 80% width for every figure. A 15px base on a 1.2 ratio.
+- **Shape.** 5px radii everywhere, and a compact density of 0.86, so every space step and control is smaller.
+- **Depth.** Hairlines, and a double rule above a table's footer (`--table-foot-rule`), as a ledger totals a column.
+- **Motion.** Brief and flat (`--motion-scale: 0.8`).

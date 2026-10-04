@@ -1,4 +1,4 @@
 {
   "title": "Foundations",
-  "pages": ["tokens", "colour", "type", "spacing", "motion", "theming", "icons"]
+  "pages": ["design-rules", "tokens", "colour", "type", "spacing", "motion", "theming", "icons"]
 }

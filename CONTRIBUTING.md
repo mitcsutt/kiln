@@ -21,8 +21,8 @@ apps/
   docs/              the Fumadocs docs site (private, never published)
   storybook/         the Storybook workbench (private, never published)
 packages/
-  ui/                @mitcsutt/kiln-ui
-  forms/             @mitcsutt/kiln-forms
+  ui/                @mitcsutt/kiln-ui (skills/: agent skills, built from the docs)
+  forms/             @mitcsutt/kiln-forms (skills/: agent skills, built from the docs)
   eslint-config/     @mitcsutt/kiln-eslint-config
   prettier-config/   @mitcsutt/kiln-prettier-config
   tsconfig/          @mitcsutt/kiln-tsconfig
@@ -33,6 +33,7 @@ docs/
   releasing.md       how releases work, and what the first publish needs
   target-state.md    what the repo looks like when the first body of work is done
 .changeset/          pending changesets and the Changesets config
+.claude/skills/      project skills for adding a component, a theme preset or a forms field
 DESIGN.md            the design system's principles, anti-slop rules and token contract
 vite.library.ts      the library build every runtime package shares
 size-report.ts       size budgets and tree-shaking checks for built packages
@@ -44,26 +45,29 @@ Directories use the short name (`packages/tsconfig`), and the package name carri
 
 Run these from the repo root. Turborepo runs each one across the workspace and caches the results.
 
-| Command               | What it does                                                          |
-| --------------------- | --------------------------------------------------------------------- |
-| `pnpm lint`           | ESLint in every package and at the root, plus `prettier --check`      |
-| `pnpm typecheck`      | `tsc --noEmit` in every package and at the root                       |
-| `pnpm test`           | Vitest in every package                                               |
-| `pnpm build`          | Builds every package that has a build step                            |
-| `pnpm test:react18`   | The runtime packages' test suites again, on React 18.3                |
-| `pnpm test:storybook` | Every story as a browser test: render, `play` function and axe        |
-| `pnpm check:links`    | Builds the docs site, serves it and fails on any broken internal link |
-| `pnpm check:package`  | `publint` and `@arethetypeswrong/cli` on each packed package          |
-| `pnpm size`           | Size report against each package's budgets, with tree-shaking checks  |
-| `pnpm format`         | Formats the whole repo with Prettier                                  |
+| Command                | What it does                                                          |
+| ---------------------- | --------------------------------------------------------------------- |
+| `pnpm lint`            | ESLint in every package and at the root, plus `prettier --check`      |
+| `pnpm typecheck`       | `tsc --noEmit` in every package and at the root                       |
+| `pnpm test`            | Vitest in every package                                               |
+| `pnpm build`           | Builds every package that has a build step                            |
+| `pnpm test:react18`    | The runtime packages' test suites again, on React 18.3                |
+| `pnpm test:storybook`  | Every story as a browser test: render, `play` function and axe        |
+| `pnpm check:links`     | Builds the docs site, serves it and fails on any broken internal link |
+| `pnpm check:package`   | `publint` and `@arethetypeswrong/cli` on each packed package          |
+| `pnpm size`            | Size report against each package's budgets, with tree-shaking checks  |
+| `pnpm format`          | Formats the whole repo with Prettier                                  |
+| `pnpm generate:skills` | Rebuilds the agent skills in `packages/*/skills` from the docs pages  |
 
 To work on one package, filter to it, for example `pnpm turbo run test --filter=@mitcsutt/kiln-eslint-config`.
 
 To run the docs site, run `pnpm --filter @mitcsutt/kiln-docs dev` and open http://localhost:3000. Pages are MDX in `apps/docs/content/docs`, and each live example is a file in `apps/docs/examples` that the page names with `<Example name="…" />`; API tables come from the package types. [`apps/docs/README.md`](apps/docs/README.md) has the details.
 
+The agent skills that `kiln-ui` and `kiln-forms` ship are built from docs pages, which `apps/docs/src/skills/manifest.ts` lists ([ADR 0011](docs/adr/0011-ai-tooling.md)). After you change one of those pages, run `pnpm generate:skills` and commit the result: the docs tests fail while a skill differs from its pages. Never edit a file in `packages/*/skills` by hand.
+
 To open the Storybook workbench, run `pnpm --filter @mitcsutt/kiln-storybook dev`. The story tests need Chromium from Playwright the first time: `pnpm --filter @mitcsutt/kiln-storybook exec playwright install chromium`. They start in Paper, light; set `STORYBOOK_THEME` and `STORYBOOK_MODE` to run them in another theme or mode, as CI does for every one.
 
-CI runs all of these except `format` on every pull request and on `main`, plus a changeset check on pull requests, and they must all pass. On a pull request it also comments the size report, compared with the base branch.
+CI runs all of these except `format` and `generate:skills` on every pull request and on `main`, plus a changeset check on pull requests, and they must all pass. On a pull request it also comments the size report, compared with the base branch.
 
 ## Conventions
 

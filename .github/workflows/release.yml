@@ -52,6 +52,10 @@ jobs:
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
+          # The changelog looks up the commit that added each changeset. In a shallow clone
+          # Changesets runs `git fetch --deepen`, which can't authenticate without the
+          # persisted credentials, so check out the full history instead.
+          fetch-depth: 0
       # No dependency cache in jobs that can write, to rule out cache poisoning.
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v7

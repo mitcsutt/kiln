@@ -1,0 +1,169 @@
+import { existsSync, readFileSync } from 'node:fs'
+import { join } from 'node:path'
+import { parse, stringify } from 'yaml'
+import { SITE_URL } from '@/lib/site'
+import { toMarkdown } from '@/lib/to-markdown'
+import { skills, type SkillSpec } from './manifest'
+
+const appDir = join(import.meta.dirname, '../..')
+const contentDir = join(appDir, 'content/docs')
+
+/** Pages written by a generator, and the file they're written from. */
+const generatedFrom: Record<string, string> = {
+  'ui/foundations/design-rules': 'DESIGN.md',
+}
+
+const REPO = 'mitcsutt/kiln'
+
+interface Page {
+  path: string
+  file: string
+  title: string
+  description?: string
+  body: string
+}
+
+function readPage(path: string): Page {
+  const file = [`${path}.mdx`, `${path}/index.mdx`].find((candidate) =>
+    existsSync(join(contentDir, candidate)),
+  )
+  if (!file) throw new Error(`No docs page at content/docs/${path}`)
+  const raw = readFileSync(join(contentDir, file), 'utf8')
+  const match = /^---\n([\s\S]*?)\n---\n([\s\S]*)$/.exec(raw)
+  if (!match) throw new Error(`content/docs/${file} has no frontmatter`)
+  const frontmatter = parse(match[1] ?? '') as { title: string; description?: string }
+  return {
+    path,
+    file: generatedFrom[path] ?? `apps/docs/content/docs/${file}`,
+    title: frontmatter.title,
+    description: frontmatter.description,
+    body: toMarkdown(match[2] ?? '').trim(),
+  }
+}
+
+/** `forms/schema/index` → `schema`, `ui/layout/stack` → `stack`. */
+function slug(path: string): string {
+  const segments = path.split('/')
+  const last = segments.at(-1) === 'index' ? segments.at(-2) : segments.at(-1)
+  return last ?? path
+}
+
+/** Applies `edit` to the Markdown outside fenced code blocks. */
+function outsideCode(markdown: string, edit: (text: string) => string): string {
+  return markdown
+    .split(/(^```[\s\S]*?^```)/m)
+    .map((part, index) => (index % 2 ? part : edit(part)))
+    .join('')
+}
+
+/**
+ * Docs links, rewritten for a skill: a page the skill ships becomes a relative link to its
+ * file, and any other page a link to the site.
+ */
+function rewriteLinks(markdown: string, target: (path: string) => string | undefined): string {
+  return outsideCode(markdown, (text) =>
+    text.replace(
+      /\]\(\/docs(?:\/([^)#\s]*))?(#[^)\s]*)?\)/g,
+      (_match, path: string | undefined, anchor: string | undefined) => {
+        const hash = anchor ?? ''
+        const local = target(path ?? 'index') ?? (path ? target(`${path}/index`) : undefined)
+        if (local === '') return `](${anchor ?? '#'})`
+        if (local !== undefined) return `](${local}${hash})`
+        return `](${SITE_URL}/docs${path ? `/${path}` : ''}${hash})`
+      },
+    ),
+  )
+}
+
+const demote = (markdown: string) => outsideCode(markdown, (text) => text.replace(/^#/gm, '##'))
+
+const GENERATED_NOTE =
+  '<!-- Generated from the Kiln docs by apps/docs/src/skills. Edit the docs pages, then run `pnpm generate:skills`. -->'
+
+function frontmatter(spec: SkillSpec, pages: Page[]): string {
+  const fields = {
+    name: spec.name,
+    description: spec.description,
+    metadata: {
+      purpose: spec.purpose,
+      type: spec.type,
+      library: `@mitcsutt/kiln-${spec.package}`,
+    },
+    sources: [...new Set(pages.map((page) => `${REPO}:${page.file}`))],
+  }
+  return `---\n${stringify(fields, { lineWidth: 0 })}---\n`
+}
+
+/** Every file of one skill, keyed by its path from the repository root. */
+function buildSkill(spec: SkillSpec): Map<string, string> {
+  const dir = `packages/${spec.package}/skills/${spec.name}`
+  const pages = spec.pages.map(readPage)
+  const references = (spec.references ?? []).map((path) => ({
+    ...readPage(path),
+    fileName: `${slug(path)}.md`,
+  }))
+  const referenceFile = new Map(references.map((page) => [page.path, page.fileName]))
+  if (new Set(referenceFile.values()).size !== referenceFile.size) {
+    throw new Error(`Two references of ${spec.name} share a file name`)
+  }
+
+  // From SKILL.md, a body page is on the same page and a reference is in references/.
+  const linkFrom = (self: string, prefix: string) => (path: string) => {
+    if (spec.pages.includes(path)) return self
+    const fileName = referenceFile.get(path)
+    return fileName === undefined ? undefined : `${prefix}${fileName}`
+  }
+  const fromSkill = linkFrom('', 'references/')
+  const fromReference = linkFrom('../SKILL.md', './')
+
+  const single = pages.length === 1
+  const sections = pages.map((page) => {
+    const body = rewriteLinks(page.body, fromSkill)
+    if (single) return body
+    const lead = page.description ? `\n\n${page.description}` : ''
+    return `## ${page.title}${lead}\n\n${demote(body)}`
+  })
+  const lines = [
+    frontmatter(spec, [...pages, ...references]),
+    GENERATED_NOTE,
+    '',
+    `# ${spec.title}`,
+    '',
+    spec.purpose,
+    '',
+    sections.join('\n\n'),
+  ]
+  if (references.length) {
+    lines.push(
+      '',
+      '## References',
+      '',
+      'Read a reference when its description matches the task:',
+      '',
+      ...references.map(
+        (page) =>
+          `- [${page.title}](references/${page.fileName})${page.description ? `: ${page.description}` : ''}`,
+      ),
+    )
+  }
+  const files = new Map([[`${dir}/SKILL.md`, `${lines.join('\n')}\n`]])
+
+  for (const page of references) {
+    const lead = page.description ? `> ${page.description}\n\n` : ''
+    const source = `Source: ${SITE_URL}/docs/${page.path.replace(/\/?index$/, '')}`
+    const body = rewriteLinks(page.body, fromReference)
+    files.set(
+      `${dir}/references/${page.fileName}`,
+      `${GENERATED_NOTE}\n\n# ${page.title}\n\n${lead}${source}\n\n${body}\n`,
+    )
+  }
+  return files
+}
+
+/** Every skill file both packages ship, keyed by its path from the repository root. */
+export function buildSkills(): Map<string, string> {
+  const names = skills.map((spec) => spec.name)
+  const duplicate = names.find((name, index) => names.indexOf(name) !== index)
+  if (duplicate) throw new Error(`Two skills are named ${duplicate}`)
+  return new Map(skills.flatMap((spec) => [...buildSkill(spec)]))
+}

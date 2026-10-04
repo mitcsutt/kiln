@@ -2,3 +2,5 @@
 .source/
 next-env.d.ts
 .generated/
+# Written from DESIGN.md by scripts/generate-design-rules.ts
+content/docs/ui/foundations/design-rules.mdx

@@ -72,6 +72,14 @@ if (parsed.ok) {
 
 Bound fields are also exported on their own, with a `Form` prefix (`FormTextField`, `FormAmountField`, …), so they never share a name with kiln-ui's unbound controls (`TextField`).
 
+## For coding agents
+
+The package ships agent skills in `skills/`, built from the docs pages: component mode, schema mode, custom fields, validation and view mode. They're versioned with the code, so they match the version you've installed. Run this in your project, and [TanStack Intent](https://tanstack.com/intent) adds them to your agent's instructions:
+
+```sh
+npx @tanstack/intent@latest install
+```
+
 ## Docs
 
 Full documentation, with every field, layout and hook, lives on the [Kiln docs site](https://kiln.mitchellsutton.com). Until it's live, see the [design reference](https://github.com/mitcsutt/kiln/blob/main/packages/forms/docs/design.md) in the repository.

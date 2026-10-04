@@ -1,0 +1,35 @@
+<!-- Generated from the Kiln docs by apps/docs/src/skills. Edit the docs pages, then run `pnpm generate:skills`. -->
+
+# Paper
+
+> The neutral default. A typeset proof on good uncoated stock, where the ink is the accent.
+
+Source: https://kiln.mitchellsutton.com/docs/ui/themes/paper
+
+_A typeset proof on good uncoated stock._ Paper is the theme you get when you set none. It's in the base stylesheet, and it's built to sit under any brand without arguing with it: graphite ink on warm-neutral paper, with the ink itself as the accent.
+
+
+## Use it
+
+Paper needs no extra import and no `theme` prop:
+
+```tsx
+import '@mitcsutt/kiln-ui/styles.css'
+import { ThemeProvider } from '@mitcsutt/kiln-ui'
+
+;<ThemeProvider>…</ThemeProvider>
+```
+
+Paper is also declared on the document root at zero specificity, so a preset or a custom theme that leaves a token out falls back to Paper's value rather than to nothing.
+
+## The idea, applied
+
+- **Colour.** Warm-neutral paper (hue 85, chroma no more than 0.008) and graphite ink. The primary action, the current item and live state are solid ink, and links are ink told apart by their underline. The one other hue is the editor's non-photo blue, kept for "you", the selected row and text selection. Tones are the only saturated colour on the page.
+- **Type.** Schibsted Grotesk for everything you scan (text, headings, and display at weight 640 with −0.04em tracking), Newsreader for long reading and for figures, whose tabular punctuation sits tighter, and Martian Mono for code. A 16px base on a 1.25 ratio.
+- **Shape.** Square-shouldered: 6px actions, fields and chips, 8px surfaces, round avatars.
+- **Depth.** Hairlines only. Soft graphite shadows for floating layers.
+- **Motion.** A quart ease-out, brisk, with no bounce.
+
+## All four themes
+
+The same screen in each built-in theme, in the page's current mode:

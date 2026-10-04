@@ -3,6 +3,7 @@
   "extends": ["//"],
   "tasks": {
     "build": {
+      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/DESIGN.md"],
       "outputs": [".next/**", "!.next/cache/**", "!.next/dev/**"]
     },
     "check:links": {

@@ -6,3 +6,6 @@ apps/docs/.generated/
 apps/docs/.source/
 apps/docs/.next/
 apps/docs/next-env.d.ts
+
+# Built from the docs by apps/docs/src/skills; the drift test compares them byte for byte
+packages/*/skills/
