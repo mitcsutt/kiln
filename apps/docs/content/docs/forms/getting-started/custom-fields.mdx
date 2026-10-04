@@ -51,8 +51,15 @@ Extend the default kit once, in a module of your own, and import the form hooks 
 import { kit } from '@mitcsutt/kiln-forms'
 import { PhoneField } from './PhoneField'
 
-export const { useAppForm, withForm, withFieldGroup, useFields, defineFormSchema, SchemaForm } =
-  kit.extend({ fields: { phone: PhoneField } })
+export const {
+  useAppForm,
+  withForm,
+  useTypedAppFormContext,
+  withFieldGroup,
+  useFields,
+  defineFormSchema,
+  SchemaForm,
+} = kit.extend({ fields: { phone: PhoneField } })
 ```
 
 The kind `phone` becomes `form.PhoneField`, `field.PhoneField` and `{ kind: 'phone' }`. An extended kit can't shadow a kind that already exists. `createFormKit` builds a kit from scratch, for an app that wants only its own fields.

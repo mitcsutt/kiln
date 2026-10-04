@@ -1,0 +1,54 @@
+---
+title: Form context
+description: Reach a form from components nested deep inside it, typed against its values, without passing it down as a prop.
+exports: [useTypedAppFormContext, useFormContext]
+---
+
+`<Form form={form}>` puts the form in React context, so any component below it can reach the form without a `form` prop, however deep it sits. `useTypedAppFormContext(options)` returns that form typed against your values, with the same `form.TextField`, `form.state` and `form.Subscribe` you get from `useAppForm`.
+
+<Example name="forms/getting-started/form-context" />
+
+Nothing between the form and its fields passes `form` down. `AttendeeFields` and `SessionFields` render bound fields, `Summary` reads two values, and `Footer` reads the form's status.
+
+## Typing the form from context
+
+Context can't carry a type, so `useTypedAppFormContext` takes the form's options to get one back. Create them once with `formOptions`, spread them into `useAppForm`, and pass the same object to every component that reads the form from context:
+
+```tsx
+import { formOptions, useTypedAppFormContext } from '@mitcsutt/kiln-forms'
+
+export const bookingOptions = formOptions({
+  defaultValues: { attendee: { name: '', email: '' }, seats: 1 },
+})
+
+export function SeatsField() {
+  const form = useTypedAppFormContext(bookingOptions)
+  return <form.NumberField name="seats" label="Seats" />
+}
+```
+
+The options are only read for their type, so a nested component can pass them without an `onSubmit`. Field names are checked as they are on the form itself: `name="seat"` or a `NumberField` on a text path is a type error.
+
+`useTypedAppFormContext` trusts that the form in context was made from those options, just as `withForm` trusts the `form` you pass it. Share one options object per form so they can't drift apart.
+
+## Reading values and state
+
+Subscribe where a value is used, so only that component re-renders when it changes:
+
+- `useFieldValue(form, 'seats')` returns one value, typed to its path.
+- `useFormStatus()` returns `isDirty`, `isSubmitting`, `canSubmit` and the rest. It finds the form in context by itself, so it needs no options.
+- `form.Subscribe` and `useSelector(form.store, selector)` read any other slice of form state.
+
+`SubmitButton`, `ResetButton`, `ErrorSummary` and `FormStatus` read the form from context too, so they work at any depth.
+
+## Context, a prop, or withForm
+
+- **Context** (`useTypedAppFormContext`) suits components several levels down, and layout components that shouldn't know about the form.
+- **A prop** (`withForm`) suits a section one level below the form. The parent passes `form={form}`, and TypeScript checks it has the right shape. See [Component mode](/docs/forms/getting-started/component-mode#splitting-a-big-form).
+- **A field group** (`withFieldGroup`) suits a set of fields reused under different paths, like a billing and a delivery address.
+
+## Outside a form
+
+Both context hooks throw outside `<Form>` or `<form.AppForm>`, with an error that says so. `<form.AppForm>` provides the same context without rendering a `<form>` element, for a component that renders fields outside one. `useFormContext()` returns the form untyped, for code that works with any form, such as a [custom layout](/docs/forms/layouts/custom-layouts).
+
+<ApiSignature of="useTypedAppFormContext" />

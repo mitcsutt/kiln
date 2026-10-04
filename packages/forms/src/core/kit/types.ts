@@ -419,6 +419,14 @@ export interface FormKit<R extends FieldRegistry, X> {
   withForm: <T, P extends object = EmptyObject, M = undefined, O = T>(
     options: WithFormOptions<T, P, M, R, O>,
   ) => ComponentType<P & { form: KitForm<T, M, R> }>
+  /**
+   * The form from the nearest `<Form>` or `<form.AppForm>`, typed by the options it was created
+   * with (share them through `formOptions`), for a component nested anywhere below it. Throws
+   * outside a form.
+   */
+  useTypedAppFormContext: <T, O = T, M = undefined>(
+    options: KitFormOptions<T, O, M>,
+  ) => KitForm<T, M, R>
   withFieldGroup: KitWithFieldGroup<R>
   /** Typed shorthand fields for any api (form, withForm form, field group). */
   useFields: <A extends { AppField: unknown; state: { values: unknown } }>(

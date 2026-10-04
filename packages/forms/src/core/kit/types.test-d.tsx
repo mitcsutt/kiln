@@ -271,6 +271,35 @@ export function Composition() {
   )
 }
 
+// --- useTypedAppFormContext: a nested component reads the form from context, typed -------------
+export function NestedFromContext() {
+  const form = testKit.useTypedAppFormContext(addressOptions)
+  expectTypeOf(form.state.values).toEqualTypeOf<Values>()
+  expectTypeOf(form.state.values.address.city).toEqualTypeOf<string>()
+  expectTypeOf(form).toEqualTypeOf<KitForm<Values, undefined, typeof testKit.registries.fields>>()
+  expectTypeOf(useFieldValue(form, 'people')).toEqualTypeOf<Values['people']>()
+  // @ts-expect-error unknown path
+  useFieldValue(form, 'address.town')
+  const meta = testKit.useTypedAppFormContext(
+    formOptions({ defaultValues: defaults, onSubmitMeta: { draft: false } }),
+  )
+  expectTypeOf(meta).toEqualTypeOf<
+    KitForm<Values, { draft: boolean }, typeof testKit.registries.fields>
+  >()
+  // @ts-expect-error options are required: they carry the form's type
+  testKit.useTypedAppFormContext()
+  return (
+    <>
+      <form.TextField name="address.city" label="City" />
+      <form.QuantityField name="age" label="Age" />
+      {/* @ts-expect-error city is a string */}
+      <form.QuantityField name="address.city" label="City" />
+      {/* @ts-expect-error unknown path */}
+      <form.TextField name="address.town" label="Town" />
+    </>
+  )
+}
+
 // --- FormSubmitError / helpers ---------------------------------------------------------------
 export const submitError = new FormSubmitError<Values>({
   form: 'Try again',
