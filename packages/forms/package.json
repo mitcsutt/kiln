@@ -11,7 +11,8 @@
     "schema",
     "validation",
     "standard-schema",
-    "accessibility"
+    "accessibility",
+    "tanstack-intent"
   ],
   "homepage": "https://kiln.mitchellsutton.com",
   "bugs": "https://github.com/mitcsutt/kiln/issues",
@@ -53,7 +54,8 @@
     "imports": {}
   },
   "files": [
-    "dist"
+    "dist",
+    "skills"
   ],
   "scripts": {
     "build": "vite build",

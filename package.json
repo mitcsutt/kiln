@@ -17,7 +17,8 @@
     "test:storybook": "turbo run test:storybook",
     "check:package": "turbo run check:package",
     "check:links": "turbo run check:links",
-    "size": "turbo run size"
+    "size": "turbo run size",
+    "generate:skills": "pnpm --filter @mitcsutt/kiln-docs generate:skills"
   },
   "prettier": "@mitcsutt/kiln-prettier-config",
   "devDependencies": {
@@ -27,6 +28,7 @@
     "@mitcsutt/kiln-eslint-config": "workspace:*",
     "@mitcsutt/kiln-prettier-config": "workspace:*",
     "@mitcsutt/kiln-tsconfig": "workspace:*",
+    "@tanstack/intent": "catalog:",
     "@types/node": "catalog:",
     "@vitejs/plugin-react": "catalog:",
     "eslint": "catalog:",

@@ -1,0 +1,57 @@
+<!-- Generated from the Kiln docs by apps/docs/src/skills. Edit the docs pages, then run `pnpm generate:skills`. -->
+
+# Type
+
+> Type roles a theme fills in, a modular scale with big display steps, and figures that line up.
+
+Source: https://kiln.mitchellsutton.com/docs/ui/foundations/type
+
+A theme picks at most two families (plus a mono where it needs one) and assigns them to roles. Components ask for a role, so a heading is set in the theme's heading face at the theme's heading weight, whatever the theme is.
+
+## Roles
+
+| Role    | Tokens                                                                                                                   | Used by                                    |
+| ------- | ------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------ |
+| Display | `--font-display`, `--display-weight`, `--display-tracking`, `--display-stretch`, `--display-transform`, `--display-opsz` | `Heading` at display sizes, `Stat` heroes  |
+| Heading | `--heading-font`, `--heading-weight`, `--heading-tracking`, `--heading-transform`                                        | `Heading`, `SectionHeader`, card titles    |
+| Text    | `--font-text`, `--leading-body`                                                                                          | `Text`, controls, labels                   |
+| Label   | `--label-weight`, `--label-tracking`, `--label-transform`                                                                | field labels, buttons, tabs                |
+| Prose   | `--font-prose`, `--prose-size`, `--prose-leading`                                                                        | `Prose` (these paragraphs)                 |
+| Numeric | `--font-numeric`, `--numeric-stretch`                                                                                    | `Numeral`, `Amount`, `Stat`, numeric cells |
+| Mono    | `--font-mono`, `--mono-stretch`                                                                                          | `Code`, `CodeBlock`, `Kbd`                 |
+
+Fiesta sets `--heading-transform: uppercase` for stadium signage; Ledger sets its numerals in condensed Martian Mono so a column of figures reads like receipt tape. Neither needed a component change.
+
+## The scale
+
+Sizes are a modular scale: `--type-base × --type-ratio^n`. The display steps are fluid and jump hard, so the largest is at least five times body size. Display tracking tightens as size grows. Here's the scale in the current theme:
+
+
+`Heading` and `Text` take these steps as `size`: `<Heading size="display-sm">`, `<Text size="sm">`. Both accept a responsive value, `size={{ base: 'xl', md: '2xl' }}`.
+
+## Figures
+
+Every number that aligns or updates uses tabular, lining figures: scores, money, tables, dates. `Numeral` and `Amount` do it for you, and so does `Table.Cell numeric`.
+
+```tsx
+```
+
+## Rules
+
+- Keep prose to about 70 characters a line (`width="text"`, or `Prose`, which sets its own measure).
+- Headings balance their lines and paragraphs avoid orphans; the reset does both.
+- Don't accent one word of a headline in italic or colour. Don't put a tracked all-caps eyebrow over every section. Don't number things `01 / 02 / 03` unless they're a sequence. Don't use monospace as decoration.
+
+## Fonts
+
+Kiln self-hosts every face its themes use, so there's nothing to set up:
+
+| Face                | Used by                              | Ships in            |
+| ------------------- | ------------------------------------ | ------------------- |
+| Schibsted Grotesk   | Paper, Monograph, Ledger             | `styles.css`        |
+| Newsreader          | Paper (prose and figures), Monograph | `styles.css`        |
+| Martian Mono        | code everywhere, Ledger's figures    | `styles.css`        |
+| Big Shoulders       | Fiesta display                       | `themes/fiesta.css` |
+| Bricolage Grotesque | Fiesta text                          | `themes/fiesta.css` |
+
+Browsers download a face only when something renders in it, so a declared face you never use costs nothing. All five are licensed under the SIL Open Font License 1.1, and the licences ship in the package at `dist/assets/fonts/licenses/`. A theme of your own loads its own fonts: see [Theming](../SKILL.md#5-load-its-fonts).

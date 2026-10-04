@@ -191,6 +191,9 @@ catalogs:
     '@storybook/react-vite':
       specifier: ^10.6.1
       version: 10.6.1
+    '@tanstack/intent':
+      specifier: ^0.5.3
+      version: 0.5.3
     '@tanstack/react-form':
       specifier: ^1.33.5
       version: 1.33.5
@@ -325,6 +328,9 @@ importers:
       '@mitcsutt/kiln-tsconfig':
         specifier: workspace:*
         version: link:packages/tsconfig
+      '@tanstack/intent':
+        specifier: 'catalog:'
+        version: 0.5.3
       '@types/node':
         specifier: 'catalog:'
         version: 24.19.1
@@ -2762,6 +2768,11 @@ packages:
 
   '@tanstack/form-core@1.33.5':
     resolution: {integrity: sha512-3dfx9MBP0aq5sXKteikG629X9oviptrQj0IFRk9YGcb+lB7Kv5x8S17oOSk1wUWgjQZ4xVJEMbKwOAODymocgA==}
+
+  '@tanstack/intent@0.5.3':
+    resolution: {integrity: sha512-2zeLGRJ+796daqv3DrwXsrXn7TZb4yOIogJgrqeF96YEIwOsJoDIW/eQBwZVAcR1OQ3znA3dGDizb5GBmxk4Zg==}
+    engines: {node: '>=20.12.0'}
+    hasBin: true
 
   '@tanstack/pacer-lite@0.1.1':
     resolution: {integrity: sha512-y/xtNPNt/YeyoVxE/JCx+T7yjEzpezmbb+toK8DDD1P4m7Kzs5YR956+7OKexG3f8aXgC3rLZl7b1V+yNUSy5w==}
@@ -8629,6 +8640,8 @@ snapshots:
       '@tanstack/devtools-event-client': 0.4.4
       '@tanstack/pacer-lite': 0.1.1
       '@tanstack/store': 0.11.2
+
+  '@tanstack/intent@0.5.3': {}
 
   '@tanstack/pacer-lite@0.1.1': {}
 
