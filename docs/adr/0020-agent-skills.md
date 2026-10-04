@@ -35,6 +35,7 @@
 **`intent validate` isn't a CI gate yet**
 
 - Besides its structural checks, which pass, `intent validate` typechecks every TypeScript code block in SKILL.md against the package. With TypeScript 6 it reports every CSS side-effect import (`import '@mitcsutt/kiln-ui/styles.css'`) as TS2882, because Intent doesn't relax `noUncheckedSideEffectImports`. It also rejects the docs' deliberate fragments: a JSX snippet with `…` children, or a signature written as `name(args) => result`. Making it pass would mean rewriting docs examples for the validator, so it stays out of CI for now. The structural checks run in the test above.
+- The repo doesn't install the Intent CLI. Run it with `npx @tanstack/intent@latest validate` when checking skills by hand, as the READMEs tell consumers to do for `install`.
 
 **Contributor skills**
 

@@ -28,7 +28,6 @@
     "@mitcsutt/kiln-eslint-config": "workspace:*",
     "@mitcsutt/kiln-prettier-config": "workspace:*",
     "@mitcsutt/kiln-tsconfig": "workspace:*",
-    "@tanstack/intent": "catalog:",
     "@types/node": "catalog:",
     "@vitejs/plugin-react": "catalog:",
     "eslint": "catalog:",

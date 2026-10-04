@@ -66,7 +66,7 @@ function rewriteLinks(markdown: string, target: (path: string) => string | undef
       /\]\(\/docs(?:\/([^)#\s]*))?(#[^)\s]*)?\)/g,
       (_match, path: string | undefined, anchor: string | undefined) => {
         const hash = anchor ?? ''
-        const local = target(path ?? 'index')
+        const local = target(path ?? 'index') ?? (path ? target(`${path}/index`) : undefined)
         if (local === '') return `](${anchor ?? '#'})`
         if (local !== undefined) return `](${local}${hash})`
         return `](${SITE_URL}/docs${path ? `/${path}` : ''}${hash})`

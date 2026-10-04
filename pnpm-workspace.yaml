@@ -14,7 +14,6 @@ catalog:
   '@storybook/addon-docs': ^10.6.1
   '@storybook/addon-vitest': ^10.6.1
   '@storybook/react-vite': ^10.6.1
-  '@tanstack/intent': ^0.5.3
   '@tanstack/react-form': ^1.33.5
   '@testing-library/jest-dom': ^7.0.1
   '@testing-library/react': ^16.3.3
@@ -64,6 +63,3 @@ peerDependencyRules:
   # kiln-eslint-config tests run its rules on ESLint 10 to prove they work.
   allowedVersions:
     eslint-plugin-jsx-a11y>eslint: '10'
-
-minimumReleaseAgeExclude:
-  - '@tanstack/intent@0.5.3'
