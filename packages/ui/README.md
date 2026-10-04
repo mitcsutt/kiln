@@ -56,6 +56,14 @@ Each theme has light and dark modes (`data-mode`, or `mode`/`defaultMode` on `Th
 
 Kiln self-hosts the fonts its themes use, so there's nothing to set up: Schibsted Grotesk, Newsreader and Martian Mono come with `styles.css`, and Big Shoulders and Bricolage Grotesque come with the Fiesta preset. Browsers download a face only when something renders in it. All five are licensed under the SIL Open Font License 1.1, and the licences ship in `dist/assets/fonts/licenses/`. A custom theme loads its own fonts.
 
+## For coding agents
+
+The package ships agent skills in `skills/`, built from the docs pages: setting up and theming, composing layout, writing a custom theme, and the design rules. They're versioned with the code, so they match the version you've installed. Run this in your project, and [TanStack Intent](https://tanstack.com/intent) adds them to your agent's instructions:
+
+```sh
+npx @tanstack/intent@latest install
+```
+
 ## Docs
 
 Full documentation, including the token contract and how to write a theme, lives on the [Kiln docs site](https://kiln.mitchellsutton.com). Until it's live, see [`DESIGN.md`](https://github.com/mitcsutt/kiln/blob/main/DESIGN.md) in the repository.
