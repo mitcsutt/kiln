@@ -39,11 +39,11 @@ describe('one tree for the docs and Storybook', () => {
       existsSync(join(contentDir, dir, slug, 'meta.json'))
         ? meta(join(dir, slug)).title
         : pages.find((page) => page.path === `${dir}/${slug}`)?.frontmatter.title
-    const sidebar = Object.fromEntries(
+    const sidebar: Record<string, (string | undefined)[]> = Object.fromEntries(
       (meta('.').pages ?? [])
         .filter((slug) => slug !== 'index')
-        .map((slug) => [
-          meta(slug).title,
+        .map((slug): [string, (string | undefined)[]] => [
+          meta(slug).title ?? slug,
           (meta(slug).pages ?? [])
             .filter((child) => child !== 'index')
             .map((child) => titleOf(slug, child)),
