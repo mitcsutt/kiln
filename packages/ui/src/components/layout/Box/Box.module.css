@@ -1,0 +1,108 @@
+/*
+ * Responsive pattern: see layout/Stack/Stack.module.css. Axis padding (--box-px/-py)
+ * falls back to the all-sides value (--box-p) per breakpoint.
+ *
+ * --box-fill / --box-on (read-only): the fill and ink of an `inverse` Box.
+ */
+.box {
+  --_p: var(--box-p-base, 0px);
+  --_px: var(--box-px-base, var(--_p));
+  --_py: var(--box-py-base, var(--_p));
+
+  display: block;
+  min-inline-size: 0;
+  padding-block: var(--_py);
+  padding-inline: var(--_px);
+}
+
+@media (min-width: 40em) {
+  .box {
+    --_p: var(--box-p-sm, 0px);
+    --_px: var(--box-px-sm, var(--_p));
+    --_py: var(--box-py-sm, var(--_p));
+  }
+}
+@media (min-width: 48em) {
+  .box {
+    --_p: var(--box-p-md, 0px);
+    --_px: var(--box-px-md, var(--_p));
+    --_py: var(--box-py-md, var(--_p));
+  }
+}
+@media (min-width: 64em) {
+  .box {
+    --_p: var(--box-p-lg, 0px);
+    --_px: var(--box-px-lg, var(--_p));
+    --_py: var(--box-py-lg, var(--_p));
+  }
+}
+@media (min-width: 80em) {
+  .box {
+    --_p: var(--box-p-xl, 0px);
+    --_px: var(--box-px-xl, var(--_p));
+    --_py: var(--box-py-xl, var(--_p));
+  }
+}
+
+/* Surfaces */
+.box[data-surface='canvas'] {
+  background-color: var(--color-canvas);
+  background-image: var(--canvas-image);
+  background-size: var(--canvas-image-size);
+  color: var(--color-ink);
+}
+.box[data-surface='surface'] {
+  background-color: var(--color-surface);
+  color: var(--color-ink);
+}
+.box[data-surface='sunken'] {
+  background-color: var(--color-surface-sunken);
+  color: var(--color-ink);
+}
+.box[data-surface='raised'] {
+  background-color: var(--color-surface-raised);
+  color: var(--color-ink);
+}
+/* Inverse re-points the colour roles for descendants — same approach as Section. */
+.box[data-surface='inverse'] {
+  --box-fill: var(--color-surface-inverse);
+  --box-on: var(--color-ink-inverse);
+  --color-ink: var(--box-on);
+  --color-ink-muted: color-mix(in oklab, var(--box-on) 76%, var(--box-fill));
+  --color-ink-subtle: color-mix(in oklab, var(--box-on) 60%, var(--box-fill));
+  --color-line: color-mix(in oklab, var(--box-on) 22%, var(--box-fill));
+  --color-line-strong: color-mix(in oklab, var(--box-on) 45%, var(--box-fill));
+  --color-canvas: var(--box-fill);
+  --color-surface: color-mix(in oklab, var(--box-on) 7%, var(--box-fill));
+  --color-surface-sunken: color-mix(in oklab, var(--box-on) 12%, var(--box-fill));
+  --color-surface-raised: color-mix(in oklab, var(--box-on) 4%, var(--box-fill));
+  --color-focus: var(--box-on);
+  --color-accent-text: var(--box-on);
+  --canvas-image: none;
+
+  background-color: var(--box-fill);
+  color: var(--box-on);
+}
+.box[data-surface='inverse'] > * {
+  --color-surface-inverse: var(--box-on);
+  --color-ink-inverse: var(--box-fill);
+}
+
+.box[data-border] {
+  border: var(--border-width) solid var(--color-line);
+}
+
+.box[data-radius='field'] {
+  border-radius: var(--radius-field);
+}
+.box[data-radius='surface'] {
+  border-radius: var(--radius-surface);
+}
+.box[data-radius='media'] {
+  border-radius: var(--radius-media);
+}
+
+/* `hidden` wins over the display above (author CSS otherwise beats the UA [hidden] rule). */
+.box[hidden] {
+  display: none;
+}

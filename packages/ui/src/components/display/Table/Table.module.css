@@ -1,0 +1,273 @@
+/*
+ * Component tokens (themes may set any of these on [data-theme]):
+ *   --table-head-font          default var(--font-text) — Fiesta sets its display caps
+ *   --table-head-numeric-font  numeric header cells, default var(--table-head-font, var(--font-text))
+ *   --table-head-size          default var(--text-sm)
+ *   --table-head-weight        default var(--label-weight)
+ *   --table-head-transform     default var(--heading-transform)
+ *   --table-head-bg            default var(--color-canvas) — only painted when stickyHeader
+ *   --table-max-height         default 70vh — scroll height when stickyHeader
+ *   --table-foot-rule          the rule over totals, default var(--border-width-strong) solid
+ *                              var(--color-line-strong) — Ledger draws the accountant's double rule
+ *   --highlight-tone-{positive,caution,critical,info}-text, --highlight-accent-text
+ *                              tone text inside a highlighted row (shared with List). Default:
+ *                              the tone text mixed 25% toward --color-highlight-ink.
+ *
+ * Headers are labels, so they're set in the text face (monospace as decoration for small
+ * labels is banned in DESIGN §2); figures below them carry the numeric face.
+ */
+.scroll {
+  inline-size: 100%;
+  min-inline-size: 0;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+.scroll[data-sticky-header] {
+  overflow: auto;
+  max-block-size: var(--table-max-height, 70vh);
+}
+.scroll:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.table {
+  --_py: var(--space-2);
+  --_px: var(--space-3);
+
+  inline-size: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-family: var(--font-text);
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+  color: var(--color-ink);
+}
+.table[data-density='compact'] {
+  --_py: var(--space-1);
+  --_px: var(--space-2);
+}
+
+.caption {
+  caption-side: top;
+  padding-block-end: var(--space-3);
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+  text-align: start;
+}
+
+/* ── Cells ─────────────────────────────────────────────────────────────── */
+
+.headerCell,
+.cell {
+  padding: var(--_py) var(--_px);
+  text-align: start;
+  vertical-align: baseline;
+}
+.headerCell:first-child,
+.cell:first-child {
+  padding-inline-start: var(--space-2);
+}
+.headerCell:last-child,
+.cell:last-child {
+  padding-inline-end: var(--space-2);
+}
+/* Figure columns are narrow; tighter gutters keep a 10-column standings table on a phone. */
+:is(.headerCell, .cell)[data-numeric] {
+  padding-inline: var(--space-2);
+}
+.headerCell abbr {
+  text-decoration: none;
+  cursor: help;
+}
+:is(.headerCell, .cell)[data-align='center'] {
+  text-align: center;
+}
+:is(.headerCell, .cell)[data-align='end'] {
+  text-align: end;
+}
+
+.headerCell {
+  padding-block: var(--_py);
+  color: var(--color-ink-muted);
+  font-family: var(--table-head-font, var(--font-text));
+  font-size: var(--table-head-size, var(--text-sm));
+  font-weight: var(--table-head-weight, var(--label-weight));
+  letter-spacing: var(--label-tracking);
+  text-transform: var(--table-head-transform, var(--heading-transform));
+  white-space: nowrap;
+  vertical-align: bottom;
+  border-block-end: var(--border-width-strong) solid var(--color-line-strong);
+}
+
+.headerCell[data-numeric] {
+  font-family: var(--table-head-numeric-font, var(--table-head-font, var(--font-text)));
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.headerCell[data-width='fill'] {
+  inline-size: 100%;
+}
+.headerCell[data-width='min'] {
+  inline-size: 1%;
+}
+
+.cell[data-numeric] {
+  font-family: var(--font-numeric);
+  font-stretch: var(--numeric-stretch);
+  font-variant-numeric: tabular-nums lining-nums;
+  white-space: nowrap;
+}
+.cell[data-row-header] {
+  font-weight: var(--label-weight);
+}
+
+/* ── Rows ──────────────────────────────────────────────────────────────── */
+
+.table[data-variant='rules'] .body .cell {
+  border-block-end: var(--border-width) solid var(--color-line);
+}
+.table[data-variant='rules'] .body > .row:last-child > .cell {
+  border-block-end-color: var(--color-line-strong);
+}
+
+.table[data-striped] .body > .row:nth-child(even) > .cell {
+  background: var(--color-surface-sunken);
+}
+
+/*
+ * A highlighted row re-points the colour roles for its cells' content, so a muted date,
+ * a tone-coloured Numeral or a LiveIndicator stays legible on the highlight fill (gold in
+ * Fiesta night, where the ordinary tone texts are pale). Same approach as Section's
+ * inverse band: the row publishes its fill/ink and tone texts under private names, and
+ * the cells swap the roles — setting e.g. --tone-positive-text from itself on one element
+ * would be a var() cycle.
+ */
+.row[data-highlighted] {
+  --_band-fill: var(--color-highlight);
+  --_band-ink: var(--color-highlight-ink);
+  --_band-positive: var(
+    --highlight-tone-positive-text,
+    color-mix(in oklab, var(--tone-positive-text) 75%, var(--color-highlight-ink))
+  );
+  --_band-caution: var(
+    --highlight-tone-caution-text,
+    color-mix(in oklab, var(--tone-caution-text) 75%, var(--color-highlight-ink))
+  );
+  --_band-critical: var(
+    --highlight-tone-critical-text,
+    color-mix(in oklab, var(--tone-critical-text) 75%, var(--color-highlight-ink))
+  );
+  --_band-info: var(
+    --highlight-tone-info-text,
+    color-mix(in oklab, var(--tone-info-text) 75%, var(--color-highlight-ink))
+  );
+  --_band-accent: var(
+    --highlight-accent-text,
+    color-mix(in oklab, var(--color-accent-text) 75%, var(--color-highlight-ink))
+  );
+}
+.row[data-highlighted] > .cell {
+  --color-ink: var(--_band-ink);
+  --color-ink-muted: color-mix(in oklab, var(--_band-ink), var(--_band-fill) 25%);
+  --color-ink-subtle: color-mix(in oklab, var(--_band-ink), var(--_band-fill) 35%);
+  --tone-positive-text: var(--_band-positive);
+  --tone-caution-text: var(--_band-caution);
+  --tone-critical-text: var(--_band-critical);
+  --tone-info-text: var(--_band-info);
+  --color-accent-text: var(--_band-accent);
+
+  background: var(--_band-fill);
+  color: var(--_band-ink);
+}
+/* Round the ends of a highlighted row so the fill reads as a marker, not a stripe. */
+.row[data-highlighted] > .cell:first-child {
+  border-start-start-radius: var(--radius-field);
+  border-end-start-radius: var(--radius-field);
+}
+.row[data-highlighted] > .cell:last-child {
+  border-start-end-radius: var(--radius-field);
+  border-end-end-radius: var(--radius-field);
+}
+
+.row[data-interactive] {
+  cursor: pointer;
+}
+.row > .cell {
+  transition: background-color var(--dur-1) var(--ease-out);
+}
+@media (hover: hover) {
+  .row[data-interactive]:not([data-highlighted]):hover > .cell {
+    background: var(--color-surface-sunken);
+  }
+}
+
+.foot > :first-child > .cell {
+  border-block-start: var(
+    --table-foot-rule,
+    var(--border-width-strong) solid var(--color-line-strong)
+  );
+}
+.foot .cell {
+  font-weight: var(--label-weight);
+}
+/* The totals rule replaces the last row's hairline rather than stacking under it. */
+.table[data-variant='rules'] .body:has(+ .foot) > .row:last-child > .cell {
+  border-block-end-width: 0;
+}
+
+/* ── Sticky header ─────────────────────────────────────────────────────── */
+
+.table[data-sticky-header] .head .headerCell {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 1;
+  background: var(--table-head-bg, var(--color-canvas));
+}
+
+/* ── Sort button ───────────────────────────────────────────────────────── */
+
+.sortButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25em;
+  margin: calc(var(--space-1) * -1);
+  padding: var(--space-1);
+  border: 0;
+  border-radius: var(--radius-field);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+  transition: color var(--dur-1) var(--ease-out);
+}
+.headerCell[data-align='end'] .sortButton {
+  flex-direction: row-reverse;
+}
+@media (hover: hover) {
+  .sortButton:hover {
+    color: var(--color-ink);
+  }
+}
+.sortButton:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 0;
+}
+.sortGlyph {
+  display: inline-flex;
+  font-size: 1.1em;
+  opacity: 0;
+  transition: opacity var(--dur-1) var(--ease-out);
+}
+.headerCell:is([data-sort='asc'], [data-sort='desc']) {
+  color: var(--color-ink);
+}
+.headerCell:is([data-sort='asc'], [data-sort='desc']) .sortGlyph,
+.sortButton:hover .sortGlyph,
+.sortButton:focus-visible .sortGlyph {
+  opacity: 1;
+}
+.headerCell[data-sort='none'] .sortButton:is(:hover, :focus-visible) .sortGlyph {
+  opacity: 0.45;
+}

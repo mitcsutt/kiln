@@ -1,0 +1,84 @@
+/*
+ * Component tokens (themes may set any of these on [data-theme]):
+ *   --datalist-label-width   default max-content, capped at 40% — the hang column
+ *
+ * Horizontal lists are one grid; each item is a subgrid row, so every value lines up
+ * on the same column no matter how long its label is.
+ */
+.list {
+  --_row-gap: var(--space-2);
+
+  display: grid;
+  grid-template-columns: var(--datalist-label-width, fit-content(40%)) minmax(0, 1fr);
+  column-gap: var(--space-5);
+  row-gap: var(--_row-gap);
+  margin: 0;
+  font-family: var(--font-text);
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+}
+
+.item {
+  display: grid;
+  grid-column: 1 / -1;
+  grid-template-columns: subgrid;
+  align-items: baseline;
+  min-inline-size: 0;
+}
+
+.label {
+  color: var(--color-ink-muted);
+  font-weight: var(--label-weight);
+  letter-spacing: var(--label-tracking);
+  text-transform: var(--label-transform);
+}
+
+.value {
+  margin: 0;
+  min-inline-size: 0;
+  color: var(--color-ink);
+  font-variant-numeric: lining-nums;
+  overflow-wrap: anywhere;
+}
+
+/* Vertical: label over value; items flow left-to-right and wrap (a meta strip). */
+.list[data-orientation='vertical'] {
+  --_row-gap: var(--space-4);
+
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: var(--space-6);
+}
+.list[data-orientation='vertical'] .item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.list[data-orientation='vertical'] .label {
+  font-size: var(--text-xs);
+}
+.list[data-orientation='vertical'] .value {
+  font-size: var(--text-md);
+}
+
+/* Divided: rules between rows (horizontal) or between columns (vertical). */
+.list[data-divided][data-orientation='horizontal'] {
+  row-gap: 0;
+}
+.list[data-divided][data-orientation='horizontal'] .item {
+  padding-block: var(--space-2);
+}
+.list[data-divided][data-orientation='horizontal'] .item + .item {
+  border-block-start: var(--border-width) solid var(--color-line);
+}
+/* Every item carries a leading rule; the list is pulled left by one gutter and the
+   first rule of each wrapped line is clipped away, so rules only ever sit *between* items. */
+.list[data-divided][data-orientation='vertical'] {
+  column-gap: 0;
+  margin-inline-start: calc((var(--space-5) + var(--border-width)) * -1);
+  clip-path: inset(0 0 0 var(--border-width));
+}
+.list[data-divided][data-orientation='vertical'] .item {
+  padding-inline: var(--space-5);
+  border-inline-start: var(--border-width) solid var(--color-line);
+}

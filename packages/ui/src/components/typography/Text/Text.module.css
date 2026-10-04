@@ -1,0 +1,152 @@
+/*
+ * Body text. Everything is opt-in: with no props a <Text> inherits size, colour and
+ * weight, so it composes inside buttons, table cells and list rows.
+ * Responsive size reads --text-size-{base..xl} (Stack pattern) when data-responsive.
+ *
+ * Component tokens:
+ *   --text-weight-medium   default 500
+ *   --text-weight-strong   default 650
+ */
+.text {
+  --_lh: var(--leading-body);
+  margin: 0;
+}
+.text[data-tone] {
+  color: var(--_ink);
+}
+
+/* Scalar sizes */
+.text[data-size] {
+  font-size: var(--_fs);
+  line-height: var(--_lh);
+}
+.text[data-size='2xs'] {
+  --_fs: var(--text-2xs);
+}
+.text[data-size='xs'] {
+  --_fs: var(--text-xs);
+}
+.text[data-size='sm'] {
+  --_fs: var(--text-sm);
+}
+.text[data-size='md'] {
+  --_fs: var(--text-md);
+}
+.text[data-size='lg'] {
+  --_fs: var(--text-lg);
+  --_lh: calc((var(--leading-body) + var(--leading-snug)) / 2);
+}
+.text[data-size='xl'] {
+  --_fs: var(--text-xl);
+  --_lh: var(--leading-snug);
+}
+
+/* Responsive sizes */
+.text[data-responsive] {
+  --_fs: var(--text-size-base);
+}
+@media (min-width: 40em) {
+  .text[data-responsive] {
+    --_fs: var(--text-size-sm);
+  }
+}
+@media (min-width: 48em) {
+  .text[data-responsive] {
+    --_fs: var(--text-size-md);
+  }
+}
+@media (min-width: 64em) {
+  .text[data-responsive] {
+    --_fs: var(--text-size-lg);
+  }
+}
+@media (min-width: 80em) {
+  .text[data-responsive] {
+    --_fs: var(--text-size-xl);
+  }
+}
+
+/* Tones */
+.text[data-tone='default'] {
+  --_ink: var(--color-ink);
+}
+.text[data-tone='muted'] {
+  --_ink: var(--color-ink-muted);
+}
+.text[data-tone='subtle'] {
+  --_ink: var(--color-ink-subtle);
+}
+.text[data-tone='accent'] {
+  --_ink: var(--color-accent-text);
+}
+.text[data-tone='positive'] {
+  --_ink: var(--tone-positive-text);
+}
+.text[data-tone='caution'] {
+  --_ink: var(--tone-caution-text);
+}
+.text[data-tone='critical'] {
+  --_ink: var(--tone-critical-text);
+}
+.text[data-tone='inverse'] {
+  --_ink: var(--color-ink-inverse);
+}
+
+/* Weights */
+.text[data-weight='regular'] {
+  font-weight: 400;
+}
+.text[data-weight='medium'] {
+  font-weight: var(--text-weight-medium, 500);
+}
+.text[data-weight='strong'] {
+  font-weight: var(--text-weight-strong, 650);
+}
+
+/* Numbers: the theme's figure face, always tabular + lining */
+.text[data-numeric] {
+  font-family: var(--font-numeric);
+  font-stretch: var(--numeric-stretch);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-feature-settings:
+    'tnum' 1,
+    'lnum' 1;
+}
+
+/* Alignment */
+.text[data-align='start'] {
+  text-align: start;
+}
+.text[data-align='center'] {
+  text-align: center;
+}
+.text[data-align='end'] {
+  text-align: end;
+}
+
+/* Truncation */
+.text[data-truncate='line'] {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  min-inline-size: 0;
+}
+.text[data-truncate='lines'] {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--text-lines);
+  line-clamp: var(--text-lines);
+}
+
+/* Measure: cap the line length with the width tokens. */
+.text[data-measure='narrow'] {
+  max-inline-size: var(--width-narrow);
+}
+.text[data-measure='text'] {
+  max-inline-size: var(--width-text);
+}
+.text[data-measure='content'] {
+  max-inline-size: var(--width-content);
+}

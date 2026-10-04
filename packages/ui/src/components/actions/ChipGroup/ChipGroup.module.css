@@ -1,0 +1,19 @@
+/*
+ * A wrapping run of chips. The chips themselves are styled by the shared
+ * actions/ToggleChip/chip.module.css, so a ChipGroup chip and a ToggleChip are identical.
+ *
+ * Component tokens:
+ *   --chip-group-gap   default var(--space-2)
+ */
+.group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--chip-group-gap, var(--space-2));
+  min-inline-size: 0;
+}
+
+/* Read-only: chips stay focusable but don't invite a press. */
+.group[data-readonly] > * {
+  cursor: default;
+}

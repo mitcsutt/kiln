@@ -1,0 +1,31 @@
+/*
+ * Box, states and focus come from inputs/internal/control.module.css.
+ * Private vars --_rows / --_max-rows are written inline by the component for autoResize.
+ */
+.textarea {
+  --_rows: 3; /* overridden inline when autoResize */
+  --_py: var(--space-2);
+
+  display: block;
+  inline-size: 100%;
+  padding: var(--_py) var(--_px);
+  resize: vertical;
+  line-height: var(--leading-body);
+}
+.textarea::placeholder {
+  color: var(--color-ink-subtle);
+  opacity: 1;
+}
+.textarea:disabled {
+  resize: none;
+}
+
+.textarea[data-auto-resize] {
+  field-sizing: content;
+  resize: none;
+  min-block-size: calc(var(--_rows) * 1lh + 2 * var(--_py) + 2 * var(--border-width));
+  overflow-y: auto;
+}
+.textarea[data-auto-resize][data-max-rows] {
+  max-block-size: calc(var(--_max-rows) * 1lh + 2 * var(--_py) + 2 * var(--border-width));
+}

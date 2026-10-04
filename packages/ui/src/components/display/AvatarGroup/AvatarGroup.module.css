@@ -1,0 +1,75 @@
+/*
+ * Component tokens (themes may set any of these on [data-theme]):
+ *   --avatar-cutout   default var(--color-canvas) — the gap drawn around each stacked avatar
+ *   --avatar-overlap  default 0.14 (0.05 at xs/sm) — fraction of an avatar hidden under
+ *                     its neighbour. Each avatar also loses the 2px cutout ring drawn by the
+ *                     next one, so small stacks overlap less or their initials get clipped.
+ *
+ * Sizes mirror Avatar's so the "+N" chip matches the stack.
+ */
+.group {
+  --_size: var(--control-sm);
+  --_overlap: var(--avatar-overlap, 0.14);
+
+  display: inline-flex;
+  align-items: center;
+  isolation: isolate;
+  vertical-align: middle;
+}
+.group[data-size='xs'] {
+  --_size: var(--space-5);
+  --_overlap: var(--avatar-overlap, 0.05);
+}
+.group[data-size='sm'] {
+  --_size: var(--control-sm);
+  --_overlap: var(--avatar-overlap, 0.05);
+}
+.group[data-size='md'] {
+  --_size: var(--control-md);
+}
+.group[data-size='lg'] {
+  --_size: var(--control-lg);
+}
+.group[data-size='xl'] {
+  --_size: var(--space-8);
+}
+
+.group > * {
+  box-shadow: 0 0 0 2px var(--avatar-cutout, var(--color-canvas));
+}
+.group > * + * {
+  margin-inline-start: calc(var(--_size) * var(--_overlap) * -1);
+}
+
+.more {
+  --_size: var(--control-sm);
+
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  inline-size: var(--_size);
+  block-size: var(--_size);
+  border-radius: var(--avatar-radius, var(--radius-avatar));
+  background: var(--color-surface-sunken);
+  color: var(--color-ink-muted);
+  font-family: var(--font-numeric);
+  font-stretch: var(--numeric-stretch);
+  font-weight: var(--label-weight);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-size: calc(var(--_size) * 0.36);
+  line-height: 1;
+  outline: var(--border-width) solid var(--color-line);
+  outline-offset: calc(var(--border-width) * -1);
+}
+.more[data-size='xs'] {
+  --_size: var(--space-5);
+}
+.more[data-size='md'] {
+  --_size: var(--control-md);
+}
+.more[data-size='lg'] {
+  --_size: var(--control-lg);
+}
+.more[data-size='xl'] {
+  --_size: var(--space-8);
+}

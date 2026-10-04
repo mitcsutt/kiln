@@ -1,0 +1,35 @@
+/*
+ * A keycap: hairline sides and a heavier bottom edge — the key's travel. One edge
+ * treatment (border), no shadow.
+ *
+ * Component tokens:
+ *   --kbd-radius   default half of --radius-field
+ */
+.kbd {
+  --_fs: 0.8em;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: 1.75em;
+  block-size: 1.75em;
+  padding-inline: 0.45em;
+  vertical-align: 0.08em;
+  border: var(--border-width) solid var(--color-line-strong);
+  border-block-end-width: calc(var(--border-width) + 1px);
+  border-radius: var(--kbd-radius, calc(var(--radius-field) / 2));
+  background: var(--color-surface);
+  color: var(--color-ink-muted);
+  font-family: var(--font-text);
+  font-size: var(--_fs);
+  font-weight: var(--label-weight);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: none;
+  white-space: nowrap;
+}
+
+.kbd[data-size='sm'] {
+  --_fs: 0.7em;
+}

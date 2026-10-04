@@ -1,0 +1,64 @@
+/* Responsive pattern: see layout/Stack/Stack.module.css. */
+.inline {
+  --_gap: var(--inline-gap-base, 0px);
+  --_row-gap: var(--inline-row-gap-base, var(--_gap));
+  --_align: var(--inline-align-base, center);
+  --_justify: var(--inline-justify-base, flex-start);
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  min-inline-size: 0;
+  column-gap: var(--_gap);
+  row-gap: var(--_row-gap);
+  align-items: var(--_align);
+  justify-content: var(--_justify);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.inline[data-wrap='false'] {
+  flex-wrap: nowrap;
+}
+
+@media (min-width: 40em) {
+  .inline {
+    --_gap: var(--inline-gap-sm, 0px);
+    --_row-gap: var(--inline-row-gap-sm, var(--_gap));
+    --_align: var(--inline-align-sm, center);
+    --_justify: var(--inline-justify-sm, flex-start);
+  }
+}
+
+@media (min-width: 48em) {
+  .inline {
+    --_gap: var(--inline-gap-md, 0px);
+    --_row-gap: var(--inline-row-gap-md, var(--_gap));
+    --_align: var(--inline-align-md, center);
+    --_justify: var(--inline-justify-md, flex-start);
+  }
+}
+
+@media (min-width: 64em) {
+  .inline {
+    --_gap: var(--inline-gap-lg, 0px);
+    --_row-gap: var(--inline-row-gap-lg, var(--_gap));
+    --_align: var(--inline-align-lg, center);
+    --_justify: var(--inline-justify-lg, flex-start);
+  }
+}
+
+@media (min-width: 80em) {
+  .inline {
+    --_gap: var(--inline-gap-xl, 0px);
+    --_row-gap: var(--inline-row-gap-xl, var(--_gap));
+    --_align: var(--inline-align-xl, center);
+    --_justify: var(--inline-justify-xl, flex-start);
+  }
+}
+
+/* `hidden` wins over the display above (author CSS otherwise beats the UA [hidden] rule). */
+.inline[hidden] {
+  display: none;
+}

@@ -1,0 +1,77 @@
+/*
+ * Component tokens (themes may set any of these on [data-theme]):
+ *   --skeleton-color         resting tone, default var(--color-surface-sunken)
+ *   --skeleton-color-peak    tone at the top of the breath, default var(--color-line)
+ *   --skeleton-circle-radius default var(--radius-avatar)
+ *
+ * Written by the component: --skeleton-width, --skeleton-height, --skeleton-gap.
+ *
+ * The "shimmer" is a slow breath between two neutrals — no gradient sweep. Every block
+ * shares the same clock (no per-element delay), so a page of placeholders moves as one.
+ */
+.skeleton {
+  --_radius: var(--radius-field);
+
+  display: block;
+  inline-size: var(--skeleton-width, 100%);
+  max-inline-size: 100%;
+  block-size: var(--skeleton-height, 1lh);
+  border-radius: var(--_radius);
+  background-color: var(--skeleton-color, var(--color-surface-sunken));
+  animation: breathe calc(var(--dur-3) * 5) var(--ease-in-out) infinite alternate;
+}
+
+.skeleton[data-radius='surface'] {
+  --_radius: var(--radius-surface);
+}
+.skeleton[data-radius='media'] {
+  --_radius: var(--radius-media);
+}
+.skeleton[data-radius='chip'] {
+  --_radius: var(--radius-chip);
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--skeleton-gap, calc(1lh - 1em));
+}
+
+.line {
+  inline-size: 100%;
+  block-size: 1em;
+  /* a text bar is a line, not a field: cap its rounding */
+  border-radius: min(var(--radius-field), 0.3em);
+}
+.line:last-child:not(:first-child) {
+  inline-size: 62%;
+}
+
+.circle {
+  --_s: var(--control-md);
+  inline-size: var(--_s);
+  block-size: var(--_s);
+  flex: none;
+  border-radius: var(--skeleton-circle-radius, var(--radius-avatar));
+}
+.circle[data-size='sm'] {
+  --_s: var(--control-sm);
+}
+.circle[data-size='lg'] {
+  --_s: var(--control-lg);
+}
+
+@keyframes breathe {
+  from {
+    background-color: var(--skeleton-color, var(--color-surface-sunken));
+  }
+  to {
+    background-color: var(--skeleton-color-peak, var(--color-line));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+  }
+}

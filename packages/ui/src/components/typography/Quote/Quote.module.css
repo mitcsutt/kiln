@@ -1,0 +1,98 @@
+/*
+ * Layout: a two-column grid. The opening quote mark hangs in the first column, so the
+ * text keeps a clean left edge and the mark sits in the margin like set type.
+ *
+ * Component tokens:
+ *   --quote-mark-color   default var(--color-accent-text)
+ *   --quote-measure      default 28ch (md/lg), 60ch (sm)
+ */
+/* Zero-specificity reset, so a surrounding flow (Prose, Stack) or a className can space it. */
+:where(.quote) {
+  margin: 0;
+}
+.quote {
+  --_fs: var(--text-2xl);
+  --_measure: var(--quote-measure, 26ch);
+
+  display: grid;
+  grid-template-columns: 0.62em minmax(0, 1fr);
+  column-gap: 0.12em;
+  row-gap: var(--space-4);
+  font-size: var(--_fs);
+}
+.quote[data-size='sm'] {
+  --_fs: var(--text-lg);
+  --_measure: var(--quote-measure, 60ch);
+  grid-template-columns: 0.75em minmax(0, 1fr);
+  row-gap: var(--space-3);
+}
+.quote[data-size='lg'] {
+  --_fs: var(--text-display-sm);
+  --_measure: var(--quote-measure, 22ch);
+  row-gap: var(--space-5);
+}
+
+.mark {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: end;
+  color: var(--quote-mark-color, var(--color-accent-text));
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: 1.9em;
+  line-height: 0.82;
+  user-select: none;
+}
+
+.body {
+  grid-column: 2;
+  grid-row: 1;
+  max-inline-size: var(--_measure);
+  margin: 0;
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-style: var(--display-style);
+  font-stretch: var(--display-stretch);
+  letter-spacing: calc(var(--display-tracking) * 0.6);
+  text-transform: var(--display-transform);
+  line-height: calc(var(--leading-tight) + 0.1);
+  text-wrap: balance;
+}
+.body > * {
+  margin: 0;
+}
+.body > * + * {
+  margin-block-start: 0.5em;
+}
+
+/* Testimonials read as prose: the prose face, sentence case, relaxed leading */
+.quote[data-size='sm'] .body {
+  font-family: var(--font-prose);
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: 0;
+  text-transform: none;
+  line-height: var(--leading-snug);
+  text-wrap: pretty;
+}
+.quote[data-size='sm'] .mark {
+  font-size: 1.7em;
+  line-height: 0.9;
+}
+
+.cite {
+  grid-column: 2;
+  font-family: var(--font-text);
+  font-size: var(--text-sm);
+  font-style: normal;
+  font-weight: var(--label-weight);
+  line-height: var(--leading-snug);
+  color: var(--color-ink);
+}
+/* Anything after the name (role, date) steps down */
+.cite :where(br) + *,
+.cite :where(small, span) {
+  font-weight: 400;
+  color: var(--color-ink-muted);
+}

@@ -54,6 +54,74 @@ jobs:
       - name: Build
         run: pnpm build
 
+  test-react18:
+    name: Test (React 18)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup
+      - name: Test on React 18.3
+        run: pnpm test:react18
+
+  package:
+    name: Package checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup
+      - name: publint and arethetypeswrong
+        run: pnpm check:package
+
+  size:
+    name: Size
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup
+      - name: Size report against budgets
+        id: size
+        continue-on-error: true
+        run: pnpm size
+
+      # On a pull request, measure the base branch too and comment the difference.
+      - name: Check out the base branch
+        if: github.event_name == 'pull_request'
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+          path: .base
+      - name: Measure the base branch
+        if: github.event_name == 'pull_request'
+        continue-on-error: true
+        working-directory: .base
+        run: |
+          pnpm install --frozen-lockfile
+          if node -e "process.exit(require('./package.json').scripts?.size ? 0 : 1)"; then pnpm size; fi
+      - name: Write the size comment
+        if: always() && github.event_name == 'pull_request'
+        run: |
+          : > "$RUNNER_TEMP/size-comment.md"
+          for report in packages/*/.size/report.json; do
+            [ -f "$report" ] || continue
+            node size-report.ts --markdown "$RUNNER_TEMP/size-part.md" --head "$report" --base ".base/$report"
+            cat "$RUNNER_TEMP/size-part.md" >> "$RUNNER_TEMP/size-comment.md"
+          done
+      - name: Comment on the pull request
+        # A pull request from a fork gets a read-only token, so it can't comment.
+        if: always() && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+        uses: marocchino/sticky-pull-request-comment@v3
+        with:
+          header: size-report
+          path: ${{ runner.temp }}/size-comment.md
+          ignore_empty: true
+
+      - name: Fail when a size check fails
+        if: steps.size.outcome == 'failure'
+        run: exit 1
+
   # A pull request that changes a published package must add a changeset
   # (ADR 0008). Use `pnpm changeset --empty` when a change needs no release.
   # The Version packages pull request consumes changesets, so it is skipped.

@@ -1,0 +1,158 @@
+/*
+ * Component tokens (themes may set any of these on [data-theme]):
+ *   --dialog-radius    default var(--radius-surface)
+ *   --dialog-shadow    default var(--shadow-overlay)
+ *   --dialog-border    default var(--color-line-strong)
+ *   --dialog-surface   default var(--color-surface-raised)
+ *
+ * Motion: one keyframe for every theme. Monograph/Ledger's --ease-spring is their ease-out,
+ * so the panel settles; Fiesta's overshoots, so it lands with a bump.
+ */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-overlay);
+  background: var(--color-scrim);
+}
+.overlay[data-state='open'] {
+  animation: fade-in var(--dur-2) var(--ease-out);
+}
+.overlay[data-state='closed'] {
+  animation: fade-out var(--dur-1) var(--ease-out);
+}
+
+.content {
+  --_pad: var(--space-5);
+  --_radius: var(--dialog-radius, var(--radius-surface));
+
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-overlay);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  inline-size: min(
+    var(--_w),
+    calc(100% - 2 * var(--space-4))
+  ); /* % of the viewport (or a transformed container) */
+  block-size: fit-content;
+  max-block-size: calc(100% - 2 * var(--space-5));
+  margin: auto;
+  padding: var(--_pad);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: var(--border-width) solid var(--dialog-border, var(--color-line-strong));
+  border-radius: var(--_radius);
+  background: var(--dialog-surface, var(--color-surface-raised));
+  box-shadow: var(--dialog-shadow, var(--shadow-overlay));
+  color: var(--color-ink);
+  font-family: var(--font-text);
+  font-size: var(--text-md);
+  line-height: var(--leading-body);
+  transform-origin: 50% 60%;
+}
+.content:focus {
+  outline: none;
+}
+
+.content[data-size='sm'] {
+  --_w: calc(var(--width-narrow) * 0.8125);
+}
+.content[data-size='md'] {
+  --_w: var(--width-narrow);
+}
+.content[data-size='lg'] {
+  --_w: var(--width-text);
+}
+
+.content[data-state='open'] {
+  animation: dialog-in var(--dur-3) var(--ease-spring);
+}
+.content[data-state='closed'] {
+  animation: fade-out var(--dur-1) var(--ease-out);
+}
+
+.header {
+  display: grid;
+  gap: var(--space-2);
+}
+/* Leave room for the absolutely placed close button. */
+.header[data-has-close] {
+  padding-inline-end: calc(var(--control-sm) + var(--space-2));
+}
+
+.title {
+  font-family: var(--heading-font);
+  font-weight: var(--heading-weight);
+  letter-spacing: var(--heading-tracking);
+  text-transform: var(--heading-transform);
+  font-size: var(--text-xl);
+  line-height: var(--leading-snug);
+  color: var(--color-ink);
+}
+
+.description {
+  font-size: var(--text-sm);
+  line-height: var(--leading-body);
+  color: var(--color-ink-muted);
+  max-inline-size: 60ch;
+}
+
+.close {
+  --_pad: var(--space-5);
+
+  position: absolute;
+  inset-block-start: calc(var(--_pad) - var(--space-1));
+  inset-inline-end: calc(var(--_pad) - var(--space-2));
+}
+
+.footer {
+  --_pad: var(--space-5); /* matches .content padding */
+
+  position: sticky;
+  inset-block-end: calc(-1 * var(--_pad));
+  display: flex;
+  flex-wrap: wrap-reverse;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  margin-block-start: var(--space-1);
+  margin-inline: calc(-1 * var(--_pad));
+  margin-block-end: calc(-1 * var(--_pad));
+  padding: var(--space-4) var(--_pad) var(--_pad);
+  background: var(--dialog-surface, var(--color-surface-raised));
+}
+/* On a phone the actions stack full width, primary on top (wrap-reverse); side by side from sm. */
+.footer > * {
+  flex: 1 1 100%;
+}
+@media (min-width: 40em) {
+  .footer > * {
+    flex: 0 0 auto;
+  }
+}
+
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    scale: 0.96;
+    translate: 0 var(--space-2);
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay[data-state],
+  .content[data-state] {
+    animation: none;
+  }
+}

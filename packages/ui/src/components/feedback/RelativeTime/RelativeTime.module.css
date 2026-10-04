@@ -1,0 +1,7 @@
+/*
+ * The time text updates in place, so its figures are tabular and don't shift the line.
+ * The prefix ("Updated") is ordinary text: proportional figures, the surrounding face.
+ */
+.value {
+  font-variant-numeric: tabular-nums lining-nums;
+}

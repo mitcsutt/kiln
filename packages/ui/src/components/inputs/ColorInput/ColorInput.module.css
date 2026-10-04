@@ -1,0 +1,116 @@
+/*
+ * The hex box is Input's; this seats the native colour picker as its leading swatch and
+ * lays out the preset swatches under it. A swatch's fill is the colour itself (data, set
+ * inline as --_swatch) — the one place a raw colour renders.
+ *
+ * Component tokens:
+ *   --color-swatch-radius   default var(--radius-chip)
+ */
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-inline-size: 0;
+}
+
+.box {
+  max-inline-size: 100%;
+}
+
+/* The picker: a small square of the current colour, sized to the text. */
+.picker {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  inline-size: 1.25em;
+  block-size: 1.25em;
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--color-swatch-radius, var(--radius-chip));
+  overflow: hidden;
+}
+.picker[data-empty] {
+  background-color: var(--color-surface-sunken);
+}
+
+.pickerInput {
+  inline-size: 100%;
+  block-size: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  appearance: none;
+}
+.pickerInput:disabled {
+  cursor: not-allowed;
+}
+.pickerInput::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+.pickerInput::-webkit-color-swatch {
+  border: 0;
+  border-radius: 0;
+}
+.pickerInput::-moz-color-swatch {
+  border: 0;
+  border-radius: 0;
+}
+/* No colour yet: hide the browser's black default so the sunken fill reads as empty. */
+.picker[data-empty] .pickerInput {
+  opacity: 0;
+}
+.pickerInput:focus-visible {
+  outline: none;
+}
+.picker:has(.pickerInput:focus-visible) {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+/* Presets */
+.swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.swatch {
+  --_size: var(--control-sm);
+  --_swatch: transparent;
+
+  all: unset;
+  box-sizing: border-box;
+  inline-size: var(--_size);
+  block-size: var(--_size);
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--color-swatch-radius, var(--radius-chip));
+  background-color: var(--_swatch);
+  cursor: pointer;
+  transition: box-shadow var(--dur-1) var(--ease-out);
+}
+.root[data-size='sm'] .swatch {
+  --_size: calc(var(--control-sm) * 0.75);
+}
+.root[data-size='lg'] .swatch {
+  --_size: var(--control-md);
+}
+
+/* Checked: an ink edge with a surface ring inside it, so it reads on any colour. */
+.swatch[data-state='checked'] {
+  border: 2px solid var(--color-ink);
+  box-shadow: inset 0 0 0 2px var(--color-surface);
+}
+
+.swatch:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.swatch[data-disabled] {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+.swatch[data-readonly] {
+  cursor: default;
+}

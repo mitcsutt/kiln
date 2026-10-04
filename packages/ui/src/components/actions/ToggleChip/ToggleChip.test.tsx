@@ -1,0 +1,53 @@
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { createRef, useState } from 'react'
+import { ToggleChip } from './ToggleChip'
+
+describe('ToggleChip', () => {
+  it('is a toggle button with aria-pressed (uncontrolled)', async () => {
+    const ref = createRef<HTMLButtonElement>()
+    render(<ToggleChip ref={ref}>Mine</ToggleChip>)
+    const chip = screen.getByRole('button', { name: 'Mine' })
+    expect(ref.current).toBe(chip)
+    expect(chip).toHaveAttribute('type', 'button')
+    expect(chip).toHaveAttribute('aria-pressed', 'false')
+    await userEvent.click(chip)
+    expect(chip).toHaveAttribute('aria-pressed', 'true')
+    expect(chip).toHaveAttribute('data-state', 'on')
+  })
+
+  it('supports controlled state and keyboard activation', async () => {
+    const onPressedChange = vi.fn()
+    function Controlled() {
+      const [pressed, setPressed] = useState(true)
+      return (
+        <ToggleChip
+          pressed={pressed}
+          onPressedChange={(p) => {
+            onPressedChange(p)
+            setPressed(p)
+          }}
+        >
+          Scorers only
+        </ToggleChip>
+      )
+    }
+    render(<Controlled />)
+    const chip = screen.getByRole('button', { name: 'Scorers only' })
+    expect(chip).toHaveAttribute('aria-pressed', 'true')
+    chip.focus()
+    await userEvent.keyboard(' ')
+    expect(onPressedChange).toHaveBeenCalledWith(false)
+    expect(chip).toHaveAttribute('aria-pressed', 'false')
+  })
+
+  it('renders a count and size for theming', () => {
+    render(
+      <ToggleChip size="sm" count={12}>
+        Scorers only
+      </ToggleChip>,
+    )
+    const chip = screen.getByRole('button', { name: 'Scorers only 12' })
+    expect(chip).toHaveAttribute('data-size', 'sm')
+  })
+})

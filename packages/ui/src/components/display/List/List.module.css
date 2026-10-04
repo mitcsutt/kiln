@@ -1,0 +1,182 @@
+/*
+ * Component tokens (themes may set any of these on [data-theme]):
+ *   --list-inset         default var(--space-2) — row padding-inline (room for fills)
+ *   --list-row-radius    default var(--radius-field) — hover/selected/highlighted fill
+ *   --list-trailing-size default: the row's text size (same as the title)
+ *   --highlight-tone-{positive,caution,critical,info}-text, --highlight-accent-text
+ *                        tone text inside a highlighted row (shared with Table)
+ *
+ * Structure: li.item > .row (a div, or the asChild link/button) > slots. The row carries
+ * padding, hover and focus so a linked row is one target edge to edge. Slots are spans,
+ * valid inside <a> and <button>.
+ */
+.list {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-text);
+  color: var(--color-ink);
+}
+
+.item {
+  --_py: var(--space-3);
+  --_fill: transparent;
+  --_fill-ink: inherit;
+
+  position: relative;
+  min-inline-size: 0;
+}
+.list[data-density='compact'] > .item {
+  --_py: var(--space-2);
+}
+
+.list[data-divided] > .item + .item {
+  border-block-start: var(--border-width) solid var(--color-line);
+}
+/* A filled row doesn't need rules either side — the fill is its edge. */
+.list[data-divided] > .item:is([data-highlighted], [data-selected]),
+.list[data-divided] > .item:is([data-highlighted], [data-selected]) + .item {
+  border-block-start-color: transparent;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  inline-size: 100%;
+  min-inline-size: 0;
+  margin: 0;
+  padding-block: var(--_py);
+  padding-inline: var(--list-inset, var(--space-2));
+  border: 0;
+  border-radius: var(--list-row-radius, var(--radius-field));
+  background: var(--_fill);
+  color: var(--_fill-ink);
+  font: inherit;
+  text-align: start;
+  text-decoration: none;
+  transition: background-color var(--dur-1) var(--ease-out);
+}
+
+.item[data-selected] {
+  --_fill: var(--color-accent-soft);
+  --_fill-ink: var(--color-ink);
+}
+.item[data-highlighted] {
+  --_fill: var(--color-highlight);
+  --_fill-ink: var(--color-highlight-ink);
+  --_band-positive: var(
+    --highlight-tone-positive-text,
+    color-mix(in oklab, var(--tone-positive-text) 75%, var(--color-highlight-ink))
+  );
+  --_band-caution: var(
+    --highlight-tone-caution-text,
+    color-mix(in oklab, var(--tone-caution-text) 75%, var(--color-highlight-ink))
+  );
+  --_band-critical: var(
+    --highlight-tone-critical-text,
+    color-mix(in oklab, var(--tone-critical-text) 75%, var(--color-highlight-ink))
+  );
+  --_band-info: var(
+    --highlight-tone-info-text,
+    color-mix(in oklab, var(--tone-info-text) 75%, var(--color-highlight-ink))
+  );
+  --_band-accent: var(
+    --highlight-accent-text,
+    color-mix(in oklab, var(--color-accent-text) 75%, var(--color-highlight-ink))
+  );
+}
+
+/*
+ * A filled row re-points the colour roles for its content, so a muted description, a
+ * tone-coloured Numeral or a LiveIndicator stays legible on the fill (gold in Fiesta
+ * night). The item publishes fill/ink under private names and the row swaps the roles —
+ * redefining a role from itself on one element would be a var() cycle (see Section).
+ */
+.item:is([data-highlighted], [data-selected]) > .row {
+  --color-ink: var(--_fill-ink);
+  --color-ink-muted: color-mix(in oklab, var(--_fill-ink), var(--_fill) 25%);
+  --color-ink-subtle: color-mix(in oklab, var(--_fill-ink), var(--_fill) 35%);
+}
+.item[data-highlighted] > .row {
+  --tone-positive-text: var(--_band-positive);
+  --tone-caution-text: var(--_band-caution);
+  --tone-critical-text: var(--_band-critical);
+  --tone-info-text: var(--_band-info);
+  --color-accent-text: var(--_band-accent);
+}
+
+.item[data-interactive] > .row {
+  cursor: pointer;
+}
+@media (hover: hover) {
+  .item[data-interactive]:not([data-highlighted], [data-selected]) > .row:hover {
+    background: var(--color-surface-sunken);
+  }
+  .item[data-interactive]:is([data-highlighted], [data-selected]) > .row:hover {
+    background: color-mix(in oklch, var(--_fill) 88%, var(--color-ink));
+  }
+}
+.row:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: -2px;
+}
+
+/* ── Slots ───────────────────────────────────────────────────────────────── */
+
+.leading {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: flex-end;
+  min-inline-size: 2ch;
+  color: var(--color-ink-muted);
+  font-family: var(--font-numeric);
+  font-stretch: var(--numeric-stretch);
+  font-weight: var(--label-weight);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-size: var(--text-md);
+}
+.item[data-highlighted] .leading {
+  color: inherit;
+}
+
+.content {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: calc(var(--space-1) / 2);
+  min-inline-size: 0;
+  font-size: var(--text-md);
+  font-weight: var(--label-weight);
+  line-height: var(--leading-snug);
+  overflow-wrap: anywhere;
+}
+
+.description {
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+  font-weight: 400;
+}
+
+.trailing {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  margin-inline-start: auto;
+  text-align: end;
+  /*
+   * The row's text face and size, with tabular figures: a bare "7 pts" sits level with the
+   * title instead of looming in the numeric face. Put a <Numeral>/<Amount> here for figures
+   * that should carry the numeric face (receipt mono in Ledger).
+   */
+  font-variant-numeric: tabular-nums lining-nums;
+  font-size: var(--list-trailing-size, var(--text-md));
+  font-weight: var(--label-weight);
+  line-height: var(--leading-snug);
+  white-space: nowrap;
+}

@@ -1,0 +1,113 @@
+/*
+ * Component tokens (themes may set any of these on [data-theme]):
+ *   --empty-title-size    default var(--text-xl)
+ *   --empty-mark-size     framed: length of each crop mark, default var(--space-4)
+ *   --empty-mark-color    framed: default var(--color-line-strong)
+ *   --empty-measure       max width of the copy, default 38ch
+ */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+  padding-block: var(--space-6);
+  text-align: start;
+  font-family: var(--font-text);
+}
+
+.empty[data-align='center'] {
+  align-items: center;
+  text-align: center;
+}
+
+/*
+ * Framed: printer's crop marks at the four corners instead of a dashed box — the space is
+ * marked out for what will be placed there, not fenced in. The root draws the top pair,
+ * the .marks overlay the bottom pair.
+ */
+.empty[data-framed] {
+  position: relative;
+  padding: var(--space-6) var(--space-5);
+}
+.empty[data-framed]::before,
+.empty[data-framed]::after,
+.marks::before,
+.marks::after {
+  content: '';
+  position: absolute;
+  inline-size: var(--empty-mark-size, var(--space-4));
+  block-size: var(--empty-mark-size, var(--space-4));
+  border: 0 solid var(--empty-mark-color, var(--color-line-strong));
+  pointer-events: none;
+}
+.empty[data-framed]::before {
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  border-block-start-width: var(--border-width-strong);
+  border-inline-start-width: var(--border-width-strong);
+}
+.empty[data-framed]::after {
+  inset-block-start: 0;
+  inset-inline-end: 0;
+  border-block-start-width: var(--border-width-strong);
+  border-inline-end-width: var(--border-width-strong);
+}
+.marks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.marks::before {
+  inset-block-end: 0;
+  inset-inline-start: 0;
+  border-block-end-width: var(--border-width-strong);
+  border-inline-start-width: var(--border-width-strong);
+}
+.marks::after {
+  inset-block-end: 0;
+  inset-inline-end: 0;
+  border-block-end-width: var(--border-width-strong);
+  border-inline-end-width: var(--border-width-strong);
+}
+
+.media {
+  display: flex;
+  color: var(--color-ink-subtle);
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-inline-size: var(--empty-measure, 38ch);
+}
+
+.title {
+  margin: 0;
+  font-family: var(--heading-font);
+  font-size: var(--empty-title-size, var(--text-xl));
+  font-weight: var(--heading-weight);
+  letter-spacing: var(--heading-tracking);
+  text-transform: var(--heading-transform);
+  line-height: var(--leading-snug);
+  color: var(--color-ink);
+  text-wrap: balance;
+}
+
+.description {
+  margin: 0;
+  font-size: var(--text-md);
+  line-height: var(--leading-body);
+  color: var(--color-ink-muted);
+  text-wrap: pretty;
+}
+
+.action {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-block-start: var(--space-1);
+}
+.empty[data-align='center'] .action {
+  justify-content: center;
+}

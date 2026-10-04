@@ -1,0 +1,126 @@
+/*
+ * A list of checkboxes. No box — the group is grouping, not a surface.
+ *
+ * [■] Select all             ← optional; sits over a hairline, apart from the options
+ * ─────────────
+ * [✓] Goals
+ *     When anyone you drew scores
+ * [ ] Kick-offs
+ *
+ * Component tokens:
+ *   --checkbox-group-gap       default var(--space-3) — between options
+ *   --checkbox-group-rule      default var(--color-line) — under "select all"
+ * Invalid re-points Checkbox's public `--control-border` token for the unchecked boxes
+ * (checked boxes use `--control-checked-border`, so they keep the accent).
+ *
+ * Responsive `columns`: see layout/Stack/Stack.module.css for the pattern.
+ */
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-inline-size: 0;
+}
+
+.group[data-invalid] {
+  --control-border: var(--tone-critical);
+}
+
+.items {
+  --_gap: var(--checkbox-group-gap, var(--space-3));
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--_gap);
+}
+
+.items[data-layout='horizontal'] {
+  flex-direction: row;
+  flex-wrap: wrap;
+  column-gap: var(--space-5);
+}
+
+.items[data-layout='columns'] {
+  display: grid;
+  grid-template-columns: var(--_cols);
+  column-gap: var(--space-5);
+  row-gap: var(--_gap);
+}
+
+/*
+ * The registered --checkbox-group-columns-* inputs don't inherit, so they resolve here on
+ * the root (where the component writes them) into --_cols, which .items reads.
+ */
+.group {
+  --_cols: var(--checkbox-group-columns-base, minmax(0, 1fr));
+}
+@media (min-width: 40em) {
+  .group {
+    --_cols: var(--checkbox-group-columns-sm, minmax(0, 1fr));
+  }
+}
+@media (min-width: 48em) {
+  .group {
+    --_cols: var(--checkbox-group-columns-md, minmax(0, 1fr));
+  }
+}
+@media (min-width: 64em) {
+  .group {
+    --_cols: var(--checkbox-group-columns-lg, minmax(0, 1fr));
+  }
+}
+@media (min-width: 80em) {
+  .group {
+    --_cols: var(--checkbox-group-columns-xl, minmax(0, 1fr));
+  }
+}
+
+.item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: var(--space-3);
+  align-items: start;
+  font-size: var(--text-md);
+  line-height: var(--leading-snug);
+}
+.group[data-size='sm'] .item {
+  font-size: var(--text-sm);
+}
+.group[data-size='lg'] .item {
+  font-size: var(--text-lg);
+}
+
+/* "Select all" governs the list below it: a hairline separates the two, one step of air. */
+.item[data-select-all] {
+  padding-block-end: var(--space-3);
+  border-block-end: var(--border-width) solid var(--checkbox-group-rule, var(--color-line));
+}
+.item[data-select-all] .label {
+  font-weight: var(--label-weight);
+}
+
+/* One line tall, so the box centres on the label's first line however long it wraps. */
+.slot {
+  display: flex;
+  align-items: center;
+  block-size: 1lh;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-inline-size: 0;
+}
+
+.label {
+  color: var(--color-ink);
+  cursor: pointer;
+}
+.item[data-disabled] .label {
+  color: var(--color-ink-subtle);
+  cursor: not-allowed;
+}
+.group[data-readonly] .label {
+  cursor: default;
+}

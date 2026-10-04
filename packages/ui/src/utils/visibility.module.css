@@ -1,0 +1,48 @@
+/*
+ * Responsive visibility. `:not(#\#)` adds id-level specificity so these always beat a
+ * component's own `display` (class + attribute selectors) without !important.
+ */
+
+@media (max-width: calc(40em - 0.02px)) {
+  .hideBelowSm:not(#\#) {
+    display: none;
+  }
+}
+@media (min-width: 40em) {
+  .hideAboveSm:not(#\#) {
+    display: none;
+  }
+}
+
+@media (max-width: calc(48em - 0.02px)) {
+  .hideBelowMd:not(#\#) {
+    display: none;
+  }
+}
+@media (min-width: 48em) {
+  .hideAboveMd:not(#\#) {
+    display: none;
+  }
+}
+
+@media (max-width: calc(64em - 0.02px)) {
+  .hideBelowLg:not(#\#) {
+    display: none;
+  }
+}
+@media (min-width: 64em) {
+  .hideAboveLg:not(#\#) {
+    display: none;
+  }
+}
+
+@media (max-width: calc(80em - 0.02px)) {
+  .hideBelowXl:not(#\#) {
+    display: none;
+  }
+}
+@media (min-width: 80em) {
+  .hideAboveXl:not(#\#) {
+    display: none;
+  }
+}

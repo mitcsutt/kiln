@@ -8,11 +8,18 @@
     },
     "build": {
       "dependsOn": ["^build"],
+      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/vite.library.ts"],
       "outputs": ["dist/**"]
     },
     "test": {
       "dependsOn": ["transit"],
-      "outputs": []
+      "outputs": [],
+      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/DESIGN.md"]
+    },
+    "test:react18": {
+      "dependsOn": ["transit"],
+      "outputs": [],
+      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/DESIGN.md"]
     },
     "lint": {
       "dependsOn": ["transit"],
@@ -27,6 +34,15 @@
       "dependsOn": ["transit"],
       "outputs": []
     },
+    "check:package": {
+      "dependsOn": ["build"],
+      "outputs": []
+    },
+    "size": {
+      "dependsOn": ["build"],
+      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/size-report.ts"],
+      "outputs": [".size/**"]
+    },
     "//#lint:root": {
       "inputs": [
         "$TURBO_DEFAULT$",
@@ -40,7 +56,13 @@
       "outputs": []
     },
     "//#format:check": {
-      "inputs": ["$TURBO_ROOT$/**", "!$TURBO_ROOT$/**/node_modules/**", "!$TURBO_ROOT$/.turbo/**"],
+      "inputs": [
+        "$TURBO_ROOT$/**",
+        "!$TURBO_ROOT$/**/node_modules/**",
+        "!$TURBO_ROOT$/.turbo/**",
+        "!$TURBO_ROOT$/**/dist/**",
+        "!$TURBO_ROOT$/**/.size/**"
+      ],
       "outputs": []
     }
   }

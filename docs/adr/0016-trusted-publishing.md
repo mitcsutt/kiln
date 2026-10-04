@@ -1,4 +1,4 @@
-# 0015. Trusted publishing, switched on by the owner
+# 0016. Trusted publishing, switched on by the owner
 
 - **Status:** Accepted
 - **Date:** 2026-10-04

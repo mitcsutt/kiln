@@ -1,0 +1,233 @@
+/*
+ * Component tokens:
+ *   --stepper-marker-size    marker diameter, default 1.75rem
+ *   --stepper-marker-radius  marker corner radius, default var(--radius-chip)
+ *   --stepper-rail           connector line colour, default var(--color-line)
+ *
+ * --_count is written inline by the component (steps.length) — used to centre the
+ * horizontal rail under the first and last markers without measuring the DOM.
+ */
+.root {
+  min-inline-size: 0;
+}
+
+.compact {
+  display: none;
+  margin: 0;
+  color: var(--color-ink);
+  font-size: var(--text-sm);
+  font-weight: var(--label-weight);
+}
+.compact :is(b, strong) {
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+@media (max-width: 39.9375em) {
+  .root[data-compact-below='sm'] > .list {
+    display: none;
+  }
+  .root[data-compact-below='sm'] > .compact {
+    display: block;
+  }
+}
+@media (max-width: 47.9375em) {
+  .root[data-compact-below='md'] > .list {
+    display: none;
+  }
+  .root[data-compact-below='md'] > .compact {
+    display: block;
+  }
+}
+
+.list {
+  position: relative;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ── Horizontal (default) ─────────────────────────────────────────────── */
+.list[data-orientation='horizontal'] {
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+.list[data-orientation='horizontal']::before {
+  content: '';
+  position: absolute;
+  inset-inline: calc(50% / var(--_count));
+  inset-block-start: calc(var(--stepper-marker-size, 1.75rem) / 2);
+  block-size: var(--border-width);
+  background: var(--stepper-rail, var(--color-line));
+}
+.list[data-orientation='horizontal'] .item {
+  position: relative;
+  flex: 1 1 0;
+  min-inline-size: 0;
+}
+.list[data-orientation='horizontal'] .control {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.list[data-orientation='horizontal'] .text {
+  align-items: center;
+}
+.list[data-orientation='horizontal'] .connector {
+  display: none;
+}
+
+/* ── Vertical ─────────────────────────────────────────────────────────── */
+.list[data-orientation='vertical'] {
+  flex-direction: column;
+  gap: 0;
+}
+.list[data-orientation='vertical'] .item {
+  flex: none;
+}
+.list[data-orientation='vertical'] .control {
+  flex-direction: row;
+  align-items: flex-start;
+  text-align: start;
+  padding-block-end: var(--space-3);
+}
+.list[data-orientation='vertical'] .item:last-child .control {
+  padding-block-end: 0;
+}
+.list[data-orientation='vertical'] .markerCol {
+  align-self: stretch;
+}
+.list[data-orientation='vertical'] .connector {
+  display: block;
+  flex: 1;
+  inline-size: var(--border-width);
+  min-block-size: var(--space-3);
+  margin-block: var(--space-1);
+  background: var(--stepper-rail, var(--color-line));
+}
+.list[data-orientation='vertical'] .connector[data-status='complete'] {
+  background: var(--color-accent);
+}
+
+/* ── Item / control ───────────────────────────────────────────────────── */
+.item {
+  min-inline-size: 0;
+}
+
+.control {
+  display: flex;
+  gap: var(--space-2);
+  border: 0;
+  background: none;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  cursor: default;
+}
+button.control {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+button.control:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-field);
+}
+
+.markerCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: none;
+}
+
+.marker {
+  display: grid;
+  place-items: center;
+  flex: none;
+  inline-size: var(--stepper-marker-size, 1.75rem);
+  block-size: var(--stepper-marker-size, 1.75rem);
+  border-radius: var(--stepper-marker-radius, var(--radius-chip));
+  border: var(--border-width) solid var(--color-line-strong);
+  background: var(--color-surface);
+  color: var(--color-ink-muted);
+  transition:
+    background-color var(--dur-1) var(--ease-out),
+    border-color var(--dur-1) var(--ease-out),
+    color var(--dur-1) var(--ease-out);
+}
+.marker svg {
+  inline-size: 62%;
+  block-size: 62%;
+}
+
+.number {
+  font-family: var(--font-numeric);
+  font-stretch: var(--numeric-stretch);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-size: var(--text-sm);
+  line-height: 1;
+}
+
+.control[data-status='current'] .marker {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+  color: var(--color-accent-ink);
+}
+.control[data-status='complete'] .marker {
+  border-color: var(--color-line-strong);
+  background: var(--color-surface-sunken);
+  color: var(--color-ink);
+}
+.control[data-invalid] .marker {
+  border-color: var(--tone-critical);
+  background: var(--tone-critical-soft);
+  color: var(--tone-critical-text);
+}
+/* The current step with errors: filled like current, in the critical tone. */
+.control[data-status='current'][data-invalid] .marker {
+  background: var(--tone-critical);
+  color: var(--tone-critical-ink);
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-block-start: 1px;
+  min-inline-size: 0;
+}
+
+.label {
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+  font-weight: var(--label-weight);
+}
+.control[data-status='current'] .label {
+  color: var(--color-ink);
+}
+.control[data-invalid] .label {
+  color: var(--tone-critical-text);
+}
+
+.description {
+  color: var(--color-ink-subtle);
+  font-size: var(--text-xs);
+}
+
+@media (hover: hover) {
+  button.control:hover .marker {
+    border-color: var(--color-ink-muted);
+  }
+  button.control[data-status='current']:hover .marker,
+  button.control[data-status='complete']:hover .marker,
+  button.control[data-invalid]:hover .marker {
+    border-color: currentColor;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marker {
+    transition: none;
+  }
+}

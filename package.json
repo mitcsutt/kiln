@@ -12,7 +12,10 @@
     "typecheck": "turbo run typecheck typecheck:root",
     "typecheck:root": "tsc --noEmit",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "test:react18": "turbo run test:react18",
+    "check:package": "turbo run check:package",
+    "size": "turbo run size"
   },
   "prettier": "@mitcsutt/kiln-prettier-config",
   "devDependencies": {
@@ -23,11 +26,14 @@
     "@mitcsutt/kiln-prettier-config": "workspace:*",
     "@mitcsutt/kiln-tsconfig": "workspace:*",
     "@types/node": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
     "eslint": "catalog:",
     "lefthook": "catalog:",
+    "lightningcss": "catalog:",
     "prettier": "catalog:",
     "turbo": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "vite": "catalog:"
   },
   "packageManager": "pnpm@12.9.1",
   "engines": {

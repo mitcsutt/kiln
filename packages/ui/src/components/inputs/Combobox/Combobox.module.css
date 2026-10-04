@@ -1,0 +1,281 @@
+/*
+ * The box (border, radius, sizes, states) comes from inputs/internal/control.module.css;
+ * this file lays out the chips, the input and the trailing controls inside it, and the
+ * floating list.
+ *
+ * Component tokens (themes may set any of these on [data-theme]):
+ *   --combobox-list-border       default var(--color-line-strong)
+ *   --combobox-option-highlight  default var(--color-surface-sunken) — keyboard/hover row
+ *   --combobox-option-check      default var(--color-accent-text)
+ */
+
+/* ── Box ── */
+.root {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  inline-size: 100%;
+  padding-inline: var(--_px) calc(var(--_px) * 0.75);
+  cursor: text;
+}
+.root[data-multiple] {
+  padding-block: calc(var(--space-1) * 0.75);
+}
+.root:focus-within {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+.root[data-disabled] {
+  cursor: not-allowed;
+}
+
+.values {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1);
+  min-inline-size: 0;
+}
+
+.chips {
+  display: contents;
+}
+
+.chip {
+  max-inline-size: 100%;
+}
+
+.input {
+  flex: 1;
+  align-self: stretch;
+  min-inline-size: 6ch;
+  min-block-size: calc(var(--_h) - 2 * var(--border-width));
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-overflow: ellipsis;
+  outline: none;
+}
+.root[data-multiple] .input {
+  min-block-size: calc(var(--space-5) * 0.9);
+}
+.input:focus-visible {
+  outline: none;
+}
+.input:disabled {
+  cursor: not-allowed;
+}
+.input::placeholder {
+  color: var(--color-ink-subtle);
+  opacity: 1;
+}
+
+.trailing {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--color-ink-muted);
+}
+
+.spinner {
+  color: var(--color-ink-subtle);
+}
+
+.clear {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  inline-size: 1.5em;
+  block-size: 1.5em;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-chip);
+  background: transparent;
+  color: inherit;
+  font-size: inherit;
+  cursor: pointer;
+}
+.clear::after {
+  content: '';
+  position: absolute;
+  inset: -0.25em;
+}
+.clear > svg {
+  inline-size: 1.1em;
+  block-size: 1.1em;
+}
+@media (hover: hover) {
+  .clear:hover {
+    color: var(--color-ink);
+    background: var(--color-surface-sunken);
+  }
+}
+.clear:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 1px;
+}
+
+.chevron {
+  inline-size: 1.15em;
+  block-size: 1.15em;
+  transition: rotate var(--dur-2) var(--ease-spring);
+}
+.root[data-state='open'] .chevron {
+  rotate: 180deg;
+}
+.root[data-disabled] .trailing {
+  color: var(--color-ink-subtle);
+}
+
+/* ── Floating list ── */
+.popup {
+  --_pad: var(--space-1);
+  --_radius: var(--radius-surface);
+
+  z-index: var(--z-popover);
+  box-sizing: border-box;
+  min-inline-size: var(--radix-popover-trigger-width);
+  max-inline-size: min(28rem, calc(100vw - 2 * var(--space-4)));
+  max-block-size: min(22rem, var(--radix-popover-content-available-height));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--_pad);
+  border: var(--border-width) solid var(--combobox-list-border, var(--color-line-strong));
+  border-radius: var(--_radius);
+  background-color: var(--color-surface-raised);
+  color: var(--color-ink);
+  box-shadow: var(--shadow-float);
+  font-family: var(--font-text);
+  font-size: var(--text-md);
+  line-height: var(--leading-snug);
+  scroll-padding-block: var(--_pad);
+  transform-origin: var(--radix-popover-content-transform-origin);
+}
+.popup:focus {
+  outline: none;
+}
+.popup[data-state='open'] {
+  animation: combobox-in var(--dur-2) var(--ease-spring);
+}
+
+@keyframes combobox-in {
+  from {
+    opacity: 0;
+    scale: 0.97;
+    translate: 0 calc(var(--space-1) * -1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .popup[data-state='open'] {
+    animation: none;
+  }
+  .chevron {
+    transition: none;
+  }
+}
+
+.listbox:empty {
+  display: none;
+}
+
+.group {
+  display: block;
+}
+.group + .group,
+.option + .group {
+  margin-block-start: var(--_pad);
+  padding-block-start: var(--_pad);
+  border-block-start: var(--border-width) solid var(--color-line);
+}
+
+.groupLabel {
+  padding: var(--space-2) var(--space-3) var(--space-1);
+  color: var(--color-ink-subtle);
+  font-size: var(--text-xs);
+  font-weight: var(--label-weight);
+  letter-spacing: var(--label-tracking);
+  text-transform: var(--label-transform);
+}
+
+/* Nested radius: the row sits inside the list's padding, so it's that much smaller. */
+.option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-block-size: var(--control-sm);
+  padding-block: var(--space-1);
+  padding-inline: var(--space-3) var(--space-2);
+  border-radius: max(2px, calc(var(--_radius) - var(--_pad)));
+  cursor: default;
+  user-select: none;
+}
+.option[data-active] {
+  background-color: var(--combobox-option-highlight, var(--color-surface-sunken));
+}
+.option[data-selected] {
+  font-weight: var(--label-weight);
+}
+.option[data-disabled] {
+  color: var(--color-ink-subtle);
+  opacity: 0.6;
+}
+
+.optionText {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-inline-size: 0;
+}
+
+.optionLabel {
+  overflow-wrap: anywhere;
+}
+
+.optionDescription {
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+  font-weight: normal;
+}
+
+/* Multiple: a checkbox-like square, filled when chosen. */
+.box {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  inline-size: 1.1em;
+  block-size: 1.1em;
+  border: var(--border-width) solid var(--color-line-control);
+  border-radius: var(--radius-chip);
+  color: var(--color-accent-ink);
+}
+.option[data-selected] .box {
+  border-color: var(--color-accent);
+  background-color: var(--color-accent);
+}
+.box > svg {
+  inline-size: 0.9em;
+  block-size: 0.9em;
+}
+
+.check {
+  flex: none;
+  inline-size: 1.1em;
+  block-size: 1.1em;
+  color: var(--combobox-option-check, var(--color-accent-text));
+}
+
+.message {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+}

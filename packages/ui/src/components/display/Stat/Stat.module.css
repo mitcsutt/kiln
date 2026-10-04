@@ -1,0 +1,110 @@
+/*
+ * Component tokens (themes may set any of these on [data-theme]):
+ *   --stat-value-font     default var(--font-numeric)
+ *   --stat-value-weight   default var(--heading-weight)
+ *   --stat-fit            how many value-ems of width a figure is assumed to need, default 6.5
+ *                         (Ledger 7.5: its receipt mono is wide).
+ *                         The value never grows past its size step, and shrinks below it
+ *                         when the Stat is narrower than --stat-fit × that size.
+ *
+ * Fitting: the Stat is an inline-size container, so a figure in a narrow grid cell scales
+ * down (cqi) instead of running into its neighbour. Containment would make a Stat inside a
+ * flex row (Inline) zero-wide, so its intrinsic width is stated instead: --stat-fit value-ems.
+ * A figure longer than that may still wrap as a last resort, never overlap.
+ *
+ * The change is a <Delta> set at --text-sm on the value's baseline.
+ *
+ * The value is set in the theme's numeric face, tabular and lining, so a row of stats
+ * (or the same stat updating) never jitters. Label above, change on the value's baseline.
+ */
+.stat {
+  --_value-size: var(--text-2xl);
+  --_value-leading: 1;
+  --_fit: var(--stat-fit, 6.5);
+
+  container-type: inline-size;
+  contain-intrinsic-inline-size: auto calc(var(--_value-size) * var(--_fit));
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-inline-size: 0;
+  font-family: var(--font-text);
+  color: var(--color-ink);
+}
+
+.stat[data-size='sm'] {
+  --_value-size: var(--text-lg);
+}
+.stat[data-size='md'] {
+  --_value-size: var(--text-2xl);
+}
+.stat[data-size='lg'] {
+  --_value-size: var(--text-3xl);
+}
+.stat[data-size='hero'] {
+  --_value-size: var(--text-display-md);
+  --_value-leading: 1;
+
+  gap: var(--space-2);
+}
+
+.stat[data-rule] {
+  padding-block-start: var(--space-3);
+  border-block-start: var(--border-width) solid var(--color-line-strong);
+}
+
+.label {
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+  font-weight: var(--label-weight);
+  letter-spacing: var(--label-tracking);
+  text-transform: var(--label-transform);
+  line-height: var(--leading-snug);
+}
+
+.figure {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-3);
+  min-inline-size: 0;
+}
+
+.value {
+  font-family: var(--stat-value-font, var(--font-numeric));
+  font-weight: var(--stat-value-weight, var(--heading-weight));
+  font-stretch: var(--numeric-stretch);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-size: min(var(--_value-size), calc(100cqi / var(--_fit)));
+  line-height: var(--_value-leading);
+  letter-spacing: -0.01em;
+  max-inline-size: 100%;
+  overflow-wrap: anywhere;
+}
+.stat .value > * {
+  white-space: normal; /* last resort (see top): a Numeral wraps rather than overlaps */
+}
+.stat[data-tone='positive'] .value {
+  color: var(--tone-positive-text);
+}
+.stat[data-tone='critical'] .value {
+  color: var(--tone-critical-text);
+}
+.stat[data-tone='accent'] .value {
+  color: var(--color-accent-text);
+}
+
+.stat[data-size='hero'] .value {
+  letter-spacing: var(--display-tracking);
+}
+
+.delta {
+  font-size: var(--text-sm);
+}
+
+.hint {
+  color: var(--color-ink-subtle);
+  font-size: var(--text-xs);
+  line-height: var(--leading-snug);
+}

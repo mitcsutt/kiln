@@ -1,6 +1,6 @@
 # Releasing
 
-Kiln releases with [Changesets](https://changesets.dev). Each package has its own version ([ADR 0008](adr/0008-versioning-and-release.md)), and npm publishing goes through trusted publishing with provenance ([ADR 0015](adr/0015-trusted-publishing.md)).
+Kiln releases with [Changesets](https://changesets.dev). Each package has its own version ([ADR 0008](adr/0008-versioning-and-release.md)), and npm publishing goes through trusted publishing with provenance ([ADR 0016](adr/0016-trusted-publishing.md)).
 
 Nothing has been published yet. The pipeline is in place, but publishing stays switched off until the [prerequisites](#prerequisites) below are done.
 

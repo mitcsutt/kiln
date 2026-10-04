@@ -1,0 +1,88 @@
+/*
+ * No box: a fieldset is grouping, not a surface. The legend reads like a field label.
+ *
+ * `data-variant='section'` promotes the legend to a small heading (heading tokens,
+ * text-lg) over a hairline, for forms split into groups of fields.
+ *
+ * `data-layout='horizontal'` matches a horizontal Field: at and above `sm` the legend takes
+ * the label column and the body the control column; below it, everything stacks. (The
+ * legend is floated, so it is an ordinary grid item, not the fieldset's rendered legend.)
+ * `data-layout='inline'` only hides the legend (Fieldset.tsx).
+ *
+ * Component tokens:
+ *   --fieldset-gap            default var(--space-3) — space between the grouped controls
+ *                             (var(--space-5) for `section`: it groups whole fields)
+ *   --fieldset-section-rule   rule under a section legend, default var(--color-line)
+ */
+.fieldset {
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.legend {
+  float: inline-start; /* makes the legend an ordinary block so the body can sit under it */
+  inline-size: 100%;
+  margin-block-end: var(--space-2);
+}
+.legend + * {
+  clear: both;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* Help text hugs the legend (label → help is space-1 everywhere in a form). */
+.description {
+  margin-block-start: calc(var(--space-1) - var(--space-2));
+}
+
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fieldset-gap, var(--space-3));
+}
+
+/* Section: a heading, not a label. The rule sits under the legend, across the column. */
+.fieldset[data-variant='section'] > .legend {
+  display: flex;
+  margin-block-end: var(--space-4);
+  padding-block-end: var(--space-2);
+  border-block-end: var(--border-width) solid var(--fieldset-section-rule, var(--color-line));
+  font-family: var(--heading-font);
+  font-size: var(--text-lg);
+  font-weight: var(--heading-weight);
+  letter-spacing: var(--heading-tracking);
+  text-transform: var(--heading-transform);
+  line-height: var(--leading-tight);
+}
+.fieldset[data-variant='section'] > .body {
+  gap: var(--space-4);
+}
+.fieldset[data-variant='section'] > .body > .description {
+  margin-block-start: calc(-1 * var(--space-1));
+}
+.fieldset[data-variant='section'] > .body > .controls {
+  gap: var(--fieldset-gap, var(--space-5));
+}
+
+/* Horizontal: legend column | body column, like Field's horizontal grid. */
+@media (min-width: 40em) {
+  .fieldset[data-layout='horizontal'] {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    column-gap: var(--space-4);
+    align-items: start;
+  }
+  .fieldset[data-layout='horizontal'] > .legend {
+    grid-column: 1;
+    margin-block-end: 0;
+  }
+  .fieldset[data-layout='horizontal'] > .body {
+    grid-column: 2;
+  }
+}

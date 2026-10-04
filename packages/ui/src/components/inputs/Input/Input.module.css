@@ -1,0 +1,86 @@
+/*
+ * The box (border, radius, states) comes from inputs/internal/control.module.css;
+ * this file lays out the input and its adornments inside it.
+ *
+ * Component tokens:
+ *   --input-adornment-ink   default var(--color-ink-subtle)
+ */
+.root {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  inline-size: 100%;
+  padding-inline: var(--_px);
+  cursor: text;
+}
+
+/* Focus: the neutral ring goes round the whole box, never onto the border. */
+.root:focus-within {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.root[data-disabled] {
+  cursor: not-allowed;
+}
+
+.input {
+  flex: 1;
+  align-self: stretch;
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  outline: none;
+}
+.input:focus-visible {
+  outline: none;
+}
+.input:disabled {
+  cursor: not-allowed;
+}
+.input::placeholder {
+  color: var(--color-ink-subtle);
+  opacity: 1;
+}
+/* Keep autofill inside the theme instead of the browser's yellow/blue slab. */
+.input:autofill {
+  -webkit-text-fill-color: var(--color-ink);
+  caret-color: var(--color-ink);
+}
+.input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.adornment {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--input-adornment-ink, var(--color-ink-subtle));
+  font-size: 0.875em;
+  white-space: nowrap;
+  user-select: none;
+}
+.adornment > svg {
+  inline-size: 1.15em;
+  block-size: 1.15em;
+}
+
+/* Money: tabular, right-aligned, in the theme's numeric face — "$ 1,240.00 AUD". */
+.root[data-numeric] .input {
+  text-align: end;
+  font-family: var(--font-numeric);
+  font-stretch: var(--numeric-stretch);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.root[data-numeric] .adornment {
+  font-family: var(--font-numeric);
+  font-stretch: var(--numeric-stretch);
+  font-variant-numeric: tabular-nums lining-nums;
+}

@@ -1,0 +1,72 @@
+/* Story-only. See StoryKit.tsx. */
+.stage {
+  position: relative;
+  transform: translateZ(0);
+  overflow: hidden;
+  min-block-size: 30rem;
+  border: 1px dashed var(--color-line);
+  border-radius: var(--radius-surface);
+}
+.stage[data-size='lg'] {
+  min-block-size: 40rem;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding-block: var(--space-2);
+  border-block-end: 1px solid var(--color-line);
+  font-size: var(--text-sm);
+}
+.row:last-child {
+  border-block-end: 0;
+}
+.row[data-strong] {
+  font-weight: var(--label-weight);
+}
+
+.figure {
+  font-family: var(--font-numeric);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-stretch: var(--numeric-stretch);
+  white-space: nowrap;
+}
+
+.muted {
+  margin: 0;
+  font-size: var(--text-xs);
+  color: var(--color-ink-subtle);
+}
+
+.body {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--color-ink-muted);
+  max-inline-size: 60ch;
+}
+
+.strong {
+  margin: 0;
+  font-weight: var(--label-weight);
+  color: var(--color-ink);
+}
+
+.spacer {
+  block-size: 16rem;
+}
+.spacer[data-size='sm'] {
+  block-size: 3rem;
+}
+.spacer[data-size='lg'] {
+  block-size: 24rem;
+}
+
+.clip {
+  overflow: hidden;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-surface);
+  background: var(--color-surface);
+}

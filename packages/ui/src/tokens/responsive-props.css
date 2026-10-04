@@ -1,0 +1,512 @@
+/*
+ * Responsive prop inputs are NON-INHERITING.
+ *
+ * `responsiveVars()` writes e.g. --stack-gap-md on a component's root as an inline
+ * style. Unregistered custom properties inherit, so a nested <Stack> without its own
+ * `gap` would silently pick up its parent's value. Registering each input with
+ * `inherits: false` scopes it to the element that set it.
+ *
+ * Every name passed to responsiveVars() must be listed here —
+ * `utils/responsive-registry.test.ts` fails the build if one is missing.
+ */
+
+@property --action-bar-gap-base {
+  syntax: '*';
+  inherits: false;
+}
+@property --action-bar-gap-sm {
+  syntax: '*';
+  inherits: false;
+}
+@property --action-bar-gap-md {
+  syntax: '*';
+  inherits: false;
+}
+@property --action-bar-gap-lg {
+  syntax: '*';
+  inherits: false;
+}
+@property --action-bar-gap-xl {
+  syntax: '*';
+  inherits: false;
+}
+@property --box-p-base {
+  syntax: '*';
+  inherits: false;
+}
+@property --box-p-sm {
+  syntax: '*';
+  inherits: false;
+}
+@property --box-p-md {
+  syntax: '*';
+  inherits: false;
+}
+@property --box-p-lg {
+  syntax: '*';
+  inherits: false;
+}
+@property --box-p-xl {
+  syntax: '*';
+  inherits: false;
+}
+@property --box-px-base {
+  syntax: '*';
+  inherits: false;
+}
+@property --box-px-sm {
+  syntax: '*';
+  inherits: false;
+}
+@property --box-px-md {
+  syntax: '*';
+  inherits: false;
+}
+@property --box-px-lg {
+  syntax: '*';
+  inherits: false;
+}
+@property --box-px-xl {
+  syntax: '*';
+  inherits: false;
+}
+@property --box-py-base {
+  syntax: '*';
+  inherits: false;
+}
+@property --box-py-sm {
+  syntax: '*';
+  inherits: false;
+}
+@property --box-py-md {
+  syntax: '*';
+  inherits: false;
+}
+@property --box-py-lg {
+  syntax: '*';
+  inherits: false;
+}
+@property --box-py-xl {
+  syntax: '*';
+  inherits: false;
+}
+@property --card-padding-base {
+  syntax: '*';
+  inherits: false;
+}
+@property --card-padding-sm {
+  syntax: '*';
+  inherits: false;
+}
+@property --card-padding-md {
+  syntax: '*';
+  inherits: false;
+}
+@property --card-padding-lg {
+  syntax: '*';
+  inherits: false;
+}
+@property --card-padding-xl {
+  syntax: '*';
+  inherits: false;
+}
+@property --checkbox-group-columns-base {
+  syntax: '*';
+  inherits: false;
+}
+@property --checkbox-group-columns-sm {
+  syntax: '*';
+  inherits: false;
+}
+@property --checkbox-group-columns-md {
+  syntax: '*';
+  inherits: false;
+}
+@property --checkbox-group-columns-lg {
+  syntax: '*';
+  inherits: false;
+}
+@property --checkbox-group-columns-xl {
+  syntax: '*';
+  inherits: false;
+}
+@property --choice-cards-columns-base {
+  syntax: '*';
+  inherits: false;
+}
+@property --choice-cards-columns-sm {
+  syntax: '*';
+  inherits: false;
+}
+@property --choice-cards-columns-md {
+  syntax: '*';
+  inherits: false;
+}
+@property --choice-cards-columns-lg {
+  syntax: '*';
+  inherits: false;
+}
+@property --choice-cards-columns-xl {
+  syntax: '*';
+  inherits: false;
+}
+@property --grid-align-base {
+  syntax: '*';
+  inherits: false;
+}
+@property --grid-align-sm {
+  syntax: '*';
+  inherits: false;
+}
+@property --grid-align-md {
+  syntax: '*';
+  inherits: false;
+}
+@property --grid-align-lg {
+  syntax: '*';
+  inherits: false;
+}
+@property --grid-align-xl {
+  syntax: '*';
+  inherits: false;
+}
+@property --grid-columns-base {
+  syntax: '*';
+  inherits: false;
+}
+@property --grid-columns-sm {
+  syntax: '*';
+  inherits: false;
+}
+@property --grid-columns-md {
+  syntax: '*';
+  inherits: false;
+}
+@property --grid-columns-lg {
+  syntax: '*';
+  inherits: false;
+}
+@property --grid-columns-xl {
+  syntax: '*';
+  inherits: false;
+}
+@property --grid-gap-base {
+  syntax: '*';
+  inherits: false;
+}
+@property --grid-gap-sm {
+  syntax: '*';
+  inherits: false;
+}
+@property --grid-gap-md {
+  syntax: '*';
+  inherits: false;
+}
+@property --grid-gap-lg {
+  syntax: '*';
+  inherits: false;
+}
+@property --grid-gap-xl {
+  syntax: '*';
+  inherits: false;
+}
+@property --grid-item-end-base {
+  syntax: '*';
+  inherits: false;
+}
+@property --grid-item-end-sm {
+  syntax: '*';
+  inherits: false;
+}
+@property --grid-item-end-md {
+  syntax: '*';
+  inherits: false;
+}
+@property --grid-item-end-lg {
+  syntax: '*';
+  inherits: false;
+}
+@property --grid-item-end-xl {
+  syntax: '*';
+  inherits: false;
+}
+@property --grid-item-full-base {
+  syntax: '*';
+  inherits: false;
+}
+@property --grid-item-full-sm {
+  syntax: '*';
+  inherits: false;
+}
+@property --grid-item-full-md {
+  syntax: '*';
+  inherits: false;
+}
+@property --grid-item-full-lg {
+  syntax: '*';
+  inherits: false;
+}
+@property --grid-item-full-xl {
+  syntax: '*';
+  inherits: false;
+}
+@property --grid-item-start-base {
+  syntax: '*';
+  inherits: false;
+}
+@property --grid-item-start-sm {
+  syntax: '*';
+  inherits: false;
+}
+@property --grid-item-start-md {
+  syntax: '*';
+  inherits: false;
+}
+@property --grid-item-start-lg {
+  syntax: '*';
+  inherits: false;
+}
+@property --grid-item-start-xl {
+  syntax: '*';
+  inherits: false;
+}
+@property --grid-row-gap-base {
+  syntax: '*';
+  inherits: false;
+}
+@property --grid-row-gap-sm {
+  syntax: '*';
+  inherits: false;
+}
+@property --grid-row-gap-md {
+  syntax: '*';
+  inherits: false;
+}
+@property --grid-row-gap-lg {
+  syntax: '*';
+  inherits: false;
+}
+@property --grid-row-gap-xl {
+  syntax: '*';
+  inherits: false;
+}
+@property --heading-size-base {
+  syntax: '*';
+  inherits: false;
+}
+@property --heading-size-sm {
+  syntax: '*';
+  inherits: false;
+}
+@property --heading-size-md {
+  syntax: '*';
+  inherits: false;
+}
+@property --heading-size-lg {
+  syntax: '*';
+  inherits: false;
+}
+@property --heading-size-xl {
+  syntax: '*';
+  inherits: false;
+}
+@property --inline-align-base {
+  syntax: '*';
+  inherits: false;
+}
+@property --inline-align-sm {
+  syntax: '*';
+  inherits: false;
+}
+@property --inline-align-md {
+  syntax: '*';
+  inherits: false;
+}
+@property --inline-align-lg {
+  syntax: '*';
+  inherits: false;
+}
+@property --inline-align-xl {
+  syntax: '*';
+  inherits: false;
+}
+@property --inline-gap-base {
+  syntax: '*';
+  inherits: false;
+}
+@property --inline-gap-sm {
+  syntax: '*';
+  inherits: false;
+}
+@property --inline-gap-md {
+  syntax: '*';
+  inherits: false;
+}
+@property --inline-gap-lg {
+  syntax: '*';
+  inherits: false;
+}
+@property --inline-gap-xl {
+  syntax: '*';
+  inherits: false;
+}
+@property --inline-justify-base {
+  syntax: '*';
+  inherits: false;
+}
+@property --inline-justify-sm {
+  syntax: '*';
+  inherits: false;
+}
+@property --inline-justify-md {
+  syntax: '*';
+  inherits: false;
+}
+@property --inline-justify-lg {
+  syntax: '*';
+  inherits: false;
+}
+@property --inline-justify-xl {
+  syntax: '*';
+  inherits: false;
+}
+@property --inline-row-gap-base {
+  syntax: '*';
+  inherits: false;
+}
+@property --inline-row-gap-sm {
+  syntax: '*';
+  inherits: false;
+}
+@property --inline-row-gap-md {
+  syntax: '*';
+  inherits: false;
+}
+@property --inline-row-gap-lg {
+  syntax: '*';
+  inherits: false;
+}
+@property --inline-row-gap-xl {
+  syntax: '*';
+  inherits: false;
+}
+@property --section-space-base {
+  syntax: '*';
+  inherits: false;
+}
+@property --section-space-sm {
+  syntax: '*';
+  inherits: false;
+}
+@property --section-space-md {
+  syntax: '*';
+  inherits: false;
+}
+@property --section-space-lg {
+  syntax: '*';
+  inherits: false;
+}
+@property --section-space-xl {
+  syntax: '*';
+  inherits: false;
+}
+@property --split-align-base {
+  syntax: '*';
+  inherits: false;
+}
+@property --split-align-sm {
+  syntax: '*';
+  inherits: false;
+}
+@property --split-align-md {
+  syntax: '*';
+  inherits: false;
+}
+@property --split-align-lg {
+  syntax: '*';
+  inherits: false;
+}
+@property --split-align-xl {
+  syntax: '*';
+  inherits: false;
+}
+@property --split-gap-base {
+  syntax: '*';
+  inherits: false;
+}
+@property --split-gap-sm {
+  syntax: '*';
+  inherits: false;
+}
+@property --split-gap-md {
+  syntax: '*';
+  inherits: false;
+}
+@property --split-gap-lg {
+  syntax: '*';
+  inherits: false;
+}
+@property --split-gap-xl {
+  syntax: '*';
+  inherits: false;
+}
+@property --stack-align-base {
+  syntax: '*';
+  inherits: false;
+}
+@property --stack-align-sm {
+  syntax: '*';
+  inherits: false;
+}
+@property --stack-align-md {
+  syntax: '*';
+  inherits: false;
+}
+@property --stack-align-lg {
+  syntax: '*';
+  inherits: false;
+}
+@property --stack-align-xl {
+  syntax: '*';
+  inherits: false;
+}
+@property --stack-gap-base {
+  syntax: '*';
+  inherits: false;
+}
+@property --stack-gap-sm {
+  syntax: '*';
+  inherits: false;
+}
+@property --stack-gap-md {
+  syntax: '*';
+  inherits: false;
+}
+@property --stack-gap-lg {
+  syntax: '*';
+  inherits: false;
+}
+@property --stack-gap-xl {
+  syntax: '*';
+  inherits: false;
+}
+@property --text-size-base {
+  syntax: '*';
+  inherits: false;
+}
+@property --text-size-sm {
+  syntax: '*';
+  inherits: false;
+}
+@property --text-size-md {
+  syntax: '*';
+  inherits: false;
+}
+@property --text-size-lg {
+  syntax: '*';
+  inherits: false;
+}
+@property --text-size-xl {
+  syntax: '*';
+  inherits: false;
+}

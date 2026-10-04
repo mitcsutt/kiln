@@ -1,0 +1,112 @@
+/*
+ * Shared field text: label, description and error. Used by Field, Fieldset,
+ * CheckboxField and RadioGroup items so every label in a form reads the same.
+ *
+ * Component tokens:
+ *   --field-label-size        default var(--text-sm)
+ *   --field-description-size  default var(--text-sm)
+ */
+.label {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 0.35em;
+  padding: 0;
+  font-family: var(--font-text);
+  font-size: var(--field-label-size, var(--text-sm));
+  font-weight: var(--label-weight);
+  letter-spacing: var(--label-tracking);
+  text-transform: var(--label-transform);
+  line-height: var(--leading-snug);
+  color: var(--color-ink);
+}
+
+/* Visual only — the control carries aria-required. Muted ink: required isn't an error. */
+.required {
+  color: var(--color-ink-muted);
+  font-weight: var(--label-weight);
+}
+
+.optional {
+  color: var(--color-ink-subtle);
+  font-weight: normal;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.description {
+  max-inline-size: 64ch;
+  font-size: var(--field-description-size, var(--text-sm));
+  line-height: var(--leading-snug);
+  color: var(--color-ink-muted);
+  text-wrap: pretty;
+}
+
+.error {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4em;
+  max-inline-size: 64ch;
+  font-size: var(--field-description-size, var(--text-sm));
+  font-weight: var(--label-weight);
+  line-height: var(--leading-snug);
+  color: var(--tone-critical-text);
+  text-wrap: pretty;
+}
+
+/* Glyph sits on the first line's centre, not the block's. */
+.errorIcon {
+  flex: none;
+  block-size: 1lh;
+  inline-size: 1.1em;
+}
+
+/* Non-blocking advice — same shape as .error, caution tone instead of critical. */
+.warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4em;
+  max-inline-size: 64ch;
+  font-size: var(--field-description-size, var(--text-sm));
+  line-height: var(--leading-snug);
+  color: var(--tone-caution-text);
+  text-wrap: pretty;
+}
+
+.warningIcon {
+  flex: none;
+  block-size: 1lh;
+  inline-size: 1.1em;
+}
+
+/* validating spinner after the label text */
+.busy {
+  flex: none;
+  color: var(--color-ink-subtle);
+}
+
+/* maxLength counter under the control */
+.count {
+  font-size: var(--field-description-size, var(--text-sm));
+  color: var(--color-ink-subtle);
+  font-variant-numeric: tabular-nums lining-nums;
+  text-align: end;
+}
+
+.visuallyHidden {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+[data-disabled] > .label,
+[data-disabled] > * > .label,
+.label[data-disabled] {
+  color: var(--color-ink-subtle);
+}

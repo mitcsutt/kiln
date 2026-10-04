@@ -1,0 +1,10 @@
+/*
+ * Accounting columns: non-negative amounts end in an invisible ")" (drawn by the pad's
+ * ::after, so it never enters the text content) that keeps their decimals aligned with the
+ * parenthesised negatives when right-aligned in a table. The pad sits inside Numeral's
+ * proportional suffix run, the same setting as the real ")".
+ */
+.pad::after {
+  content: ')';
+  visibility: hidden;
+}

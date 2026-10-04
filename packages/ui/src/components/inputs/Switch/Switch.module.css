@@ -1,0 +1,116 @@
+/*
+ * Track + thumb. The thumb travels (track width − track height) — a pill in Monograph and
+ * Fiesta, a squared key in Ledger (radius follows --radius-action). Fiesta's spring
+ * easing makes the thumb land with a bump.
+ *
+ * Component tokens:
+ *   --switch-radius            default var(--radius-action)
+ *   --control-checked-bg       default var(--color-accent)
+ *   --control-checked-border   default var(--color-accent)
+ *   --control-checked-ink      default var(--color-accent-ink)   (thumb when on)
+ *   --control-border           default var(--color-line-control) (unchecked edge, ≥ 3:1)
+ *   --control-shadow           default var(--shadow-active)
+ */
+.switch {
+  --_h: calc(var(--control-sm) * 0.6875);
+  --_w: calc(var(--_h) * 1.8);
+  --_inset: 2px;
+  /* An unchecked box is identified only by its edge, so it needs 3:1 (WCAG 1.4.11):
+     line-strong alone is a ~2:1 hairline in the quieter themes. */
+  --_border: var(--control-border, var(--color-line-control));
+  --_radius: var(--switch-radius, var(--radius-action));
+
+  all: unset;
+  box-sizing: border-box;
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  inline-size: var(--_w);
+  block-size: var(--_h);
+  padding: var(--_inset);
+  border: var(--border-width) solid var(--_border);
+  border-radius: var(--_radius);
+  background-color: var(--color-surface-sunken);
+  box-shadow: var(--control-shadow, var(--shadow-active));
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--dur-2) var(--ease-out),
+    border-color var(--dur-2) var(--ease-out),
+    translate var(--dur-1) var(--ease-spring),
+    box-shadow var(--dur-1) var(--ease-out);
+}
+.switch[data-size='sm'] {
+  --_h: calc(var(--control-sm) * 0.5625);
+}
+
+.switch::before {
+  content: '';
+  position: absolute;
+  inset: calc(var(--space-1) * -1.5);
+}
+
+@media (hover: hover) {
+  .switch:hover:not([data-disabled], [data-state='checked']) {
+    --_border: color-mix(in oklch, var(--color-line-strong), var(--color-ink) 65%);
+  }
+}
+
+.switch[data-state='checked'] {
+  --_border: var(--control-checked-border, var(--color-accent));
+  background-color: var(--control-checked-bg, var(--color-accent));
+}
+
+.switch[data-invalid] {
+  --_border: var(--tone-critical);
+}
+
+.switch:active:not([data-disabled]) {
+  translate: var(--active-shift) var(--active-shift);
+  box-shadow: none;
+}
+
+.switch:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.switch[data-disabled] {
+  cursor: not-allowed;
+  opacity: 0.45;
+  box-shadow: none;
+}
+
+/* The thumb is always the track's direct child, so it reads the track's --_w/--_h/--_radius. */
+.thumb {
+  display: block;
+  block-size: 100%;
+  aspect-ratio: 1;
+  border-radius: max(1px, calc(var(--_radius) - var(--_inset) - var(--border-width)));
+  background-color: var(--color-ink-muted);
+  transition:
+    translate var(--dur-2) var(--ease-spring),
+    background-color var(--dur-2) var(--ease-out);
+}
+.thumb[data-state='checked'] {
+  translate: calc(var(--_w) - var(--_h)) 0;
+  background-color: var(--control-checked-ink, var(--color-accent-ink));
+}
+
+/* Inline label */
+.wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.label {
+  color: var(--color-ink);
+  font-size: var(--text-md);
+  line-height: var(--leading-snug);
+  cursor: pointer;
+}
+.wrapper[data-disabled] .label {
+  color: var(--color-ink-subtle);
+  cursor: not-allowed;
+}

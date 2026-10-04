@@ -1,0 +1,67 @@
+/*
+ * Responsive pattern: see layout/Stack/Stack.module.css. The column template comes
+ * from the component as --split-columns (ratio + reverse); it only applies at and
+ * above the `collapseBelow` breakpoint. Below it the sides stack in DOM order.
+ */
+.split {
+  --_gap: var(--split-gap-base, 0px);
+  --_align: var(--split-align-base, flex-start);
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--_gap);
+  align-items: var(--_align);
+  min-inline-size: 0;
+}
+
+.split > * {
+  min-inline-size: 0;
+}
+
+@media (min-width: 40em) {
+  .split {
+    --_gap: var(--split-gap-sm, 0px);
+    --_align: var(--split-align-sm, flex-start);
+  }
+  .split[data-collapse-below='sm'] {
+    grid-template-columns: var(--split-columns);
+  }
+  .split[data-collapse-below='sm'][data-reverse] > :first-child {
+    order: 2;
+  }
+}
+@media (min-width: 48em) {
+  .split {
+    --_gap: var(--split-gap-md, 0px);
+    --_align: var(--split-align-md, flex-start);
+  }
+  .split[data-collapse-below='md'] {
+    grid-template-columns: var(--split-columns);
+  }
+  .split[data-collapse-below='md'][data-reverse] > :first-child {
+    order: 2;
+  }
+}
+@media (min-width: 64em) {
+  .split {
+    --_gap: var(--split-gap-lg, 0px);
+    --_align: var(--split-align-lg, flex-start);
+  }
+  .split[data-collapse-below='lg'] {
+    grid-template-columns: var(--split-columns);
+  }
+  .split[data-collapse-below='lg'][data-reverse] > :first-child {
+    order: 2;
+  }
+}
+@media (min-width: 80em) {
+  .split {
+    --_gap: var(--split-gap-xl, 0px);
+    --_align: var(--split-align-xl, flex-start);
+  }
+}
+
+/* `hidden` wins over the display above (author CSS otherwise beats the UA [hidden] rule). */
+.split[hidden] {
+  display: none;
+}
