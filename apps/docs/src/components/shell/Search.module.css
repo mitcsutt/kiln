@@ -1,0 +1,29 @@
+.results {
+  max-block-size: min(60vh, 32rem);
+  overflow-y: auto;
+}
+
+.result {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding-block: var(--space-2);
+  color: inherit;
+  text-decoration: none;
+}
+.result[data-type='heading'],
+.result[data-type='text'] {
+  padding-inline-start: var(--space-4);
+}
+.result:hover,
+.result:focus-visible {
+  color: var(--color-accent-text);
+}
+.result:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+.result mark {
+  background: var(--color-highlight);
+  color: var(--color-highlight-ink);
+}

@@ -1,0 +1,21 @@
+---
+title: Sheet
+description: A panel that slides in from an edge. A drawer on desktop, a bottom sheet on a phone.
+exports: [Sheet]
+---
+
+`Sheet` is a dialog that slides in from the side or the bottom. It's built on Radix Dialog, so it traps focus, closes on Escape or a tap on the scrim, locks page scroll and returns focus to its trigger.
+
+<Example name="ui/overlays/sheet/usage" />
+
+`side` is `right` (the default), `left` or `bottom`, and takes a responsive value: `{ base: 'bottom', md: 'right' }` is a bottom sheet on phones and a drawer from 48em. A bottom sheet shows a grab handle. `size` sets the width of a side sheet or the maximum height of a bottom one. The mobile navigation in these docs is a `Sheet`.
+
+## API
+
+<ApiTable of="SheetProps, SheetContentProps" />
+
+### Component tokens
+
+Set these in a theme, or on one element, to change this component without touching the rest.
+
+<ComponentTokens of="Sheet" />

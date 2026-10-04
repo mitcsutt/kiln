@@ -1,0 +1,19 @@
+---
+title: FormActions
+description: The row of buttons at the end of a form, with the status line if you want it.
+exports: [FormActions]
+---
+
+`FormActions` is an [ActionBar](/docs/ui/layout/action-bar) for forms. `status` adds a `FormStatus` at its start, and `sticky` keeps it in view while a long form scrolls.
+
+<Example name="forms/layouts/form-actions/usage" />
+
+## In a schema
+
+```json
+{ "layout": "actions", "align": "end", "children": [{ "content": "submit", "label": "Save line" }] }
+```
+
+## API
+
+<ApiTable of="FormActionsProps" />

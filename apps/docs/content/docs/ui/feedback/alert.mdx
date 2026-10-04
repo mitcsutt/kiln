@@ -1,0 +1,24 @@
+---
+title: Alert
+description: An inline message about the thing next to it. A hairline frame, the tone in its glyph, never a coloured stripe.
+exports: [Alert]
+---
+
+`Alert` tells the reader something about the content around it: an error loading it, a change to it, a success. It's a full hairline frame with the tone in the glyph and a short tab on the top edge, and its title in the heading face. It isn't a tinted box by default, and it never has a coloured stripe down the left edge.
+
+<Example name="ui/feedback/alert/usage" />
+
+- `tone` is `neutral`, `info`, `positive`, `caution` or `critical`, and sets the glyph and its colour. Critical and caution alerts interrupt (`role="alert"`); the others are announced politely (`role="status"`).
+- `variant="soft"` tints the box, for the rare alert that must shout.
+- `action` puts one button beside the message, like "Try again".
+- `onDismiss` adds a dismiss button (named with `dismissLabel`). You remove the alert.
+
+## API
+
+<ApiTable of="AlertProps" />
+
+### Component tokens
+
+Set these in a theme, or on one element, to change this component without touching the rest.
+
+<ComponentTokens of="Alert" />

@@ -1,0 +1,21 @@
+.pair,
+.grid {
+  display: grid;
+  gap: var(--space-5);
+  margin-block: var(--space-6);
+}
+.pair {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+}
+.grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+}
+
+/* Each sheet is its own theme scope: framed, painted in its theme's canvas. */
+.sheet {
+  padding: var(--space-5);
+  border: var(--border-width) solid var(--color-line-strong);
+  border-radius: var(--radius-surface);
+  box-shadow: var(--shadow-surface);
+  font-family: var(--font-text);
+}

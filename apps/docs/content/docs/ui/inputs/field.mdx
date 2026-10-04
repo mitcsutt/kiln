@@ -1,0 +1,44 @@
+---
+title: Field
+description: Wires a label, a description, an error and a warning to one control. Every Kiln input works inside it.
+exports: [Field, useFieldControl]
+---
+
+Every input in Kiln exists twice. The bare control (`Input`, `NumberInput`, `Combobox`) works anywhere, and the `*Field` version (`TextField`, `NumberField`, `ComboboxField`) adds the label, description, error and warning. `Field` is what the `*Field`s are made of, and what you use to give any other control the same treatment.
+
+<Example name="ui/inputs/field/usage" />
+
+The label is wired to the control (`htmlFor`), the description and messages to `aria-describedby`, and an error sets `aria-invalid` on the control. Kiln's controls read this wiring from the `Field` around them, so you never pass ids by hand.
+
+## Errors and warnings are two channels
+
+- **`error`** blocks submission. It sets `aria-invalid`, renders in the critical tone, and is announced as it appears.
+- **`warning`** is advice ("Usernames are case-sensitive") in the caution tone. It never blocks and is never announced as an alert.
+
+An error replaces the warning while it shows. Plain fields show whatever `error` you pass; [kiln-forms](/docs/forms) decides _when_ to show one (after the field is blurred or after a submit attempt). Pass `errorLive={false}` when an error summary owns the announcement, and `errorHidden` when the layout shows the message somewhere else.
+
+`required` marks the field for assistive technology; `optional` adds a visible "Optional" (or your own text) instead, for forms where most fields are required. `validating` shows that an async check is running.
+
+## Layout
+
+`layout="stack"` (the default) puts the label above the control. `horizontal` gives the label and the control their own columns, stacking below `sm`. `inline` hides the label visually so the control can sit in a sentence. The group fields (checkbox and radio groups, chips, choice cards, date range) take the same `layout`.
+
+<Example name="ui/inputs/field/layouts" />
+
+## Your own control
+
+`useFieldControl()` returns the surrounding `Field`'s wiring (`id`, `describedBy`, `invalid`, `disabled`, and so on), or `null` outside one. Kiln's controls call it themselves; call it from your own control to make it Field-aware.
+
+<Example name="ui/inputs/field/custom-control" />
+
+<ApiSignature of="useFieldControl" />
+
+## API
+
+<ApiTable of="FieldProps" />
+
+### Component tokens
+
+Set these in a theme, or on one element, to change this component without touching the rest.
+
+<ComponentTokens of="Field" />

@@ -1,0 +1,31 @@
+---
+title: Avatar
+description: A person or organisation, as an image with an initials fallback on a colour that's always the same for that name.
+exports: [Avatar, getInitials, avatarColor]
+---
+
+`Avatar` shows a picture when there is one and falls back to initials when there isn't (or when the image fails to load). The fallback colour comes from the name, so the same person gets the same colour on every screen. Its shape is the theme's `--radius-avatar`: round in Paper and Fiesta, a rounded square in Monograph.
+
+<Example name="ui/display/avatar/usage" />
+
+`name` is required: it's the accessible name and the source of the initials and colour. `ring` adds a canvas-coloured ring, for avatars that overlap or sit on images.
+
+## Helpers
+
+`getInitials` and `avatarColor` are the functions Avatar uses, for when you need the same initials or colour elsewhere, like a chart legend.
+
+<Example name="ui/display/avatar/helpers" />
+
+<ApiSignature of="getInitials" />
+
+<ApiSignature of="avatarColor" />
+
+## API
+
+<ApiTable of="AvatarProps" />
+
+### Component tokens
+
+Set these in a theme, or on one element, to change this component without touching the rest.
+
+<ComponentTokens of="Avatar" />

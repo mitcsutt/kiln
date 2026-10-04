@@ -1,0 +1,21 @@
+---
+title: Popover
+description: A non-modal panel anchored to its trigger, for details, a filter or a small form.
+exports: [Popover]
+---
+
+`Popover` opens a floating panel beside its trigger. It's non-modal: the rest of the page stays usable, and it closes on Escape or a click outside, returning focus to the trigger.
+
+<Example name="ui/overlays/popover/usage" />
+
+Give `Popover.Content` an `aria-label` (or a heading inside it). `arrow` draws a pointer to the trigger. For a hint on hover, use a [Tooltip](/docs/ui/overlays/tooltip); for a list of commands, a [DropdownMenu](/docs/ui/overlays/dropdown-menu).
+
+## API
+
+<ApiTable of="PopoverContentProps" />
+
+### Component tokens
+
+Set these in a theme, or on one element, to change this component without touching the rest.
+
+<ComponentTokens of="Popover" />

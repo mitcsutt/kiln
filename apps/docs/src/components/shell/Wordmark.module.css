@@ -1,0 +1,30 @@
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-ink);
+  text-decoration: none;
+}
+.wordmark:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.mark {
+  inline-size: 0.9em;
+  block-size: 0.9em;
+  border: var(--border-width-strong) solid var(--color-ink);
+  border-radius: var(--radius-chip);
+  background: var(--color-accent);
+  box-shadow: var(--shadow-active);
+}
+
+.name {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: var(--display-weight);
+  font-stretch: var(--display-stretch);
+  letter-spacing: var(--display-tracking);
+  text-transform: var(--display-transform);
+  line-height: 1;
+}

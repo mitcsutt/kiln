@@ -1,0 +1,19 @@
+---
+title: ColorInput
+description: A colour as a hex code, with the native picker as its swatch and optional named presets.
+exports: [ColorInput]
+---
+
+`ColorInput` holds a colour as a `#rrggbb` hex code: the native colour picker is its leading swatch, the hex text follows (normalised on blur, so `#ABC` becomes `#aabbcc`), and `swatches` adds named presets as a radio group. With `swatchesOnly`, only the presets can be chosen.
+
+<Example name="ui/inputs/color-input/usage" />
+
+## API
+
+<ApiTable of="ColorInputProps" />
+
+### Component tokens
+
+Set these in a theme, or on one element, to change this component without touching the rest.
+
+<ComponentTokens of="ColorInput" />

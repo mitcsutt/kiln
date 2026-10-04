@@ -18,6 +18,7 @@ pnpm install
 
 ```
 apps/
+  docs/              the Fumadocs docs site (private, never published)
   storybook/         the Storybook workbench (private, never published)
 packages/
   ui/                @mitcsutt/kiln-ui
@@ -28,6 +29,7 @@ packages/
   testing-react18/   private test fixture for the React 18 test pass (never published)
 docs/
   adr/               architecture decision records
+  tree.json          the information architecture the docs and Storybook share
   releasing.md       how releases work, and what the first publish needs
   target-state.md    what the repo looks like when the first body of work is done
 .changeset/          pending changesets and the Changesets config
@@ -42,19 +44,22 @@ Directories use the short name (`packages/tsconfig`), and the package name carri
 
 Run these from the repo root. Turborepo runs each one across the workspace and caches the results.
 
-| Command               | What it does                                                         |
-| --------------------- | -------------------------------------------------------------------- |
-| `pnpm lint`           | ESLint in every package and at the root, plus `prettier --check`     |
-| `pnpm typecheck`      | `tsc --noEmit` in every package and at the root                      |
-| `pnpm test`           | Vitest in every package                                              |
-| `pnpm build`          | Builds every package that has a build step                           |
-| `pnpm test:react18`   | The runtime packages' test suites again, on React 18.3               |
-| `pnpm test:storybook` | Every story as a browser test: render, `play` function and axe       |
-| `pnpm check:package`  | `publint` and `@arethetypeswrong/cli` on each packed package         |
-| `pnpm size`           | Size report against each package's budgets, with tree-shaking checks |
-| `pnpm format`         | Formats the whole repo with Prettier                                 |
+| Command               | What it does                                                          |
+| --------------------- | --------------------------------------------------------------------- |
+| `pnpm lint`           | ESLint in every package and at the root, plus `prettier --check`      |
+| `pnpm typecheck`      | `tsc --noEmit` in every package and at the root                       |
+| `pnpm test`           | Vitest in every package                                               |
+| `pnpm build`          | Builds every package that has a build step                            |
+| `pnpm test:react18`   | The runtime packages' test suites again, on React 18.3                |
+| `pnpm test:storybook` | Every story as a browser test: render, `play` function and axe        |
+| `pnpm check:links`    | Builds the docs site, serves it and fails on any broken internal link |
+| `pnpm check:package`  | `publint` and `@arethetypeswrong/cli` on each packed package          |
+| `pnpm size`           | Size report against each package's budgets, with tree-shaking checks  |
+| `pnpm format`         | Formats the whole repo with Prettier                                  |
 
 To work on one package, filter to it, for example `pnpm turbo run test --filter=@mitcsutt/kiln-eslint-config`.
+
+To run the docs site, run `pnpm --filter @mitcsutt/kiln-docs dev` and open http://localhost:3000. Pages are MDX in `apps/docs/content/docs`, and each live example is a file in `apps/docs/examples` that the page names with `<Example name="…" />`; API tables come from the package types. [`apps/docs/README.md`](apps/docs/README.md) has the details.
 
 To open the Storybook workbench, run `pnpm --filter @mitcsutt/kiln-storybook dev`. The story tests need Chromium from Playwright the first time: `pnpm --filter @mitcsutt/kiln-storybook exec playwright install chromium`. They start in Paper, light; set `STORYBOOK_THEME` and `STORYBOOK_MODE` to run them in another theme or mode, as CI does for every one.
 

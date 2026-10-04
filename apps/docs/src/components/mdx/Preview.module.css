@@ -1,0 +1,39 @@
+/* One frame around the live example and its source, ruled between them. */
+.preview {
+  margin-inline: 0;
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--radius-surface);
+  overflow: hidden;
+}
+
+.stage {
+  padding: var(--space-6);
+  background: var(--color-canvas);
+  background-image: var(--canvas-image);
+  background-size: var(--canvas-image-size);
+  color: var(--color-ink);
+  font-family: var(--font-text);
+  font-size: var(--text-md);
+  line-height: var(--leading-body);
+}
+.stage[data-layout='centered'] {
+  display: grid;
+  place-items: center;
+  min-block-size: 10rem;
+}
+.stage[data-layout='bleed'] {
+  padding: 0;
+}
+.stage[data-layout='frame'] {
+  block-size: 32rem;
+  padding: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.code {
+  border-block-start: var(--border-width) solid var(--color-line);
+  border-radius: 0;
+  max-block-size: 32rem;
+  overflow: auto;
+}

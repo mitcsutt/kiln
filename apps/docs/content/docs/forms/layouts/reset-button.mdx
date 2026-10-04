@@ -1,0 +1,21 @@
+---
+title: ResetButton
+description: Resets the form to its defaults, or to the last saved values. Quiet by default.
+exports: [ResetButton]
+---
+
+`ResetButton` is a `Button` with `type="reset"`, `ghost` and `neutral` unless you say otherwise. Its default text comes from `messages.reset`.
+
+<Example name="forms/layouts/reset-button/usage" />
+
+`to="baseline"` resets to the last saved values (after a rebaselining submit or an autosave) rather than the original defaults.
+
+## In a schema
+
+```json
+{ "content": "reset", "label": "Start again" }
+```
+
+## API
+
+<ApiTable of="ResetButtonProps" />

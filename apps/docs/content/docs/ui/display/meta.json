@@ -1,0 +1,23 @@
+{
+  "title": "Display",
+  "pages": [
+    "avatar",
+    "avatar-group",
+    "badge",
+    "card",
+    "code-block",
+    "data-list",
+    "delta",
+    "empty-state",
+    "list",
+    "marquee",
+    "media",
+    "meter",
+    "progress",
+    "skeleton",
+    "stamp",
+    "stat",
+    "table",
+    "tag"
+  ]
+}

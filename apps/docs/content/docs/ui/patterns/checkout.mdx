@@ -1,0 +1,17 @@
+---
+title: Checkout
+description: A short checkout with the order summary beside the form, choice cards for collection, and a total that lines up.
+---
+
+A checkout asks for as little as it can, shows the cost before the button that commits to it, and says what happens next. The order summary sits beside the form on wide screens and below it on a phone.
+
+<Example name="ui/patterns/checkout" layout="bleed" />
+
+## What it's made of
+
+- **`Split ratio="7/5"`**: form first in reading order, summary second, so the summary follows the form when the split stacks.
+- **`ChoiceCardsField`** for the collection choice, because each option carries a description and a price worth comparing. Use `RadioGroupField` for options that are just labels.
+- **`TextField optional`** marks the one optional field, rather than starring every required one.
+- **`List`** with `List.Trailing` amounts for the basket, and **`DataList`** for subtotal lines.
+- **`Amount`** formats every price with the currency and tabular figures, and the total uses a bigger step so it reads first.
+- **The button says the amount.** "Pay £120.50" leaves no doubt about what pressing it does.

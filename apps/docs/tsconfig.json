@@ -1,0 +1,20 @@
+{
+  "extends": ["@mitcsutt/kiln-tsconfig/app", "@mitcsutt/kiln-tsconfig/react"],
+  "compilerOptions": {
+    "types": ["node", "vitest/globals"],
+    "plugins": [{ "name": "next" }],
+    "paths": {
+      "@/*": ["./src/*"],
+      "fumadocs-mdx:collections/*": ["./.source/*"]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "*.js",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    ".source/**/*.ts"
+  ],
+  "exclude": ["node_modules", ".next"]
+}

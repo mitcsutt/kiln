@@ -1,0 +1,27 @@
+---
+title: Link
+description: An inline text link. Hover thickens the underline instead of changing colour, so it reads in every theme.
+exports: [Link]
+---
+
+`Link` is for links inside text. It's always underlined by default, because colour alone doesn't tell people what's a link (and in Paper, links are ink). Hovering thickens the underline rather than changing the colour.
+
+<Example name="ui/typography/link/usage" />
+
+`external` adds `target="_blank"`, `rel="noopener noreferrer"`, a small arrow, and a visually hidden "(opens in new tab)" for screen readers. `underline="hover"` is for quiet links in dense places like footers, where it's clear from context that they're links. With `asChild`, your router's link renders with Link's styles:
+
+```tsx
+<Link asChild>
+  <NextLink href="/fares">Fares and passes</NextLink>
+</Link>
+```
+
+## API
+
+<ApiTable of="LinkProps" />
+
+### Component tokens
+
+Set these in a theme, or on one element, to change this component without touching the rest.
+
+<ComponentTokens of="Link" />

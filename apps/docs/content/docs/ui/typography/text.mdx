@@ -1,0 +1,26 @@
+---
+title: Text
+description: Body text in the theme's text face, with a size, tone and weight from the scale.
+exports: [Text]
+---
+
+`Text` is a paragraph by default and any inline element with `as` (`span`, `strong`, `em`, `small`, `label`, `time`). Size, tone, weight and measure are props, so text never needs a class.
+
+<Example name="ui/typography/text/usage" />
+
+- `tone` is `default`, `muted`, `subtle`, `accent`, `positive`, `caution`, `critical` or `inverse`. Status tones use each tone's AA text colour.
+- `numeric` switches to tabular, lining figures in the theme's numeric face, for times and counts that line up.
+- `truncate` cuts to one line with an ellipsis, or to a number of lines (`truncate={2}`).
+- `measure` caps the line length at a named width (`text` is about 68 characters).
+
+For long-form writing with headings, lists and quotes, use [Prose](/docs/ui/typography/prose).
+
+## API
+
+<ApiTable of="TextProps" />
+
+### Component tokens
+
+Set these in a theme, or on one element, to change this component without touching the rest.
+
+<ComponentTokens of="Text" />

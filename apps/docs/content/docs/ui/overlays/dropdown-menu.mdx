@@ -1,0 +1,23 @@
+---
+title: DropdownMenu
+description: A list of commands behind a button, with checkboxes, radio groups, submenus and full keyboard support.
+exports: [DropdownMenu]
+---
+
+`DropdownMenu` holds the actions you don't need to see all the time: a row's options, a sort order. It's Radix Menu underneath, so arrow keys, typeahead, Home, End and Escape all work.
+
+<Example name="ui/overlays/dropdown-menu/usage" />
+
+- `DropdownMenu.Item` is a command. It takes a `leadingIcon`, a `shortcut` hint, and `tone="critical"` for destructive commands.
+- `DropdownMenu.CheckboxItem` toggles a setting; `DropdownMenu.RadioGroup` with `RadioItem`s picks one of a set.
+- `Label`, `Separator` and `Group` organise longer menus, and `Sub`, `SubTrigger` and `SubContent` nest one.
+
+## API
+
+<ApiTable of="DropdownMenuItemProps, DropdownMenuContentProps" />
+
+### Component tokens
+
+Set these in a theme, or on one element, to change this component without touching the rest.
+
+<ComponentTokens of="DropdownMenu" />

@@ -1,0 +1,15 @@
+---
+title: AmountField
+description: A labelled money input with the currency's decimals and tabular figures.
+exports: [AmountField]
+---
+
+`AmountField` is a [Field](/docs/ui/inputs/field) around an [AmountInput](/docs/ui/inputs/amount-input). `currency` is required, and sets the decimal places and the symbol.
+
+<Example name="ui/inputs/amount-field/usage" />
+
+Store money in minor units (`unit="minor"`, integer pence) so it's never a float.
+
+## API
+
+<ApiTable of="AmountFieldProps" />

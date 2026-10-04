@@ -1,0 +1,20 @@
+/* Each specimen is a framed sheet in its own theme; the page's mode carries through. */
+.specimen {
+  padding: var(--space-6);
+  border: var(--border-width) solid var(--color-line-strong);
+  border-radius: var(--radius-surface);
+  box-shadow: var(--shadow-surface);
+}
+
+.packageLink {
+  color: var(--color-ink);
+  text-decoration-color: var(--color-line-strong);
+  text-underline-offset: 0.2em;
+}
+.packageLink:hover {
+  text-decoration-color: currentColor;
+}
+.packageLink:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}

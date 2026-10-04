@@ -16,6 +16,7 @@
     "test:react18": "turbo run test:react18",
     "test:storybook": "turbo run test:storybook",
     "check:package": "turbo run check:package",
+    "check:links": "turbo run check:links",
     "size": "turbo run size"
   },
   "prettier": "@mitcsutt/kiln-prettier-config",

@@ -1,0 +1,12 @@
+---
+title: Stack and inline
+description: Plain vertical and horizontal layout in schema mode, rendered by kiln-ui's own Stack and Inline.
+---
+
+kiln-forms has no wrapper for plain layout: in component mode, use kiln-ui's [Stack](/docs/ui/layout/stack) and [Inline](/docs/ui/layout/inline) directly. In schema mode, `stack` and `inline` nodes render those same components, with their `gap` and `align` props.
+
+<Example name="forms/layouts/stack-and-inline/usage" />
+
+```json
+{ "layout": "stack", "gap": 5, "children": [] }
+```

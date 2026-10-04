@@ -97,6 +97,17 @@ jobs:
       - name: Serve it under /storybook and load a story
         run: pnpm --filter @mitcsutt/kiln-storybook check:static
 
+  # The docs site builds as a deployable artefact (nothing is deployed), and every
+  # internal link and anchor in it resolves (ADR 0019).
+  docs:
+    name: Docs build and links
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup
+      - name: Build the docs site and check its links
+        run: pnpm check:links
+
   package:
     name: Package checks
     runs-on: ubuntu-latest

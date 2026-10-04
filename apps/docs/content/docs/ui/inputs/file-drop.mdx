@@ -1,0 +1,21 @@
+---
+title: FileDrop
+description: Pick or drop files. The real control is a native file input; dragging is an enhancement.
+exports: [FileDrop]
+---
+
+`FileDrop` is a native `<input type="file">` (visually hidden, labelled by its Field, with the focus ring on the drop zone) with drag and drop on top. It holds the files in state rather than uploading them: the value is `File`s, plus any already-stored files you pass back in. The input's file list is kept in sync where the browser allows, so a native form submit sends the current files.
+
+<Example name="ui/inputs/file-drop/usage" />
+
+`accept`, `maxFiles` and `maxSize` constrain what's taken, and `onReject` says what was turned away and why. `preview` shows the chosen files as a `list` or as `thumbnails`.
+
+## API
+
+<ApiTable of="FileDropProps" />
+
+### Component tokens
+
+Set these in a theme, or on one element, to change this component without touching the rest.
+
+<ComponentTokens of="FileDrop" />

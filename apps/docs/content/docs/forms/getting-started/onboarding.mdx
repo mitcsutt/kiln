@@ -1,0 +1,15 @@
+---
+title: Onboarding
+description: A multi-step application with a branch that only some people see, and a review step built from the same fields.
+---
+
+Four steps, one of them conditional: the "Proof" step only exists for people claiming a concession. Choose a concession, fill in the card number, then go back and choose "No": the proof step disappears, and its values are reset to their defaults in what's submitted.
+
+<Example name="forms/getting-started/onboarding" layout="bleed" />
+
+## How it's built
+
+- **`FormSteps`** shows a `Stepper`, renders Back and Next, validates each step before moving on, and moves focus to the new step's heading. On the last step, Next submits.
+- **`When`** around a step removes it from the sequence while it's hidden. `names={['proof']}` tells it which values to reset when hidden, even before the step has been shown.
+- **`FormReview`** renders the same fields again in view mode, as a list of answers to check.
+- **Pruning.** `onSubmit` receives values with hidden branches back at their defaults, so a concession card number typed and then abandoned is never sent.

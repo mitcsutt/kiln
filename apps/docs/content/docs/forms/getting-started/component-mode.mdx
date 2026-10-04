@@ -1,0 +1,77 @@
+---
+title: Component mode
+description: Write a form as JSX with useAppForm. Field names are type-checked against your values, and each field binds only to paths of the right type.
+exports: [withForm, withFieldGroup, useFields, formOptions]
+---
+
+In component mode, `useAppForm` takes your default values and returns a form object. The form object carries a bound component for every field kind (`form.TextField`, `form.NumberField`, `form.SelectField`), each typed against your values.
+
+```tsx
+import { Form, SubmitButton, useAppForm } from '@mitcsutt/kiln-forms'
+
+const form = useAppForm({
+  defaultValues: { name: '', seats: null as number | null },
+  onSubmit: async ({ value }) => save(value),
+})
+
+<Form form={form} aria-label="Book seats">
+  <form.TextField name="name" label="Full name" />
+  <form.NumberField name="seats" label="Seats" min={1} />
+  <SubmitButton>Book</SubmitButton>
+</Form>
+```
+
+## Types do the checking
+
+`name` only accepts paths whose value the field can hold:
+
+| Binding                                                     | Result                                                     |
+| ----------------------------------------------------------- | ---------------------------------------------------------- |
+| `form.TextField` to `name: string` or `address.city`        | fine                                                       |
+| `form.TextField` to `seats: number \| null`                 | a type error                                               |
+| `form.TextField` to `role: 'admin' \| 'member'`             | a type error: a text box would write any string            |
+| `form.NumberField` to `seats: number \| null`               | fine (clearing it writes `null`)                           |
+| `form.SelectField` to `role` with an option `value: 'root'` | a type error: option values are typed to the union         |
+| `form.CheckboxGroupField` to `days: ('mon' \| 'tue')[]`     | fine, and each option's `value` must be `'mon'` or `'tue'` |
+
+Model a number that can be empty as `number | null`: empty number fields write `null`, never `NaN` or `''`.
+
+## The `Form` element
+
+`<Form form={form}>` renders a `<form noValidate>` wired to the kit: submitting runs validation and your `onSubmit`, repeated submits are ignored while one is in flight, and a reset button resets the form. Give it an accessible name (`aria-label`, or `aria-labelledby` pointing at a heading). `mode="view"` turns every field into read-only text; `disabled` and `readOnly` cascade to every field.
+
+## The TanStack way still works
+
+`form` _is_ TanStack Form's form API, so everything from TanStack works: `form.AppField` with a render prop, `form.Subscribe`, `form.store`, `form.setFieldValue`. The bound shorthand is a convenience over `AppField`, not a replacement.
+
+<Example name="forms/getting-started/canonical" />
+
+Inside `AppField`, `field.TextField` isn't checked against the value type (TanStack can't do it there); a development-only guard catches a mismatch at runtime instead.
+
+## Splitting a big form
+
+`withForm` makes a component out of part of a form, typed against the same values. Share the options between the form and its pieces with `formOptions`.
+
+<Example name="forms/getting-started/with-form" />
+
+## Reusable groups of fields
+
+`withFieldGroup` makes a group of fields that binds wherever a form has the right shape, and `useFields(group)` gives typed shorthand inside it. Bind the group with `fields="password"`: TypeScript checks that `password` has the group's shape.
+
+<Example name="forms/getting-started/field-group" />
+
+<ApiSignature of="useFields" />
+
+## useAppForm options
+
+Beyond `defaultValues` and `onSubmit`, the options you'll reach for most:
+
+- `schema`: a Standard Schema (zod, valibot, arktype) for the whole form. `onSubmit` receives its parsed `output` as well as `value`. See [Validation](/docs/forms/getting-started/validation).
+- `validateOn`: when validation first runs, `'blur'` (the default), `'change'` or `'submit'`. After a field's first blur, or any submit, it's always live.
+- `errorVisibility`: when errors show. The default shows them once a field is left or after a submit.
+- `afterSubmit`: `'rebaseline'` (the default: the submitted values become the new clean state), `'reset'`, `'keep'` or `'lock'` (the submit button stays locked until a reset, for dialogs).
+- `focusOnInvalid`: where focus goes on an invalid submit. `'auto'` is the error summary if one is mounted, else the first invalid field.
+- `derive`: fields computed from other fields. See [Savings goal](/docs/forms/getting-started/savings-goal).
+- `messages`: replace any of the library's text, from "Saving…" to the error summary's title.
+
+<ApiTable of="KitFormOptions" />

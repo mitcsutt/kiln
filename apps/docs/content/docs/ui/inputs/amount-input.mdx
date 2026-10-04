@@ -1,0 +1,15 @@
+---
+title: AmountInput
+description: Money typed as text, with the currency's decimals, grouped when you leave it.
+exports: [AmountInput]
+---
+
+`AmountInput` is a text box for money, not a spinbutton: arrow keys shouldn't nudge a payment. Its decimal places come from the `currency`, it's tabular and right-aligned like every amount, and it's grouped when blurred ("1,450.00") and raw while focused.
+
+<Example name="ui/inputs/amount-input/usage" />
+
+`value` is a number in `unit`s: `major` (pounds, the default) or `minor` (pence), so you can store integers. `allowNegative` permits refunds and corrections. `showCurrency` controls the leading symbol. `name` submits a plain number.
+
+## API
+
+<ApiTable of="AmountInputProps" />

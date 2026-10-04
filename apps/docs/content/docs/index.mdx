@@ -1,0 +1,36 @@
+---
+title: Introduction
+description: Kiln is a themeable React design system, a form library, and the configs they're built with. Start here.
+---
+
+Kiln is a set of packages for building React apps that look like they were designed on purpose:
+
+- **[`@mitcsutt/kiln-ui`](/docs/ui)**: one set of accessible components whose entire look comes from a theme. A theme is one CSS file of tokens; Kiln ships a neutral default and three presets, and you can write your own.
+- **[`@mitcsutt/kiln-forms`](/docs/forms)**: typed forms on TanStack Form, written as components or described as JSON, rendered entirely through kiln-ui.
+- **[Tooling](/docs/tooling)**: the ESLint, Prettier and TypeScript configs Kiln is built with.
+
+Nothing is published to npm yet. These docs describe the packages as they'll be released.
+
+## How Kiln thinks
+
+- **Themes are data, components are structure.** A component never knows which theme it's in. Switch the theme in the header: every page here, the chrome included, renders in it.
+- **Props, not styles.** Layout and intent are typed props (`gap={5}`, `tone="critical"`, `width="text"`), not utility classes or inline styles.
+- **Durable by default.** Components forward refs, work on React 18 and 19, render on the server, and are complete for keyboard and screen reader users.
+- **Specific beats safe.** The median choice is the wrong one. [Foundations](/docs/ui/foundations/tokens) has the rules.
+
+## Where to start
+
+- Building an interface: [UI, getting started](/docs/ui).
+- Building a form: [Forms, getting started](/docs/forms).
+- Writing a theme: [Theming](/docs/ui/foundations/theming).
+- Setting up a project's tooling: [Tooling](/docs/tooling).
+
+## How these docs are organised
+
+The sidebar has one tree, nested by package: **UI** (foundations, then components by group, then themes and patterns), **Forms** (getting started, fields, layouts, hooks, schema) and **Tooling**. Kiln's Storybook uses the same tree, so a component lives at the same path in both.
+
+Every component page has a live example rendered from the real package, the code that renders it, and an API table generated from the component's TypeScript types.
+
+## For agents
+
+Every page is available as Markdown: add `.md` to its URL, or use the **View as Markdown** link under the title. [`/llms.txt`](/llms.txt) lists every page, and [`/llms-full.txt`](/llms-full.txt) is the whole site in one file. Examples and API tables appear in the Markdown as code and tables, read from the same source the pages render.

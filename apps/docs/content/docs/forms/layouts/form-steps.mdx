@@ -1,0 +1,36 @@
+---
+title: FormSteps
+description: A form split into steps, validated one step at a time, with focus and announcements handled.
+exports: [FormSteps, FormStep, useFormSteps]
+---
+
+`FormSteps` shows a [Stepper](/docs/ui/navigation/stepper) and one step at a time, with Back and Next. **Next** validates the current step's fields; if any are invalid it stays, shows their errors and focuses the first. Otherwise it moves on, focuses the new step's heading and announces "Step 2 of 3". On the last step, Next submits the form. The final submit validates every step, and an error in an earlier step takes you back to it.
+
+<Example name="forms/layouts/form-steps/usage" />
+
+- `linear` (on by default) stops the reader skipping ahead past an invalid step.
+- Control the step with `value` and `onValueChange` to keep it in the URL, so a link can open the form at a step.
+- A `FormStep` takes a Standard Schema as `schema` for extra checks on that step only.
+- Wrap a step in [`When`](/docs/forms/layouts/when) to make it conditional: it leaves the sequence while hidden, and its values are pruned. See [Onboarding](/docs/forms/getting-started/onboarding).
+
+## Your own navigation
+
+`nav="none"` removes the built-in buttons, and `useFormSteps()` inside the steps gives you the state and the moves: `next()`, `back()`, `goTo(step)`, `index`, `count`, `isFirst`, `isLast`.
+
+<Example name="forms/layouts/form-steps/custom-nav" />
+
+<ApiSignature of="useFormSteps" />
+
+## In a schema
+
+```json
+{
+  "layout": "steps",
+  "label": "Booking",
+  "children": [{ "layout": "step", "value": "route", "title": "Route", "children": [] }]
+}
+```
+
+## API
+
+<ApiTable of="FormStepsProps, FormStepProps, StepsApi" />

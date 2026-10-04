@@ -1,0 +1,15 @@
+---
+title: NumberInput
+description: A number typed as text, as a spinbutton. Formatted when you leave it, raw while you edit it.
+exports: [NumberInput]
+---
+
+`NumberInput` is a WAI-ARIA spinbutton, never `type="number"` (which mangles locales, scrolls on the wheel and hides what you typed). It shows the number formatted for the locale when blurred ("1,450.5") and raw while focused ("1450.5"), so editing never fights the grouping.
+
+<Example name="ui/inputs/number-input/usage" />
+
+The arrow keys step by `step`, Page Up and Page Down by `largeStep`, Home and End jump to `min` and `max`, and Enter commits. `stepper` adds minus and plus buttons. `name` submits a plain number. The value is `number | null`.
+
+## API
+
+<ApiTable of="NumberInputProps" />

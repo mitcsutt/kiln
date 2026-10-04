@@ -1,0 +1,26 @@
+---
+title: FormAside
+description: The settings layout. A heading and its reason in a column beside the fields.
+exports: [FormAside]
+---
+
+`FormAside` puts a section's heading and a sentence about why it matters in a column on the left, and the fields on the right. Stack several with dividers for a settings page. Below `collapseBelow` the column stacks above the fields.
+
+<Example name="forms/layouts/form-aside/usage" />
+
+The fields are a group labelled by the heading. `ratio` is `4/8` (the default), `5/7` or `1/3`.
+
+## In a schema
+
+```json
+{
+  "layout": "aside",
+  "title": "Profile",
+  "description": "Shown to people you share routes with.",
+  "children": []
+}
+```
+
+## API
+
+<ApiTable of="FormAsideProps" />

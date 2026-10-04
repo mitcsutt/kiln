@@ -1,0 +1,43 @@
+---
+title: Registries
+description: Options loaders, custom validators, computed values and custom nodes, registered with the kit and referenced by key.
+exports: [defineLoader, defineValidator, defineComputer, defineCustomNode]
+---
+
+A schema is JSON, so it can't contain functions. Instead the kit holds them, and the schema refers to them by key. Typed schemas check the keys: referencing a loader that isn't registered is a type error.
+
+<Example name="forms/schema/registries" />
+
+| Registry     | Define with                                                 | Referenced by                                           |
+| ------------ | ----------------------------------------------------------- | ------------------------------------------------------- |
+| `loaders`    | `defineLoader`                                              | `optionsFrom: { "loader": "stops", "deps": [] }`        |
+| `validators` | `defineValidator`                                           | `{ "rule": "custom", "validator": "bookingReference" }` |
+| `computers`  | `defineComputer`                                            | `compute: { "computer": "total", "from": ["adults"] }`  |
+| `nodes`      | `defineCustomNode`                                          | `{ "custom": "notice", "props": { … } }`                |
+| `layouts`    | any component                                               | `{ "layout": "leg", "children": [] }`                   |
+| `fields`     | a [custom field](/docs/forms/getting-started/custom-fields) | `{ "kind": "phone" }`                                   |
+
+Register them once with `kit.extend`, and use the extended kit's `useAppForm`, `defineFormSchema` and `SchemaForm`:
+
+```ts title="src/forms.ts"
+import { kit } from '@mitcsutt/kiln-forms'
+
+export const { useAppForm, defineFormSchema, SchemaForm } = kit.extend({
+  loaders: { stops },
+  validators: { bookingReference },
+  computers: { total },
+  nodes: { notice },
+})
+```
+
+<ApiSignature of="defineLoader" />
+
+<ApiSignature of="defineValidator" />
+
+A validator returns a message to fail and nothing to pass. With `{ async: true }` it runs on the async channel, debounced and abortable. It receives the form's values and the rule's `args`.
+
+<ApiSignature of="defineComputer" />
+
+<ApiSignature of="defineCustomNode" />
+
+A custom node receives `{ form, props, node }`. Its `props` come from JSON and aren't filtered: if it spreads them onto the DOM, filter them first.

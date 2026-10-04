@@ -1,0 +1,44 @@
+---
+title: Overview
+description: Typed React forms on TanStack Form, written as components or described as JSON, rendered entirely through kiln-ui.
+exports: [useAppForm]
+---
+
+`@mitcsutt/kiln-forms` handles form state, validation, submission and accessibility, and renders nothing of its own: every field is a kiln-ui `*Field`, and every layout is built from kiln-ui primitives. A form looks exactly like the same fields would without it.
+
+<Example name="forms/getting-started/first-form" />
+
+Submit it empty to see the error summary, then fix the fields: errors appear after you leave a field or try to submit, and stay live while you fix them.
+
+## Install
+
+```sh
+pnpm add @mitcsutt/kiln-forms @mitcsutt/kiln-ui
+```
+
+kiln-ui, React and React DOM (18.3 or 19) are peer dependencies, so your app has one copy of the UI. The package ships no CSS: load kiln-ui's stylesheet once, as in [UI, getting started](/docs/ui). The only runtime dependency is `@tanstack/react-form`, which you never import yourself.
+
+## Two ways to write a form
+
+Both use the same fields, layouts, validation and accessibility, so you can mix them on one page.
+
+- **[Component mode](/docs/forms/getting-started/component-mode)**: `useAppForm` returns a form whose fields (`form.TextField`, `form.AmountField`) are typed against your values. A text field can't be bound to a number.
+- **[Schema mode](/docs/forms/getting-started/schema-mode)**: describe the form as JSON and render it with `SchemaForm`. Schemas can come from a server or a CMS, and the React-free `@mitcsutt/kiln-forms/schema` entry runs the same rules on your server.
+
+## What it decides for you
+
+- **Error timing.** A field's error shows after it's been left or after a submit attempt, then stays live while it's being fixed ("reward early, punish late").
+- **Errors and warnings.** Errors block submission; warnings are advice that never does.
+- **Submitting.** The submit button is never `disabled`: it's `aria-disabled` with a reason, so everyone can reach it and hear why. An invalid submit focuses the error summary, or the first invalid field after revealing its tab, accordion item or step.
+- **The payload.** Hidden fields go back to their defaults before `onSubmit` sees the values, so a branch the reader didn't take never leaks into what you save.
+- **Performance.** Only the field being edited re-renders on a keystroke.
+
+## Names
+
+Bound fields are exported with a `Form` prefix (`FormTextField`, `FormAmountField`), so they never share a name with kiln-ui's unbound controls (`TextField`). Inside a form you'll mostly use the shorthand on the form object, `form.TextField`, which is the same component.
+
+## Where next
+
+- [Fields](/docs/forms/fields/text-field): all 28, with the value each one holds.
+- [Layouts](/docs/forms/layouts/form): sections, tabs, steps, repeaters and more.
+- [Validation](/docs/forms/getting-started/validation): schemas, field rules, warnings and server errors.

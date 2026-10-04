@@ -1,0 +1,138 @@
+---
+title: Theming
+description: Write a complete theme of your own against the token contract, select it like a built-in, and check it in every component.
+exports: [ThemeScope, useTheme]
+---
+
+A Kiln theme is one CSS file. It sets the tokens in the [contract](/docs/ui/foundations/tokens#the-theme-contract), and nothing else: no component changes, no JavaScript, no build plugin. This guide writes one from scratch. It's called Harbour, it lives in these docs (not in kiln-ui), and you can see it working below.
+
+<Example name="ui/foundations/custom-theme" layout="bleed" />
+
+## 1. Start from one idea
+
+Strong themes take one idea from their subject and apply it everywhere, with everything else quiet. Paper is a typeset proof; Fiesta is a screen-printed matchday poster. Harbour is _the tide table posted at a ferry terminal_. That idea decides the rest:
+
+- **Colour**: sea-grey enamel neutrals (hue 225), one signal-orange accent like a channel buoy, sea-glass green for "you".
+- **Type**: heavy upright signage for headings, and every figure in a monospaced face, because tide times are read down a column.
+- **Shape**: squared enamel corners, firm hairlines, flat surfaces.
+- **Motion**: brisk, no bounce.
+
+If a choice can't be justified by the idea, leave it at the default. Pick at most two families and one accent.
+
+## 2. Copy the starter file
+
+This is every token in the contract, set to Paper's values, under your theme's name. It's generated from Paper when the docs are built, so it's always complete. Rename `harbour` and save it as your theme's stylesheet.
+
+<StarterThemeFile />
+
+Three things about its shape matter:
+
+- **The first line declares Kiln's layer order.** Every Kiln stylesheet does, so the order holds whichever file loads first.
+- **Tokens live in the `kiln.themes` layer.** Layered rules lose to unlayered ones, so your app's own CSS still wins over the theme.
+- **The selector is your theme's name.** `[data-theme='harbour']` is what `ThemeProvider` and `ThemeScope` write. Don't add `:root`: Paper already covers the document root at zero specificity.
+
+## 3. Change the values
+
+Work through the file group by group. Keep every token; a theme that leaves one out inherits it from whatever scope it's nested in, which differs from page to page.
+
+**Colour.** Author in OKLCH, with each colour a `light-dark(<light>, <dark>)` pair, so the theme works in both modes with no extra file. Tint the neutrals toward your hue with a little chroma (0.004 to 0.02). Check contrast: `--color-ink-subtle` must still meet AA on sunken and raised surfaces, and `--color-accent-text` must meet AA on the canvas.
+
+```css
+--color-canvas: light-dark(oklch(0.965 0.006 225), oklch(0.2 0.012 230));
+--color-accent: light-dark(oklch(0.6 0.17 42), oklch(0.72 0.15 48));
+--color-highlight: light-dark(oklch(0.93 0.04 175), oklch(0.33 0.05 178));
+```
+
+**Type.** Assign families to roles, then set the temperament: the base size, the ratio between steps, the display weight and tracking.
+
+```css
+--font-numeric: 'Martian Mono', ui-monospace, monospace;
+--numeric-stretch: 87.5%;
+--display-weight: 780;
+--type-ratio: 1.22;
+```
+
+**Structure.** `--density` multiplies every space step and control height; `--motion-scale` multiplies every duration. Radii are roles, so actions, fields, surfaces and avatars can each have their own.
+
+**Depth.** Decide what an edge is. Flat themes set `--shadow-surface: none` and keep soft shadows for floating layers only; Fiesta's hard offset is its edge.
+
+The whole Harbour file is in the repository at [`apps/docs/src/styles/harbour.css`](https://github.com/mitcsutt/kiln/blob/main/apps/docs/src/styles/harbour.css).
+
+## 4. Load it and select it
+
+Import your theme after Kiln's stylesheet, then name it. `ThemeName` accepts any string, so there's no type to extend and nothing to register:
+
+```tsx title="app root"
+import '@mitcsutt/kiln-ui/styles.css'
+import './harbour.css'
+import { ThemeProvider } from '@mitcsutt/kiln-ui'
+
+;<ThemeProvider theme="harbour">…</ThemeProvider>
+```
+
+For SSR without a flash, `themeScript('harbour')` works the same way as for a built-in. To theme one part of a page, use `ThemeScope`. It paints its own canvas, and portalled overlays opened inside it (dialogs, menus, tooltips) render in its theme:
+
+```tsx
+<ThemeScope theme="harbour">
+  <TimetablePanel />
+</ThemeScope>
+```
+
+`useTheme()` reads and changes the theme and mode from anywhere inside a `ThemeProvider`:
+
+```tsx
+const { theme, setTheme, mode, resolvedMode, setMode } = useTheme()
+```
+
+## 5. Load its fonts
+
+Kiln ships only the faces its own themes use. Declare your theme's faces in the same file, with `font-display: swap`, and serve the files yourself:
+
+```css title="harbour.css"
+@font-face {
+  font-family: 'Harbour Sign';
+  src: url('./fonts/harbour-sign.woff2') format('woff2');
+  font-weight: 400 900;
+  font-display: swap;
+}
+```
+
+Harbour itself uses only Schibsted Grotesk and Martian Mono, which Kiln's base stylesheet already loads. That's allowed too.
+
+## 6. Check it everywhere
+
+See it in the context where it'll fail first: everything, in both modes.
+
+<ThemeSpecimen theme="harbour" />
+
+Then go through the component pages with your theme applied. A few things to look for:
+
+- Focus rings on every control. Focus is `--color-focus`, and it should never look like an error.
+- Text on the accent (`--color-accent-ink`) and on each solid tone (`--tone-*-ink`).
+- A `Section surface="inverse"` band, where the colour roles flip.
+- Numbers in a `Table` with `numeric` cells, and an `Amount` with `accounting`.
+- `Dialog`, `Popover` and `DropdownMenu`, which use `--shadow-float` and `--shadow-overlay`.
+
+## Optional and component tokens
+
+When your idea needs something the contract doesn't cover, there are two more levels.
+
+[Optional tokens](/docs/ui/foundations/tokens#optional-theme-tokens) are set by only some themes, and every theme scope resets them, so they never leak into a nested theme. Ledger sets `--table-foot-rule`; Fiesta sets the `--highlight-*-text` inks for text on its gold rows.
+
+Component tokens change one component without touching the rest. They're read with a fallback, so setting one is always safe:
+
+```css
+[data-theme='harbour'] {
+  --button-radius: 0;
+  --card-radius: var(--radius-field);
+}
+```
+
+## Rules a theme follows
+
+From [DESIGN.md](https://github.com/mitcsutt/kiln/blob/main/DESIGN.md), and they're how the built-in themes are reviewed:
+
+- One idea, from the subject. Two families at most, and one accent.
+- No gradients that don't encode data, no glow in dark mode, no indigo or violet primary.
+- Every token in the contract, in light and dark.
+- No theme logic in components. If a component can't express your idea, it needs a component token, not an `if (theme === 'harbour')`.

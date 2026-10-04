@@ -2,7 +2,7 @@ import base from '@mitcsutt/kiln-eslint-config/base'
 import node from '@mitcsutt/kiln-eslint-config/node'
 import react from '@mitcsutt/kiln-eslint-config/react'
 import storybook from '@mitcsutt/kiln-eslint-config/storybook'
-import { defineConfig } from 'eslint/config'
+import { defineConfig, globalIgnores } from 'eslint/config'
 
 const FORMS_TUPLE_SELECTOR =
   'Tuple selectors re-render on every store change (a new array each time). Select a primitive (`s => s.isSubmitting`), or use `useSelector(store, sel, { compare: shallowEqual })`.'
@@ -22,6 +22,8 @@ const FORMS_IMPORT_PATTERNS = [
 // own directory and picks this file up, so lint stays cached per package.
 export default defineConfig(
   base,
+  // Written by the docs app's generators, Fumadocs MDX and Next.js.
+  globalIgnores(['apps/docs/.source/', 'apps/docs/.generated/', 'apps/docs/next-env.d.ts']),
   {
     name: 'kiln/workspace/type-aware',
     languageOptions: {
@@ -40,6 +42,44 @@ export default defineConfig(
       'packages/*/*.config.ts',
       'packages/*/scripts/**',
     ],
+    extends: [node],
+  },
+  {
+    name: 'kiln/workspace/docs',
+    files: ['apps/docs/**'],
+    extends: [react],
+    rules: {
+      // A private app has no consumers, so build-time and runtime dependencies are one list.
+      'import-x/no-extraneous-dependencies': [
+        'error',
+        { devDependencies: true, peerDependencies: true, optionalDependencies: false },
+      ],
+    },
+  },
+  {
+    name: 'kiln/workspace/docs/routes',
+    files: ['apps/docs/**/*.{jsx,tsx}'],
+    rules: {
+      // Next.js reads these named exports from route modules alongside the component.
+      'react-refresh/only-export-components': [
+        'error',
+        {
+          allowExportNames: [
+            'metadata',
+            'generateMetadata',
+            'generateStaticParams',
+            'dynamic',
+            'revalidate',
+            'viewport',
+          ],
+        },
+      ],
+    },
+  },
+  {
+    // The docs app's own tooling runs in Node: config files, generators and the link checker.
+    name: 'kiln/workspace/docs/node',
+    files: ['apps/docs/*.{js,ts}', 'apps/docs/scripts/**', 'apps/docs/src/mdx/**'],
     extends: [node],
   },
   {

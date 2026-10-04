@@ -1,0 +1,29 @@
+---
+title: DateTimeField
+description: A native date and time input bound to an ISO string.
+exports: [FormDateTimeField]
+---
+
+| Kind       | Shorthand            | Export              | Value                         | Empty |
+| ---------- | -------------------- | ------------------- | ----------------------------- | ----- |
+| `dateTime` | `form.DateTimeField` | `FormDateTimeField` | `string` (`YYYY-MM-DDTHH:mm`) | `''`  |
+
+<Example name="forms/fields/date-time-field/usage" />
+
+It renders kiln-ui's [TextField](/docs/ui/inputs/text-field) with `type="datetime-local"`. The value has no time zone: store the zone separately if it matters.
+
+## In a schema
+
+```json
+{
+  "kind": "dateTime",
+  "name": "pickup",
+  "label": "Pick-up time"
+}
+```
+
+## API
+
+Every bound field also takes `name` (a path to a value it can hold), `validators`, `listeners` and `defaultValue`, plus `warn` for advice that never blocks. `excluded` keeps a field visible but leaves it out of validation and submits its default.
+
+<ApiTable of="FormDateTimeFieldProps" />

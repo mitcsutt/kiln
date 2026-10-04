@@ -1,0 +1,38 @@
+---
+title: Numeral
+description: A formatted number in tabular figures, with its machine-readable value attached.
+exports: [Numeral, formatNumeral, formatNumeralParts, signOf]
+---
+
+`Numeral` formats a number with `Intl.NumberFormat` and sets it in the theme's numeric face with tabular, lining figures, so a column of them lines up and a changing value doesn't jitter. It renders a `<data value>` element, so the raw value travels with the formatted text.
+
+<Example name="ui/typography/numeral/usage" />
+
+- `format` takes any `Intl.NumberFormatOptions`: percentages, compact notation, units.
+- `locale` defaults to `en-AU`.
+- `signDisplay` controls the sign, and `tone="auto"` colours positive and negative values with the positive and critical tones. Negatives use a true minus sign (U+2212), as wide as a plus.
+- `prefix` and `suffix` add text before and after, outside the figures.
+
+Separators and symbols are set proportionally. Some faces make a tabular comma as wide as a digit, which reads as "1 , 017"; right-aligned columns still line up.
+
+## Formatting without the component
+
+`formatNumeral` returns the same text as a plain string, for titles, `aria-label`s and CSV exports. `formatNumeralParts` splits it into runs of figures and marks, and `signOf` resolves a number's sign, treating `-0` as zero.
+
+<Example name="ui/typography/numeral/format" />
+
+<ApiSignature of="formatNumeral" />
+
+<ApiSignature of="formatNumeralParts" />
+
+<ApiSignature of="signOf" />
+
+## API
+
+<ApiTable of="NumeralProps" />
+
+### Component tokens
+
+Set these in a theme, or on one element, to change this component without touching the rest.
+
+<ComponentTokens of="Numeral" />

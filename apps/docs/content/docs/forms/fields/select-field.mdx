@@ -1,0 +1,42 @@
+---
+title: SelectField
+description: One choice from a dropdown. Option values keep their type, numbers and booleans come back as numbers and booleans.
+exports: [FormSelectField]
+---
+
+It renders kiln-ui's [SelectField](/docs/ui/inputs/select-field).
+
+| Kind     | Shorthand          | Export            | Value                              | Empty  |
+| -------- | ------------------ | ----------------- | ---------------------------------- | ------ |
+| `select` | `form.SelectField` | `FormSelectField` | the options' value type, or `null` | `null` |
+
+<Example name="forms/fields/select-field/usage" />
+
+Option values are typed to the bound path, so an option the path can't hold is a type error. `emptyOption` adds a first option, with your label, that writes `null`. View mode shows the chosen option's label.
+
+## In a schema
+
+```json
+{
+  "kind": "select",
+  "name": "pass",
+  "label": "Pass",
+  "placeholder": "Choose a pass",
+  "options": [
+    {
+      "value": "week",
+      "label": "Week"
+    },
+    {
+      "value": "month",
+      "label": "Month"
+    }
+  ]
+}
+```
+
+## API
+
+Every bound field also takes `name` (a path to a value it can hold), `validators`, `listeners` and `defaultValue`, plus `warn` for advice that never blocks. `excluded` keeps a field visible but leaves it out of validation and submits its default.
+
+<ApiTable of="FormSelectFieldProps" />

@@ -1,0 +1,34 @@
+---
+title: SliderField
+description: One number from a continuous range.
+exports: [FormSliderField]
+---
+
+It renders kiln-ui's [SliderField](/docs/ui/inputs/slider-field).
+
+| Kind     | Shorthand          | Export            | Value    | Empty                       |
+| -------- | ------------------ | ----------------- | -------- | --------------------------- |
+| `slider` | `form.SliderField` | `FormSliderField` | `number` | none: it always has a value |
+
+<Example name="forms/fields/slider-field/usage" />
+
+A slider always has a value. If "no answer" is a real state, a number field or a select is a better fit.
+
+## In a schema
+
+```json
+{
+  "kind": "slider",
+  "name": "walk",
+  "label": "Longest walk to a stop",
+  "min": 200,
+  "max": 2000,
+  "step": 100
+}
+```
+
+## API
+
+Every bound field also takes `name` (a path to a value it can hold), `validators`, `listeners` and `defaultValue`, plus `warn` for advice that never blocks. `excluded` keeps a field visible but leaves it out of validation and submits its default.
+
+<ApiTable of="FormSliderFieldProps" />

@@ -1,0 +1,17 @@
+{
+  "title": "UI",
+  "pages": [
+    "index",
+    "foundations",
+    "actions",
+    "inputs",
+    "layout",
+    "display",
+    "navigation",
+    "feedback",
+    "overlays",
+    "typography",
+    "themes",
+    "patterns"
+  ]
+}

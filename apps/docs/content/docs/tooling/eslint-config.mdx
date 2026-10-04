@@ -1,0 +1,81 @@
+---
+title: ESLint config
+description: A type-aware flat config for ESLint 10, in layers. Every rule is an error or off, and formatting is left to Prettier.
+---
+
+`@mitcsutt/kiln-eslint-config` is the lint config Kiln itself uses. It's a flat config for ESLint 10, it's type-aware, and it has no warning tier: a rule matters enough to fail the build, or it's off.
+
+## Install
+
+```sh
+pnpm add -D @mitcsutt/kiln-eslint-config eslint typescript
+```
+
+It needs ESLint 10 and a TypeScript version that typescript-eslint supports. `eslint-plugin-jsx-a11y` hasn't added ESLint 10 to its peer range yet, so your package manager may warn about it. The package's own tests run every jsx-a11y rule on ESLint 10.
+
+## Compose the layers
+
+Each export is a list of config objects that adds to `base` without repeating it. Start with `base` and add what your project needs:
+
+```js title="eslint.config.js"
+import base from '@mitcsutt/kiln-eslint-config/base'
+import react from '@mitcsutt/kiln-eslint-config/react'
+import { defineConfig } from 'eslint/config'
+
+export default defineConfig(base, react, {
+  languageOptions: {
+    parserOptions: { tsconfigRootDir: import.meta.dirname },
+  },
+})
+```
+
+| Export      | What it adds                                                                                                                                                                        |
+| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `base`      | `@eslint/js` recommended, typescript-eslint `strictTypeChecked` and `stylisticTypeChecked`, type-only imports, import hygiene with `eslint-plugin-import-x`, Vitest rules for tests |
+| `react`     | `react-hooks` (every rule an error), `react-refresh`, `jsx-a11y`, browser globals, and Testing Library rules for tests                                                              |
+| `storybook` | `eslint-plugin-storybook` for stories and `.storybook/main`                                                                                                                         |
+| `node`      | Node.js globals, for scripts and tool config files                                                                                                                                  |
+
+A Node script and a React app in one repository take different layers for different files:
+
+```js title="eslint.config.js"
+import base from '@mitcsutt/kiln-eslint-config/base'
+import node from '@mitcsutt/kiln-eslint-config/node'
+import react from '@mitcsutt/kiln-eslint-config/react'
+import storybook from '@mitcsutt/kiln-eslint-config/storybook'
+import { defineConfig } from 'eslint/config'
+
+export default defineConfig(
+  base,
+  { languageOptions: { parserOptions: { tsconfigRootDir: import.meta.dirname } } },
+  { files: ['src/**'], extends: [react, storybook] },
+  { files: ['scripts/**', '*.config.js'], extends: [node] },
+)
+```
+
+## Type-aware means every file has a tsconfig
+
+The type-checked rules need type information for each file they lint, JavaScript included. Make sure every linted file belongs to a `tsconfig.json`, and turn on `allowJs` (and `checkJs` if you want it checked) for config files written in JavaScript.
+
+## Rules worth knowing
+
+- **No warnings.** Plugin presets that ship warnings (react-hooks, Storybook, Vitest, Testing Library, jsx-a11y) have them raised to errors, and a test fails if the combined exports contain any warn-level rule. A plugin upgrade that adds a warning can therefore be a breaking change for this package.
+- **Unused disable comments are errors** (`reportUnusedDisableDirectives`), so a suppression can't outlive the problem it hid.
+- **Type-only imports** are enforced both ways: `consistent-type-imports`, `consistent-type-exports` and `no-import-type-side-effects`.
+- **Dependencies are checked.** Test files, stories and tool config files (`*.config.*`, `.storybook/`) may import dev dependencies, and nothing else may.
+- **Formatting is Prettier's.** `eslint-config-prettier` is the last object in `base`, so no rule fights the formatter. Use it with the [Prettier config](/docs/tooling/prettier-config).
+
+## Adding your own rules
+
+Put project rules after the Kiln layers, scoped to the files they're for:
+
+```js title="eslint.config.js"
+export default defineConfig(base, react, {
+  files: ['src/server/**'],
+  rules: {
+    'no-restricted-imports': ['error', { patterns: ['react', 'react-dom'] }],
+  },
+})
+```
+
+Keep to the same standard: an error with a reason, or nothing. When a single line needs an exception, `// eslint-disable-next-line <rule> -- <why>` keeps the reason next to the code.

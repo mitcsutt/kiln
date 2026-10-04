@@ -1,0 +1,15 @@
+{
+  "title": "Typography",
+  "pages": [
+    "heading",
+    "text",
+    "link",
+    "code",
+    "kbd",
+    "prose",
+    "quote",
+    "numeral",
+    "amount",
+    "section-header"
+  ]
+}

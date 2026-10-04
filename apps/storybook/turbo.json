@@ -8,6 +8,7 @@
     },
     "test:storybook": {
       "dependsOn": ["transit"],
+      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/docs/tree.json"],
       "env": ["STORYBOOK_THEME", "STORYBOOK_MODE"],
       "outputs": []
     }

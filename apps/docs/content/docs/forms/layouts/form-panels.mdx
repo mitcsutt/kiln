@@ -1,0 +1,25 @@
+---
+title: FormPanels
+description: Self-contained groups of fields in outlined cards, like a saved place or a payment method.
+exports: [FormPanels, FormPanel]
+---
+
+`FormPanels` lays out `FormPanel`s, each a `<section>` labelled by its title inside an outlined card. Use panels for groups that are objects in their own right: an address, a card, a saved place. A card needs a reason; most sections don't have one.
+
+<Example name="forms/layouts/form-panels/usage" />
+
+`actions` puts buttons in a panel's header.
+
+## In a schema
+
+```json
+{
+  "layout": "panels",
+  "columns": { "base": 1, "md": 2 },
+  "children": [{ "layout": "panel", "title": "Home", "children": [] }]
+}
+```
+
+## API
+
+<ApiTable of="FormPanelsProps, FormPanelProps" />

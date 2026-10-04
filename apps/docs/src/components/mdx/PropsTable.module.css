@@ -1,0 +1,21 @@
+.wrap {
+  margin-block: var(--space-5);
+}
+
+.name {
+  white-space: nowrap;
+}
+
+.type {
+  min-inline-size: 11rem;
+  max-inline-size: 20rem;
+}
+.type code {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.description {
+  min-inline-size: 16rem;
+  white-space: pre-line;
+}

@@ -1,0 +1,45 @@
+{
+  "name": "@mitcsutt/kiln-docs",
+  "version": "0.0.0",
+  "private": true,
+  "description": "The Kiln docs site: Fumadocs on Next.js, built with kiln-ui",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "generate": "node scripts/generate-api.ts && node scripts/generate-tokens.ts && node scripts/generate-examples.ts && fumadocs-mdx",
+    "dev": "pnpm generate && next dev",
+    "build": "pnpm generate && next build",
+    "start": "next start",
+    "check:links": "node scripts/check-links.ts",
+    "lint": "pnpm generate && eslint --max-warnings=0 .",
+    "test": "pnpm generate && vitest run",
+    "typecheck": "pnpm generate && next typegen && tsc --noEmit"
+  },
+  "dependencies": {
+    "@mitcsutt/kiln-forms": "workspace:*",
+    "@mitcsutt/kiln-ui": "workspace:*",
+    "fumadocs-core": "~16.15.18",
+    "fumadocs-mdx": "^15.4.6",
+    "next": "^16.3.8",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@mitcsutt/kiln-tsconfig": "workspace:*",
+    "@types/mdast": "^4.0.4",
+    "@types/mdx": "^2.0.14",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "eslint": "catalog:",
+    "node-html-parser": "^9.0.4",
+    "typescript": "catalog:",
+    "unist-util-visit": "^5.1.0",
+    "vitest": "catalog:",
+    "yaml": "^2.9.1"
+  },
+  "engines": {
+    "node": ">=24.11.0"
+  }
+}

@@ -1,0 +1,19 @@
+---
+title: Checkbox
+description: A bare checkbox, including the indeterminate state for "some of these".
+exports: [Checkbox]
+---
+
+`Checkbox` is Radix Checkbox with Kiln's look. `checked` can be `true`, `false` or `'indeterminate'`, for a parent that controls a set where only some are on. It needs a label: use [CheckboxField](/docs/ui/inputs/checkbox-field), a `Field`, or an `aria-label`.
+
+<Example name="ui/inputs/checkbox/usage" />
+
+## API
+
+<ApiTable of="CheckboxProps" />
+
+### Component tokens
+
+Set these in a theme, or on one element, to change this component without touching the rest.
+
+<ComponentTokens of="Checkbox" />

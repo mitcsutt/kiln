@@ -1,0 +1,4 @@
+{
+  "title": "Tooling",
+  "pages": ["index", "eslint-config", "prettier-config", "tsconfig"]
+}

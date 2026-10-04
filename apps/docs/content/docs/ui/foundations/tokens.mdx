@@ -1,0 +1,86 @@
+---
+title: Tokens
+description: The three tiers of design tokens, the contract every theme fills in, and the axes that scope them.
+---
+
+Everything visual in Kiln is a CSS custom property. A component never contains a colour, a size or a duration: it reads a token, and the theme on the page decides what the token is. That's why one `<Button>` can look like four different products.
+
+## Three tiers
+
+Components read tiers 2 and 3 only.
+
+| Tier            | Where it's set                               | Examples                                                                                       |
+| --------------- | -------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| 1. Theme inputs | a theme stylesheet                           | `--density`, `--type-base`, `--type-ratio`, `--motion-scale`, font stacks, OKLCH colour values |
+| 2. Semantic     | derived from the inputs, or set by the theme | `--space-5`, `--text-lg`, `--color-ink`, `--radius-field`, `--dur-2`                           |
+| 3. Component    | read inside a component's CSS, with fallback | `var(--button-radius, var(--radius-action))`                                                   |
+
+A theme sets its inputs and its semantic colours, radii and type roles. The scales (space, type sizes, control heights, durations) are formulas over the inputs, so a theme never sets them directly: Ledger sets `--density: 0.86` and every space step, control height and gap gets denser.
+
+## The scales
+
+These come from formulas, and every theme gets them.
+
+| Family        | Tokens                                                                | How it's derived                                                                     |
+| ------------- | --------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| Space         | `--space-1` … `--space-12`                                            | 4 8 12 16 24 32 48 64 96 144 192 256px × `--density`. Props take the step: `gap={5}` |
+| Controls      | `--control-sm`, `--control-md`, `--control-lg`                        | 32, 40, 48px × `--density`                                                           |
+| Type          | `--text-2xs` … `--text-3xl`, `--text-display-sm/md/lg`                | `--type-base × --type-ratio^n`. Display steps are fluid                              |
+| Width         | `--width-narrow/text/content/wide`, `--gutter`                        | 32, 42, 68, 84rem. The gutter is fluid                                               |
+| Motion        | `--dur-1`, `--dur-2`, `--dur-3`                                       | 110, 190, 340ms × `--motion-scale`, and 1ms under reduced motion                     |
+| Layers        | `--z-raised`, `--z-sticky`, `--z-overlay`, `--z-popover`, `--z-toast` | Fixed                                                                                |
+| Control edges | `--color-line-control`                                                | Mixed from `--color-line-strong` and ink, at least 3:1 against its surroundings      |
+| Breakpoints   | `sm` 40em, `md` 48em, `lg` 64em, `xl` 80em                            | Mobile-first. Media queries can't read custom properties, so these are fixed         |
+
+[Spacing](/docs/ui/foundations/spacing), [Type](/docs/ui/foundations/type) and [Motion](/docs/ui/foundations/motion) show each scale measured in the theme you're looking at.
+
+## The theme contract
+
+Every theme sets every one of these tokens. Together they're Kiln's public theming API, so they're a semver surface: renaming or removing one is a breaking change. The values below are Paper's, read from `paper.css` when these docs are built. kiln-ui's test suite fails if Paper and this list ever disagree.
+
+<ContractTokens />
+
+## Optional theme tokens
+
+Some themes set a few more: Fiesta's inks for text on its gold rows, Ledger's table rule. Every theme scope resets these first, so a theme nested inside another falls back to the component's default instead of inheriting its parent's value. Set them only when your theme's idea needs them:
+
+<OptionalThemeTokens />
+
+## Component tokens
+
+A component exposes a few tokens of its own where a theme might reasonably differ, always read with a fallback to a semantic token: `--button-radius`, `--card-radius`, `--link-thickness`, `--prose-measure`, `--code-bg`, `--app-shell-sidebar-width`. Each component's CSS lists its tokens at the top. Set one in a theme, or on a single element, when one component needs to step away from the rest.
+
+## Shape and depth
+
+Radii are roles, not one global roundness. A theme can make actions pills and surfaces square.
+
+<RadiusRoles />
+
+One edge treatment per element: a border, a shadow or a change of fill, never all three. Static structure uses hairlines. Soft shadows are only for things that float, like popovers and dialogs. Fiesta's hard offset is its one deliberate exception: it's the print misregistration, and it _is_ the edge.
+
+<DepthRoles />
+
+## Axes and scoping
+
+Three attributes select tokens, and they're independent of each other.
+
+```html
+<html data-theme="monograph" data-mode="dark">
+  <div data-theme="fiesta">a Fiesta panel that keeps the page's dark mode</div>
+  <div data-density="compact">a denser table</div>
+</html>
+```
+
+- `data-theme` is `paper`, `monograph`, `ledger`, `fiesta`, or the name of a theme you wrote. No attribute means Paper.
+- `data-mode` is `light`, `dark` or `system`. It drives `color-scheme`, which drives every `light-dark()` colour. Leave it off nested scopes and they inherit the page's mode.
+- `data-density` is `compact` or `comfortable`, and multiplies the theme's own density.
+
+The derived scales are re-declared on every `[data-theme]` and `[data-density]`, so a nested scope recomputes from its own inputs rather than inheriting its parent's already-resolved sizes. In React, `ThemeProvider` sets the attributes on `<html>`, and `ThemeScope` sets them on a subtree.
+
+## Inverted bands
+
+`Section surface="inverse"` (or `"accent"`) and `Box surface="inverse"` re-point the colour roles for everything inside: ink, muted ink, lines, focus and accent text. Any component placed on a dark band stays legible without extra props.
+
+## Cascade layers
+
+Kiln declares `@layer kiln.reset, kiln.tokens, kiln.themes;` at the top of every stylesheet, so the order holds whichever file loads first. Layers have the lowest priority, so your own CSS always wins over Kiln's globals. Component CSS is deliberately _not_ layered: a layered rule loses to any unlayered rule, so a typical app reset (`button { color: inherit }`) would otherwise break every button. A single-class component selector beats an element reset, and a `className` you pass wins on source order.

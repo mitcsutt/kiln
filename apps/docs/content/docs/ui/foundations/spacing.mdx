@@ -1,0 +1,50 @@
+---
+title: Spacing
+description: A non-linear space scale that follows the theme's density, content widths, and props that change per breakpoint.
+---
+
+Space is a scale of twelve steps, and props take the step number: `gap={5}`, `padding={4}`, `space={9}`. You never write a pixel value at a call site.
+
+## The scale
+
+The steps are deliberately non-linear (4, 8, 12, 16, 24, 32, 48, 64, 96, 144, 192 and 256px at density 1), so neighbouring choices look different from each other. Each step is multiplied by the theme's `--density`. The bars below are measured in the theme you're looking at: switch to Ledger and they tighten.
+
+<SpaceScale />
+
+Vary the rhythm. Adjacent sections shouldn't share a `space` step, and a page usually wants one generous break somewhere (`space={9}` or more) rather than the same gap everywhere.
+
+## Density
+
+`data-density` multiplies the theme's own density for a subtree: `compact` by 0.85, `comfortable` by 1.15. Spacing, control heights and gaps all follow. Use it for a dense admin table inside an otherwise roomy page.
+
+<Example name="ui/foundations/density" />
+
+## Widths
+
+`Container width` and `Text measure` take named widths rather than lengths:
+
+| Width     | Size  | For                                   |
+| --------- | ----- | ------------------------------------- |
+| `narrow`  | 32rem | sign-in forms, confirmations          |
+| `text`    | 42rem | reading: about 68 characters of body  |
+| `content` | 68rem | most pages                            |
+| `wide`    | 84rem | dashboards, tables with many columns  |
+| `full`    | 100%  | edge-to-edge, still inside the gutter |
+
+`--gutter` is fluid (1rem to 2.5rem), and `Container` applies it unless you pass `gutter={false}`.
+
+## Responsive props
+
+Layout props that make sense per breakpoint take either a value or a map of values, from `base` up:
+
+```ts
+type Responsive<T> = T | Partial<Record<'base' | 'sm' | 'md' | 'lg' | 'xl', T>>
+```
+
+<Example name="ui/foundations/responsive-props" />
+
+Breakpoints are mobile-first viewport widths: `sm` 40em, `md` 48em, `lg` 64em, `xl` 80em. Structural components also take `hideBelow` and `hideAbove`, so responsive visibility is a prop too: `<NavLinks hideBelow="md">` beside `<BottomNav hideAbove="md">`.
+
+## Control heights
+
+Inputs, buttons and selects share three heights, which follow density like everything else: `--control-sm` (32px), `--control-md` (40px) and `--control-lg` (48px). A `size` prop on a control picks one, so a button and a field of the same size line up in a row.
