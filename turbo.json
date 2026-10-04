@@ -16,7 +16,11 @@
     },
     "lint": {
       "dependsOn": ["transit"],
-      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/eslint.config.js"],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "$TURBO_ROOT$/eslint.config.js",
+        "$TURBO_ROOT$/packages/eslint-config/*.js"
+      ],
       "outputs": []
     },
     "typecheck": {
@@ -24,9 +28,15 @@
       "outputs": []
     },
     "//#lint:root": {
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "$TURBO_ROOT$/packages/eslint-config/*.js",
+        "$TURBO_ROOT$/packages/tsconfig/*.json"
+      ],
       "outputs": []
     },
     "//#typecheck:root": {
+      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/packages/tsconfig/*.json"],
       "outputs": []
     },
     "//#format:check": {
