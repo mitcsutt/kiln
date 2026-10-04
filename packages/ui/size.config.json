@@ -1,0 +1,58 @@
+{
+  "checks": [
+    {
+      "name": "Base stylesheet (styles.css)",
+      "file": "dist/styles.css",
+      "budget": 33000
+    },
+    {
+      "name": "Preset: monograph.css",
+      "file": "dist/themes/monograph.css",
+      "budget": 1600
+    },
+    {
+      "name": "Preset: ledger.css",
+      "file": "dist/themes/ledger.css",
+      "budget": 1500
+    },
+    {
+      "name": "Preset: fiesta.css",
+      "file": "dist/themes/fiesta.css",
+      "budget": 1900
+    },
+    {
+      "name": "import { Button }",
+      "import": "{ Button }",
+      "from": "dist/index.js",
+      "isolatedTo": "dist/components/actions/Button/Button.js",
+      "budget": 1000
+    },
+    {
+      "name": "import { Stack }",
+      "import": "{ Stack }",
+      "from": "dist/index.js",
+      "isolatedTo": "dist/components/layout/Stack/Stack.js",
+      "budget": 1000
+    },
+    {
+      "name": "import { Dialog }",
+      "import": "{ Dialog }",
+      "from": "dist/index.js",
+      "isolatedTo": "dist/components/overlays/Dialog/Dialog.js",
+      "budget": 2700
+    },
+    {
+      "name": "import { ThemeProvider }",
+      "import": "{ ThemeProvider }",
+      "from": "dist/index.js",
+      "isolatedTo": "dist/theme/ThemeProvider.js",
+      "budget": 1000
+    },
+    {
+      "name": "Everything (import *)",
+      "import": "* as kiln",
+      "from": "dist/index.js",
+      "budget": 44000
+    }
+  ]
+}
