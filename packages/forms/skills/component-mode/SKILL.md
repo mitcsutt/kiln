@@ -1,6 +1,6 @@
 ---
 name: component-mode
-description: "Use when building a form in React with @mitcsutt/kiln-forms in JSX: installing it, useAppForm, form.AppField and the typed form.<Kind>Field components, default values, onSubmit, layouts like FormSection, FormSteps, FormTabs and Repeater, conditional fields with When, and submit buttons."
+description: "Use when building a form in React with @mitcsutt/kiln-forms in JSX: installing it, useAppForm, form.AppField and the typed form.<Kind>Field components, default values, onSubmit, splitting a form into components with withForm or reading it from context in nested components with useTypedAppFormContext, layouts like FormSection, FormSteps, FormTabs and Repeater, conditional fields with When, and submit buttons."
 metadata:
   purpose: Build typed forms with useAppForm, where each field is bound to a path of the values and rendered through kiln-ui.
   type: core
@@ -8,6 +8,7 @@ metadata:
 sources:
   - mitcsutt/kiln:apps/docs/content/docs/forms/index.mdx
   - mitcsutt/kiln:apps/docs/content/docs/forms/getting-started/component-mode.mdx
+  - mitcsutt/kiln:apps/docs/content/docs/forms/getting-started/form-context.mdx
   - mitcsutt/kiln:apps/docs/content/docs/forms/getting-started/account-settings.mdx
   - mitcsutt/kiln:apps/docs/content/docs/forms/getting-started/onboarding.mdx
   - mitcsutt/kiln:apps/docs/content/docs/forms/getting-started/savings-goal.mdx
@@ -236,6 +237,8 @@ export default function WithForm() {
 }
 ```
 
+For a component several levels below the form, read the form from context instead of passing it down: see [Form context](references/form-context.md).
+
 ### Reusable groups of fields
 
 `withFieldGroup` makes a group of fields that binds wherever a form has the right shape, and `useFields(group)` gives typed shorthand inside it. Bind the group with `fields="password"`: TypeScript checks that `password` has the group's shape.
@@ -335,6 +338,7 @@ Beyond `defaultValues` and `onSubmit`, the options you'll reach for most:
 
 Read a reference when its description matches the task:
 
+- [Form context](references/form-context.md): Reach a form from components nested deep inside it, typed against its values, without passing it down as a prop.
 - [Account settings](references/account-settings.md): A settings page that saves as you type, with sections in a label column and the password in a form of its own.
 - [Onboarding](references/onboarding.md): A multi-step application with a branch that only some people see, and a review step built from the same fields.
 - [Savings goal](references/savings-goal.md): A form written as a sentence, with a value computed from the others as you type.

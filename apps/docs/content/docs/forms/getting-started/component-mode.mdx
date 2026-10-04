@@ -54,6 +54,8 @@ Inside `AppField`, `field.TextField` isn't checked against the value type (TanSt
 
 <Example name="forms/getting-started/with-form" />
 
+For a component several levels below the form, read the form from context instead of passing it down: see [Form context](/docs/forms/getting-started/form-context).
+
 ## Reusable groups of fields
 
 `withFieldGroup` makes a group of fields that binds wherever a form has the right shape, and `useFields(group)` gives typed shorthand inside it. Bind the group with `fields="password"`: TypeScript checks that `password` has the group's shape.

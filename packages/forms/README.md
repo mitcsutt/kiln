@@ -70,6 +70,77 @@ if (parsed.ok) {
 }
 ```
 
+### Form context and nested components
+
+`<Form form={form}>` puts the form in context, so a component any number of levels below it can reach the form without a `form` prop. Create the options once with `formOptions`, and pass them to `useTypedAppFormContext` to get the form back typed against your values:
+
+```tsx
+import type { ReactNode } from 'react'
+import {
+  Form,
+  SubmitButton,
+  formOptions,
+  useAppForm,
+  useFieldValue,
+  useFormStatus,
+  useTypedAppFormContext,
+} from '@mitcsutt/kiln-forms'
+
+const bookingOptions = formOptions({
+  defaultValues: { attendee: { name: '', email: '' }, seats: 1 },
+})
+
+// Layout components pass children through and never see the form.
+function Panel({ children }: { children: ReactNode }) {
+  return <section>{children}</section>
+}
+
+// Renders bound fields, typed against the form's values.
+function AttendeeFields() {
+  const form = useTypedAppFormContext(bookingOptions)
+  return (
+    <>
+      <form.TextField name="attendee.name" label="Full name" />
+      <form.TextField name="attendee.email" label="Email" type="email" />
+      <form.NumberField name="seats" label="Seats" min={1} />
+    </>
+  )
+}
+
+// Subscribes to one value, so only this component re-renders when it changes.
+function SeatCount() {
+  const form = useTypedAppFormContext(bookingOptions)
+  const seats = useFieldValue(form, 'seats')
+  return <p>{seats === 1 ? '1 seat' : `${seats} seats`}</p>
+}
+
+// Form-wide hooks and components find the form in context by themselves.
+function Footer() {
+  const { isDirty } = useFormStatus()
+  return <SubmitButton>{isDirty ? 'Book' : 'Nothing to book'}</SubmitButton>
+}
+
+export function Booking() {
+  const form = useAppForm({
+    ...bookingOptions,
+    onSubmit: async ({ value }) => {
+      await fetch('/api/bookings', { method: 'POST', body: JSON.stringify(value) })
+    },
+  })
+  return (
+    <Form form={form} aria-label="Book a workshop">
+      <Panel>
+        <AttendeeFields />
+        <SeatCount />
+      </Panel>
+      <Footer />
+    </Form>
+  )
+}
+```
+
+Field names in nested components are type-checked as they are on the form itself. `useTypedAppFormContext` and `useFormContext` (the untyped form, for code that works with any form) throw outside `<Form>` or `<form.AppForm>`. For a section one level down, `withForm` takes the form as a typed prop instead.
+
 Bound fields are also exported on their own, with a `Form` prefix (`FormTextField`, `FormAmountField`, …), so they never share a name with kiln-ui's unbound controls (`TextField`).
 
 ## For coding agents
