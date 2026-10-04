@@ -12,16 +12,6 @@
     "Themes",
     "Patterns"
   ],
-  "Forms": [
-    "Getting started",
-    "Fields",
-    "Layouts",
-    "Hooks",
-    "Schema"
-  ],
-  "Tooling": [
-    "ESLint config",
-    "Prettier config",
-    "TSConfig"
-  ]
+  "Forms": ["Getting started", "Fields", "Layouts", "Hooks", "Schema"],
+  "Tooling": ["ESLint config", "Prettier config", "TSConfig"]
 }
