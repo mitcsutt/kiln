@@ -16,9 +16,9 @@ type Story = StoryObj<typeof meta>
 export const Playground: Story = {
   render: (args) => (
     <Stack {...args}>
-      <Cell>Spain</Cell>
-      <Cell>Uruguay</Cell>
-      <Cell>Senegal</Cell>
+      <Cell>Starter</Cell>
+      <Cell>Team</Cell>
+      <Cell>Business</Cell>
     </Stack>
   ),
 }
@@ -28,10 +28,10 @@ export const Dividers: Story = {
   render: () => (
     <Stack as="ul" gap={4} dividers>
       {[
-        ['Rent', '$2,340.00'],
-        ['Groceries', '$612.85'],
-        ['Utilities', '$214.30'],
-        ['Transport', '$186.00'],
+        ['Design', '$2,340.00'],
+        ['Development', '$612.85'],
+        ['Hosting', '$214.30'],
+        ['Support', '$186.00'],
       ].map(([k, v]) => (
         <li key={k}>
           <Inline justify="between" gap={3} wrap={false}>
@@ -49,12 +49,12 @@ export const Responsive: Story = {
   render: () => (
     <Stack gap={{ base: 5, md: 7 }}>
       <Stack gap={2}>
-        <Label>Group A</Label>
-        <Title level={2}>Hawks top on goal difference</Title>
+        <Label>Release 2.4</Label>
+        <Title level={2}>Billing migration lands on Thursday</Title>
       </Stack>
       <Stack gap={2}>
-        <Label>Group B</Label>
-        <Title level={2}>Canada through with a game to spare</Title>
+        <Label>Release 2.5</Label>
+        <Title level={2}>Mobile app enters beta a week early</Title>
       </Stack>
     </Stack>
   ),

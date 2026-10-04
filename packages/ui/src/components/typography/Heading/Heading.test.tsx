@@ -7,10 +7,10 @@ describe('Heading', () => {
     const ref = createRef<HTMLHeadingElement>()
     render(
       <Heading ref={ref} level={3}>
-        Group B standings
+        Open tasks by project
       </Heading>,
     )
-    const h = screen.getByRole('heading', { level: 3, name: 'Group B standings' })
+    const h = screen.getByRole('heading', { level: 3, name: 'Open tasks by project' })
     expect(h.tagName).toBe('H3')
     expect(ref.current).toBe(h)
   })
@@ -25,7 +25,7 @@ describe('Heading', () => {
   it('keeps level and size independent', () => {
     render(
       <Heading level={1} size="xl">
-        September spending
+        September invoices
       </Heading>,
     )
     const h = screen.getByRole('heading', { level: 1 })
@@ -52,7 +52,7 @@ describe('Heading', () => {
   it('keeps heading semantics when rendered as another element', () => {
     render(
       <Heading level={4} as="p">
-        Fixtures
+        Releases
       </Heading>,
     )
     const h = screen.getByRole('heading', { level: 4 })

@@ -25,9 +25,9 @@ export const Playground: Story = {}
 export const InText: Story = {
   render: () => (
     <Text size="lg" style={{ maxWidth: '38rem' }}>
-      The studio makes maps and signs for public places, and writes about{' '}
-      <Link href="#wayfinding">wayfinding that survives a rebrand</Link>. The code for this
-      component library is on{' '}
+      Brightline Labs builds invoicing tools for small teams, and writes about{' '}
+      <Link href="#late-payments">getting paid on time without awkward emails</Link>. The code for
+      this component library is on{' '}
       <Link href="https://github.com/mitcsutt/kiln" external>
         GitHub
       </Link>
@@ -39,12 +39,12 @@ export const InText: Story = {
 export const Tones: Story = {
   render: () => (
     <Stack gap={3}>
-      <Link href="#a">Default — Publish fixtures</Link>
+      <Link href="#a">Default — Send invoice</Link>
       <Link href="#b" tone="accent">
-        Accent — Follow Hawks v Millpond live
+        Accent — Follow the release 2.4 deploy live
       </Link>
       <Link href="#c" tone="muted">
-        Muted — Edit budget categories
+        Muted — Edit invoice templates
       </Link>
     </Stack>
   ),
@@ -54,17 +54,17 @@ export const Tones: Story = {
 export const UnderlineOnHover: Story = {
   render: () => (
     <Inline gap={5}>
-      <Link href="#work" underline="hover">
-        Work
+      <Link href="#product" underline="hover">
+        Product
       </Link>
-      <Link href="#writing" underline="hover">
-        Writing
+      <Link href="#pricing" underline="hover">
+        Pricing
       </Link>
-      <Link href="#about" underline="hover">
-        About
+      <Link href="#changelog" underline="hover">
+        Changelog
       </Link>
-      <Link href="https://www.linkedin.com/" underline="hover" tone="muted" external>
-        LinkedIn
+      <Link href="https://github.com/mitcsutt/kiln" underline="hover" tone="muted" external>
+        GitHub
       </Link>
     </Inline>
   ),

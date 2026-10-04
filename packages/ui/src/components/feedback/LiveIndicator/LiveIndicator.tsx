@@ -12,13 +12,13 @@ export interface LiveIndicatorProps extends HTMLAttributes<HTMLSpanElement> {
   tone?: Tone
   /** A ring that swells out of the dot. Stills under reduced motion. Default `true`. */
   pulse?: boolean
-  /** `inline` sits in running text; `pill` is a keylined chip for match cards. */
+  /** `inline` sits in running text; `pill` is a keylined chip for cards and list rows. */
   variant?: LiveIndicatorVariant
   size?: Exclude<Size, 'lg'>
 }
 
 /**
- * "This is happening now." A dot with a slow ring and a short label — for live matches,
+ * "This is happening now." A dot with a slow ring and a short label — for a live call,
  * an in-progress sync, a recording.
  *
  * Deliberately not a live region: a minute counter that announces itself every minute is

@@ -7,9 +7,9 @@ const meta = {
   title: 'UI/Display/Stat',
   component: Stat,
   args: {
-    label: 'Spent',
+    label: 'Costs',
     value: '$4,812.40',
-    hint: 'of $6,200.00 budgeted',
+    hint: 'of $6,200.00 forecast',
     delta: { value: '$212.40', direction: 'up', tone: 'critical' },
     size: 'md',
     rule: false,
@@ -22,82 +22,92 @@ type Story = StoryObj<typeof meta>
 export const Playground: Story = {}
 
 /**
- * A budget month. One hero figure (what's left), the rest in a ruled row so they line up
- * like ledger columns. Spending that rose is bad; savings that rose is good.
+ * A revenue month. One hero figure (what's been billed), the rest in a ruled row so they
+ * line up like ledger columns. Costs that rose are bad; revenue that rose is good.
  */
-export const BudgetMonth: Story = {
+export const MonthlyRevenue: Story = {
   render: () => (
     <Stack gap={6}>
       <Stat
         size="hero"
-        label="Left to spend in September"
-        value="$1,387.60"
-        hint="12 days to go · about $115 a day"
+        label="Revenue in September"
+        value="$48,120.40"
+        hint="12 days to go · of $60,000 target"
       />
       <Inline gap={6} align="start">
-        <Stat rule label="Income" value="$7,450.00" delta={{ value: '$0.00', direction: 'flat' }} />
         <Stat
           rule
-          label="Spent"
+          label="Invoiced"
+          value="$52,450.00"
+          delta={{ value: '$0.00', direction: 'flat' }}
+        />
+        <Stat
+          rule
+          label="Costs"
           value="$4,812.40"
           delta={{ value: '$212.40', direction: 'up', tone: 'critical' }}
           hint="vs August"
         />
         <Stat
           rule
-          label="Saved"
-          value="$1,250.00"
-          delta={{ value: '$150.00', direction: 'up' }}
-          hint="Emergency fund 68%"
+          label="New clients"
+          value="4"
+          delta={{ value: '1', direction: 'up' }}
+          hint="Pipeline 68%"
         />
       </Inline>
     </Stack>
   ),
 }
 
-/** A league: rank change where down the table is bad and up is good. */
-export const League: Story = {
+/** Sprint figures: a falling cycle time is good news, so its delta is `tone="positive"`. */
+export const SprintStats: Story = {
   render: () => (
     <Inline gap={6} align="start">
-      <Stat size="lg" label="Points" value="42" delta={{ value: '6 today', direction: 'up' }} />
       <Stat
         size="lg"
-        label="Rank"
-        value="3rd"
-        delta={{ value: '2 places', direction: 'down' }}
-        hint="of 8 clubs"
+        label="Tasks closed"
+        value="42"
+        delta={{ value: '6 today', direction: 'up' }}
       />
-      <Stat size="lg" label="Cup ties left" value="2 / 6" hint="Quarter-final, semi-final" />
+      <Stat
+        size="lg"
+        label="Cycle time"
+        value="3.2 days"
+        delta={{ value: '0.4 days', direction: 'down', tone: 'positive' }}
+        hint="median, last 30 days"
+      />
+      <Stat size="lg" label="Milestones left" value="2 / 6" hint="Beta, general release" />
     </Inline>
   ),
 }
 
-/** `tone` colours the figure itself — only when the number is the news: an overspend, the live total. */
+/** `tone` colours the figure itself — only when the number is the news: an overrun, the live total. */
 export const Tones: Story = {
   render: () => (
     <Inline gap={6} align="start">
       <Stat
         rule
-        label="Eating out"
+        label="Cloud hosting"
         value="$412.50"
         tone="critical"
-        hint="$112.50 over the $300.00 budget"
+        hint="$112.50 over the $300.00 forecast"
       />
       <Stat
         rule
-        label="Emergency fund"
-        value="$8,500.00"
+        label="Annual recurring revenue"
+        value="$850,000"
         tone="positive"
-        delta={{ value: '$250.00', direction: 'up' }}
-        hint="Goal reached"
+        delta={{ value: '$25,000', direction: 'up' }}
+        hint="Target reached"
       />
       <Stat
         rule
         label="Live total"
-        value="47 pts"
+        value="47 signups"
         tone="accent"
         delta={{ value: '3', direction: 'up' }}
-        hint="Hawks lead 1–0"
+        hint="Launch day, hour 6"
       />
     </Inline>
   ),

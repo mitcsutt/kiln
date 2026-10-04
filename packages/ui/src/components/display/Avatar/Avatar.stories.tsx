@@ -67,22 +67,22 @@ export const RingAndFallback: Story = {
   ),
 }
 
-/** `initials` overrides the derived letters — three-letter codes for clubs. Three letters are set smaller. */
-export const TeamCodes: Story = {
+/** `initials` overrides the derived letters — three-letter codes for companies. Three letters are set smaller. */
+export const CompanyCodes: Story = {
   render: () => (
     <Stack gap={4}>
       <Inline gap={3} align="end">
         {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((size) => (
-          <Avatar key={size} name="Harbour Hawks" initials="HAW" color={2} size={size} />
+          <Avatar key={size} name="Northwind Studio" initials="NWS" color={2} size={size} />
         ))}
       </Inline>
       <Inline gap={3}>
         {[
-          ['Harbour Hawks', 'HAW'],
-          ['Millpond FC', 'MIL'],
-          ['Quarry Lane', 'QUA'],
-          ['Eastgate United', 'EAS'],
-          ['Westbank Swifts', 'WES'],
+          ['Northwind Studio', 'NWS'],
+          ['Brightline Labs', 'BRL'],
+          ['Orchard & Co', 'ORC'],
+          ['Fernhill Press', 'FHP'],
+          ['Tidewater Books', 'TWB'],
         ].map(([name, code]) => (
           <Avatar key={code} name={name ?? ''} initials={code} />
         ))}

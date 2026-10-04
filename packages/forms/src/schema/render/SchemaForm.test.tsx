@@ -16,17 +16,15 @@ import { resetWarnings } from '#schema/render/warn'
 import { renderForm } from '#test/renderForm'
 
 // A kit with every schema registry filled (§10.5).
-const TeamBadge = defineCustomNode<{ teamId: string; compact?: boolean }>(function TeamBadge({
-  form,
-  props,
-  node,
-}) {
-  return (
-    <p data-testid="badge" data-form={'store' in form ? 'yes' : 'none'} data-node={node.custom}>
-      {`Team ${props.teamId}${props.compact === true ? ' (compact)' : ''}`}
-    </p>
-  )
-})
+const ProjectBadge = defineCustomNode<{ projectId: string; compact?: boolean }>(
+  function ProjectBadge({ form, props, node }) {
+    return (
+      <p data-testid="badge" data-form={'store' in form ? 'yes' : 'none'} data-node={node.custom}>
+        {`Project ${props.projectId}${props.compact === true ? ' (compact)' : ''}`}
+      </p>
+    )
+  },
+)
 
 function Timeline({ node, form, children, title }: LayoutRenderProps & { title: string }) {
   return (
@@ -40,20 +38,20 @@ function Timeline({ node, form, children, title }: LayoutRenderProps & { title: 
   )
 }
 
-const teams = defineLoader<string>(({ values }) => {
-  const league = (values as { league?: string }).league
+const projects = defineLoader<string>(({ values }) => {
+  const client = (values as { client?: string }).client
   return Promise.resolve(
-    league === 'weekend'
-      ? [{ value: 'ash', label: 'Ashgrove Athletic' }]
+    client === 'brightline'
+      ? [{ value: 'hlp', label: 'Help centre' }]
       : [
-          { value: 'riv', label: 'Riverside Rovers' },
-          { value: 'har', label: 'Harbour United' },
+          { value: 'atl', label: 'Atlas redesign' },
+          { value: 'bil', label: 'Billing migration' },
         ],
   )
 })
 
 const schemaKit = kit.extend({
-  loaders: { teams },
+  loaders: { projects },
   validators: {
     notTaken: defineValidator<string>((value) =>
       value === 'taken' ? 'That name is taken' : undefined,
@@ -76,7 +74,7 @@ const schemaKit = kit.extend({
       return (v.amount ?? 0) - v.splits.reduce((total, line) => total + (line.amount ?? 0), 0)
     }),
   },
-  nodes: { teamBadge: TeamBadge },
+  nodes: { projectBadge: ProjectBadge },
   layouts: { timeline: Timeline },
 })
 
@@ -142,7 +140,7 @@ describe('SchemaForm', () => {
             kind: 'number',
             name: 'age',
             label: 'Age',
-            rules: [{ rule: 'min', value: 16, message: 'Players must be 16 or over' }],
+            rules: [{ rule: 'min', value: 16, message: 'Members must be 16 or over' }],
           },
           { content: 'submit', label: 'Save' },
         ],
@@ -153,7 +151,7 @@ describe('SchemaForm', () => {
     expect(name).toBeRequired()
     await user.type(screen.getByRole('spinbutton', { name: 'Age' }), '12')
     await submit(user)
-    expect(await screen.findByText('Players must be 16 or over')).toBeInTheDocument()
+    expect(await screen.findByText('Members must be 16 or over')).toBeInTheDocument()
     expect(name).toHaveAttribute('aria-invalid', 'true')
     expect(onSubmit).not.toHaveBeenCalled()
   })
@@ -321,7 +319,7 @@ describe('SchemaForm', () => {
     }
     const schema = schemaKit.defineFormSchema<
       V,
-      { mode: 'create' | 'edit'; role: 'organiser' | 'player' }
+      { mode: 'create' | 'edit'; role: 'owner' | 'member' }
     >()({
       version: 1,
       root: {
@@ -337,21 +335,21 @@ describe('SchemaForm', () => {
             kind: 'text',
             name: 'role',
             label: 'Role',
-            when: { context: 'role', op: 'eq', value: 'organiser' },
+            when: { context: 'role', op: 'eq', value: 'owner' },
           },
         ],
       },
     })
     const { unmount } = renderSchema<V>(schema, {
       defaultValues: { email: '', role: '' },
-      context: { mode: 'create', role: 'organiser' },
+      context: { mode: 'create', role: 'owner' },
     })
     expect(screen.getByLabelText('Email')).not.toHaveAttribute('readonly')
     expect(screen.getByLabelText('Role')).toBeInTheDocument()
     unmount()
     renderSchema<V>(schema, {
       defaultValues: { email: 'a@b.co', role: '' },
-      context: { mode: 'edit', role: 'player' },
+      context: { mode: 'edit', role: 'member' },
     })
     expect(screen.getByLabelText('Email')).toHaveAttribute('readonly')
     expect(screen.queryByLabelText('Role')).toBeNull()
@@ -429,8 +427,8 @@ describe('SchemaForm', () => {
 
   it('optionsFrom loads options from the registry and reloads when a dep changes; resets clears the dependant', async () => {
     interface V {
-      league: 'weekday' | 'weekend'
-      team: string | null
+      client: 'northwind' | 'brightline'
+      project: string | null
     }
     const schema = schemaKit.defineFormSchema<V>()({
       version: 1,
@@ -439,37 +437,39 @@ describe('SchemaForm', () => {
         children: [
           {
             kind: 'radio',
-            name: 'league',
-            label: 'League',
+            name: 'client',
+            label: 'Client',
             options: [
-              { value: 'weekday', label: 'Weekday evenings' },
-              { value: 'weekend', label: 'Weekend mornings' },
+              { value: 'northwind', label: 'Northwind Studio' },
+              { value: 'brightline', label: 'Brightline Labs' },
             ],
-            resets: ['team'],
+            resets: ['project'],
           },
           {
             kind: 'radio',
-            name: 'team',
-            label: 'Team',
-            optionsFrom: { loader: 'teams', deps: ['league'] },
+            name: 'project',
+            label: 'Project',
+            optionsFrom: { loader: 'projects', deps: ['client'] },
           },
         ],
       },
     })
     const { user, form } = renderSchema<V>(schema, {
-      defaultValues: { league: 'weekday', team: null },
+      defaultValues: { client: 'northwind', project: null },
     })
-    const team = await screen.findByRole('group', { name: 'Team' })
-    expect(await within(team).findByRole('radio', { name: 'Riverside Rovers' })).toBeInTheDocument()
-    await user.click(within(team).getByRole('radio', { name: 'Harbour United' }))
-    expect(form.state.values.team).toBe('har')
-    await user.click(screen.getByRole('radio', { name: 'Weekend mornings' }))
+    const project = await screen.findByRole('group', { name: 'Project' })
     expect(
-      await within(screen.getByRole('group', { name: 'Team' })).findByRole('radio', {
-        name: 'Ashgrove Athletic',
+      await within(project).findByRole('radio', { name: 'Atlas redesign' }),
+    ).toBeInTheDocument()
+    await user.click(within(project).getByRole('radio', { name: 'Billing migration' }))
+    expect(form.state.values.project).toBe('bil')
+    await user.click(screen.getByRole('radio', { name: 'Brightline Labs' }))
+    expect(
+      await within(screen.getByRole('group', { name: 'Project' })).findByRole('radio', {
+        name: 'Help centre',
       }),
     ).toBeInTheDocument()
-    expect(form.state.values.team).toBeNull()
+    expect(form.state.values.project).toBeNull()
   })
 
   describe('compute (runtime derive registration)', () => {
@@ -612,21 +612,21 @@ describe('SchemaForm', () => {
 
   describe('optionsFrom on a loading field (combobox)', () => {
     interface V {
-      league: string
-      team: string | null
+      client: string
+      project: string | null
     }
     const comboSchema = comboKit.defineFormSchema<V>()({
       version: 1,
       root: {
         layout: 'stack',
         children: [
-          { kind: 'text', name: 'league', label: 'League code' },
+          { kind: 'text', name: 'client', label: 'Client code' },
           {
             kind: 'combobox',
-            name: 'team',
-            label: 'Team',
+            name: 'project',
+            label: 'Project',
             placeholder: 'Search',
-            optionsFrom: { loader: 'search', deps: ['league'] },
+            optionsFrom: { loader: 'search', deps: ['client'] },
           },
         ],
       },
@@ -640,10 +640,10 @@ describe('SchemaForm', () => {
 
     it('passes the typed query to the loader and reloads on its deps', async () => {
       search.mockImplementation(({ query }) =>
-        Promise.resolve([{ value: 'riv', label: `Riverside Rovers ${query}` }]),
+        Promise.resolve([{ value: 'atl', label: `Atlas redesign ${query}` }]),
       )
       renderSchema<V>(comboSchema, {
-        defaultValues: { league: 'weekday', team: null },
+        defaultValues: { client: 'northwind', project: null },
         using: comboKit,
       })
       await act(() => {
@@ -651,7 +651,7 @@ describe('SchemaForm', () => {
         return Promise.resolve()
       })
       expect(search.mock.calls.map(([ctx]) => ctx.query)).toEqual([''])
-      fireEvent.change(screen.getByRole('combobox', { name: 'Team' }), {
+      fireEvent.change(screen.getByRole('combobox', { name: 'Project' }), {
         target: { value: 'ar' },
       })
       await act(() => Promise.resolve())
@@ -660,27 +660,27 @@ describe('SchemaForm', () => {
         return Promise.resolve()
       })
       expect(search.mock.calls.map(([ctx]) => ctx.query)).toEqual(['', 'ar'])
-      fireEvent.change(screen.getByLabelText('League code'), { target: { value: 'weekend' } })
+      fireEvent.change(screen.getByLabelText('Client code'), { target: { value: 'brightline' } })
       await act(() => Promise.resolve())
       await act(() => {
         vi.advanceTimersByTime(300)
         return Promise.resolve()
       })
       expect(search).toHaveBeenCalledTimes(3)
-      expect((search.mock.calls[2]?.[0].values as V).league).toBe('weekend')
+      expect((search.mock.calls[2]?.[0].values as V).client).toBe('brightline')
     })
 
     it('shows the failed message when the loader rejects', async () => {
       search.mockImplementation(() => Promise.reject(new Error('offline')))
       renderSchema<V>(comboSchema, {
-        defaultValues: { league: 'weekday', team: null },
+        defaultValues: { client: 'northwind', project: null },
         using: comboKit,
       })
       await act(() => {
         vi.advanceTimersByTime(0)
         return Promise.resolve()
       })
-      fireEvent.click(screen.getByRole('combobox', { name: 'Team' }))
+      fireEvent.click(screen.getByRole('combobox', { name: 'Project' }))
       await act(() => Promise.resolve())
       expect(screen.getByText("Couldn't load options")).toBeInTheDocument()
     })
@@ -688,7 +688,7 @@ describe('SchemaForm', () => {
     it('makes no call in view mode', async () => {
       search.mockImplementation(() => Promise.resolve([]))
       renderSchema<V>(comboSchema, {
-        defaultValues: { league: 'weekday', team: 'riv' },
+        defaultValues: { client: 'northwind', project: 'atl' },
         using: comboKit,
         mode: 'view',
       })
@@ -697,7 +697,7 @@ describe('SchemaForm', () => {
         return Promise.resolve()
       })
       expect(search).not.toHaveBeenCalled()
-      expect(screen.getByText('riv')).toBeInTheDocument()
+      expect(screen.getByText('atl')).toBeInTheDocument()
     })
   })
 
@@ -803,22 +803,22 @@ describe('SchemaForm', () => {
       version: 1,
       root: {
         layout: 'timeline',
-        title: 'Season',
+        title: 'Roadmap',
         children: [
           { kind: 'text', name: 'name', label: 'Name' },
-          { custom: 'teamBadge', props: { teamId: 'riv', compact: true } },
+          { custom: 'projectBadge', props: { projectId: 'atl', compact: true } },
         ],
       },
     })
     renderSchema(schema, { defaultValues: { name: '' } })
-    const region = screen.getByRole('region', { name: 'Season' })
+    const region = screen.getByRole('region', { name: 'Roadmap' })
     expect(region).toHaveAttribute('data-layout', 'timeline')
     expect(region).toHaveAttribute('data-has-form', 'yes')
     expect(within(region).getByLabelText('Name')).toBeInTheDocument()
     const badge = within(region).getByTestId('badge')
-    expect(badge).toHaveTextContent('Team riv (compact)')
+    expect(badge).toHaveTextContent('Project atl (compact)')
     expect(badge).toHaveAttribute('data-form', 'yes')
-    expect(badge).toHaveAttribute('data-node', 'teamBadge')
+    expect(badge).toHaveAttribute('data-node', 'projectBadge')
   })
 
   it('unknown keys (untrusted schemas) render nothing and warn in dev', () => {

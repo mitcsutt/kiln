@@ -13,25 +13,25 @@ type Story = StoryObj<typeof meta>
 
 export const Playground: Story = {}
 
-/** Bill states on an accounts screen. */
-export const BillStates: Story = {
+/** Invoice states on a billing screen. */
+export const InvoiceStates: Story = {
   render: () => (
     <Stack gap={3}>
-      <StatusDot tone="positive" label="Electricity — paid 3 Sep" />
-      <StatusDot tone="caution" label="Water — due in 4 days" />
-      <StatusDot tone="critical" label="Council rates — overdue" />
-      <StatusDot tone="neutral" label="Internet — scheduled" />
+      <StatusDot tone="positive" label="INV-1042 — paid 3 Sep" />
+      <StatusDot tone="caution" label="INV-1043 — due in 4 days" />
+      <StatusDot tone="critical" label="INV-1039 — overdue" />
+      <StatusDot tone="neutral" label="INV-1044 — scheduled" />
     </Stack>
   ),
 }
 
-/** Cup status for a club. */
-export const TeamStatus: Story = {
+/** Project health on a dashboard. */
+export const ProjectStatus: Story = {
   render: () => (
     <Stack gap={3}>
-      <StatusDot tone="positive" label="Through to the quarter-finals" />
-      <StatusDot tone="info" label="Waiting on a replay" />
-      <StatusDot tone="critical" label="Eliminated" />
+      <StatusDot tone="positive" label="On track for 14 November" />
+      <StatusDot tone="info" label="Waiting on design review" />
+      <StatusDot tone="critical" label="Blocked" />
     </Stack>
   ),
 }

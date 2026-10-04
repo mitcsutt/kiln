@@ -73,27 +73,27 @@ describe('RadioGroup', () => {
 
   it('is labelled by a surrounding Field label', () => {
     render(
-      <Field label="Pay period" error="Choose a period">
+      <Field label="Billing period" error="Choose a period">
         <RadioGroup>
           <RadioGroup.Item value="w" label="Weekly" />
           <RadioGroup.Item value="m" label="Monthly" />
         </RadioGroup>
       </Field>,
     )
-    const group = screen.getByRole('radiogroup', { name: 'Pay period' })
+    const group = screen.getByRole('radiogroup', { name: 'Billing period' })
     expect(group).toHaveAccessibleDescription('Choose a period')
     expect(group).not.toHaveAttribute('id')
   })
 
   it('inside a Fieldset, leaves the name to the legend (named once)', () => {
     render(
-      <Fieldset legend="Pay period">
+      <Fieldset legend="Billing period">
         <RadioGroup>
           <RadioGroup.Item value="w" label="Weekly" />
         </RadioGroup>
       </Fieldset>,
     )
-    expect(screen.getByRole('group', { name: 'Pay period' })).toContainElement(
+    expect(screen.getByRole('group', { name: 'Billing period' })).toContainElement(
       screen.getByRole('radiogroup'),
     )
     expect(screen.getByRole('radiogroup')).not.toHaveAttribute('aria-labelledby')

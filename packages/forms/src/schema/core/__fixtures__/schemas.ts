@@ -7,48 +7,48 @@ import type { TestExtras, TestRegistry } from '#schema/core/__fixtures__/registr
 
 const define = defineSchemaFor<TestRegistry, TestExtras>()
 
-// --- League entry ----------------------------------------------------------------------------
-export interface LeagueEntry {
+// --- Project sign-up -------------------------------------------------------------------------
+export interface ProjectSignup {
   name: string
   email: string
   age: number | null
-  role: 'admin' | 'player'
-  league: 'weekday' | 'weekend'
-  team: string | null
+  role: 'admin' | 'member'
+  client: 'northwind' | 'brightline'
+  project: string | null
   fee: 30 | 45 | 60 | null
   paid: boolean
-  positions: ('goalkeeper' | 'outfield')[]
+  disciplines: ('design' | 'engineering')[]
   code: string
   address: { line1: string; city: string; postcode: string }
   guests: { name: string; age: number | null; vegetarian: boolean }[]
 }
-export interface LeagueEntryContext {
+export interface ProjectSignupContext {
   mode: 'create' | 'edit'
-  role: 'organiser' | 'player'
+  role: 'owner' | 'member'
 }
 
-export const emptyLeagueEntry: LeagueEntry = {
+export const emptyProjectSignup: ProjectSignup = {
   name: '',
   email: '',
   age: null,
-  role: 'player',
-  league: 'weekday',
-  team: null,
+  role: 'member',
+  client: 'northwind',
+  project: null,
   fee: null,
   paid: false,
-  positions: [],
+  disciplines: [],
   code: '',
   address: { line1: '', city: '', postcode: '' },
   guests: [],
 }
 
-export const leagueEntrySchema = define<LeagueEntry, LeagueEntryContext>()({
+export const projectSignupSchema = define<ProjectSignup, ProjectSignupContext>()({
   version: 1,
-  title: 'League entry',
-  description: 'Sign up for the five-a-side community league.',
+  title: 'Project sign-up',
+  description: 'Join a client project as a contractor.',
   root: {
     layout: 'steps',
-    label: 'Entry',
+    label: 'Sign-up steps',
     children: [
       {
         layout: 'step',
@@ -94,7 +94,7 @@ export const leagueEntrySchema = define<LeagueEntry, LeagueEntryContext>()({
                 label: 'Age',
                 min: 16,
                 rules: [
-                  { rule: 'min', value: 16, message: 'Players must be 16 or over' },
+                  { rule: 'min', value: 16, message: 'You must be 16 or over' },
                   { rule: 'integer' },
                 ],
               },
@@ -103,10 +103,10 @@ export const leagueEntrySchema = define<LeagueEntry, LeagueEntryContext>()({
                 name: 'role',
                 label: 'Role',
                 options: [
-                  { value: 'admin', label: 'Organiser' },
-                  { value: 'player', label: 'Player' },
+                  { value: 'admin', label: 'Project lead' },
+                  { value: 'member', label: 'Contributor' },
                 ],
-                when: { context: 'role', op: 'eq', value: 'organiser' },
+                when: { context: 'role', op: 'eq', value: 'owner' },
               },
             ],
           },
@@ -133,40 +133,40 @@ export const leagueEntrySchema = define<LeagueEntry, LeagueEntryContext>()({
       },
       {
         layout: 'step',
-        value: 'team',
-        title: 'Team',
+        value: 'project',
+        title: 'Project',
         children: [
           {
             kind: 'radio',
-            name: 'league',
-            label: 'League',
+            name: 'client',
+            label: 'Client',
             options: [
-              { value: 'weekday', label: 'Weekday evenings' },
-              { value: 'weekend', label: 'Weekend mornings' },
+              { value: 'northwind', label: 'Northwind Studio' },
+              { value: 'brightline', label: 'Brightline Labs' },
             ],
-            resets: ['team'],
+            resets: ['project'],
           },
           {
             kind: 'combobox',
-            name: 'team',
-            label: 'Team',
-            optionsFrom: { loader: 'teams', deps: ['league'] },
-            rules: [{ rule: 'required', message: 'Choose a team' }],
+            name: 'project',
+            label: 'Project',
+            optionsFrom: { loader: 'projects', deps: ['client'] },
+            rules: [{ rule: 'required', message: 'Choose a project' }],
           },
           {
             kind: 'chips',
-            name: 'positions',
-            label: 'Position',
+            name: 'disciplines',
+            label: 'Discipline',
             options: [
-              { value: 'goalkeeper', label: 'Goalkeeper' },
-              { value: 'outfield', label: 'Outfield' },
+              { value: 'design', label: 'Design' },
+              { value: 'engineering', label: 'Engineering' },
             ],
-            rules: [{ rule: 'maxItems', value: 1, message: 'Pick one position' }],
+            rules: [{ rule: 'maxItems', value: 1, message: 'Pick one discipline' }],
           },
           {
-            custom: 'teamPreview',
-            props: { teamId: 'riverside', compact: true },
-            when: { field: 'team', op: 'notEmpty' },
+            custom: 'projectPreview',
+            props: { projectId: 'atlas', compact: true },
+            when: { field: 'project', op: 'notEmpty' },
           },
         ],
       },
@@ -178,20 +178,20 @@ export const leagueEntrySchema = define<LeagueEntry, LeagueEntryContext>()({
           {
             kind: 'choiceCards',
             name: 'fee',
-            label: 'Season fee',
+            label: 'Monthly seat price',
             columns: 3,
             options: [
               { value: 30, label: '£30' },
               { value: 45, label: '£45' },
               { value: 60, label: '£60' },
             ],
-            rules: [{ rule: 'required', message: 'Choose a season fee' }],
+            rules: [{ rule: 'required', message: 'Choose a seat price' }],
           },
           {
             kind: 'checkbox',
             name: 'paid',
-            label: 'I have paid the season fee',
-            when: { field: 'role', op: 'eq', value: 'player' },
+            label: 'I have paid the first invoice',
+            when: { field: 'role', op: 'eq', value: 'member' },
             rules: [{ rule: 'required' }],
           },
           {
@@ -204,7 +204,7 @@ export const leagueEntrySchema = define<LeagueEntry, LeagueEntryContext>()({
           {
             layout: 'repeater',
             name: 'guests',
-            label: 'Guests for the end-of-season dinner',
+            label: 'Guests for the launch dinner',
             variant: 'table',
             max: 4,
             addLabel: 'Add a guest',
@@ -238,8 +238,8 @@ export const leagueEntrySchema = define<LeagueEntry, LeagueEntryContext>()({
           {
             content: 'alert',
             tone: 'info',
-            title: 'Entries close before the first fixture',
-            text: 'Late entries join the waiting list and pay nothing until a place opens.',
+            title: 'Sign-ups close when the project starts',
+            text: 'Late sign-ups join the waiting list and pay nothing until a place opens.',
             when: {
               all: [
                 { field: 'age', op: 'gte', value: 16 },
@@ -256,7 +256,7 @@ export const leagueEntrySchema = define<LeagueEntry, LeagueEntryContext>()({
         children: [
           {
             layout: 'review',
-            title: 'Check your entry',
+            title: 'Check your sign-up',
             children: [
               { kind: 'text', name: 'name', label: 'Full name' },
               { kind: 'text', name: 'email', label: 'Email' },
@@ -266,7 +266,7 @@ export const leagueEntrySchema = define<LeagueEntry, LeagueEntryContext>()({
           {
             layout: 'actions',
             align: 'end',
-            children: [{ content: 'submit', label: 'Join the league' }],
+            children: [{ content: 'submit', label: 'Join the project' }],
           },
         ],
       },
@@ -656,7 +656,7 @@ export const onboardingSchema = define<Onboarding>()({
             options: [
               { value: 'projects', label: 'Projects' },
               { value: 'events', label: 'Events' },
-              { value: 'clubs', label: 'Clubs and groups' },
+              { value: 'clients', label: 'Client work' },
             ],
             rules: [{ rule: 'minItems', value: 1, message: 'Choose at least one' }],
           },
@@ -666,34 +666,33 @@ export const onboardingSchema = define<Onboarding>()({
   },
 })
 
-// --- Savings goal (sentence) ------------------------------------------------------------------
-export interface SavingsGoal {
-  target: number | null
-  goal: string
-  deadline: string
+// --- Recurring invoice (sentence) -------------------------------------------------------------
+export interface RecurringInvoice {
+  client: string
+  amount: number | null
+  start: string
 }
 
-export const savingsSchema = define<SavingsGoal>()({
+export const recurringInvoiceSchema = define<RecurringInvoice>()({
   version: 1,
   root: {
     layout: 'sentence',
-    label: 'Savings goal',
+    label: 'Recurring invoice',
     children: [
-      { content: 'text', text: 'I want to save' },
+      { content: 'text', text: 'Bill' },
+      { kind: 'text', name: 'client', label: 'Client', rules: [{ rule: 'required' }] },
       {
         kind: 'amount',
-        name: 'target',
-        label: 'Target amount',
+        name: 'amount',
+        label: 'Amount',
         currency: 'GBP',
         rules: [{ rule: 'required' }, { rule: 'min', value: 10 }],
       },
-      { content: 'text', text: 'for' },
-      { kind: 'text', name: 'goal', label: 'Goal', rules: [{ rule: 'required' }] },
-      { content: 'text', text: 'by' },
+      { content: 'text', text: 'every month starting' },
       {
         kind: 'date',
-        name: 'deadline',
-        label: 'Deadline',
+        name: 'start',
+        label: 'Start date',
         rules: [{ rule: 'minDate', value: 'today' }],
       },
     ],
@@ -872,11 +871,11 @@ export const layoutsSchema = define<Profile>()({
 
 /** Every fixture schema, by Storybook-ish name. */
 export const storySchemas = {
-  'League entry': leagueEntrySchema,
+  'Project sign-up': projectSignupSchema,
   'Expense claim': expenseSchema,
   Enquiry: enquirySchema,
   'Account settings': accountSchema,
   Onboarding: onboardingSchema,
-  'Savings goal': savingsSchema,
+  'Recurring invoice': recurringInvoiceSchema,
   'Every layout': layoutsSchema,
 }

@@ -50,66 +50,52 @@ export const Playground: Story = {
   ),
 }
 
-interface TeamRow {
-  team: string
-  p: number
-  w: number
-  d: number
-  l: number
-  gf: number
-  ga: number
-  pts: number
+interface ProjectRow {
+  project: string
+  owner: string
+  open: number
+  done: number
+  due: string
+  points: number
   yours?: boolean
 }
 
-// Division two after round 3 (story data): every result is consistent across the table.
-const DIVISION: TeamRow[] = [
-  { team: 'Harbour Hawks', p: 3, w: 2, d: 1, l: 0, gf: 5, ga: 2, pts: 7 },
-  { team: 'Eastgate United', p: 3, w: 1, d: 2, l: 0, gf: 4, ga: 3, pts: 5, yours: true },
-  { team: 'Old Town Wanderers', p: 3, w: 1, d: 0, l: 2, gf: 4, ga: 5, pts: 3 },
-  { team: 'Westbank Swifts', p: 3, w: 0, d: 1, l: 2, gf: 2, ga: 5, pts: 1 },
+// Sprint 14, week 2 (story data).
+const SPRINT: ProjectRow[] = [
+  { project: 'Atlas redesign', owner: 'Priya Nair', open: 4, done: 8, due: '14 Oct', points: 21 },
+  {
+    project: 'Billing migration',
+    owner: 'Tomás Ortega',
+    open: 4,
+    done: 6,
+    due: '21 Oct',
+    points: 18,
+    yours: true,
+  },
+  { project: 'Mobile app', owner: 'Hana Kobayashi', open: 5, done: 4, due: '4 Nov', points: 13 },
+  { project: 'Help centre', owner: 'Sam Okafor', open: 4, done: 2, due: '11 Nov', points: 5 },
 ]
 
-const gd = (r: TeamRow) => r.gf - r.ga
-const signed = (n: number) => (n > 0 ? `+${String(n)}` : n < 0 ? `−${String(Math.abs(n))}` : '0')
-
-/** A league table. Your club is highlighted; Pts sorts. */
-export const LeagueTable: Story = {
+/** A sprint's projects as a table. Your project is highlighted; Points sorts. */
+export const SprintProjects: Story = {
   render: function Render(args) {
     const [sort, setSort] = useState<TableSort>('desc')
     const rows = useMemo(
-      () => [...DIVISION].sort((a, b) => (sort === 'asc' ? a.pts - b.pts : b.pts - a.pts)),
+      () =>
+        [...SPRINT].sort((a, b) => (sort === 'asc' ? a.points - b.points : b.points - a.points)),
       [sort],
     )
     return (
       <Stack style={{ maxWidth: '40rem' }}>
-        <Table {...args} label="Division two table">
-          <Table.Caption>Division two · after round 3</Table.Caption>
+        <Table {...args} label="Sprint 14 projects">
+          <Table.Caption>Sprint 14 · week 2</Table.Caption>
           <Table.Head>
             <Table.Row>
-              <Table.HeaderCell numeric>#</Table.HeaderCell>
-              <Table.HeaderCell>Team</Table.HeaderCell>
-              <Table.HeaderCell numeric>
-                <abbr title="Played">P</abbr>
-              </Table.HeaderCell>
-              <Table.HeaderCell numeric>
-                <abbr title="Won">W</abbr>
-              </Table.HeaderCell>
-              <Table.HeaderCell numeric>
-                <abbr title="Drawn">D</abbr>
-              </Table.HeaderCell>
-              <Table.HeaderCell numeric>
-                <abbr title="Lost">L</abbr>
-              </Table.HeaderCell>
-              <Table.HeaderCell numeric>
-                <abbr title="Goals for">GF</abbr>
-              </Table.HeaderCell>
-              <Table.HeaderCell numeric>
-                <abbr title="Goals against">GA</abbr>
-              </Table.HeaderCell>
-              <Table.HeaderCell numeric>
-                <abbr title="Goal difference">GD</abbr>
-              </Table.HeaderCell>
+              <Table.HeaderCell>Project</Table.HeaderCell>
+              <Table.HeaderCell>Owner</Table.HeaderCell>
+              <Table.HeaderCell numeric>Open tasks</Table.HeaderCell>
+              <Table.HeaderCell numeric>Done</Table.HeaderCell>
+              <Table.HeaderCell>Due</Table.HeaderCell>
               <Table.HeaderCell
                 numeric
                 sort={sort}
@@ -117,24 +103,20 @@ export const LeagueTable: Story = {
                   setSort((s) => (s === 'desc' ? 'asc' : 'desc'))
                 }}
               >
-                Pts
+                <abbr title="Story points">Points</abbr>
               </Table.HeaderCell>
             </Table.Row>
           </Table.Head>
           <Table.Body>
             {rows.map((r) => (
-              <Table.Row key={r.team} highlighted={r.yours}>
-                <Table.Cell numeric>{DIVISION.indexOf(r) + 1}</Table.Cell>
-                <Table.Cell rowHeader>{r.team}</Table.Cell>
-                <Table.Cell numeric>{r.p}</Table.Cell>
-                <Table.Cell numeric>{r.w}</Table.Cell>
-                <Table.Cell numeric>{r.d}</Table.Cell>
-                <Table.Cell numeric>{r.l}</Table.Cell>
-                <Table.Cell numeric>{r.gf}</Table.Cell>
-                <Table.Cell numeric>{r.ga}</Table.Cell>
-                <Table.Cell numeric>{signed(gd(r))}</Table.Cell>
+              <Table.Row key={r.project} highlighted={r.yours}>
+                <Table.Cell rowHeader>{r.project}</Table.Cell>
+                <Table.Cell>{r.owner}</Table.Cell>
+                <Table.Cell numeric>{r.open}</Table.Cell>
+                <Table.Cell numeric>{r.done}</Table.Cell>
+                <Table.Cell>{r.due}</Table.Cell>
                 <Table.Cell numeric>
-                  <strong>{r.pts}</strong>
+                  <strong>{r.points}</strong>
                 </Table.Cell>
               </Table.Row>
             ))}
@@ -145,50 +127,50 @@ export const LeagueTable: Story = {
   },
 }
 
-interface Txn {
+interface Invoice {
   date: string
-  payee: string
-  category: string
+  client: string
+  service: string
   color: TagColor
   amount: number
 }
 
-const TRANSACTIONS: Txn[] = [
-  { date: '26 Sep', payee: 'Corner Grocer', category: 'Groceries', color: 1, amount: -84.2 },
-  { date: '25 Sep', payee: 'Salary — Harbour Labs', category: 'Income', color: 2, amount: 3725 },
-  { date: '24 Sep', payee: 'Metro Transit top-up', category: 'Transport', color: 4, amount: -50 },
-  { date: '23 Sep', payee: 'City Power', category: 'Utilities', color: 3, amount: -186.45 },
-  { date: '22 Sep', payee: 'Rent — Eastgate Lettings', category: 'Rent', color: 5, amount: -1240 },
-  { date: '21 Sep', payee: 'Trattoria Nove', category: 'Eating out', color: 6, amount: -96.5 },
-  { date: '20 Sep', payee: 'High Street Pharmacy', category: 'Health', color: 7, amount: -23.99 },
+const INVOICES: Invoice[] = [
+  { date: '26 Sep', client: 'Northwind Studio', service: 'Design', color: 1, amount: 4200 },
+  { date: '25 Sep', client: 'Brightline Labs', service: 'Development', color: 2, amount: 8650 },
+  { date: '24 Sep', client: 'Orchard & Co (credit)', service: 'Support', color: 4, amount: -350 },
+  { date: '23 Sep', client: 'Harbourview Clinic', service: 'Hosting', color: 3, amount: 186.45 },
+  { date: '22 Sep', client: 'Fernhill Press', service: 'Consulting', color: 5, amount: 1240 },
+  { date: '21 Sep', client: 'Tidewater Books', service: 'Training', color: 6, amount: 960.5 },
+  { date: '20 Sep', client: 'Larkspur Health', service: 'Licences', color: 7, amount: 239.99 },
 ]
 
 /** A ledger: compact, ruled, figures right-aligned and tabular, with a totals row. */
-export const Transactions: Story = {
+export const Invoices: Story = {
   args: { density: 'compact' },
   render: (args) => {
-    const net = TRANSACTIONS.reduce((sum, t) => sum + t.amount, 0)
+    const total = INVOICES.reduce((sum, t) => sum + t.amount, 0)
     return (
       <Stack style={{ maxWidth: '40rem' }}>
-        <Table {...args} label="September transactions">
-          <Table.Caption>Everyday account · September</Table.Caption>
+        <Table {...args} label="September invoices">
+          <Table.Caption>Invoices issued · September</Table.Caption>
           <Table.Head>
             <Table.Row>
-              <Table.HeaderCell>Date</Table.HeaderCell>
-              <Table.HeaderCell>Payee</Table.HeaderCell>
-              <Table.HeaderCell>Category</Table.HeaderCell>
+              <Table.HeaderCell>Issued</Table.HeaderCell>
+              <Table.HeaderCell>Client</Table.HeaderCell>
+              <Table.HeaderCell>Service</Table.HeaderCell>
               <Table.HeaderCell numeric>Amount</Table.HeaderCell>
             </Table.Row>
           </Table.Head>
           <Table.Body>
-            {TRANSACTIONS.map((t) => (
-              <Table.Row key={t.payee} interactive>
+            {INVOICES.map((t) => (
+              <Table.Row key={t.client} interactive>
                 <Table.Cell numeric align="start">
                   {t.date}
                 </Table.Cell>
-                <Table.Cell rowHeader>{t.payee}</Table.Cell>
+                <Table.Cell rowHeader>{t.client}</Table.Cell>
                 <Table.Cell>
-                  <Tag color={t.color}>{t.category}</Tag>
+                  <Tag color={t.color}>{t.service}</Tag>
                 </Table.Cell>
                 <Table.Cell numeric>
                   <Amount value={t.amount} accounting />
@@ -198,9 +180,9 @@ export const Transactions: Story = {
           </Table.Body>
           <Table.Foot>
             <Table.Row>
-              <Table.Cell colSpan={3}>Net for the period</Table.Cell>
+              <Table.Cell colSpan={3}>Total for the period</Table.Cell>
               <Table.Cell numeric>
-                <Amount value={net} accounting />
+                <Amount value={total} accounting />
               </Table.Cell>
             </Table.Row>
           </Table.Foot>
@@ -224,22 +206,22 @@ export const PlainAndStriped: Story = {
           <Table.Caption>{v.striped ? 'Plain, striped' : 'Plain'}</Table.Caption>
           <Table.Head>
             <Table.Row>
-              <Table.HeaderCell>Player</Table.HeaderCell>
-              <Table.HeaderCell>Team</Table.HeaderCell>
-              <Table.HeaderCell numeric>Goals</Table.HeaderCell>
+              <Table.HeaderCell>Reviewer</Table.HeaderCell>
+              <Table.HeaderCell>Project</Table.HeaderCell>
+              <Table.HeaderCell numeric>Reviews</Table.HeaderCell>
             </Table.Row>
           </Table.Head>
           <Table.Body>
             {[
-              ['Sione Taufa', 'Harbour Hawks', 3],
-              ['Lena Brandt', 'Eastgate United', 2],
-              ['Tomás Ferreira', 'Old Town Wanderers', 2],
-              ['Kwame Asante', 'Westbank Swifts', 1],
-            ].map(([player, team, goals]) => (
-              <Table.Row key={String(player)}>
-                <Table.Cell rowHeader>{player}</Table.Cell>
-                <Table.Cell>{team}</Table.Cell>
-                <Table.Cell numeric>{goals}</Table.Cell>
+              ['Priya Nair', 'Atlas redesign', 14],
+              ['Tomás Ortega', 'Billing migration', 11],
+              ['Hana Kobayashi', 'Mobile app', 9],
+              ['Sam Okafor', 'Help centre', 6],
+            ].map(([reviewer, project, reviews]) => (
+              <Table.Row key={String(reviewer)}>
+                <Table.Cell rowHeader>{reviewer}</Table.Cell>
+                <Table.Cell>{project}</Table.Cell>
+                <Table.Cell numeric>{reviews}</Table.Cell>
               </Table.Row>
             ))}
           </Table.Body>
@@ -251,47 +233,40 @@ export const PlainAndStriped: Story = {
 
 /**
  * On a phone the table drops to what matters: `hideBelow="md"` on a column's header
- * and cells removes W/D/L/GF/GA under 48em; `width="fill"` gives the team column the
- * spare width and `width="min"` keeps rank tight. Resize the canvas to see it.
+ * and cells removes the owner and done columns under 48em; `width="fill"` gives the
+ * project column the spare width and `width="min"` keeps the points column tight. Resize
+ * the canvas to see it.
  */
 export const ResponsiveColumns: Story = {
   render: (args) => (
     <Stack style={{ maxWidth: '40rem' }}>
-      <Table {...args} label="Division two table">
+      <Table {...args} label="Sprint 14 projects">
         <Table.Head>
           <Table.Row>
+            <Table.HeaderCell width="fill">Project</Table.HeaderCell>
+            <Table.HeaderCell hideBelow="md">Owner</Table.HeaderCell>
+            <Table.HeaderCell numeric>Open tasks</Table.HeaderCell>
+            <Table.HeaderCell numeric hideBelow="md">
+              Done
+            </Table.HeaderCell>
+            <Table.HeaderCell>Due</Table.HeaderCell>
             <Table.HeaderCell numeric width="min">
-              #
+              Points
             </Table.HeaderCell>
-            <Table.HeaderCell width="fill">Team</Table.HeaderCell>
-            <Table.HeaderCell numeric>
-              <abbr title="Played">P</abbr>
-            </Table.HeaderCell>
-            {(['W', 'D', 'L', 'GF', 'GA'] as const).map((h) => (
-              <Table.HeaderCell key={h} numeric hideBelow="md">
-                {h}
-              </Table.HeaderCell>
-            ))}
-            <Table.HeaderCell numeric>
-              <abbr title="Goal difference">GD</abbr>
-            </Table.HeaderCell>
-            <Table.HeaderCell numeric>Pts</Table.HeaderCell>
           </Table.Row>
         </Table.Head>
         <Table.Body>
-          {DIVISION.map((r, i) => (
-            <Table.Row key={r.team} highlighted={r.yours}>
-              <Table.Cell numeric>{i + 1}</Table.Cell>
-              <Table.Cell rowHeader>{r.team}</Table.Cell>
-              <Table.Cell numeric>{r.p}</Table.Cell>
-              {[r.w, r.d, r.l, r.gf, r.ga].map((n, j) => (
-                <Table.Cell key={j} numeric hideBelow="md">
-                  {n}
-                </Table.Cell>
-              ))}
-              <Table.Cell numeric>{signed(gd(r))}</Table.Cell>
+          {SPRINT.map((r) => (
+            <Table.Row key={r.project} highlighted={r.yours}>
+              <Table.Cell rowHeader>{r.project}</Table.Cell>
+              <Table.Cell hideBelow="md">{r.owner}</Table.Cell>
+              <Table.Cell numeric>{r.open}</Table.Cell>
+              <Table.Cell numeric hideBelow="md">
+                {r.done}
+              </Table.Cell>
+              <Table.Cell>{r.due}</Table.Cell>
               <Table.Cell numeric>
-                <strong>{r.pts}</strong>
+                <strong>{r.points}</strong>
               </Table.Cell>
             </Table.Row>
           ))}
@@ -308,29 +283,35 @@ export const ResponsiveColumns: Story = {
 export const HighlightedWithTones: Story = {
   render: (args) => (
     <Stack style={{ maxWidth: '40rem' }}>
-      <Table {...args} label="Clubs with a match on now">
+      <Table {...args} label="Workspaces with a deploy today">
         <Table.Head>
           <Table.Row>
-            <Table.HeaderCell width="fill">Club</Table.HeaderCell>
-            <Table.HeaderCell>Match</Table.HeaderCell>
-            <Table.HeaderCell numeric>Today</Table.HeaderCell>
-            <Table.HeaderCell numeric>Fees due</Table.HeaderCell>
+            <Table.HeaderCell width="fill">Workspace</Table.HeaderCell>
+            <Table.HeaderCell>Deploy</Table.HeaderCell>
+            <Table.HeaderCell numeric>Seats today</Table.HeaderCell>
+            <Table.HeaderCell numeric>Balance</Table.HeaderCell>
           </Table.Row>
         </Table.Head>
         <Table.Body>
           {[
-            { name: 'Harbour Hawks', match: 'Hawks v Swifts', live: true, today: 3, balance: 12.5 },
             {
-              name: 'Eastgate United (your club)',
-              match: 'Eastgate v Wanderers',
+              name: 'Northwind Studio',
+              deploy: 'Release 2.4 to production',
+              live: true,
+              today: 3,
+              balance: 12.5,
+            },
+            {
+              name: 'Brightline Labs (your workspace)',
+              deploy: 'Release 2.4 to staging',
               live: true,
               today: -1,
               balance: -4.5,
               you: true,
             },
             {
-              name: 'Northside Rovers',
-              match: 'Rovers v Millpond',
+              name: 'Orchard & Co',
+              deploy: 'Hotfix 2.3.1',
               live: false,
               today: 0,
               balance: 0,
@@ -341,14 +322,14 @@ export const HighlightedWithTones: Story = {
                 {o.name}
                 <Text as="span" size="xs" tone="muted">
                   {' '}
-                  · 3 squads
+                  · 3 projects
                 </Text>
               </Table.Cell>
               <Table.Cell>
                 {o.live ? (
-                  <LiveIndicator size="sm" label={`${o.match} · 67′`} />
+                  <LiveIndicator size="sm" label={`${o.deploy} · 4 min`} />
                 ) : (
-                  <StatusDot size="sm" tone="positive" label={`${o.match} · FT`} />
+                  <StatusDot size="sm" tone="positive" label={`${o.deploy} · done`} />
                 )}
               </Table.Cell>
               <Table.Cell numeric>

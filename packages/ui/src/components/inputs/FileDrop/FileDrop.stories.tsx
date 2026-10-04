@@ -3,8 +3,8 @@ import { Stack } from '#components/layout/Stack'
 import { FileDrop, type StoredFile } from './FileDrop'
 
 const earlierReceipts: StoredFile[] = [
-  { id: 'r-112', name: 'grocer-2026-09-28.pdf', size: 184_000, type: 'application/pdf' },
-  { id: 'r-113', name: 'origin-energy-q3.pdf', size: 412_000, type: 'application/pdf' },
+  { id: 'r-112', name: 'invoice-2026-09-28.pdf', size: 184_000, type: 'application/pdf' },
+  { id: 'r-113', name: 'hosting-q3.pdf', size: 412_000, type: 'application/pdf' },
 ]
 
 const meta = {
@@ -45,11 +45,11 @@ export const Thumbnails: Story = {
 
 export const SingleFile: Story = {
   args: {
-    'aria-label': 'Statement',
+    'aria-label': 'Timesheet',
     accept: '.pdf,.csv',
     multiple: false,
-    browseLabel: 'choose a statement',
-    dropLabel: 'Drop your bank statement here or',
+    browseLabel: 'choose a timesheet',
+    dropLabel: "Drop this month's timesheet here or",
   },
 }
 

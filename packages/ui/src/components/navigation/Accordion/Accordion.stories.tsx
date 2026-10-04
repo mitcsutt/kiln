@@ -6,29 +6,29 @@ import { Accordion } from './Accordion'
 const meta = {
   title: 'UI/Navigation/Accordion',
   component: Accordion,
-  args: { type: 'single', variant: 'divided', size: 'md', defaultValue: 'scoring' },
+  args: { type: 'single', variant: 'divided', size: 'md', defaultValue: 'billing' },
   render: (args) => (
     <div style={{ maxInlineSize: '36rem' }}>
       <Accordion {...args}>
-        <Accordion.Item value="fixtures">
-          <Accordion.Trigger>How are fixtures set?</Accordion.Trigger>
+        <Accordion.Item value="trial">
+          <Accordion.Trigger>How long is the free trial?</Accordion.Trigger>
           <Accordion.Content>
-            Every club plays every other club twice, once at home and once away. The fixture list is
-            published a month before the first round and only moves for weather.
+            Fourteen days on any plan, with every feature switched on. We only ask for a card when
+            you decide to stay.
           </Accordion.Content>
         </Accordion.Item>
-        <Accordion.Item value="scoring">
-          <Accordion.Trigger>How does scoring work?</Accordion.Trigger>
+        <Accordion.Item value="billing">
+          <Accordion.Trigger>How does billing work?</Accordion.Trigger>
           <Accordion.Content>
-            Three points for a win and one for a draw. Cup matches count double, and a walkover
-            scores as a 3–0 win for the club that turned up.
+            Plans bill monthly or yearly, per seat. Add a seat mid-cycle and you pay only for the
+            days left; remove one and the difference comes off the next invoice.
           </Accordion.Content>
         </Accordion.Item>
-        <Accordion.Item value="ties">
-          <Accordion.Trigger>What happens on a tie?</Accordion.Trigger>
+        <Accordion.Item value="cancel">
+          <Accordion.Trigger>What happens if I cancel?</Accordion.Trigger>
           <Accordion.Content>
-            Clubs level on points are split by goal difference, then goals scored, then the result
-            between them.
+            Your workspace stays readable for 30 days, then it is deleted. Export your projects and
+            invoices any time before then.
           </Accordion.Content>
         </Accordion.Item>
       </Accordion>
@@ -43,12 +43,12 @@ type Story = StoryObj<typeof meta>
 export const Playground: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(storyRoot(canvasElement))
-    const scoring = canvas.getByRole('button', { name: 'How does scoring work?' })
-    const ties = canvas.getByRole('button', { name: 'What happens on a tie?' })
-    await expect(scoring).toHaveAttribute('aria-expanded', 'true')
-    await userEvent.click(ties)
-    await expect(ties).toHaveAttribute('aria-expanded', 'true')
-    await expect(scoring).toHaveAttribute('aria-expanded', 'false')
+    const billing = canvas.getByRole('button', { name: 'How does billing work?' })
+    const cancel = canvas.getByRole('button', { name: 'What happens if I cancel?' })
+    await expect(billing).toHaveAttribute('aria-expanded', 'true')
+    await userEvent.click(cancel)
+    await expect(cancel).toHaveAttribute('aria-expanded', 'true')
+    await expect(billing).toHaveAttribute('aria-expanded', 'false')
   },
 }
 
@@ -57,27 +57,27 @@ export const Contained: Story = {
   args: { variant: 'contained' },
 }
 
-/** Several sections open at once: monthly spending notes. */
+/** Several sections open at once: this month's plan usage. */
 export const Multiple: Story = {
-  args: { type: 'multiple', defaultValue: ['groceries', 'utilities'] },
+  args: { type: 'multiple', defaultValue: ['storage', 'seats'] },
   render: (args) => (
     <div style={{ maxInlineSize: '36rem' }}>
       <Accordion {...args} variant="contained">
-        <Accordion.Item value="groceries">
-          <Accordion.Trigger>Groceries — $812.40 of $900.00</Accordion.Trigger>
+        <Accordion.Item value="storage">
+          <Accordion.Trigger>Storage — 81 GB of 100 GB</Accordion.Trigger>
           <Accordion.Content>
-            Corner Grocer $498.20, Bulk Foods Co-op $214.35, Riverside Market $99.85.
+            Atlas redesign 52 GB, Billing migration 21 GB, Help centre 8 GB.
           </Accordion.Content>
         </Accordion.Item>
-        <Accordion.Item value="utilities">
-          <Accordion.Trigger>Utilities — $356.15 of $320.00</Accordion.Trigger>
+        <Accordion.Item value="seats">
+          <Accordion.Trigger>Seats — 12 of 10</Accordion.Trigger>
           <Accordion.Content>
-            The winter power bill came in $36.15 over. Consider moving $40 from Dining out.
+            Two guests became members this month. Add two seats or move them back to guests.
           </Accordion.Content>
         </Accordion.Item>
-        <Accordion.Item value="transport">
-          <Accordion.Trigger>Transport — $214.90 of $260.00</Accordion.Trigger>
-          <Accordion.Content>Travel card top-ups $120.00, fuel $94.90.</Accordion.Content>
+        <Accordion.Item value="requests">
+          <Accordion.Trigger>API requests — 214,900 of 500,000</Accordion.Trigger>
+          <Accordion.Content>Webhooks 120,000, integrations 94,900.</Accordion.Content>
         </Accordion.Item>
       </Accordion>
     </div>
@@ -91,9 +91,10 @@ export const InlineNote: Story = {
     <div style={{ maxInlineSize: '24rem' }}>
       <Accordion {...args}>
         <Accordion.Item value="why">
-          <Accordion.Trigger level={4}>Why are Westbank relegated?</Accordion.Trigger>
+          <Accordion.Trigger level={4}>Why is this invoice overdue?</Accordion.Trigger>
           <Accordion.Content>
-            Level on points with Quarry Lane, but bottom of division two on goal difference (−2).
+            It was due on 30 September and Orchard & Co haven&apos;t paid it yet. A reminder went
+            out on 3 October.
           </Accordion.Content>
         </Accordion.Item>
       </Accordion>

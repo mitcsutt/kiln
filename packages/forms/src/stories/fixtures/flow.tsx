@@ -8,39 +8,39 @@ import { FormReview, FormSentence, When } from '#layouts'
 import { defineParity } from '#stories/fixtures/parity'
 
 // --- sentence --------------------------------------------------------------------------------
-interface Goal {
-  target: number | null
-  goal: string
-  deadline: string
+interface RecurringInvoice {
+  client: string
+  amount: number | null
+  start: string
 }
 
-export const sentenceSchema = kit.defineFormSchema<Goal>()({
+export const sentenceSchema = kit.defineFormSchema<RecurringInvoice>()({
   version: 1,
   root: {
     layout: 'sentence',
-    label: 'Savings goal',
+    label: 'Recurring invoice',
     children: [
-      { content: 'text', text: 'I want to save ' },
-      { kind: 'amount', name: 'target', label: 'Target amount', currency: 'GBP' },
-      { content: 'text', text: ' for ' },
-      { kind: 'text', name: 'goal', label: 'Goal', htmlSize: 14 },
-      { content: 'text', text: ' by ' },
-      { kind: 'date', name: 'deadline', label: 'Deadline' },
+      { content: 'text', text: 'Bill ' },
+      { kind: 'text', name: 'client', label: 'Client', htmlSize: 14 },
+      { content: 'text', text: ' ' },
+      { kind: 'amount', name: 'amount', label: 'Amount', currency: 'GBP' },
+      { content: 'text', text: ' every month starting ' },
+      { kind: 'date', name: 'start', label: 'Start date' },
       { content: 'text', text: '.' },
     ],
   },
 })
 
 export const sentenceFixture = defineParity({
-  name: 'Savings goal',
+  name: 'Recurring invoice',
   covers: ['sentence', 'text'],
-  defaultValues: { target: null, goal: '', deadline: '' } satisfies Goal,
+  defaultValues: { client: '', amount: null, start: '' } satisfies RecurringInvoice,
   schema: sentenceSchema,
   render: (form) => (
-    <FormSentence label="Savings goal">
-      I want to save <form.AmountField name="target" label="Target amount" currency="GBP" /> for{' '}
-      <form.TextField name="goal" label="Goal" htmlSize={14} /> by{' '}
-      <form.DateField name="deadline" label="Deadline" />.
+    <FormSentence label="Recurring invoice">
+      Bill <form.TextField name="client" label="Client" htmlSize={14} />{' '}
+      <form.AmountField name="amount" label="Amount" currency="GBP" /> every month starting{' '}
+      <form.DateField name="start" label="Start date" />.
     </FormSentence>
   ),
 })

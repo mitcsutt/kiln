@@ -18,7 +18,7 @@ const toCss = (ratio: AspectRatioPreset | number): string =>
  * and is cropped with `object-fit: cover`. It has no edge or radius of its own —
  * wrap it (Media, Card) for that.
  *
- * <AspectRatio ratio="4/3"><img src="/images/dashboard.png" alt="Spending dashboard" /></AspectRatio>
+ * <AspectRatio ratio="4/3"><img src="/images/dashboard.png" alt="Revenue dashboard" /></AspectRatio>
  */
 export const AspectRatio = forwardRef<HTMLDivElement, AspectRatioProps>(function AspectRatio(
   { ratio = '16/9', className, style, ...rest },

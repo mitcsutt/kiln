@@ -13,14 +13,14 @@ describe('SegmentedField', () => {
   it('labels the radiogroup with the Field label and describes it with help and error', () => {
     render(
       <SegmentedField
-        label="Budget period"
+        label="Billing period"
         description="Totals reset at the start of each"
         error="Choose a period"
         options={periods}
         required
       />,
     )
-    const group = screen.getByRole('radiogroup', { name: 'Budget period' })
+    const group = screen.getByRole('radiogroup', { name: 'Billing period' })
     expect(group).toHaveAccessibleDescription('Totals reset at the start of each Choose a period')
     expect(group).toHaveAttribute('aria-invalid', 'true')
     expect(group).toHaveAttribute('aria-required', 'true')
@@ -34,7 +34,7 @@ describe('SegmentedField', () => {
         ref={ref}
         id="period"
         className="extra"
-        label="Budget period"
+        label="Billing period"
         options={periods}
       />,
     )
@@ -47,7 +47,7 @@ describe('SegmentedField', () => {
     const onValueChange = vi.fn()
     render(
       <SegmentedField
-        label="Budget period"
+        label="Billing period"
         options={periods}
         readOnly
         onValueChange={onValueChange}
@@ -60,12 +60,12 @@ describe('SegmentedField', () => {
   })
 
   it('disabled from the Field disables every segment', () => {
-    render(<SegmentedField label="Budget period" options={periods} disabled />)
+    render(<SegmentedField label="Billing period" options={periods} disabled />)
     for (const radio of screen.getAllByRole('radio')) expect(radio).toBeDisabled()
   })
 
   it('validating sets aria-busy', () => {
-    render(<SegmentedField label="Budget period" options={periods} validating />)
+    render(<SegmentedField label="Billing period" options={periods} validating />)
     expect(screen.getByRole('radiogroup')).toHaveAttribute('aria-busy', 'true')
   })
 
@@ -73,7 +73,7 @@ describe('SegmentedField', () => {
     const { container } = render(
       <form>
         <SegmentedField
-          label="Budget period"
+          label="Billing period"
           name="period"
           options={periods}
           defaultValue="quarter"
@@ -91,7 +91,7 @@ describe('SegmentedField', () => {
     const onBlur = vi.fn()
     render(
       <>
-        <SegmentedField label="Budget period" options={periods} onBlur={onBlur} />
+        <SegmentedField label="Billing period" options={periods} onBlur={onBlur} />
         <button type="button">Save</button>
       </>,
     )

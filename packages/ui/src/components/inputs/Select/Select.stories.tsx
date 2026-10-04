@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Stack } from '#components/layout/Stack'
-import { expenseCategories, periods, countryGroups } from '#components/inputs/internal/storyData'
+import { taskCategories, periods, countryGroups } from '#components/inputs/internal/storyData'
 import { Select } from './Select'
 
 const meta = {
   title: 'UI/Inputs/Select',
   component: Select,
   args: {
-    'aria-label': 'Pay period',
+    'aria-label': 'Billing period',
     options: periods,
     placeholder: 'Choose a period',
     size: 'md',
@@ -35,7 +35,7 @@ export const Playground: Story = {
 export const Groups: Story = {
   render: () => (
     <Stack style={width}>
-      <Select aria-label="Category" groups={expenseCategories} defaultValue="rent" defaultOpen />
+      <Select aria-label="Category" groups={taskCategories} defaultValue="backend" defaultOpen />
     </Stack>
   ),
   parameters: {
@@ -79,14 +79,14 @@ export const Compound: Story = {
   render: () => (
     <Stack style={width}>
       <Select.Root defaultValue="aus">
-        <Select.Trigger aria-label="Team" />
+        <Select.Trigger aria-label="Country" />
         <Select.Content>
           {countryGroups.map((group) => (
             <Select.Group key={group.label}>
               <Select.Label>{group.label}</Select.Label>
-              {group.options.map((team) => (
-                <Select.Item key={team.value} value={team.value}>
-                  {team.label}
+              {group.options.map((country) => (
+                <Select.Item key={country.value} value={country.value}>
+                  {country.label}
                 </Select.Item>
               ))}
             </Select.Group>

@@ -10,13 +10,13 @@ function file(name: string, type: string, bytes = 1200): File {
   return new File([new Uint8Array(bytes)], name, { type })
 }
 
-const receipt = () => file('hardware-receipt.jpg', 'image/jpeg', 240_000)
-const invoice = () => file('power-bill-march.pdf', 'application/pdf', 1_800_000)
+const receipt = () => file('conference-receipt.jpg', 'image/jpeg', 240_000)
+const invoice = () => file('hosting-invoice-march.pdf', 'application/pdf', 1_800_000)
 const notes = () => file('notes.txt', 'text/plain', 300)
 
 const stored: StoredFile = {
   id: 'r-114',
-  name: 'grocer-receipt.png',
+  name: 'client-lunch-receipt.png',
   size: 98_000,
   type: 'image/png',
   url: 'https://example.test/r-114.png',
@@ -81,7 +81,7 @@ describe('FileDrop', () => {
     const second = invoice()
     await user.upload(input(), second)
     expect(onValueChange).toHaveBeenLastCalledWith([first, second])
-    expect(names()).toEqual(['hardware-receipt.jpg', 'power-bill-march.pdf'])
+    expect(names()).toEqual(['conference-receipt.jpg', 'hosting-invoice-march.pdf'])
     expect(screen.getByText('1.8 MB')).toBeInTheDocument()
   })
 
@@ -169,7 +169,9 @@ describe('FileDrop', () => {
         onValueChange={onValueChange}
       />,
     )
-    await user.click(screen.getByRole('button', { name: 'Remove receipt grocer-receipt.png' }))
+    await user.click(
+      screen.getByRole('button', { name: 'Remove receipt client-lunch-receipt.png' }),
+    )
     expect(onValueChange).toHaveBeenLastCalledWith([])
     expect(input()).toHaveFocus()
     expect(screen.queryByRole('list')).not.toBeInTheDocument()
@@ -181,10 +183,10 @@ describe('FileDrop', () => {
         aria-label="Receipts"
         multiple
         preview="thumbnails"
-        defaultValue={[stored, { id: 'x', name: 'statement.pdf' }]}
+        defaultValue={[stored, { id: 'x', name: 'timesheet.pdf' }]}
       />,
     )
-    expect(names()).toEqual(['grocer-receipt.png', 'statement.pdf'])
+    expect(names()).toEqual(['client-lunch-receipt.png', 'timesheet.pdf'])
     expect(screen.getByText('98 kB')).toBeInTheDocument()
     expect(document.querySelector('img')).toHaveAttribute('src', stored.url)
     expect(screen.getByText('PDF')).toBeInTheDocument()
@@ -219,7 +221,7 @@ describe('FileDrop', () => {
     it('creates thumbnails for image Files and revokes them on removal and unmount', async () => {
       const user = setup()
       const a = receipt()
-      const b = file('homewares-receipt.png', 'image/png', 4000)
+      const b = file('software-receipt.png', 'image/png', 4000)
       const { unmount } = render(
         <FileDrop
           aria-label="Receipts"
@@ -230,7 +232,7 @@ describe('FileDrop', () => {
       )
       expect(created).toEqual(['blob:test/1', 'blob:test/2'])
       expect(document.querySelectorAll('img')).toHaveLength(2)
-      await user.click(screen.getByRole('button', { name: 'Remove hardware-receipt.jpg' }))
+      await user.click(screen.getByRole('button', { name: 'Remove conference-receipt.jpg' }))
       expect(revoked).toEqual(['blob:test/1'])
       unmount()
       expect(revoked).toEqual(['blob:test/1', 'blob:test/2'])
@@ -429,7 +431,7 @@ describe('FileDrop', () => {
     }
     render(<Controlled />)
     await user.upload(input(), receipt())
-    expect(names()).toEqual(['grocer-receipt.png', 'hardware-receipt.jpg'])
+    expect(names()).toEqual(['client-lunch-receipt.png', 'conference-receipt.jpg'])
     await user.click(screen.getByRole('button', { name: 'Clear' }))
     expect(names()).toEqual([])
   })

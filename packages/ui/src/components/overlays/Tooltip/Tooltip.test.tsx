@@ -49,8 +49,8 @@ describe('Tooltip', () => {
   it('carries the trigger scope theme onto the portalled bubble', async () => {
     render(
       <div data-theme="fiesta">
-        <Tooltip content="Harbour Hawks, top of division two">
-          <button type="button">HAW</button>
+        <Tooltip content="Northwind Studio, your largest client">
+          <button type="button">NWS</button>
         </Tooltip>
       </div>,
     )

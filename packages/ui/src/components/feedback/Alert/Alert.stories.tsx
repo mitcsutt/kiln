@@ -9,8 +9,8 @@ const meta = {
   args: {
     tone: 'info',
     variant: 'outline',
-    title: 'Scores refresh every 30 seconds',
-    children: 'Live matches update on their own. Pull down to check now.',
+    title: 'Deploys refresh every 30 seconds',
+    children: 'Running deploys update on their own. Pull down to check now.',
   },
   argTypes: { icon: { control: false }, action: { control: false } },
 } satisfies Meta<typeof Alert>
@@ -23,29 +23,29 @@ export const Playground: Story = {}
 export const Tones: Story = {
   render: (args) => (
     <Stack gap={4}>
-      <Alert {...args} tone="info" title="Scores refresh every 30 seconds">
-        Live matches update on their own.
+      <Alert {...args} tone="info" title="Deploys refresh every 30 seconds">
+        Running deploys update on their own.
       </Alert>
-      <Alert {...args} tone="positive" title="September budget saved">
-        $4,820.00 allocated across 14 categories.
+      <Alert {...args} tone="positive" title="September invoices sent">
+        $4,820.00 billed across 14 clients.
       </Alert>
-      <Alert {...args} tone="caution" title="Groceries is at 85% of its limit">
-        $578.40 of $680.00 spent with 9 days left in the month.
+      <Alert {...args} tone="caution" title="Storage is at 85% of your plan">
+        85 GB of 100 GB used with 9 days left in the billing period.
       </Alert>
       <Alert
         {...args}
         tone="critical"
-        title="Couldn't load fixtures"
+        title="Couldn't load invoices"
         action={
           <Button size="sm" variant="outline" tone="neutral">
             Try again
           </Button>
         }
       >
-        The results service didn't answer. The table may be out of date.
+        The billing service didn't answer. The list may be out of date.
       </Alert>
       <Alert {...args} tone="neutral" title={undefined}>
-        Scorer data for round 14 is still arriving.
+        Usage data for this week is still arriving.
       </Alert>
     </Stack>
   ),
@@ -59,11 +59,11 @@ export const Soft: Story = {
   render: (args) => (
     <Stack gap={4}>
       <Alert {...args} variant="soft" tone="info" />
-      <Alert {...args} variant="soft" tone="caution" title="Two bills due this week">
-        Electricity ($212.35) on Tuesday, water ($96.10) on Friday.
+      <Alert {...args} variant="soft" tone="caution" title="Two invoices due this week">
+        Northwind Studio ($2,120.00) on Tuesday, Brightline Labs ($960.00) on Friday.
       </Alert>
-      <Alert {...args} variant="soft" tone="critical" title="Rent payment failed">
-        The bank declined the transfer. Check the account has $2,340.00 available.
+      <Alert {...args} variant="soft" tone="critical" title="Card payment failed">
+        Your bank declined the $240.00 charge for the Team plan. Update the card to keep your seats.
       </Alert>
     </Stack>
   ),
@@ -72,8 +72,8 @@ export const Soft: Story = {
 export const Dismissible: Story = {
   args: {
     tone: 'positive',
-    title: 'Fixtures published',
-    children: 'Eight clubs, 14 rounds. Every club has seven home games.',
+    title: 'Invoice sent',
+    children: 'Orchard & Co will get it by email, with a link to pay online.',
     onDismiss: () => undefined,
   },
 }

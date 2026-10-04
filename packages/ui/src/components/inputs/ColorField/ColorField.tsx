@@ -11,7 +11,7 @@ export interface ColorFieldProps
  * `swatchesOnly`…) and the ref go to the hex input (or the swatch group with
  * `swatchesOnly`); `className`/`style` go to the wrapper.
  *
- * <ColorField label="Team colour" swatches={palette} value={colour} onValueChange={setColour} />
+ * <ColorField label="Label colour" swatches={palette} value={colour} onValueChange={setColour} />
  */
 export const ColorField = forwardRef<HTMLElement, ColorFieldProps>(function ColorField(props, ref) {
   const [fieldProps, rest] = splitFieldLabelProps(props)

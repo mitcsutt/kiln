@@ -21,7 +21,7 @@ Neutrals are tinted toward the theme's hue (chroma 0.004 to 0.02), never stock g
 The accent is for about 5 to 10 percent of a screen: the primary action, the current item, live state, key data. Everything else is ink. `--color-accent-ink` is text set _on_ the accent; `--color-accent-text` is accent-coloured text on the canvas, and it's tuned for AA.
 
 
-A second hue appears only when it carries meaning. `--color-highlight` means "you" or "selected": your row in a league table, the chosen option. Focus is always neutral (`--color-focus` is ink), so focus can never be mistaken for validation.
+A second hue appears only when it carries meaning. `--color-highlight` means "you" or "selected": your row in a members table, the chosen option. Focus is always neutral (`--color-focus` is ink), so focus can never be mistaken for validation.
 
 ## Tones
 

@@ -38,10 +38,10 @@ export interface TableProps extends TableHTMLAttributes<HTMLTableElement> {
 }
 
 /**
- * A semantic, styled data table: standings, ledgers, match logs. The wrapper scrolls
+ * A semantic, styled data table: project boards, ledgers, audit logs. The wrapper scrolls
  * horizontally on narrow screens; `ref` and native props go to the `<table>`.
  *
- * <Table><Table.Head><Table.Row><Table.HeaderCell>Team</Table.HeaderCell>…</Table.Row></Table.Head>…</Table>
+ * <Table><Table.Head><Table.Row><Table.HeaderCell>Project</Table.HeaderCell>…</Table.Row></Table.Head>…</Table>
  */
 const TableRoot = forwardRef<HTMLTableElement, TableProps>(function Table(
   {
@@ -97,7 +97,7 @@ const TableFoot = forwardRef<HTMLTableSectionElement, HTMLAttributes<HTMLTableSe
 )
 
 export interface TableRowProps extends HTMLAttributes<HTMLTableRowElement> {
-  /** `--color-highlight` fill — "you", your team, the circled line. */
+  /** `--color-highlight` fill — "you", your project, the circled line. */
   highlighted?: boolean
   /** Hover fill for rows that respond to clicks (put the real link in a cell). */
   interactive?: boolean
@@ -187,7 +187,7 @@ export interface TableCellProps
   align?: TableAlign
   /** Figures: right-aligned, tabular, in the theme's numeric face (mono in Ledger). */
   numeric?: boolean
-  /** Render as `<th scope="row">` — the cell that names the row (team, payee). */
+  /** Render as `<th scope="row">` — the cell that names the row (project, client). */
   rowHeader?: boolean
 }
 

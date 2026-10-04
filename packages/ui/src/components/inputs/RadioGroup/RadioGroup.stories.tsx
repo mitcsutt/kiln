@@ -6,7 +6,7 @@ const meta = {
   title: 'UI/Inputs/RadioGroup',
   component: RadioGroup,
   args: {
-    'aria-label': 'Pay period',
+    'aria-label': 'Billing period',
     defaultValue: 'fortnightly',
     orientation: 'vertical',
     size: 'md',
@@ -34,22 +34,22 @@ export const Horizontal: Story = {
 /** Descriptions hang under their label; the radio centres on the first line. */
 export const WithDescriptions: Story = {
   render: () => (
-    <Fieldset legend="Who can see the league table?">
+    <Fieldset legend="Who can see the project board?">
       <RadioGroup defaultValue="private">
         <RadioGroup.Item
           value="private"
           label="Private link"
-          description="Only the eight club secretaries with a sign-in link can see it."
+          description="Only the eight team members with a sign-in link can see it."
         />
         <RadioGroup.Item
           value="public"
           label="Public page"
-          description="Anyone with the address can watch the leaderboard. Reactions stay private."
+          description="Anyone with the address can follow progress. Comments stay private."
         />
         <RadioGroup.Item
           value="archive"
-          label="Archive after the final"
-          description="Available once the tournament ends on 19 July."
+          label="Archive after launch"
+          description="Available once the project closes on 19 July."
           disabled
         />
       </RadioGroup>

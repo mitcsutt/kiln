@@ -106,7 +106,7 @@
 .avatar[data-size='xs'] .fallback {
   font-size: calc(var(--_size) * 0.46);
 }
-/* Three-letter codes ("GER", "CRC") shrink so they clear the frame and the keyline. */
+/* Three-letter codes ("NWS", "ACM") shrink so they clear the frame and the keyline. */
 .fallback[data-glyphs='many'] {
   font-size: calc(var(--_size) * 0.3);
   letter-spacing: -0.02em;

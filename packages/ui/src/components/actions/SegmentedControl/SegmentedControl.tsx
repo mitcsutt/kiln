@@ -117,7 +117,7 @@ function childValues(children: ReactNode): string[] {
 
 /**
  * Single-select segmented control: pick one of 2–5 peer views or periods
- * (Month / Quarter / Year · Groups / Table / Bracket). One segment is always selected —
+ * (Month / Quarter / Year · Board / Table / Timeline). One segment is always selected —
  * clicking the current one does nothing.
  *
  * Radix ToggleGroup underneath: segments are `role="radio"` inside a `radiogroup`,

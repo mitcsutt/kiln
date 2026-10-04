@@ -48,7 +48,7 @@ export default function CustomTheme() {
 
 ## 1. Start from one idea
 
-Strong themes take one idea from their subject and apply it everywhere, with everything else quiet. Paper is a typeset proof; Fiesta is a screen-printed matchday poster. Harbour is _the tide table posted at a ferry terminal_. That idea decides the rest:
+Strong themes take one idea from their subject and apply it everywhere, with everything else quiet. Paper is a typeset proof; Fiesta is a screen-printed festival poster. Harbour is _the tide table posted at a ferry terminal_. That idea decides the rest:
 
 - **Colour**: sea-grey enamel neutrals (hue 225), one signal-orange accent like a channel buoy, sea-glass green for "you".
 - **Type**: heavy upright signage for headings, and every figure in a monospaced face, because tide times are read down a column.

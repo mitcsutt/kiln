@@ -9,8 +9,8 @@ const meta = {
   title: 'UI/Typography/SectionHeader',
   component: SectionHeader,
   args: {
-    title: 'Recent projects',
-    description: 'Maps, signs and books the studio finished in the last two years.',
+    title: 'Active projects',
+    description: 'Projects with work due this quarter, newest first.',
     level: 2,
     divider: false,
   },
@@ -28,10 +28,10 @@ export const PageHeader: Story = {
       level={1}
       size={{ base: '3xl', md: 'display-sm' }}
       kicker="2025–26 financial year"
-      title="September spending"
+      title="September invoices"
       description={
         <>
-          <Amount value={4182.6} /> of <Amount value={5200} precision={0} /> budgeted, with 2 days
+          <Amount value={4182.6} /> of a <Amount value={5200} precision={0} /> target, with 2 days
           to go.
         </>
       }
@@ -40,7 +40,7 @@ export const PageHeader: Story = {
           <Button variant="outline" tone="neutral">
             Export CSV
           </Button>
-          <Button leadingIcon={<PlusIcon />}>Add expense</Button>
+          <Button leadingIcon={<PlusIcon />}>New invoice</Button>
         </>
       }
       divider
@@ -53,8 +53,8 @@ export const Sections: Story = {
   render: () => (
     <Stack gap={9}>
       <SectionHeader
-        title="Recent projects"
-        description="Maps, signs and books the studio finished in the last two years."
+        title="Active projects"
+        description="Projects with work due this quarter, newest first."
         actions={
           <Button variant="ghost" tone="neutral" trailingIcon={<ArrowUpRightIcon />} asChild>
             <a href="#projects">All projects</a>
@@ -62,12 +62,12 @@ export const Sections: Story = {
         }
       />
       <SectionHeader
-        kicker="Round 2 of 14"
-        title="Group B standings"
-        description="Top two go through, plus the best third-placed teams."
+        kicker="Sprint 2 of 14"
+        title="Open tasks by project"
+        description="Sorted by due date, with overdue tasks first."
         divider
       />
-      <SectionHeader level={3} title="Recent writing" />
+      <SectionHeader level={3} title="Recent releases" />
     </Stack>
   ),
 }

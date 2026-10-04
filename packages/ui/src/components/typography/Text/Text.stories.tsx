@@ -8,7 +8,7 @@ const meta = {
   component: Text,
   args: {
     children:
-      'I build web platforms that teams build on — design systems, internal tools and the slow, careful work of making software easier to change.',
+      'Plan releases, track tasks and send invoices from one workspace — built for small teams that would rather ship than sit in status meetings.',
     size: 'md',
   },
   argTypes: {
@@ -28,7 +28,7 @@ export const Sizes: Story = {
     <Stack gap={4}>
       {SIZES.map((size) => (
         <Text key={size} size={size}>
-          {size} — Harbour Hawks open the season against Millpond FC at Harbour Park.
+          {size} — Release 2.4 ships on Thursday with the new billing settings.
         </Text>
       ))}
     </Stack>
@@ -50,7 +50,7 @@ export const Tones: Story = {
     <Stack gap={2}>
       {TONES.map((tone) => (
         <Text key={tone} tone={tone} weight={tone === 'default' ? 'medium' : undefined}>
-          {tone} — Groceries are 12% under budget this month.
+          {tone} — Storage use is 12% under quota this month.
         </Text>
       ))}
     </Stack>
@@ -62,10 +62,10 @@ export const Numeric: Story = {
   render: () => (
     <Stack gap={1}>
       {[
-        ['Rent', '2,340.00'],
-        ['Groceries', '611.18'],
-        ['Electricity', '148.90'],
-        ['Streaming', '41.97'],
+        ['Design', '2,340.00'],
+        ['Development', '611.18'],
+        ['Hosting', '148.90'],
+        ['Software', '41.97'],
       ].map(([label, value]) => (
         <Inline key={label} justify="between" gap={4}>
           <Text as="span" size="sm">
@@ -84,12 +84,13 @@ export const Truncation: Story = {
   render: () => (
     <Stack gap={4}>
       <Text size="sm" truncate>
-        Corner Grocer, Market Street — weekly shop, split with housemates, paid back on Sunday
+        Northwind Studio, invoice 1042 — design retainer for September, net 14, reminder sent on
+        Monday
       </Text>
       <Text size="sm" tone="muted" truncate={2}>
-        Notes from the 2026 fixtures meeting: eight clubs, fourteen rounds, one pitch booking sheet.
-        Home games were spread across the season so no club plays three away in a row. Kofi still
-        ended up with two early kick-offs.
+        Notes from the planning meeting: the billing migration moves to March, the help centre gets
+        two more writers, and the mobile app beta opens to forty customers next week. Sam owns the
+        release checklist.
       </Text>
     </Stack>
   ),
@@ -105,7 +106,7 @@ export const Inverse: Story = {
       }}
     >
       <Text size="lg" weight="strong" tone="inverse">
-        Kick-off in 12 minutes: Harbour Hawks v Millpond FC
+        Deploy in 12 minutes: release 2.4 to production
       </Text>
     </div>
   ),
@@ -116,12 +117,11 @@ export const Measure: Story = {
   render: () => (
     <Stack gap={5}>
       <Text measure="narrow" tone="muted">
-        Eight clubs, fourteen rounds. Every club plays every other club twice, once at home and once
-        away, so nobody gets an easy run of fixtures.
+        Every pull request gets two reviews before it merges, so nothing reaches production unseen.
       </Text>
       <Text measure="text">
-        Zero-based budgeting has one rule: every dollar has a job before the month starts. The best
-        tools for it are still a spreadsheet at heart, with better typography and a ledger that
+        Good invoicing has one rule: every billable hour has a client before the month ends. The
+        best tools for it are still a spreadsheet at heart, with better typography and a ledger that
         reconciles itself overnight.
       </Text>
     </Stack>

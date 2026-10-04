@@ -36,9 +36,9 @@ export interface MediaProps extends Omit<HTMLAttributes<HTMLElement>, 'children'
 
 /**
  * A framed image: fixed ratio, fitted, lazy by default, with a caption and a graceful
- * failure state. Screenshots of work, team crests, receipts.
+ * failure state. Screenshots, company logos, scanned documents.
  *
- * <Media src="/images/dashboard.png" alt="Spending dashboard, September" ratio="16/9" caption="Dashboard, 2026" />
+ * <Media src="/images/dashboard.png" alt="Revenue dashboard, September" ratio="16/9" caption="Dashboard, 2026" />
  */
 export const Media = forwardRef<HTMLElement, MediaProps>(function Media(
   {

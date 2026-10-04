@@ -11,8 +11,8 @@ const meta = {
   title: 'UI/Inputs/RadioGroupField',
   component: RadioGroupField,
   args: {
-    label: 'Pay period',
-    description: 'Budgets reset at the start of each period',
+    label: 'Billing period',
+    description: 'Invoices go out at the start of each period',
     options: periods,
     name: 'period',
     defaultValue: 'fortnightly',
@@ -36,7 +36,7 @@ export const Horizontal: Story = {
 }
 
 export const WithError: Story = {
-  args: { defaultValue: undefined, required: true, error: 'Choose a pay period' },
+  args: { defaultValue: undefined, required: true, error: 'Choose a billing period' },
 }
 
 export const ReadOnly: Story = { args: { readOnly: true } }

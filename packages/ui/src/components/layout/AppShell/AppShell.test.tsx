@@ -5,12 +5,12 @@ import { AppShell } from './AppShell'
 function Frame(props: { mainId?: string; sticky?: boolean }) {
   return (
     <AppShell mainId={props.mainId}>
-      <AppShell.Header sticky={props.sticky}>Matchday</AppShell.Header>
+      <AppShell.Header sticky={props.sticky}>Workspace</AppShell.Header>
       <AppShell.Sidebar aria-label="Sections" side="end">
-        Groups
+        Projects
       </AppShell.Sidebar>
-      <AppShell.Main>Standings</AppShell.Main>
-      <AppShell.Footer>Season 2026</AppShell.Footer>
+      <AppShell.Main>Open tasks</AppShell.Main>
+      <AppShell.Footer>Release 2.4</AppShell.Footer>
       <AppShell.BottomBar>Tabs</AppShell.BottomBar>
     </AppShell>
   )
@@ -19,8 +19,8 @@ function Frame(props: { mainId?: string; sticky?: boolean }) {
 describe('AppShell', () => {
   it('renders the landmarks', () => {
     render(<Frame />)
-    expect(screen.getByRole('banner')).toHaveTextContent('Matchday')
-    expect(screen.getByRole('main')).toHaveTextContent('Standings')
+    expect(screen.getByRole('banner')).toHaveTextContent('Workspace')
+    expect(screen.getByRole('main')).toHaveTextContent('Open tasks')
     expect(screen.getByRole('complementary', { name: 'Sections' })).toHaveAttribute(
       'data-side',
       'end',
@@ -60,7 +60,7 @@ describe('AppShell', () => {
     expect(container.firstElementChild).toHaveAttribute('data-nav-breakpoint', 'lg')
     rerender(
       <AppShell navBreakpoint="md">
-        <AppShell.Main>Standings</AppShell.Main>
+        <AppShell.Main>Open tasks</AppShell.Main>
       </AppShell>,
     )
     expect(container.firstElementChild).toHaveAttribute('data-nav-breakpoint', 'md')

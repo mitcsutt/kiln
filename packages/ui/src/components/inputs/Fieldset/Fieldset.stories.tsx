@@ -24,9 +24,9 @@ const meta = {
   },
   render: (args) => (
     <Fieldset {...args}>
-      <CheckboxField label="Kick-off for my club" defaultChecked />
-      <CheckboxField label="Goals and red cards" defaultChecked />
-      <CheckboxField label="Weekly table recap" description="Monday mornings." />
+      <CheckboxField label="Tasks assigned to me" defaultChecked />
+      <CheckboxField label="Mentions and replies" defaultChecked />
+      <CheckboxField label="Weekly digest" description="Monday mornings." />
     </Fieldset>
   ),
 } satisfies Meta<typeof Fieldset>
@@ -56,7 +56,7 @@ export const Sections: Story = {
         <Fieldset
           variant="section"
           legend="Your details"
-          description="Shown to the other seven clubs on the table."
+          description="Shown to everyone in the workspace."
         >
           <TextField label="Display name" defaultValue="Kofi" required />
           <TextField label="Email" type="email" defaultValue="kofi@example.com" required />
@@ -64,8 +64,8 @@ export const Sections: Story = {
         <Fieldset variant="section" legend="Plan" optional>
           <TextField label="Amount" numeric leading="$" trailing="AUD" defaultValue="50.00" />
           <Fieldset legend="Notify me about">
-            <CheckboxField label="Kick-off for my club" defaultChecked />
-            <CheckboxField label="Weekly table recap" />
+            <CheckboxField label="Tasks assigned to me" defaultChecked />
+            <CheckboxField label="Weekly digest" />
           </Fieldset>
         </Fieldset>
       </Stack>
@@ -95,8 +95,8 @@ export const Horizontal: Story = {
           ]}
         />
         <Fieldset layout="horizontal" legend="Notify me about">
-          <CheckboxField label="Kick-off for teams I own" defaultChecked />
-          <CheckboxField label="Weekly standings recap" />
+          <CheckboxField label="Releases for projects I own" defaultChecked />
+          <CheckboxField label="Weekly digest" />
         </Fieldset>
       </Stack>
     </Container>

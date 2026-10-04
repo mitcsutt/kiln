@@ -11,16 +11,16 @@ describe('SliderField', () => {
         ref={ref}
         id="rate"
         className="extra"
-        label="Savings rate"
-        description="Of each pay"
-        warning="That leaves little for bills"
+        label="Discount rate"
+        description="Off each invoice"
+        warning="That leaves little margin"
         defaultValue={60}
       />,
     )
-    const slider = screen.getByRole('slider', { name: 'Savings rate' })
+    const slider = screen.getByRole('slider', { name: 'Discount rate' })
     expect(ref.current).toBe(slider)
     expect(slider).toHaveAttribute('id', 'rate')
-    expect(slider).toHaveAccessibleDescription('Of each pay That leaves little for bills')
+    expect(slider).toHaveAccessibleDescription('Off each invoice That leaves little margin')
     expect(container.firstElementChild).toHaveClass('extra')
   })
 
@@ -28,7 +28,7 @@ describe('SliderField', () => {
     const onValueChange = vi.fn()
     render(
       <SliderField
-        label="Savings rate"
+        label="Discount rate"
         error="Too high"
         readOnly
         validating
@@ -46,7 +46,7 @@ describe('SliderField', () => {
   })
 
   it('layout="horizontal" is passed to the Field', () => {
-    const { container } = render(<SliderField label="Savings rate" layout="horizontal" />)
+    const { container } = render(<SliderField label="Discount rate" layout="horizontal" />)
     expect(container.firstElementChild).toHaveAttribute('data-layout', 'horizontal')
   })
 })

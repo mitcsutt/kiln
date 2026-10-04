@@ -68,7 +68,7 @@ function splitter(delimiters: readonly string[]): RegExp | null {
  * delimiters. The ref and native input props go to the text input; `className`/`style`
  * go to the box. With `name`, each tag is submitted as its own hidden input.
  *
- * <TagsInput placeholder="Add a label" defaultValue={['Groceries']} maxTags={8} />
+ * <TagsInput placeholder="Add a label" defaultValue={['Design']} maxTags={8} />
  */
 export const TagsInput = markFieldAware(
   forwardRef<HTMLInputElement, TagsInputProps>(function TagsInput(

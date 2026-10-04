@@ -52,16 +52,16 @@ describe('SegmentedControl', () => {
       const [view, setView] = useState('table')
       return (
         <SegmentedControl aria-label="View" value={view} onValueChange={setView}>
-          <SegmentedControl.Item value="groups">Groups</SegmentedControl.Item>
+          <SegmentedControl.Item value="board">Board</SegmentedControl.Item>
           <SegmentedControl.Item value="table">Table</SegmentedControl.Item>
-          <SegmentedControl.Item value="bracket">Bracket</SegmentedControl.Item>
+          <SegmentedControl.Item value="timeline">Timeline</SegmentedControl.Item>
         </SegmentedControl>
       )
     }
     render(<Controlled />)
     expect(screen.getByRole('radio', { name: 'Table' })).toHaveAttribute('aria-checked', 'true')
-    await userEvent.click(screen.getByRole('radio', { name: 'Bracket' }))
-    expect(screen.getByRole('radio', { name: 'Bracket' })).toHaveAttribute('aria-checked', 'true')
+    await userEvent.click(screen.getByRole('radio', { name: 'Timeline' }))
+    expect(screen.getByRole('radio', { name: 'Timeline' })).toHaveAttribute('aria-checked', 'true')
     expect(screen.getByRole('radiogroup').style.getPropertyValue('--_index')).toBe('2')
   })
 
@@ -82,7 +82,7 @@ describe('SegmentedControl', () => {
   it('writes per-breakpoint attributes for responsive size and fullWidth', () => {
     render(
       <SegmentedControl
-        aria-label="Squad view"
+        aria-label="Directory view"
         options={periods}
         size={{ base: 'lg', md: 'md' }}
         fullWidth={{ base: true, md: false }}

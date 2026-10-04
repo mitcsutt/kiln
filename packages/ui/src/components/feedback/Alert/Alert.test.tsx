@@ -11,7 +11,7 @@ describe('Alert', () => {
     ['positive', 'status'],
     ['neutral', 'status'],
   ] as const)('%s tone uses role=%s', (tone, role) => {
-    render(<Alert tone={tone}>Budget synced</Alert>)
+    render(<Alert tone={tone}>Invoices synced</Alert>)
     expect(screen.getByRole(role)).toHaveAttribute('data-tone', tone)
   })
 
@@ -27,13 +27,13 @@ describe('Alert', () => {
   it('is named by its title and forwards refs', () => {
     const ref = createRef<HTMLDivElement>()
     render(
-      <Alert ref={ref} tone="critical" title="Couldn't load fixtures">
-        The results service didn't answer.
+      <Alert ref={ref} tone="critical" title="Couldn't load invoices">
+        The billing service didn't answer.
       </Alert>,
     )
-    const alert = screen.getByRole('alert', { name: "Couldn't load fixtures" })
+    const alert = screen.getByRole('alert', { name: "Couldn't load invoices" })
     expect(ref.current).toBe(alert)
-    expect(alert).toHaveTextContent("The results service didn't answer.")
+    expect(alert).toHaveTextContent("The billing service didn't answer.")
   })
 
   it('renders a dismiss button only when onDismiss is given', async () => {

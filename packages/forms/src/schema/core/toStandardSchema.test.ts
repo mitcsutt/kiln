@@ -5,9 +5,9 @@ import { defineValidator } from '#schema/core/registry'
 import { toStandardSchema } from '#schema/core/toStandardSchema'
 import type { UntypedFormSchema } from '#schema/core/types'
 import {
-  emptyLeagueEntry,
-  leagueEntrySchema,
-  type LeagueEntry,
+  emptyProjectSignup,
+  projectSignupSchema,
+  type ProjectSignup,
 } from '#schema/core/__fixtures__/schemas'
 import { testValidators } from '#schema/core/__fixtures__/registry'
 
@@ -213,16 +213,16 @@ describe('toStandardSchema', () => {
     ])
   })
 
-  it('applies the league entry fixture end to end', async () => {
-    const standard = toStandardSchema(leagueEntrySchema, {
+  it('applies the project sign-up fixture end to end', async () => {
+    const standard = toStandardSchema(projectSignupSchema, {
       validators: testValidators,
-      context: { mode: 'create', role: 'organiser' },
+      context: { mode: 'create', role: 'owner' },
     })
-    const entry: LeagueEntry = {
-      ...emptyLeagueEntry,
+    const entry: ProjectSignup = {
+      ...emptyProjectSignup,
       name: 'Ada Lovelace',
       email: 'ada@example.com',
-      team: 'riverside',
+      project: 'atlas',
       fee: 45,
       paid: true,
       address: { line1: '1 Main St', city: 'Leeds', postcode: 'LS1 4AP' },
@@ -237,14 +237,14 @@ describe('toStandardSchema', () => {
     })
     expect(issuesOf(bad)).toEqual([
       ['name', 'Enter your name'],
-      ['age', 'Players must be 16 or over'],
+      ['age', 'You must be 16 or over'],
       ['address.postcode', 'Enter a full UK postcode, like SW1A 1AA'],
       ['email', 'That email is already entered'],
     ])
     // readOnlyWhen (context mode=edit) skips email entirely
-    const editing = toStandardSchema(leagueEntrySchema, {
+    const editing = toStandardSchema(projectSignupSchema, {
       validators: testValidators,
-      context: { mode: 'edit', role: 'player' },
+      context: { mode: 'edit', role: 'member' },
     })
     expect(issuesOf(await run(editing, { ...entry, email: 'taken@example.com' }))).toEqual([])
   })

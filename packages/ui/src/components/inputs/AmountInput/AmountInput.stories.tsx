@@ -6,7 +6,7 @@ const meta = {
   title: 'UI/Inputs/AmountInput',
   component: AmountInput,
   args: {
-    'aria-label': 'Monthly rent',
+    'aria-label': 'Monthly retainer',
     currency: 'GBP',
     locale: 'en-GB',
     unit: 'minor',
@@ -27,16 +27,16 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-/** Monthly rent £1,450.00, held as 145000 pence. */
+/** Monthly retainer £1,450.00, held as 145000 pence. */
 export const Playground: Story = {}
 
 export const CurrencyDisplay: Story = {
   render: (args) => (
     <Stack gap={3} style={{ maxInlineSize: '20rem' }}>
-      <AmountInput {...args} aria-label="Rent, symbol" showCurrency="symbol" />
-      <AmountInput {...args} aria-label="Rent, code" showCurrency="code" />
-      <AmountInput {...args} aria-label="Rent, both" showCurrency="both" />
-      <AmountInput {...args} aria-label="Rent, none" showCurrency="none" />
+      <AmountInput {...args} aria-label="Retainer, symbol" showCurrency="symbol" />
+      <AmountInput {...args} aria-label="Retainer, code" showCurrency="code" />
+      <AmountInput {...args} aria-label="Retainer, both" showCurrency="both" />
+      <AmountInput {...args} aria-label="Retainer, none" showCurrency="none" />
     </Stack>
   ),
 }
@@ -44,7 +44,7 @@ export const CurrencyDisplay: Story = {
 export const Currencies: Story = {
   render: () => (
     <Stack gap={3} style={{ maxInlineSize: '20rem' }}>
-      <AmountInput aria-label="Groceries" currency="AUD" locale="en-AU" defaultValue={186.4} />
+      <AmountInput aria-label="Hosting" currency="AUD" locale="en-AU" defaultValue={186.4} />
       <AmountInput
         aria-label="Rail pass"
         currency="JPY"
@@ -53,7 +53,7 @@ export const Currencies: Story = {
         showCurrency="both"
       />
       <AmountInput
-        aria-label="Miete"
+        aria-label="Rechnung"
         currency="EUR"
         locale="de-DE"
         defaultValue={1234.5}

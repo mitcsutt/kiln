@@ -21,11 +21,11 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-const PROJECTS = ['Harbour transit map', 'Library signage', 'Field guide', 'Annual report']
+const PROJECTS = ['Atlas redesign', 'Billing migration', 'Mobile app', 'Help centre']
 
 function MemberActions({ open, ...args }: DropdownMenuContentProps & { open?: boolean }) {
   const [live, setLive] = useState(true)
-  const [sort, setSort] = useState('points')
+  const [sort, setSort] = useState('updated')
   return (
     <DropdownMenu open={open} modal={false}>
       <DropdownMenu.Trigger asChild>
@@ -51,12 +51,12 @@ function MemberActions({ open, ...args }: DropdownMenuContentProps & { open?: bo
         </DropdownMenu.CheckboxItem>
         <DropdownMenu.Label>Sort projects by</DropdownMenu.Label>
         <DropdownMenu.RadioGroup value={sort} onValueChange={setSort}>
-          <DropdownMenu.RadioItem value="points">Last updated</DropdownMenu.RadioItem>
-          <DropdownMenu.RadioItem value="goals">Name</DropdownMenu.RadioItem>
-          <DropdownMenu.RadioItem value="group">Client</DropdownMenu.RadioItem>
+          <DropdownMenu.RadioItem value="updated">Last updated</DropdownMenu.RadioItem>
+          <DropdownMenu.RadioItem value="name">Name</DropdownMenu.RadioItem>
+          <DropdownMenu.RadioItem value="client">Client</DropdownMenu.RadioItem>
         </DropdownMenu.RadioGroup>
         <DropdownMenu.Separator />
-        <DropdownMenu.Item tone="critical">Remove from the team</DropdownMenu.Item>
+        <DropdownMenu.Item tone="critical">Remove from workspace</DropdownMenu.Item>
       </DropdownMenu.Content>
     </DropdownMenu>
   )
@@ -85,7 +85,7 @@ export const Playground: Story = {
   },
 }
 
-/** A member's actions in a team admin screen. Destructive last, after a rule. Pinned open. */
+/** A member's actions in a workspace admin screen. Destructive last, after a rule. Pinned open. */
 export const MemberActionsOpen: Story = {
   render: (args) => (
     <Stack gap={0} align="start">
@@ -95,14 +95,14 @@ export const MemberActionsOpen: Story = {
   ),
 }
 
-/** Row actions on an expense. Icons on every item or none — never a mix. */
+/** Row actions on an invoice. Icons on every item or none — never a mix. */
 export const RowActions: Story = {
   args: { align: 'end' },
   render: (args) => (
     <Stack gap={0} align="end">
       <DropdownMenu open modal={false}>
         <DropdownMenu.Trigger asChild>
-          <Button variant="ghost" tone="neutral" aria-label="Actions for Corner Grocer, $182.40">
+          <Button variant="ghost" tone="neutral" aria-label="Actions for INV-1042, $1,820.00">
             <MoreIcon />
           </Button>
         </DropdownMenu.Trigger>
@@ -110,9 +110,9 @@ export const RowActions: Story = {
           <DropdownMenu.Item leadingIcon={<CopyIcon />} shortcut="⌘D">
             Duplicate
           </DropdownMenu.Item>
-          <DropdownMenu.Item leadingIcon={<ArrowUpRightIcon />}>Open receipt</DropdownMenu.Item>
+          <DropdownMenu.Item leadingIcon={<ArrowUpRightIcon />}>Open PDF</DropdownMenu.Item>
           <DropdownMenu.Item disabled leadingIcon={<ArrowUpRightIcon />}>
-            Open bank statement
+            Open payment record
           </DropdownMenu.Item>
         </DropdownMenu.Content>
       </DropdownMenu>

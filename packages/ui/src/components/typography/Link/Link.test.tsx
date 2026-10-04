@@ -6,12 +6,12 @@ describe('Link', () => {
   it('renders an anchor with tone and underline attributes', () => {
     const ref = createRef<HTMLAnchorElement>()
     render(
-      <Link ref={ref} href="/work" tone="accent" underline="hover">
+      <Link ref={ref} href="/releases" tone="accent" underline="hover">
         Read the release notes
       </Link>,
     )
     const a = screen.getByRole('link', { name: 'Read the release notes' })
-    expect(a).toHaveAttribute('href', '/work')
+    expect(a).toHaveAttribute('href', '/releases')
     expect(a).toHaveAttribute('data-tone', 'accent')
     expect(a).toHaveAttribute('data-underline', 'hover')
     expect(a).not.toHaveAttribute('target')
@@ -44,11 +44,11 @@ describe('Link', () => {
   it('renders its child when asChild (router links)', () => {
     render(
       <Link asChild tone="muted">
-        <a href="/blog">Writing</a>
+        <a href="/changelog">Changelog</a>
       </Link>,
     )
-    const a = screen.getByRole('link', { name: 'Writing' })
-    expect(a).toHaveAttribute('href', '/blog')
+    const a = screen.getByRole('link', { name: 'Changelog' })
+    expect(a).toHaveAttribute('href', '/changelog')
     expect(a).toHaveAttribute('data-tone', 'muted')
   })
 })

@@ -14,7 +14,7 @@ const meta = {
     ratio: '4/3',
     fit: 'cover',
     radius: 'media',
-    caption: 'Ada Okafor, cartographer, Lisbon',
+    caption: 'Ada Okafor, support lead, Lisbon',
   },
   render: (args) => (
     <Stack style={{ maxWidth: '22rem' }}>
@@ -43,9 +43,9 @@ export const Ratios: Story = {
 /** A failed image keeps its frame and its accessible name. */
 export const Fallback: Story = {
   args: {
-    src: '/missing/receipt-hardware.jpg',
-    alt: 'Receipt from Hardware Barn, 14 September',
-    caption: 'Receipt · Hardware Barn · $142.80',
-    fallback: 'Receipt image unavailable',
+    src: '/missing/billing-settings.png',
+    alt: 'Billing settings with the Team plan selected',
+    caption: 'Billing settings · Team plan',
+    fallback: 'Screenshot unavailable',
   },
 }

@@ -12,11 +12,11 @@ export type MeterTone = Extract<
 
 export interface MeterProps
   extends Omit<HTMLAttributes<HTMLDivElement>, 'children'>, MeterThresholds {
-  /** The measured amount. May exceed `max` (an overspent budget): the bar fills and `data-over` is set. */
+  /** The measured amount. May exceed `max` (a quota that has run over): the bar fills and `data-over` is set. */
   value: number
   /** Visible label; also the accessible name. */
   label?: ReactNode
-  /** Replaces the default percentage, visibly and as `aria-valuetext`: "$578.40 of $680.00". */
+  /** Replaces the default percentage, visibly and as `aria-valuetext`: "578.4 GB of 680 GB". */
   valueLabel?: string
   /** Show the value text in the label row. Default `true`. */
   showValue?: boolean
@@ -32,12 +32,12 @@ export interface MeterProps
 }
 
 /**
- * A measurement against a known range: spent vs budget, storage used, goals vs target.
- * Tone follows the thresholds, so 40% of the grocery budget is calm, 85% is a warning
+ * A measurement against a known range: usage vs quota, storage used, revenue vs target.
+ * Tone follows the thresholds, so 40% of the storage quota is calm, 85% is a warning
  * and 110% is critical without the app deciding colours.
  *
- * <Meter label="Groceries" value={578.4} max={680} low={510} high={680} optimum={0}
- *        valueLabel="$578.40 of $680.00" />
+ * <Meter label="Storage" value={578.4} max={680} low={510} high={680} optimum={0}
+ *        valueLabel="578.4 GB of 680 GB" />
  */
 export const Meter = forwardRef<HTMLDivElement, MeterProps>(function Meter(
   {

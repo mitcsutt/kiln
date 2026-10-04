@@ -4,8 +4,8 @@ import userEvent from '@testing-library/user-event'
 import { CheckboxGroupField } from './CheckboxGroupField'
 
 const topics = [
-  { value: 'goals', label: 'Goals' },
-  { value: 'kickoffs', label: 'Kick-offs' },
+  { value: 'mentions', label: 'Mentions' },
+  { value: 'assigned', label: 'Assigned tasks' },
 ]
 
 describe('CheckboxGroupField', () => {
@@ -13,7 +13,7 @@ describe('CheckboxGroupField', () => {
     render(
       <CheckboxGroupField
         label="Notify me about"
-        description="We only email on match days"
+        description="We only email on weekdays"
         error="Choose at least one"
         options={topics}
       />,
@@ -21,7 +21,7 @@ describe('CheckboxGroupField', () => {
     const fieldset = screen
       .getAllByRole('group', { name: 'Notify me about' })
       .find((el) => el.tagName === 'FIELDSET')
-    expect(fieldset).toHaveAccessibleDescription('We only email on match days Choose at least one')
+    expect(fieldset).toHaveAccessibleDescription('We only email on weekdays Choose at least one')
     expect(screen.getByRole('alert')).toHaveTextContent('Choose at least one')
   })
 
@@ -41,18 +41,18 @@ describe('CheckboxGroupField', () => {
     expect(ref.current).toHaveAttribute('id', 'notify')
     expect(ref.current).toHaveAttribute('role', 'group')
     expect(container.querySelector('fieldset')).toHaveClass('extra')
-    await userEvent.click(screen.getByRole('checkbox', { name: 'Goals' }))
-    expect(onValueChange).toHaveBeenCalledWith(['goals'])
+    await userEvent.click(screen.getByRole('checkbox', { name: 'Mentions' }))
+    expect(onValueChange).toHaveBeenCalledWith(['mentions'])
   })
 
   it('readOnly and disabled reach the boxes', async () => {
     const { rerender } = render(
       <CheckboxGroupField label="Notify me about" options={topics} readOnly />,
     )
-    await userEvent.click(screen.getByRole('checkbox', { name: 'Goals' }))
-    expect(screen.getByRole('checkbox', { name: 'Goals' })).not.toBeChecked()
+    await userEvent.click(screen.getByRole('checkbox', { name: 'Mentions' }))
+    expect(screen.getByRole('checkbox', { name: 'Mentions' })).not.toBeChecked()
     rerender(<CheckboxGroupField label="Notify me about" options={topics} disabled />)
-    expect(screen.getByRole('checkbox', { name: 'Goals' })).toBeDisabled()
+    expect(screen.getByRole('checkbox', { name: 'Mentions' })).toBeDisabled()
   })
 
   it('labelHidden keeps the legend for assistive tech only', () => {

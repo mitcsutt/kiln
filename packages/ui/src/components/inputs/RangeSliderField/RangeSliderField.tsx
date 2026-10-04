@@ -11,7 +11,7 @@ export interface RangeSliderFieldProps
  * thumbs. `className`/`style` go to the Field; `ref`, `id`, `name` and the rest go to the
  * range slider's group.
  *
- * <RangeSliderField label="Budget range" name="budget" min={500} max={5000} step={100} showValue />
+ * <RangeSliderField label="Price range" name="price" min={500} max={5000} step={100} showValue />
  */
 export const RangeSliderField = forwardRef<HTMLSpanElement, RangeSliderFieldProps>(
   function RangeSliderField(props, ref) {

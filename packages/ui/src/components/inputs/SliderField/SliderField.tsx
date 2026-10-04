@@ -11,7 +11,7 @@ export interface SliderFieldProps
  * help, warning and error. `className`/`style` go to the Field; `ref`, `id`, `name` and the
  * rest go to the slider (the ref to its thumb).
  *
- * <SliderField label="Savings rate" name="savingsRate" step={5} showValue formatOptions={{ style: 'unit', unit: 'percent' }} />
+ * <SliderField label="Discount rate" name="discountRate" step={5} showValue formatOptions={{ style: 'unit', unit: 'percent' }} />
  */
 export const SliderField = forwardRef<HTMLSpanElement, SliderFieldProps>(
   function SliderField(props, ref) {

@@ -10,7 +10,7 @@ export interface AmountFieldProps
  * Label + AmountInput + description + error. Input props (`currency`, `unit`, `value`…)
  * and the ref go to the text input; `className`/`style` go to the wrapper.
  *
- * <AmountField label="Monthly rent" currency="GBP" unit="minor" value={rent} onValueChange={setRent} />
+ * <AmountField label="Monthly retainer" currency="GBP" unit="minor" value={retainer} onValueChange={setRetainer} />
  */
 export const AmountField = forwardRef<HTMLInputElement, AmountFieldProps>(
   function AmountField(props, ref) {

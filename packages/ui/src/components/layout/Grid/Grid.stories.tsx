@@ -15,22 +15,22 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-const cupGroup = [
-  { team: 'Harbour Hawks', captain: 'Conor', pts: 7 },
-  { team: 'Millpond FC', captain: 'Ned', pts: 4 },
-  { team: 'Quarry Lane', captain: 'Kofi', pts: 3 },
-  { team: 'Westbank Swifts', captain: 'Lena', pts: 2 },
+const boards = [
+  { project: 'Atlas redesign', owner: 'Priya', open: 7 },
+  { project: 'Billing migration', owner: 'Tomás', open: 4 },
+  { project: 'Mobile app', owner: 'Hana', open: 3 },
+  { project: 'Help centre', owner: 'Sam', open: 2 },
 ]
 
 export const Playground: Story = {
   render: (args) => (
     <Grid {...args}>
-      {cupGroup.map((t) => (
-        <Cell key={t.team}>
-          <strong>{t.team}</strong>
+      {boards.map((b) => (
+        <Cell key={b.project}>
+          <strong>{b.project}</strong>
           <Inline gap={2} justify="between">
-            <Label>{t.captain}</Label>
-            <Figure size="sm">{t.pts} pts</Figure>
+            <Label>{b.owner}</Label>
+            <Figure size="sm">{b.open} open</Figure>
           </Inline>
         </Cell>
       ))}
@@ -40,24 +40,24 @@ export const Playground: Story = {
 
 const projects = [
   {
-    name: 'Sunday League',
-    kind: 'pitch' as const,
-    blurb: 'Fixtures, results and a live table for an eight-club league.',
+    name: 'Release planner',
+    kind: 'board' as const,
+    blurb: 'Releases, tasks and a live board for a six-person team.',
   },
   {
-    name: 'Harbour transit map',
+    name: 'Billing migration',
     kind: 'chart' as const,
-    blurb: 'Every bus, ferry and tram line on one sheet.',
+    blurb: 'Moving every plan to the new billing provider by March.',
   },
   {
-    name: 'Library signage',
+    name: 'Mobile app',
     kind: 'screen' as const,
-    blurb: 'Wayfinding for four floors and a reading garden.',
+    blurb: 'Invoices, receipts and payment alerts on the phone.',
   },
   {
-    name: 'Field guide',
+    name: 'Help centre',
     kind: 'screen' as const,
-    blurb: 'Coastal birds, set for reading outdoors.',
+    blurb: 'Searchable guides for the forty most common questions.',
   },
 ]
 
@@ -149,7 +149,7 @@ export const Dashboard: Story = {
             Due this week
           </Title>
           <Inline justify="between" gap={3} wrap={false}>
-            <Body size="sm">Office rent</Body>
+            <Body size="sm">Office lease</Body>
             <Figure size="sm">$1,480.00</Figure>
           </Inline>
           <Inline justify="between" gap={3} wrap={false}>

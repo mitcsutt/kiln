@@ -4,7 +4,7 @@ import type { StoredFile } from '#components/inputs/FileDrop'
 import { FileField } from './FileField'
 
 const earlierReceipts: StoredFile[] = [
-  { id: 'r-112', name: 'grocer-2026-09-28.pdf', size: 184_000, type: 'application/pdf' },
+  { id: 'r-112', name: 'invoice-2026-09-28.pdf', size: 184_000, type: 'application/pdf' },
 ]
 
 const meta = {
@@ -39,5 +39,5 @@ export const Receipts: Story = {
 }
 
 export const WithError: Story = {
-  args: { required: true, error: 'power-bill.heic is not a JPG, PNG or PDF' },
+  args: { required: true, error: 'office-scan.heic is not a JPG, PNG or PDF' },
 }

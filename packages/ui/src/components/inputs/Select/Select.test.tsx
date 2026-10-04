@@ -5,10 +5,10 @@ import { Field } from '#components/inputs/Field'
 import { Select } from './Select'
 
 const categories = [
-  { value: 'groceries', label: 'Groceries' },
-  { value: 'rent', label: 'Rent' },
-  { value: 'utilities', label: 'Utilities', disabled: true },
-  { value: 'transport', label: 'Transport' },
+  { value: 'design', label: 'Design' },
+  { value: 'engineering', label: 'Engineering' },
+  { value: 'legal', label: 'Legal', disabled: true },
+  { value: 'support', label: 'Support' },
 ]
 
 describe('Select', () => {
@@ -32,10 +32,10 @@ describe('Select', () => {
     const onValueChange = vi.fn()
     render(<Select aria-label="Category" options={categories} onValueChange={onValueChange} />)
     await userEvent.click(screen.getByRole('combobox'))
-    expect(screen.getByRole('option', { name: 'Utilities' })).toHaveAttribute('data-disabled')
-    await userEvent.click(screen.getByRole('option', { name: 'Rent' }))
-    expect(onValueChange).toHaveBeenCalledWith('rent')
-    expect(screen.getByRole('combobox')).toHaveTextContent('Rent')
+    expect(screen.getByRole('option', { name: 'Legal' })).toHaveAttribute('data-disabled')
+    await userEvent.click(screen.getByRole('option', { name: 'Engineering' }))
+    expect(onValueChange).toHaveBeenCalledWith('engineering')
+    expect(screen.getByRole('combobox')).toHaveTextContent('Engineering')
   })
 
   it('is keyboard operable: open, move, choose', async () => {
@@ -44,7 +44,7 @@ describe('Select', () => {
       <Select
         aria-label="Category"
         options={categories}
-        defaultValue="groceries"
+        defaultValue="design"
         onValueChange={onValueChange}
       />,
     )
@@ -53,18 +53,18 @@ describe('Select', () => {
     await userEvent.keyboard('{Enter}')
     expect(screen.getByRole('listbox')).toBeInTheDocument()
     await userEvent.keyboard('{ArrowDown}{Enter}')
-    expect(onValueChange).toHaveBeenCalledWith('rent')
-    expect(trigger).toHaveTextContent('Rent')
+    expect(onValueChange).toHaveBeenCalledWith('engineering')
+    expect(trigger).toHaveTextContent('Engineering')
   })
 
   it('renders groups with labels', async () => {
     render(
       <Select
-        aria-label="Team"
+        aria-label="Country"
         groups={[
-          { label: 'Group A', options: [{ value: 'mex', label: 'Mexico' }] },
+          { label: 'Americas', options: [{ value: 'mex', label: 'Mexico' }] },
           {
-            label: 'Group D',
+            label: 'Asia-Pacific',
             options: [
               { value: 'usa', label: 'United States' },
               { value: 'aus', label: 'Australia' },
@@ -75,19 +75,19 @@ describe('Select', () => {
     )
     await userEvent.click(screen.getByRole('combobox'))
     expect(screen.getAllByRole('group')).toHaveLength(2)
-    expect(screen.getByText('Group D')).toBeInTheDocument()
+    expect(screen.getByText('Asia-Pacific')).toBeInTheDocument()
     expect(screen.getByRole('option', { name: 'Australia' })).toBeInTheDocument()
   })
 
   it('picks up label, description and error from a Field', () => {
     render(
-      <Field label="Category" description="Used for the monthly report" error="Choose a category">
+      <Field label="Category" description="Used for the weekly report" error="Choose a category">
         <Select options={categories} placeholder="Choose" />
       </Field>,
     )
     const trigger = screen.getByLabelText('Category')
     expect(trigger).toHaveRole('combobox')
-    expect(trigger).toHaveAccessibleDescription('Used for the monthly report Choose a category')
+    expect(trigger).toHaveAccessibleDescription('Used for the weekly report Choose a category')
     expect(trigger).toHaveAttribute('aria-invalid', 'true')
     expect(trigger).toHaveAttribute('data-invalid')
   })
@@ -95,20 +95,20 @@ describe('Select', () => {
   it('supports the compound API', async () => {
     render(
       <Select.Root defaultValue="fr">
-        <Select.Trigger aria-label="Team" />
+        <Select.Trigger aria-label="Country" />
         <Select.Content>
           <Select.Group>
-            <Select.Label>Group I</Select.Label>
+            <Select.Label>Europe</Select.Label>
             <Select.Item value="fr">France</Select.Item>
-            <Select.Item value="sn">Senegal</Select.Item>
+            <Select.Item value="es">Spain</Select.Item>
           </Select.Group>
         </Select.Content>
       </Select.Root>,
     )
     expect(screen.getByRole('combobox')).toHaveTextContent('France')
     await userEvent.click(screen.getByRole('combobox'))
-    await userEvent.click(screen.getByRole('option', { name: 'Senegal' }))
-    expect(screen.getByRole('combobox')).toHaveTextContent('Senegal')
+    await userEvent.click(screen.getByRole('option', { name: 'Spain' }))
+    expect(screen.getByRole('combobox')).toHaveTextContent('Spain')
   })
 
   it('does not open when disabled', async () => {
@@ -123,7 +123,7 @@ describe('Select', () => {
       <Select
         aria-label="Category"
         options={categories}
-        value="groceries"
+        value="design"
         onValueChange={onValueChange}
         readOnly
       />,
@@ -131,8 +131,8 @@ describe('Select', () => {
     const trigger = screen.getByRole('combobox')
     expect(trigger).toHaveAttribute('aria-readonly', 'true')
     await userEvent.click(trigger)
-    await userEvent.click(screen.getByRole('option', { name: 'Rent' }))
+    await userEvent.click(screen.getByRole('option', { name: 'Engineering' }))
     expect(onValueChange).not.toHaveBeenCalled()
-    expect(trigger).toHaveTextContent('Groceries')
+    expect(trigger).toHaveTextContent('Design')
   })
 })

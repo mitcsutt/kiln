@@ -22,11 +22,11 @@ function setup() {
           <f.TextField name="phone" label="Phone" validators={{ onDynamic: required }} />
         </FormSteps.Step>
         <FormSteps.Step value="more" title="More">
-          <f.TextField name="team" label="Team" />
+          <f.TextField name="company" label="Company" />
         </FormSteps.Step>
       </FormSteps>
     ),
-    { defaultValues: { name: '', email: '', phone: '', team: '' } },
+    { defaultValues: { name: '', email: '', phone: '', company: '' } },
   )
 }
 

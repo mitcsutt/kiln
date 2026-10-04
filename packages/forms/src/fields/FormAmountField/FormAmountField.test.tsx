@@ -32,19 +32,19 @@ const getByFormattedText = (pattern: RegExp) =>
 describe('FormAmountField', () => {
   it('binds and clears to null', async () => {
     const { form, user } = renderForm(
-      (f) => <f.AmountField name="rent" label="Monthly rent" currency="AUD" />,
-      { defaultValues: { rent: null as number | null } },
+      (f) => <f.AmountField name="retainer" label="Monthly retainer" currency="AUD" />,
+      { defaultValues: { retainer: null as number | null } },
     )
-    const control = screen.getByLabelText('Monthly rent')
+    const control = screen.getByLabelText('Monthly retainer')
     await user.type(control, '1450.5')
-    expect(form.state.values.rent).toBe(1450.5)
+    expect(form.state.values.retainer).toBe(1450.5)
     await user.clear(control)
-    expect(form.state.values.rent).toBeNull()
+    expect(form.state.values.retainer).toBeNull()
   })
 
   it('renders a formatted amount in view mode', () => {
-    renderForm((f) => <f.AmountField name="rent" label="Monthly rent" currency="AUD" />, {
-      defaultValues: { rent: 100 },
+    renderForm((f) => <f.AmountField name="retainer" label="Monthly retainer" currency="AUD" />, {
+      defaultValues: { retainer: 100 },
       formProps: { mode: 'view' },
     })
     expect(getByFormattedText(/100\.00/)).toBeInTheDocument()
@@ -52,15 +52,15 @@ describe('FormAmountField', () => {
 
   it('stores minor units but shows a major-unit amount in view mode', () => {
     renderForm(
-      (f) => <f.AmountField name="rent" label="Monthly rent" currency="AUD" unit="minor" />,
-      { defaultValues: { rent: 145050 }, formProps: { mode: 'view' } },
+      (f) => <f.AmountField name="retainer" label="Monthly retainer" currency="AUD" unit="minor" />,
+      { defaultValues: { retainer: 145050 }, formProps: { mode: 'view' } },
     )
     expect(getByFormattedText(/1,450\.50/)).toBeInTheDocument()
   })
 
   it('shows Not provided in view mode when null', () => {
-    renderForm((f) => <f.AmountField name="rent" label="Monthly rent" currency="AUD" />, {
-      defaultValues: { rent: null as number | null },
+    renderForm((f) => <f.AmountField name="retainer" label="Monthly retainer" currency="AUD" />, {
+      defaultValues: { retainer: null as number | null },
       formProps: { mode: 'view' },
     })
     expect(screen.getByText('Not provided')).toBeInTheDocument()

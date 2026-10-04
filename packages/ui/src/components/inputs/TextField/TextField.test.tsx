@@ -21,8 +21,8 @@ describe('TextField', () => {
   it('calls onValueChange with the string and native onChange with the event', async () => {
     const onValueChange = vi.fn()
     const onChange = vi.fn()
-    render(<TextField label="Payee" onValueChange={onValueChange} onChange={onChange} />)
-    await userEvent.type(screen.getByLabelText('Payee'), 'a')
+    render(<TextField label="Client" onValueChange={onValueChange} onChange={onChange} />)
+    await userEvent.type(screen.getByLabelText('Client'), 'a')
     expect(onValueChange).toHaveBeenCalledWith('a')
     expect(onChange.mock.calls[0]?.[0]).toHaveProperty('target')
   })

@@ -116,7 +116,7 @@ export const Side: Story = {
     side: 'right',
     size: 'sm',
     title: 'September',
-    description: '$3,412.80 spent of $4,100.00',
+    description: '$3,412.80 invoiced across five clients',
   },
   render: (args) => (
     <Stage size="lg">
@@ -129,11 +129,11 @@ export const Side: Story = {
           </Sheet.Trigger>
           <Sheet.Content container={container} {...args}>
             <Stack gap={0}>
-              <Row label="Rent" value="$2,160.00" />
-              <Row label="Groceries" value="$612.35" />
-              <Row label="Transport" value="$184.20" />
-              <Row label="Electricity" value="$146.90" />
-              <Row label="Eating out" value="$309.35" />
+              <Row label="Northwind Studio" value="$2,160.00" />
+              <Row label="Brightline Labs" value="$612.35" />
+              <Row label="Orchard & Co" value="$184.20" />
+              <Row label="Paperkite Press" value="$146.90" />
+              <Row label="Fernhill School" value="$309.35" />
               <Row label="Total" value="$3,412.80" strong />
             </Stack>
             <Sheet.Footer>

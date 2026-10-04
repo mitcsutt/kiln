@@ -6,8 +6,8 @@ const meta = {
   title: 'UI/Inputs/CheckboxField',
   component: CheckboxField,
   args: {
-    label: "I've read the league rules",
-    description: 'Home clubs supply match balls and enter the result within an hour of full time.',
+    label: "I've read the workspace guidelines",
+    description: "Guests can view shared projects but can't edit tasks or invite anyone else.",
     required: true,
     error: '',
     disabled: false,
@@ -25,7 +25,7 @@ type Story = StoryObj<typeof meta>
 export const Playground: Story = {}
 
 export const WithError: Story = {
-  args: { error: 'Tick this to register your club' },
+  args: { error: 'Tick this to join the workspace' },
 }
 
 export const Checked: Story = {

@@ -3,14 +3,14 @@ import { Fieldset } from '#components/inputs/Fieldset'
 import { CheckboxGroup } from './CheckboxGroup'
 
 const notifications = [
-  { value: 'goals', label: 'Goals', description: 'When a team you drew scores' },
+  { value: 'mentions', label: 'Mentions', description: 'When someone tags you in a comment' },
   {
-    value: 'kickoffs',
-    label: 'Kick-offs',
-    description: 'Fifteen minutes before each of your matches',
+    value: 'assigned',
+    label: 'Assigned tasks',
+    description: 'When a task lands in your queue',
   },
-  { value: 'results', label: 'Full-time results' },
-  { value: 'standings', label: 'Weekly table', description: 'Every Monday morning' },
+  { value: 'releases', label: 'Release notes' },
+  { value: 'digest', label: 'Weekly digest', description: 'Every Monday morning' },
 ]
 
 const meta = {
@@ -19,7 +19,7 @@ const meta = {
   args: {
     'aria-label': 'Notify me about',
     options: notifications,
-    defaultValue: ['goals', 'results'],
+    defaultValue: ['mentions', 'releases'],
     orientation: 'vertical',
     size: 'md',
     disabled: false,
@@ -36,11 +36,11 @@ export const Playground: Story = {}
 /** "Everything" governs the list: ticking some of them shows the dash. */
 export const NotifyMeAbout: Story = {
   render: () => (
-    <Fieldset legend="Notify me about" description="Sent to the email on your club registration">
+    <Fieldset legend="Notify me about" description="Sent to the email on your workspace profile">
       <CheckboxGroup
         name="notify"
         options={notifications}
-        defaultValue={['goals']}
+        defaultValue={['mentions']}
         selectAllLabel="Everything"
       />
     </Fieldset>
@@ -49,23 +49,23 @@ export const NotifyMeAbout: Story = {
 
 export const Columns: Story = {
   args: {
-    'aria-label': 'Categories to track',
+    'aria-label': 'Departments to notify',
     options: [
-      { value: 'groceries', label: 'Groceries' },
-      { value: 'rent', label: 'Rent' },
-      { value: 'power', label: 'Electricity and gas' },
-      { value: 'fuel', label: 'Fuel' },
-      { value: 'eating-out', label: 'Eating out' },
-      { value: 'gym', label: 'Gym membership' },
+      { value: 'design', label: 'Design' },
+      { value: 'engineering', label: 'Engineering' },
+      { value: 'support', label: 'Support' },
+      { value: 'sales', label: 'Sales' },
+      { value: 'marketing', label: 'Marketing' },
+      { value: 'finance', label: 'Finance' },
     ],
-    defaultValue: ['rent', 'fuel'],
+    defaultValue: ['engineering', 'sales'],
     columns: { base: 1, sm: 2, md: 3 },
   },
 }
 
 export const Horizontal: Story = {
   args: {
-    'aria-label': 'Days paid',
+    'aria-label': 'Stand-up days',
     options: [
       { value: 'mon', label: 'Monday' },
       { value: 'wed', label: 'Wednesday' },

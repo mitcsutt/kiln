@@ -4,12 +4,12 @@ import { CodeBlock } from './CodeBlock'
 const invalidate = `import type { QueryClient } from '@tanstack/react-query'
 import { keys } from './keys'
 
-export type Domain = 'results' | 'fixtures'
+export type Domain = 'invoices' | 'projects'
 
 /** Which cached resources a server-side change makes stale. */
 const affected: Record<Domain, readonly (keyof typeof keys)[]> = {
-  results: ['table', 'divisions', 'cup'],
-  fixtures: ['fixtures', 'cup'],
+  invoices: ['invoices', 'clients', 'reports'],
+  projects: ['projects', 'reports'],
 }
 
 export function invalidateForDomain(qc: QueryClient, domain: Domain) {

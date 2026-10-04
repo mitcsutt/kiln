@@ -1636,14 +1636,14 @@ export interface RepeaterItem<I> {
 ### 9.10 `FormSentence`: mad-libs
 
 ```tsx
-<FormSentence label="Savings goal">
-  I want to save <form.AmountField name="target" label="Target amount" currency="GBP" /> for{' '}
-  <form.TextField name="goal" label="Goal" htmlSize={14} /> by{' '}
-  <form.DateField name="deadline" label="Deadline" />.
+<FormSentence label="Recurring invoice">
+  Bill <form.TextField name="client" label="Client" htmlSize={14} />{' '}
+  <form.AmountField name="amount" label="Amount" currency="GBP" /> every month starting{' '}
+  <form.DateField name="start" label="Start date" />.
 </FormSentence>
 ```
 
-Provides `FieldPresentation { layout: 'inline', errorPlacement: 'external' }` (label visually hidden, error message not rendered inline). Renders a `fieldset` (legend = `label`, visually hidden), then the text flow (A.7: a `div`, not a `p`), then a list of visible error messages below it, each with an id the matching control references through `aria-describedby`. Use it for short, low-stakes forms (goal setting, filters), never for long data entry.
+Provides `FieldPresentation { layout: 'inline', errorPlacement: 'external' }` (label visually hidden, error message not rendered inline). Renders a `fieldset` (legend = `label`, visually hidden), then the text flow (A.7: a `div`, not a `p`), then a list of visible error messages below it, each with an id the matching control references through `aria-describedby`. Use it for short, low-stakes forms (schedules, filters), never for long data entry.
 
 ### 9.11 `FormReview`
 
@@ -1749,7 +1749,7 @@ export type Condition<T, C = {}> =
   | { not: Condition<T, C> }
 ```
 
-- `context` conditions read `SchemaForm context={{ mode: 'edit', role: 'organiser' }}` (create vs edit, §13 #48).
+- `context` conditions read `SchemaForm context={{ mode: 'edit', role: 'owner' }}` (create vs edit, §13 #48).
 - Paths in conditions are root paths (`TRoot`) everywhere, including on repeater item fields (A.8). Item-relative references are rare and covered by custom nodes or validators.
 - `evaluateCondition(cond, values, context)` is pure (in `@mitcsutt/kiln-forms/schema`). `empty` means `''`, `null`, `undefined` or `[]`. The paths a condition reads are collected statically for selectors.
 
@@ -2090,7 +2090,7 @@ Stories are co-located with the source (`<Name>.stories.tsx`) and titled by the 
 | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `Forms/Getting started/Account settings`                                                                                                                                                                                         | `FormAside` sections: Profile (name, avatar file), Notifications (switch rows through `FormRows`), Security (a password pair field group), Danger zone; autosave with `FormStatus`.  |
 | `Forms/Getting started/Onboarding`                                                                                                                                                                                               | Multi-step with branching (a step inside `When`: business vs personal), a deep-linked step, and the pruned branch shown in the submitted output.                                     |
-| `Forms/Getting started/Savings goal`                                                                                                                                                                                             | `FormSentence` mad-libs.                                                                                                                                                             |
+| `Forms/Getting started/Recurring invoice`                                                                                                                                                                                        | `FormSentence` mad-libs.                                                                                                                                                             |
 | `Forms/Fields/<Kind>Field` (28, e.g. `Forms/Fields/TextField`)                                                                                                                                                                   | Playground (args); States (default, with description, error after blur, warning, disabled, readOnly, validating); in a form (`form.XField` + submit); view mode.                     |
 | `Forms/Layouts/FormGrid`, `FormSection`, `FormAside`, `FormRows`, `FormPanels`, `FormTabs`, `FormAccordion`, `FormSteps`, `Repeater` (list, table, cards), `FormSentence`, `FormReview`, `FormActions`, `When`, stack and inline | Each: component mode and the **same form in schema mode** side by side (parity, §10.11).                                                                                             |
 | `Forms/Layouts/Form`, `SubmitButton`, `ResetButton`, `ErrorSummary`, `FormStatus`                                                                                                                                                | The form components sit beside the layouts that hold them: `Form` (external submit, view mode), `SubmitButton` (`requireChanges`, lock), `ErrorSummary`, `FormStatus` with autosave. |

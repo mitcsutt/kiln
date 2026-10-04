@@ -14,7 +14,7 @@ describe('RangeSlider', () => {
   it('is a named group of two named sliders with valuetext', () => {
     render(
       <RangeSlider
-        aria-label="Budget range"
+        aria-label="Price range"
         min={500}
         max={5000}
         step={100}
@@ -23,7 +23,7 @@ describe('RangeSlider', () => {
         locale="en-GB"
       />,
     )
-    expect(screen.getByRole('group', { name: 'Budget range' })).toBeInTheDocument()
+    expect(screen.getByRole('group', { name: 'Price range' })).toBeInTheDocument()
     const low = screen.getByRole('slider', { name: 'Minimum' })
     const high = screen.getByRole('slider', { name: 'Maximum' })
     expect(low).toHaveAttribute('aria-valuetext', '£1,000')
@@ -34,7 +34,7 @@ describe('RangeSlider', () => {
     const onValueChange = vi.fn()
     render(
       <RangeSlider
-        aria-label="Budget range"
+        aria-label="Price range"
         min={0}
         max={10}
         defaultValue={[4, 6]}
@@ -58,7 +58,7 @@ describe('RangeSlider', () => {
   it('is controlled; readOnly holds', async () => {
     const onValueChange = vi.fn()
     const { rerender } = render(
-      <RangeSlider aria-label="Budget range" value={[20, 80]} onValueChange={onValueChange} />,
+      <RangeSlider aria-label="Price range" value={[20, 80]} onValueChange={onValueChange} />,
     )
     screen.getByRole('slider', { name: 'Maximum' }).focus()
     await userEvent.keyboard('{ArrowRight}')
@@ -67,7 +67,7 @@ describe('RangeSlider', () => {
     onValueChange.mockClear()
     rerender(
       <RangeSlider
-        aria-label="Budget range"
+        aria-label="Price range"
         defaultValue={[20, 80]}
         readOnly
         onValueChange={onValueChange}
@@ -82,7 +82,7 @@ describe('RangeSlider', () => {
     const { container } = render(
       <form>
         <RangeSlider
-          aria-label="Kick-off window"
+          aria-label="Meeting window"
           name="window"
           min={12}
           max={22}
@@ -104,15 +104,15 @@ describe('RangeSlider', () => {
     const onBlur = vi.fn()
     render(
       <>
-        <Field label="Budget range" htmlFor="budget" error="Too wide">
+        <Field label="Price range" htmlFor="price" error="Too wide">
           <RangeSlider ref={ref} onBlur={onBlur} />
         </Field>
         <button type="button">Save</button>
       </>,
     )
-    const group = screen.getByRole('group', { name: 'Budget range' })
+    const group = screen.getByRole('group', { name: 'Price range' })
     expect(ref.current).toBe(group)
-    expect(group).toHaveAttribute('id', 'budget')
+    expect(group).toHaveAttribute('id', 'price')
     expect(group).toHaveAccessibleDescription('Too wide')
     expect(screen.getByRole('slider', { name: 'Minimum' })).toHaveAttribute('aria-invalid', 'true')
     await userEvent.tab()

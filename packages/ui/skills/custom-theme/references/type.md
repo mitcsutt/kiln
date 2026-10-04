@@ -20,7 +20,7 @@ A theme picks at most two families (plus a mono where it needs one) and assigns 
 | Numeric | `--font-numeric`, `--numeric-stretch`                                                                                    | `Numeral`, `Amount`, `Stat`, numeric cells |
 | Mono    | `--font-mono`, `--mono-stretch`                                                                                          | `Code`, `CodeBlock`, `Kbd`                 |
 
-Fiesta sets `--heading-transform: uppercase` for stadium signage; Ledger sets its numerals in condensed Martian Mono so a column of figures reads like receipt tape. Neither needed a component change.
+Fiesta sets `--heading-transform: uppercase` for poster headlines; Ledger sets its numerals in condensed Martian Mono so a column of figures reads like receipt tape. Neither needed a component change.
 
 ## The scale
 
@@ -31,7 +31,7 @@ Sizes are a modular scale: `--type-base × --type-ratio^n`. The display steps ar
 
 ## Figures
 
-Every number that aligns or updates uses tabular, lining figures: scores, money, tables, dates. `Numeral` and `Amount` do it for you, and so does `Table.Cell numeric`.
+Every number that aligns or updates uses tabular, lining figures: counts, money, tables, dates. `Numeral` and `Amount` do it for you, and so does `Table.Cell numeric`.
 
 ```tsx
 ;<>

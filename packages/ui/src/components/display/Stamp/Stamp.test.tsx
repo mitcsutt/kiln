@@ -5,8 +5,8 @@ import { Stamp } from './Stamp'
 describe('Stamp', () => {
   it('reads as its text and forwards refs', () => {
     const ref = createRef<HTMLSpanElement>()
-    render(<Stamp ref={ref}>Eliminated</Stamp>)
-    expect(ref.current).toBe(screen.getByText('Eliminated'))
+    render(<Stamp ref={ref}>Rejected</Stamp>)
+    expect(ref.current).toBe(screen.getByText('Rejected'))
   })
 
   it('writes the rotation and exposes tone and size', () => {
@@ -24,13 +24,11 @@ describe('Stamp', () => {
 
   it('accepts an aria-label for more context', () => {
     render(
-      <Stamp role="img" aria-label="Westbank eliminated in the group stage">
-        Eliminated
+      <Stamp role="img" aria-label="Invoice 1039 overdue by 12 days">
+        Rejected
       </Stamp>,
     )
-    expect(
-      screen.getByRole('img', { name: 'Westbank eliminated in the group stage' }),
-    ).toBeInTheDocument()
+    expect(screen.getByRole('img', { name: 'Invoice 1039 overdue by 12 days' })).toBeInTheDocument()
   })
 
   it('marks corner placement and leaves inline unmarked', () => {

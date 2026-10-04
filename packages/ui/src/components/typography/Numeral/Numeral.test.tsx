@@ -66,9 +66,9 @@ describe('Numeral parts', () => {
   })
 
   it('sets a prefix and suffix as proportional marks around the figures', () => {
-    const { container } = render(<Numeral value={47} prefix="≈" suffix=" pts" />)
+    const { container } = render(<Numeral value={47} prefix="≈" suffix=" seats" />)
     const data = container.querySelector('data') as HTMLElement
-    expect(data).toHaveTextContent('≈47 pts')
+    expect(data).toHaveTextContent('≈47 seats')
     expect(data.firstElementChild).toHaveAttribute('data-affix', 'prefix')
     expect(data.lastElementChild).toHaveAttribute('data-affix', 'suffix')
     expect(data).toHaveAttribute('value', '47')

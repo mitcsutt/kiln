@@ -3,9 +3,9 @@
  *
  * [■] Select all             ← optional; sits over a hairline, apart from the options
  * ─────────────
- * [✓] Goals
- *     When anyone you drew scores
- * [ ] Kick-offs
+ * [✓] Mentions
+ *     When someone tags you in a comment
+ * [ ] Assigned tasks
  *
  * Component tokens:
  *   --checkbox-group-gap       default var(--space-3) — between options

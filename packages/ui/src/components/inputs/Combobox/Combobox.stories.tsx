@@ -5,15 +5,15 @@ import { useEffect, useState } from 'react'
 import { Stack } from '#components/layout/Stack'
 import { filterOptions } from '#components/inputs/internal/filterOptions'
 import { Combobox, type ComboboxOption } from './Combobox'
-import { expenseLabels, payees, countries } from './storyData'
+import { projectLabels, clients, countries } from './storyData'
 
 const meta = {
   title: 'UI/Inputs/Combobox',
   component: Combobox,
   args: {
-    'aria-label': 'Team',
+    'aria-label': 'Country',
     options: countries,
-    placeholder: 'Search 48 nations',
+    placeholder: 'Search countries',
     clearable: true,
     disabled: false,
     invalid: false,
@@ -34,23 +34,23 @@ type Story = StoryObj<typeof meta>
 /** Type to filter, then pick: the input shows the chosen option's label. */
 export const Playground: Story = {
   play: async ({ canvasElement }) => {
-    const input = within(storyRoot(canvasElement)).getByRole('combobox', { name: 'Team' })
+    const input = within(storyRoot(canvasElement)).getByRole('combobox', { name: 'Country' })
     await userEvent.type(input, 'zeal')
     await userEvent.click(await screen.findByRole('option', { name: /New Zealand/ }))
     await expect(input).toHaveValue('New Zealand')
   },
 }
 
-export const Team: Story = {
+export const Country: Story = {
   args: { defaultValue: 'aus' },
 }
 
 export const Sizes: Story = {
   render: (args) => (
     <Stack gap={3} style={{ maxInlineSize: '24rem' }}>
-      <Combobox {...args} aria-label="Team, small" size="sm" />
-      <Combobox {...args} aria-label="Team, medium" size="md" />
-      <Combobox {...args} aria-label="Team, large" size="lg" />
+      <Combobox {...args} aria-label="Country, small" size="sm" />
+      <Combobox {...args} aria-label="Country, medium" size="md" />
+      <Combobox {...args} aria-label="Country, large" size="lg" />
     </Stack>
   ),
 }
@@ -68,12 +68,12 @@ export const Multiple: Story = {
   render: (args) => (
     <Stack style={{ maxInlineSize: '28rem' }}>
       <Combobox
-        aria-label="Teams to follow"
+        aria-label="Countries you ship to"
         options={args.options}
         size={args.size}
         multiple
         maxSelected={4}
-        placeholder="Up to four teams"
+        placeholder="Up to four countries"
         defaultValue={['aus', 'nzl']}
       />
     </Stack>
@@ -86,22 +86,22 @@ export const CreatableLabels: Story = {
     <Stack style={{ maxInlineSize: '28rem' }}>
       <Combobox
         aria-label="Labels"
-        options={expenseLabels}
+        options={projectLabels}
         size={args.size}
         multiple
         creatable
         placeholder="Add or create a label"
-        defaultValue={['essentials']}
+        defaultValue={['design']}
       />
     </Stack>
   ),
 }
 
 /* A fake server: filters, then answers after a delay. */
-function searchPayees(query: string, signal: AbortSignal): Promise<readonly ComboboxOption[]> {
+function searchClients(query: string, signal: AbortSignal): Promise<readonly ComboboxOption[]> {
   return new Promise((resolve, reject) => {
     const timer = setTimeout(() => {
-      resolve(filterOptions(payees, query).slice(0, 8))
+      resolve(filterOptions(clients, query).slice(0, 8))
     }, 600)
     signal.addEventListener('abort', () => {
       clearTimeout(timer)
@@ -110,20 +110,20 @@ function searchPayees(query: string, signal: AbortSignal): Promise<readonly Comb
   })
 }
 
-function AsyncPayee() {
+function AsyncClient() {
   const [query, setQuery] = useState('')
   const [results, setResults] = useState<{
     query: string
     options: readonly ComboboxOption[]
   } | null>(null)
-  const [payee, setPayee] = useState<string | null>(null)
+  const [client, setClient] = useState<string | null>(null)
   const searchable = query.trim().length >= 2
 
   useEffect(() => {
     if (!searchable) return
     const controller = new AbortController()
     const debounce = setTimeout(() => {
-      searchPayees(query, controller.signal)
+      searchClients(query, controller.signal)
         .then((found) => {
           setResults({ query, options: found })
         })
@@ -142,17 +142,17 @@ function AsyncPayee() {
   return (
     <Stack gap={2} style={{ maxInlineSize: '24rem' }}>
       <Combobox
-        aria-label="Payee"
+        aria-label="Client"
         options={options}
         filter="none"
         loading={loading}
-        loadingMessage="Searching payees…"
-        emptyMessage={searchable ? 'No payee by that name' : 'Type two letters to search'}
+        loadingMessage="Searching clients…"
+        emptyMessage={searchable ? 'No client by that name' : 'Type two letters to search'}
         creatable
         clearable
-        placeholder="Who did you pay?"
-        value={payee}
-        onValueChange={setPayee}
+        placeholder="Who are you billing?"
+        value={client}
+        onValueChange={setClient}
         onInputValueChange={setQuery}
       />
     </Stack>
@@ -160,6 +160,6 @@ function AsyncPayee() {
 }
 
 /** Async-ready: `filter="none"`, `loading`, and the loader's results as `options`. */
-export const Payee: Story = {
-  render: () => <AsyncPayee />,
+export const Client: Story = {
+  render: () => <AsyncClient />,
 }

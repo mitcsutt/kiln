@@ -15,11 +15,11 @@ const required = ({ value }: { value: string }) => (value === '' ? 'Enter a valu
 interface Entry {
   name: string
   email: string
-  team: string
-  hasTeam: boolean
+  company: string
+  hasCompany: boolean
   notes: string
 }
-const defaults: Entry = { name: '', email: '', team: '', hasTeam: false, notes: '' }
+const defaults: Entry = { name: '', email: '', company: '', hasCompany: false, notes: '' }
 
 function stepper() {
   return screen.getByRole('list', { name: 'Sign-up steps' })
@@ -272,11 +272,11 @@ describe('FormSteps', () => {
       (f) => (
         <FormSteps label="Sign-up steps">
           <FormSteps.Step value="you" title="You">
-            <f.CheckboxField name="hasTeam" label="I play for a team" />
+            <f.CheckboxField name="hasCompany" label="I work for a company" />
           </FormSteps.Step>
-          <When form={f} is={(v) => v.hasTeam}>
-            <FormSteps.Step value="team" title="Team">
-              <f.TextField name="team" label="Team name" />
+          <When form={f} is={(v) => v.hasCompany}>
+            <FormSteps.Step value="company" title="Company">
+              <f.TextField name="company" label="Company name" />
             </FormSteps.Step>
           </When>
           <FormSteps.Step value="notes" title="Notes">
@@ -292,27 +292,27 @@ describe('FormSteps', () => {
       },
     )
     expect(within(stepper()).getAllByRole('listitem')).toHaveLength(2)
-    await user.click(screen.getByLabelText('I play for a team'))
+    await user.click(screen.getByLabelText('I work for a company'))
     expect(
       within(stepper())
         .getAllByRole('listitem')
         .map((item) => item.textContent),
     ).toEqual([
       expect.stringContaining('You'),
-      expect.stringContaining('Team'),
+      expect.stringContaining('Company'),
       expect.stringContaining('Notes'),
     ])
     await user.click(screen.getByRole('button', { name: 'Next' }))
-    await user.type(await screen.findByLabelText('Team name'), 'Harriers')
+    await user.type(await screen.findByLabelText('Company name'), 'Brightline Labs')
     await user.click(screen.getByRole('button', { name: 'Back' }))
-    await user.click(screen.getByLabelText('I play for a team'))
+    await user.click(screen.getByLabelText('I work for a company'))
     expect(within(stepper()).getAllByRole('listitem')).toHaveLength(2)
     await user.click(screen.getByRole('button', { name: 'Next' }))
     await user.click(await screen.findByRole('button', { name: 'Submit' }))
     await waitFor(() => {
       expect(onSubmit).toHaveBeenCalledTimes(1)
     })
-    expect(onSubmit.mock.calls[0]?.[0]).toMatchObject({ hasTeam: false, team: '' })
+    expect(onSubmit.mock.calls[0]?.[0]).toMatchObject({ hasCompany: false, company: '' })
   })
 
   it('per-step schema issues are filtered to the step and block Next', async () => {
@@ -408,7 +408,7 @@ describe('FormSteps', () => {
           <FormSteps.Step value="you" title="You">
             <f.TextField name="name" label="Full name" validators={{ onDynamic: required }} />
           </FormSteps.Step>
-          <When form={f} is={(v) => !v.hasTeam}>
+          <When form={f} is={(v) => !v.hasCompany}>
             <FormSteps.Step value="review" title="Review">
               <FormReview title="Check your answers">
                 <f.TextField name="name" label="Full name" />
@@ -440,7 +440,7 @@ describe('FormSteps', () => {
     expect(runtime.fields.get('name')?.element()).toBe(realInput())
     // Unmounting the review keeps the real field registered.
     act(() => {
-      form.setFieldValue('hasTeam', true)
+      form.setFieldValue('hasCompany', true)
     })
     expect(screen.queryByRole('region', { name: 'Review' })).toBeNull()
     expect(runtime.fields.get('name')?.element()).toBe(realInput())

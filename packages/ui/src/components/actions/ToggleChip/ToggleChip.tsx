@@ -14,7 +14,7 @@ export interface ToggleChipProps extends ComponentPropsWithoutRef<typeof Toggle.
 }
 
 /**
- * A pressable filter chip — an on/off switch that reads as a word ("Mine", "Scorers
+ * A pressable filter chip — an on/off switch that reads as a word ("Mine", "Overdue
  * only"). Built on Radix Toggle, so it is a real `<button aria-pressed>`; use
  * `pressed`/`onPressedChange` (controlled) or `defaultPressed`.
  *

@@ -77,12 +77,12 @@ const fromMinor = (minor: number, unit: AmountUnit, digits: number) =>
   unit === 'minor' ? minor : Number(`${String(minor)}e-${String(digits)}`)
 
 /**
- * Money, typed as text (a textbox, not a spinbutton — arrow keys shouldn't nudge a rent
- * payment). Decimals come from the currency; grouped when blurred ("1,450.00"), raw while
+ * Money, typed as text (a textbox, not a spinbutton — arrow keys shouldn't nudge an invoice
+ * total). Decimals come from the currency; grouped when blurred ("1,450.00"), raw while
  * focused ("1450.00"). Tabular and right-aligned like every amount. The ref goes to the
  * text input; `name` is submitted as a plain number in `unit`s.
  *
- * <AmountInput currency="AUD" unit="minor" value={rentCents} onValueChange={setRentCents} />
+ * <AmountInput currency="AUD" unit="minor" value={retainerCents} onValueChange={setRetainerCents} />
  */
 export const AmountInput = markFieldAware(
   forwardRef<HTMLInputElement, AmountInputProps>(function AmountInput(

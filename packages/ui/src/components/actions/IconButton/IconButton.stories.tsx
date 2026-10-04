@@ -38,13 +38,8 @@ export const Variants: Story = {
     <Stack gap={4}>
       {(['accent', 'neutral', 'critical'] as const).map((tone) => (
         <Inline key={tone} gap={3}>
-          <IconButton tone={tone} variant="solid" label="Add expense" icon={<PlusIcon />} />
-          <IconButton
-            tone={tone}
-            variant="outline"
-            label="Search transactions"
-            icon={<SearchIcon />}
-          />
+          <IconButton tone={tone} variant="solid" label="New project" icon={<PlusIcon />} />
+          <IconButton tone={tone} variant="outline" label="Search invoices" icon={<SearchIcon />} />
           <IconButton tone={tone} variant="ghost" label="More options" icon={<MoreIcon />} />
         </Inline>
       ))}
@@ -77,8 +72,8 @@ export const Shapes: Story = {
 export const BesideButton: Story = {
   render: () => (
     <Inline gap={2}>
-      <Button>Save budget</Button>
-      <IconButton variant="outline" label="More budget actions" icon={<MoreIcon />} showTitle />
+      <Button>Save changes</Button>
+      <IconButton variant="outline" label="More invoice actions" icon={<MoreIcon />} showTitle />
     </Inline>
   ),
 }
@@ -90,7 +85,7 @@ export const States: Story = {
         variant="solid"
         tone="accent"
         loading
-        label="Refreshing fixtures"
+        label="Refreshing invoices"
         icon={<PlusIcon />}
       />
       <IconButton variant="outline" disabled label="Copy link" icon={<CopyIcon />} />

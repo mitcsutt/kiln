@@ -59,8 +59,8 @@ export const IconButtons: Story = {
   render: () => (
     <TooltipProvider>
       <Inline gap={1}>
-        <Tooltip content="Search fixtures" open>
-          <Button variant="ghost" tone="neutral" aria-label="Search fixtures">
+        <Tooltip content="Search invoices" open>
+          <Button variant="ghost" tone="neutral" aria-label="Search invoices">
             <SearchIcon />
           </Button>
         </Tooltip>
@@ -83,7 +83,7 @@ export const IconButtons: Story = {
 export const OnData: Story = {
   render: () => (
     <Tooltip
-      content="Excludes the $120.00 refund from Fresh Market on 22 September."
+      content="Excludes the $120.00 credit note for Orchard & Co on 22 September."
       open
       side="right"
     >
@@ -99,9 +99,9 @@ export const EscapesClipping: Story = {
   render: () => (
     <Clip>
       <Stack gap={2}>
-        <Tooltip content="Harbour Hawks, top of division two" open>
+        <Tooltip content="Northwind Studio, your largest client" open>
           <Button size="sm" variant="outline" tone="neutral">
-            HAW
+            NWS
           </Button>
         </Tooltip>
         <Muted>This box has overflow: hidden; the tooltip above it is not cut off.</Muted>

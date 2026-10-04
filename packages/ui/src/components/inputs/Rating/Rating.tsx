@@ -39,7 +39,7 @@ const defaultItemLabel = (n: number, max: number) => `${String(n)} of ${String(m
  * previews a rating before you choose it. Label it with a `<Field>` (see `RatingField`) or
  * `aria-label`. `onBlur` fires once, when focus leaves the stars.
  *
- * <Rating aria-label="Rate this fixture" defaultValue={4} clearable />
+ * <Rating aria-label="Rate this release" defaultValue={4} clearable />
  */
 export const Rating = markFieldAware(
   forwardRef<HTMLDivElement, RatingProps>(function Rating(

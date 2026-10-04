@@ -25,12 +25,12 @@ export const Playground: Story = {
     <Stack style={{ maxWidth: '26rem' }}>
       <Card {...args}>
         <Card.Header>
-          <Card.Title>Harbour transit map</Card.Title>
-          <Card.Meta>2026</Card.Meta>
+          <Card.Title>Atlas redesign</Card.Title>
+          <Card.Meta>Due 14 Nov</Card.Meta>
         </Card.Header>
         <Card.Description>
-          Every bus, ferry and tram line in a coastal city on one sheet, with a large-print edition
-          for the stations.
+          A new navigation, settings and billing area for the web app, with a high-contrast mode
+          shipped alongside.
         </Card.Description>
       </Card>
     </Stack>
@@ -42,14 +42,14 @@ export const Project: Story = {
   render: () => (
     <Stack style={{ maxWidth: '26rem' }}>
       <Card asChild variant="raised">
-        <a href="#sunday-league">
+        <a href="#billing-migration">
           <Card.Header>
-            <Card.Title level={2}>Sunday League</Card.Title>
-            <Card.Meta>2026</Card.Meta>
+            <Card.Title level={2}>Billing migration</Card.Title>
+            <Card.Meta>Q4</Card.Meta>
           </Card.Header>
           <Card.Description>
-            Eight clubs, fourteen rounds, one live table. Home clubs enter results from the
-            touchline, and the table updates for everyone within a second.
+            Twelve hundred accounts moved to the new invoicing service without downtime. Finance
+            sees every invoice as it is issued, and clients get a receipt within a second.
           </Card.Description>
           <TagList aria-label="Stack">
             <Tag>React</Tag>
@@ -66,47 +66,47 @@ export const Project: Story = {
   ),
 }
 
-/** A match: one fixture with its facts. Not interactive, so no hover. */
-export const Match: Story = {
+/** A release: one deploy with its facts. Not interactive, so no hover. */
+export const Release: Story = {
   render: () => (
     <Stack style={{ maxWidth: '24rem' }}>
       <Card variant="outline" padding={4}>
         <Card.Header>
-          <Card.Meta>Division two · Round 1</Card.Meta>
+          <Card.Meta>Atlas redesign · Release 2.4</Card.Meta>
           <Badge tone="accent" variant="solid" dot>
             Live
           </Badge>
         </Card.Header>
-        <Card.Title>Harbour Hawks v Millpond FC</Card.Title>
+        <Card.Title>Release 2.4 to production</Card.Title>
         <DataList divided>
-          <DataList.Item label="Venue">Harbour Park, pitch 2</DataList.Item>
-          <DataList.Item label="Kick-off">Sun 14 June, 10:30</DataList.Item>
-          <DataList.Item label="Referee">Ingrid Solberg</DataList.Item>
+          <DataList.Item label="Region">Sydney, ap-southeast-2</DataList.Item>
+          <DataList.Item label="Started">Thu 14 Nov, 10:30</DataList.Item>
+          <DataList.Item label="Owner">Elena Petrova</DataList.Item>
         </DataList>
       </Card>
     </Stack>
   ),
 }
 
-/** A spending envelope — a small object with a status and an action. */
-export const Envelope: Story = {
+/** A plan summary — a small object with a status and an action. */
+export const Plan: Story = {
   render: () => (
     <Stack style={{ maxWidth: '22rem' }}>
       <Card variant="plain" padding={4}>
         <Card.Header>
-          <Card.Title level={4}>Groceries</Card.Title>
+          <Card.Title level={4}>Team plan</Card.Title>
           <Badge tone="positive">On track</Badge>
         </Card.Header>
         <Card.Body>
           <DataList>
-            <DataList.Item label="Spent">$612.35</DataList.Item>
-            <DataList.Item label="Budget">$800.00</DataList.Item>
-            <DataList.Item label="Left">$187.65</DataList.Item>
+            <DataList.Item label="Billed so far">$612.35</DataList.Item>
+            <DataList.Item label="Monthly cap">$800.00</DataList.Item>
+            <DataList.Item label="Remaining">$187.65</DataList.Item>
           </DataList>
         </Card.Body>
         <Card.Footer>
           <Button size="sm" variant="outline" tone="neutral">
-            Move money
+            Change plan
           </Button>
         </Card.Footer>
       </Card>
@@ -123,10 +123,10 @@ export const WithMedia: Story = {
           <img src={portrait} alt="" />
         </Card.Media>
         <Card.Header>
-          <Card.Title>About</Card.Title>
+          <Card.Title>Priya Nair</Card.Title>
         </Card.Header>
         <Card.Description>
-          Cartographer in Lisbon. Transit maps, wayfinding and the odd field guide.
+          Design lead in Lisbon. Owns the design system, onboarding and the help centre.
         </Card.Description>
         <Card.Footer>
           <Button
@@ -136,7 +136,7 @@ export const WithMedia: Story = {
             trailingIcon={<ArrowUpRightIcon />}
             asChild
           >
-            <a href="https://example.com/portfolio">Portfolio</a>
+            <a href="https://example.com">Website</a>
           </Button>
         </Card.Footer>
       </Card>
@@ -151,21 +151,21 @@ export const WithMedia: Story = {
   ),
 }
 
-const ENVELOPES = {
+const USAGE = {
   plain: {
-    title: 'Groceries',
+    title: 'Storage',
     edge: 'Fill, no edge',
-    copy: '$101.60 left of $680.00 for September. Corner Grocer is most of it.',
+    copy: '101.6 GB left of 680 GB this month. Design files are most of it.',
   },
   outline: {
-    title: 'Transport',
+    title: 'Seats',
     edge: 'Hairline · default',
-    copy: '$50.00 left of $160.00 — one more travel-card top-up this month.',
+    copy: '2 of 12 seats free — one more invite before the Team plan is full.',
   },
   raised: {
-    title: 'Eating out',
+    title: 'API requests',
     edge: 'Surface shadow',
-    copy: '$112.50 over the $300.00 budget after Trattoria Nove on Sunday.',
+    copy: '12,500 over the 300,000 monthly quota after the import on Sunday.',
   },
 } as const
 
@@ -176,10 +176,10 @@ export const Variants: Story = {
       {(['plain', 'outline', 'raised'] as const).map((variant) => (
         <Card key={variant} variant={variant} interactive padding={4}>
           <Card.Header>
-            <Card.Title level={4}>{ENVELOPES[variant].title}</Card.Title>
-            <Card.Meta>{ENVELOPES[variant].edge}</Card.Meta>
+            <Card.Title level={4}>{USAGE[variant].title}</Card.Title>
+            <Card.Meta>{USAGE[variant].edge}</Card.Meta>
           </Card.Header>
-          <Card.Description>{ENVELOPES[variant].copy}</Card.Description>
+          <Card.Description>{USAGE[variant].copy}</Card.Description>
         </Card>
       ))}
     </Stack>

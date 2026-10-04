@@ -18,8 +18,8 @@ describe('Divider', () => {
   })
 
   it('is named by its label', () => {
-    render(<Divider label="Knockout stage" labelPosition="center" />)
-    const sep = screen.getByRole('separator', { name: 'Knockout stage' })
+    render(<Divider label="Earlier this week" labelPosition="center" />)
+    const sep = screen.getByRole('separator', { name: 'Earlier this week' })
     expect(sep).toHaveAttribute('data-label-position', 'center')
   })
 

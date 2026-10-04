@@ -5,7 +5,7 @@ import styles from './EmptyState.module.css'
 export type EmptyStateTitleElement = 'h1' | 'h2' | 'h3' | 'h4' | 'p'
 
 export interface EmptyStateProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
-  /** What's empty, said plainly: "No expenses yet". */
+  /** What's empty, said plainly: "No invoices yet". */
   title: ReactNode
   /** What happens next, or why it's empty. One or two sentences. */
   description?: ReactNode
@@ -28,7 +28,7 @@ export interface EmptyStateProps extends Omit<HTMLAttributes<HTMLDivElement>, 't
  * The view when there's nothing to show yet. Typographic: a plain title, a line of
  * direction, one action.
  *
- * <EmptyState title="No expenses yet" description="…" action={<Button>Add expense</Button>} />
+ * <EmptyState title="No invoices yet" description="…" action={<Button>New invoice</Button>} />
  */
 export const EmptyState = forwardRef<HTMLDivElement, EmptyStateProps>(function EmptyState(
   {

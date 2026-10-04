@@ -97,8 +97,8 @@ const BottomNavItem = forwardRef<HTMLAnchorElement, BottomNavItemProps>(function
  * Pair the breakpoints: `<BottomNav hideAbove="md">` with `<NavLinks hideBelow="md">`.
  *
  * <BottomNav>
- *   <BottomNav.Item asChild icon={<TableIcon />} label="Table" active>
- *     <Link to="/standings" />
+ *   <BottomNav.Item asChild icon={<TableIcon />} label="Projects" active>
+ *     <Link to="/projects" />
  *   </BottomNav.Item>
  * </BottomNav>
  */

@@ -3,8 +3,8 @@ import { Section } from './Section'
 
 describe('Section', () => {
   it('renders a <section> by default', () => {
-    render(<Section aria-label="Standings" />)
-    expect(screen.getByRole('region', { name: 'Standings' }).tagName).toBe('SECTION')
+    render(<Section aria-label="Release notes" />)
+    expect(screen.getByRole('region', { name: 'Release notes' }).tagName).toBe('SECTION')
   })
 
   it('maps responsive space to cascading block-padding vars', () => {

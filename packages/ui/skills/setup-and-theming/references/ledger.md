@@ -21,7 +21,7 @@ import { ThemeProvider } from '@mitcsutt/kiln-ui'
 </ThemeProvider>
 ```
 
-Ledger is light-first. It suits screens that are mostly tables and totals: budgets, invoices, timesheets.
+Ledger is light-first. It suits screens that are mostly tables and totals: invoices, timesheets, stock counts.
 
 ## The idea, applied
 

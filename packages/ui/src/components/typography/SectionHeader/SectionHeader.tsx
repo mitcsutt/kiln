@@ -19,7 +19,7 @@ export interface SectionHeaderProps extends Omit<HTMLAttributes<HTMLElement>, 't
   actions?: ReactNode
   /**
    * Small context above the title — only when it tells the reader something
-   * ("2025–26 financial year", "Group B"). Plain muted text, never a tracked-caps eyebrow.
+   * ("2025–26 financial year", "Sprint 2"). Plain muted text, never a tracked-caps eyebrow.
    */
   kicker?: ReactNode
   /** A hairline under the header. */
@@ -33,7 +33,7 @@ export interface SectionHeaderProps extends Omit<HTMLAttributes<HTMLElement>, 't
  * The title block for a page or section: optional kicker, heading, description and
  * actions. Title, kicker and description are grouped in an <hgroup>.
  *
- * <SectionHeader title="September spending" description="$4,182.60 of $5,200 budgeted" actions={<Button>Export CSV</Button>} />
+ * <SectionHeader title="September invoices" description="$4,182.60 of $5,200 target" actions={<Button>Export CSV</Button>} />
  */
 export const SectionHeader = forwardRef<HTMLElement, SectionHeaderProps>(function SectionHeader(
   {

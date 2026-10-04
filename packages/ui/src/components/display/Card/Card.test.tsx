@@ -36,12 +36,12 @@ describe('Card', () => {
   it('sets the title element from level (default h3)', () => {
     render(
       <Card>
-        <Card.Title>Hawks v Millpond</Card.Title>
-        <Card.Title level={4}>Harbour Park</Card.Title>
+        <Card.Title>Release 2.4</Card.Title>
+        <Card.Title level={4}>Changelog</Card.Title>
       </Card>,
     )
-    expect(screen.getByRole('heading', { level: 3, name: 'Hawks v Millpond' })).toBeInTheDocument()
-    expect(screen.getByRole('heading', { level: 4, name: 'Harbour Park' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 3, name: 'Release 2.4' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 4, name: 'Changelog' })).toBeInTheDocument()
   })
 
   it('marks media ratio and inset for styling', () => {

@@ -16,7 +16,7 @@ type Story = StoryObj<typeof meta>
 
 export const Playground: Story = {}
 
-/** Tone follows direction; override it when falling is good (spending, goals against). */
+/** Tone follows direction; override it when falling is good (costs, open bugs). */
 export const Tones: Story = {
   render: () => (
     <Inline gap={5} align="baseline">
@@ -24,10 +24,10 @@ export const Tones: Story = {
       <Delta direction="down">1 place</Delta>
       <Delta direction="flat">No movement</Delta>
       <Delta direction="down" tone="positive">
-        $84.20 less on groceries
+        $84.20 less on hosting
       </Delta>
       <Delta direction="up" tone="critical">
-        $212.40 more spent
+        $212.40 more in costs
       </Delta>
     </Inline>
   ),
@@ -37,23 +37,23 @@ export const Tones: Story = {
 export const InARow: Story = {
   render: () => (
     <Stack gap={5} style={{ maxWidth: '26rem' }}>
-      <List aria-label="Movers after matchday 3">
+      <List aria-label="Review leaderboard, week 3">
         {[
-          { name: 'Kofi Grant', pts: 51, dir: 'up' as const, by: '2' },
-          { name: 'Ada Okafor', pts: 47, dir: 'down' as const, by: '1' },
-          { name: 'Ingrid Tran', pts: 44, dir: 'flat' as const, by: undefined },
+          { name: 'Tomás Ortega', reviews: 51, dir: 'up' as const, by: '2' },
+          { name: 'Hana Kobayashi', reviews: 47, dir: 'down' as const, by: '1' },
+          { name: 'Sam Okafor', reviews: 44, dir: 'flat' as const, by: undefined },
         ].map((r) => (
           <List.Item key={r.name}>
             <List.Content>{r.name}</List.Content>
             <List.Trailing>
               <Delta direction={r.dir}>{r.by}</Delta>
-              {r.pts}
+              {r.reviews}
             </List.Trailing>
           </List.Item>
         ))}
       </List>
       <Text size="sm" tone="muted">
-        Groceries{' '}
+        Hosting{' '}
         <Delta direction="down" tone="positive">
           $84.20
         </Delta>{' '}

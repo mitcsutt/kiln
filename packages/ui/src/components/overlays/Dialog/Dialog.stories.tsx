@@ -11,8 +11,9 @@ const meta = {
   component: Dialog.Content,
   args: {
     size: 'sm',
-    title: 'Delete expense?',
-    description: 'Corner Grocer, $182.40 on 14 September. It also comes off your Groceries total.',
+    title: 'Delete invoice?',
+    description:
+      'INV-1042 for Northwind Studio, $1,820.00, issued 14 September. The client can no longer pay it.',
     hideClose: false,
   },
   argTypes: {
@@ -30,17 +31,17 @@ function ConfirmDelete({ defaultOpen, ...args }: DialogContentProps & { defaultO
     <Dialog defaultOpen={defaultOpen}>
       <Dialog.Trigger asChild>
         <Button variant="outline" tone="critical">
-          Delete expense
+          Delete invoice
         </Button>
       </Dialog.Trigger>
       <Dialog.Content {...args}>
         <Dialog.Footer>
           <Dialog.Close asChild>
             <Button variant="ghost" tone="neutral">
-              Keep expense
+              Keep invoice
             </Button>
           </Dialog.Close>
-          <Button tone="critical">Delete expense</Button>
+          <Button tone="critical">Delete invoice</Button>
         </Dialog.Footer>
       </Dialog.Content>
     </Dialog>
@@ -51,10 +52,10 @@ function ConfirmDelete({ defaultOpen, ...args }: DialogContentProps & { defaultO
 export const Playground: Story = {
   render: (args) => <ConfirmDelete {...args} />,
   play: async ({ canvasElement }) => {
-    const trigger = within(storyRoot(canvasElement)).getByRole('button', { name: 'Delete expense' })
+    const trigger = within(storyRoot(canvasElement)).getByRole('button', { name: 'Delete invoice' })
     await userEvent.click(trigger)
-    const dialog = await screen.findByRole('dialog', { name: 'Delete expense?' })
-    await expect(dialog).toHaveAccessibleDescription(/Corner Grocer/)
+    const dialog = await screen.findByRole('dialog', { name: 'Delete invoice?' })
+    await expect(dialog).toHaveAccessibleDescription(/Northwind Studio/)
     await userEvent.keyboard('{Escape}')
     await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument())
     await expect(trigger).toHaveFocus()
@@ -75,8 +76,8 @@ export const ConfirmDestructive: Story = {
 export const Breakdown: Story = {
   args: {
     size: 'md',
-    title: 'Groceries, September',
-    description: '14 transactions against an $850.00 limit.',
+    title: 'Invoice INV-1042',
+    description: 'Northwind Studio · due 14 October',
   },
   render: (args) => (
     <Stage size="lg">
@@ -89,12 +90,12 @@ export const Breakdown: Story = {
           </Dialog.Trigger>
           <Dialog.Content container={container} {...args}>
             <Stack gap={0}>
-              <Row label="Corner Grocer" value="$182.40" />
-              <Row label="Fresh Market" value="$96.15" />
-              <Row label="Bulk Foods Co-op" value="$141.72" />
-              <Row label="Rise Bakery" value="$18.60" />
-              <Row label="Corner Grocer, delivery" value="$173.48" />
-              <Row label="Spent so far" value="$612.35" strong />
+              <Row label="Design review, 6 hours" value="$720.00" />
+              <Row label="Frontend build, 8 hours" value="$960.00" />
+              <Row label="Hosting, September" value="$96.15" />
+              <Row label="Support retainer" value="$25.25" />
+              <Row label="Domain renewal" value="$18.60" />
+              <Row label="Total due" value="$1,820.00" strong />
             </Stack>
             <Dialog.Footer>
               <Dialog.Close asChild>
@@ -115,8 +116,8 @@ export const Breakdown: Story = {
 export const Reading: Story = {
   args: {
     size: 'lg',
-    title: 'How the league works',
-    description: 'Division two · 8 clubs, 14 rounds',
+    title: 'How billing works',
+    description: 'Team plan · 12 seats, billed monthly',
   },
   render: (args) => (
     <Stage size="lg">
@@ -124,20 +125,20 @@ export const Reading: Story = {
         <Dialog defaultOpen>
           <Dialog.Trigger asChild>
             <Button variant="ghost" tone="neutral">
-              Rules
+              Billing help
             </Button>
           </Dialog.Trigger>
           <Dialog.Content container={container} {...args}>
             <Stack gap={3}>
               <Body>
-                Every club plays every other club twice, once at home and once away. Fixtures are
-                published before the first round and only move for weather.
+                Every seat is billed on the first of the month. Add a seat mid-cycle and you pay
+                only for the days left in the period.
               </Body>
               <Body>
-                A win scores 3 and a draw 1. Clubs level on points are split by goal difference,
-                then goals scored, then the result between them.
+                Removing a seat credits the unused days to your next invoice. Credits never expire,
+                and they apply to any plan.
               </Body>
-              <Body>The table updates as soon as the home club confirms the result.</Body>
+              <Body>Invoices go to the billing contact as soon as they are issued.</Body>
             </Stack>
             <Dialog.Footer>
               <Dialog.Close asChild>

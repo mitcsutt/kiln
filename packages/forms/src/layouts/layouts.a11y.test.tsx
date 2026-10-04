@@ -41,8 +41,12 @@ describe('layouts — axe', () => {
             </FormPanels.Panel>
           </FormPanels>
           <FormTabs label="More">
-            <FormTabs.Tab value="team" label="Team">
-              <f.TextField name="team" label="Team name" validators={{ onDynamic: required }} />
+            <FormTabs.Tab value="company" label="Company">
+              <f.TextField
+                name="company"
+                label="Company name"
+                validators={{ onDynamic: required }}
+              />
             </FormTabs.Tab>
             <FormTabs.Tab value="notes" label="Notes">
               <f.TextField name="notes" label="Notes" />
@@ -63,7 +67,7 @@ describe('layouts — axe', () => {
           weekly: false,
           display: '',
           street: '',
-          team: '',
+          company: '',
           notes: '',
           extra: '',
         },

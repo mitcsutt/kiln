@@ -17,11 +17,11 @@ import {
   enquirySchema,
   expenseSchema,
   layoutsSchema,
-  leagueEntrySchema,
   onboardingSchema,
-  savingsSchema,
-  type LeagueEntry,
-  type LeagueEntryContext,
+  projectSignupSchema,
+  recurringInvoiceSchema,
+  type ProjectSignup,
+  type ProjectSignupContext,
 } from '#schema/core/__fixtures__/schemas'
 
 type Assert<T extends true> = T
@@ -29,7 +29,7 @@ type IsEqual<A, B> =
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-parameters -- the usual exact-equality idiom
   (<G>() => G extends A ? 1 : 2) extends <G>() => G extends B ? 1 : 2 ? true : false
 
-const d = defineSchemaFor<TestRegistry, TestExtras>()<LeagueEntry, LeagueEntryContext>()
+const d = defineSchemaFor<TestRegistry, TestExtras>()<ProjectSignup, ProjectSignupContext>()
 const guest = { name: '', age: null, vegetarian: false }
 
 // ---- Valid schemas compile ---------------------------------------------------------------------
@@ -60,9 +60,9 @@ d({
   version: 1,
   root: {
     kind: 'combobox',
-    name: 'team',
-    label: 'Team',
-    optionsFrom: { loader: 'teams', deps: ['league', 'address.city'] },
+    name: 'project',
+    label: 'Project',
+    optionsFrom: { loader: 'projects', deps: ['client', 'address.city'] },
   },
 })
 d({
@@ -74,7 +74,7 @@ d({
     compute: { computer: 'remainder', from: ['guests'] },
   },
 })
-d({ version: 1, root: { custom: 'teamPreview', props: { teamId: 'riverside' } } })
+d({ version: 1, root: { custom: 'projectPreview', props: { projectId: 'atlas' } } })
 d({
   version: 1,
   root: {
@@ -123,7 +123,7 @@ d({
 d({
   version: 1,
   // @ts-expect-error unknown loader key
-  root: { kind: 'select', name: 'team', label: 'Team', optionsFrom: { loader: 'players' } },
+  root: { kind: 'select', name: 'project', label: 'Project', optionsFrom: { loader: 'invoices' } },
 })
 // @ts-expect-error unknown layout
 d({ version: 1, root: { layout: 'carousel', children: [] } })
@@ -147,9 +147,9 @@ d({
   // @ts-expect-error multi-choice option value outside the element union
   root: {
     kind: 'chips',
-    name: 'positions',
-    label: 'Position',
-    options: [{ value: 'referee', label: 'Referee' }],
+    name: 'disciplines',
+    label: 'Discipline',
+    options: [{ value: 'marketing', label: 'Marketing' }],
   },
 })
 
@@ -220,9 +220,9 @@ d({
   // @ts-expect-error optionsFrom deps must be value paths
   root: {
     kind: 'combobox',
-    name: 'team',
-    label: 'T',
-    optionsFrom: { loader: 'teams', deps: ['country'] },
+    name: 'project',
+    label: 'P',
+    optionsFrom: { loader: 'projects', deps: ['country'] },
   },
 })
 d({
@@ -241,7 +241,7 @@ d({
   },
 })
 // @ts-expect-error resets must be value paths
-d({ version: 1, root: { kind: 'radio', name: 'league', label: 'L', resets: ['club'] } })
+d({ version: 1, root: { kind: 'radio', name: 'client', label: 'C', resets: ['company'] } })
 
 // ---- Layout, content, custom and repeater nodes ---------------------------------------------------
 // @ts-expect-error section needs a title
@@ -253,9 +253,9 @@ d({ version: 1, root: { content: 'image', text: 'x' } })
 // @ts-expect-error alert tone outside AlertTone
 d({ version: 1, root: { content: 'alert', tone: 'warning', text: 'x' } })
 // @ts-expect-error unknown custom node key
-d({ version: 1, root: { custom: 'leaderboard' } })
+d({ version: 1, root: { custom: 'burndownChart' } })
 // @ts-expect-error custom node props are typed from the registered component
-d({ version: 1, root: { custom: 'teamPreview', props: { teamId: 7 } } })
+d({ version: 1, root: { custom: 'projectPreview', props: { projectId: 7 } } })
 d({
   version: 1,
   // @ts-expect-error repeater newItem must be an item
@@ -297,19 +297,19 @@ d({ version: 2, root: { content: 'divider' } })
 
 // ---- Every fixture schema is an UntypedFormSchema (what the runtime functions take) ---------------
 export const untyped: UntypedFormSchema[] = [
-  leagueEntrySchema,
+  projectSignupSchema,
   expenseSchema,
   enquirySchema,
   accountSchema,
   onboardingSchema,
-  savingsSchema,
+  recurringInvoiceSchema,
   layoutsSchema,
 ]
 
 // ---- JSON round-trip keeps the type (§10.10) ------------------------------------------------------
-export const roundTrip: typeof leagueEntrySchema = JSON.parse(
-  JSON.stringify(leagueEntrySchema),
-) as typeof leagueEntrySchema
+export const roundTrip: typeof projectSignupSchema = JSON.parse(
+  JSON.stringify(projectSignupSchema),
+) as typeof projectSignupSchema
 
 // ---- The real default registry (ReactNode labels, function props) ---------------------------------
 interface Real {
@@ -372,7 +372,7 @@ type Timeline = (props: {
 const withLayouts = defineSchemaFor<
   TestRegistry,
   TestExtras & { layouts: { timeline: Timeline } }
->()<LeagueEntry>()
+>()<ProjectSignup>()
 withLayouts({
   version: 1,
   root: { layout: 'timeline', orientation: 'vertical', children: [{ content: 'divider' }] },
@@ -405,7 +405,7 @@ export type JsonPropsCases = [
 ]
 
 // ---- FormSchema defaults -------------------------------------------------------------------------
-export type DefaultsCase = Assert<IsEqual<FormSchema<LeagueEntry, TestRegistry>['version'], 1>>
+export type DefaultsCase = Assert<IsEqual<FormSchema<ProjectSignup, TestRegistry>['version'], 1>>
 
 // ---- Errors deep in the tree are caught ------------------------------------------------------------
 d({

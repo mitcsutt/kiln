@@ -15,10 +15,10 @@ export interface DataListProps extends HTMLAttributes<HTMLDListElement> {
 }
 
 /**
- * Label/value pairs as a real `<dl>`: a project's facts, a match's venue and kick-off,
+ * Label/value pairs as a real `<dl>`: a project's facts, a release's region and start time,
  * an account's details.
  *
- * <DataList><DataList.Item label="Venue">Harbour Park</DataList.Item></DataList>
+ * <DataList><DataList.Item label="Region">Sydney</DataList.Item></DataList>
  */
 const DataListRoot = forwardRef<HTMLDListElement, DataListProps>(function DataList(
   { orientation = 'horizontal', divided = false, className, ...rest },

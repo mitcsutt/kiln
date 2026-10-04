@@ -5,8 +5,8 @@ const meta = {
   title: 'UI/Inputs/RatingField',
   component: RatingField,
   args: {
-    label: 'Rate this fixture',
-    description: 'Hawks v Rovers, the cup final',
+    label: 'Rate this release',
+    description: 'Release 2.4, shipped on Thursday',
     name: 'rating',
     clearable: true,
     disabled: false,
@@ -20,7 +20,7 @@ type Story = StoryObj<typeof meta>
 export const Playground: Story = {}
 
 export const WithError: Story = {
-  args: { required: true, error: 'Rate the match to see everyone else’s ratings' },
+  args: { required: true, error: 'Rate the release to see everyone else’s ratings' },
 }
 
 export const Horizontal: Story = { args: { layout: 'horizontal', defaultValue: 5 } }

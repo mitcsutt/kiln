@@ -16,7 +16,7 @@ const meta = {
   title: 'UI/Actions/SegmentedControl',
   component: SegmentedControl,
   args: {
-    'aria-label': 'Budget period',
+    'aria-label': 'Reporting period',
     options: periods,
     size: 'md',
     fullWidth: false,
@@ -43,15 +43,15 @@ export const Playground: Story = {
   },
 }
 
-/** A league's table views, composed from Items and controlled. */
-export const StandingsViews: Story = {
+/** A project's task views, composed from Items and controlled. */
+export const TaskViews: Story = {
   render: function Render() {
     const [view, setView] = useState('table')
     return (
-      <SegmentedControl aria-label="Standings view" value={view} onValueChange={setView}>
-        <SegmentedControl.Item value="groups">Divisions</SegmentedControl.Item>
+      <SegmentedControl aria-label="Task view" value={view} onValueChange={setView}>
+        <SegmentedControl.Item value="board">Board</SegmentedControl.Item>
         <SegmentedControl.Item value="table">Table</SegmentedControl.Item>
-        <SegmentedControl.Item value="bracket">Cup</SegmentedControl.Item>
+        <SegmentedControl.Item value="timeline">Timeline</SegmentedControl.Item>
       </SegmentedControl>
     )
   },
@@ -67,15 +67,15 @@ export const Sizes: Story = {
   ),
 }
 
-/** Full width on a phone-sized squad page: "Teams | Players". */
+/** Full width on a phone-sized directory page: "Projects | People". */
 export const FullWidth: Story = {
   render: () => (
     <SegmentedControl
-      aria-label="Squad view"
+      aria-label="Directory view"
       fullWidth
       options={[
-        { value: 'teams', label: 'Teams' },
-        { value: 'players', label: 'Players' },
+        { value: 'projects', label: 'Projects' },
+        { value: 'people', label: 'People' },
       ]}
     />
   ),
@@ -88,13 +88,13 @@ export const FullWidth: Story = {
 export const ResponsiveSizing: Story = {
   render: () => (
     <SegmentedControl
-      aria-label="Fixtures"
+      aria-label="Task view"
       size={{ base: 'lg', md: 'md' }}
       fullWidth={{ base: true, md: false }}
       options={[
-        { value: 'groups', label: 'Groups' },
+        { value: 'board', label: 'Board' },
         { value: 'table', label: 'Table' },
-        { value: 'bracket', label: 'Bracket' },
+        { value: 'timeline', label: 'Timeline' },
       ]}
       defaultValue="table"
     />
@@ -131,9 +131,9 @@ export const WithIcons: Story = {
 export const Disabled: Story = {
   render: () => (
     <SegmentedControl
-      aria-label="Fixtures"
+      aria-label="Releases"
       options={[
-        { value: 'played', label: 'Played' },
+        { value: 'shipped', label: 'Shipped' },
         { value: 'today', label: 'Today' },
         { value: 'upcoming', label: 'Upcoming', disabled: true },
       ]}

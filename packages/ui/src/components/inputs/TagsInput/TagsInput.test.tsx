@@ -20,11 +20,11 @@ describe('TagsInput', () => {
     const user = userEvent.setup()
     const onValueChange = vi.fn()
     render(<TagsInput aria-label="Labels" onValueChange={onValueChange} />)
-    await user.type(textbox(), 'Groceries{Enter}')
-    expect(onValueChange).toHaveBeenLastCalledWith(['Groceries'])
-    await user.type(textbox(), 'School fees,')
-    expect(onValueChange).toHaveBeenLastCalledWith(['Groceries', 'School fees'])
-    expect(chips()).toEqual(['Groceries', 'School fees'])
+    await user.type(textbox(), 'Design{Enter}')
+    expect(onValueChange).toHaveBeenLastCalledWith(['Design'])
+    await user.type(textbox(), 'Release notes,')
+    expect(onValueChange).toHaveBeenLastCalledWith(['Design', 'Release notes'])
+    expect(chips()).toEqual(['Design', 'Release notes'])
     expect(textbox()).toHaveValue('')
   })
 
@@ -39,7 +39,7 @@ describe('TagsInput', () => {
       </form>,
     )
     must(container.querySelector('form')).addEventListener('submit', onSubmit)
-    await user.type(textbox(), 'Rent{Enter}')
+    await user.type(textbox(), 'Billing{Enter}')
     expect(onSubmit).not.toHaveBeenCalled()
     await user.keyboard('{Enter}')
     expect(onSubmit).toHaveBeenCalledTimes(1)
@@ -55,14 +55,14 @@ describe('TagsInput', () => {
         onValueChange={onValueChange}
       />,
     )
-    await user.type(textbox(), 'rent;fuel ')
-    expect(onValueChange).toHaveBeenLastCalledWith(['rent', 'fuel'])
-    await user.type(textbox(), 'gym')
+    await user.type(textbox(), 'billing;hosting ')
+    expect(onValueChange).toHaveBeenLastCalledWith(['billing', 'hosting'])
+    await user.type(textbox(), 'bug')
     await user.tab()
-    expect(onValueChange).toHaveBeenLastCalledWith(['rent', 'fuel', 'gym'])
+    expect(onValueChange).toHaveBeenLastCalledWith(['billing', 'hosting', 'bug'])
     // Enter is not a delimiter here: it does nothing to the text.
-    await user.type(textbox(), 'power{Enter}')
-    expect(textbox()).toHaveValue('power')
+    await user.type(textbox(), 'support{Enter}')
+    expect(textbox()).toHaveValue('support')
   })
 
   it('paste splits on the delimiters (and line breaks when Enter is one)', async () => {
@@ -70,11 +70,11 @@ describe('TagsInput', () => {
     const onValueChange = vi.fn()
     render(<TagsInput aria-label="Labels" onValueChange={onValueChange} />)
     await user.click(textbox())
-    await user.paste('Rent, Power\nInternet')
-    expect(onValueChange).toHaveBeenLastCalledWith(['Rent', 'Power', 'Internet'])
+    await user.paste('Billing, Support\nDocs')
+    expect(onValueChange).toHaveBeenLastCalledWith(['Billing', 'Support', 'Docs'])
     // Without a delimiter, paste is ordinary text.
-    await user.paste('Car rego')
-    expect(textbox()).toHaveValue('Car rego')
+    await user.paste('Tech debt')
+    expect(textbox()).toHaveValue('Tech debt')
   })
 
   it('rejects duplicates, empties and anything past maxTags', async () => {
@@ -85,19 +85,19 @@ describe('TagsInput', () => {
       <TagsInput
         aria-label="Labels"
         maxTags={2}
-        defaultValue={['Rent']}
+        defaultValue={['Billing']}
         onReject={onReject}
         onValueChange={onValueChange}
       />,
     )
-    await user.type(textbox(), 'Rent{Enter}')
-    expect(onReject).toHaveBeenLastCalledWith('Rent', 'duplicate')
+    await user.type(textbox(), 'Billing{Enter}')
+    expect(onReject).toHaveBeenLastCalledWith('Billing', 'duplicate')
     await user.type(textbox(), '   {Enter}')
     expect(onReject).toHaveBeenLastCalledWith('   ', 'empty')
-    await user.type(textbox(), 'Fuel{Enter}Gym{Enter}')
-    expect(onReject).toHaveBeenLastCalledWith('Gym', 'max')
+    await user.type(textbox(), 'Hosting{Enter}Bug{Enter}')
+    expect(onReject).toHaveBeenLastCalledWith('Bug', 'max')
     expect(onValueChange).toHaveBeenCalledTimes(1)
-    expect(onValueChange).toHaveBeenLastCalledWith(['Rent', 'Fuel'])
+    expect(onValueChange).toHaveBeenLastCalledWith(['Billing', 'Hosting'])
   })
 
   it('allowDuplicates keeps repeats', async () => {
@@ -107,30 +107,30 @@ describe('TagsInput', () => {
       <TagsInput
         aria-label="Labels"
         allowDuplicates
-        defaultValue={['Rent']}
+        defaultValue={['Billing']}
         onValueChange={onValueChange}
       />,
     )
-    await user.type(textbox(), 'Rent{Enter}')
-    expect(onValueChange).toHaveBeenLastCalledWith(['Rent', 'Rent'])
+    await user.type(textbox(), 'Billing{Enter}')
+    expect(onValueChange).toHaveBeenLastCalledWith(['Billing', 'Billing'])
   })
 
   it('normalise: trim (default), lowercase, none', async () => {
     const user = userEvent.setup()
     const onValueChange = vi.fn()
     const { unmount } = render(<TagsInput aria-label="Labels" onValueChange={onValueChange} />)
-    await user.type(textbox(), '  Rent  {Enter}')
-    expect(onValueChange).toHaveBeenLastCalledWith(['Rent'])
+    await user.type(textbox(), '  Billing  {Enter}')
+    expect(onValueChange).toHaveBeenLastCalledWith(['Billing'])
     unmount()
     const view = render(
       <TagsInput aria-label="Labels" normalise="lowercase" onValueChange={onValueChange} />,
     )
-    await user.type(textbox(), ' School Fees {Enter}')
-    expect(onValueChange).toHaveBeenLastCalledWith(['school fees'])
+    await user.type(textbox(), ' Release Notes {Enter}')
+    expect(onValueChange).toHaveBeenLastCalledWith(['release notes'])
     view.unmount()
     render(<TagsInput aria-label="Labels" normalise="none" onValueChange={onValueChange} />)
-    await user.type(textbox(), ' Gym {Enter}')
-    expect(onValueChange).toHaveBeenLastCalledWith([' Gym '])
+    await user.type(textbox(), ' Bug {Enter}')
+    expect(onValueChange).toHaveBeenLastCalledWith([' Bug '])
   })
 
   it('Backspace on an empty box removes the last tag; with text it edits text', async () => {
@@ -139,15 +139,15 @@ describe('TagsInput', () => {
     render(
       <TagsInput
         aria-label="Labels"
-        defaultValue={['Rent', 'Fuel']}
+        defaultValue={['Billing', 'Hosting']}
         onValueChange={onValueChange}
       />,
     )
     await user.type(textbox(), 'G{Backspace}')
     expect(onValueChange).not.toHaveBeenCalled()
     await user.keyboard('{Backspace}')
-    expect(onValueChange).toHaveBeenLastCalledWith(['Rent'])
-    expect(chips()).toEqual(['Rent'])
+    expect(onValueChange).toHaveBeenLastCalledWith(['Billing'])
+    expect(chips()).toEqual(['Billing'])
   })
 
   it('removes a tag with its button and refocuses the input', async () => {
@@ -156,13 +156,13 @@ describe('TagsInput', () => {
     render(
       <TagsInput
         aria-label="Labels"
-        defaultValue={['Rent', 'Fuel']}
+        defaultValue={['Billing', 'Hosting']}
         removeLabel={(tag) => `Remove label ${tag}`}
         onValueChange={onValueChange}
       />,
     )
-    await user.click(screen.getByRole('button', { name: 'Remove label Rent' }))
-    expect(onValueChange).toHaveBeenLastCalledWith(['Fuel'])
+    await user.click(screen.getByRole('button', { name: 'Remove label Billing' }))
+    expect(onValueChange).toHaveBeenLastCalledWith(['Hosting'])
     expect(textbox()).toHaveFocus()
   })
 
@@ -174,26 +174,26 @@ describe('TagsInput', () => {
       <>
         <TagsInput
           aria-label="Labels"
-          defaultValue={['Rent']}
+          defaultValue={['Billing']}
           onValueChange={onValueChange}
           onBlur={onBlur}
         />
         <button type="button">Next</button>
       </>,
     )
-    await user.type(textbox(), 'Fuel')
+    await user.type(textbox(), 'Hosting')
     await user.tab({ shift: true }) // to the chip's remove button, still inside
     expect(onBlur).not.toHaveBeenCalled()
     expect(onValueChange).not.toHaveBeenCalled()
     await user.click(screen.getByRole('button', { name: 'Next' }))
-    expect(onValueChange).toHaveBeenLastCalledWith(['Rent', 'Fuel'])
+    expect(onValueChange).toHaveBeenLastCalledWith(['Billing', 'Hosting'])
     expect(onBlur).toHaveBeenCalledTimes(1)
   })
 
   it('is controlled', async () => {
     const user = userEvent.setup()
     function Controlled() {
-      const [tags, setTags] = useState<readonly string[]>(['Rent'])
+      const [tags, setTags] = useState<readonly string[]>(['Billing'])
       return (
         <>
           <TagsInput aria-label="Labels" value={tags} onValueChange={setTags} />
@@ -209,8 +209,8 @@ describe('TagsInput', () => {
       )
     }
     render(<Controlled />)
-    await user.type(textbox(), 'Fuel{Enter}')
-    expect(chips()).toEqual(['Rent', 'Fuel'])
+    await user.type(textbox(), 'Hosting{Enter}')
+    expect(chips()).toEqual(['Billing', 'Hosting'])
     await user.click(screen.getByRole('button', { name: 'Clear all' }))
     expect(chips()).toEqual([])
   })
@@ -218,12 +218,12 @@ describe('TagsInput', () => {
   it('renders one hidden input per tag for name', () => {
     const { container } = render(
       <form>
-        <TagsInput aria-label="Labels" name="labels" defaultValue={['Rent', 'Fuel']} />
+        <TagsInput aria-label="Labels" name="labels" defaultValue={['Billing', 'Hosting']} />
       </form>,
     )
     expect(new FormData(must(container.querySelector('form'))).getAll('labels')).toEqual([
-      'Rent',
-      'Fuel',
+      'Billing',
+      'Hosting',
     ])
   })
 
@@ -234,7 +234,7 @@ describe('TagsInput', () => {
       <TagsInput
         aria-label="Labels"
         readOnly
-        defaultValue={['Rent']}
+        defaultValue={['Billing']}
         onValueChange={onValueChange}
       />,
     )
@@ -247,7 +247,7 @@ describe('TagsInput', () => {
       <TagsInput
         aria-label="Labels"
         disabled
-        defaultValue={['Rent']}
+        defaultValue={['Billing']}
         onValueChange={onValueChange}
       />,
     )
@@ -278,7 +278,7 @@ describe('TagsInput', () => {
       <TagsInput aria-label="Labels" placeholder="Add a label" value={[]} />,
     )
     expect(textbox()).toHaveAttribute('placeholder', 'Add a label')
-    rerender(<TagsInput aria-label="Labels" placeholder="Add a label" value={['Rent']} />)
+    rerender(<TagsInput aria-label="Labels" placeholder="Add a label" value={['Billing']} />)
     expect(textbox()).not.toHaveAttribute('placeholder')
   })
 })

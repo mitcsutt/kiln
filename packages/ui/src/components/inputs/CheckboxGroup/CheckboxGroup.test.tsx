@@ -5,19 +5,21 @@ import { Fieldset } from '#components/inputs/Fieldset'
 import { CheckboxGroup } from './CheckboxGroup'
 
 const topics = [
-  { value: 'goals', label: 'Goals', description: 'When anyone you drew scores' },
-  { value: 'kickoffs', label: 'Kick-offs' },
-  { value: 'results', label: 'Final results' },
+  { value: 'mentions', label: 'Mentions', description: 'When someone tags you in a comment' },
+  { value: 'assigned', label: 'Assigned tasks' },
+  { value: 'releases', label: 'Release notes' },
 ]
 
 describe('CheckboxGroup', () => {
   it('is a labelled group of checkboxes with descriptions', () => {
-    render(<CheckboxGroup aria-label="Notify me about" options={topics} defaultValue={['goals']} />)
+    render(
+      <CheckboxGroup aria-label="Notify me about" options={topics} defaultValue={['mentions']} />,
+    )
     expect(screen.getByRole('group', { name: 'Notify me about' })).toBeInTheDocument()
-    const goals = screen.getByRole('checkbox', { name: 'Goals' })
-    expect(goals).toBeChecked()
-    expect(goals).toHaveAccessibleDescription('When anyone you drew scores')
-    expect(screen.getByRole('checkbox', { name: 'Kick-offs' })).not.toBeChecked()
+    const mentions = screen.getByRole('checkbox', { name: 'Mentions' })
+    expect(mentions).toBeChecked()
+    expect(mentions).toHaveAccessibleDescription('When someone tags you in a comment')
+    expect(screen.getByRole('checkbox', { name: 'Assigned tasks' })).not.toBeChecked()
   })
 
   it('toggles uncontrolled, keeping option order', async () => {
@@ -26,15 +28,15 @@ describe('CheckboxGroup', () => {
       <CheckboxGroup
         aria-label="Notify me about"
         options={topics}
-        defaultValue={['results']}
+        defaultValue={['releases']}
         onValueChange={onValueChange}
       />,
     )
-    await userEvent.click(screen.getByText('Goals'))
-    expect(onValueChange).toHaveBeenLastCalledWith(['goals', 'results'])
-    expect(screen.getByRole('checkbox', { name: 'Goals' })).toBeChecked()
-    await userEvent.click(screen.getByRole('checkbox', { name: 'Final results' }))
-    expect(onValueChange).toHaveBeenLastCalledWith(['goals'])
+    await userEvent.click(screen.getByText('Mentions'))
+    expect(onValueChange).toHaveBeenLastCalledWith(['mentions', 'releases'])
+    expect(screen.getByRole('checkbox', { name: 'Mentions' })).toBeChecked()
+    await userEvent.click(screen.getByRole('checkbox', { name: 'Release notes' }))
+    expect(onValueChange).toHaveBeenLastCalledWith(['mentions'])
   })
 
   it('is controlled by value', async () => {
@@ -47,46 +49,46 @@ describe('CheckboxGroup', () => {
         onValueChange={onValueChange}
       />,
     )
-    await userEvent.click(screen.getByRole('checkbox', { name: 'Goals' }))
-    expect(onValueChange).toHaveBeenCalledWith(['goals'])
-    expect(screen.getByRole('checkbox', { name: 'Goals' })).not.toBeChecked()
+    await userEvent.click(screen.getByRole('checkbox', { name: 'Mentions' }))
+    expect(onValueChange).toHaveBeenCalledWith(['mentions'])
+    expect(screen.getByRole('checkbox', { name: 'Mentions' })).not.toBeChecked()
     rerender(
       <CheckboxGroup
         aria-label="Notify me about"
         options={topics}
-        value={['goals']}
+        value={['mentions']}
         onValueChange={onValueChange}
       />,
     )
-    expect(screen.getByRole('checkbox', { name: 'Goals' })).toBeChecked()
+    expect(screen.getByRole('checkbox', { name: 'Mentions' })).toBeChecked()
   })
 
   it('each box is a tab stop and Space toggles it', async () => {
     render(<CheckboxGroup aria-label="Notify me about" options={topics} />)
     await userEvent.tab()
-    expect(screen.getByRole('checkbox', { name: 'Goals' })).toHaveFocus()
+    expect(screen.getByRole('checkbox', { name: 'Mentions' })).toHaveFocus()
     await userEvent.keyboard(' ')
-    expect(screen.getByRole('checkbox', { name: 'Goals' })).toBeChecked()
+    expect(screen.getByRole('checkbox', { name: 'Mentions' })).toBeChecked()
     await userEvent.tab()
-    expect(screen.getByRole('checkbox', { name: 'Kick-offs' })).toHaveFocus()
+    expect(screen.getByRole('checkbox', { name: 'Assigned tasks' })).toHaveFocus()
   })
 
   it('select all is tri-state and skips disabled options', async () => {
-    const options = [...topics, { value: 'draws', label: 'Draws', disabled: true }]
+    const options = [...topics, { value: 'billing', label: 'Billing', disabled: true }]
     render(
       <CheckboxGroup aria-label="Notify me about" options={options} selectAllLabel="Everything" />,
     )
     const all = screen.getByRole('checkbox', { name: 'Everything' })
     expect(all).toHaveAttribute('aria-checked', 'false')
-    await userEvent.click(screen.getByRole('checkbox', { name: 'Goals' }))
+    await userEvent.click(screen.getByRole('checkbox', { name: 'Mentions' }))
     expect(all).toHaveAttribute('aria-checked', 'mixed')
     await userEvent.click(all)
     expect(all).toHaveAttribute('aria-checked', 'true')
-    expect(screen.getByRole('checkbox', { name: 'Final results' })).toBeChecked()
-    expect(screen.getByRole('checkbox', { name: 'Draws' })).not.toBeChecked()
+    expect(screen.getByRole('checkbox', { name: 'Release notes' })).toBeChecked()
+    expect(screen.getByRole('checkbox', { name: 'Billing' })).not.toBeChecked()
     await userEvent.click(all)
     expect(all).toHaveAttribute('aria-checked', 'false')
-    expect(screen.getByRole('checkbox', { name: 'Goals' })).not.toBeChecked()
+    expect(screen.getByRole('checkbox', { name: 'Mentions' })).not.toBeChecked()
   })
 
   it('emits one hidden input per checked value', () => {
@@ -96,25 +98,25 @@ describe('CheckboxGroup', () => {
           aria-label="Notify me about"
           name="notify"
           options={topics}
-          defaultValue={['goals', 'results']}
+          defaultValue={['mentions', 'releases']}
         />
       </form>,
     )
     const form = container.querySelector('form')
     if (!form) throw new Error('no form')
-    expect(new FormData(form).getAll('notify')).toEqual(['goals', 'results'])
+    expect(new FormData(form).getAll('notify')).toEqual(['mentions', 'releases'])
   })
 
   it('accepts Item children', async () => {
     render(
       <CheckboxGroup aria-label="Notify me about" selectAllLabel="Everything">
-        <CheckboxGroup.Item value="goals" label="Goals" />
-        <CheckboxGroup.Item value="kickoffs" label="Kick-offs" />
+        <CheckboxGroup.Item value="mentions" label="Mentions" />
+        <CheckboxGroup.Item value="assigned" label="Assigned tasks" />
       </CheckboxGroup>,
     )
     await userEvent.click(screen.getByRole('checkbox', { name: 'Everything' }))
-    expect(screen.getByRole('checkbox', { name: 'Goals' })).toBeChecked()
-    expect(screen.getByRole('checkbox', { name: 'Kick-offs' })).toBeChecked()
+    expect(screen.getByRole('checkbox', { name: 'Mentions' })).toBeChecked()
+    expect(screen.getByRole('checkbox', { name: 'Assigned tasks' })).toBeChecked()
   })
 
   it('readOnly keeps the boxes focusable but ignores clicks', async () => {
@@ -123,15 +125,15 @@ describe('CheckboxGroup', () => {
       <CheckboxGroup
         aria-label="Notify me about"
         options={topics}
-        defaultValue={['goals']}
+        defaultValue={['mentions']}
         readOnly
         onValueChange={onValueChange}
       />,
     )
-    const kickoffs = screen.getByRole('checkbox', { name: 'Kick-offs' })
-    expect(kickoffs).toHaveAttribute('aria-readonly', 'true')
-    await userEvent.click(kickoffs)
-    expect(kickoffs).not.toBeChecked()
+    const assigned = screen.getByRole('checkbox', { name: 'Assigned tasks' })
+    expect(assigned).toHaveAttribute('aria-readonly', 'true')
+    await userEvent.click(assigned)
+    expect(assigned).not.toBeChecked()
     expect(onValueChange).not.toHaveBeenCalled()
     expect(screen.getByRole('group')).toHaveAttribute('data-readonly')
   })
@@ -170,7 +172,9 @@ describe('CheckboxGroup', () => {
     expect(group).not.toHaveAttribute('aria-labelledby')
     expect(group).toHaveAttribute('aria-invalid', 'true')
     // The options don't inherit the fieldset's wiring.
-    expect(screen.getByRole('checkbox', { name: 'Kick-offs' })).not.toHaveAttribute('aria-invalid')
+    expect(screen.getByRole('checkbox', { name: 'Assigned tasks' })).not.toHaveAttribute(
+      'aria-invalid',
+    )
   })
 
   it('maps columns to responsive vars and forwards the ref', () => {

@@ -3,11 +3,11 @@ import { Fieldset } from '#components/inputs/Fieldset'
 import { ChipGroup } from './ChipGroup'
 
 const alerts = [
-  { value: 'goals', label: 'Goals', count: 8 },
-  { value: 'first-red', label: 'Red cards', count: 3 },
-  { value: 'own-goal', label: 'Own goal', count: 5 },
-  { value: 'penalties', label: 'Penalty shoot-outs', count: 2 },
-  { value: 'hat-trick', label: 'Hat-trick in the final', disabled: true },
+  { value: 'mentions', label: 'Mentions', count: 8 },
+  { value: 'comments', label: 'Comments', count: 3 },
+  { value: 'deploys', label: 'Deploys', count: 5 },
+  { value: 'invoices', label: 'Invoices paid', count: 2 },
+  { value: 'digest', label: 'Weekly digest', disabled: true },
 ]
 
 const meta = {
@@ -15,9 +15,9 @@ const meta = {
   component: ChipGroup,
   args: {
     type: 'multiple',
-    'aria-label': 'Match alerts',
+    'aria-label': 'Email alerts',
     options: alerts,
-    defaultValue: ['goals', 'own-goal'],
+    defaultValue: ['mentions', 'deploys'],
     size: 'md',
     disabled: false,
     readOnly: false,
@@ -31,10 +31,10 @@ type Story = StoryObj<typeof meta>
 export const Playground: Story = {}
 
 /** The counts are how many members follow each alert. */
-export const MatchAlerts: Story = {
+export const EmailAlerts: Story = {
   render: () => (
-    <Fieldset legend="Match alerts" description="Sent to your phone during the match">
-      <ChipGroup type="multiple" name="alerts" options={alerts} defaultValue={['goals']} />
+    <Fieldset legend="Email alerts" description="Sent to your inbox as they happen">
+      <ChipGroup type="multiple" name="alerts" options={alerts} defaultValue={['mentions']} />
     </Fieldset>
   ),
 }
@@ -43,9 +43,12 @@ export const MatchAlerts: Story = {
 export const Single: Story = {
   args: {
     type: 'single',
-    'aria-label': 'Group',
-    options: ['A', 'B', 'C', 'D', 'E', 'F'].map((g) => ({ value: g, label: `Group ${g}` })),
-    defaultValue: 'C',
+    'aria-label': 'Plan',
+    options: ['Starter', 'Team', 'Business', 'Enterprise'].map((plan) => ({
+      value: plan,
+      label: plan,
+    })),
+    defaultValue: 'Team',
   },
 }
 
@@ -53,7 +56,7 @@ export const Small: Story = { args: { size: 'sm' } }
 
 export const Invalid: Story = {
   render: () => (
-    <Fieldset legend="Match alerts" error="Pick at least one alert">
+    <Fieldset legend="Email alerts" error="Pick at least one alert">
       <ChipGroup type="multiple" options={alerts} />
     </Fieldset>
   ),

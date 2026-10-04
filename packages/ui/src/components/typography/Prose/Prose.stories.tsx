@@ -18,20 +18,20 @@ type Story = StoryObj<typeof meta>
 const Post = () => (
   <>
     <p>
-      Every design system I have worked on died the same way. Not in a rewrite, and not in a rebrand
-      — it died the week a product team needed a slightly different button and found it faster to
-      copy the component than to ask.
+      Most design systems die the same way. Not in a rewrite, and not in a rebrand — they die the
+      week a product team needs a slightly different button and finds it faster to copy the
+      component than to ask.
     </p>
     <p>
       This post is about the three changes that stopped that happening, and why a reading app, an
-      invoicing tool and a league site can share <a href="#one-library">one component library</a>{' '}
+      invoicing tool and a status page can share <a href="#one-library">one component library</a>{' '}
       with completely different personalities.
     </p>
     <h2>Themes are data</h2>
     <p>
       A component never knows which theme it is in. Colour, type, radius, density and motion are all{' '}
       <strong>custom properties</strong>, set once on the root. The same <code>&lt;Button&gt;</code>{' '}
-      is a quiet pill here, a chunky sticker on a matchday poster and a crisp ledger key in an
+      is a quiet pill here, a chunky sticker on a festival poster and a crisp ledger key in an
       accounts screen.
     </p>
     <ul>
@@ -117,14 +117,14 @@ export const Small: Story = {
   args: { size: 'sm' },
   render: (args) => (
     <Prose {...args}>
-      <h3>How the league works</h3>
+      <h3>How billing works</h3>
       <p>
-        Eight clubs, fourteen rounds. Every club plays every other club twice, once at home and once
-        away.
+        Plans renew monthly. Every seat is billed from the day it is added, pro rata to the end of
+        the cycle.
       </p>
       <ul>
-        <li>Wins are worth 3 points, draws 1.</li>
-        <li>Cup wins count double.</li>
+        <li>Annual plans get two months free.</li>
+        <li>Unused seats are credited on the next invoice.</li>
       </ul>
     </Prose>
   ),
@@ -135,12 +135,12 @@ export const Large: Story = {
   render: (args) => (
     <Prose {...args}>
       <p>
-        Zero-based budgeting has one rule: every dollar has a job before the month starts. Most
+        Good invoicing has one rule: every billable hour has a client before the month ends. Most
         tools for it are still a spreadsheet, just with better typography.
       </p>
       <p>
-        September came in at <strong>$4,182.60</strong> against a plan of $5,200 — the first month
-        groceries stayed under <mark>$650</mark>.
+        September came in at <strong>$4,182.60</strong> against a target of $5,200 — the first month
+        every invoice was paid within <mark>14 days</mark>.
       </p>
     </Prose>
   ),
@@ -155,35 +155,35 @@ export const WithComponents: Story = {
   render: (args) => (
     <Prose {...args}>
       <p>
-        Build every query from one factory. Call <code>tableQuery(divisionId)</code> in a component,
-        a loader or an invalidation and you get the same key, so a push event for{' '}
-        <code>results</code> refreshes the table without a reload.
+        Build every query from one factory. Call <code>projectsQuery(workspaceId)</code> in a
+        component, a loader or an invalidation and you get the same key, so a push event for{' '}
+        <code>tasks</code> refreshes the table without a reload.
       </p>
       <CodeBlock
-        title="src/queries/table.ts"
+        title="src/queries/projects.ts"
         language="ts"
-        code={`export const tableQuery = (divisionId: string) =>\n  queryOptions({\n    queryKey: keys.table(divisionId),\n    queryFn: () => get<LeagueTable>(\`/api/table/\${divisionId}\`),\n  })`}
+        code={`export const projectsQuery = (workspaceId: string) =>\n  queryOptions({\n    queryKey: keys.projects(workspaceId),\n    queryFn: () => get<ProjectList>(\`/api/projects/\${workspaceId}\`),\n  })`}
       />
-      <p>The table it feeds, after round 3:</p>
+      <p>The table it feeds, after sprint 3:</p>
       <Table density="compact">
         <Table.Head>
           <Table.Row>
-            <Table.HeaderCell>Team</Table.HeaderCell>
-            <Table.HeaderCell numeric>Pts</Table.HeaderCell>
+            <Table.HeaderCell>Project</Table.HeaderCell>
+            <Table.HeaderCell numeric>Open</Table.HeaderCell>
           </Table.Row>
         </Table.Head>
         <Table.Body>
           <Table.Row>
-            <Table.Cell rowHeader>Harbour Hawks</Table.Cell>
+            <Table.Cell rowHeader>Atlas redesign</Table.Cell>
             <Table.Cell numeric>7</Table.Cell>
           </Table.Row>
           <Table.Row highlighted>
-            <Table.Cell rowHeader>Eastgate United</Table.Cell>
+            <Table.Cell rowHeader>Billing migration</Table.Cell>
             <Table.Cell numeric>5</Table.Cell>
           </Table.Row>
         </Table.Body>
       </Table>
-      <Quote cite="Kofi Grant, club secretary">It updated before the replay finished.</Quote>
+      <Quote cite="Hana Kobayashi, support lead">It updated before the deploy finished.</Quote>
       <Alert tone="info" title="Deferred">
         Caching responses at the edge is planned, not built yet.
       </Alert>

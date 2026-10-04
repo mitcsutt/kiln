@@ -35,13 +35,13 @@ export const Sizes: Story = {
       <Quote
         cite={
           <>
-            Kofi
+            Sam Okafor
             <br />
-            <span>Captain, Harbour Hawks</span>
+            <span>Support lead, Brightline Labs</span>
           </>
         }
       >
-        I have never cared this much about division two.
+        I have never cared this much about a changelog.
       </Quote>
       <Quote
         size="sm"
@@ -49,12 +49,12 @@ export const Sizes: Story = {
           <>
             Amara Raman
             <br />
-            <span>Engineering manager, previous team</span>
+            <span>Head of finance, Orchard &amp; Co</span>
           </>
         }
       >
-        Ada rebuilt our component library without a single product team having to stop shipping. Six
-        months later nobody remembered the old one.
+        We moved every client to the new invoicing flow without the finance team having to stop
+        work. Six months later nobody remembered the old one.
       </Quote>
     </Stack>
   ),

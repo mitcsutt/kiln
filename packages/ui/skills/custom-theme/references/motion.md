@@ -6,7 +6,7 @@
 
 Source: https://kiln.mitchellsutton.com/docs/ui/foundations/motion
 
-Motion in Kiln answers an action or shows a change of state: a panel opening, a row expanding, a score updating. It's never decoration. There's no fade-up on scroll, no hover-scale on static cards and no parallax.
+Motion in Kiln answers an action or shows a change of state: a panel opening, a row expanding, a count updating. It's never decoration. There's no fade-up on scroll, no hover-scale on static cards and no parallax.
 
 ## Durations and easings
 

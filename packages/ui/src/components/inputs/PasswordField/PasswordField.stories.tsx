@@ -35,7 +35,7 @@ export const WithError: Story = {
   args: {
     label: 'New password',
     autoComplete: 'new-password',
-    defaultValue: 'rent2026',
+    defaultValue: 'atlas2026',
     error: 'Use at least 12 characters',
   },
 }

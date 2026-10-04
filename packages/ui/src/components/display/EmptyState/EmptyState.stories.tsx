@@ -7,9 +7,9 @@ const meta = {
   title: 'UI/Display/EmptyState',
   component: EmptyState,
   args: {
-    title: 'No expenses yet',
+    title: 'No invoices yet',
     description:
-      'Add what you spent this month, or import a CSV export from your bank. Categories fill in as you go.',
+      'Create your first invoice, or import a CSV export from your accounting tool. Clients fill in as you go.',
     align: 'start',
     framed: false,
   },
@@ -21,13 +21,13 @@ type Story = StoryObj<typeof meta>
 
 export const Playground: Story = {}
 
-/** An expenses screen's first run. One primary action, one quieter alternative. */
-export const NoExpensesYet: Story = {
+/** An invoices screen's first run. One primary action, one quieter alternative. */
+export const NoInvoicesYet: Story = {
   args: {
     framed: true,
     action: (
       <>
-        <Button leadingIcon={<PlusIcon />}>Add expense</Button>
+        <Button leadingIcon={<PlusIcon />}>New invoice</Button>
         <Button variant="ghost" tone="neutral">
           Import CSV
         </Button>
@@ -36,12 +36,12 @@ export const NoExpensesYet: Story = {
   },
 }
 
-/** A match feed before kick-off: the whole panel, so centred. */
+/** An activity feed before a project starts: the whole panel, so centred. */
 export const QuietFeed: Story = {
   args: {
     title: 'Quiet so far',
     description:
-      'Goals, cards and substitutions land here once Hawks and Millpond kick off on 14 June.',
+      'Comments, reviews and deploys land here once the Atlas redesign starts on 14 June.',
     align: 'center',
     titleAs: 'h2',
   },

@@ -13,7 +13,7 @@ export interface AvatarGroupProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 /**
- * An overlapping stack of `Avatar`s — who reacted, who owns a team, who's in a group.
+ * An overlapping stack of `Avatar`s — who reacted, who owns a project, who's in a group.
  *
  * <AvatarGroup max={4} aria-label="Members"><Avatar name="Noor" />…</AvatarGroup>
  */

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Stack } from '#components/layout/Stack'
-import { expenseCategories, countryGroups } from '#components/inputs/internal/storyData'
+import { taskCategories, countryGroups } from '#components/inputs/internal/storyData'
 import { SelectField } from './SelectField'
 
 const meta = {
@@ -8,8 +8,8 @@ const meta = {
   component: SelectField,
   args: {
     label: 'Category',
-    description: 'Used for the monthly breakdown',
-    groups: expenseCategories,
+    description: 'Used for the weekly time report',
+    groups: taskCategories,
     placeholder: 'Choose a category',
     required: true,
     error: '',
@@ -33,10 +33,10 @@ export const WithError: Story = {
   args: { error: 'Choose a category' },
 }
 
-export const Teams: Story = {
+export const Countries: Story = {
   args: {
     label: 'Country',
-    description: 'Where your club is registered.',
+    description: 'Where your company is registered.',
     groups: countryGroups,
     placeholder: 'Choose a country',
     required: false,

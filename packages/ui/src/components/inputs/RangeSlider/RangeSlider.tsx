@@ -23,12 +23,12 @@ export interface RangeSliderProps extends Omit<
 const DEFAULT_THUMB_LABELS = ['Minimum', 'Maximum'] as const
 
 /**
- * A low–high range on one track ("Budget range": £500–£5,000). The wrapper is a
+ * A low–high range on one track ("Price range": £500–£5,000). The wrapper is a
  * `role="group"` labelled by the surrounding `<Field>` (see `RangeSliderField`) or
  * `aria-label`; each thumb is a `role="slider"` named by `thumbLabels`. The ref and `id`
  * go to the group. `onBlur` fires once, when focus leaves both thumbs.
  *
- * <RangeSlider aria-label="Budget range" min={500} max={5000} step={100} defaultValue={[1000, 2500]} showValue
+ * <RangeSlider aria-label="Price range" min={500} max={5000} step={100} defaultValue={[1000, 2500]} showValue
  *   formatOptions={{ style: 'currency', currency: 'GBP', maximumFractionDigits: 0 }} />
  */
 export const RangeSlider = markFieldAware(

@@ -23,7 +23,7 @@ export type ChipGroupFieldProps = FieldLabelProps &
  * A `ChipGroup` under a `<Fieldset>` legend, with help, warning and error for the group.
  * `className`/`style` go to the fieldset; `ref`, `id`, `name` and the rest go to the group.
  *
- * <ChipGroupField type="multiple" label="Match alerts" name="alerts" options={alerts} />
+ * <ChipGroupField type="multiple" label="Deploy alerts" name="alerts" options={alerts} />
  */
 export const ChipGroupField = forwardRef<HTMLDivElement, ChipGroupFieldProps>(
   function ChipGroupField(props, ref) {

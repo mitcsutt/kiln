@@ -13,7 +13,7 @@ export interface DividerProps
   orientation?: DividerOrientation
   /** Heavier rule in `--color-line-strong` at `--border-width-strong`. */
   strong?: boolean
-  /** Text set into a horizontal rule, e.g. "Knockout stage". It also names the separator. */
+  /** Text set into a horizontal rule, e.g. "Earlier this week". It also names the separator. */
   label?: ReactNode
   /** Where the label sits. Default `start` (left-aligned by default); `center` for a lone break. */
   labelPosition?: 'start' | 'center'
@@ -30,7 +30,7 @@ export interface DividerProps
  * A hairline rule between groups of content. Prefer `Stack dividers` for rules
  * between every item of a list.
  *
- * <Divider label="Knockout stage" spacing={6} />
+ * <Divider label="Earlier this week" spacing={6} />
  */
 export const Divider = forwardRef<HTMLDivElement, DividerProps>(function Divider(
   {

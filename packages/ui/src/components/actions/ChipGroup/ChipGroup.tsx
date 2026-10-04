@@ -70,7 +70,7 @@ function ChipContent({ option }: { option: ChipOption }) {
 }
 
 /**
- * A set of chips that together make one answer — "Match alerts", "Categories". The chips look
+ * A set of chips that together make one answer — "Email alerts", "Labels". The chips look
  * exactly like `ToggleChip` (they share its style module) but behave as a group (Radix
  * ToggleGroup): one tab stop, arrow keys move between chips, Space/Enter presses.
  *
@@ -80,7 +80,7 @@ function ChipContent({ option }: { option: ChipOption }) {
  * Label it with a `<Fieldset legend>` (see `ChipGroupField`), a `<Field>` or `aria-label`.
  * `onBlur` fires once, when focus leaves the whole group.
  *
- * <ChipGroup type="multiple" aria-label="Match alerts" options={alerts} defaultValue={['goals']} />
+ * <ChipGroup type="multiple" aria-label="Email alerts" options={alerts} defaultValue={['mentions']} />
  */
 export const ChipGroup = markFieldAware(
   forwardRef<HTMLDivElement, ChipGroupProps>(function ChipGroup(props, ref) {

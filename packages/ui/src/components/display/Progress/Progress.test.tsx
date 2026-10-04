@@ -6,8 +6,8 @@ import { must } from '#test/must'
 describe('Progress', () => {
   it('is a labelled progressbar with value text', () => {
     const ref = createRef<HTMLDivElement>()
-    render(<Progress ref={ref} label="Importing transactions" value={42} showValue />)
-    const bar = screen.getByRole('progressbar', { name: 'Importing transactions' })
+    render(<Progress ref={ref} label="Importing invoices" value={42} showValue />)
+    const bar = screen.getByRole('progressbar', { name: 'Importing invoices' })
     expect(ref.current).toBe(bar)
     expect(bar).toHaveAttribute('aria-valuenow', '42')
     expect(bar).toHaveAttribute('aria-valuetext', '42%')

@@ -5,15 +5,15 @@ import { Text } from './Text'
 describe('Text', () => {
   it('renders a paragraph by default and forwards refs', () => {
     const ref = createRef<HTMLElement>()
-    render(<Text ref={ref}>Budget resets on the 1st.</Text>)
-    const p = screen.getByText('Budget resets on the 1st.')
+    render(<Text ref={ref}>Plans renew on the 1st.</Text>)
+    const p = screen.getByText('Plans renew on the 1st.')
     expect(p.tagName).toBe('P')
     expect(ref.current).toBe(p)
   })
 
   it('inherits by default: no size, tone or weight attributes', () => {
-    render(<Text as="span">Brazil</Text>)
-    const el = screen.getByText('Brazil')
+    render(<Text as="span">Priya Nair</Text>)
+    const el = screen.getByText('Priya Nair')
     expect(el).not.toHaveAttribute('data-size')
     expect(el).not.toHaveAttribute('data-tone')
     expect(el).not.toHaveAttribute('data-weight')
@@ -66,7 +66,7 @@ describe('Text', () => {
   })
 
   it('caps the line length with a measure', () => {
-    render(<Text measure="text">Every dollar has a job before the month starts.</Text>)
-    expect(screen.getByText(/Every dollar/)).toHaveAttribute('data-measure', 'text')
+    render(<Text measure="text">Every billable hour has a client before the month ends.</Text>)
+    expect(screen.getByText(/Every billable hour/)).toHaveAttribute('data-measure', 'text')
   })
 })

@@ -54,12 +54,12 @@ export const Sticky: Story = {
       }}
     >
       <Stack gap={4} style={{ padding: 'var(--space-5)' }}>
-        <Text>Pick a winner for each group before continuing.</Text>
-        <Text>Group A</Text>
-        <Text>Group B</Text>
-        <Text>Group C</Text>
-        <Text>Group D</Text>
-        <Text>Group E</Text>
+        <Text>Assign an owner to each project before continuing.</Text>
+        <Text>Atlas redesign</Text>
+        <Text>Billing migration</Text>
+        <Text>Mobile app</Text>
+        <Text>Help centre</Text>
+        <Text>Search revamp</Text>
       </Stack>
       <ActionBar {...args}>
         <Button variant="ghost">Back</Button>

@@ -3,14 +3,14 @@ import { FieldDemo, NEVER_SETTLES, StatesGrid, StoryForm } from '#stories/_kit'
 import { FormComboboxField } from './FormComboboxField'
 
 const countries = [
-  { value: 'arg', label: 'Argentina' },
-  { value: 'fra', label: 'France' },
-  { value: 'bra', label: 'Brazil' },
-  { value: 'eng', label: 'England' },
-  { value: 'esp', label: 'Spain' },
-  { value: 'ned', label: 'Netherlands' },
-  { value: 'por', label: 'Portugal' },
-  { value: 'ger', label: 'Germany' },
+  { value: 'au', label: 'Australia' },
+  { value: 'ca', label: 'Canada' },
+  { value: 'fr', label: 'France' },
+  { value: 'de', label: 'Germany' },
+  { value: 'jp', label: 'Japan' },
+  { value: 'nz', label: 'New Zealand' },
+  { value: 'gb', label: 'United Kingdom' },
+  { value: 'us', label: 'United States' },
 ]
 
 const meta = {
@@ -95,7 +95,7 @@ export const States: Story = {
         {
           title: 'Warning',
           children: (
-            <FieldDemo defaultValues={{ value: 'ger' }} reveal>
+            <FieldDemo defaultValues={{ value: 'de' }} reveal>
               {(form) => (
                 <form.ComboboxField
                   name="value"
@@ -110,7 +110,7 @@ export const States: Story = {
         {
           title: 'Disabled',
           children: (
-            <FieldDemo defaultValues={{ value: 'arg' }}>
+            <FieldDemo defaultValues={{ value: 'au' }}>
               {(form) => (
                 <form.ComboboxField name="value" label="Country" options={countries} disabled />
               )}
@@ -120,7 +120,7 @@ export const States: Story = {
         {
           title: 'Read-only',
           children: (
-            <FieldDemo defaultValues={{ value: 'arg' }}>
+            <FieldDemo defaultValues={{ value: 'au' }}>
               {(form) => (
                 <form.ComboboxField name="value" label="Country" options={countries} readOnly />
               )}
@@ -130,7 +130,7 @@ export const States: Story = {
         {
           title: 'Validating',
           children: (
-            <FieldDemo defaultValues={{ value: 'arg' }} reveal>
+            <FieldDemo defaultValues={{ value: 'au' }} reveal>
               {(form) => (
                 <form.ComboboxField
                   name="value"
@@ -175,7 +175,7 @@ export const InAForm: Story = {
 export const ViewMode: Story = {
   name: 'View mode',
   render: () => (
-    <FieldDemo defaultValues={{ value: 'arg' }} mode="view" label="Country">
+    <FieldDemo defaultValues={{ value: 'au' }} mode="view" label="Country">
       {(form) => <form.ComboboxField name="value" label="Country" options={countries} />}
     </FieldDemo>
   ),

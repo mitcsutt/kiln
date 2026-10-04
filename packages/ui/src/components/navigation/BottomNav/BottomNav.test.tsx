@@ -5,11 +5,11 @@ import { BottomNav } from './BottomNav'
 describe('BottomNav', () => {
   it('renders a labelled nav with hide-above and position attributes', () => {
     render(
-      <BottomNav label="Matchday" hideAbove="lg">
-        <BottomNav.Item href="/fixtures" icon={<svg />} label="Fixtures" />
+      <BottomNav label="Workspace" hideAbove="lg">
+        <BottomNav.Item href="/calendar" icon={<svg />} label="Calendar" />
       </BottomNav>,
     )
-    const nav = screen.getByRole('navigation', { name: 'Matchday' })
+    const nav = screen.getByRole('navigation', { name: 'Workspace' })
     expect(nav).toHaveAttribute('data-hide-above', 'lg')
     expect(nav).toHaveAttribute('data-position', 'fixed')
   })
@@ -27,30 +27,30 @@ describe('BottomNav', () => {
     const ref = createRef<HTMLAnchorElement>()
     render(
       <BottomNav>
-        <BottomNav.Item ref={ref} href="/table" icon={<svg />} label="Table" active />
+        <BottomNav.Item ref={ref} href="/projects" icon={<svg />} label="Projects" active />
         <BottomNav.Item href="/feed" icon={<svg />} label="Feed" badge={128} />
-        <BottomNav.Item href="/squads" icon={<svg />} label="Squads" badge />
+        <BottomNav.Item href="/team" icon={<svg />} label="Team" badge />
       </BottomNav>,
     )
-    const table = screen.getByRole('link', { name: 'Table' })
-    expect(ref.current).toBe(table)
-    expect(table).toHaveAttribute('aria-current', 'page')
+    const projects = screen.getByRole('link', { name: 'Projects' })
+    expect(ref.current).toBe(projects)
+    expect(projects).toHaveAttribute('aria-current', 'page')
     expect(screen.getByRole('link', { name: /^Feed\s?, 128 new$/ })).not.toHaveAttribute(
       'aria-current',
     )
     expect(screen.getByText('99+')).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: /^Squads\s?, new$/ })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /^Team\s?, new$/ })).toBeInTheDocument()
   })
 
   it('renders a router link via asChild', () => {
     render(
       <BottomNav>
-        <BottomNav.Item asChild icon={<svg />} label="Fixtures" active>
-          <a href="/fixtures" data-router="" aria-label="Fixtures" />
+        <BottomNav.Item asChild icon={<svg />} label="Calendar" active>
+          <a href="/calendar" data-router="" aria-label="Calendar" />
         </BottomNav.Item>
       </BottomNav>,
     )
-    const link = screen.getByRole('link', { name: 'Fixtures' })
+    const link = screen.getByRole('link', { name: 'Calendar' })
     expect(link).toHaveAttribute('data-router')
     expect(link).toHaveAttribute('aria-current', 'page')
   })

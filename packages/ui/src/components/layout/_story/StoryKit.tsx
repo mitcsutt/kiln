@@ -41,7 +41,7 @@ export function Body({
   )
 }
 
-/** Tabular figure: money, points, counts. */
+/** Tabular figure: money, percentages, counts. */
 export function Figure({
   size = 'md',
   tone = 'default',
@@ -83,7 +83,7 @@ export function Cell({ children, tall = false }: { children: ReactNode; tall?: b
   )
 }
 
-/** A bar meter for spending stories: `value` of `max`. */
+/** A bar meter for usage stories: `value` of `max`. */
 export function Bar({
   value,
   max,
@@ -103,8 +103,8 @@ export function Bar({
   )
 }
 
-/** A line drawing that stands in for media in stories: a pitch, a screen, or a chart. */
-export function Artwork({ kind, label }: { kind: 'pitch' | 'screen' | 'chart'; label: string }) {
+/** A line drawing that stands in for media in stories: a task board, a screen, or a chart. */
+export function Artwork({ kind, label }: { kind: 'board' | 'screen' | 'chart'; label: string }) {
   return (
     <svg
       className={styles.artwork}
@@ -114,14 +114,16 @@ export function Artwork({ kind, label }: { kind: 'pitch' | 'screen' | 'chart'; l
       aria-label={label}
     >
       <rect x="0" y="0" width="160" height="100" className={styles.artworkGround} />
-      {kind === 'pitch' ? (
+      {kind === 'board' ? (
         <g className={styles.artworkLine}>
-          <rect x="14" y="10" width="132" height="80" />
-          <line x1="80" y1="10" x2="80" y2="90" />
-          <circle cx="80" cy="50" r="12" />
-          <rect x="14" y="30" width="18" height="40" />
-          <rect x="128" y="30" width="18" height="40" />
-          <circle cx="80" cy="50" r="1.2" className={styles.artworkDot} />
+          <rect x="14" y="14" width="40" height="72" rx="3" />
+          <rect x="60" y="14" width="40" height="72" rx="3" />
+          <rect x="106" y="14" width="40" height="72" rx="3" />
+          <rect x="20" y="22" width="28" height="12" rx="2" className={styles.artworkStrong} />
+          <rect x="20" y="40" width="28" height="12" rx="2" />
+          <rect x="66" y="22" width="28" height="12" rx="2" />
+          <rect x="112" y="22" width="28" height="12" rx="2" className={styles.artworkAccent} />
+          <circle cx="44" cy="28" r="1.2" className={styles.artworkDot} />
         </g>
       ) : kind === 'screen' ? (
         <g className={styles.artworkLine}>

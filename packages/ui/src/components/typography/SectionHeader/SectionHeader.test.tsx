@@ -6,15 +6,15 @@ describe('SectionHeader', () => {
     const { container } = render(
       <SectionHeader
         kicker="2025–26 financial year"
-        title="September spending"
-        description="$4,182.60 of $5,200 budgeted"
+        title="September invoices"
+        description="$4,182.60 of $5,200 target"
       />,
     )
-    const h = screen.getByRole('heading', { level: 2, name: 'September spending' })
+    const h = screen.getByRole('heading', { level: 2, name: 'September invoices' })
     const hgroup = container.querySelector('hgroup')
     expect(hgroup).toContainElement(h)
     expect(hgroup).toHaveTextContent('2025–26 financial year')
-    expect(hgroup).toHaveTextContent('$4,182.60 of $5,200 budgeted')
+    expect(hgroup).toHaveTextContent('$4,182.60 of $5,200 target')
   })
 
   it('passes level, size and titleId to the heading', () => {

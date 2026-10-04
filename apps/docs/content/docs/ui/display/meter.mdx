@@ -4,7 +4,7 @@ description: A measurement against a known range, whose tone follows thresholds 
 exports: [Meter, meterTone]
 ---
 
-`Meter` shows where a value sits in a range: seats taken, budget spent, storage used. Give it `low`, `high` and `optimum` thresholds and the tone follows the value, so 60% of capacity is calm, 90% is a warning, and over the limit is critical.
+`Meter` shows where a value sits in a range: seats taken, storage used, API requests against a monthly quota. Give it `low`, `high` and `optimum` thresholds and the tone follows the value, so 60% of capacity is calm, 90% is a warning, and over the limit is critical.
 
 <Example name="ui/display/meter/usage" />
 
@@ -12,7 +12,7 @@ exports: [Meter, meterTone]
 
 ## The tone without the bar
 
-`meterTone` returns the tone a meter would pick. Unlike the native `<meter>`, a value past `max` still counts as past `high`: an overspent budget must not read as fine.
+`meterTone` returns the tone a meter would pick. Unlike the native `<meter>`, a value past `max` still counts as past `high`: a plan over its quota must not read as fine.
 
 <Example name="ui/display/meter/tone" />
 

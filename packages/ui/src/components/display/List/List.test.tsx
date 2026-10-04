@@ -9,10 +9,10 @@ describe('List', () => {
     render(
       <List ref={ref} density="compact">
         <List.Item>
-          <List.Content>Mexico</List.Content>
+          <List.Content>Atlas redesign</List.Content>
         </List.Item>
         <List.Item>
-          <List.Content>Canada</List.Content>
+          <List.Content>Billing migration</List.Content>
         </List.Item>
       </List>,
     )
@@ -32,10 +32,10 @@ describe('List', () => {
     render(
       <List>
         <List.Item asChild highlighted>
-          <a href="/members/noor">
+          <a href="/members/priya">
             <List.Leading>1</List.Leading>
             <List.Content>
-              Noor<List.Description>Coast path, Ridge loop</List.Description>
+              Priya<List.Description>Atlas redesign, Help centre</List.Description>
             </List.Content>
             <List.Trailing>42</List.Trailing>
           </a>
@@ -44,8 +44,8 @@ describe('List', () => {
     )
     const item = screen.getByRole('listitem')
     const link = within(item).getByRole('link')
-    expect(link).toHaveAttribute('href', '/members/noor')
-    expect(link).toHaveTextContent('Noor')
+    expect(link).toHaveAttribute('href', '/members/priya')
+    expect(link).toHaveTextContent('Priya')
     expect(link).toHaveTextContent('42')
     expect(link.querySelector('a')).toBeNull()
     expect(item).toHaveAttribute('data-interactive')
@@ -58,12 +58,12 @@ describe('List', () => {
       <List>
         <List.Item asChild>
           <button type="button" onClick={onClick}>
-            <List.Content>Groceries</List.Content>
+            <List.Content>Invoices</List.Content>
           </button>
         </List.Item>
       </List>,
     )
-    const button = screen.getByRole('button', { name: 'Groceries' })
+    const button = screen.getByRole('button', { name: 'Invoices' })
     button.focus()
     await userEvent.keyboard('{Enter}')
     expect(onClick).toHaveBeenCalledTimes(1)
@@ -73,7 +73,7 @@ describe('List', () => {
     render(
       <List divided={false}>
         <List.Item selected>
-          <List.Content>Budget</List.Content>
+          <List.Content>Settings</List.Content>
         </List.Item>
       </List>,
     )

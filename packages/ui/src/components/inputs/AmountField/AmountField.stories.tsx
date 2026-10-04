@@ -6,8 +6,8 @@ const meta = {
   title: 'UI/Inputs/AmountField',
   component: AmountField,
   args: {
-    label: 'Monthly rent',
-    description: 'Paid on the 1st to Harbour Lettings',
+    label: 'Monthly retainer',
+    description: 'Billed on the 1st to Northwind Studio',
     currency: 'GBP',
     locale: 'en-GB',
     unit: 'minor',
@@ -28,7 +28,7 @@ type Story = StoryObj<typeof meta>
 export const Playground: Story = {}
 
 export const WithError: Story = {
-  args: { defaultValue: null, error: 'Enter the monthly rent' },
+  args: { defaultValue: null, error: 'Enter the monthly retainer' },
 }
 
 export const Warning: Story = {

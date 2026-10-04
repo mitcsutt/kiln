@@ -9,7 +9,7 @@ import {
 } from '#schema/core/nodes'
 import type { UntypedFormSchema, UntypedLayoutNode, UntypedNode } from '#schema/core/types'
 import { getPath, joinPath, pathSegments, setPath } from '#schema/core/values'
-import { expenseSchema, leagueEntrySchema } from '#schema/core/__fixtures__/schemas'
+import { expenseSchema, projectSignupSchema } from '#schema/core/__fixtures__/schemas'
 
 function byId(schema: UntypedFormSchema, id: string): UntypedNode {
   const node = analyseSchema(schema).nodeById.get(id)
@@ -36,7 +36,7 @@ const schema: UntypedFormSchema = {
             id: 'name',
             label: 'Name',
             defaultValue: 'Ada',
-            when: { field: 'role', op: 'eq', value: 'player' },
+            when: { field: 'role', op: 'eq', value: 'member' },
           },
           {
             layout: 'grid',
@@ -158,8 +158,8 @@ describe('analyseSchema', () => {
   })
 
   it('handles the fixture schemas', () => {
-    const league = analyseSchema(leagueEntrySchema)
-    expect(league.names(leagueEntrySchema.root)).toEqual([
+    const signup = analyseSchema(projectSignupSchema)
+    expect(signup.names(projectSignupSchema.root)).toEqual([
       'name',
       'email',
       'age',
@@ -167,15 +167,15 @@ describe('analyseSchema', () => {
       'address.line1',
       'address.city',
       'address.postcode',
-      'league',
-      'team',
-      'positions',
+      'client',
+      'project',
+      'disciplines',
       'fee',
       'paid',
       'code',
       'guests',
     ])
-    expect(league.nodeById.get('email')).toMatchObject({ kind: 'text', name: 'email' })
+    expect(signup.nodeById.get('email')).toMatchObject({ kind: 'text', name: 'email' })
     expect(analyseSchema(expenseSchema).names(expenseSchema.root)).toContain('splits')
   })
 })

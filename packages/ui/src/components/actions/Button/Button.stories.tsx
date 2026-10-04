@@ -6,7 +6,7 @@ import { Button } from './Button'
 const meta = {
   title: 'UI/Actions/Button',
   component: Button,
-  args: { children: 'Publish fixtures', variant: 'solid', tone: 'accent', size: 'md' },
+  args: { children: 'Send invoice', variant: 'solid', tone: 'accent', size: 'md' },
   argTypes: {
     leadingIcon: { control: false },
     trailingIcon: { control: false },
@@ -22,7 +22,7 @@ export const Playground: Story = {}
 export const Hierarchy: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
-      <Button>Save budget</Button>
+      <Button>Save changes</Button>
       <Button variant="outline" tone="neutral">
         Export CSV
       </Button>
@@ -64,7 +64,7 @@ export const Sizes: Story = {
 export const WithIcons: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-      <Button leadingIcon={<PlusIcon />}>Add expense</Button>
+      <Button leadingIcon={<PlusIcon />}>New project</Button>
       <Button variant="outline" tone="neutral" trailingIcon={<ArrowUpRightIcon />} asChild>
         <a href="https://github.com/mitcsutt/kiln">Source on GitHub</a>
       </Button>

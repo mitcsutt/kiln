@@ -16,7 +16,7 @@ export interface ListProps extends HTMLAttributes<HTMLUListElement> {
 }
 
 /**
- * The workhorse row list: leaderboards, squads, transactions, recent work. Rows are
+ * The workhorse row list: leaderboards, team members, invoices, recent work. Rows are
  * `Leading · Content · Trailing`, divided by hairlines, never boxed in cards.
  *
  * <List><List.Item><List.Leading>1</List.Leading><List.Content>…</List.Content></List.Item></List>
@@ -44,7 +44,7 @@ export interface ListItemProps extends LiHTMLAttributes<HTMLLIElement> {
   /**
    * Make the whole row one link or button: the single child becomes the row, so there
    * is exactly one interactive element and no nested anchors.
-   * `<List.Item asChild><a href="/team/mexico">…slots…</a></List.Item>`
+   * `<List.Item asChild><a href="/projects/atlas">…slots…</a></List.Item>`
    */
   asChild?: boolean
   /** The current item (accent-soft fill) — e.g. the open page in a list of links. */

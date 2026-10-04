@@ -5,7 +5,7 @@ import { ColorInput } from './ColorInput'
 import { normaliseHex } from './colorFormat'
 import { must } from '#test/must'
 
-const TEAM = [
+const LABEL_COLOURS = [
   { value: '#FF6B57', label: 'Coral' },
   { value: '#e8b730', label: 'Gold' },
   { value: '#1f9e8f', label: 'Teal' },
@@ -25,8 +25,8 @@ describe('normaliseHex', () => {
 describe('ColorInput', () => {
   it('renders a hex textbox with a native picker and forwards the ref to the textbox', () => {
     const ref = createRef<HTMLElement>()
-    render(<ColorInput ref={ref} aria-label="Team colour" defaultValue="#1F9E8F" />)
-    const input = screen.getByRole('textbox', { name: 'Team colour' })
+    render(<ColorInput ref={ref} aria-label="Label colour" defaultValue="#1F9E8F" />)
+    const input = screen.getByRole('textbox', { name: 'Label colour' })
     expect(ref.current).toBe(input)
     expect(input).toHaveValue('#1f9e8f')
     const picker = screen.getByLabelText('Choose colour')
@@ -69,7 +69,13 @@ describe('ColorInput', () => {
 
   it('shows swatches as a radio group with colour names', async () => {
     const onValueChange = vi.fn()
-    render(<ColorInput aria-label="Team colour" swatches={TEAM} onValueChange={onValueChange} />)
+    render(
+      <ColorInput
+        aria-label="Label colour"
+        swatches={LABEL_COLOURS}
+        onValueChange={onValueChange}
+      />,
+    )
     const group = screen.getByRole('radiogroup', { name: 'presets' })
     const radios = screen.getAllByRole('radio')
     expect(group).toContainElement(must(radios[0]))
@@ -86,7 +92,7 @@ describe('ColorInput', () => {
   })
 
   it('checks the swatch that matches a typed value and moves with arrow keys', async () => {
-    render(<ColorInput aria-label="Team colour" swatches={TEAM} defaultValue="#E8B730" />)
+    render(<ColorInput aria-label="Label colour" swatches={LABEL_COLOURS} defaultValue="#E8B730" />)
     const gold = screen.getByRole('radio', { name: 'Gold' })
     expect(gold).toBeChecked()
     await userEvent.click(screen.getByRole('textbox'))
@@ -105,8 +111,8 @@ describe('ColorInput', () => {
       <form data-testid="form">
         <ColorInput
           ref={ref}
-          aria-label="Team colour"
-          swatches={TEAM}
+          aria-label="Label colour"
+          swatches={LABEL_COLOURS}
           swatchesOnly
           name="colour"
           defaultValue="#1f9e8f"
@@ -128,8 +134,8 @@ describe('ColorInput', () => {
     render(
       <form data-testid="form">
         <ColorInput
-          aria-label="Team colour"
-          swatches={TEAM}
+          aria-label="Label colour"
+          swatches={LABEL_COLOURS}
           swatchesOnly
           name="colour"
           defaultValue="#123456"
@@ -147,8 +153,8 @@ describe('ColorInput', () => {
     render(
       <form data-testid="form">
         <ColorInput
-          aria-label="Team colour"
-          swatches={TEAM}
+          aria-label="Label colour"
+          swatches={LABEL_COLOURS}
           swatchesOnly
           name="colour"
           defaultValue="#123456"
@@ -164,8 +170,8 @@ describe('ColorInput', () => {
     render(
       <form data-testid="form">
         <ColorInput
-          aria-label="Team colour"
-          swatches={TEAM}
+          aria-label="Label colour"
+          swatches={LABEL_COLOURS}
           swatchesOnly
           name="colour"
           defaultValue="#123456"
@@ -179,7 +185,13 @@ describe('ColorInput', () => {
   it('swatchesOnly + required: no value leaves the form invalid', () => {
     render(
       <form data-testid="form">
-        <ColorInput aria-label="Team colour" swatches={TEAM} swatchesOnly name="colour" required />
+        <ColorInput
+          aria-label="Label colour"
+          swatches={LABEL_COLOURS}
+          swatchesOnly
+          name="colour"
+          required
+        />
       </form>,
     )
     const form = screen.getByTestId<HTMLFormElement>('form')
@@ -201,7 +213,12 @@ describe('ColorInput', () => {
       const [value, setValue] = useState('#ff6b57')
       return (
         <>
-          <ColorInput aria-label="Colour" swatches={TEAM} value={value} onValueChange={setValue} />
+          <ColorInput
+            aria-label="Colour"
+            swatches={LABEL_COLOURS}
+            value={value}
+            onValueChange={setValue}
+          />
           <output>{value}</output>
         </>
       )
@@ -217,7 +234,7 @@ describe('ColorInput', () => {
     const { rerender } = render(
       <ColorInput
         aria-label="Colour"
-        swatches={TEAM}
+        swatches={LABEL_COLOURS}
         defaultValue="#ff6b57"
         readOnly
         onValueChange={onValueChange}
@@ -229,7 +246,7 @@ describe('ColorInput', () => {
     expect(onValueChange).not.toHaveBeenCalled()
     expect(screen.getByRole('radio', { name: 'Coral' })).toBeChecked()
     expect(screen.getByLabelText('Choose colour')).toBeDisabled()
-    rerender(<ColorInput aria-label="Colour" swatches={TEAM} disabled />)
+    rerender(<ColorInput aria-label="Colour" swatches={LABEL_COLOURS} disabled />)
     expect(screen.getByRole('textbox')).toBeDisabled()
     for (const radio of screen.getAllByRole('radio')) expect(radio).toBeDisabled()
   })
@@ -238,7 +255,7 @@ describe('ColorInput', () => {
     const onBlur = vi.fn()
     render(
       <>
-        <ColorInput aria-label="Colour" swatches={TEAM} onBlur={onBlur} />
+        <ColorInput aria-label="Colour" swatches={LABEL_COLOURS} onBlur={onBlur} />
         <button type="button">Save</button>
       </>,
     )

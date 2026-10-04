@@ -26,13 +26,13 @@ describe('AmountInput', () => {
     render(
       <AmountInput
         ref={ref}
-        aria-label="Monthly rent"
+        aria-label="Monthly retainer"
         currency="GBP"
         locale="en-GB"
         defaultValue={1450}
       />,
     )
-    const input = screen.getByRole('textbox', { name: 'Monthly rent' })
+    const input = screen.getByRole('textbox', { name: 'Monthly retainer' })
     expect(ref.current).toBe(input)
     expect(screen.queryByRole('spinbutton')).toBeNull()
     expect(screen.getByText('£')).toBeInTheDocument()
@@ -42,7 +42,7 @@ describe('AmountInput', () => {
   })
 
   it('groups when blurred and shows raw text while focused', async () => {
-    render(<AmountInput aria-label="Rent" currency="GBP" locale="en-GB" defaultValue={1450} />)
+    render(<AmountInput aria-label="Retainer" currency="GBP" locale="en-GB" defaultValue={1450} />)
     const input = screen.getByRole('textbox')
     await userEvent.click(input)
     expect(input).toHaveValue('1450.00')
@@ -54,7 +54,7 @@ describe('AmountInput', () => {
     const onValueChange = vi.fn()
     render(
       <AmountInput
-        aria-label="Rent"
+        aria-label="Retainer"
         currency="GBP"
         locale="en-GB"
         unit="minor"
@@ -69,12 +69,17 @@ describe('AmountInput', () => {
   it('emits major units by default and reads minor values back', async () => {
     const onValueChange = vi.fn()
     const { rerender } = render(
-      <AmountInput aria-label="Rent" currency="AUD" locale="en-AU" onValueChange={onValueChange} />,
+      <AmountInput
+        aria-label="Retainer"
+        currency="AUD"
+        locale="en-AU"
+        onValueChange={onValueChange}
+      />,
     )
     await userEvent.type(screen.getByRole('textbox'), '0.1')
     expect(onValueChange).toHaveBeenLastCalledWith(0.1)
     rerender(
-      <AmountInput aria-label="Rent" currency="AUD" locale="en-AU" unit="minor" value={30} />,
+      <AmountInput aria-label="Retainer" currency="AUD" locale="en-AU" unit="minor" value={30} />,
     )
     expect(screen.getByRole('textbox')).toHaveValue('0.30')
   })
@@ -111,7 +116,7 @@ describe('AmountInput', () => {
     const onValueChange = vi.fn()
     const { unmount } = render(
       <AmountInput
-        aria-label="Rent"
+        aria-label="Retainer"
         currency="GBP"
         locale="en-GB"
         defaultValue={10}
@@ -147,7 +152,7 @@ describe('AmountInput', () => {
     const onValueChange = vi.fn()
     render(
       <AmountInput
-        aria-label="Rent"
+        aria-label="Retainer"
         currency="GBP"
         locale="en-GB"
         max={100}
@@ -167,7 +172,7 @@ describe('AmountInput', () => {
       return (
         <>
           <AmountInput
-            aria-label="Rent"
+            aria-label="Retainer"
             currency="GBP"
             locale="en-GB"
             unit="minor"
@@ -190,38 +195,44 @@ describe('AmountInput', () => {
   it('respects readOnly and disabled', async () => {
     const onValueChange = vi.fn()
     const { rerender } = render(
-      <AmountInput aria-label="Rent" currency="GBP" readOnly onValueChange={onValueChange} />,
+      <AmountInput aria-label="Retainer" currency="GBP" readOnly onValueChange={onValueChange} />,
     )
     const input = screen.getByRole('textbox')
     await userEvent.type(input, '12')
     expect(onValueChange).not.toHaveBeenCalled()
     expect(input).toHaveAttribute('readonly')
-    rerender(<AmountInput aria-label="Rent" currency="GBP" disabled />)
+    rerender(<AmountInput aria-label="Retainer" currency="GBP" disabled />)
     expect(input).toBeDisabled()
   })
 
   it('submits nothing when disabled', () => {
     render(
       <form data-testid="form">
-        <AmountInput aria-label="Rent" currency="GBP" name="rent" defaultValue={1450} disabled />
+        <AmountInput
+          aria-label="Retainer"
+          currency="GBP"
+          name="retainer"
+          defaultValue={1450}
+          disabled
+        />
       </form>,
     )
-    expect(new FormData(screen.getByTestId<HTMLFormElement>('form')).getAll('rent')).toEqual([])
+    expect(new FormData(screen.getByTestId<HTMLFormElement>('form')).getAll('retainer')).toEqual([])
   })
 
   it('submits name as a plain number in unit', () => {
     render(
       <form data-testid="form">
         <AmountInput
-          aria-label="Rent"
+          aria-label="Retainer"
           currency="GBP"
           locale="en-GB"
           unit="minor"
-          name="rent"
+          name="retainer"
           defaultValue={145000}
         />
       </form>,
     )
-    expect(new FormData(screen.getByTestId<HTMLFormElement>('form')).get('rent')).toBe('145000')
+    expect(new FormData(screen.getByTestId<HTMLFormElement>('form')).get('retainer')).toBe('145000')
   })
 })

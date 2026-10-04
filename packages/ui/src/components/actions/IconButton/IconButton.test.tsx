@@ -39,11 +39,11 @@ describe('IconButton', () => {
 
   it('renders a link when asChild', () => {
     render(
-      <IconButton asChild label="GitHub profile" icon={<CloseIcon />}>
-        <a href="https://github.com/mitcsutt/kiln" aria-label="GitHub profile" />
+      <IconButton asChild label="Source on GitHub" icon={<CloseIcon />}>
+        <a href="https://github.com/mitcsutt/kiln" aria-label="Source on GitHub" />
       </IconButton>,
     )
-    const link = screen.getByRole('link', { name: 'GitHub profile' })
+    const link = screen.getByRole('link', { name: 'Source on GitHub' })
     expect(link).toHaveAttribute('href', 'https://github.com/mitcsutt/kiln')
     expect(link.querySelector('svg')).not.toBeNull()
   })

@@ -33,11 +33,11 @@ export const AutoResize: Story = {
   render: () => (
     <Stack style={width}>
       <Textarea
-        aria-label="Project summary"
+        aria-label="Release notes"
         autoResize
         rows={2}
         maxRows={6}
-        defaultValue="Redrew the city's transit map so every bus, ferry and tram line fits on one sheet. Interchanges now share one symbol, which took the median route-finding test from 40 seconds to under ten."
+        defaultValue="Invoices can now repeat weekly, fortnightly or monthly. Reminders go out three days after the due date, and every client gets a single link to pay online."
       />
     </Stack>
   ),
@@ -48,16 +48,11 @@ export const States: Story = {
     <Stack gap={4} style={width}>
       <Textarea
         aria-label="Invalid"
-        defaultValue="Rent for September and October"
+        defaultValue="Invoice for September and October"
         invalid
         rows={2}
       />
-      <Textarea
-        aria-label="Disabled"
-        defaultValue="Imported from the bank feed"
-        disabled
-        rows={2}
-      />
+      <Textarea aria-label="Disabled" defaultValue="Imported from a CSV upload" disabled rows={2} />
     </Stack>
   ),
 }

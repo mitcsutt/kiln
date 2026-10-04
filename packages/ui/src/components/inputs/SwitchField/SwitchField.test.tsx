@@ -9,18 +9,22 @@ describe('SwitchField', () => {
     const { rerender } = render(
       <SwitchField
         ref={ref}
-        label="Email me when rent is due"
+        label="Email me when an invoice is due"
         description="Three days before the 1st"
         warning="Your email isn't verified yet"
       />,
     )
-    const sw = screen.getByRole('switch', { name: 'Email me when rent is due' })
+    const sw = screen.getByRole('switch', { name: 'Email me when an invoice is due' })
     expect(ref.current).toBe(sw)
     expect(sw).toHaveAccessibleDescription(
       "Three days before the 1st Your email isn't verified yet",
     )
     rerender(
-      <SwitchField label="Email me when rent is due" error="Turn this on to continue" required />,
+      <SwitchField
+        label="Email me when an invoice is due"
+        error="Turn this on to continue"
+        required
+      />,
     )
     expect(sw).toHaveAttribute('aria-invalid', 'true')
     expect(sw).toHaveAttribute('aria-required', 'true')
@@ -72,7 +76,7 @@ describe('SwitchField', () => {
     const onBlur = vi.fn()
     render(
       <>
-        <p id="note">Applies to every account</p>
+        <p id="note">Applies to every project</p>
         <SwitchField
           id="sync"
           label="Sync"
@@ -84,7 +88,7 @@ describe('SwitchField', () => {
     )
     const sw = screen.getByRole('switch')
     expect(sw).toHaveAttribute('id', 'sync')
-    expect(sw).toHaveAccessibleDescription('Applies to every account Every hour')
+    expect(sw).toHaveAccessibleDescription('Applies to every project Every hour')
     await userEvent.click(sw)
     await userEvent.tab()
     expect(onBlur).toHaveBeenCalledTimes(1)

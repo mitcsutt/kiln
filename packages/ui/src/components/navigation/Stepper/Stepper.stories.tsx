@@ -3,17 +3,17 @@ import { useState } from 'react'
 import { Stack } from '#components/layout/Stack'
 import { Stepper, type StepperStep } from './Stepper'
 
-const entrySteps: StepperStep[] = [
+const signupSteps: StepperStep[] = [
   { value: 'you', label: 'You', description: 'Name and email' },
-  { value: 'squad', label: 'Squad', description: 'Players and positions' },
-  { value: 'pay', label: 'Pay', description: 'Season fee' },
+  { value: 'team', label: 'Team', description: 'Invite your colleagues' },
+  { value: 'pay', label: 'Pay', description: 'Plan and card' },
   { value: 'review', label: 'Review', description: 'Confirm and submit' },
 ]
 
 const meta = {
   title: 'UI/Navigation/Stepper',
   component: Stepper,
-  args: { steps: entrySteps, value: 'squad' },
+  args: { steps: signupSteps, value: 'team' },
 } satisfies Meta<typeof Stepper>
 
 export default meta
@@ -21,18 +21,18 @@ type Story = StoryObj<typeof meta>
 
 export const Playground: Story = {}
 
-/** A club registration flow — a step ahead is reachable once visited, none are skippable ahead. */
+/** A workspace sign-up flow — a step ahead is reachable once visited, none are skippable ahead. */
 export const Registration: Story = {
   render: function Render() {
-    const [value, setValue] = useState('squad')
-    return <Stepper steps={entrySteps} value={value} onStepSelect={setValue} />
+    const [value, setValue] = useState('team')
+    return <Stepper steps={signupSteps} value={value} onStepSelect={setValue} />
   },
 }
 
 /** A step with an outstanding error — its glyph and label switch to the critical tone. */
 export const WithErrorStep: Story = {
   args: {
-    steps: entrySteps.map((step) =>
+    steps: signupSteps.map((step) =>
       step.value === 'pay' ? { ...step, status: 'error' as const } : step,
     ),
     value: 'review',
@@ -43,7 +43,7 @@ export const WithErrorStep: Story = {
  * critical tone, while a completed step that also has errors keeps its progress status. */
 export const CurrentStepWithErrors: Story = {
   args: {
-    steps: entrySteps.map((step) =>
+    steps: signupSteps.map((step) =>
       step.value === 'you' || step.value === 'pay' ? { ...step, invalid: true } : step,
     ),
     value: 'pay',

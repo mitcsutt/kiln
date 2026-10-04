@@ -10,7 +10,7 @@ sources:
   - mitcsutt/kiln:apps/docs/content/docs/forms/getting-started/component-mode.mdx
   - mitcsutt/kiln:apps/docs/content/docs/forms/getting-started/account-settings.mdx
   - mitcsutt/kiln:apps/docs/content/docs/forms/getting-started/onboarding.mdx
-  - mitcsutt/kiln:apps/docs/content/docs/forms/getting-started/savings-goal.mdx
+  - mitcsutt/kiln:apps/docs/content/docs/forms/getting-started/recurring-invoice.mdx
   - mitcsutt/kiln:apps/docs/content/docs/forms/layouts/form.mdx
   - mitcsutt/kiln:apps/docs/content/docs/forms/layouts/form-section.mdx
   - mitcsutt/kiln:apps/docs/content/docs/forms/layouts/form-grid.mdx
@@ -307,7 +307,7 @@ Beyond `defaultValues` and `onSubmit`, the options you'll reach for most:
 - `errorVisibility`: when errors show. The default shows them once a field is left or after a submit.
 - `afterSubmit`: `'rebaseline'` (the default: the submitted values become the new clean state), `'reset'`, `'keep'` or `'lock'` (the submit button stays locked until a reset, for dialogs).
 - `focusOnInvalid`: where focus goes on an invalid submit. `'auto'` is the error summary if one is mounted, else the first invalid field.
-- `derive`: fields computed from other fields. See [Savings goal](references/savings-goal.md).
+- `derive`: fields computed from other fields. See [Recurring invoice](references/recurring-invoice.md).
 - `messages`: replace any of the library's text, from "Saving…" to the error summary's title.
 
 `KitFormOptions`:
@@ -344,7 +344,7 @@ Read a reference when its description matches the task:
 
 - [Account settings](references/account-settings.md): A settings page that saves as you type, with sections in a label column and the password in a form of its own.
 - [Onboarding](references/onboarding.md): A multi-step application with a branch that only some people see, and a review step built from the same fields.
-- [Savings goal](references/savings-goal.md): A form written as a sentence, with a value computed from the others as you type.
+- [Recurring invoice](references/recurring-invoice.md): A form written as a sentence, with a value computed from the others as you type.
 - [Form](references/form.md): The form element, wired to the kit. Submitting runs validation and your onSubmit; disabled, readOnly and view mode cascade to every field.
 - [FormSection](references/form-section.md): A titled group of fields, as a fieldset and legend, that can be disabled or made read-only as one.
 - [FormGrid](references/form-grid.md): Fields in columns that collapse on small screens, with items that span.

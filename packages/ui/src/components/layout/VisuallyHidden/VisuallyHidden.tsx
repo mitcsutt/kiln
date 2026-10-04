@@ -20,7 +20,7 @@ export interface VisuallyHiddenProps extends HTMLAttributes<HTMLElement> {
  * Content for screen readers only: a label for an icon-only control, a table caption,
  * a heading that the visual layout already implies.
  *
- * <VisuallyHidden as="h2">Group standings</VisuallyHidden>
+ * <VisuallyHidden as="h2">Open invoices</VisuallyHidden>
  */
 export const VisuallyHidden = forwardRef<HTMLElement, VisuallyHiddenProps>(function VisuallyHidden(
   { focusable = false, as: Comp = 'span', className, ...rest },

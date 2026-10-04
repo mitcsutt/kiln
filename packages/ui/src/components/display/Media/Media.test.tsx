@@ -4,9 +4,9 @@ import { Media } from './Media'
 describe('Media', () => {
   it('renders a lazy, async-decoded image in a plain frame by default', () => {
     const { container } = render(
-      <Media src="/images/dashboard.png" alt="Spending dashboard" ratio="16/9" />,
+      <Media src="/images/dashboard.png" alt="Revenue dashboard" ratio="16/9" />,
     )
-    const img = screen.getByRole('img', { name: 'Spending dashboard' })
+    const img = screen.getByRole('img', { name: 'Revenue dashboard' })
     expect(img).toHaveAttribute('loading', 'lazy')
     expect(img).toHaveAttribute('decoding', 'async')
     expect(container.querySelector('figure')).toBeNull()
@@ -29,13 +29,17 @@ describe('Media', () => {
 
   it('swaps in the fallback, keeping the accessible name, when the image fails', () => {
     const { container } = render(
-      <Media src="/missing.png" alt="Receipt from Hardware Barn" fallback="Image unavailable" />,
+      <Media
+        src="/missing.png"
+        alt="Signed contract for Northwind Studio"
+        fallback="Image unavailable"
+      />,
     )
     fireEvent.error(screen.getByRole('img'))
     expect(container.querySelector('img')).toBeNull()
-    expect(screen.getByRole('img', { name: 'Receipt from Hardware Barn' })).toHaveTextContent(
-      'Image unavailable',
-    )
+    expect(
+      screen.getByRole('img', { name: 'Signed contract for Northwind Studio' }),
+    ).toHaveTextContent('Image unavailable')
     expect(container.firstElementChild).toHaveAttribute('data-failed')
   })
 })

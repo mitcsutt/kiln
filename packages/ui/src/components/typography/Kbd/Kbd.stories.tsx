@@ -18,10 +18,10 @@ export const Shortcuts: Story = {
   render: () => (
     <Stack gap={3}>
       <Text>
-        Search transactions with <Kbd>⌘</Kbd> <Kbd>K</Kbd>
+        Search invoices with <Kbd>⌘</Kbd> <Kbd>K</Kbd>
       </Text>
       <Text>
-        Move between fixtures with <Kbd>J</Kbd> and <Kbd>K</Kbd>, open one with <Kbd>Enter</Kbd>
+        Move between tasks with <Kbd>J</Kbd> and <Kbd>K</Kbd>, open one with <Kbd>Enter</Kbd>
       </Text>
       <Text size="sm" tone="muted">
         Close any dialog with <Kbd size="sm">Esc</Kbd>

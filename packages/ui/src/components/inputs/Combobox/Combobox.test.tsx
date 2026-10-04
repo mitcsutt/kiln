@@ -5,7 +5,7 @@ import { Field } from '#components/inputs/Field'
 import { Combobox, type ComboboxOption } from './Combobox'
 import { must } from '#test/must'
 
-const teams: ComboboxOption[] = [
+const countries: ComboboxOption[] = [
   { value: 'arg', label: 'Argentina', group: 'South America' },
   { value: 'bra', label: 'Brazil', group: 'South America' },
   { value: 'usa', label: 'United States', keywords: ['USA', 'America'], group: 'North America' },
@@ -15,10 +15,10 @@ const teams: ComboboxOption[] = [
 ]
 
 const flat: ComboboxOption[] = [
-  { value: 'groceries', label: 'Groceries' },
-  { value: 'rent', label: 'Rent', description: 'Paid on the 1st' },
-  { value: 'utilities', label: 'Utilities', disabled: true },
-  { value: 'transport', label: 'Transport' },
+  { value: 'design', label: 'Design' },
+  { value: 'billing', label: 'Billing', description: 'Invoices and payments' },
+  { value: 'hosting', label: 'Hosting', disabled: true },
+  { value: 'support', label: 'Support' },
 ]
 
 function setup() {
@@ -47,7 +47,7 @@ describe('Combobox — ARIA', () => {
 
   it('links the listbox, options and groups', async () => {
     const user = setup()
-    render(<Combobox aria-label="Team" options={teams} />)
+    render(<Combobox aria-label="Country" options={countries} />)
     await user.click(combobox())
     expect(combobox()).toHaveAttribute('aria-expanded', 'true')
     const list = listbox()
@@ -70,28 +70,25 @@ describe('Combobox — ARIA', () => {
   it('is labelled by a surrounding Field (input and listbox)', async () => {
     const user = setup()
     render(
-      <Field label="Team" description="The side you follow" error="Choose a team" required>
-        <Combobox options={teams} />
+      <Field label="Country" description="Where you are based" error="Choose a country" required>
+        <Combobox options={countries} />
       </Field>,
     )
-    const input = screen.getByRole('combobox', { name: /Team/ })
-    expect(input).toHaveAccessibleDescription(/The side you follow/)
+    const input = screen.getByRole('combobox', { name: /Country/ })
+    expect(input).toHaveAccessibleDescription(/Where you are based/)
     expect(input).toHaveAttribute('aria-invalid', 'true')
     expect(input).toHaveAttribute('aria-required', 'true')
     await user.click(input)
-    expect(screen.getByRole('listbox', { name: /Team/ })).toBeInTheDocument()
+    expect(screen.getByRole('listbox', { name: /Country/ })).toBeInTheDocument()
   })
 
   it('marks aria-multiselectable and aria-selected when multiple', async () => {
     const user = setup()
-    render(<Combobox multiple aria-label="Labels" options={flat} defaultValue={['rent']} />)
+    render(<Combobox multiple aria-label="Labels" options={flat} defaultValue={['billing']} />)
     await user.click(combobox())
     expect(listbox()).toHaveAttribute('aria-multiselectable', 'true')
-    expect(screen.getByRole('option', { name: /Rent/ })).toHaveAttribute('aria-selected', 'true')
-    expect(screen.getByRole('option', { name: 'Groceries' })).toHaveAttribute(
-      'aria-selected',
-      'false',
-    )
+    expect(screen.getByRole('option', { name: /Billing/ })).toHaveAttribute('aria-selected', 'true')
+    expect(screen.getByRole('option', { name: 'Design' })).toHaveAttribute('aria-selected', 'false')
   })
 })
 
@@ -102,14 +99,14 @@ describe('Combobox — keyboard', () => {
     combobox().focus()
     await user.keyboard('{ArrowDown}')
     expect(combobox()).toHaveAttribute('aria-expanded', 'true')
-    expect(activeOption()).toHaveTextContent('Groceries')
+    expect(activeOption()).toHaveTextContent('Design')
     await user.keyboard('{ArrowDown}')
-    expect(activeOption()).toHaveTextContent('Rent')
-    // Utilities is disabled: skipped.
+    expect(activeOption()).toHaveTextContent('Billing')
+    // Hosting is disabled: skipped.
     await user.keyboard('{ArrowDown}')
-    expect(activeOption()).toHaveTextContent('Transport')
+    expect(activeOption()).toHaveTextContent('Support')
     await user.keyboard('{ArrowDown}')
-    expect(activeOption()).toHaveTextContent('Groceries')
+    expect(activeOption()).toHaveTextContent('Design')
     expect(activeOption()).toHaveAttribute('data-active')
   })
 
@@ -118,19 +115,19 @@ describe('Combobox — keyboard', () => {
     render(<Combobox aria-label="Category" options={flat} />)
     combobox().focus()
     await user.keyboard('{ArrowUp}')
-    expect(activeOption()).toHaveTextContent('Transport')
+    expect(activeOption()).toHaveTextContent('Support')
     await user.keyboard('{ArrowUp}{ArrowUp}')
-    expect(activeOption()).toHaveTextContent('Groceries')
+    expect(activeOption()).toHaveTextContent('Design')
     await user.keyboard('{ArrowUp}')
-    expect(activeOption()).toHaveTextContent('Transport')
+    expect(activeOption()).toHaveTextContent('Support')
   })
 
   it('opening starts on the selected option', async () => {
     const user = setup()
-    render(<Combobox aria-label="Category" options={flat} defaultValue="transport" />)
+    render(<Combobox aria-label="Category" options={flat} defaultValue="support" />)
     combobox().focus()
     await user.keyboard('{ArrowDown}')
-    expect(activeOption()).toHaveTextContent('Transport')
+    expect(activeOption()).toHaveTextContent('Support')
   })
 
   it('Alt+ArrowDown opens without moving the highlight', async () => {
@@ -147,9 +144,9 @@ describe('Combobox — keyboard', () => {
     render(<Combobox aria-label="Category" options={flat} />)
     combobox().focus()
     await user.keyboard('{ArrowDown}{End}')
-    expect(activeOption()).toHaveTextContent('Transport')
+    expect(activeOption()).toHaveTextContent('Support')
     await user.keyboard('{Home}')
-    expect(activeOption()).toHaveTextContent('Groceries')
+    expect(activeOption()).toHaveTextContent('Design')
   })
 
   it('Enter selects; single closes and shows the label', async () => {
@@ -158,8 +155,8 @@ describe('Combobox — keyboard', () => {
     render(<Combobox aria-label="Category" options={flat} onValueChange={onValueChange} />)
     combobox().focus()
     await user.keyboard('{ArrowDown}{ArrowDown}{Enter}')
-    expect(onValueChange).toHaveBeenLastCalledWith('rent')
-    expect(combobox()).toHaveValue('Rent')
+    expect(onValueChange).toHaveBeenLastCalledWith('billing')
+    expect(combobox()).toHaveValue('Billing')
     expect(combobox()).toHaveAttribute('aria-expanded', 'false')
     expect(screen.queryByRole('listbox')).not.toBeInTheDocument()
   })
@@ -170,18 +167,18 @@ describe('Combobox — keyboard', () => {
     render(<Combobox multiple aria-label="Labels" options={flat} onValueChange={onValueChange} />)
     combobox().focus()
     await user.keyboard('{ArrowDown}{Enter}')
-    expect(onValueChange).toHaveBeenLastCalledWith(['groceries'])
+    expect(onValueChange).toHaveBeenLastCalledWith(['design'])
     expect(combobox()).toHaveAttribute('aria-expanded', 'true')
     await user.keyboard('{ArrowDown}{Enter}')
-    expect(onValueChange).toHaveBeenLastCalledWith(['groceries', 'rent'])
+    expect(onValueChange).toHaveBeenLastCalledWith(['design', 'billing'])
     await user.keyboard('{Enter}')
-    expect(onValueChange).toHaveBeenLastCalledWith(['groceries'])
+    expect(onValueChange).toHaveBeenLastCalledWith(['design'])
   })
 
   it('typing highlights the best match so Enter picks it', async () => {
     const user = setup()
     const onValueChange = vi.fn()
-    render(<Combobox aria-label="Team" options={teams} onValueChange={onValueChange} />)
+    render(<Combobox aria-label="Country" options={countries} onValueChange={onValueChange} />)
     await user.type(combobox(), 'usa')
     expect(activeOption()).toHaveTextContent('United States')
     await user.keyboard('{Enter}')
@@ -191,7 +188,7 @@ describe('Combobox — keyboard', () => {
 
   it('Escape closes, and a second Escape clears the query', async () => {
     const user = setup()
-    render(<Combobox aria-label="Team" options={teams} />)
+    render(<Combobox aria-label="Country" options={countries} />)
     await user.type(combobox(), 'bra')
     expect(combobox()).toHaveAttribute('aria-expanded', 'true')
     await user.keyboard('{Escape}')
@@ -206,8 +203,8 @@ describe('Combobox — keyboard', () => {
     const onValueChange = vi.fn()
     render(
       <Combobox
-        aria-label="Team"
-        options={teams}
+        aria-label="Country"
+        options={countries}
         defaultValue="mex"
         onValueChange={onValueChange}
       />,
@@ -222,7 +219,7 @@ describe('Combobox — keyboard', () => {
     const user = setup()
     render(
       <>
-        <Combobox aria-label="Team" options={teams} />
+        <Combobox aria-label="Country" options={countries} />
         <button type="button">Next</button>
       </>,
     )
@@ -241,15 +238,15 @@ describe('Combobox — keyboard', () => {
         multiple
         aria-label="Labels"
         options={flat}
-        defaultValue={['rent', 'transport']}
+        defaultValue={['billing', 'support']}
         onValueChange={onValueChange}
       />,
     )
     await user.click(combobox())
     await user.keyboard('{Backspace}')
-    expect(onValueChange).toHaveBeenLastCalledWith(['rent'])
+    expect(onValueChange).toHaveBeenLastCalledWith(['billing'])
     expect(
-      screen.queryByText('Transport', { selector: '[data-removable] *, [data-removable]' }),
+      screen.queryByText('Support', { selector: '[data-removable] *, [data-removable]' }),
     ).not.toBeInTheDocument()
   })
 
@@ -261,12 +258,12 @@ describe('Combobox — keyboard', () => {
         multiple
         aria-label="Labels"
         options={flat}
-        defaultValue={['rent']}
+        defaultValue={['billing']}
         onValueChange={onValueChange}
       />,
     )
-    await user.type(combobox(), 'gr{Backspace}')
-    expect(combobox()).toHaveValue('g')
+    await user.type(combobox(), 'de{Backspace}')
+    expect(combobox()).toHaveValue('d')
     expect(onValueChange).not.toHaveBeenCalled()
   })
 
@@ -275,16 +272,16 @@ describe('Combobox — keyboard', () => {
     render(<Combobox aria-label="Category" options={flat} />)
     await user.click(combobox())
     expect(combobox()).toHaveFocus()
-    await user.click(screen.getByRole('option', { name: 'Groceries' }))
+    await user.click(screen.getByRole('option', { name: 'Design' }))
     expect(combobox()).toHaveFocus()
-    expect(combobox()).toHaveValue('Groceries')
+    expect(combobox()).toHaveValue('Design')
   })
 })
 
 describe('Combobox — selection and filtering', () => {
   it('filters diacritic-folded and ranked, with keywords', async () => {
     const user = setup()
-    render(<Combobox aria-label="Team" options={teams} />)
+    render(<Combobox aria-label="Country" options={countries} />)
     await user.type(combobox(), 'curacao')
     expect(screen.getAllByRole('option').map((option) => option.textContent)).toEqual(['Curaçao'])
     await user.clear(combobox())
@@ -297,24 +294,26 @@ describe('Combobox — selection and filtering', () => {
 
   it('shows all options again after a pick (single), with the chosen one checked', async () => {
     const user = setup()
-    render(<Combobox aria-label="Category" options={flat} defaultValue="rent" />)
+    render(<Combobox aria-label="Category" options={flat} defaultValue="billing" />)
     await user.click(combobox())
     expect(screen.getAllByRole('option')).toHaveLength(4)
-    expect(screen.getByRole('option', { name: /Rent/ })).toHaveAttribute('aria-selected', 'true')
+    expect(screen.getByRole('option', { name: /Billing/ })).toHaveAttribute('aria-selected', 'true')
   })
 
   it("filter='none' shows the given options as they are", async () => {
     const user = setup()
-    render(<Combobox aria-label="Payee" options={flat} filter="none" />)
+    render(<Combobox aria-label="Client" options={flat} filter="none" />)
     await user.type(combobox(), 'zzz')
     expect(screen.getAllByRole('option')).toHaveLength(4)
   })
 
   it('shows the empty message when nothing matches', async () => {
     const user = setup()
-    render(<Combobox aria-label="Team" options={teams} emptyMessage="No team by that name" />)
+    render(
+      <Combobox aria-label="Country" options={countries} emptyMessage="No country by that name" />,
+    )
     await user.type(combobox(), 'zzz')
-    expect(screen.getByText('No team by that name')).toBeInTheDocument()
+    expect(screen.getByText('No country by that name')).toBeInTheDocument()
     expect(screen.queryAllByRole('option')).toHaveLength(0)
   })
 
@@ -322,45 +321,45 @@ describe('Combobox — selection and filtering', () => {
     const user = setup()
     const { rerender } = render(
       <Combobox
-        aria-label="Payee"
+        aria-label="Client"
         options={[]}
         filter="none"
         loading
-        loadingMessage="Searching payees"
+        loadingMessage="Searching clients"
       />,
     )
-    await user.type(combobox(), 'wool')
-    expect(screen.getByText('Searching payees')).toBeInTheDocument()
+    await user.type(combobox(), 'nort')
+    expect(screen.getByText('Searching clients')).toBeInTheDocument()
     expect(listbox()).toHaveAttribute('aria-busy', 'true')
     rerender(
       <Combobox
-        aria-label="Payee"
-        options={[{ value: 'w', label: 'Corner Grocer' }]}
+        aria-label="Client"
+        options={[{ value: 'w', label: 'Northwind Studio' }]}
         filter="none"
       />,
     )
-    expect(screen.queryByText('Searching payees')).not.toBeInTheDocument()
-    expect(screen.getByRole('option', { name: 'Corner Grocer' })).toBeInTheDocument()
+    expect(screen.queryByText('Searching clients')).not.toBeInTheDocument()
+    expect(screen.getByRole('option', { name: 'Northwind Studio' })).toBeInTheDocument()
   })
 
   it('while loading, nothing is auto-highlighted and Enter does not commit a stale result', async () => {
     const user = setup()
     const onValueChange = vi.fn()
-    const previous = [{ value: 'corner-grocer', label: 'Corner Grocer' }]
+    const previous = [{ value: 'northwind', label: 'Northwind Studio' }]
     const { rerender } = render(
       <Combobox
-        aria-label="Payee"
+        aria-label="Client"
         options={previous}
         filter="none"
         onValueChange={onValueChange}
       />,
     )
     await user.type(combobox(), 'wo')
-    expect(activeOption()).toHaveTextContent('Corner Grocer')
+    expect(activeOption()).toHaveTextContent('Northwind Studio')
     // A new query is in flight: the list still shows the previous query's results.
     rerender(
       <Combobox
-        aria-label="Payee"
+        aria-label="Client"
         options={previous}
         filter="none"
         loading
@@ -375,13 +374,13 @@ describe('Combobox — selection and filtering', () => {
     // Results arrive: the best match is highlighted again.
     rerender(
       <Combobox
-        aria-label="Payee"
-        options={[{ value: 'wox', label: 'Woxford Cafe' }]}
+        aria-label="Client"
+        options={[{ value: 'wox', label: 'Woxford Labs' }]}
         filter="none"
         onValueChange={onValueChange}
       />,
     )
-    expect(activeOption()).toHaveTextContent('Woxford Cafe')
+    expect(activeOption()).toHaveTextContent('Woxford Labs')
   })
 
   it('selects with the mouse and ignores disabled options', async () => {
@@ -389,16 +388,16 @@ describe('Combobox — selection and filtering', () => {
     const onValueChange = vi.fn()
     render(<Combobox aria-label="Category" options={flat} onValueChange={onValueChange} />)
     await user.click(combobox())
-    await user.click(screen.getByRole('option', { name: 'Utilities' }))
+    await user.click(screen.getByRole('option', { name: 'Hosting' }))
     expect(onValueChange).not.toHaveBeenCalled()
-    await user.click(screen.getByRole('option', { name: 'Transport' }))
-    expect(onValueChange).toHaveBeenCalledWith('transport')
+    await user.click(screen.getByRole('option', { name: 'Support' }))
+    expect(onValueChange).toHaveBeenCalledWith('support')
   })
 
   it('is controlled', async () => {
     const user = setup()
     function Controlled() {
-      const [value, setValue] = useState<string | null>('rent')
+      const [value, setValue] = useState<string | null>('billing')
       return (
         <>
           <Combobox aria-label="Category" options={flat} value={value} onValueChange={setValue} />
@@ -415,18 +414,18 @@ describe('Combobox — selection and filtering', () => {
       )
     }
     render(<Controlled />)
-    expect(combobox()).toHaveValue('Rent')
+    expect(combobox()).toHaveValue('Billing')
     combobox().focus()
     await user.keyboard('{ArrowDown}{ArrowDown}{Enter}')
-    expect(screen.getByText('transport')).toBeInTheDocument()
-    expect(combobox()).toHaveValue('Transport')
+    expect(screen.getByText('support')).toBeInTheDocument()
+    expect(combobox()).toHaveValue('Support')
     await user.click(screen.getByRole('button', { name: 'Reset' }))
     expect(combobox()).toHaveValue('')
   })
 
   it('reverts unmatched text to the chosen label on blur (not creatable)', async () => {
     const user = setup()
-    render(<Combobox aria-label="Team" options={teams} defaultValue="mex" />)
+    render(<Combobox aria-label="Country" options={countries} defaultValue="mex" />)
     await user.clear(combobox())
     await user.type(combobox(), 'Spai')
     await user.tab()
@@ -438,8 +437,8 @@ describe('Combobox — selection and filtering', () => {
     const onValueChange = vi.fn()
     render(
       <Combobox
-        aria-label="Team"
-        options={teams}
+        aria-label="Country"
+        options={countries}
         defaultValue="mex"
         onValueChange={onValueChange}
       />,
@@ -454,19 +453,19 @@ describe('Combobox — selection and filtering', () => {
     const onValueChange = vi.fn()
     render(
       <Combobox
-        aria-label="Team"
-        options={teams}
+        aria-label="Country"
+        options={countries}
         defaultValue="mex"
         clearable
-        clearLabel="Clear team"
+        clearLabel="Clear country"
         onValueChange={onValueChange}
       />,
     )
-    await user.click(screen.getByRole('button', { name: 'Clear team' }))
+    await user.click(screen.getByRole('button', { name: 'Clear country' }))
     expect(onValueChange).toHaveBeenLastCalledWith(null)
     expect(combobox()).toHaveValue('')
     expect(combobox()).toHaveFocus()
-    expect(screen.queryByRole('button', { name: 'Clear team' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Clear country' })).not.toBeInTheDocument()
   })
 
   it('maxSelected disables the remaining options', async () => {
@@ -477,15 +476,12 @@ describe('Combobox — selection and filtering', () => {
         aria-label="Labels"
         options={flat}
         maxSelected={1}
-        defaultValue={['rent']}
+        defaultValue={['billing']}
       />,
     )
     await user.click(combobox())
-    expect(screen.getByRole('option', { name: 'Groceries' })).toHaveAttribute(
-      'aria-disabled',
-      'true',
-    )
-    expect(screen.getByRole('option', { name: /Rent/ })).not.toHaveAttribute('aria-disabled')
+    expect(screen.getByRole('option', { name: 'Design' })).toHaveAttribute('aria-disabled', 'true')
+    expect(screen.getByRole('option', { name: /Billing/ })).not.toHaveAttribute('aria-disabled')
   })
 })
 
@@ -498,23 +494,23 @@ describe('Combobox — multiple chips', () => {
         multiple
         aria-label="Labels"
         options={flat}
-        defaultValue={['rent', 'transport']}
+        defaultValue={['billing', 'support']}
         removeLabel={(label) => `Remove label ${label}`}
         onValueChange={onValueChange}
       />,
     )
-    expect(screen.getByRole('list')).toHaveTextContent('RentTransport')
-    await user.click(screen.getByRole('button', { name: 'Remove label Rent' }))
-    expect(onValueChange).toHaveBeenLastCalledWith(['transport'])
+    expect(screen.getByRole('list')).toHaveTextContent('BillingSupport')
+    await user.click(screen.getByRole('button', { name: 'Remove label Billing' }))
+    expect(onValueChange).toHaveBeenLastCalledWith(['support'])
     expect(combobox()).toHaveFocus()
   })
 
   it('clears the query after each pick', async () => {
     const user = setup()
     render(<Combobox multiple aria-label="Labels" options={flat} />)
-    await user.type(combobox(), 'tra{Enter}')
+    await user.type(combobox(), 'sup{Enter}')
     expect(combobox()).toHaveValue('')
-    expect(screen.getByRole('button', { name: 'Remove Transport' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Remove Support' })).toBeInTheDocument()
   })
 })
 
@@ -522,29 +518,29 @@ describe('Combobox — creatable', () => {
   it('commits free text on Enter (single)', async () => {
     const user = setup()
     const onValueChange = vi.fn()
-    render(<Combobox creatable aria-label="Payee" options={flat} onValueChange={onValueChange} />)
-    await user.type(combobox(), 'Corner bakery{Enter}')
-    expect(onValueChange).toHaveBeenLastCalledWith('Corner bakery')
-    expect(combobox()).toHaveValue('Corner bakery')
+    render(<Combobox creatable aria-label="Client" options={flat} onValueChange={onValueChange} />)
+    await user.type(combobox(), 'Paperkite Press{Enter}')
+    expect(onValueChange).toHaveBeenLastCalledWith('Paperkite Press')
+    expect(combobox()).toHaveValue('Paperkite Press')
     expect(combobox()).toHaveAttribute('aria-expanded', 'false')
   })
 
   it('commits free text on blur', async () => {
     const user = setup()
     const onValueChange = vi.fn()
-    render(<Combobox creatable aria-label="Payee" options={flat} onValueChange={onValueChange} />)
-    await user.type(combobox(), 'Corner bakery')
+    render(<Combobox creatable aria-label="Client" options={flat} onValueChange={onValueChange} />)
+    await user.type(combobox(), 'Paperkite Press')
     await user.tab()
-    expect(onValueChange).toHaveBeenLastCalledWith('Corner bakery')
+    expect(onValueChange).toHaveBeenLastCalledWith('Paperkite Press')
   })
 
   it('a typed label that matches an option picks that option', async () => {
     const user = setup()
     const onValueChange = vi.fn()
-    render(<Combobox creatable aria-label="Payee" options={flat} onValueChange={onValueChange} />)
-    await user.type(combobox(), 'rent{Enter}')
-    expect(onValueChange).toHaveBeenLastCalledWith('rent')
-    expect(combobox()).toHaveValue('Rent')
+    render(<Combobox creatable aria-label="Client" options={flat} onValueChange={onValueChange} />)
+    await user.type(combobox(), 'billing{Enter}')
+    expect(onValueChange).toHaveBeenLastCalledWith('billing')
+    expect(combobox()).toHaveValue('Billing')
   })
 
   it('multiple: Enter and blur add chips', async () => {
@@ -559,22 +555,22 @@ describe('Combobox — creatable', () => {
         onValueChange={onValueChange}
       />,
     )
-    await user.type(combobox(), 'Holiday{Enter}')
-    expect(onValueChange).toHaveBeenLastCalledWith(['Holiday'])
-    await user.type(combobox(), 'Gifts')
+    await user.type(combobox(), 'Research{Enter}')
+    expect(onValueChange).toHaveBeenLastCalledWith(['Research'])
+    await user.type(combobox(), 'Urgent')
     await user.tab()
-    expect(onValueChange).toHaveBeenLastCalledWith(['Holiday', 'Gifts'])
-    expect(screen.getByRole('button', { name: 'Remove Gifts' })).toBeInTheDocument()
+    expect(onValueChange).toHaveBeenLastCalledWith(['Research', 'Urgent'])
+    expect(screen.getByRole('button', { name: 'Remove Urgent' })).toBeInTheDocument()
   })
 
   it('an arrowed-to option still wins over the typed text', async () => {
     const user = setup()
     const onValueChange = vi.fn()
-    render(<Combobox creatable aria-label="Payee" options={flat} onValueChange={onValueChange} />)
-    await user.type(combobox(), 'r')
-    // Ranked: Rent (prefix) first. Committing the text would give 'r'.
+    render(<Combobox creatable aria-label="Client" options={flat} onValueChange={onValueChange} />)
+    await user.type(combobox(), 'b')
+    // Ranked: Billing (prefix) first. Committing the text would give 'b'.
     await user.keyboard('{ArrowDown}{Enter}')
-    expect(onValueChange).toHaveBeenLastCalledWith('rent')
+    expect(onValueChange).toHaveBeenLastCalledWith('billing')
   })
 })
 
@@ -590,18 +586,20 @@ describe('Combobox — form integration', () => {
         aria-label="Labels"
         name="labels"
         options={flat}
-        defaultValue={['rent', 'transport']}
+        defaultValue={['billing', 'support']}
       />,
     )
-    expect(hidden(view.container, 'labels')).toEqual(['rent', 'transport'])
+    expect(hidden(view.container, 'labels')).toEqual(['billing', 'support'])
     view.unmount()
     const { container: single, unmount } = render(
-      <Combobox aria-label="Team" name="team" options={teams} defaultValue="mex" />,
+      <Combobox aria-label="Country" name="country" options={countries} defaultValue="mex" />,
     )
-    expect(hidden(single, 'team')).toEqual(['mex'])
+    expect(hidden(single, 'country')).toEqual(['mex'])
     unmount()
-    const { container: empty } = render(<Combobox aria-label="Team" name="team" options={teams} />)
-    expect(hidden(empty, 'team')).toEqual([''])
+    const { container: empty } = render(
+      <Combobox aria-label="Country" name="country" options={countries} />,
+    )
+    expect(hidden(empty, 'country')).toEqual([''])
   })
 
   it('submits through FormData', () => {
@@ -612,12 +610,12 @@ describe('Combobox — form integration', () => {
           aria-label="Labels"
           name="labels"
           options={flat}
-          defaultValue={['rent', 'groceries']}
+          defaultValue={['billing', 'design']}
         />
       </form>,
     )
     const data = new FormData(must(container.querySelector('form')))
-    expect(data.getAll('labels')).toEqual(['rent', 'groceries'])
+    expect(data.getAll('labels')).toEqual(['billing', 'design'])
   })
 
   it('onBlur fires once focus leaves the whole control, not when moving to a chip', async () => {
@@ -629,7 +627,7 @@ describe('Combobox — form integration', () => {
           multiple
           aria-label="Labels"
           options={flat}
-          defaultValue={['rent']}
+          defaultValue={['billing']}
           onBlur={onBlur}
         />
         <button type="button">After</button>
@@ -637,7 +635,7 @@ describe('Combobox — form integration', () => {
     )
     await user.click(combobox())
     await user.tab({ shift: true }) // to the chip's remove button
-    expect(screen.getByRole('button', { name: 'Remove Rent' })).toHaveFocus()
+    expect(screen.getByRole('button', { name: 'Remove Billing' })).toHaveFocus()
     expect(onBlur).not.toHaveBeenCalled()
     await user.click(screen.getByRole('button', { name: 'After' }))
     expect(onBlur).toHaveBeenCalledTimes(1)
@@ -647,20 +645,22 @@ describe('Combobox — form integration', () => {
     const user = setup()
     const onValueChange = vi.fn()
     const { rerender } = render(
-      <Combobox aria-label="Team" options={teams} readOnly onValueChange={onValueChange} />,
+      <Combobox aria-label="Country" options={countries} readOnly onValueChange={onValueChange} />,
     )
     expect(combobox()).toHaveAttribute('readonly')
     await user.click(combobox())
     await user.keyboard('{ArrowDown}')
     expect(combobox()).toHaveAttribute('aria-expanded', 'false')
-    rerender(<Combobox aria-label="Team" options={teams} disabled onValueChange={onValueChange} />)
+    rerender(
+      <Combobox aria-label="Country" options={countries} disabled onValueChange={onValueChange} />,
+    )
     expect(combobox()).toBeDisabled()
     expect(onValueChange).not.toHaveBeenCalled()
   })
 
   it('announces the result count politely, debounced', async () => {
     const user = setup()
-    render(<Combobox aria-label="Team" options={teams} />)
+    render(<Combobox aria-label="Country" options={countries} />)
     const status = screen.getByRole('status')
     expect(status).toHaveAttribute('aria-live', 'polite')
     await user.type(combobox(), 'a')
@@ -674,7 +674,7 @@ describe('Combobox — form integration', () => {
     const user = setup()
     render(
       <div data-theme="fiesta" data-testid="scope">
-        <Combobox aria-label="Team" options={teams} />
+        <Combobox aria-label="Country" options={countries} />
       </div>,
     )
     await user.click(combobox())
@@ -684,7 +684,7 @@ describe('Combobox — form integration', () => {
   it('works with fake timers too (live region uses setTimeout)', () => {
     vi.useFakeTimers()
     try {
-      render(<Combobox aria-label="Team" options={teams} defaultOpen />)
+      render(<Combobox aria-label="Country" options={countries} defaultOpen />)
       act(() => {
         vi.advanceTimersByTime(600)
       })
