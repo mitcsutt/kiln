@@ -6,6 +6,7 @@
 ## Context
 
 The source has a strong, explicit standard. `DESIGN.md` sets the principles, the "not AI slop" rules, the token contract and the theme catalogue. `packages/ui/CLAUDE.md` sets the component rules:
+
 - `forwardRef`, compatible with React 18 and 19
 - unlayered CSS Modules that use only tokens
 - variants through data attributes, and typed props instead of style knobs

@@ -1,0 +1,40 @@
+packages:
+  - apps/*
+  - packages/*
+
+# One version of each shared dependency for the whole workspace (ADR 0006).
+# Reference these from package.json as "catalog:".
+catalog:
+  '@commitlint/cli': ^21.2.3
+  '@commitlint/config-conventional': ^21.2.3
+  '@eslint/js': ^10.0.1
+  '@types/node': ^24.0.0
+  '@vitest/eslint-plugin': ^1.6.27
+  eslint: ^10.12.0
+  eslint-config-prettier: ^10.1.8
+  eslint-import-resolver-typescript: ^4.4.5
+  eslint-plugin-import-x: ^4.17.1
+  eslint-plugin-jsx-a11y: ^6.10.2
+  eslint-plugin-react-hooks: ^7.1.1
+  eslint-plugin-react-refresh: ^0.5.7
+  eslint-plugin-storybook: ^10.6.1
+  eslint-plugin-testing-library: ^7.16.2
+  globals: ^17.13.0
+  lefthook: ^2.1.16
+  prettier: ^3.9.9
+  turbo: ^2.11.7
+  typescript: ~6.0.3
+  typescript-eslint: ^8.71.0
+  vite: ^8.3.2
+  vitest: ^5.0.3
+
+# Dependencies allowed to run install scripts.
+allowBuilds:
+  lefthook: true
+  unrs-resolver: true
+
+peerDependencyRules:
+  # eslint-plugin-jsx-a11y has not declared ESLint 10 support yet. The
+  # kiln-eslint-config tests run its rules on ESLint 10 to prove they work.
+  allowedVersions:
+    eslint-plugin-jsx-a11y>eslint: '10'

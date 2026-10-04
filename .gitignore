@@ -1,0 +1,31 @@
+# Dependencies
+node_modules
+
+# Build output
+dist
+storybook-static
+.next
+out
+
+# Tooling caches
+.turbo
+.eslintcache
+coverage
+*.tsbuildinfo
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+
+# OS and editor
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea
+
+# Local agent settings
+.claude/settings.local.json

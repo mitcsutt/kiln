@@ -1,0 +1,82 @@
+{
+  "name": "@mitcsutt/kiln-eslint-config",
+  "version": "0.1.0",
+  "description": "Shared flat ESLint config for Kiln and the projects that use it",
+  "keywords": [
+    "kiln",
+    "eslint",
+    "eslintconfig",
+    "eslint-config",
+    "flat-config",
+    "typescript-eslint"
+  ],
+  "homepage": "https://kiln.mitchellsutton.com",
+  "bugs": "https://github.com/mitcsutt/kiln/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mitcsutt/kiln.git",
+    "directory": "packages/eslint-config"
+  },
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    "./base": {
+      "types": "./types/base.d.ts",
+      "default": "./base.js"
+    },
+    "./react": {
+      "types": "./types/react.d.ts",
+      "default": "./react.js"
+    },
+    "./storybook": {
+      "types": "./types/storybook.d.ts",
+      "default": "./storybook.js"
+    },
+    "./node": {
+      "types": "./types/node.d.ts",
+      "default": "./node.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "*.js",
+    "types"
+  ],
+  "scripts": {
+    "lint": "eslint --max-warnings=0 .",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@eslint/js": "catalog:",
+    "@vitest/eslint-plugin": "catalog:",
+    "eslint-config-prettier": "catalog:",
+    "eslint-import-resolver-typescript": "catalog:",
+    "eslint-plugin-import-x": "catalog:",
+    "eslint-plugin-jsx-a11y": "catalog:",
+    "eslint-plugin-react-hooks": "catalog:",
+    "eslint-plugin-react-refresh": "catalog:",
+    "eslint-plugin-storybook": "catalog:",
+    "eslint-plugin-testing-library": "catalog:",
+    "globals": "catalog:",
+    "typescript-eslint": "catalog:"
+  },
+  "devDependencies": {
+    "@mitcsutt/kiln-tsconfig": "workspace:*",
+    "@types/node": "catalog:",
+    "eslint": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:"
+  },
+  "peerDependencies": {
+    "eslint": "^10.0.0",
+    "typescript": ">=4.8.4 <6.1.0"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

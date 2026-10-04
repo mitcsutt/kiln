@@ -1,0 +1,42 @@
+name: Bug report
+description: Something in a Kiln package doesn't work as documented.
+labels: [bug]
+body:
+  - type: dropdown
+    id: package
+    attributes:
+      label: Package
+      options:
+        - '@mitcsutt/kiln-eslint-config'
+        - '@mitcsutt/kiln-prettier-config'
+        - '@mitcsutt/kiln-tsconfig'
+        - Other or not sure
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Package version
+      placeholder: 0.1.0
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what happened instead.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: A minimal example or a link to a repository that shows the problem.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Node.js version, package manager and version, and the versions of any related tools (ESLint, Prettier, TypeScript, React).
+      render: text
