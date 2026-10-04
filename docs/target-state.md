@@ -12,11 +12,11 @@ Decisions and their reasoning live in [`adr/`](adr/). When this document and an 
 
 The UI and forms code comes from the `mitchell-sutton` monorepo (`github.com/mitcsutt/mitchell-sutton`), pinned at **`origin/main` @ `0fc4294`**. It is a plain copy with no git history ([ADR 0002](adr/0002-port-by-copy.md)).
 
-| Source path @ `0fc4294` | Becomes |
-|---|---|
-| `packages/ui` (`@repo/ui`, "Press") | `packages/ui` (`@mitcsutt/kiln-ui`) |
-| `packages/forms` (`@repo/forms`) | `packages/forms` (`@mitcsutt/kiln-forms`) |
-| `packages/testing-react18` | Whatever the React 18 test pass needs ([ADR 0004](adr/0004-react-18-and-19.md)) |
+| Source path @ `0fc4294`                                | Becomes                                                                                                    |
+| ------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |
+| `packages/ui` (`@repo/ui`, "Press")                    | `packages/ui` (`@mitcsutt/kiln-ui`)                                                                        |
+| `packages/forms` (`@repo/forms`)                       | `packages/forms` (`@mitcsutt/kiln-forms`)                                                                  |
+| `packages/testing-react18`                             | Whatever the React 18 test pass needs ([ADR 0004](adr/0004-react-18-and-19.md))                            |
 | `packages/eslint-config`, `packages/typescript-config` | Inputs to the new config packages, not copied as they are ([ADR 0007](adr/0007-shared-config-packages.md)) |
 
 Read these source documents before porting. They describe how the code works and why:

@@ -9,17 +9,17 @@ The source monorepo uses pnpm, Turborepo, Vitest, ESLint 9 flat config, Prettier
 
 ## Decision
 
-| Concern | Choice |
-|---|---|
-| Package manager | pnpm, with **catalogs** for shared dependency versions (replaces syncpack) |
-| Task runner | Turborepo, with remote cache optional |
-| Tests | Vitest + Testing Library, co-located with source |
-| Lint / format | ESLint (flat) + Prettier, both through Kiln's own config packages (0007) |
-| Git hooks | Lefthook (format and lint staged files) |
-| Commits | Conventional Commits, enforced by commitlint |
-| Releases | Changesets (0008) |
-| CI | GitHub Actions |
-| Runtime | Node LTS, pinned in `.nvmrc` and `engines`, with `packageManager` set for Corepack |
+| Concern         | Choice                                                                             |
+| --------------- | ---------------------------------------------------------------------------------- |
+| Package manager | pnpm, with **catalogs** for shared dependency versions (replaces syncpack)         |
+| Task runner     | Turborepo, with remote cache optional                                              |
+| Tests           | Vitest + Testing Library, co-located with source                                   |
+| Lint / format   | ESLint (flat) + Prettier, both through Kiln's own config packages (0007)           |
+| Git hooks       | Lefthook (format and lint staged files)                                            |
+| Commits         | Conventional Commits, enforced by commitlint                                       |
+| Releases        | Changesets (0008)                                                                  |
+| CI              | GitHub Actions                                                                     |
+| Runtime         | Node LTS, pinned in `.nvmrc` and `engines`, with `packageManager` set for Corepack |
 
 Biome was considered and set aside: Kiln relies on the react-hooks, jsx-a11y, import-x and Storybook ESLint plugins, which Biome doesn't fully replace.
 

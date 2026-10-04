@@ -1,0 +1,54 @@
+{
+  "name": "@mitcsutt/kiln-prettier-config",
+  "version": "0.1.0",
+  "description": "Shared Prettier config for Kiln and the projects that use it",
+  "keywords": [
+    "kiln",
+    "prettier",
+    "prettier-config",
+    "config"
+  ],
+  "homepage": "https://kiln.mitchellsutton.com",
+  "bugs": "https://github.com/mitcsutt/kiln/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mitcsutt/kiln.git",
+    "directory": "packages/prettier-config"
+  },
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "default": "./index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "types"
+  ],
+  "scripts": {
+    "lint": "eslint --max-warnings=0 .",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@mitcsutt/kiln-tsconfig": "workspace:*",
+    "@types/node": "catalog:",
+    "eslint": "catalog:",
+    "prettier": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:"
+  },
+  "peerDependencies": {
+    "prettier": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -4,9 +4,12 @@ Kiln is a monorepo of published `@mitcsutt/kiln-*` packages: a themeable React d
 
 ## Current state
 
-The repo is **plan only**. The code hasn't been ported or scaffolded yet. Your job is to bring the repo to the end state in `docs/target-state.md`.
+The workspace foundation is in place: a pnpm workspace (shared versions in the `pnpm-workspace.yaml` catalog), Turborepo, and the three config packages in `packages/eslint-config`, `packages/prettier-config` and `packages/tsconfig`. `ui`, `forms`, the docs site, Storybook and the release pipeline haven't been ported or scaffolded yet. Your job is to bring the repo to the end state in `docs/target-state.md`.
 
-- **`docs/target-state.md` is the spec.** It defines *done* as acceptance criteria. Order, approach and tooling details are yours to choose, within its criteria.
+- **Commands** (from the root, Node from `.nvmrc`, pnpm through Corepack): `pnpm lint` (ESLint plus `prettier --check .`), `pnpm typecheck`, `pnpm test`, `pnpm build`, `pnpm format`. CI runs the first four on every PR and on `main`.
+- **Lint and format config:** one root `eslint.config.js` built from `@mitcsutt/kiln-eslint-config` serves every package; Prettier reads `@mitcsutt/kiln-prettier-config` from the root `package.json`. Every package `tsconfig.json` extends a `@mitcsutt/kiln-tsconfig` preset.
+
+- **`docs/target-state.md` is the spec.** It defines _done_ as acceptance criteria. Order, approach and tooling details are yours to choose, within its criteria.
 - **`docs/adr/` holds the decisions.** Read the index before starting. If you need to depart from an ADR, add a new ADR that supersedes it, give the reasoning, and flag it in your PR. Never quietly diverge.
 - **Decisions the target state leaves open** (for example how the forms/ui name collisions are resolved) get recorded as new ADRs too.
 - **Done is release-ready, not released.** Never publish to npm and never deploy a site. Those are separate, human-triggered steps.
@@ -23,3 +26,14 @@ The UI and forms code is ported from `github.com/mitcsutt/mitchell-sutton` at co
 - **Standards are binding.** Once ported, `DESIGN.md` and the per-package authoring guides are binding standards. Follow them, and change them only together with the lint rules or tests that enforce them.
 
 As the repo takes shape, replace the "Current state" section above with real commands, layout and conventions, so that this file always describes the repo as it is.
+
+<!-- BEGIN:turborepo-agent-rules -->
+
+# This is NOT the Turborepo you know
+
+Turborepo configuration, task behavior, and CLI commands can vary between installed versions and may differ from your training data. Resolve the `turbo` package from this file's directory or relevant workspace; in monorepos, it may not be visible from the repository root. For example, run `node -p "require.resolve('turbo/package.json')"` from a workspace that depends on `turbo`.
+
+Read `docs/README.md` inside that installed package first, then read the relevant pages from its `docs/` directory before changing Turborepo configuration or commands. Heed deprecation notices. These bundled docs match the installed package version and are available without network access.
+
+This block is written and re-added by `turbo` before repository-scoped commands when an AI agent is detected. In the Turborepo source repository, its template is defined in `crates/turborepo-cli/src/cli/agent_guidance.rs`. Removing the managed block while updates are enabled means a later qualifying invocation will add it again. Set `"agentGuidance": false` in the root `turbo.json` or `turbo.jsonc` to opt out; this does not remove an existing block. Keep the block committed with your work to avoid an uncommitted change on the next agent invocation.
+<!-- END:turborepo-agent-rules -->

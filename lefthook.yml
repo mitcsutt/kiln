@@ -1,0 +1,19 @@
+# Git hooks, installed by the lefthook package on `pnpm install`.
+# See https://lefthook.dev/configuration/
+
+pre-commit:
+  parallel: false
+  jobs:
+    - name: format
+      run: pnpm exec prettier --write --ignore-unknown {staged_files}
+      stage_fixed: true
+
+    - name: lint
+      glob: '*.{js,jsx,mjs,cjs,ts,tsx,mts,cts}'
+      run: pnpm exec eslint --fix --max-warnings=0 --no-warn-ignored {staged_files}
+      stage_fixed: true
+
+commit-msg:
+  jobs:
+    - name: commitlint
+      run: pnpm exec commitlint --edit {1}

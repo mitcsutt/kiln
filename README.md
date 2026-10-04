@@ -1,24 +1,36 @@
 # Kiln
 
-Kiln is a themeable React design system and form library, published to npm under the `@mitcsutt` scope.
+[![CI](https://github.com/mitcsutt/kiln/actions/workflows/ci.yml/badge.svg)](https://github.com/mitcsutt/kiln/actions/workflows/ci.yml)
 
-> **Status: planning.** This repository holds only the plan right now. Nothing is built yet. The intended end state is described in [`docs/target-state.md`](docs/target-state.md), and the reasoning behind each decision is in [`docs/adr/`](docs/adr/).
+Kiln is a themeable React design system and form library, published to npm under the `@mitcsutt` scope, along with the shared ESLint, Prettier and TypeScript configs it's built with.
+
+> **Status: in progress, unreleased.** The workspace and the three config packages are in place. The UI and forms packages, the docs site and Storybook are still to come. Nothing is published to npm yet. The intended end state is described in [`docs/target-state.md`](docs/target-state.md), and the reasoning behind each decision is in [`docs/adr/`](docs/adr/).
 
 ## What Kiln is for
 
 I kept rebuilding the same components, form plumbing and lint configs in every project. Kiln pulls them into one place, so any new project can install them, theme them and get going.
 
-It starts with five packages:
+## Packages
 
-| Package | What it is |
-|---|---|
-| `@mitcsutt/kiln-ui` | Themeable components on Radix primitives, with plain CSS, design tokens, and a default theme plus opt-in presets |
-| `@mitcsutt/kiln-forms` | A form library on TanStack Form. Forms can be written as components or described as JSON schemas, and both render through `kiln-ui`. |
-| `@mitcsutt/kiln-eslint-config` | A shared flat ESLint config |
-| `@mitcsutt/kiln-prettier-config` | A shared Prettier config |
-| `@mitcsutt/kiln-tsconfig` | Shared TypeScript presets |
+| Package                                                      | What it is                                                                                                                           | Status      |
+| ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
+| `@mitcsutt/kiln-ui`                                          | Themeable components on Radix primitives, with plain CSS, design tokens, and a default theme plus opt-in presets                     | Not started |
+| `@mitcsutt/kiln-forms`                                       | A form library on TanStack Form. Forms can be written as components or described as JSON schemas, and both render through `kiln-ui`. | Not started |
+| [`@mitcsutt/kiln-eslint-config`](packages/eslint-config)     | A shared, type-aware flat ESLint config                                                                                              | Unreleased  |
+| [`@mitcsutt/kiln-prettier-config`](packages/prettier-config) | A shared Prettier config                                                                                                             | Unreleased  |
+| [`@mitcsutt/kiln-tsconfig`](packages/tsconfig)               | Shared TypeScript presets                                                                                                            | Unreleased  |
 
 More general utilities will follow as `@mitcsutt/kiln-*` packages.
+
+## Quick start
+
+Once the packages are published, a project picks up Kiln's tooling with:
+
+```sh
+pnpm add -D @mitcsutt/kiln-eslint-config @mitcsutt/kiln-prettier-config @mitcsutt/kiln-tsconfig eslint prettier typescript
+```
+
+Each package's README shows how to wire it up. To work on Kiln itself, see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Ideas it's built on
 
@@ -26,6 +38,12 @@ More general utilities will follow as `@mitcsutt/kiln-*` packages.
 - **Props, not styles.** Layout and intent are typed props (`gap={5}`, `tone="critical"`), not utility classes or inline styles.
 - **Durable by default.** Components forward refs, work on React 18 and 19, render on the server, and are complete for keyboard and screen-reader users.
 - **Docs for people and agents.** A docs site for people, Storybook for development, and agent skills shipped inside each package via [TanStack Intent](https://tanstack.com/intent), so coding agents in a consumer's project know how to use Kiln correctly.
+
+## Links
+
+- Docs site: [kiln.mitchellsutton.com](https://kiln.mitchellsutton.com) (not live yet)
+- Storybook: [kiln.mitchellsutton.com/storybook](https://kiln.mitchellsutton.com/storybook) (not live yet)
+- [Contributing](CONTRIBUTING.md), [Security policy](SECURITY.md), [Code of Conduct](CODE_OF_CONDUCT.md)
 
 ## Licence
 
