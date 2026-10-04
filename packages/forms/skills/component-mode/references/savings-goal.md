@@ -61,7 +61,7 @@ export default function SavingsGoal() {
           <Text tone="muted">Fill in the sentence to see the monthly amount.</Text>
         ) : (
           <Text>
-            That&apos;s  a month.
+            That&apos;s <Amount value={monthly} currency="GBP" locale="en-GB" /> a month.
           </Text>
         )}
         <FormActions align="start">

@@ -98,7 +98,8 @@ export default function AccountSettings() {
           </Heading>
           <Text tone="muted">Changes save as you make them.</Text>
         </Stack>
-              </Inline>
+        <FormStatus form={form} />
+      </Inline>
       <Form form={form} aria-label="Profile and alerts">
         <Stack gap={8} dividers>
           <FormAside
@@ -142,7 +143,8 @@ export default function AccountSettings() {
           </FormAside>
         </Stack>
       </Form>
-          </Stack>
+      <PasswordForm />
+    </Stack>
   )
 }
 ```

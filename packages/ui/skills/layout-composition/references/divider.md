@@ -15,10 +15,15 @@ export default function Usage() {
   return (
     <Stack gap={4}>
       <Text>Morning departures</Text>
-                        <Inline gap={3}>
+      <Divider />
+      <Divider label="Afternoon" spacing={4} />
+      <Divider label="Evening" labelPosition="center" strong />
+      <Inline gap={3}>
         <Text size="sm">Timetable</Text>
-                <Text size="sm">Fares</Text>
-                <Text size="sm">Accessibility</Text>
+        <Divider orientation="vertical" />
+        <Text size="sm">Fares</Text>
+        <Divider orientation="vertical" />
+        <Text size="sm">Accessibility</Text>
       </Inline>
     </Stack>
   )

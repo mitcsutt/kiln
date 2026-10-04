@@ -21,7 +21,8 @@ export default function Usage() {
   return (
     <Form form={form} aria-label="Claim a refund">
       <Stack gap={5}>
-                <form.TextField name="name" label="Full name" validators={required('Enter your name')} />
+        <ErrorSummary title="Check these before you claim" />
+        <form.TextField name="name" label="Full name" validators={required('Enter your name')} />
         <form.TextField
           name="email"
           label="Email"

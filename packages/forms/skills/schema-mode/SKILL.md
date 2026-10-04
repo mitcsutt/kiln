@@ -84,7 +84,8 @@ export default function SchemaFormExample() {
   })
   return (
     <Form form={form} aria-label="Report lost property">
-          </Form>
+      <SchemaForm form={form} schema={schema} />
+    </Form>
   )
 }
 ```
@@ -114,7 +115,8 @@ A schema from a server or a CMS isn't known at build time, so it can't be typed 
 ```tsx
 <Form form={form}>
   <form.TextField name="name" label="Full name" />
-  </Form>
+  <SchemaNode form={form} schema={schema} id="contact-details" />
+</Form>
 ```
 
 ## Context

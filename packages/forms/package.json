@@ -60,6 +60,7 @@
   "scripts": {
     "build": "vite build",
     "check:package": "pnpm pack --out node_modules/.cache/kiln-pack/package.tgz > /dev/null && publint --pack pnpm --strict && attw node_modules/.cache/kiln-pack/package.tgz --profile esm-only && node scripts/check-schema-entry.ts node_modules/.cache/kiln-pack/package.tgz",
+    "check:skills": "intent validate",
     "lint": "eslint --max-warnings=0 .",
     "size": "node ../../size-report.ts",
     "test": "vitest run",
@@ -73,6 +74,7 @@
     "@arethetypeswrong/cli": "catalog:",
     "@mitcsutt/kiln-testing-react18": "workspace:*",
     "@mitcsutt/kiln-tsconfig": "workspace:*",
+    "@tanstack/intent": "catalog:",
     "@mitcsutt/kiln-ui": "workspace:*",
     "@storybook/react-vite": "catalog:",
     "@testing-library/jest-dom": "catalog:",

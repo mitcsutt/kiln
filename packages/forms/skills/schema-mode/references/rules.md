@@ -76,7 +76,8 @@ export default function Rules() {
   })
   return (
     <Form form={form} aria-label="Sign up">
-          </Form>
+      <SchemaForm form={form} schema={schema} />
+    </Form>
   )
 }
 ```

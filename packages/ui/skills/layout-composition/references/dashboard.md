@@ -60,7 +60,25 @@ export default function Dashboard() {
             }
           />
           <Grid columns={{ base: 1, sm: 3 }} gap={6}>
-                                              </Grid>
+            <Stat
+              label="Rides"
+              value="2,418"
+              delta={{ value: '9%', direction: 'up', tone: 'positive' }}
+              rule
+            />
+            <Stat
+              label="Bikes in service"
+              value="164"
+              delta={{ value: '6', direction: 'down', tone: 'critical' }}
+              rule
+            />
+            <Stat
+              label="Revenue"
+              value="£6,935"
+              delta={{ value: '£410', direction: 'up', tone: 'positive' }}
+              rule
+            />
+          </Grid>
           <Split ratio="7/5" gap={7}>
             <Stack gap={4}>
               <Text weight="strong">Docking stations</Text>
@@ -81,9 +99,21 @@ export default function Dashboard() {
                         {station.bikes} / {station.docks}
                       </Table.Cell>
                       <Table.Cell hideBelow="sm">
-                                              </Table.Cell>
+                        <Meter
+                          value={station.bikes}
+                          max={station.docks}
+                          low={station.docks * 0.25}
+                          optimum={station.docks * 0.6}
+                          size="sm"
+                          label={`${station.name} occupancy`}
+                        />
+                      </Table.Cell>
                       <Table.Cell>
-                                              </Table.Cell>
+                        <StatusDot
+                          tone={STATUS[station.status].tone}
+                          label={STATUS[station.status].label}
+                        />
+                      </Table.Cell>
                     </Table.Row>
                   ))}
                 </Table.Body>

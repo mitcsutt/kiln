@@ -60,11 +60,11 @@ The whole Harbour file is in the repository at [`apps/docs/src/styles/harbour.cs
 
 ## 4. Load it and select it
 
-Import your theme after Kiln's stylesheet, then name it. `ThemeName` accepts any string, so there's no type to extend and nothing to register:
+Import your theme after Kiln's stylesheet (`import './harbour.css'` on the next line: your bundler loads your own CSS as it does any other), then name it. `ThemeName` accepts any string, so there's no type to extend and nothing to register:
 
 ```tsx title="app root"
 import '@mitcsutt/kiln-ui/styles.css'
-import './harbour.css'
+// import './harbour.css'
 import { ThemeProvider } from '@mitcsutt/kiln-ui'
 
 ;<ThemeProvider theme="harbour">…</ThemeProvider>

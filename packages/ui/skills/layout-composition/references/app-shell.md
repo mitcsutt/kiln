@@ -26,10 +26,10 @@ import {
 
 const SECTIONS = ['Departures', 'Routes', 'Tickets', 'Account']
 const ICONS = [
-  ,
-  ,
-  ,
-  ,
+  <ArrowRightIcon key="d" />,
+  <SearchIcon key="r" />,
+  <CircleCheckIcon key="t" />,
+  <SystemIcon key="a" />,
 ]
 
 export default function Usage() {
@@ -71,7 +71,14 @@ export default function Usage() {
       <AppShell.BottomBar>
         <BottomNav position="static" hideAbove="md" label="Main">
           {SECTIONS.map((section, index) => (
-                      ))}
+            <BottomNav.Item
+              key={section}
+              href={`#${section.toLowerCase()}`}
+              icon={ICONS[index]}
+              label={section}
+              active={index === 0}
+            />
+          ))}
         </BottomNav>
       </AppShell.BottomBar>
     </AppShell>

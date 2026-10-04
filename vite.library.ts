@@ -18,7 +18,8 @@
  *   be downloaded.
  * - Declarations come from `tsc -p tsconfig.build.json`, with every specifier rewritten
  *   to a relative `.js` path so they resolve under `moduleResolution: node16` as well as
- *   `bundler`.
+ *   `bundler`. A hand-written `.d.ts` the source references with `preserve="true"` is
+ *   copied alongside them.
  */
 import { execFileSync } from 'node:child_process'
 import { cpSync, existsSync, readFileSync, readdirSync, statSync, writeFileSync } from 'node:fs'
@@ -132,13 +133,29 @@ function emitDeclarations(root: string, outDir: string): void {
     cwd: root,
     stdio: 'inherit',
   })
+  const srcDir = join(root, 'src')
   for (const file of walk(outDir).filter((f) => f.endsWith('.d.ts'))) {
     const source = readFileSync(file, 'utf8')
-    const rewritten = source.replace(
-      /(from\s+|import\s*\(\s*)(['"])([^'"]+)\2/g,
-      (_, lead: string, quote: string, spec: string) =>
-        `${lead}${quote}${resolveDeclarationSpecifier(spec, file, outDir)}${quote}`,
-    )
+    const rewritten = source
+      .replace(
+        /(from\s+|import\s*\(\s*)(['"])([^'"]+)\2/g,
+        (_, lead: string, quote: string, spec: string) =>
+          `${lead}${quote}${resolveDeclarationSpecifier(spec, file, outDir)}${quote}`,
+      )
+      // A hand-written declaration file that the source references with `preserve="true"`
+      // (tsc keeps the reference but points it into src/) is copied and pointed at the copy.
+      .replace(
+        /(\/\/\/\s*<reference\s+path=)(['"])([^'"]+)\2/g,
+        (_, lead: string, quote: string, spec: string) => {
+          const target = resolve(dirname(file), spec)
+          if (!target.startsWith(srcDir + sep)) {
+            throw new Error(`${relative(outDir, file)} references ${spec}, outside src/`)
+          }
+          const copy = join(outDir, relative(srcDir, target))
+          cpSync(target, copy)
+          return `${lead}${quote}${relativeSpecifier(dirname(file), copy)}${quote}`
+        },
+      )
     if (rewritten !== source) writeFileSync(file, rewritten)
   }
 }
