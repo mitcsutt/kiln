@@ -1,0 +1,158 @@
+/**
+ * Serves the built site and follows every internal link from `/`, failing on a page that
+ * doesn't answer 200 or an `#anchor` that names no element on its page. Run it after
+ * `pnpm build`.
+ *
+ *   node scripts/check-links.ts
+ *
+ * It checks the site as a reader gets it, rewrites and route handlers included, so
+ * `/docs/<page>.md`, `llms.txt` and the search index are crawled like any other page.
+ */
+import { spawn } from 'node:child_process'
+import { createServer } from 'node:net'
+import { resolve } from 'node:path'
+
+const app = resolve(import.meta.dirname, '..')
+const CONCURRENCY = 8
+/** Where the site will be served. Absolute links to it (llms.txt uses them) are checked locally. */
+const SITE_URL = 'https://kiln.mitchellsutton.com'
+
+function freePort(): Promise<number> {
+  return new Promise((done, fail) => {
+    const server = createServer()
+    server.once('error', fail)
+    server.listen(0, () => {
+      const address = server.address()
+      server.close(() => {
+        if (address && typeof address === 'object') done(address.port)
+        else fail(new Error('No port'))
+      })
+    })
+  })
+}
+
+const port = await freePort()
+const origin = `http://127.0.0.1:${String(port)}`
+const next = spawn('pnpm', ['exec', 'next', 'start', '-p', String(port), '-H', '127.0.0.1'], {
+  cwd: app,
+  stdio: ['ignore', 'pipe', 'inherit'],
+})
+
+async function waitForServer(): Promise<void> {
+  for (let attempt = 0; attempt < 120; attempt++) {
+    try {
+      const response = await fetch(origin)
+      if (response.status < 500) return
+    } catch {
+      // not listening yet
+    }
+    await new Promise((done) => setTimeout(done, 500))
+  }
+  throw new Error('The docs server did not start. Run `pnpm build` first.')
+}
+
+interface Fetched {
+  status: number
+  ids: Set<string>
+  links: string[]
+}
+
+const fetched = new Map<string, Promise<Fetched>>()
+const problems: string[] = []
+
+/** Same-origin links in a page, resolved against it, without their fragment's page part. */
+function linksIn(html: string, base: URL): string[] {
+  const found: string[] = []
+  for (const match of html.matchAll(/<a\b[^>]*\shref="([^"]+)"/g)) {
+    const href = match[1]?.replace(/&amp;/g, '&')
+    if (!href || /^(mailto|tel|javascript):/.test(href)) continue
+    const url = new URL(href, base)
+    if (url.origin !== origin) continue
+    found.push(url.pathname + url.search + url.hash)
+  }
+  return found
+}
+
+/** Links in the Markdown routes: `[text](url)`, with the public site's URLs mapped here. */
+function markdownLinksIn(markdown: string, base: URL): string[] {
+  const found: string[] = []
+  for (const match of markdown.matchAll(/\]\(([^)\s]+)\)/g)) {
+    const href = match[1]
+    if (!href) continue
+    const url = new URL(href.startsWith(SITE_URL) ? href.slice(SITE_URL.length) || '/' : href, base)
+    if (url.origin !== origin) continue
+    // Fragments in Markdown point at headings in the HTML page, which the HTML crawl checks.
+    found.push(url.pathname + url.search)
+  }
+  return found
+}
+
+function load(path: string): Promise<Fetched> {
+  const existing = fetched.get(path)
+  if (existing) return existing
+  const pending = (async () => {
+    const response = await fetch(origin + path, { redirect: 'follow' })
+    const type = response.headers.get('content-type') ?? ''
+    if (type.includes('text/markdown')) {
+      return {
+        status: response.status,
+        ids: new Set<string>(),
+        links: markdownLinksIn(await response.text(), new URL(origin + path)),
+      }
+    }
+    if (!type.includes('text/html')) {
+      await response.arrayBuffer()
+      return { status: response.status, ids: new Set<string>(), links: [] }
+    }
+    const html = await response.text()
+    const ids = new Set([...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1] ?? ''))
+    return { status: response.status, ids, links: linksIn(html, new URL(origin + path)) }
+  })()
+  fetched.set(path, pending)
+  return pending
+}
+
+async function crawl(start: string[]): Promise<number> {
+  const queue = [...start]
+  const seen = new Set(queue)
+  const referrers = new Map<string, string>()
+  let checked = 0
+  const worker = async (): Promise<void> => {
+    for (let target = queue.shift(); target !== undefined; target = queue.shift()) {
+      const [path = '/', hash] = target.split('#')
+      const page = await load(path)
+      checked++
+      const from = referrers.get(target) ?? 'the start list'
+      if (page.status !== 200) {
+        problems.push(`${String(page.status)} ${path} (linked from ${from})`)
+        continue
+      }
+      if (hash && !page.ids.has(decodeURIComponent(hash))) {
+        problems.push(`missing #${hash} on ${path} (linked from ${from})`)
+      }
+      for (const link of page.links) {
+        if (seen.has(link)) continue
+        seen.add(link)
+        referrers.set(link, path)
+        queue.push(link)
+      }
+    }
+  }
+  // Workers stop when the queue runs dry, so keep going until a round finds nothing new.
+  while (queue.length) await Promise.all(Array.from({ length: CONCURRENCY }, worker))
+  return checked
+}
+
+try {
+  await waitForServer()
+  const checked = await crawl(['/', '/docs', '/llms.txt', '/llms-full.txt', '/api/search'])
+  if (problems.length) {
+    console.error(`Broken internal links (${String(problems.length)}):`)
+    for (const problem of problems.sort()) console.error(`  ${problem}`)
+    process.exitCode = 1
+  } else {
+    console.log(`Checked ${String(checked)} internal links: none broken.`)
+  }
+} finally {
+  next.kill()
+}

@@ -1,0 +1,9 @@
+/* The page tree sits on the sunken surface, ruled off from the reading column. */
+.shell {
+  --app-shell-sidebar-width: 17rem;
+}
+
+.sidebar {
+  border-inline-end: var(--border-width) solid var(--color-line);
+  background: var(--color-surface-sunken);
+}

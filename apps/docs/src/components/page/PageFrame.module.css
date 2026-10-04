@@ -1,0 +1,81 @@
+/*
+ * The reading column and its table of contents. Prose keeps its own measure for text;
+ * the column is wider so previews and API tables have room.
+ */
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-8);
+  padding-block: var(--space-7) var(--space-9);
+}
+@media (min-width: 80em) {
+  .layout {
+    grid-template-columns: minmax(0, 52rem) 13rem;
+    justify-content: space-between;
+  }
+}
+
+.article {
+  min-inline-size: 0;
+}
+
+.header {
+  padding-block-end: var(--space-6);
+  margin-block-end: var(--space-7);
+  border-block-end: var(--border-width) solid var(--color-line);
+}
+
+.prose {
+  --prose-measure: 52rem;
+}
+
+.toc {
+  display: none;
+}
+@media (min-width: 80em) {
+  .toc {
+    display: block;
+    position: sticky;
+    inset-block-start: calc(var(--control-lg) + var(--space-4) + var(--space-7));
+    align-self: start;
+    max-block-size: calc(100dvh - var(--control-lg) - var(--space-9));
+    overflow-y: auto;
+  }
+}
+
+.tocItem[data-depth='3'] {
+  padding-inline-start: var(--space-4);
+}
+
+.pager {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+  margin-block-start: var(--space-9);
+  padding-block-start: var(--space-6);
+  border-block-start: var(--border-width) solid var(--color-line);
+}
+
+.pagerLink {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-4);
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--radius-surface);
+  color: var(--color-ink);
+  text-decoration: none;
+  transition: border-color var(--dur-1) var(--ease-out);
+}
+.pagerLink:hover {
+  border-color: var(--color-line-strong);
+}
+.pagerLink:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+.pagerLink[data-next] {
+  grid-column: 2;
+  align-items: end;
+  text-align: end;
+}

@@ -1,0 +1,30 @@
+/* The docs sidebar: a scrolling column of the page tree, padded off the shell's edge. */
+.nav {
+  padding-block: var(--space-6) var(--space-9);
+  padding-inline: var(--space-5) var(--space-4);
+}
+
+.sectionLabel {
+  font-family: var(--heading-font);
+  letter-spacing: var(--heading-tracking);
+  text-transform: var(--heading-transform);
+}
+
+.groups {
+  margin-inline-start: calc(var(--space-1) * -1);
+}
+
+.links {
+  padding-block-end: var(--space-3);
+}
+
+/* A group heading reads as a quiet label beside the links, not as a page heading. */
+.groupTrigger {
+  min-block-size: var(--control-md);
+  padding-block: var(--space-2);
+  font-family: var(--font-text);
+  font-size: var(--text-sm);
+  font-weight: var(--label-weight);
+  letter-spacing: var(--label-tracking);
+  text-transform: var(--label-transform);
+}
