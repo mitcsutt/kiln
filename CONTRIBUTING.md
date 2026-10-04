@@ -25,7 +25,9 @@ packages/
   testing-react18/   private test fixture for the React 18 test pass (never published)
 docs/
   adr/               architecture decision records
+  releasing.md       how releases work, and what the first publish needs
   target-state.md    what the repo looks like when the first body of work is done
+.changeset/          pending changesets and the Changesets config
 DESIGN.md            the design system's principles, anti-slop rules and token contract
 vite.library.ts      the library build every runtime package shares
 size-report.ts       size budgets and tree-shaking checks for built packages
@@ -50,7 +52,7 @@ Run these from the repo root. Turborepo runs each one across the workspace and c
 
 To work on one package, filter to it, for example `pnpm turbo run test --filter=@mitcsutt/kiln-eslint-config`.
 
-CI runs all of these except `format` on every pull request and on `main`, and they must all pass. On a pull request it also comments the size report, compared with the base branch.
+CI runs all of these except `format` on every pull request and on `main`, plus a changeset check on pull requests, and they must all pass. On a pull request it also comments the size report, compared with the base branch.
 
 ## Conventions
 
@@ -66,7 +68,23 @@ CI runs all of these except `format` on every pull request and on `main`, and th
 
 Every pull request that changes a published package needs a changeset describing the change, so the package gets the right version bump and changelog entry ([ADR 0008](docs/adr/0008-versioning-and-release.md)). Packages version independently.
 
-Rule changes in the config packages are semver changes: a new error-level ESLint rule is a minor or major bump, never a patch.
+To add one, run this from the repo root and commit the file it creates in `.changeset/`:
+
+```sh
+pnpm changeset
+```
+
+It asks which packages changed, the bump for each (`patch`, `minor` or `major`), and a summary. The summary becomes the changelog entry, so write it for the people who use the package. To skip the prompts, pass everything as flags:
+
+```sh
+pnpm changeset --minor @mitcsutt/kiln-eslint-config -m "Add the node preset"
+```
+
+The `Changeset` CI job fails when a pull request changes a published package without adding a changeset. Changes that only touch tests (`test/`, `*.test.*`) or stories (`*.stories.*`) don't count. If a change needs no release, such as a README typo, add an empty changeset instead: `pnpm changeset --empty`. `pnpm changeset status --since=origin/main` runs the same check locally once your changeset is committed.
+
+While packages are on `0.x`, a breaking change is a `minor` bump. Rule changes in the config packages are semver changes: a new error-level ESLint rule is a minor or major bump, never a patch.
+
+You don't bump versions or edit changelogs by hand. [`docs/releasing.md`](docs/releasing.md) covers how changesets become releases.
 
 ## Reporting bugs and security issues
 
