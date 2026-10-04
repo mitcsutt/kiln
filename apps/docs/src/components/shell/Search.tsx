@@ -21,7 +21,7 @@ const client = staticClient({ from: '/api/search' })
 
 /** Search results arrive as Markdown with `<mark>` around the matches. Render only the marks. */
 function highlighted(content: string): ReactNode[] {
-  const plain = content.replace(/[*_`#>[\]]/g, '')
+  const plain = content.replace(/[*_`#[\]]/g, '')
   return plain.split(/(<mark>.*?<\/mark>)/g).map((part, index) => {
     const match = /^<mark>(.*)<\/mark>$/.exec(part)
     return match ? <mark key={index}>{match[1]}</mark> : part
