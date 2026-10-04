@@ -1,0 +1,15 @@
+---
+title: TagsInput
+description: Free-form tags in one box. Enter or a comma adds one, Backspace removes the last.
+exports: [TagsInput]
+---
+
+`TagsInput` collects short free-form values: type and press Enter (or a comma) to add one, press Backspace in an empty box to remove the last, or use each chip's remove button. Pasting splits on the delimiters. With `name`, each tag submits as its own hidden input.
+
+<Example name="ui/inputs/tags-input/usage" />
+
+`normalise` (`trim`, `lowercase` or `none`) cleans each tag, `allowDuplicates` permits repeats, `maxTags` caps the count, and `onReject` tells you why a tag wasn't added.
+
+## API
+
+<ApiTable of="TagsInputProps" />

@@ -1,0 +1,55 @@
+---
+title: Prettier config
+description: Single quotes, no semicolons, trailing commas everywhere, a 100-column line and two-space indents.
+---
+
+`@mitcsutt/kiln-prettier-config` is the formatting every Kiln package and app uses.
+
+| Option          | Value   |
+| --------------- | ------- |
+| `semi`          | `false` |
+| `singleQuote`   | `true`  |
+| `trailingComma` | `'all'` |
+| `printWidth`    | `100`   |
+| `tabWidth`      | `2`     |
+| `useTabs`       | `false` |
+
+## Install
+
+```sh
+pnpm add -D @mitcsutt/kiln-prettier-config prettier
+```
+
+## Use it
+
+Point Prettier at it from `package.json`:
+
+```json title="package.json"
+{
+  "prettier": "@mitcsutt/kiln-prettier-config"
+}
+```
+
+Then check and write:
+
+```sh
+pnpm exec prettier --check .
+pnpm exec prettier --write .
+```
+
+## Change an option
+
+To change one setting, spread the config into your own `prettier.config.js` instead of pointing at it from `package.json`:
+
+```js title="prettier.config.js"
+import kiln from '@mitcsutt/kiln-prettier-config'
+
+export default {
+  ...kiln,
+  proseWrap: 'always',
+}
+```
+
+## With ESLint
+
+The [ESLint config](/docs/tooling/eslint-config) ends with `eslint-config-prettier`, so ESLint never reports formatting. Run Prettier as its own check, before or alongside lint. Kiln's root `lint` script runs ESLint and then `prettier --check .`.

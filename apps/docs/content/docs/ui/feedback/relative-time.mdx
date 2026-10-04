@@ -1,0 +1,27 @@
+---
+title: RelativeTime
+description: How long ago, or how long until. A time element that keeps itself current and renders safely on the server.
+exports: [RelativeTime, formatRelativeTime, formatAbsoluteTime]
+---
+
+`RelativeTime` renders a `<time>` that reads "3 mins ago" or "in 2 hours", and updates itself (every 30 seconds by default). The full date is always in its `title`.
+
+<Example name="ui/feedback/relative-time/usage" />
+
+It's safe to server-render: the server and the first client render both show the absolute date, because no clock is read during render, so hydration can't disagree about "now". The relative wording appears once the component has mounted.
+
+`format` is `long` ("3 minutes ago"), `short` (the default, "3 mins ago") or `narrow` ("3m ago"). `prefix` adds text inside the element ("Updated 3 mins ago"). Anything under 45 seconds reads as "now".
+
+## Formatting without the element
+
+`formatRelativeTime` and `formatAbsoluteTime` return the strings, for a tooltip, a notification or an `aria-label`.
+
+<Example name="ui/feedback/relative-time/format" />
+
+<ApiSignature of="formatRelativeTime" />
+
+<ApiSignature of="formatAbsoluteTime" />
+
+## API
+
+<ApiTable of="RelativeTimeProps" />

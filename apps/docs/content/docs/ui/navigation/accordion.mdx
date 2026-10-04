@@ -1,0 +1,21 @@
+---
+title: Accordion
+description: Expandable sections with a turning chevron. Also Kiln's disclosure, for a single "why?" note.
+exports: [Accordion]
+---
+
+`Accordion` stacks sections whose content expands under their heading. It's Radix Accordion underneath, so triggers are buttons inside headings, and arrow keys move between them.
+
+<Example name="ui/navigation/accordion/usage" />
+
+`type="single"` opens one section at a time (and is collapsible unless you pass `collapsible={false}`); `type="multiple"` lets any number stay open. A single item works as a disclosure for an inline "why do we ask this?" note. Set the heading level of the triggers with `level` on `Accordion.Trigger`.
+
+## Contained
+
+`variant="divided"` (the default) separates sections with rules. `variant="contained"` puts them in a framed box, for a few sections inside a page.
+
+<Example name="ui/navigation/accordion/contained" />
+
+## API
+
+<ApiTable of="AccordionProps, AccordionItemProps, AccordionTriggerProps" />

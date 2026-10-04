@@ -53,6 +53,15 @@ describe('every export with behaviour has a page', () => {
 })
 
 describe('page references', () => {
+  const known = new Set(allApi().map((entry) => entry.name))
+
+  it.each(pages)('$path names real exports in its API tables', ({ body }) => {
+    const named = [...body.matchAll(/<Api(?:Table|Signature)\b[^>]*\bof="([^"]+)"/g)].flatMap(
+      (match) => (match[1] ?? '').split(',').map((name) => name.trim()),
+    )
+    expect(named.filter((name) => !known.has(name))).toEqual([])
+  })
+
   it.each(pages)('$path uses examples that exist', ({ body }) => {
     for (const match of body.matchAll(/<Example\b[^>]*\bname="([^"]+)"/g)) {
       expect(existsSync(join(contentDir, '../../examples', `${match[1] ?? ''}.tsx`))).toBe(true)

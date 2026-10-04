@@ -1,0 +1,27 @@
+---
+title: Heading
+description: A heading whose level sets the document outline and whose size sets the look, independently.
+exports: [Heading]
+---
+
+`Heading` keeps two things apart that HTML ties together: `level` is the outline (`h1` to `h6`, for screen readers and search), and `size` is how big it looks. A sidebar's `h2` can be small; a hero's `h1` can be a display step.
+
+<Example name="ui/typography/heading/usage" />
+
+With no `size`, each level has a default look (`DEFAULT_HEADING_SIZE`). Headings use the theme's heading role (face, weight, tracking, transform) and display sizes use its display role. `balance` (on by default) evens out line lengths. `tone="muted"` steps a heading back; `tone="accent"` is rarely right.
+
+## Sizes
+
+`size` is a display step (`display-lg`, `display-md`, `display-sm`) or a text step (`3xl` down to `sm`), and takes responsive values: `size={{ base: '2xl', md: 'display-sm' }}`.
+
+<Example name="ui/typography/heading/sizes" />
+
+## API
+
+<ApiTable of="HeadingProps" />
+
+### Component tokens
+
+Set these in a theme, or on one element, to change this component without touching the rest.
+
+<ComponentTokens of="Heading" />

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 400" role="img" aria-label="A harbour at dusk: a ferry at the pier, a lighthouse on the headland">
+  <rect width="640" height="400" fill="#c9d6dc"/>
+  <circle cx="470" cy="120" r="46" fill="#efc48f"/>
+  <path d="M0 230 L120 170 L210 205 L330 150 L450 210 L640 160 L640 260 L0 260 Z" fill="#7d94a0"/>
+  <rect y="250" width="640" height="150" fill="#4f6b7a"/>
+  <path d="M0 290 h640 M0 330 h640 M0 370 h640" stroke="#5f7d8c" stroke-width="3"/>
+  <rect x="520" y="150" width="22" height="100" fill="#ece7dc"/>
+  <rect x="520" y="150" width="22" height="18" fill="#c4553d"/>
+  <rect x="516" y="138" width="30" height="12" fill="#2f3b42"/>
+  <rect x="60" y="240" width="200" height="14" fill="#3a4a52"/>
+  <path d="M110 255 h190 l-22 34 h-150 Z" fill="#ece7dc"/>
+  <rect x="150" y="226" width="100" height="29" fill="#ece7dc"/>
+  <rect x="160" y="233" width="14" height="10" fill="#4f6b7a"/>
+  <rect x="182" y="233" width="14" height="10" fill="#4f6b7a"/>
+  <rect x="204" y="233" width="14" height="10" fill="#4f6b7a"/>
+  <rect x="226" y="233" width="14" height="10" fill="#4f6b7a"/>
+  <rect x="236" y="206" width="10" height="20" fill="#c4553d"/>
+</svg>

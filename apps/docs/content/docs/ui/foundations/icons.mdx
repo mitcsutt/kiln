@@ -1,0 +1,47 @@
+---
+title: Icons
+description: The twenty-odd glyphs Kiln's components need, drawn on a 20px grid with a stroke the theme sets.
+exports: [createIcon]
+---
+
+Kiln ships deliberately few icons: the ones its own components need (chevrons, a check, a close cross, search, the tone glyphs). They're drawn on a 20px grid, stroked with `currentColor`, and their stroke weight is a theme token (`--icon-stroke`), so they're fine-lined in Monograph and chunky in Fiesta. Bring your own set for everything else.
+
+<Example name="ui/foundations/icons" />
+
+## Use one
+
+```tsx
+import { ArrowUpRightIcon, Button } from '@mitcsutt/kiln-ui'
+
+;<Button variant="outline" tone="neutral" trailingIcon={<ArrowUpRightIcon />}>
+  Source on GitHub
+</Button>
+```
+
+An icon is decorative by default (`aria-hidden`). Give it a `label` when it's the only thing that says what something means, and it becomes `role="img"` with that name. Icons size to the surrounding text (`size="inherit"`) unless you pass `xs`, `sm`, `md` or `lg`.
+
+Wherever a component takes an icon (`leadingIcon`, `icon`), any SVG element works, so an icon from your own set drops straight in.
+
+## Make one that matches
+
+`createIcon` gives you a component with the same grid, stroke and props as Kiln's own:
+
+```tsx
+import { createIcon } from '@mitcsutt/kiln-ui'
+
+export const AnchorIcon = createIcon(
+  'AnchorIcon',
+  <>
+    <circle cx="10" cy="4.5" r="1.75" />
+    <path d="M10 6.25V16.5M6 9.5h8M4 12a6 6 0 0 0 12 0" />
+  </>,
+)
+```
+
+Draw on a 20 by 20 grid, with strokes only (no fills), round caps and joins.
+
+## Rules
+
+At most one icon per row. Never put an icon in a tinted circle, and never use emoji as interface.
+
+<ApiTable of="IconProps" />

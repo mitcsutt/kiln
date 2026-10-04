@@ -1,0 +1,67 @@
+---
+title: TSConfig
+description: Strict TypeScript presets for libraries, React apps and Node tooling, to extend or combine.
+---
+
+`@mitcsutt/kiln-tsconfig` holds the compiler settings Kiln's packages and apps share. Each preset is a JSON file to extend.
+
+## Install
+
+```sh
+pnpm add -D @mitcsutt/kiln-tsconfig typescript
+```
+
+## Pick a preset
+
+| Preset    | What it sets                                                                                                                                |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `base`    | `strict`, `noUncheckedIndexedAccess`, `noImplicitOverride`, `verbatimModuleSyntax`, `isolatedModules`, Bundler resolution, an ES2022 target |
+| `react`   | `base`, plus the DOM libraries and the automatic JSX runtime                                                                                |
+| `library` | `base`, plus declarations, declaration maps and source maps                                                                                 |
+| `app`     | `base`, plus `noEmit` and `allowJs`, for code a bundler or framework builds                                                                 |
+| `node`    | `base`, with Node.js resolution (`NodeNext`) and Node types, for scripts and tooling. It needs `@types/node`                                |
+
+```json title="tsconfig.json"
+{
+  "extends": "@mitcsutt/kiln-tsconfig/react",
+  "include": ["src"]
+}
+```
+
+## Combine presets
+
+`extends` takes a list, and later entries win. Every preset builds on `base`, so each one carries `base`'s settings too, including `lib`. **Put `react` last**: it's the preset that changes `lib` (adding the DOM), and anything after it would set `lib` back to `base`'s.
+
+A React component library takes `library` for declarations and `react` for JSX and the DOM:
+
+```json title="tsconfig.json"
+{
+  "extends": ["@mitcsutt/kiln-tsconfig/library", "@mitcsutt/kiln-tsconfig/react"],
+  "include": ["src"]
+}
+```
+
+A Next.js or Vite app takes `app` and `react`. These docs are built that way:
+
+```json title="apps/docs/tsconfig.json"
+{
+  "extends": ["@mitcsutt/kiln-tsconfig/app", "@mitcsutt/kiln-tsconfig/react"],
+  "compilerOptions": {
+    "plugins": [{ "name": "next" }],
+    "paths": { "@/*": ["./src/*"] }
+  },
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"]
+}
+```
+
+Run `tsc --showConfig` to see what the combination resolves to.
+
+Every preset can also be imported with its extension, for example `@mitcsutt/kiln-tsconfig/base.json`, for tools that resolve config files by path.
+
+## What the strict settings catch
+
+- `noUncheckedIndexedAccess` types `items[0]` as `Item | undefined`, so a missing element is handled before it's used.
+- `verbatimModuleSyntax` keeps `import type` imports out of the emitted JavaScript, which is what bundlers and Node's type stripping expect. The [ESLint config](/docs/tooling/eslint-config) enforces the matching `consistent-type-imports`.
+- `noImplicitOverride` requires `override` on a class member that replaces a parent's.
+
+Turning on a stricter option is a minor or major release of this package, never a patch, because it can fail a build that passed before.

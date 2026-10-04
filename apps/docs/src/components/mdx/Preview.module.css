@@ -24,6 +24,12 @@
 .stage[data-layout='bleed'] {
   padding: 0;
 }
+.stage[data-layout='frame'] {
+  block-size: 32rem;
+  padding: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
 
 .code {
   border-block-start: var(--border-width) solid var(--color-line);

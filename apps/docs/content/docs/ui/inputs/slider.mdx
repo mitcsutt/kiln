@@ -1,0 +1,15 @@
+---
+title: Slider
+description: One number from a continuous range, by dragging or with the arrow keys.
+exports: [Slider]
+---
+
+`Slider` is Radix Slider with Kiln's look. Arrow keys step, Page Up and Page Down step by ten, and Home and End jump to the ends. Label it with a Field (see [SliderField](/docs/ui/inputs/slider-field)) or an `aria-label`.
+
+<Example name="ui/inputs/slider/usage" />
+
+`marks` labels points under the track, and a mark's label becomes the thumb's spoken value when it lands there. `showValue` prints the value, formatted with `formatOptions`. `onValueCommit` fires when the drag ends, for work you don't want to do on every move.
+
+## API
+
+<ApiTable of="SliderProps" />

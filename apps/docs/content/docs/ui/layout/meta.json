@@ -1,0 +1,17 @@
+{
+  "title": "Layout",
+  "pages": [
+    "stack",
+    "inline",
+    "grid",
+    "split",
+    "container",
+    "section",
+    "box",
+    "divider",
+    "aspect-ratio",
+    "app-shell",
+    "action-bar",
+    "visually-hidden"
+  ]
+}

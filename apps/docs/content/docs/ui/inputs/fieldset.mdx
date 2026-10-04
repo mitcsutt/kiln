@@ -1,0 +1,15 @@
+---
+title: Fieldset
+description: Groups related controls under one legend, with a description and an error for the group.
+exports: [Fieldset]
+---
+
+`Fieldset` is a `<fieldset>` and `<legend>` with Kiln's styles: an address block, a set of checkboxes, a radio group. Screen readers announce the legend with each control inside, so "Town" becomes "Delivery address, Town".
+
+<Example name="ui/inputs/fieldset/usage" />
+
+`description`, `error` and `warning` describe the whole group. `disabled` disables every control inside, as native fieldsets do. `layout="horizontal"` puts the legend in the label column, lined up with horizontal fields. `legendHidden` hides the legend visually when a heading above already says it.
+
+## API
+
+<ApiTable of="FieldsetProps" />

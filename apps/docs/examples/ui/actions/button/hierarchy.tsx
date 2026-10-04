@@ -5,7 +5,7 @@ import { Button, Inline } from '@mitcsutt/kiln-ui'
 export default function Hierarchy() {
   return (
     <Inline gap={3}>
-      <Button>Publish fixtures</Button>
+      <Button>Publish timetable</Button>
       <Button variant="outline" tone="neutral">
         Export CSV
       </Button>

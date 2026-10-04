@@ -1,0 +1,17 @@
+---
+title: Tooltip
+description: A short label that appears on hover and keyboard focus. Never for anything interactive.
+exports: [Tooltip, TooltipProvider]
+---
+
+`Tooltip` shows a short label beside its trigger on hover and on keyboard focus. It's portalled, so an `overflow: hidden` parent never clips it. Keep it to a few words, and never put anything interactive in it: use a [Popover](/docs/ui/overlays/popover) for that.
+
+<Example name="ui/overlays/tooltip/usage" />
+
+A tooltip supplements a name; it isn't one. An `IconButton` already has its `label` as its accessible name, and the tooltip shows that same label to pointer users.
+
+`TooltipProvider` shares delays between tooltips, so moving along a toolbar shows each one instantly after the first. Put one near the app root. Tooltips work without it.
+
+## API
+
+<ApiTable of="TooltipProps" />

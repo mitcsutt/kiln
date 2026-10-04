@@ -1,0 +1,167 @@
+/* Specimen sheets: framed like a preview, so Prose leaves their insides alone. */
+.specimen {
+  margin-block: var(--space-6);
+  padding: var(--space-6);
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--radius-surface);
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-text);
+  font-size: var(--text-md);
+}
+
+.swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  gap: var(--space-4);
+}
+
+.swatch {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-inline-size: 0;
+}
+
+.chip {
+  block-size: var(--space-8);
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--radius-field);
+}
+
+.value {
+  overflow-wrap: anywhere;
+}
+
+.typeRow {
+  display: grid;
+  grid-template-columns: 11rem minmax(0, 1fr);
+  align-items: baseline;
+  gap: var(--space-4);
+}
+@media (max-width: 47.99em) {
+  .typeRow {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-1);
+  }
+}
+
+.typeMeta {
+  white-space: nowrap;
+}
+
+.text {
+  font-family: var(--font-text);
+  line-height: var(--leading-snug);
+  overflow-wrap: anywhere;
+}
+
+.display {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-style: var(--display-style);
+  font-stretch: var(--display-stretch);
+  letter-spacing: var(--display-tracking);
+  text-transform: var(--display-transform);
+  line-height: var(--leading-tight);
+  overflow-wrap: anywhere;
+}
+
+.spaceRow {
+  display: grid;
+  grid-template-columns: 6rem minmax(0, auto) auto;
+  justify-content: start;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.bar {
+  block-size: var(--space-3);
+  max-inline-size: 100%;
+  background: var(--color-accent);
+  border-radius: var(--radius-chip);
+}
+
+.radii,
+.depths {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+  gap: var(--space-6);
+}
+
+.radius {
+  inline-size: var(--space-8);
+  block-size: var(--space-8);
+  border: var(--border-width-strong) solid var(--color-ink);
+  background: var(--color-surface);
+}
+
+.depth {
+  inline-size: 100%;
+  block-size: var(--space-8);
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--radius-surface);
+  background: var(--color-surface-raised);
+}
+
+.track {
+  --_duration: var(--dur-2);
+  --_easing: var(--ease-out);
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  inline-size: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--radius-field);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+  transition-property: border-color;
+  transition-duration: var(--_duration);
+  transition-timing-function: var(--_easing);
+}
+.track:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.lane {
+  flex: none;
+  inline-size: var(--space-10);
+}
+
+.puck {
+  display: block;
+  inline-size: var(--space-4);
+  block-size: var(--space-4);
+  border-radius: var(--radius-chip);
+  background: var(--color-accent);
+  transition: translate var(--_duration) var(--_easing);
+}
+.track:hover .puck,
+.track:focus-visible .puck {
+  translate: calc(var(--space-10) - var(--space-4)) 0;
+}
+
+.reference {
+  margin-block: var(--space-6);
+}
+
+.tokenName {
+  white-space: nowrap;
+}
+
+.tokenValue code {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.starter {
+  max-block-size: 36rem;
+  overflow: auto;
+}

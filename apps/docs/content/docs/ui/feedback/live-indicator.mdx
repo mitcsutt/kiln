@@ -1,0 +1,15 @@
+---
+title: LiveIndicator
+description: This is happening now. A dot with a slow ring and a short label.
+exports: [LiveIndicator]
+---
+
+`LiveIndicator` marks something in progress: live tracking, a sync, a recording. The ring pulses slowly and stops under reduced motion.
+
+<Example name="ui/feedback/live-indicator/usage" />
+
+It's deliberately not a live region: a counter that announced itself every minute would be noise. If a change matters, announce it where it happens. For states that sit still, use a [StatusDot](/docs/ui/feedback/status-dot).
+
+## API
+
+<ApiTable of="LiveIndicatorProps" />

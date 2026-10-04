@@ -1,0 +1,27 @@
+---
+title: Stat
+description: A single labelled figure with its change, set on one baseline. No tile, no icon, no gradient.
+exports: [Stat]
+---
+
+`Stat` is a number that matters, with its label and how it changed. It's typographic on purpose: label, figure and change on one baseline, in the theme's numeric face. A row of them on a hairline reads better than three tiles with an icon in a tinted circle each.
+
+<Example name="ui/display/stat/usage" />
+
+`delta` takes a `value`, a `direction` and a `tone`. Choose the tone by whether the change is good news, not by its direction: fewer delays is `down` and `positive`. `hint` adds context such as a target, and `rule` draws a hairline above.
+
+## The hero figure
+
+`size="hero"` is for the one number a page is about.
+
+<Example name="ui/display/stat/hero" />
+
+## API
+
+<ApiTable of="StatProps, StatDelta" />
+
+### Component tokens
+
+Set these in a theme, or on one element, to change this component without touching the rest.
+
+<ComponentTokens of="Stat" />

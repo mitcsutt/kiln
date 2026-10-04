@@ -6,7 +6,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "generate": "node scripts/generate-api.ts && node scripts/generate-examples.ts && fumadocs-mdx",
+    "generate": "node scripts/generate-api.ts && node scripts/generate-tokens.ts && node scripts/generate-examples.ts && fumadocs-mdx",
     "dev": "pnpm generate && next dev",
     "build": "pnpm generate && next build",
     "start": "next start",
@@ -33,6 +33,7 @@
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "eslint": "catalog:",
+    "node-html-parser": "^9.0.4",
     "typescript": "catalog:",
     "unist-util-visit": "^5.1.0",
     "vitest": "catalog:",

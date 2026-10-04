@@ -1,0 +1,27 @@
+---
+title: Dialog
+description: A modal dialog that traps focus, closes on Escape, and returns focus to whatever opened it.
+exports: [Dialog]
+---
+
+`Dialog` interrupts to ask for a decision or a small piece of input. It's Radix Dialog underneath: focus moves into it and is trapped there, Escape and the scrim close it, page scroll locks, and focus returns to the trigger when it closes.
+
+<Example name="ui/overlays/dialog/usage" layout="centered" />
+
+`Dialog.Content` takes the `title` (the dialog's accessible name) and a `description`. Every dialog needs a name, so if you leave `title` out, render a `Dialog.Title` yourself. Name the buttons for what they do: "Keep booking" and "Cancel booking", never "OK" and "Cancel".
+
+`size` is `sm` for confirmations, `md` (the default) for short forms and `lg` for reading. `hideClose` removes the corner close button when a `Dialog.Close` in the footer covers it.
+
+## With a form
+
+Control `open` to close the dialog when the form submits.
+
+<Example name="ui/overlays/dialog/form" />
+
+## Themes
+
+A dialog opened inside a `ThemeScope` renders in that scope's theme, even though it's portalled to the end of the document.
+
+## API
+
+<ApiTable of="DialogProps, DialogContentProps" />

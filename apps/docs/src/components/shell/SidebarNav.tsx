@@ -41,6 +41,16 @@ function PageLinks({ nodes, pathname, label }: PageLinksProps) {
   )
 }
 
+/** Splits a folder's items at its meta.json separators (`---Fields---`) into labelled runs. */
+function runs(nodes: PageTree.Node[]): { label?: string; nodes: PageTree.Node[] }[] {
+  const result: { label?: string; nodes: PageTree.Node[] }[] = [{ nodes: [] }]
+  for (const node of nodes) {
+    if (node.type === 'separator') result.push({ label: nodeText(node.name), nodes: [] })
+    else result.at(-1)?.nodes.push(node)
+  }
+  return result.filter((run) => run.nodes.length)
+}
+
 /** A second-level folder (UI/Inputs, Forms/Fields): one disclosure, open while it holds the current page. */
 function Group({
   folder,
@@ -52,15 +62,25 @@ function Group({
   section: string
 }) {
   const items: PageTree.Node[] = folder.index ? [folder.index, ...folder.children] : folder.children
+  const name = `${section}: ${nodeText(folder.name)}`
   return (
     <Accordion.Item value={nodeKey(folder)}>
       <Accordion.Trigger className={styles.groupTrigger}>{folder.name}</Accordion.Trigger>
       <Accordion.Content>
-        <PageLinks
-          nodes={items}
-          pathname={pathname}
-          label={`${section}: ${nodeText(folder.name)}`}
-        />
+        {runs(items).map((run) => (
+          <div key={run.label ?? 'pages'}>
+            {run.label ? (
+              <Text as="p" size="xs" tone="muted" className={styles.runLabel}>
+                {run.label}
+              </Text>
+            ) : null}
+            <PageLinks
+              nodes={run.nodes}
+              pathname={pathname}
+              label={run.label ? `${name}, ${run.label}` : name}
+            />
+          </div>
+        ))}
       </Accordion.Content>
     </Accordion.Item>
   )

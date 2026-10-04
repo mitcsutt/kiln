@@ -1,0 +1,37 @@
+---
+title: Table
+description: A semantic data table with numeric columns that line up, sortable headers and a footer for totals.
+exports: [Table]
+---
+
+`Table` is a real `<table>` with Kiln's styles: rules between rows, numeric columns in tabular figures, and a wrapper that scrolls sideways on narrow screens instead of breaking the layout.
+
+<Example name="ui/display/table/usage" />
+
+- `Table.Cell numeric` and `Table.HeaderCell numeric` right-align figures in the theme's numeric face. In Ledger that's condensed mono, like receipt tape.
+- `Table.Cell rowHeader` renders a `<th scope="row">`, the cell that names its row.
+- `Table.Row highlighted` marks "you" or the row that needs attention.
+- `hideBelow` on a cell drops a column on small screens. Hide the header cell and every body cell in that column.
+- `Table.Foot` holds totals. Ledger rules it off with a double line.
+
+Give every table a name: a `Table.Caption`, or `label` when the caption would repeat a heading.
+
+## Sorting
+
+Pass `sort` and `onSort` to a header cell and its label becomes a button with `aria-sort` set. The table doesn't sort for you: decide the next direction and reorder the rows yourself.
+
+<Example name="ui/display/table/sorting" />
+
+## Density, stripes and sticky headers
+
+`density="compact"` for dense data, `striped` for alternating fills (rules usually read better), and `stickyHeader` to keep the header in view while the rows scroll inside the table.
+
+## API
+
+<ApiTable of="TableProps, TableRowProps, TableHeaderCellProps, TableCellProps" />
+
+### Component tokens
+
+Set these in a theme, or on one element, to change this component without touching the rest.
+
+<ComponentTokens of="Table" />

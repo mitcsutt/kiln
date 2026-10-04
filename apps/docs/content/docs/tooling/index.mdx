@@ -1,0 +1,30 @@
+---
+title: Overview
+description: The ESLint, Prettier and TypeScript configs Kiln is built with, published so any project can use the same ones.
+---
+
+Kiln lints, formats and type-checks itself with three config packages, and publishes them so another project can pick up the same setup with one dependency each, instead of copying config files around and watching them drift.
+
+| Package                          | What it is                                                     |
+| -------------------------------- | -------------------------------------------------------------- |
+| `@mitcsutt/kiln-eslint-config`   | A type-aware flat ESLint config, in layers you compose         |
+| `@mitcsutt/kiln-prettier-config` | Single quotes, no semicolons, trailing commas, 100 columns     |
+| `@mitcsutt/kiln-tsconfig`        | Strict TypeScript presets for libraries, apps and Node tooling |
+
+## Install all three
+
+```sh
+pnpm add -D @mitcsutt/kiln-eslint-config @mitcsutt/kiln-prettier-config @mitcsutt/kiln-tsconfig eslint prettier typescript
+```
+
+Then wire each one up:
+
+- [ESLint config](/docs/tooling/eslint-config): an `eslint.config.js` that composes `base` with the layers you need.
+- [Prettier config](/docs/tooling/prettier-config): one line in `package.json`.
+- [TSConfig](/docs/tooling/tsconfig): a `tsconfig.json` that extends a preset.
+
+## What they agree on
+
+The three are designed together. ESLint leaves formatting to Prettier (`eslint-config-prettier` comes last), the type-aware rules read the same `tsconfig.json` the compiler uses, and `consistent-type-imports` matches the `verbatimModuleSyntax` the TS presets turn on.
+
+Rule and option changes follow semver: a new error-level lint rule or a stricter compiler option is a minor or major release of its package, never a patch.

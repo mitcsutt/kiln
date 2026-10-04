@@ -2,6 +2,8 @@ import '@mitcsutt/kiln-ui/styles.css'
 import '@mitcsutt/kiln-ui/themes/monograph.css'
 import '@mitcsutt/kiln-ui/themes/ledger.css'
 import '@mitcsutt/kiln-ui/themes/fiesta.css'
+// The Theming guide's custom theme: an ordinary consumer stylesheet.
+import '@/styles/harbour.css'
 import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
 import { DocsThemeProvider } from '@/components/DocsThemeProvider'

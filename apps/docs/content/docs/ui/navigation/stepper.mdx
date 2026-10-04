@@ -1,0 +1,17 @@
+---
+title: Stepper
+description: Where you are in a multi-step flow. A step indicator, not a form control.
+exports: [Stepper]
+---
+
+`Stepper` shows the steps of a flow and which one you're on. It doesn't hold the form: drive it and the step content from the same state, and pair it with an `ActionBar` for back and next.
+
+<Example name="ui/navigation/stepper/usage" />
+
+Each step has a `value`, a `label`, an optional `description`, and a `status` (`complete`, `current`, `upcoming` or `error`). With `onStepSelect`, completed steps become buttons that jump back. `compactBelow` collapses it to "Step 2 of 4" on small screens; `orientation="vertical"` stacks it for a sidebar.
+
+For a form split into steps with validation per step, use kiln-forms' [FormSteps](/docs/forms/layouts/form-steps), which renders a `Stepper` for you.
+
+## API
+
+<ApiTable of="StepperProps, StepperStep" />

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Illustrated portrait">
+  <rect width="120" height="120" fill="#d9c9b0"/>
+  <path d="M18 120 C22 92 40 82 60 82 C80 82 98 92 102 120 Z" fill="#4f6b7a"/>
+  <circle cx="60" cy="52" r="24" fill="#b88a6a"/>
+  <path d="M36 50 C36 30 50 22 62 22 C78 22 86 34 84 50 C78 40 66 36 52 40 C46 42 40 46 36 50 Z" fill="#2f2622"/>
+</svg>

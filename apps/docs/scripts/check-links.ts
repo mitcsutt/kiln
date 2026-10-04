@@ -11,6 +11,7 @@
 import { spawn } from 'node:child_process'
 import { createServer } from 'node:net'
 import { resolve } from 'node:path'
+import { parse } from 'node-html-parser'
 
 const app = resolve(import.meta.dirname, '..')
 const CONCURRENCY = 8
@@ -60,12 +61,17 @@ interface Fetched {
 const fetched = new Map<string, Promise<Fetched>>()
 const problems: string[] = []
 
-/** Same-origin links in a page, resolved against it, without their fragment's page part. */
+/**
+ * Same-origin links in a page, resolved against it. Live examples link to `#stops` and
+ * the like to show a component, not to go anywhere, so fragment-only links inside an
+ * example stage are skipped. Their links to other pages are still checked.
+ */
 function linksIn(html: string, base: URL): string[] {
   const found: string[] = []
-  for (const match of html.matchAll(/<a\b[^>]*\shref="([^"]+)"/g)) {
-    const href = match[1]?.replace(/&amp;/g, '&')
+  for (const anchor of parse(html).querySelectorAll('a[href]')) {
+    const href = anchor.getAttribute('href')
     if (!href || /^(mailto|tel|javascript):/.test(href)) continue
+    if (href.startsWith('#') && anchor.closest('[data-example-stage]')) continue
     const url = new URL(href, base)
     if (url.origin !== origin) continue
     found.push(url.pathname + url.search + url.hash)
@@ -105,7 +111,11 @@ function load(path: string): Promise<Fetched> {
       return { status: response.status, ids: new Set<string>(), links: [] }
     }
     const html = await response.text()
-    const ids = new Set([...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1] ?? ''))
+    const ids = new Set(
+      parse(html)
+        .querySelectorAll('[id]')
+        .map((element) => element.id),
+    )
     return { status: response.status, ids, links: linksIn(html, new URL(origin + path)) }
   })()
   fetched.set(path, pending)

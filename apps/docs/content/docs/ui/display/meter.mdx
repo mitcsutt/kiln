@@ -1,0 +1,29 @@
+---
+title: Meter
+description: A measurement against a known range, whose tone follows thresholds you set, so the app never picks colours.
+exports: [Meter, meterTone]
+---
+
+`Meter` shows where a value sits in a range: seats taken, budget spent, storage used. Give it `low`, `high` and `optimum` thresholds and the tone follows the value, so 60% of capacity is calm, 90% is a warning, and over the limit is critical.
+
+<Example name="ui/display/meter/usage" />
+
+`valueLabel` is the spoken and printed value ("212 of 320 seats"). `segments` splits the bar into discrete cells, for small counts.
+
+## The tone without the bar
+
+`meterTone` returns the tone a meter would pick. Unlike the native `<meter>`, a value past `max` still counts as past `high`: an overspent budget must not read as fine.
+
+<Example name="ui/display/meter/tone" />
+
+<ApiSignature of="meterTone" />
+
+## API
+
+<ApiTable of="MeterProps" />
+
+### Component tokens
+
+Set these in a theme, or on one element, to change this component without touching the rest.
+
+<ComponentTokens of="Meter" />

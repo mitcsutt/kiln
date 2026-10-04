@@ -1,0 +1,20 @@
+---
+title: Settings
+description: A settings page with section navigation, labelled fields, grouped switches and a guarded destructive action.
+---
+
+Settings pages are long, rarely visited, and read by people looking for one thing. So the sections are named and linked, every control has a visible label and a sentence of description where the effect isn't obvious, and the one destructive action asks before it acts.
+
+<Example name="ui/patterns/settings" layout="bleed" />
+
+## What it's made of
+
+- **`Split ratio="1/3"`** with vertical **`NavLinks`** for the sections. Below `md` the split stacks, and the links sit above the form.
+- **`TextField`, `TextareaField` and `SelectField`**, the composed fields from [Inputs](/docs/ui/inputs/field): label, description, error and warning wired to the control with no extra markup.
+- **`Fieldset`** groups the notification switches under one legend, so a screen reader announces them as a set.
+- **`Dialog`** confirms the account deletion, saying exactly what will be lost. Its cancel button is the specific "Keep my account", not "Cancel".
+- **`ActionBar align="end"`** holds save and discard together at the end of the form.
+
+## Bound to form state
+
+This page uses plain kiln-ui fields with default values. To validate, track dirty state and submit, bind the same fields with `@mitcsutt/kiln-forms`: it renders through exactly these components, so the page looks the same. See [Account settings](/docs/forms/getting-started/account-settings) for the bound version.

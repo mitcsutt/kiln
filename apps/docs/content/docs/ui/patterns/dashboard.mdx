@@ -1,0 +1,21 @@
+---
+title: Dashboard
+description: A week of operations at a glance, built from stats, a table and a list. No tiles, no gradients, no cards that don't need to be cards.
+---
+
+A dashboard's hero is the subject's most characteristic thing: here, the docking stations and which ones need a van. The figures above it are typographic `Stat`s on a hairline rule rather than three identical tiles with icons in tinted circles.
+
+<Example name="ui/patterns/dashboard" layout="bleed" />
+
+## What it's made of
+
+- **`SectionHeader`** carries the title, the date range and both actions, so the header is one component with one alignment.
+- **`Stat` with `rule`**: label, number and change on one baseline. The change takes a tone only where the direction is good or bad news.
+- **`Table` with `numeric` cells** keeps the figures in tabular lining numerals that line up down the column. `hideBelow="sm"` drops the occupancy meters on a phone instead of squeezing them.
+- **`Meter`** shows a level within a known range (bikes in docks), with `low` and `optimum` so the tone follows the value. A `Progress` would claim the stations are heading somewhere.
+- **`StatusDot`** pairs colour with a word, so status never depends on colour alone.
+- **`Split ratio="7/5"`**: an asymmetric split, the table given the room and the alerts beside it.
+
+## Why it isn't cards
+
+Cards are for self-contained, interactive objects. A dashboard's numbers are one document read top to bottom, so they sit on the canvas, separated by rules and space. Put a `Card` around something only when it's a thing you'd pick up, open or drag.

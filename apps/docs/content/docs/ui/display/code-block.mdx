@@ -1,0 +1,21 @@
+---
+title: CodeBlock
+description: A block of source with an optional filename bar, line numbers, highlighted lines and a copy button.
+exports: [CodeBlock]
+---
+
+`CodeBlock` shows code: a snippet in an article, a command, a config example. It's a plain surface with an optional title bar, never fake window chrome, and it has no syntax highlighting: the code is the design. Every code sample in these docs is a `CodeBlock`.
+
+<Example name="ui/display/code-block/usage" />
+
+`copyable` (on by default) adds a copy button that announces whether it worked. `showLineNumbers` adds a gutter that isn't copied with a selection, `highlightLines` marks lines with the theme's highlight, and `wrap` wraps long lines instead of scrolling. A scrolling block is focusable, so keyboard users can scroll it.
+
+## API
+
+<ApiTable of="CodeBlockProps" />
+
+### Component tokens
+
+Set these in a theme, or on one element, to change this component without touching the rest.
+
+<ComponentTokens of="CodeBlock" />

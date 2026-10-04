@@ -1,0 +1,21 @@
+---
+title: Media
+description: A framed image with a fixed ratio, lazy loading, a caption, and a calm failure state.
+exports: [Media]
+---
+
+`Media` frames an image: it holds a ratio while loading, fits the image, loads lazily, and when the image fails it keeps its shape and shows a quiet fallback instead of a broken-image icon.
+
+<Example name="ui/display/media/usage" />
+
+`alt` is required. Describe what the image shows, or pass an empty string for a purely decorative one. `fit` is `cover` or `contain`, `radius` is `media` (the default), `surface` or `none`, and `fallback` replaces the failure state. `imgProps` reaches the `<img>` for anything else, like `srcSet`.
+
+## API
+
+<ApiTable of="MediaProps" />
+
+### Component tokens
+
+Set these in a theme, or on one element, to change this component without touching the rest.
+
+<ComponentTokens of="Media" />

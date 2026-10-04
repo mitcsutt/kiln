@@ -91,7 +91,7 @@ function jsDocTag(symbol: ts.Symbol, tag: string): string | undefined {
 const DEFAULT_IN_PROSE = [
   /\bDefault(?: is)?:?\s+`([^`]+)`/,
   /\bdefault(?: is)?:?\s+`([^`]+)`/,
-  /\bDefault:?\s+(-?\d+(?:\.\d+)?)\b/,
+  /\bDefault:?\s+(-?\d+(?:[ _,]\d{3})*(?:\.\d+)?)\b/,
   /\bDefault:?\s+("[^"]+")/,
   /`([^`]+)` \(default\)/,
 ]
@@ -136,12 +136,12 @@ function printType(type: ts.Type, node: ts.TypeNode | undefined, typeParams: Set
     ? type.types.filter((t) => !(t.flags & ts.TypeFlags.Undefined))
     : [type]
   if (nonNullable.length > 1 && nonNullable.every((t) => t.flags & LITERAL)) {
-    const numeric = nonNullable.every((t) => t.flags & ts.TypeFlags.NumberLiteral)
-    const ordered = numeric
-      ? [...nonNullable].sort(
-          (a, b) => (a as ts.NumberLiteralType).value - (b as ts.NumberLiteralType).value,
-        )
-      : nonNullable
+    // Numbers first and in order (`0 | 1 | … | 12 | 'full'`), then the rest as declared.
+    const numbers = nonNullable
+      .filter((t) => t.flags & ts.TypeFlags.NumberLiteral)
+      .sort((a, b) => (a as ts.NumberLiteralType).value - (b as ts.NumberLiteralType).value)
+    const ordered = [...numbers, ...nonNullable.filter((t) => !numbers.includes(t))]
+
     const parts = ordered.map((t) => checker.typeToString(t, undefined, PRINT))
     const hasTrue = parts.includes('true')
     const hasFalse = parts.includes('false')
@@ -263,6 +263,17 @@ function externalHeritage(decl: ts.Declaration, seen = new Set<ts.Declaration>()
   return [...new Set(found)]
 }
 
+/** `type Space = 1 | 2 | … | 12`, spelling out an indexed type, or `type Responsive<T> = …`. */
+function aliasSignature(decl: ts.TypeAliasDeclaration, type: ts.Type): string {
+  const params = decl.typeParameters?.length
+    ? `<${decl.typeParameters.map((p) => p.getText()).join(', ')}>`
+    : ''
+  const text = decl.type.getText().replace(/\s+/g, ' ')
+  const literalUnion = type.isUnion() && type.types.every((t) => t.getFlags() & LITERAL) && !params
+  const body = literalUnion ? printType(type, undefined, new Set()) : text
+  return `type ${decl.name.text}${params} = ${body}`
+}
+
 function isComponentLike(type: ts.Type, name: string): boolean {
   if (!/^[A-Z]/.test(name)) return false
   return type.getCallSignatures().length > 0 || Boolean(type.getProperty('$$typeof'))
@@ -296,17 +307,25 @@ for (const entry of entries) {
     const description = docs(symbol)
     if (symbol.flags & (ts.SymbolFlags.Interface | ts.SymbolFlags.TypeAlias)) {
       const type = checker.getDeclaredTypeOfSymbol(symbol)
-      const props =
-        type.getFlags() & ts.TypeFlags.Object || type.isIntersection() || type.isUnion()
-          ? propsOf(type)
-          : []
-      const heritage = decls.flatMap((d) => externalHeritage(d))
       const result: ApiEntry = { name, package: entry.pkg, kind: 'type', description }
+      // An alias of a value set (`Space`, `Tone`, `Responsive<T>`) is shown as its definition.
+      const objectLike =
+        Boolean(type.getFlags() & ts.TypeFlags.Object) ||
+        type.isIntersection() ||
+        (type.isUnion() &&
+          type.types.some((t) => t.getFlags() & (ts.TypeFlags.Object | ts.TypeFlags.Intersection)))
+      if (ts.isTypeAliasDeclaration(decl) && !objectLike) {
+        result.signature = aliasSignature(decl, type)
+        api[name] = result
+        continue
+      }
+      const props = propsOf(type)
+      const heritage = decls.flatMap((d) => externalHeritage(d))
       if (props.length) result.props = props
       if (heritage.length) result.extends = [...new Set(heritage)]
       if (!props.length && !heritage.length) {
         result.signature = ts.isTypeAliasDeclaration(decl)
-          ? `type ${name} = ${decl.type.getText().replace(/\s+/g, ' ')}`
+          ? aliasSignature(decl, type)
           : checker.typeToString(type, undefined, PRINT)
       }
       api[name] = result
