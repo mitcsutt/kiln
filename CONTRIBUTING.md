@@ -76,7 +76,7 @@ CI runs all of these except `format` and `generate:skills` on every pull request
 - **Formatted and linted on commit.** A `pre-commit` hook (Lefthook) runs Prettier and ESLint on staged files and fixes what it can.
 - **One idea per pull request.** Keep unrelated changes in separate pull requests.
 - **No warnings.** Every ESLint rule is either an error or off.
-- **Design standards are binding.** [`DESIGN.md`](DESIGN.md) and [`packages/ui/AGENTS.md`](packages/ui/AGENTS.md) are binding for UI work. Change a rule only together with the lint rule or test that enforces it.
+- **Design standards are binding.** [`DESIGN.md`](DESIGN.md) and [`packages/ui/AGENTS.md`](packages/ui/AGENTS.md) are binding for UI work, and [`packages/forms/AGENTS.md`](packages/forms/AGENTS.md) for forms work. Change a rule only together with the lint rule or test that enforces it.
 - **Decisions are recorded.** Significant decisions live in [`docs/adr/`](docs/adr/). To change one, add a new record that supersedes it rather than editing the old one.
 - **Written as if public.** No secrets, internal URLs or private project details in code, docs or commit messages.
 

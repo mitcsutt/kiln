@@ -22,7 +22,7 @@ A bound field wraps one kiln-ui `*Field`, so the field needs no CSS and no new c
 6. **Schema.** If the field takes props a schema can't safely set, check the untrusted-schema rules in packages/forms/AGENTS.md.
 7. **Tests.** Run `runFieldConformance` from the test harness in the field's test, as packages/forms/AGENTS.md describes, plus tests for its own behaviour.
 8. **Stories.** Title `Forms/Fields/<Name>Field`, with a `Playground` story and real states, with invented content.
-9. **Docs page.** Add `apps/docs/content/docs/forms/fields/<kebab-name>-field.mdx` (copy `text-field.mdx`) with `exports: [Form<Name>Field]`, list it in that folder's `meta.json`, and add its example in `apps/docs/examples/forms/fields/<kebab-name>-field/usage.tsx`. Update the field count on `forms/index.mdx` if it changes, then run `pnpm generate:skills`, because that page is part of the `component-mode` skill.
+9. **Docs page.** Add `apps/docs/content/docs/forms/fields/<kebab-name>-field.mdx` (copy `text-field.mdx`) with `exports: [Form<Name>Field]`, list it in that folder's `meta.json`, add its example in `apps/docs/examples/forms/fields/<kebab-name>-field/usage.tsx`, and end the page with an `## API` section holding `<ApiTable of="Form<Name>FieldProps" />`. Update the field count on `forms/index.mdx` if it changes, then run `pnpm generate:skills`, because that page is part of the `component-mode` skill.
 10. **Changeset:** `pnpm changeset`, a `minor` bump for `@mitcsutt/kiln-forms`.
 
 ## Check it

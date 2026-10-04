@@ -10,6 +10,8 @@ exports: [useOptions]
 
 The loader is called with `{ query, values, signal }` and returns options. It's read through a ref, so an inline loader with a new identity each render doesn't refetch; change `deps` to reload. `status` is `idle`, `loading`, `ready` or `error`.
 
+## API
+
 <ApiSignature of="useOptions" />
 
 <ApiTable of="UseOptionsOptions, UseOptionsResult" />
