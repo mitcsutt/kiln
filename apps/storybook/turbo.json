@@ -3,7 +3,13 @@
   "extends": ["//"],
   "tasks": {
     "build": {
+      "env": ["STORYBOOK_THEME", "STORYBOOK_MODE"],
       "outputs": ["storybook-static/**"]
+    },
+    "test:storybook": {
+      "dependsOn": ["transit"],
+      "env": ["STORYBOOK_THEME", "STORYBOOK_MODE"],
+      "outputs": []
     }
   }
 }

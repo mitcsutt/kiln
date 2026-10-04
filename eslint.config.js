@@ -106,6 +106,18 @@ export default defineConfig(
     name: 'kiln/workspace/storybook',
     files: ['apps/storybook/**'],
     extends: [react, storybook],
+    rules: {
+      // A private app ships nothing to npm, so everything it uses is a dev dependency.
+      'import-x/no-extraneous-dependencies': [
+        'error',
+        { devDependencies: true, peerDependencies: true, optionalDependencies: false },
+      ],
+    },
+  },
+  {
+    name: 'kiln/workspace/storybook/scripts',
+    files: ['apps/storybook/scripts/**'],
+    extends: [node],
   },
   {
     // packages/forms/AGENTS.md: `@mitcsutt/kiln-forms/schema` must load on a server, so

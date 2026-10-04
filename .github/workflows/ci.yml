@@ -63,6 +63,40 @@ jobs:
       - name: Test on React 18.3
         run: pnpm test:react18
 
+  # Every story is a browser test: it renders, its play function passes and axe finds
+  # no violations. Run once per built-in theme and mode (ADR 0018).
+  storybook-test:
+    name: Storybook tests (${{ matrix.theme }}, ${{ matrix.mode }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        theme: [paper, monograph, ledger, fiesta]
+        mode: [light, dark]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup
+      - name: Install Chromium
+        run: pnpm --filter @mitcsutt/kiln-storybook exec playwright install --with-deps --only-shell chromium
+      - name: Story, interaction and a11y tests
+        env:
+          STORYBOOK_THEME: ${{ matrix.theme }}
+          STORYBOOK_MODE: ${{ matrix.mode }}
+        run: pnpm test:storybook
+
+  storybook-build:
+    name: Storybook build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup
+      - name: Build the static Storybook
+        run: pnpm turbo run build --filter=@mitcsutt/kiln-storybook
+      - name: Install Chromium
+        run: pnpm --filter @mitcsutt/kiln-storybook exec playwright install --with-deps --only-shell chromium
+      - name: Serve it under /storybook and load a story
+        run: pnpm --filter @mitcsutt/kiln-storybook check:static
+
   package:
     name: Package checks
     runs-on: ubuntu-latest
