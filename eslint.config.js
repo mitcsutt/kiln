@@ -4,6 +4,20 @@ import react from '@mitcsutt/kiln-eslint-config/react'
 import storybook from '@mitcsutt/kiln-eslint-config/storybook'
 import { defineConfig } from 'eslint/config'
 
+const FORMS_TUPLE_SELECTOR =
+  'Tuple selectors re-render on every store change (a new array each time). Select a primitive (`s => s.isSubmitting`), or use `useSelector(store, sel, { compare: shallowEqual })`.'
+const FORMS_SCHEMA_CORE =
+  'schema/core is React-free: @mitcsutt/kiln-forms/schema must load on a server.'
+const FORMS_NO_STYLING =
+  'kiln-forms has no styling of its own: compose kiln-ui primitives through their props (packages/forms/AGENTS.md).'
+// packages/forms/AGENTS.md: `#` subpath imports inside the package, kiln-ui from its barrel
+// only, and no CSS.
+const FORMS_IMPORT_PATTERNS = [
+  { group: ['../*'], message: 'Import with a `#` subpath import (`#core/...`).' },
+  { group: ['@mitcsutt/kiln-ui/*'], message: 'Import @mitcsutt/kiln-ui from its barrel.' },
+  { group: ['*.css'], message: FORMS_NO_STYLING },
+]
+
 // One config for the whole workspace. Each package runs `eslint .` from its
 // own directory and picks this file up, so lint stays cached per package.
 export default defineConfig(
@@ -61,8 +75,70 @@ export default defineConfig(
     },
   },
   {
+    name: 'kiln/workspace/forms',
+    files: ['packages/forms/src/**'],
+    extends: [react, storybook],
+    rules: {
+      // Compound layouts (`FormTabs.Tab`) follow the ui authoring standard, so the rule
+      // is off here for the same reason as in ui (ADR 0015).
+      'react-refresh/only-export-components': 'off',
+      // packages/forms/AGENTS.md: a tuple selector re-renders on every store change (a new
+      // array each time). Select a primitive, or use `useSelector` with `shallowEqual`.
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector:
+            "JSXAttribute[name.name='selector'] > JSXExpressionContainer > ArrowFunctionExpression > ArrayExpression.body",
+          message: FORMS_TUPLE_SELECTOR,
+        },
+        {
+          selector:
+            "JSXAttribute[name.name='selector'] > JSXExpressionContainer > :function ReturnStatement > ArrayExpression.argument",
+          message: FORMS_TUPLE_SELECTOR,
+        },
+        { selector: "JSXAttribute[name.name='style']", message: FORMS_NO_STYLING },
+        { selector: "JSXAttribute[name.name='className']", message: FORMS_NO_STYLING },
+      ],
+      '@typescript-eslint/no-restricted-imports': ['error', { patterns: FORMS_IMPORT_PATTERNS }],
+    },
+  },
+  {
+    // packages/forms/AGENTS.md: `@mitcsutt/kiln-forms/schema` must load on a server, so
+    // schema/core imports React, TanStack Form and kiln-ui for types only.
+    // `schema/core/node.test.ts` catches React arriving transitively.
+    name: 'kiln/workspace/forms/schema-core',
+    files: ['packages/forms/src/schema/core/**/*.ts'],
+    rules: {
+      '@typescript-eslint/no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            { name: 'react', message: FORMS_SCHEMA_CORE },
+            { name: 'react-dom', message: FORMS_SCHEMA_CORE },
+            {
+              name: '@tanstack/react-form',
+              allowTypeImports: true,
+              message: `${FORMS_SCHEMA_CORE} Import types only from @tanstack/react-form.`,
+            },
+            {
+              name: '@mitcsutt/kiln-ui',
+              allowTypeImports: true,
+              message: `${FORMS_SCHEMA_CORE} Import types only from @mitcsutt/kiln-ui.`,
+            },
+          ],
+          patterns: FORMS_IMPORT_PATTERNS,
+        },
+      ],
+    },
+  },
+  {
     name: 'kiln/workspace/ui/test-support',
-    files: ['packages/ui/src/test/**'],
+    files: [
+      'packages/ui/src/test/**',
+      'packages/forms/src/test/**',
+      'packages/forms/src/stories/**',
+      'packages/forms/src/**/*.test-d.{ts,tsx}',
+    ],
     rules: {
       // Test setup and helpers, like test files, may import dev dependencies.
       'import-x/no-extraneous-dependencies': [
@@ -73,13 +149,33 @@ export default defineConfig(
   },
   {
     name: 'kiln/workspace/ui/tests',
-    files: ['packages/ui/src/**/*.test.{ts,tsx}'],
+    files: [
+      'packages/ui/src/**/*.test.{ts,tsx}',
+      // Forms tests and their harness read the same contract through kiln-ui, plus what
+      // a form submits: hidden inputs and `name`s for FormData, and the wrapper that
+      // carries `aria-describedby` on a group field (ADR 0017).
+      'packages/forms/src/**/*.test.{ts,tsx}',
+      'packages/forms/src/test/**',
+    ],
     rules: {
       // A design system's DOM is part of its contract: themes and consumers style the
       // data attributes, slots and generated class names these tests assert on, and
       // most of those nodes have no accessible role to query by (ADR 0015).
       'testing-library/no-container': 'off',
       'testing-library/no-node-access': 'off',
+    },
+  },
+  {
+    name: 'kiln/workspace/forms/tests',
+    files: ['packages/forms/src/**/*.test.{ts,tsx}'],
+    rules: {
+      // The axe helper asserts, and fails the test with the violations it finds.
+      'vitest/expect-expect': [
+        'error',
+        { assertFunctionNames: ['expect', 'expectNoAxeViolations'] },
+      ],
+      // Parametrised suites name each test from its data (a fixture's name, a field kind).
+      'vitest/valid-title': ['error', { allowArguments: true }],
     },
   },
 )

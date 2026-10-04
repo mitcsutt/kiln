@@ -32,8 +32,12 @@ import { defineConfig, type Plugin, type UserConfig } from 'vite'
 export interface LibraryOptions {
   /** The package directory (pass `import.meta.dirname`). */
   root: string
-  /** The JavaScript entry. Default `src/index.ts`. */
-  entry?: string
+  /**
+   * The JavaScript entries, one per `exports` subpath that has code. Default `src/index.ts`.
+   * Each lands in `dist/` at its path under `src/` (`src/schema/core/index.ts` →
+   * `dist/schema/core/index.js`).
+   */
+  entry?: string | readonly string[]
   /** Prefix for generated CSS Module class names, e.g. `kiln-`. */
   classPrefix?: string
   /**
@@ -196,7 +200,7 @@ export function defineLibraryConfig(options: LibraryOptions): UserConfig {
       cssCodeSplit: false,
       sourcemap: true,
       lib: {
-        entry: resolve(root, entry),
+        entry: (typeof entry === 'string' ? [entry] : entry).map((file) => resolve(root, file)),
         formats: ['es'],
         cssFileName: 'styles',
       },

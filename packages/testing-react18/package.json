@@ -6,6 +6,7 @@
   "license": "MIT",
   "type": "module",
   "dependencies": {
+    "@tanstack/react-form": "catalog:",
     "@testing-library/react": "catalog:",
     "radix-ui": "catalog:",
     "react": "18.3.1",

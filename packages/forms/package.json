@@ -1,0 +1,103 @@
+{
+  "name": "@mitcsutt/kiln-forms",
+  "version": "0.1.0",
+  "description": "Kiln forms: typed React forms on TanStack Form, in component or JSON schema mode, rendered through kiln-ui",
+  "keywords": [
+    "kiln",
+    "react",
+    "forms",
+    "form",
+    "tanstack-form",
+    "schema",
+    "validation",
+    "standard-schema",
+    "accessibility"
+  ],
+  "homepage": "https://kiln.mitchellsutton.com",
+  "bugs": "https://github.com/mitcsutt/kiln/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mitcsutt/kiln.git",
+    "directory": "packages/forms"
+  },
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "imports": {
+    "#*": [
+      "./src/*",
+      "./src/*.ts",
+      "./src/*.tsx",
+      "./src/*/index.ts",
+      "./src/*/index.tsx"
+    ]
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./schema": "./src/schema/core/index.ts",
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./schema": {
+        "types": "./dist/schema/core/index.d.ts",
+        "default": "./dist/schema/core/index.js"
+      },
+      "./package.json": "./package.json"
+    },
+    "imports": {}
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "check:package": "pnpm pack --out node_modules/.cache/kiln-pack/package.tgz > /dev/null && publint --pack pnpm --strict && attw node_modules/.cache/kiln-pack/package.tgz --profile esm-only && node scripts/check-schema-entry.ts node_modules/.cache/kiln-pack/package.tgz",
+    "lint": "eslint --max-warnings=0 .",
+    "size": "node ../../size-report.ts",
+    "test": "vitest run",
+    "test:react18": "vitest run --config vitest.react18.config.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@tanstack/react-form": "catalog:"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "catalog:",
+    "@mitcsutt/kiln-testing-react18": "workspace:*",
+    "@mitcsutt/kiln-tsconfig": "workspace:*",
+    "@mitcsutt/kiln-ui": "workspace:*",
+    "@storybook/react-vite": "catalog:",
+    "@testing-library/jest-dom": "catalog:",
+    "@testing-library/react": "catalog:",
+    "@testing-library/user-event": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "axe-core": "catalog:",
+    "eslint": "catalog:",
+    "jsdom": "catalog:",
+    "publint": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "storybook": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:",
+    "zod": "catalog:"
+  },
+  "peerDependencies": {
+    "@mitcsutt/kiln-ui": ">=0.1.0 <1.0.0",
+    "react": "^18.3.0 || ^19.0.0",
+    "react-dom": "^18.3.0 || ^19.0.0"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

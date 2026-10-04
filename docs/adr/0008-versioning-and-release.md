@@ -18,4 +18,4 @@ Kiln publishes several packages that change at different rates. A config package
 ## Consequences
 
 - Breaking changes during `0.x` bump the minor version, as usual for semver.
-- `kiln-forms` declares its peer range on `kiln-ui` explicitly, and Changesets keeps it updated.
+- `kiln-forms` declares its peer range on `kiln-ui` explicitly, and Changesets keeps it updated. Amended by [0017](0017-kiln-forms-port.md): before 1.0 the range is `>=0.1.0 <1.0.0` and Changesets leaves it alone while it stays in range.
