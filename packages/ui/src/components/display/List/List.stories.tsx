@@ -20,6 +20,30 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+/** A short reading list. Try `divided`, `density` and `as` in the controls. */
+export const Playground: Story = {
+  render: (args) => (
+    <Stack style={{ maxWidth: '28rem' }}>
+      <List {...args} aria-label="Reading list">
+        {[
+          { title: 'The shape of cities', author: 'Ines Duarte', pages: 312 },
+          { title: 'Tidal notes', author: 'Rowan Achebe', pages: 188 },
+          { title: 'A field guide to moss', author: 'Hana Sato', pages: 240 },
+        ].map((book, i) => (
+          <List.Item key={book.title}>
+            <List.Leading>{i + 1}</List.Leading>
+            <List.Content>
+              {book.title}
+              <List.Description>{book.author}</List.Description>
+            </List.Content>
+            <List.Trailing>{book.pages} pages</List.Trailing>
+          </List.Item>
+        ))}
+      </List>
+    </Stack>
+  ),
+}
+
 const LEADERBOARD = [
   { name: 'Noor Nguyen', routes: 'Coast path, Ridge loop, Quarry steps', points: 58, active: 2 },
   { name: 'Kofi Grant', routes: 'Harbour run, Mill lane, Old town', points: 51, active: 1 },
