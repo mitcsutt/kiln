@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { expect, screen, userEvent, within } from 'storybook/test'
+import { storyRoot } from '#components/_story/storyRoot'
 import { useEffect, useState } from 'react'
 import { Stack } from '#components/layout/Stack'
 import { filterOptions } from '#components/inputs/internal/filterOptions'
@@ -29,7 +31,15 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 /** Type "usa", "holland" or "cote" — keywords and accents both match. */
-export const Playground: Story = {}
+/** Type to filter, then pick: the input shows the chosen option's label. */
+export const Playground: Story = {
+  play: async ({ canvasElement }) => {
+    const input = within(storyRoot(canvasElement)).getByRole('combobox', { name: 'Team' })
+    await userEvent.type(input, 'zeal')
+    await userEvent.click(await screen.findByRole('option', { name: /New Zealand/ }))
+    await expect(input).toHaveValue('New Zealand')
+  },
+}
 
 export const Team: Story = {
   args: { defaultValue: 'aus' },

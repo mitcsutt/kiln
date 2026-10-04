@@ -17,6 +17,8 @@ pnpm install
 ## Layout
 
 ```
+apps/
+  storybook/         the Storybook workbench (private, never published)
 packages/
   ui/                @mitcsutt/kiln-ui
   forms/             @mitcsutt/kiln-forms
@@ -40,18 +42,21 @@ Directories use the short name (`packages/tsconfig`), and the package name carri
 
 Run these from the repo root. Turborepo runs each one across the workspace and caches the results.
 
-| Command              | What it does                                                         |
-| -------------------- | -------------------------------------------------------------------- |
-| `pnpm lint`          | ESLint in every package and at the root, plus `prettier --check`     |
-| `pnpm typecheck`     | `tsc --noEmit` in every package and at the root                      |
-| `pnpm test`          | Vitest in every package                                              |
-| `pnpm build`         | Builds every package that has a build step                           |
-| `pnpm test:react18`  | The runtime packages' test suites again, on React 18.3               |
-| `pnpm check:package` | `publint` and `@arethetypeswrong/cli` on each packed package         |
-| `pnpm size`          | Size report against each package's budgets, with tree-shaking checks |
-| `pnpm format`        | Formats the whole repo with Prettier                                 |
+| Command               | What it does                                                         |
+| --------------------- | -------------------------------------------------------------------- |
+| `pnpm lint`           | ESLint in every package and at the root, plus `prettier --check`     |
+| `pnpm typecheck`      | `tsc --noEmit` in every package and at the root                      |
+| `pnpm test`           | Vitest in every package                                              |
+| `pnpm build`          | Builds every package that has a build step                           |
+| `pnpm test:react18`   | The runtime packages' test suites again, on React 18.3               |
+| `pnpm test:storybook` | Every story as a browser test: render, `play` function and axe       |
+| `pnpm check:package`  | `publint` and `@arethetypeswrong/cli` on each packed package         |
+| `pnpm size`           | Size report against each package's budgets, with tree-shaking checks |
+| `pnpm format`         | Formats the whole repo with Prettier                                 |
 
 To work on one package, filter to it, for example `pnpm turbo run test --filter=@mitcsutt/kiln-eslint-config`.
+
+To open the Storybook workbench, run `pnpm --filter @mitcsutt/kiln-storybook dev`. The story tests need Chromium from Playwright the first time: `pnpm --filter @mitcsutt/kiln-storybook exec playwright install chromium`. They start in Paper, light; set `STORYBOOK_THEME` and `STORYBOOK_MODE` to run them in another theme or mode, as CI does for every one.
 
 CI runs all of these except `format` on every pull request and on `main`, plus a changeset check on pull requests, and they must all pass. On a pull request it also comments the size report, compared with the base branch.
 

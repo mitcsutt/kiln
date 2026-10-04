@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { expect, userEvent, within } from 'storybook/test'
+import { storyRoot } from '#components/_story/storyRoot'
 import { Stack } from '#components/layout/Stack'
 import { TagsInput } from './TagsInput'
 
@@ -28,7 +30,16 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 /** Enter or comma adds; Backspace on an empty box removes the last; paste "Rent, Power, Internet". */
-export const Playground: Story = {}
+/** Enter adds a tag; each tag has its own remove button. */
+export const Playground: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(storyRoot(canvasElement))
+    await userEvent.type(canvas.getByRole('textbox', { name: /Labels/ }), 'Holiday{Enter}')
+    await expect(canvas.getByRole('button', { name: 'Remove Holiday' })).toBeInTheDocument()
+    await userEvent.click(canvas.getByRole('button', { name: 'Remove Groceries' }))
+    await expect(canvas.queryByRole('button', { name: 'Remove Groceries' })).not.toBeInTheDocument()
+  },
+}
 
 export const Labels: Story = {
   args: { defaultValue: ['Essentials', 'Holiday', 'Car', 'Gifts'] },

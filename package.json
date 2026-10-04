@@ -14,6 +14,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test:react18": "turbo run test:react18",
+    "test:storybook": "turbo run test:storybook",
     "check:package": "turbo run check:package",
     "size": "turbo run size"
   },

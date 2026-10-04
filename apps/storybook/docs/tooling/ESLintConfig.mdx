@@ -1,0 +1,23 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="Tooling/ESLint config" />
+
+# ESLint config
+
+`@mitcsutt/kiln-eslint-config` is the flat, type-aware ESLint config Kiln lints itself with. It has no components to show here; the full guide is on the [docs site](https://kiln.mitchellsutton.com).
+
+```sh
+pnpm add -D @mitcsutt/kiln-eslint-config eslint typescript
+```
+
+```js
+// eslint.config.js
+import base from '@mitcsutt/kiln-eslint-config/base'
+import react from '@mitcsutt/kiln-eslint-config/react'
+import storybook from '@mitcsutt/kiln-eslint-config/storybook'
+import { defineConfig } from 'eslint/config'
+
+export default defineConfig(base, react, storybook, {
+  languageOptions: { parserOptions: { tsconfigRootDir: import.meta.dirname } },
+})
+```

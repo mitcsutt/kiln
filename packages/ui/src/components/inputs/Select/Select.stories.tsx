@@ -38,6 +38,20 @@ export const Groups: Story = {
       <Select aria-label="Category" groups={expenseCategories} defaultValue="rent" defaultOpen />
     </Stack>
   ),
+  parameters: {
+    // An open select is modal: Radix hides the rest of the page with `aria-hidden` and
+    // traps focus in the list, and arrow keys (not Tab) move through it. axe sees the
+    // hidden trigger and the scrolling list but not the focus trap, so these two rules
+    // are off for this always-open story only.
+    a11y: {
+      config: {
+        rules: [
+          { id: 'aria-hidden-focus', enabled: false },
+          { id: 'scrollable-region-focusable', enabled: false },
+        ],
+      },
+    },
+  },
 }
 
 export const Sizes: Story = {

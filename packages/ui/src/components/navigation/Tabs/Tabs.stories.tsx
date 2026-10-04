@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { expect, userEvent, within } from 'storybook/test'
+import { storyRoot } from '#components/_story/storyRoot'
 import { Stack } from '#components/layout/Stack'
 import { Tabs } from './Tabs'
 
@@ -25,7 +27,19 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Playground: Story = {}
+/** Arrow keys move between tabs, and the panel follows. */
+export const Playground: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(storyRoot(canvasElement))
+    await userEvent.click(canvas.getByRole('tab', { name: 'Matches' }))
+    await userEvent.keyboard('{ArrowRight}')
+    await expect(canvas.getByRole('tab', { name: 'Players' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    )
+    await expect(canvas.getByRole('tabpanel')).toHaveTextContent('Sione Taufa')
+  },
+}
 
 /** Compact pills for a view switch inside a panel — a spending breakdown. */
 export const Pill: Story = {

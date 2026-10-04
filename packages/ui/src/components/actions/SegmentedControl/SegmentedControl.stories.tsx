@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { expect, userEvent, within } from 'storybook/test'
+import { storyRoot } from '#components/_story/storyRoot'
 import { useState } from 'react'
 import { MoonIcon, SunIcon, SystemIcon } from '#icons'
 import { Stack } from '#components/layout/Stack'
@@ -26,7 +28,20 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Playground: Story = {}
+/** One option is always chosen. Arrow keys move focus and Space chooses. */
+export const Playground: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(storyRoot(canvasElement))
+    const quarter = canvas.getByRole('radio', { name: 'Quarter' })
+    await userEvent.click(quarter)
+    await expect(quarter).toHaveAttribute('aria-checked', 'true')
+    await userEvent.keyboard('{ArrowRight}')
+    const year = canvas.getByRole('radio', { name: 'Year' })
+    await expect(year).toHaveFocus()
+    await userEvent.keyboard(' ')
+    await expect(year).toHaveAttribute('aria-checked', 'true')
+  },
+}
 
 /** A league's table views, composed from Items and controlled. */
 export const StandingsViews: Story = {
