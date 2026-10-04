@@ -1,0 +1,36 @@
+/* Workbench chrome for the "All themes, side by side" view. Not part of kiln-ui. */
+.sb-matrix {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  min-block-size: 100vh;
+  margin: -1rem;
+}
+
+.sb-matrix-cell {
+  min-inline-size: 0;
+  padding: 1.5rem;
+  /* Display type (cqi) fits the column. Layout breakpoints still follow the
+     viewport, so check multi-column layouts per theme at full width. */
+  container-type: inline-size;
+}
+
+.sb-matrix-label {
+  margin-block-end: 1rem;
+  font-family: var(--font-text);
+  font-size: var(--text-xs);
+  color: var(--color-ink-subtle);
+}
+
+/* Full-bleed stories (pages, shells) reach the cell edge; only the label keeps a gutter. */
+.sb-matrix[data-layout='fullscreen'] {
+  margin: 0;
+}
+
+.sb-matrix[data-layout='fullscreen'] .sb-matrix-cell {
+  padding: 0;
+}
+
+.sb-matrix[data-layout='fullscreen'] .sb-matrix-label {
+  margin: 0;
+  padding: 0.75rem 1rem;
+}

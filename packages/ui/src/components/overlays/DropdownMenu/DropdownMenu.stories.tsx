@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { expect, screen, userEvent, waitFor, within } from 'storybook/test'
+import { storyRoot } from '#components/_story/storyRoot'
 import { Button } from '#components/actions/Button'
 import { Stack } from '#components/layout/Stack'
 import { ArrowUpRightIcon, ChevronDownIcon, CopyIcon, MoreIcon } from '#icons'
@@ -62,6 +64,25 @@ function MemberActions({ open, ...args }: DropdownMenuContentProps & { open?: bo
 
 export const Playground: Story = {
   render: (args) => <MemberActions {...args} />,
+  play: async ({ canvasElement }) => {
+    const trigger = within(storyRoot(canvasElement)).getByRole('button', { name: 'Noor' })
+    await userEvent.click(trigger)
+    const menu = await screen.findByRole('menu')
+    await expect(
+      within(menu).getByRole('menuitemcheckbox', { name: 'Email notifications' }),
+    ).toBeChecked()
+    await userEvent.click(
+      within(menu).getByRole('menuitemcheckbox', { name: 'Email notifications' }),
+    )
+    await waitFor(() => expect(screen.queryByRole('menu')).not.toBeInTheDocument())
+    await userEvent.click(trigger)
+    await expect(
+      await screen.findByRole('menuitemcheckbox', { name: 'Email notifications' }),
+    ).not.toBeChecked()
+    await userEvent.keyboard('{Escape}')
+    await waitFor(() => expect(screen.queryByRole('menu')).not.toBeInTheDocument())
+    await expect(trigger).toHaveFocus()
+  },
 }
 
 /** A member's actions in a team admin screen. Destructive last, after a rule. Pinned open. */

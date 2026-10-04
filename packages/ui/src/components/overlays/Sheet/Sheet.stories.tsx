@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { expect, screen, userEvent, waitFor, within } from 'storybook/test'
+import { storyRoot } from '#components/_story/storyRoot'
 import { Button } from '#components/actions/Button'
 import { Stack } from '#components/layout/Stack'
 import { Muted, Row, Stage, Strong } from '#components/overlays/_story/StoryKit'
@@ -69,6 +71,14 @@ function YourOrder({ defaultOpen, ...args }: SheetContentProps & { defaultOpen?:
 /** Click the trigger. Focus trap, Escape and focus return included. */
 export const Playground: Story = {
   render: (args) => <YourOrder {...args} />,
+  play: async ({ canvasElement }) => {
+    const trigger = within(storyRoot(canvasElement)).getByRole('button', { name: 'Your order' })
+    await userEvent.click(trigger)
+    const sheet = await screen.findByRole('dialog', { name: 'Your order' })
+    await userEvent.click(within(sheet).getByRole('button', { name: 'Done' }))
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument())
+    await expect(trigger).toHaveFocus()
+  },
 }
 
 /** The phone pattern: a bottom sheet with a grab handle (visual only — Escape, the scrim or Done close it). */

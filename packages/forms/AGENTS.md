@@ -117,7 +117,7 @@ The renderer strips the same unsafe props (`fieldNodeProps`/`layoutNodeProps`), 
 
 ## Stories and tests
 
-- Stories follow the ui standard ([`packages/ui/AGENTS.md`](../ui/AGENTS.md), "Stories"): realistic invented content, sentence case, no lorem ipsum, no emoji, right in every theme and mode. Titles: `Forms/Fields/<Name>Field`, `Forms/Layouts/<ExportName>`, `Forms/Schema/…`, and whole worked forms under `Forms/Getting started/…`. Until the Storybook app lands, stories are checked by `typecheck` and `lint` only.
+- Stories follow the ui standard ([`packages/ui/AGENTS.md`](../ui/AGENTS.md), "Stories"): realistic invented content, sentence case, no lorem ipsum, no emoji, right in every theme and mode. Titles: `Forms/Fields/<Name>Field`, `Forms/Layouts/<ExportName>`, `Forms/Hooks/<hookName>`, `Forms/Schema/…`, and whole worked forms under `Forms/Getting started/…`. Every field, layout and form component has a `Playground` story. Every story is also a browser test in `apps/storybook` (`pnpm test:storybook`, [ADR 0018](../../docs/adr/0018-storybook-workbench.md)): it must render, its `play` function must pass, and axe must find no violations, in every theme and mode.
 - Tests are behaviour, not snapshots. `vi`, `describe`, `it` and `expect` are globals. Use `must()` from `#test/must` for a node a test needs to exist, rather than a `!` assertion. Render through `renderForm` from `#test/renderForm`, and check accessibility with `expectNoAxeViolations` from `#test/a11y`.
 
 ## Lint

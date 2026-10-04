@@ -1,0 +1,14 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="Introduction" />
+
+# Kiln workbench
+
+This is where `@mitcsutt/kiln-ui` and `@mitcsutt/kiln-forms` are built and checked in isolation. Guides, API tables and long-form docs live on the [docs site](https://kiln.mitchellsutton.com).
+
+- **Theme** in the toolbar switches between Paper, Monograph, Ledger and Fiesta. _All themes, side by side_ renders the story once per theme.
+- **Mode** switches between light, dark and the system setting.
+- Every component has a _Playground_ story with controls, plus stories for its real states.
+- Every story runs as a test through the Vitest addon: it renders, its interactions pass, and axe finds no accessibility violations.
+
+The tree matches the docs site: `UI` is `kiln-ui`, `Forms` is `kiln-forms`, and `Tooling` is the shared config packages.

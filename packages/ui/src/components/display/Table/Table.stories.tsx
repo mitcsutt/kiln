@@ -18,6 +18,38 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+/** A small timetable. Try `variant`, `density`, `striped` and `stickyHeader` in the controls. */
+export const Playground: Story = {
+  render: (args) => (
+    <Stack style={{ maxWidth: '32rem' }}>
+      <Table {...args}>
+        <Table.Caption>Ferry timetable, weekdays</Table.Caption>
+        <Table.Head>
+          <Table.Row>
+            <Table.HeaderCell>Route</Table.HeaderCell>
+            <Table.HeaderCell>Departs</Table.HeaderCell>
+            <Table.HeaderCell numeric>Minutes</Table.HeaderCell>
+          </Table.Row>
+        </Table.Head>
+        <Table.Body>
+          {[
+            ['Quay to Point', '07:15', 25],
+            ['Quay to Island', '07:40', 50],
+            ['Point to Quay', '08:05', 25],
+            ['Island to Quay', '08:45', 50],
+          ].map(([route, departs, minutes]) => (
+            <Table.Row key={String(route)}>
+              <Table.Cell rowHeader>{route}</Table.Cell>
+              <Table.Cell>{departs}</Table.Cell>
+              <Table.Cell numeric>{minutes}</Table.Cell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
+    </Stack>
+  ),
+}
+
 interface TeamRow {
   team: string
   p: number

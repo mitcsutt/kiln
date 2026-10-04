@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { expect, userEvent, within } from 'storybook/test'
+import { storyRoot } from '#components/_story/storyRoot'
 import { Accordion } from './Accordion'
 
 const meta = {
@@ -37,7 +39,18 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Playground: Story = {}
+/** One section open at a time: opening another closes the first. */
+export const Playground: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(storyRoot(canvasElement))
+    const scoring = canvas.getByRole('button', { name: 'How does scoring work?' })
+    const ties = canvas.getByRole('button', { name: 'What happens on a tie?' })
+    await expect(scoring).toHaveAttribute('aria-expanded', 'true')
+    await userEvent.click(ties)
+    await expect(ties).toHaveAttribute('aria-expanded', 'true')
+    await expect(scoring).toHaveAttribute('aria-expanded', 'false')
+  },
+}
 
 /** A bordered surface — standing on the page, with Fiesta's print offset. */
 export const Contained: Story = {

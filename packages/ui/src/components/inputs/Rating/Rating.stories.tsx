@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { expect, userEvent, waitFor, within } from 'storybook/test'
+import { storyRoot } from '#components/_story/storyRoot'
 import { Stack } from '#components/layout/Stack'
 import { Rating } from './Rating'
 
@@ -20,7 +22,22 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Playground: Story = {}
+/** Each star is a radio: click one, or hold an arrow key to move and choose. */
+export const Playground: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(storyRoot(canvasElement))
+    await userEvent.click(canvas.getByRole('radio', { name: '2 of 5' }))
+    await expect(canvas.getByRole('radio', { name: '2 of 5' })).toHaveAttribute(
+      'aria-checked',
+      'true',
+    )
+    await userEvent.keyboard('{ArrowRight>}')
+    await waitFor(() =>
+      expect(canvas.getByRole('radio', { name: '3 of 5' })).toHaveAttribute('aria-checked', 'true'),
+    )
+    await userEvent.keyboard('{/ArrowRight}')
+  },
+}
 
 export const Sizes: Story = {
   render: (args) => (

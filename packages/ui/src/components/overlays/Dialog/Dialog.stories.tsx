@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { expect, screen, userEvent, waitFor, within } from 'storybook/test'
+import { storyRoot } from '#components/_story/storyRoot'
 import { Button } from '#components/actions/Button'
 import { Stack } from '#components/layout/Stack'
 import { Body, Row, Stage } from '#components/overlays/_story/StoryKit'
@@ -48,6 +50,15 @@ function ConfirmDelete({ defaultOpen, ...args }: DialogContentProps & { defaultO
 /** Click the trigger. In "All themes", each column's dialog opens in that column's theme. */
 export const Playground: Story = {
   render: (args) => <ConfirmDelete {...args} />,
+  play: async ({ canvasElement }) => {
+    const trigger = within(storyRoot(canvasElement)).getByRole('button', { name: 'Delete expense' })
+    await userEvent.click(trigger)
+    const dialog = await screen.findByRole('dialog', { name: 'Delete expense?' })
+    await expect(dialog).toHaveAccessibleDescription(/Corner Grocer/)
+    await userEvent.keyboard('{Escape}')
+    await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument())
+    await expect(trigger).toHaveFocus()
+  },
 }
 
 /**

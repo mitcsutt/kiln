@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { expect, userEvent, within } from 'storybook/test'
+import { storyRoot } from '#components/_story/storyRoot'
 import { Inline } from '#components/layout/Inline'
 import { Stack } from '#components/layout/Stack'
 import { Switch } from './Switch'
@@ -13,7 +15,16 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Playground: Story = {}
+export const Playground: Story = {
+  play: async ({ canvasElement }) => {
+    const toggle = within(storyRoot(canvasElement)).getByRole('switch', {
+      name: 'Repeats every month',
+    })
+    await expect(toggle).not.toBeChecked()
+    await userEvent.click(toggle)
+    await expect(toggle).toBeChecked()
+  },
+}
 
 export const States: Story = {
   render: () => (

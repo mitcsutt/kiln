@@ -30,6 +30,38 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+/** The bare frame: header, main and footer. Try `navBreakpoint` and `skipLinkLabel`. */
+export const Playground: Story = {
+  render: (args) => (
+    <AppShell {...args}>
+      <AppShell.Header>
+        <Container width="wide">
+          <Wordmark>Field notes</Wordmark>
+        </Container>
+      </AppShell.Header>
+      <AppShell.Main>
+        <Section space={6}>
+          <Container width="wide">
+            <Stack gap={3}>
+              <Title level={1} size="xl">
+                This week
+              </Title>
+              <Body tone="muted">Three walks logged, 14.2 km in total.</Body>
+            </Stack>
+          </Container>
+        </Section>
+      </AppShell.Main>
+      <AppShell.Footer>
+        <Container width="wide">
+          <Body size="sm" tone="subtle">
+            Synced 2 minutes ago
+          </Body>
+        </Container>
+      </AppShell.Footer>
+    </AppShell>
+  ),
+}
+
 const table = [
   { club: 'Harbour Hawks', played: 14, pts: 32, form: '+4' },
   { club: 'Northside Rovers', played: 14, pts: 30, form: '+2' },

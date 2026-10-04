@@ -4,7 +4,7 @@
 
 Kiln is a themeable React design system and form library, published to npm under the `@mitcsutt` scope, along with the shared ESLint, Prettier and TypeScript configs it's built with.
 
-> **Status: in progress, unreleased.** The workspace, the three config packages, the UI package and the forms package are in place. The docs site and Storybook are still to come. Nothing is published to npm yet. The intended end state is described in [`docs/target-state.md`](docs/target-state.md), and the reasoning behind each decision is in [`docs/adr/`](docs/adr/).
+> **Status: in progress, unreleased.** The workspace, the three config packages, the UI package, the forms package and the Storybook workbench are in place. The docs site is still to come. Nothing is published to npm yet. The intended end state is described in [`docs/target-state.md`](docs/target-state.md), and the reasoning behind each decision is in [`docs/adr/`](docs/adr/).
 
 ## What Kiln is for
 
@@ -21,6 +21,12 @@ I kept rebuilding the same components, form plumbing and lint configs in every p
 | [`@mitcsutt/kiln-tsconfig`](packages/tsconfig)               | Shared TypeScript presets                                                                                                            | Unreleased |
 
 More general utilities will follow as `@mitcsutt/kiln-*` packages.
+
+## Apps
+
+| App                                | What it is                                                                                                               | Run it locally                               |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------- |
+| [`apps/storybook`](apps/storybook) | The developer workbench: every ui and forms story, in every theme and mode, each one a render, interaction and a11y test | `pnpm --filter @mitcsutt/kiln-storybook dev` |
 
 ## Quick start
 
