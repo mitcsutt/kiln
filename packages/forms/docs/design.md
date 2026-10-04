@@ -142,7 +142,7 @@ The relevant shape (the real file also carries the published-package metadata):
     "./package.json": "./package.json",
   },
   "peerDependencies": {
-    "@mitcsutt/kiln-ui": "workspace:^",
+    "@mitcsutt/kiln-ui": ">=0.1.0 <1.0.0", // ADR 0017
     "react": "^18.3.0 || ^19.0.0",
     "react-dom": "^18.3.0 || ^19.0.0",
   },
