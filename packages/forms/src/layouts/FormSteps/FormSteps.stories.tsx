@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { expect, userEvent, waitFor, within } from 'storybook/test'
 import { stepsFixture, stepsSchema } from '#stories/fixtures/disclosure'
 import { parityStory } from '#stories/parity'
 import { StoryForm } from '#stories/_kit'
@@ -20,7 +21,7 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-/** A two-step sign-up. Try `linear` and the button labels. */
+/** A two-step sign-up: Continue checks the step first. Try `linear` and the button labels. */
 export const Playground: Story = {
   render: (args) => (
     <StoryForm
@@ -48,6 +49,15 @@ export const Playground: Story = {
       )}
     </StoryForm>
   ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    await userEvent.click(canvas.getByRole('button', { name: 'Continue' }))
+    await expect(await canvas.findByText('Enter your email')).toBeInTheDocument()
+    await expect(canvas.getByLabelText('Display name')).not.toBeVisible()
+    await userEvent.type(canvas.getByLabelText(/Email/), 'priya@example.com')
+    await userEvent.click(canvas.getByRole('button', { name: 'Continue' }))
+    await waitFor(() => expect(canvas.getByLabelText('Display name')).toBeVisible())
+  },
 }
 
 export const ComponentAndSchema: Story = parityStory(stepsFixture, stepsSchema, [

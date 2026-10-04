@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { expect, screen, userEvent, waitFor, within } from 'storybook/test'
 import { Button } from '#components/actions/Button'
 import { Inline } from '#components/layout/Inline'
 import { Stack } from '#components/layout/Stack'
@@ -37,7 +38,17 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 /** Hover or Tab to the button. */
-export const Playground: Story = {}
+export const Playground: Story = {
+  play: async ({ canvasElement }) => {
+    await userEvent.tab()
+    await expect(
+      within(canvasElement).getByRole('button', { name: 'Copy share link' }),
+    ).toHaveFocus()
+    await expect(await screen.findByRole('tooltip')).toHaveTextContent('Copy share link')
+    await userEvent.keyboard('{Escape}')
+    await waitFor(() => expect(screen.queryByRole('tooltip')).not.toBeInTheDocument())
+  },
+}
 
 /**
  * Icon-only buttons in a toolbar. One provider, so after the first tooltip the rest
