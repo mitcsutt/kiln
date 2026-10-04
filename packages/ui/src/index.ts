@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/triple-slash-reference -- a .d.ts can't be imported, and this one ships the stylesheet declarations
 /// <reference path="./stylesheets.d.ts" preserve="true" />
 /*
  * @mitcsutt/kiln-ui public API. Everything a consumer may import lives here — no deep imports.

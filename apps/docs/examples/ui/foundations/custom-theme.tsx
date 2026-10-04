@@ -1,6 +1,5 @@
 'use client'
 
-import '@/styles/harbour.css'
 import { Box, Button, Heading, Inline, Stack, Text, ThemeScope } from '@mitcsutt/kiln-ui'
 
 export default function CustomTheme() {
