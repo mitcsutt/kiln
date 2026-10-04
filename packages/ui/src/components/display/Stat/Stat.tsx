@@ -15,7 +15,7 @@ export interface StatDelta {
   direction: StatDeltaDirection
   /**
    * Whether the change is good. Defaults from direction (up → positive, down → critical),
-   * so override it when down is good: costs that fell is `direction="down" tone="positive"`.
+   * so override it when down is good: costs that fell are `direction="down" tone="positive"`.
    */
   tone?: StatDeltaTone
 }
