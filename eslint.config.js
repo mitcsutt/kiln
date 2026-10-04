@@ -103,6 +103,11 @@ export default defineConfig(
     },
   },
   {
+    name: 'kiln/workspace/storybook',
+    files: ['apps/storybook/**'],
+    extends: [react, storybook],
+  },
+  {
     // packages/forms/AGENTS.md: `@mitcsutt/kiln-forms/schema` must load on a server, so
     // schema/core imports React, TanStack Form and kiln-ui for types only.
     // `schema/core/node.test.ts` catches React arriving transitively.

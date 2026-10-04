@@ -1,0 +1,37 @@
+{
+  "name": "@mitcsutt/kiln-storybook",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Kiln Storybook: the developer workbench for kiln-ui and kiln-forms",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "storybook build --output-dir storybook-static --quiet",
+    "dev": "storybook dev --port 6006",
+    "lint": "eslint --max-warnings=0 .",
+    "test:storybook": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@mitcsutt/kiln-forms": "workspace:*",
+    "@mitcsutt/kiln-tsconfig": "workspace:*",
+    "@mitcsutt/kiln-ui": "workspace:*",
+    "@storybook/addon-a11y": "catalog:",
+    "@storybook/addon-docs": "catalog:",
+    "@storybook/addon-vitest": "catalog:",
+    "@storybook/react-vite": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "@vitest/browser-playwright": "catalog:",
+    "eslint": "catalog:",
+    "playwright": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "storybook": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:"
+  }
+}
