@@ -21,5 +21,6 @@ Each record captures one decision: the context, what was decided, and what follo
 | [0015](0015-kiln-ui-port.md)               | How `kiln-ui` was ported: theming, build, tests     | Accepted                  |
 | [0016](0016-trusted-publishing.md)         | Trusted publishing, switched on by the owner        | Accepted                  |
 | [0017](0017-kiln-forms-port.md)            | How `kiln-forms` was ported: names, entries, checks | Accepted                  |
+| [0018](0018-storybook-workbench.md)        | How the Storybook workbench is built and tested     | Accepted                  |
 
 New records use the next number and the same headings: Status, Context, Decision, Consequences.
