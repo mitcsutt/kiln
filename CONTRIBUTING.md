@@ -19,6 +19,7 @@ pnpm install
 ```
 packages/
   ui/                @mitcsutt/kiln-ui
+  forms/             @mitcsutt/kiln-forms
   eslint-config/     @mitcsutt/kiln-eslint-config
   prettier-config/   @mitcsutt/kiln-prettier-config
   tsconfig/          @mitcsutt/kiln-tsconfig
