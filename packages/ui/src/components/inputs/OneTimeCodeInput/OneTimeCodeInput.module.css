@@ -1,0 +1,97 @@
+/*
+ * A row of square cells that share the field box's edge, radius and states, so a code
+ * reads as the same material as every other input. Six-plus even-length codes split in
+ * half with a wider gap ("123 456"), the way they're printed in the message.
+ *
+ * Component tokens (shared with the field box — see inputs/internal/control.module.css):
+ *   --field-bg       default var(--color-surface)
+ *   --field-border   default var(--color-line-control)
+ *   --field-radius   default var(--radius-field)
+ *   --field-shadow   default none
+ *   --otp-gap        default var(--space-2) — between cells
+ */
+.root {
+  --_cell: var(--control-md);
+  --_fs: var(--text-lg);
+
+  display: inline-flex;
+  flex-wrap: nowrap;
+  gap: var(--otp-gap, var(--space-2));
+  max-inline-size: 100%;
+}
+.root[data-size='sm'] {
+  --_cell: var(--control-sm);
+  --_fs: var(--text-md);
+}
+.root[data-size='lg'] {
+  --_cell: var(--control-lg);
+  --_fs: var(--text-xl);
+}
+
+.cell {
+  --_border: var(--field-border, var(--color-line-control));
+
+  box-sizing: border-box;
+  flex: 0 1 var(--_cell);
+  min-inline-size: 0;
+  inline-size: var(--_cell);
+  block-size: calc(var(--_cell) * 1.15);
+  margin: 0;
+  padding: 0;
+  border: var(--border-width) solid var(--_border);
+  border-radius: var(--field-radius, var(--radius-field));
+  background-color: var(--field-bg, var(--color-surface));
+  box-shadow: var(--field-shadow, none);
+  color: var(--color-ink);
+  caret-color: var(--color-ink);
+  font-family: var(--font-numeric);
+  font-size: var(--_fs);
+  font-stretch: var(--numeric-stretch);
+  font-variant-numeric: tabular-nums lining-nums;
+  line-height: 1;
+  text-align: center;
+  text-transform: uppercase;
+  transition:
+    border-color var(--dur-1) var(--ease-out),
+    background-color var(--dur-1) var(--ease-out);
+}
+
+.cell[data-group-start] {
+  margin-inline-start: var(--space-3);
+}
+
+@media (hover: hover) {
+  .root:not([data-disabled], [data-invalid]) .cell:hover {
+    --_border: color-mix(
+      in oklab,
+      var(--field-border, var(--color-line-control)),
+      var(--color-ink) 35%
+    );
+  }
+}
+
+.cell:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.cell::placeholder {
+  color: var(--color-ink-subtle);
+  opacity: 1;
+}
+
+.root[data-invalid] .cell {
+  --_border: var(--tone-critical);
+}
+
+.root[data-readonly] .cell {
+  background-color: var(--color-surface-sunken);
+}
+
+.root[data-disabled] .cell {
+  --_border: var(--color-line);
+  background-color: var(--color-surface-sunken);
+  color: var(--color-ink-subtle);
+  box-shadow: none;
+  cursor: not-allowed;
+}

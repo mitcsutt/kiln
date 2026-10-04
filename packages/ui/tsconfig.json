@@ -1,0 +1,9 @@
+{
+  "extends": "@mitcsutt/kiln-tsconfig/react",
+  "compilerOptions": {
+    "noEmit": true,
+    "types": ["node", "vitest/globals"],
+    "allowImportingTsExtensions": true
+  },
+  "include": ["src", "*.ts"]
+}

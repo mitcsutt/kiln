@@ -1,0 +1,383 @@
+/*
+ * Long-form writing. Descendant selectors are wrapped in :where() so every rule stays at
+ * one-class specificity — a consumer's className (or an MDX component) always wins.
+ *
+ * Library components placed inside Prose (CodeBlock, Quote, Card, Table, Alert…) carry
+ * `data-kiln-component` on their root, and every descendant rule ends in
+ *   :not(:where(.prose [data-kiln-component], .prose [data-kiln-component] *))
+ * so it stops at that boundary — Prose styles raw HTML/MDX, never a component's insides.
+ * (`@scope (.prose) to ([data-kiln-component])` says the same thing; :not() is used for
+ * broader browser support.) The boundary must sit *inside* this .prose, so a Prose that
+ * is itself inside a Card is still styled.
+ *
+ * Rhythm: paragraphs flow on --space-4; headings take more above than below (they belong
+ * to what follows); figures, code and quotes get a wider --space-6 berth.
+ *
+ * Component tokens:
+ *   --prose-measure    default 68ch
+ *   --prose-link-line  underline colour for links, default accent at 70%
+ */
+.prose {
+  --_fs: var(--prose-size);
+  --_flow: var(--space-4);
+
+  max-inline-size: var(--prose-measure, 68ch);
+  color: var(--color-ink);
+  font-family: var(--font-prose);
+  font-size: var(--_fs);
+  line-height: var(--prose-leading);
+  font-optical-sizing: auto;
+  overflow-wrap: break-word;
+}
+.prose[data-size='sm'] {
+  --_fs: calc(var(--prose-size) * 0.89);
+  --_flow: var(--space-3);
+}
+.prose[data-size='lg'] {
+  --_fs: calc(var(--prose-size) * 1.12);
+  --_flow: var(--space-5);
+}
+
+/* ── Flow ─────────────────────────────────────────────────────────────── */
+.prose > * {
+  margin-block: 0;
+}
+.prose > * + * {
+  margin-block-start: var(--_flow);
+}
+.prose > * + :where(figure, pre, blockquote, table, hr),
+.prose > :where(figure, pre, blockquote, table, hr) + * {
+  margin-block-start: var(--space-6);
+}
+.prose > * + :where(h2) {
+  margin-block-start: var(--space-7);
+}
+.prose > * + :where(h3) {
+  margin-block-start: var(--space-6);
+}
+.prose > * + :where(h4, h5, h6) {
+  margin-block-start: var(--space-5);
+}
+.prose > :where(h1, h2, h3, h4, h5, h6) + * {
+  margin-block-start: var(--space-3);
+}
+
+/* ── Text ─────────────────────────────────────────────────────────────── */
+.prose :where(p, li):not(:where(.prose [data-kiln-component], .prose [data-kiln-component] *)) {
+  text-wrap: pretty;
+}
+.prose :where(strong, b):not(:where(.prose [data-kiln-component], .prose [data-kiln-component] *)) {
+  font-weight: 650;
+}
+.prose
+  :where(h1, h2, h3, h4, h5, h6):not(
+    :where(.prose [data-kiln-component], .prose [data-kiln-component] *)
+  )
+  strong {
+  font-weight: inherit;
+}
+.prose :where(mark):not(:where(.prose [data-kiln-component], .prose [data-kiln-component] *)) {
+  padding-inline: 0.15em;
+  border-radius: 0.15em;
+  background: var(--color-highlight);
+  color: var(--color-highlight-ink);
+}
+.prose :where(small):not(:where(.prose [data-kiln-component], .prose [data-kiln-component] *)) {
+  font-size: 0.84em;
+  color: var(--color-ink-muted);
+}
+.prose
+  :where(abbr[title]):not(:where(.prose [data-kiln-component], .prose [data-kiln-component] *)) {
+  text-decoration: underline dotted;
+  text-underline-offset: 0.2em;
+  cursor: help;
+}
+
+/* ── Headings: the theme's heading role, scaled from the prose size ────── */
+.prose
+  :where(h1, h2, h3):not(:where(.prose [data-kiln-component], .prose [data-kiln-component] *)) {
+  font-family: var(--heading-font);
+  font-weight: var(--heading-weight);
+  letter-spacing: var(--heading-tracking);
+  text-transform: var(--heading-transform);
+  line-height: var(--leading-snug);
+  color: var(--color-ink);
+  text-wrap: balance;
+}
+.prose :where(h1):not(:where(.prose [data-kiln-component], .prose [data-kiln-component] *)) {
+  font-size: calc(1em * pow(var(--type-ratio), 3));
+}
+.prose :where(h2):not(:where(.prose [data-kiln-component], .prose [data-kiln-component] *)) {
+  font-size: calc(1em * pow(var(--type-ratio), 2));
+}
+.prose :where(h3):not(:where(.prose [data-kiln-component], .prose [data-kiln-component] *)) {
+  font-size: calc(1em * var(--type-ratio));
+}
+/* Small headings step out of the display face into the text face — a run-in label, not a title. */
+.prose
+  :where(h4, h5, h6):not(:where(.prose [data-kiln-component], .prose [data-kiln-component] *)) {
+  font-family: var(--font-text);
+  font-size: 1em;
+  font-weight: var(--label-weight);
+  letter-spacing: var(--label-tracking);
+  line-height: var(--leading-snug);
+  color: var(--color-ink);
+}
+.prose :where(h5, h6):not(:where(.prose [data-kiln-component], .prose [data-kiln-component] *)) {
+  font-size: 0.89em;
+  color: var(--color-ink-muted);
+}
+
+/* ── Links: ink text, accent rule; hover thickens ─────────────────────── */
+.prose :where(a):not(:where(.prose [data-kiln-component], .prose [data-kiln-component] *)) {
+  color: inherit;
+  text-decoration-line: underline;
+  text-decoration-color: var(
+    --prose-link-line,
+    color-mix(in oklch, var(--color-accent) 70%, transparent)
+  );
+  text-decoration-thickness: max(calc(var(--border-width) * 0.75), 0.065em);
+  text-underline-offset: 0.22em;
+  transition:
+    text-decoration-color var(--dur-1) var(--ease-out),
+    text-decoration-thickness var(--dur-1) var(--ease-out);
+}
+@media (hover: hover) {
+  .prose :where(a):hover {
+    text-decoration-color: var(--color-accent);
+    text-decoration-thickness: max(var(--border-width), 0.13em);
+  }
+}
+.prose
+  :where(a):not(
+    :where(.prose [data-kiln-component], .prose [data-kiln-component] *)
+  ):focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+  border-radius: 0.125em;
+}
+
+/* ── Lists ────────────────────────────────────────────────────────────── */
+.prose :where(ul, ol):not(:where(.prose [data-kiln-component], .prose [data-kiln-component] *)) {
+  padding-inline-start: 1.35em;
+}
+.prose :where(li + li):not(:where(.prose [data-kiln-component], .prose [data-kiln-component] *)),
+.prose
+  :where(li > ul, li > ol):not(
+    :where(.prose [data-kiln-component], .prose [data-kiln-component] *)
+  ) {
+  margin-block-start: var(--space-2);
+}
+.prose
+  :where(li):not(:where(.prose [data-kiln-component], .prose [data-kiln-component] *))::marker {
+  color: var(--color-ink-subtle);
+}
+.prose
+  :where(ol > li):not(
+    :where(.prose [data-kiln-component], .prose [data-kiln-component] *)
+  )::marker {
+  font-family: var(--font-numeric);
+  font-stretch: var(--numeric-stretch);
+  /* Lining but proportional: some faces give a tabular '.' a full figure width */
+  font-variant-numeric: lining-nums;
+  font-size: 0.9em;
+}
+.prose
+  :where(ul > li):not(
+    :where(.prose [data-kiln-component], .prose [data-kiln-component] *)
+  )::marker {
+  content: '\2013\00a0\00a0';
+}
+.prose :where(dl):not(:where(.prose [data-kiln-component], .prose [data-kiln-component] *)) {
+  display: grid;
+  gap: var(--space-1) var(--space-4);
+}
+.prose :where(dt):not(:where(.prose [data-kiln-component], .prose [data-kiln-component] *)) {
+  font-family: var(--font-text);
+  font-weight: var(--label-weight);
+}
+.prose :where(dd):not(:where(.prose [data-kiln-component], .prose [data-kiln-component] *)) {
+  margin: 0;
+  color: var(--color-ink-muted);
+}
+
+/* ── Quotes: a hanging mark in the display face, no rule down the side ── */
+.prose
+  :where(blockquote):not(:where(.prose [data-kiln-component], .prose [data-kiln-component] *)) {
+  position: relative;
+  margin-inline: 0;
+  padding-inline-start: 1.25em;
+  color: var(--color-ink-muted);
+  font-size: 1.06em;
+}
+.prose
+  :where(blockquote):not(
+    :where(.prose [data-kiln-component], .prose [data-kiln-component] *)
+  )::before {
+  content: '\201C';
+  position: absolute;
+  inset-inline-start: -0.04em;
+  inset-block-start: -0.06em;
+  color: var(--color-accent-text);
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: 2.1em;
+  line-height: 1;
+}
+.prose
+  :where(blockquote):not(:where(.prose [data-kiln-component], .prose [data-kiln-component] *))
+  > *
+  + * {
+  margin-block-start: var(--space-3);
+}
+.prose
+  :where(blockquote cite, blockquote footer):not(
+    :where(.prose [data-kiln-component], .prose [data-kiln-component] *)
+  ) {
+  display: block;
+  font-family: var(--font-text);
+  font-size: 0.8em;
+  font-style: normal;
+  color: var(--color-ink-subtle);
+}
+.prose :where(q):not(:where(.prose [data-kiln-component], .prose [data-kiln-component] *)) {
+  quotes: '\201C' '\201D' '\2018' '\2019';
+}
+
+/* ── Code ─────────────────────────────────────────────────────────────── */
+.prose
+  :where(code, kbd, samp):not(
+    :where(.prose [data-kiln-component], .prose [data-kiln-component] *)
+  ) {
+  font-family: var(--font-mono);
+  font-stretch: var(--mono-stretch);
+  font-size: 0.8em;
+  font-variant-ligatures: none;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.prose
+  :where(:not(pre) > code):not(
+    :where(.prose [data-kiln-component], .prose [data-kiln-component] *)
+  ) {
+  padding: 0.08em 0.26em;
+  font-size: 0.85em;
+  font-weight: 400;
+  border-radius: calc(var(--radius-field) / 2);
+  background: var(--color-surface-sunken);
+  overflow-wrap: anywhere;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+.prose :where(kbd):not(:where(.prose [data-kiln-component], .prose [data-kiln-component] *)) {
+  padding: 0.1em 0.4em;
+  border: var(--border-width) solid var(--color-line-strong);
+  border-block-end-width: calc(var(--border-width) + 1px);
+  border-radius: calc(var(--radius-field) / 2);
+  font-family: var(--font-text);
+  font-weight: var(--label-weight);
+}
+.prose :where(pre):not(:where(.prose [data-kiln-component], .prose [data-kiln-component] *)) {
+  padding: var(--space-4) var(--space-5);
+  overflow-x: auto;
+  border-radius: var(--radius-media);
+  background: var(--color-surface-sunken);
+  line-height: 1.65;
+  tab-size: 2;
+  white-space: pre;
+}
+.prose
+  :where(pre):not(:where(.prose [data-kiln-component], .prose [data-kiln-component] *))
+  :where(code) {
+  font-size: 0.78em;
+}
+.prose
+  :where(pre):not(
+    :where(.prose [data-kiln-component], .prose [data-kiln-component] *)
+  ):focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+/* ── Figures ──────────────────────────────────────────────────────────── */
+.prose
+  :where(img, video, svg):not(
+    :where(.prose [data-kiln-component], .prose [data-kiln-component] *)
+  ) {
+  display: block;
+  max-inline-size: 100%;
+  block-size: auto;
+}
+.prose :where(figure):not(:where(.prose [data-kiln-component], .prose [data-kiln-component] *)) {
+  margin-inline: 0;
+}
+.prose
+  :where(figure):not(:where(.prose [data-kiln-component], .prose [data-kiln-component] *))
+  :where(img, video) {
+  inline-size: 100%;
+  border-radius: var(--radius-media);
+}
+.prose
+  :where(figcaption):not(:where(.prose [data-kiln-component], .prose [data-kiln-component] *)) {
+  margin-block-start: var(--space-3);
+  font-family: var(--font-text);
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+  color: var(--color-ink-muted);
+  text-wrap: pretty;
+}
+
+/* ── Rules & tables ───────────────────────────────────────────────────── */
+.prose :where(hr):not(:where(.prose [data-kiln-component], .prose [data-kiln-component] *)) {
+  block-size: 0;
+  border: 0;
+  border-block-start: var(--border-width) solid var(--color-line);
+}
+.prose :where(table):not(:where(.prose [data-kiln-component], .prose [data-kiln-component] *)) {
+  inline-size: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-text);
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.prose :where(caption):not(:where(.prose [data-kiln-component], .prose [data-kiln-component] *)) {
+  padding-block-end: var(--space-2);
+  text-align: start;
+  color: var(--color-ink-muted);
+}
+.prose :where(th, td):not(:where(.prose [data-kiln-component], .prose [data-kiln-component] *)) {
+  padding: var(--space-2) var(--space-3);
+  border-block-end: var(--border-width) solid var(--color-line);
+  text-align: start;
+  vertical-align: top;
+}
+.prose
+  :where(th:first-child, td:first-child):not(
+    :where(.prose [data-kiln-component], .prose [data-kiln-component] *)
+  ) {
+  padding-inline-start: 0;
+}
+.prose
+  :where(th:last-child, td:last-child):not(
+    :where(.prose [data-kiln-component], .prose [data-kiln-component] *)
+  ) {
+  padding-inline-end: 0;
+}
+.prose :where(thead th):not(:where(.prose [data-kiln-component], .prose [data-kiln-component] *)) {
+  border-block-end-color: var(--color-line-strong);
+  font-weight: var(--label-weight);
+  color: var(--color-ink-muted);
+}
+.prose
+  :where(td[align='right'], th[align='right']):not(
+    :where(.prose [data-kiln-component], .prose [data-kiln-component] *)
+  ),
+.prose
+  :where(td[data-numeric], th[data-numeric]):not(
+    :where(.prose [data-kiln-component], .prose [data-kiln-component] *)
+  ) {
+  text-align: end;
+  font-family: var(--font-numeric);
+  font-stretch: var(--numeric-stretch);
+}

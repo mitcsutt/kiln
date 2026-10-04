@@ -1,0 +1,76 @@
+/*
+ * Component tokens (themes may set any of these on [data-theme]):
+ *   --stamp-font        default var(--font-display)
+ *   --stamp-weight      default max(var(--display-weight), 650) — stamps are never light
+ *   --stamp-transform   default var(--display-transform)
+ *   --stamp-tracking    default 0.06em
+ *   --stamp-radius      default var(--radius-field)
+ *   --stamp-rule        width of each rule, default var(--border-width-strong)
+ *   --stamp-corner-inset  offset from the corner for placement="corner", default var(--space-3)
+ *
+ * Written by the component: --stamp-rotate.
+ *
+ * The double rule is a border plus an inset outline in the same ink — it scales with
+ * the theme's rule weight (1px in Monograph, 3px in Fiesta).
+ */
+.stamp {
+  --_ink: var(--tone-critical-text);
+  --_rule: var(--stamp-rule, var(--border-width-strong));
+  --_fs: var(--text-sm);
+  --_gap: 0.16em;
+  --_pad: 0.3em;
+
+  display: inline-block;
+  /* both rules + the gap between them sit inside the padding */
+  padding-block: calc(var(--_rule) + var(--_gap) + var(--_pad))
+    calc(var(--_rule) + var(--_gap) + var(--_pad) - 0.05em);
+  padding-inline: calc(var(--_rule) + var(--_gap) + var(--_pad) * 1.8);
+  border: var(--_rule) solid var(--_ink);
+  border-radius: var(--stamp-radius, var(--radius-field));
+  outline: var(--_rule) solid var(--_ink);
+  outline-offset: calc(var(--_rule) * -2 - var(--_gap));
+  color: var(--_ink);
+  font-family: var(--stamp-font, var(--font-display));
+  font-size: var(--_fs);
+  font-weight: var(--stamp-weight, max(var(--display-weight), 650));
+  font-stretch: var(--display-stretch);
+  font-variation-settings: 'opsz' var(--display-opsz);
+  text-transform: var(--stamp-transform, var(--display-transform));
+  letter-spacing: var(--stamp-tracking, 0.06em);
+  line-height: 1;
+  white-space: nowrap;
+  rotate: var(--stamp-rotate, -6deg);
+  user-select: none;
+}
+
+.stamp[data-size='sm'] {
+  --_fs: var(--text-xs);
+}
+.stamp[data-size='lg'] {
+  --_fs: var(--text-xl);
+}
+
+.stamp[data-tone='neutral'] {
+  --_ink: var(--color-ink-muted);
+}
+.stamp[data-tone='accent'] {
+  --_ink: var(--color-accent-text);
+}
+.stamp[data-tone='positive'] {
+  --_ink: var(--tone-positive-text);
+}
+.stamp[data-tone='caution'] {
+  --_ink: var(--tone-caution-text);
+}
+.stamp[data-tone='info'] {
+  --_ink: var(--tone-info-text);
+}
+
+/* Corner: out of flow, pinned to the top-end of the nearest positioned ancestor (Card is). */
+.stamp[data-placement='corner'] {
+  position: absolute;
+  inset-block-start: var(--stamp-corner-inset, var(--space-3));
+  inset-inline-end: var(--stamp-corner-inset, var(--space-3));
+  z-index: 1;
+  pointer-events: none;
+}

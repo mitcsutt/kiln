@@ -1,0 +1,32 @@
+/*
+ * Component tokens:
+ *   --container-gutter   default var(--gutter) (fluid, from foundation.css)
+ */
+.container {
+  --_w: var(--width-content);
+  --_g: var(--container-gutter, var(--gutter));
+
+  box-sizing: border-box;
+  inline-size: 100%;
+  max-inline-size: calc(var(--_w) + var(--_g) * 2);
+  margin-inline: auto;
+  padding-inline: var(--_g);
+  min-inline-size: 0;
+}
+
+.container[data-width='narrow'] {
+  --_w: var(--width-narrow);
+}
+.container[data-width='text'] {
+  --_w: var(--width-text);
+}
+.container[data-width='wide'] {
+  --_w: var(--width-wide);
+}
+.container[data-width='full'] {
+  max-inline-size: none;
+}
+
+.container[data-gutter='false'] {
+  --_g: 0px;
+}

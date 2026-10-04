@@ -1,0 +1,208 @@
+/*
+ * Two typographic roles, chosen by size:
+ *   display (display-lg/md/sm) — --font-display, --display-*, --leading-tight, opsz
+ *   heading (3xl … sm)         — --heading-font/-weight/-tracking/-transform, --leading-snug
+ *
+ * Responsive size: the component writes --heading-size-{base..xl} (see Stack for the
+ * pattern) and data-role-{sm..xl}; a scalar size needs neither and resolves from
+ * data-size alone.
+ *
+ * Component tokens:
+ *   --heading-display-leading   default var(--leading-tight)
+ *   --heading-leading           default var(--leading-snug)
+ */
+.heading {
+  --_ink: var(--color-ink);
+  --_fs: var(--heading-size-base, var(--_size));
+
+  margin: 0;
+  font-family: var(--_ff);
+  font-size: var(--_fs);
+  font-weight: var(--_fw);
+  font-style: var(--_fst);
+  font-stretch: var(--_fstr);
+  font-variation-settings: var(--_fvs);
+  letter-spacing: var(--_ls);
+  text-transform: var(--_tt);
+  line-height: var(--_lh);
+  color: var(--_ink);
+  text-wrap: balance;
+  overflow-wrap: break-word;
+  font-kerning: normal;
+}
+
+.heading[data-balance='false'] {
+  text-wrap: pretty;
+}
+
+/* Sizes → a token on the type scale */
+.heading[data-size='display-lg'] {
+  --_size: var(--text-display-lg);
+}
+.heading[data-size='display-md'] {
+  --_size: var(--text-display-md);
+}
+.heading[data-size='display-sm'] {
+  --_size: var(--text-display-sm);
+}
+.heading[data-size='3xl'] {
+  --_size: var(--text-3xl);
+}
+.heading[data-size='2xl'] {
+  --_size: var(--text-2xl);
+}
+.heading[data-size='xl'] {
+  --_size: var(--text-xl);
+}
+.heading[data-size='lg'] {
+  --_size: var(--text-lg);
+}
+.heading[data-size='md'] {
+  --_size: var(--text-md);
+}
+.heading[data-size='sm'] {
+  --_size: var(--text-sm);
+}
+
+/* Roles */
+.heading[data-role='display'] {
+  --_ff: var(--font-display);
+  --_fw: var(--display-weight);
+  --_fst: var(--display-style);
+  --_fstr: var(--display-stretch);
+  --_fvs: 'opsz' var(--display-opsz);
+  --_ls: var(--display-tracking);
+  --_tt: var(--display-transform);
+  --_lh: var(--heading-display-leading, var(--leading-tight));
+}
+.heading[data-role='heading'] {
+  --_ff: var(--heading-font);
+  --_fw: var(--heading-weight);
+  --_fst: normal;
+  --_fstr: normal;
+  --_fvs: normal;
+  --_ls: var(--heading-tracking);
+  --_tt: var(--heading-transform);
+  --_lh: var(--heading-leading, var(--leading-snug));
+}
+
+/* Tones */
+.heading[data-tone='muted'] {
+  --_ink: var(--color-ink-muted);
+}
+.heading[data-tone='accent'] {
+  --_ink: var(--color-accent-text);
+}
+
+/* Responsive: size var per breakpoint, role attribute per breakpoint */
+@media (min-width: 40em) {
+  .heading {
+    --_fs: var(--heading-size-sm, var(--_size));
+  }
+  .heading[data-role-sm='display'] {
+    --_ff: var(--font-display);
+    --_fw: var(--display-weight);
+    --_fst: var(--display-style);
+    --_fstr: var(--display-stretch);
+    --_fvs: 'opsz' var(--display-opsz);
+    --_ls: var(--display-tracking);
+    --_tt: var(--display-transform);
+    --_lh: var(--heading-display-leading, var(--leading-tight));
+  }
+  .heading[data-role-sm='heading'] {
+    --_ff: var(--heading-font);
+    --_fw: var(--heading-weight);
+    --_fst: normal;
+    --_fstr: normal;
+    --_fvs: normal;
+    --_ls: var(--heading-tracking);
+    --_tt: var(--heading-transform);
+    --_lh: var(--heading-leading, var(--leading-snug));
+  }
+}
+@media (min-width: 48em) {
+  .heading {
+    --_fs: var(--heading-size-md, var(--_size));
+  }
+  .heading[data-role-md='display'] {
+    --_ff: var(--font-display);
+    --_fw: var(--display-weight);
+    --_fst: var(--display-style);
+    --_fstr: var(--display-stretch);
+    --_fvs: 'opsz' var(--display-opsz);
+    --_ls: var(--display-tracking);
+    --_tt: var(--display-transform);
+    --_lh: var(--heading-display-leading, var(--leading-tight));
+  }
+  .heading[data-role-md='heading'] {
+    --_ff: var(--heading-font);
+    --_fw: var(--heading-weight);
+    --_fst: normal;
+    --_fstr: normal;
+    --_fvs: normal;
+    --_ls: var(--heading-tracking);
+    --_tt: var(--heading-transform);
+    --_lh: var(--heading-leading, var(--leading-snug));
+  }
+}
+@media (min-width: 64em) {
+  .heading {
+    --_fs: var(--heading-size-lg, var(--_size));
+  }
+  .heading[data-role-lg='display'] {
+    --_ff: var(--font-display);
+    --_fw: var(--display-weight);
+    --_fst: var(--display-style);
+    --_fstr: var(--display-stretch);
+    --_fvs: 'opsz' var(--display-opsz);
+    --_ls: var(--display-tracking);
+    --_tt: var(--display-transform);
+    --_lh: var(--heading-display-leading, var(--leading-tight));
+  }
+  .heading[data-role-lg='heading'] {
+    --_ff: var(--heading-font);
+    --_fw: var(--heading-weight);
+    --_fst: normal;
+    --_fstr: normal;
+    --_fvs: normal;
+    --_ls: var(--heading-tracking);
+    --_tt: var(--heading-transform);
+    --_lh: var(--heading-leading, var(--leading-snug));
+  }
+}
+@media (min-width: 80em) {
+  .heading {
+    --_fs: var(--heading-size-xl, var(--_size));
+  }
+  .heading[data-role-xl='display'] {
+    --_ff: var(--font-display);
+    --_fw: var(--display-weight);
+    --_fst: var(--display-style);
+    --_fstr: var(--display-stretch);
+    --_fvs: 'opsz' var(--display-opsz);
+    --_ls: var(--display-tracking);
+    --_tt: var(--display-transform);
+    --_lh: var(--heading-display-leading, var(--leading-tight));
+  }
+  .heading[data-role-xl='heading'] {
+    --_ff: var(--heading-font);
+    --_fw: var(--heading-weight);
+    --_fst: normal;
+    --_fstr: normal;
+    --_fvs: normal;
+    --_ls: var(--heading-tracking);
+    --_tt: var(--heading-transform);
+    --_lh: var(--heading-leading, var(--leading-snug));
+  }
+}
+
+/* Measure: cap the line length with the width tokens. */
+.heading[data-measure='narrow'] {
+  max-inline-size: var(--width-narrow);
+}
+.heading[data-measure='text'] {
+  max-inline-size: var(--width-text);
+}
+.heading[data-measure='content'] {
+  max-inline-size: var(--width-content);
+}

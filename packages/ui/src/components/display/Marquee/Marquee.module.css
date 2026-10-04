@@ -1,0 +1,178 @@
+/*
+ * Component tokens (themes may set any of these on [data-theme]):
+ *   --marquee-font                default var(--font-text)
+ *   --marquee-size                default var(--text-sm)
+ *   --marquee-padding             block padding of the band, default var(--space-3)
+ *   --marquee-edge                rules above/below the plain band, default var(--color-line)
+ *   --marquee-separator-color     default currentColor
+ *   --marquee-separator-opacity   default 0.5
+ *   --marquee-separator-width     default var(--border-width)
+ *   --marquee-separator-height    default 1.1em
+ *   --marquee-separator-rotate    default 18deg  (a slanted rule; 0deg = upright bar)
+ *   --marquee-separator-radius    default 0      (set width = height + a radius for a dot)
+ *
+ * Written by the component: --marquee-gap, --marquee-duration.
+ */
+.marquee {
+  --_bg: transparent;
+  --_ink: var(--color-ink-muted);
+  --_edge: var(--marquee-edge, var(--color-line));
+
+  display: flex;
+  align-items: stretch;
+  min-inline-size: 0;
+  background: var(--_bg);
+  color: var(--_ink);
+  border-block: var(--border-width) solid var(--_edge);
+  font-family: var(--marquee-font, var(--font-text));
+  font-size: var(--marquee-size, var(--text-sm));
+  font-weight: var(--label-weight);
+  line-height: var(--leading-snug);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+.marquee:not([data-surface='plain']) {
+  /* Tone text colours are tuned for the page, not for a filled band: let nested
+     indicators follow the band's ink. */
+  --live-label-color: currentColor;
+}
+
+.marquee[data-surface='inverse'] {
+  --_bg: var(--color-surface-inverse);
+  --_ink: var(--color-ink-inverse);
+  --_edge: var(--color-surface-inverse);
+}
+.marquee[data-surface='accent'] {
+  --_bg: var(--color-accent);
+  --_ink: var(--color-accent-ink);
+  --_edge: var(--color-line-strong);
+}
+
+.viewport {
+  flex: 1;
+  min-inline-size: 0;
+  overflow: hidden;
+}
+
+.track {
+  display: flex;
+  inline-size: max-content;
+  padding-block: var(--marquee-padding, var(--space-3));
+  animation: scroll var(--marquee-duration) linear infinite;
+}
+
+.marquee[data-direction='right'] .track {
+  animation-direction: reverse;
+}
+
+.marquee[data-paused] .track,
+.marquee[data-pause-on-hover]:focus-within .track {
+  animation-play-state: paused;
+}
+@media (hover: hover) {
+  .marquee[data-pause-on-hover]:hover .track {
+    animation-play-state: paused;
+  }
+}
+
+.group {
+  display: flex;
+  flex: none;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--marquee-gap, var(--space-5));
+  padding-inline-end: var(--marquee-gap, var(--space-5));
+  white-space: nowrap;
+}
+
+.content {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.separator {
+  display: inline-flex;
+  align-items: center;
+  color: var(--marquee-separator-color, currentColor);
+}
+
+.rule {
+  display: block;
+  inline-size: var(--marquee-separator-width, var(--border-width));
+  block-size: var(--marquee-separator-height, 1.1em);
+  border-radius: var(--marquee-separator-radius, 0);
+  background: currentColor;
+  opacity: var(--marquee-separator-opacity, 0.5);
+  rotate: var(--marquee-separator-rotate, 18deg);
+}
+
+.custom {
+  display: inline-flex;
+  opacity: var(--marquee-separator-opacity, 0.5);
+}
+
+/* Pause / play — quiet, but always reachable. */
+.control {
+  flex: none;
+  display: grid;
+  place-items: center;
+  inline-size: var(--control-sm);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-inline-start: var(--border-width) solid var(--_edge);
+  background: var(--_bg);
+  color: inherit;
+  font-size: var(--text-md);
+  opacity: 0.8;
+  cursor: pointer;
+  transition: opacity var(--dur-1) var(--ease-out);
+}
+.marquee[data-surface='inverse'] .control {
+  border-inline-start-color: color-mix(in oklch, var(--_ink) 25%, transparent);
+}
+@media (hover: hover) {
+  .control:hover {
+    opacity: 1;
+  }
+}
+.control:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: -4px;
+  opacity: 1;
+}
+.marquee:not([data-surface='plain']) .control:focus-visible {
+  outline-color: currentColor;
+}
+
+@keyframes scroll {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: -50% 0;
+  }
+}
+
+/* Reduced motion: no travel — a static row the reader scrolls themselves. */
+@media (prefers-reduced-motion: reduce) {
+  .viewport {
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+  .track {
+    animation: none;
+    padding-inline: var(--space-4);
+  }
+  .copy,
+  .control {
+    display: none;
+  }
+}

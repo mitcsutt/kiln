@@ -1,0 +1,74 @@
+/*
+ * Component tokens (themes may set any of these on [data-theme]):
+ *   --popover-radius    default var(--radius-surface)
+ *   --popover-shadow    default var(--shadow-float)
+ *   --popover-border    default var(--color-line-strong)
+ *   --popover-surface   default var(--color-surface-raised)
+ */
+.content {
+  --_border: var(--popover-border, var(--color-line-strong));
+  --_surface: var(--popover-surface, var(--color-surface-raised));
+
+  z-index: var(--z-popover);
+  max-inline-size: min(
+    calc(var(--width-narrow) * 0.625),
+    var(--radix-popover-content-available-width, 100vw)
+  );
+  max-block-size: var(--radix-popover-content-available-height);
+  overflow-y: auto;
+  padding: var(--space-4);
+  border: var(--border-width) solid var(--_border);
+  border-radius: var(--popover-radius, var(--radius-surface));
+  background: var(--_surface);
+  box-shadow: var(--popover-shadow, var(--shadow-float));
+  color: var(--color-ink);
+  font-family: var(--font-text);
+  font-size: var(--text-sm);
+  line-height: var(--leading-body);
+  transform-origin: var(--radix-popover-content-transform-origin);
+}
+/* Radix focuses the panel itself on open; it's a container, not a control. */
+.content:focus {
+  outline: none;
+}
+
+.content[data-state='open'] {
+  animation: pop-in var(--dur-2) var(--ease-spring);
+}
+.content[data-state='closed'] {
+  animation: pop-out var(--dur-1) var(--ease-out);
+}
+
+/* Custom arrow: surface fill + keyline on the two outer edges, tucked over the border. */
+.arrow {
+  display: block;
+  overflow: visible;
+  translate: 0 calc(-1 * var(--border-width));
+}
+.arrowFill {
+  fill: var(--popover-surface, var(--color-surface-raised));
+}
+.arrowEdge {
+  fill: none;
+  stroke: var(--popover-border, var(--color-line-strong));
+  stroke-width: var(--border-width);
+  stroke-linejoin: round;
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    scale: 0.96;
+  }
+}
+@keyframes pop-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .content[data-state] {
+    animation: none;
+  }
+}

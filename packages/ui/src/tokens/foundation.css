@@ -1,0 +1,172 @@
+/*
+ * FOUNDATION — theme-independent structure and the formulas that turn a theme's
+ * inputs into usable scales. See DESIGN.md §3 (Tokens) for the contract.
+ *
+ * Three tiers:
+ *   1. Theme inputs      set by src/themes/<name>.css   (--density, --type-base, --type-ratio, fonts, colours…)
+ *   2. Semantic tokens   derived here or set by themes   (--space-4, --text-lg, --color-ink, --radius-field…)
+ *   3. Component tokens  read (with fallbacks) inside component CSS Modules (--button-bg…)
+ *
+ * Components read tiers 2 and 3 only. Never a raw value, never a theme input.
+ *
+ * Why `:root, [data-theme], [data-density]` everywhere below:
+ * a custom property that references another is resolved on the element that
+ * declares it. Re-declaring the formulas on every theme scope makes nested
+ * <ThemeScope>s recompute spacing/type from *their* inputs instead of inheriting
+ * the parent's already-resolved values.
+ */
+
+@layer kiln.tokens {
+  :root {
+    color-scheme: light dark;
+
+    /* Breakpoints — documentation only; media queries cannot read custom properties.
+       sm 40em · md 48em · lg 64em · xl 80em (mirrors utils/responsive.ts) */
+
+    /* Content widths */
+    --width-narrow: 32rem;
+    --width-text: 42rem; /* ≈ 68ch of body copy */
+    --width-content: 68rem;
+    --width-wide: 84rem;
+    --gutter: clamp(1rem, 4.5vw, 2.5rem);
+
+    /* Layers */
+    --z-base: 0;
+    --z-raised: 10;
+    --z-sticky: 100;
+    --z-overlay: 1000;
+    --z-popover: 1100;
+    --z-toast: 1200;
+
+    /* Theme-input defaults (every theme overrides the ones it cares about) */
+    --density: 1;
+    --type-base: 1rem;
+    --type-ratio: 1.25;
+    --motion-scale: 1;
+    --canvas-image: none;
+    --canvas-image-size: auto;
+  }
+
+  /* Colour-mode axis. `system` (or no attribute) follows the OS. Scopes without
+     data-mode inherit their parent's colour-scheme, so nesting a theme keeps the mode. */
+  [data-mode='light'] {
+    color-scheme: light;
+  }
+  [data-mode='dark'] {
+    color-scheme: dark;
+  }
+  [data-mode='system'] {
+    color-scheme: light dark;
+  }
+
+  /* Optional theme tokens — set by only some themes (fiesta's gold-row inks, ledger's
+     table rule…). Every theme scope resets them first, in this lower layer, so a nested
+     <ThemeScope theme="ledger"> inside fiesta gets the component's own fallback instead of
+     inheriting fiesta's value. A theme that sets one overrides this in kiln.themes.
+     `initial` on a custom property = unset, so `var(--x, fallback)` takes the fallback.
+     themes/themes.test.ts fails if a theme sets a token the others neither set nor reset here. */
+  [data-theme] {
+    --canvas-image-size: auto;
+    --control-checked-border: initial;
+    --highlight-accent-text: initial;
+    --highlight-tone-caution-text: initial;
+    --highlight-tone-critical-text: initial;
+    --highlight-tone-info-text: initial;
+    --highlight-tone-positive-text: initial;
+    --marquee-edge: initial;
+    --numeral-scale: initial;
+    --numeral-weight: initial;
+    --section-divider-color: initial;
+    --stat-fit: initial;
+    --table-foot-rule: initial;
+    --table-head-font: initial;
+  }
+
+  /* Density axis — orthogonal to theme. Multiplies the theme's own density. */
+  [data-density='compact'] {
+    --density-adjust: 0.85;
+  }
+  [data-density='comfortable'] {
+    --density-adjust: 1.15;
+  }
+
+  /* ─── Derived scales ─────────────────────────────────────────────────────── */
+  :root,
+  [data-theme],
+  [data-density] {
+    --_d: calc(var(--density) * var(--density-adjust, 1));
+
+    /* Space — deliberately non-linear (4 8 12 16 24 32 48 64 96 144 192 256 @ density 1).
+       Adjacent sections should never share the same step. */
+    --space-1: calc(0.25rem * var(--_d));
+    --space-2: calc(0.5rem * var(--_d));
+    --space-3: calc(0.75rem * var(--_d));
+    --space-4: calc(1rem * var(--_d));
+    --space-5: calc(1.5rem * var(--_d));
+    --space-6: calc(2rem * var(--_d));
+    --space-7: calc(3rem * var(--_d));
+    --space-8: calc(4rem * var(--_d));
+    --space-9: calc(6rem * var(--_d));
+    --space-10: calc(9rem * var(--_d));
+    --space-11: calc(12rem * var(--_d));
+    --space-12: calc(16rem * var(--_d));
+
+    /* Control heights follow density too */
+    --control-sm: calc(2rem * var(--_d));
+    --control-md: calc(2.5rem * var(--_d));
+    --control-lg: calc(3rem * var(--_d));
+
+    /* Type — a modular scale from --type-base × --type-ratio^n.
+       Display steps are fluid and jump hard: the largest is ≥ 5× body. Fluid steps use
+       container units (cqi): with no size container they track the viewport (like the
+       layout breakpoints); an element that opts into `container-type: inline-size`
+       makes display type fit it instead. Themes do NOT become containers by default —
+       containment would trap position:fixed descendants. Themes whose ratio is
+       gentle can lift only the display steps with --display-scale. */
+    /* The two smallest steps are floored: a steep ratio (Fiesta 1.28) would otherwise put
+       button/badge labels under 10px. 11px / 10px at the default 16px root. */
+    --text-2xs: max(0.625rem, calc(var(--type-base) / pow(var(--type-ratio), 3)));
+    --text-xs: max(0.6875rem, calc(var(--type-base) / pow(var(--type-ratio), 2)));
+    --text-sm: calc(var(--type-base) / var(--type-ratio));
+    --text-md: var(--type-base);
+    --text-lg: calc(var(--type-base) * var(--type-ratio));
+    --text-xl: calc(var(--type-base) * pow(var(--type-ratio), 2));
+    --text-2xl: calc(var(--type-base) * pow(var(--type-ratio), 3));
+    --text-3xl: calc(var(--type-base) * pow(var(--type-ratio), 4));
+    --text-display-sm: clamp(
+      var(--text-2xl),
+      6cqi,
+      calc(var(--type-base) * pow(var(--type-ratio), 5) * var(--display-scale, 1))
+    );
+    --text-display-md: clamp(
+      var(--text-3xl),
+      8cqi,
+      calc(var(--type-base) * pow(var(--type-ratio), 6.5) * var(--display-scale, 1))
+    );
+    --text-display-lg: clamp(
+      var(--text-3xl),
+      11cqi,
+      calc(var(--type-base) * pow(var(--type-ratio), 8) * var(--display-scale, 1))
+    );
+
+    /* Edges of interactive controls (fields, checkboxes, radios, switches) must reach
+       3:1 against their surroundings (WCAG 1.4.11); hairline structure doesn't need to. */
+    --color-line-control: color-mix(in oklab, var(--color-line-strong), var(--color-ink) 32%);
+
+    /* Motion — durations scale with the theme's temperament and collapse for reduced motion */
+    --dur-1: calc(110ms * var(--motion-scale));
+    --dur-2: calc(190ms * var(--motion-scale));
+    --dur-3: calc(340ms * var(--motion-scale));
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :root,
+    [data-theme],
+    [data-density] {
+      /* Set the derived durations (not --motion-scale, which themes own in a later layer). */
+      --dur-1: 1ms;
+      --dur-2: 1ms;
+      --dur-3: 1ms;
+    }
+  }
+}

@@ -4,7 +4,7 @@
 
 Kiln is a themeable React design system and form library, published to npm under the `@mitcsutt` scope, along with the shared ESLint, Prettier and TypeScript configs it's built with.
 
-> **Status: in progress, unreleased.** The workspace and the three config packages are in place. The UI and forms packages, the docs site and Storybook are still to come. Nothing is published to npm yet. The intended end state is described in [`docs/target-state.md`](docs/target-state.md), and the reasoning behind each decision is in [`docs/adr/`](docs/adr/).
+> **Status: in progress, unreleased.** The workspace, the three config packages and the UI package are in place. The forms package, the docs site and Storybook are still to come. Nothing is published to npm yet. The intended end state is described in [`docs/target-state.md`](docs/target-state.md), and the reasoning behind each decision is in [`docs/adr/`](docs/adr/).
 
 ## What Kiln is for
 
@@ -14,7 +14,7 @@ I kept rebuilding the same components, form plumbing and lint configs in every p
 
 | Package                                                      | What it is                                                                                                                           | Status      |
 | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
-| `@mitcsutt/kiln-ui`                                          | Themeable components on Radix primitives, with plain CSS, design tokens, and a default theme plus opt-in presets                     | Not started |
+| [`@mitcsutt/kiln-ui`](packages/ui)                           | Themeable components on Radix primitives, with plain CSS, design tokens, and a default theme plus opt-in presets                     | Unreleased  |
 | `@mitcsutt/kiln-forms`                                       | A form library on TanStack Form. Forms can be written as components or described as JSON schemas, and both render through `kiln-ui`. | Not started |
 | [`@mitcsutt/kiln-eslint-config`](packages/eslint-config)     | A shared, type-aware flat ESLint config                                                                                              | Unreleased  |
 | [`@mitcsutt/kiln-prettier-config`](packages/prettier-config) | A shared Prettier config                                                                                                             | Unreleased  |

@@ -1,0 +1,161 @@
+/*
+ * Component tokens (themes may set any of these on [data-theme]):
+ *   --button-radius   default var(--radius-action)
+ *   --button-shadow   default var(--shadow-surface) for solid/outline
+ *   --button-weight   default var(--label-weight)
+ */
+.button {
+  --_bg: transparent;
+  --_bg-hover: var(--_bg);
+  --_ink: var(--color-ink);
+  --_border: transparent;
+  --_shadow: none;
+  --_h: var(--control-md);
+  --_px: var(--space-4);
+  --_fs: var(--text-sm);
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  min-block-size: var(--_h);
+  padding-inline: var(--_px);
+  padding-block: 0;
+  border: var(--border-width) solid var(--_border);
+  border-radius: var(--button-radius, var(--radius-action));
+  background: var(--_bg);
+  color: var(--_ink);
+  box-shadow: var(--_shadow);
+  font-family: var(--font-text);
+  font-size: var(--_fs);
+  font-weight: var(--button-weight, var(--label-weight));
+  letter-spacing: var(--label-tracking);
+  text-transform: var(--label-transform);
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--dur-1) var(--ease-out),
+    border-color var(--dur-1) var(--ease-out),
+    color var(--dur-1) var(--ease-out),
+    box-shadow var(--dur-1) var(--ease-out),
+    translate var(--dur-1) var(--ease-spring);
+}
+
+/* Sizes */
+.button[data-size='sm'] {
+  --_h: var(--control-sm);
+  --_px: var(--space-3);
+  --_fs: var(--text-xs);
+}
+.button[data-size='lg'] {
+  --_h: var(--control-lg);
+  --_px: var(--space-5);
+  --_fs: var(--text-md);
+}
+
+/* Tone → which colour family the variant draws with */
+.button[data-tone='accent'] {
+  --_c: var(--color-accent);
+  --_c-hover: var(--color-accent-hover);
+  --_c-ink: var(--color-accent-ink);
+  --_c-text: var(--color-accent-text);
+  --_c-soft: var(--color-accent-soft);
+}
+.button[data-tone='neutral'] {
+  --_c: var(--color-surface-inverse);
+  --_c-hover: var(--color-ink-muted);
+  --_c-ink: var(--color-ink-inverse);
+  --_c-text: var(--color-ink);
+  --_c-soft: var(--color-surface-sunken);
+}
+.button[data-tone='critical'] {
+  --_c: var(--tone-critical);
+  --_c-hover: var(--tone-critical-text);
+  --_c-ink: var(--tone-critical-ink);
+  --_c-text: var(--tone-critical-text);
+  --_c-soft: var(--tone-critical-soft);
+}
+
+/* Variants */
+.button[data-variant='solid'] {
+  --_bg: var(--_c);
+  --_bg-hover: var(--_c-hover);
+  --_ink: var(--_c-ink);
+  --_border: var(--button-solid-border, var(--_c));
+  --_shadow: var(--button-shadow, var(--shadow-surface));
+}
+.button[data-variant='outline'] {
+  --_bg: transparent;
+  --_bg-hover: var(--_c-soft);
+  --_ink: var(--_c-text);
+  --_border: var(--color-line-strong);
+  --_shadow: var(--button-shadow, var(--shadow-surface));
+}
+.button[data-tone='neutral'][data-variant='outline'] {
+  --_bg: var(--color-surface);
+}
+.button[data-variant='ghost'] {
+  --_bg: transparent;
+  --_bg-hover: var(--_c-soft);
+  --_ink: var(--_c-text);
+}
+
+@media (hover: hover) {
+  .button:hover:not(:disabled, [aria-disabled='true']) {
+    background: var(--_bg-hover);
+  }
+}
+
+.button:active:not(:disabled, [aria-disabled='true']) {
+  translate: var(--active-shift) var(--active-shift);
+  box-shadow: var(--shadow-active);
+}
+.button[data-variant='ghost']:active:not(:disabled) {
+  translate: none;
+  box-shadow: none;
+}
+
+.button:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.button:disabled,
+.button[aria-disabled='true'] {
+  cursor: not-allowed;
+  opacity: 0.45;
+  box-shadow: none;
+}
+
+.button[data-loading] {
+  cursor: progress;
+  opacity: 1;
+  /* Bare text children aren't elements, so hide the label via colour, not visibility */
+  color: transparent;
+}
+.button[data-loading] > :not(.spinner) {
+  visibility: hidden;
+}
+
+.button[data-full-width] {
+  display: flex;
+  inline-size: 100%;
+}
+
+.icon {
+  display: inline-flex;
+  font-size: 1.15em;
+  margin-inline: -0.1em;
+}
+
+.spinner {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: var(--_ink);
+}

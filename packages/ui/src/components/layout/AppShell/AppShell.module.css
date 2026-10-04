@@ -1,0 +1,184 @@
+/*
+ * Component tokens:
+ *   --app-shell-header-height   minimum header height, also the sidebar's sticky offset
+ *                               (default: control-lg + space-4)
+ *   --app-shell-sidebar-width   default 16rem
+ *   --app-shell-header-bg       default var(--color-canvas) — opaque, never glass
+ *   --app-shell-bar-rule        rule under the header / above the bottom bar
+ *                               (default var(--color-line-strong): these are the frame's edges)
+ *
+ * The bottom bar is `position: sticky` as the grid's last row rather than `fixed`, so
+ * nothing needs a magic padding to stop it covering the end of Main.
+ */
+.shell {
+  --app-shell-sticky-offset: 0px;
+
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto 1fr auto auto;
+  grid-template-areas:
+    'header'
+    'main'
+    'footer'
+    'bottombar';
+  min-block-size: 100dvh;
+}
+
+.shell:has(> .header[data-sticky]) {
+  --app-shell-sticky-offset: var(
+    --app-shell-header-height,
+    calc(var(--control-lg) + var(--space-4))
+  );
+}
+
+/* Skip link: clipped until focused, then a pill in the top corner above everything. */
+.skip {
+  position: absolute;
+  inset-block-start: var(--space-3);
+  inset-inline-start: var(--space-3);
+  z-index: var(--z-toast);
+  padding: var(--space-2) var(--space-4);
+  border: var(--border-width) solid var(--color-line-strong);
+  border-radius: var(--radius-action);
+  background: var(--color-surface-raised);
+  box-shadow: var(--shadow-float);
+  color: var(--color-ink);
+  font-size: var(--text-sm);
+  font-weight: var(--label-weight);
+  text-decoration: none;
+}
+
+.header {
+  grid-area: header;
+  display: flex;
+  align-items: center;
+  min-block-size: var(--app-shell-header-height, calc(var(--control-lg) + var(--space-4)));
+  min-inline-size: 0;
+  padding-block: var(--space-2);
+  border-block-end: var(--border-width) solid var(--app-shell-bar-rule, var(--color-line-strong));
+  background-color: var(--app-shell-header-bg, var(--color-canvas));
+  background-image: var(--canvas-image);
+  background-size: var(--canvas-image-size);
+  color: var(--color-ink);
+}
+.header > * {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+}
+.header[data-sticky] {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: var(--z-sticky);
+}
+
+.main {
+  grid-area: main;
+  min-inline-size: 0;
+}
+.main:focus {
+  outline: none;
+}
+
+.sidebar {
+  grid-area: sidebar;
+  display: none;
+  min-inline-size: 0;
+}
+
+.footer {
+  grid-area: footer;
+  min-inline-size: 0;
+  padding-block: var(--space-6);
+  border-block-start: var(--border-width) solid var(--color-line);
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+}
+
+.bottomBar {
+  grid-area: bottombar;
+  position: sticky;
+  inset-block-end: 0;
+  z-index: var(--z-sticky);
+  min-inline-size: 0;
+  padding-block-end: env(safe-area-inset-bottom, 0px);
+  border-block-start: var(--border-width) solid var(--app-shell-bar-rule, var(--color-line-strong));
+  background-color: var(--app-shell-header-bg, var(--color-canvas));
+  background-image: var(--canvas-image);
+  background-size: var(--canvas-image-size);
+}
+
+/*
+ * Nav hand-over. `data-nav-breakpoint` (md | lg) on the shell decides where the bottom
+ * bar goes and the sidebar arrives — one breakpoint for both, so no width has neither.
+ */
+.sidebar {
+  position: sticky;
+  inset-block-start: var(--app-shell-sticky-offset);
+  align-self: start;
+  block-size: calc(100dvh - var(--app-shell-sticky-offset));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--space-5) var(--space-4);
+}
+.sidebar[data-side='start'] {
+  border-inline-end: var(--border-width) solid var(--color-line);
+}
+.sidebar[data-side='end'] {
+  border-inline-start: var(--border-width) solid var(--color-line);
+}
+
+@media (min-width: 48em) {
+  .shell[data-nav-breakpoint='md'] > .bottomBar {
+    display: none;
+  }
+  .shell[data-nav-breakpoint='md'] > .sidebar {
+    display: block;
+  }
+  .shell[data-nav-breakpoint='md']:has(> .sidebar) {
+    grid-template-columns: var(--app-shell-sidebar-width, 16rem) minmax(0, 1fr);
+    grid-template-areas:
+      'header header'
+      'sidebar main'
+      'sidebar footer'
+      'bottombar bottombar';
+  }
+  .shell[data-nav-breakpoint='md']:has(> .sidebar[data-side='end']) {
+    grid-template-columns: minmax(0, 1fr) var(--app-shell-sidebar-width, 16rem);
+    grid-template-areas:
+      'header header'
+      'main sidebar'
+      'footer sidebar'
+      'bottombar bottombar';
+  }
+}
+
+@media (min-width: 64em) {
+  .shell[data-nav-breakpoint='lg'] > .bottomBar {
+    display: none;
+  }
+  .shell[data-nav-breakpoint='lg'] > .sidebar {
+    display: block;
+  }
+  .shell[data-nav-breakpoint='lg']:has(> .sidebar) {
+    grid-template-columns: var(--app-shell-sidebar-width, 16rem) minmax(0, 1fr);
+    grid-template-areas:
+      'header header'
+      'sidebar main'
+      'sidebar footer'
+      'bottombar bottombar';
+  }
+  .shell[data-nav-breakpoint='lg']:has(> .sidebar[data-side='end']) {
+    grid-template-columns: minmax(0, 1fr) var(--app-shell-sidebar-width, 16rem);
+    grid-template-areas:
+      'header header'
+      'main sidebar'
+      'footer sidebar'
+      'bottombar bottombar';
+  }
+}
+
+/* `hidden` wins over the display above (author CSS otherwise beats the UA [hidden] rule). */
+.shell[hidden] {
+  display: none;
+}

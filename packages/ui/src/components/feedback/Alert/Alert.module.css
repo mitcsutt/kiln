@@ -1,0 +1,158 @@
+/*
+ * Component tokens (themes may set any of these on [data-theme]):
+ *   --alert-radius         default var(--radius-field)
+ *   --alert-edge           keyline of the default (outline) alert, default var(--color-line-strong)
+ *   --alert-rule-length    the tone tab on the top edge, default var(--space-6)
+ *   --alert-rule-width     its thickness, default calc(var(--border-width) + 2px)
+ *   --alert-border-mix     soft variant: how much tone goes into the keyline, default 55%
+ *                          (the rest is --color-line-strong, so Fiesta's keyline stays inky)
+ *
+ * Default (`outline`): a neutral hairline frame on the surface. The tone shows in two small
+ * places only — the glyph, and a short tab of tone ink set into the top edge above it, like
+ * an index tab on a file card. Title in the theme's heading role. No tinted box, no left
+ * stripe, no shadow. `soft` keeps the tinted fill with a tone keyline for louder notices.
+ */
+.alert {
+  --_c: var(--tone-info);
+  --_soft: var(--tone-info-soft);
+  --_text: var(--tone-info-text);
+  --_bg: var(--color-surface);
+  --_edge: var(--alert-edge, var(--color-line-strong));
+
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  column-gap: var(--space-3);
+  padding-block: var(--space-3);
+  padding-inline: var(--space-4);
+  border: var(--border-width) solid var(--_edge);
+  border-radius: var(--alert-radius, var(--radius-field));
+  background: var(--_bg);
+  color: var(--color-ink);
+  font-family: var(--font-text);
+  font-size: var(--text-sm);
+  line-height: var(--leading-body);
+}
+
+/* The tone tab: set into the top edge, starting over the glyph column. */
+.alert[data-variant='outline']::before {
+  content: '';
+  position: absolute;
+  inset-block-start: calc(var(--border-width) * -1);
+  inset-inline-start: var(--space-4);
+  inline-size: var(--alert-rule-length, var(--space-6));
+  block-size: var(--alert-rule-width, calc(var(--border-width) + 2px));
+  background: var(--_c);
+}
+
+.alert[data-tone='positive'] {
+  --_c: var(--tone-positive);
+  --_soft: var(--tone-positive-soft);
+  --_text: var(--tone-positive-text);
+}
+.alert[data-tone='caution'] {
+  --_c: var(--tone-caution);
+  --_soft: var(--tone-caution-soft);
+  --_text: var(--tone-caution-text);
+}
+.alert[data-tone='critical'] {
+  --_c: var(--tone-critical);
+  --_soft: var(--tone-critical-soft);
+  --_text: var(--tone-critical-text);
+}
+.alert[data-tone='neutral'] {
+  --_c: var(--color-ink-subtle);
+  --_soft: var(--color-surface-sunken);
+  --_text: var(--color-ink-muted);
+}
+
+.alert[data-variant='soft'] {
+  --_bg: var(--_soft);
+  --_edge: color-mix(in oklab, var(--_c) var(--alert-border-mix, 55%), var(--color-line-strong));
+}
+.alert[data-variant='soft'][data-tone='neutral'] {
+  --_edge: var(--color-line-strong);
+}
+
+/* No glyph: body starts in the first column. */
+.alert:not(:has(> .glyph)) {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.glyph {
+  /* Centred on the first line's box: the title's when there is one, else the body's. */
+  --_line: calc(var(--text-sm) * var(--leading-body));
+
+  display: inline-flex;
+  block-size: var(--_line);
+  align-items: center;
+  color: var(--_text);
+  font-size: var(--text-lg);
+}
+.alert:has(> .body > .title:first-child) > .glyph {
+  --_line: calc(var(--text-md) * var(--leading-snug));
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-inline-size: 0;
+}
+
+.title {
+  margin: 0;
+  color: var(--color-ink);
+  font-family: var(--heading-font);
+  font-size: var(--text-md);
+  font-weight: var(--heading-weight);
+  letter-spacing: var(--heading-tracking);
+  text-transform: var(--heading-transform);
+  line-height: var(--leading-snug);
+  text-wrap: balance;
+}
+
+.description {
+  color: var(--color-ink-muted);
+  text-wrap: pretty;
+}
+.body > .description:first-child {
+  color: var(--color-ink);
+}
+
+.action {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-block-start: var(--space-2);
+}
+
+.dismiss {
+  display: grid;
+  place-items: center;
+  inline-size: var(--control-sm);
+  block-size: var(--control-sm);
+  margin-block: calc(var(--space-2) * -1);
+  margin-inline-end: calc(var(--space-2) * -1);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-action);
+  background: transparent;
+  color: var(--color-ink-muted);
+  font-size: var(--text-md);
+  cursor: pointer;
+  transition:
+    background-color var(--dur-1) var(--ease-out),
+    color var(--dur-1) var(--ease-out);
+}
+@media (hover: hover) {
+  .dismiss:hover {
+    background: color-mix(in oklch, var(--_c) 18%, var(--_bg));
+    color: var(--color-ink);
+  }
+}
+.dismiss:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}

@@ -1,0 +1,101 @@
+/*
+ * Responsive pattern: see layout/Stack/Stack.module.css.
+ *
+ * Component tokens (minimum track widths for `minItemWidth`):
+ *   --grid-min-xs  12rem   --grid-min-sm  16rem   --grid-min-md  20rem   --grid-min-lg  24rem
+ */
+.grid {
+  --_cols: var(--grid-columns-base, minmax(0, 1fr));
+  --_gap: var(--grid-gap-base, 0px);
+  --_row-gap: var(--grid-row-gap-base, var(--_gap));
+  --_align: var(--grid-align-base, stretch);
+
+  display: grid;
+  grid-template-columns: var(--_cols);
+  column-gap: var(--_gap);
+  row-gap: var(--_row-gap);
+  align-items: var(--_align);
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Intrinsic mode: min() keeps a single track from overflowing a narrow container. */
+.grid[data-min-item] {
+  --_min: var(--grid-min-sm, 16rem);
+
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--_min)), 1fr));
+}
+.grid[data-min-item='xs'] {
+  --_min: var(--grid-min-xs, 12rem);
+}
+.grid[data-min-item='md'] {
+  --_min: var(--grid-min-md, 20rem);
+}
+.grid[data-min-item='lg'] {
+  --_min: var(--grid-min-lg, 24rem);
+}
+
+.item {
+  --_start: var(--grid-item-start-base, var(--grid-item-full-base, auto));
+  --_end: var(--grid-item-end-base, auto);
+
+  grid-column-start: var(--_start);
+  grid-column-end: var(--_end);
+  min-inline-size: 0;
+}
+
+@media (min-width: 40em) {
+  .grid {
+    --_cols: var(--grid-columns-sm, minmax(0, 1fr));
+    --_gap: var(--grid-gap-sm, 0px);
+    --_row-gap: var(--grid-row-gap-sm, var(--_gap));
+    --_align: var(--grid-align-sm, stretch);
+  }
+  .item {
+    --_start: var(--grid-item-start-sm, var(--grid-item-full-sm, auto));
+    --_end: var(--grid-item-end-sm, auto);
+  }
+}
+@media (min-width: 48em) {
+  .grid {
+    --_cols: var(--grid-columns-md, minmax(0, 1fr));
+    --_gap: var(--grid-gap-md, 0px);
+    --_row-gap: var(--grid-row-gap-md, var(--_gap));
+    --_align: var(--grid-align-md, stretch);
+  }
+  .item {
+    --_start: var(--grid-item-start-md, var(--grid-item-full-md, auto));
+    --_end: var(--grid-item-end-md, auto);
+  }
+}
+@media (min-width: 64em) {
+  .grid {
+    --_cols: var(--grid-columns-lg, minmax(0, 1fr));
+    --_gap: var(--grid-gap-lg, 0px);
+    --_row-gap: var(--grid-row-gap-lg, var(--_gap));
+    --_align: var(--grid-align-lg, stretch);
+  }
+  .item {
+    --_start: var(--grid-item-start-lg, var(--grid-item-full-lg, auto));
+    --_end: var(--grid-item-end-lg, auto);
+  }
+}
+@media (min-width: 80em) {
+  .grid {
+    --_cols: var(--grid-columns-xl, minmax(0, 1fr));
+    --_gap: var(--grid-gap-xl, 0px);
+    --_row-gap: var(--grid-row-gap-xl, var(--_gap));
+    --_align: var(--grid-align-xl, stretch);
+  }
+  .item {
+    --_start: var(--grid-item-start-xl, var(--grid-item-full-xl, auto));
+    --_end: var(--grid-item-end-xl, auto);
+  }
+}
+
+/* `hidden` wins over the display above (author CSS otherwise beats the UA [hidden] rule). */
+.grid[hidden] {
+  display: none;
+}

@@ -1,0 +1,278 @@
+/*
+ * Component tokens:
+ *   --segmented-radius            default var(--radius-action)
+ *   --segmented-track             default var(--color-surface-sunken)
+ *   --segmented-indicator         default var(--color-surface-raised)
+ *   --segmented-indicator-line    default var(--color-line-strong)
+ *   --segmented-indicator-shadow  default var(--shadow-active) (flat except Fiesta)
+ *   --segmented-line              default var(--color-line) — the track's edge
+ *
+ * Invalid (inside a `<Field error>`) turns the track's edge critical — the only change.
+ *
+ * Geometry: every segment is 1fr of an inline grid, so the indicator is exactly
+ * (track − padding) / count wide and slides by --_index × its own width. --_count and
+ * --_index are written inline by the component on this element.
+ */
+.root {
+  --_h: var(--control-md);
+  --_fs: var(--text-sm);
+  --_px: var(--space-4);
+  --_icon: 1.25rem;
+  --_pad: calc(var(--space-1) * 0.75);
+  --_r: var(--segmented-radius, var(--radius-action));
+
+  position: relative;
+  isolation: isolate;
+  display: inline-grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  max-inline-size: 100%;
+  min-block-size: var(--_h);
+  padding: var(--_pad);
+  border: var(--border-width) solid var(--segmented-line, var(--color-line));
+  border-radius: var(--_r);
+  background: var(--segmented-track, var(--color-surface-sunken));
+  vertical-align: middle;
+}
+
+.root[data-size='sm'] {
+  --_h: var(--control-sm);
+  --_fs: var(--text-xs);
+  --_px: var(--space-3);
+  --_icon: 1rem;
+}
+.root[data-size='lg'] {
+  --_h: var(--control-lg);
+  --_fs: var(--text-md);
+  --_px: var(--space-5);
+  --_icon: 1.25rem;
+}
+
+.root[data-invalid] {
+  border-color: var(--tone-critical);
+}
+
+.root[data-readonly] .item {
+  cursor: default;
+}
+
+.root[data-full-width] {
+  display: grid;
+  inline-size: 100%;
+}
+
+/*
+ * Responsive size / fullWidth: `data-size-<bp>` and `data-full-width-<bp>` are only
+ * written for breakpoints the consumer set; mobile-first order lets each override the last.
+ */
+@media (min-width: 40em) {
+  .root[data-size-sm='sm'] {
+    --_h: var(--control-sm);
+    --_fs: var(--text-xs);
+    --_px: var(--space-3);
+    --_icon: 1rem;
+  }
+  .root[data-size-sm='md'] {
+    --_h: var(--control-md);
+    --_fs: var(--text-sm);
+    --_px: var(--space-4);
+    --_icon: 1.25rem;
+  }
+  .root[data-size-sm='lg'] {
+    --_h: var(--control-lg);
+    --_fs: var(--text-md);
+    --_px: var(--space-5);
+    --_icon: 1.25rem;
+  }
+  .root[data-full-width-sm='true'] {
+    display: grid;
+    inline-size: 100%;
+  }
+  .root[data-full-width-sm='false'] {
+    display: inline-grid;
+    inline-size: auto;
+  }
+}
+@media (min-width: 48em) {
+  .root[data-size-md='sm'] {
+    --_h: var(--control-sm);
+    --_fs: var(--text-xs);
+    --_px: var(--space-3);
+    --_icon: 1rem;
+  }
+  .root[data-size-md='md'] {
+    --_h: var(--control-md);
+    --_fs: var(--text-sm);
+    --_px: var(--space-4);
+    --_icon: 1.25rem;
+  }
+  .root[data-size-md='lg'] {
+    --_h: var(--control-lg);
+    --_fs: var(--text-md);
+    --_px: var(--space-5);
+    --_icon: 1.25rem;
+  }
+  .root[data-full-width-md='true'] {
+    display: grid;
+    inline-size: 100%;
+  }
+  .root[data-full-width-md='false'] {
+    display: inline-grid;
+    inline-size: auto;
+  }
+}
+@media (min-width: 64em) {
+  .root[data-size-lg='sm'] {
+    --_h: var(--control-sm);
+    --_fs: var(--text-xs);
+    --_px: var(--space-3);
+    --_icon: 1rem;
+  }
+  .root[data-size-lg='md'] {
+    --_h: var(--control-md);
+    --_fs: var(--text-sm);
+    --_px: var(--space-4);
+    --_icon: 1.25rem;
+  }
+  .root[data-size-lg='lg'] {
+    --_h: var(--control-lg);
+    --_fs: var(--text-md);
+    --_px: var(--space-5);
+    --_icon: 1.25rem;
+  }
+  .root[data-full-width-lg='true'] {
+    display: grid;
+    inline-size: 100%;
+  }
+  .root[data-full-width-lg='false'] {
+    display: inline-grid;
+    inline-size: auto;
+  }
+}
+@media (min-width: 80em) {
+  .root[data-size-xl='sm'] {
+    --_h: var(--control-sm);
+    --_fs: var(--text-xs);
+    --_px: var(--space-3);
+    --_icon: 1rem;
+  }
+  .root[data-size-xl='md'] {
+    --_h: var(--control-md);
+    --_fs: var(--text-sm);
+    --_px: var(--space-4);
+    --_icon: 1.25rem;
+  }
+  .root[data-size-xl='lg'] {
+    --_h: var(--control-lg);
+    --_fs: var(--text-md);
+    --_px: var(--space-5);
+    --_icon: 1.25rem;
+  }
+  .root[data-full-width-xl='true'] {
+    display: grid;
+    inline-size: 100%;
+  }
+  .root[data-full-width-xl='false'] {
+    display: inline-grid;
+    inline-size: auto;
+  }
+}
+
+/* Icon-only segments are square at every size (after the responsive sizes so it wins). */
+.root[data-icon-only] {
+  --_px: 0px;
+}
+
+.indicator {
+  position: absolute;
+  z-index: -1;
+  inset-block: var(--_pad);
+  inset-inline-start: var(--_pad);
+  inline-size: calc((100% - 2 * var(--_pad)) / var(--_count));
+  border: var(--border-width) solid var(--segmented-indicator-line, var(--color-line-strong));
+  border-radius: max(calc(var(--_r) - var(--_pad)), 2px);
+  background: var(--segmented-indicator, var(--color-surface-raised));
+  box-shadow: var(--segmented-indicator-shadow, var(--shadow-active));
+  translate: calc(var(--_index) * 100%) 0;
+  transition: translate var(--dur-3) var(--ease-spring);
+}
+[dir='rtl'] .indicator {
+  translate: calc(var(--_index) * -100%) 0;
+}
+
+.item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45em;
+  min-inline-size: calc(var(--_h) - 2 * var(--_pad));
+  padding-inline: var(--_px);
+  padding-block: 0;
+  border: 0;
+  border-radius: max(calc(var(--_r) - var(--_pad)), 2px);
+  background: transparent;
+  color: var(--color-ink-muted);
+  font-family: var(--font-text);
+  font-size: var(--_fs);
+  font-weight: var(--label-weight);
+  letter-spacing: var(--label-tracking);
+  text-transform: var(--label-transform);
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: color var(--dur-2) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .item:hover:not(:disabled) {
+    color: var(--color-ink);
+  }
+}
+
+.item[data-state='on'] {
+  color: var(--color-ink);
+  cursor: default;
+}
+
+.item:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 1px;
+}
+
+.item:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.icon {
+  display: inline-flex;
+  font-size: 1.2em;
+}
+.root[data-icon-only] .icon {
+  font-size: var(--_icon);
+}
+
+.label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.srOnly {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .indicator {
+    transition: none;
+  }
+}

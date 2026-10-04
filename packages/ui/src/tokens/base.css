@@ -1,0 +1,132 @@
+/*
+ * BASE — a small modern reset plus themed document defaults.
+ * Lives in the lowest layer so any unlayered app CSS wins without specificity games.
+ */
+
+@layer kiln.reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  * {
+    margin: 0;
+  }
+
+  html {
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
+    hanging-punctuation: first last;
+  }
+
+  img,
+  picture,
+  video,
+  canvas,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+    color: inherit;
+    letter-spacing: inherit;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    overflow-wrap: break-word;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-size: inherit;
+    font-weight: inherit;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Fieldsets are grouping, not chrome: <Fieldset> draws its own legend and rules. */
+  fieldset {
+    min-inline-size: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  ul[role='list'],
+  ol[role='list'] {
+    list-style: none;
+    padding: 0;
+  }
+
+  /* Themed document: <html data-theme> and every <ThemeScope> paint their own ground. */
+  :root,
+  [data-kiln-scope] {
+    background-color: var(--color-canvas);
+    background-image: var(--canvas-image);
+    background-size: var(--canvas-image-size);
+    color: var(--color-ink);
+    font-family: var(--font-text);
+    line-height: var(--leading-body);
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Body size is set below the root, never on <html>: --type-base is authored in rem, so
+     writing it to the root font-size would compound (17px root -> 18px text) and make every
+     nested ThemeScope's sizes depend on whichever theme owns <html>. The root keeps the
+     reader's own default size; rem stays relative to it. */
+  body,
+  [data-kiln-scope] {
+    font-size: var(--text-md);
+  }
+
+  /* Unpainted scope: theme type & ink without the canvas background */
+  [data-kiln-scope-bare] {
+    color: var(--color-ink);
+    font-family: var(--font-text);
+    font-size: var(--text-md);
+    line-height: var(--leading-body);
+  }
+
+  ::selection {
+    background-color: var(--color-selection);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      scroll-behavior: auto !important;
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "@mitcsutt/kiln-testing-react18",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Test fixture, not a package. Gives pnpm an isolated importer for React 18.3 so the React 18 test pass can resolve a consistent React 18 stack.",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "@testing-library/react": "catalog:",
+    "radix-ui": "catalog:",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  }
+}

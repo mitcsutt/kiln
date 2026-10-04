@@ -1,0 +1,45 @@
+/*
+ * [box] Label
+ *       Help text
+ *       ⚠ Error
+ * The box sits in a one-line-tall slot so it centres on the label's first line.
+ */
+.root {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: var(--space-3);
+  row-gap: var(--space-2);
+  align-items: start;
+  font-size: var(--text-md);
+  line-height: var(--leading-snug);
+}
+
+.slot {
+  display: flex;
+  align-items: center;
+  block-size: 1lh;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-inline-size: 0;
+}
+
+.label {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 0.35em;
+  color: var(--color-ink);
+  cursor: pointer;
+}
+.root[data-disabled] .label {
+  color: var(--color-ink-subtle);
+  cursor: not-allowed;
+}
+
+.error {
+  grid-column: 2;
+}

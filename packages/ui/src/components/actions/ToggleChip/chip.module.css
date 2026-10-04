@@ -1,0 +1,133 @@
+/*
+ * The chip look, shared by ToggleChip (Radix Toggle) and ChipGroup's items (Radix
+ * ToggleGroup items) — both expose `data-state="on|off"`, so one module styles both.
+ * Internal: import it only from those two components.
+ *
+ * Component tokens:
+ *   --chip-radius        default var(--radius-chip)
+ *   --chip-shadow        resting shadow; default var(--shadow-active) (flat except Fiesta)
+ *   --chip-pressed-bg    default var(--color-accent-soft)
+ *   --chip-pressed-ink   default var(--color-accent-text)
+ *   --chip-pressed-line  default var(--color-accent)
+ */
+.chip {
+  --_h: var(--control-sm);
+  --_px: var(--space-3);
+  --_fs: var(--text-sm);
+  --_bg: transparent;
+  --_ink: var(--color-ink-muted);
+  --_line: var(--color-line-strong);
+  --_shadow: var(--chip-shadow, var(--shadow-active));
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  min-block-size: var(--_h);
+  padding-inline: var(--_px);
+  padding-block: 0;
+  border: var(--border-width) solid var(--_line);
+  border-radius: var(--chip-radius, var(--radius-chip));
+  background: var(--_bg);
+  color: var(--_ink);
+  box-shadow: var(--_shadow);
+  font-family: var(--font-text);
+  font-size: var(--_fs);
+  font-weight: var(--label-weight);
+  letter-spacing: var(--label-tracking);
+  text-transform: var(--label-transform);
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--dur-1) var(--ease-out),
+    border-color var(--dur-1) var(--ease-out),
+    color var(--dur-1) var(--ease-out),
+    box-shadow var(--dur-1) var(--ease-out),
+    translate var(--dur-2) var(--ease-spring);
+}
+
+/* Grow the hit area to a comfortable touch target without changing the visual size. */
+.chip::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  inset-block: min(0px, calc((var(--_h) - var(--control-lg)) / 2));
+}
+
+.chip[data-size='sm'] {
+  --_h: calc(var(--control-sm) * 0.8125);
+  --_px: var(--space-2);
+  --_fs: var(--text-xs);
+}
+
+@media (hover: hover) {
+  .chip:hover:not(:disabled) {
+    --_ink: var(--color-ink);
+    --_line: var(--color-ink-subtle);
+  }
+}
+
+.chip[data-state='on'] {
+  --_bg: var(--chip-pressed-bg, var(--color-accent-soft));
+  --_ink: var(--chip-pressed-ink, var(--color-accent-text));
+  --_line: var(--chip-pressed-line, var(--color-accent));
+  --_shadow: none;
+
+  translate: var(--active-shift) var(--active-shift);
+}
+@media (hover: hover) {
+  .chip[data-state='on']:hover:not(:disabled) {
+    --_ink: var(--chip-pressed-ink, var(--color-accent-text));
+    --_line: var(--chip-pressed-line, var(--color-accent));
+  }
+}
+
+/* In an invalid ChipGroup the resting chips take the critical edge; pressed ones keep theirs. */
+.chip[data-invalid]:not([data-state='on']) {
+  --_line: var(--tone-critical);
+}
+
+.chip:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.chip:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+  box-shadow: none;
+}
+
+.icon {
+  display: inline-flex;
+  font-size: 1.15em;
+  margin-inline-start: -0.15em;
+}
+
+.count {
+  display: inline-grid;
+  place-items: center;
+  min-inline-size: 1.6em;
+  padding-inline: 0.35em;
+  margin-inline-end: -0.35em;
+  block-size: 1.6em;
+  border-radius: var(--chip-radius, var(--radius-chip));
+  background: var(--color-surface-sunken);
+  color: var(--color-ink-muted);
+  font-family: var(--font-numeric);
+  font-stretch: var(--numeric-stretch);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-size: 0.85em;
+  font-weight: var(--label-weight);
+  letter-spacing: 0;
+  transition:
+    background-color var(--dur-1) var(--ease-out),
+    color var(--dur-1) var(--ease-out);
+}
+.chip[data-state='on'] .count {
+  background: var(--chip-pressed-line, var(--color-accent));
+  color: var(--color-accent-ink);
+}

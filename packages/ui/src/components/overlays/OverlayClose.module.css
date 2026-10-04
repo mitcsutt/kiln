@@ -1,0 +1,40 @@
+/*
+ * The small "×" in the corner of a Dialog or Sheet. Internal to the overlays group.
+ *
+ * Component tokens:
+ *   --overlay-close-radius   default var(--radius-action)
+ */
+.close {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  inline-size: var(--control-sm);
+  block-size: var(--control-sm);
+  padding: 0;
+  border: 0;
+  border-radius: var(--overlay-close-radius, var(--radius-action));
+  background: transparent;
+  color: var(--color-ink-muted);
+  font-size: var(--text-lg);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--dur-1) var(--ease-out),
+    color var(--dur-1) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .close:hover {
+    background: var(--color-surface-sunken);
+    color: var(--color-ink);
+  }
+}
+
+.close:active {
+  background: var(--color-surface-sunken);
+}
+
+.close:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}

@@ -1,0 +1,178 @@
+/* Story-only. See StoryKit.tsx. */
+.title {
+  margin: 0;
+  color: var(--color-ink);
+  font-family: var(--heading-font);
+  font-weight: var(--heading-weight);
+  letter-spacing: var(--heading-tracking);
+  text-transform: var(--heading-transform);
+  line-height: var(--leading-snug);
+  font-size: var(--text-xl);
+}
+.title[data-size='md'] {
+  font-size: var(--text-lg);
+}
+.title[data-size='xl'] {
+  font-size: var(--text-3xl);
+  line-height: var(--leading-tight);
+}
+.title[data-size='display'] {
+  font-family: var(--font-display);
+  font-size: var(--text-display-md);
+  font-weight: var(--display-weight);
+  font-stretch: var(--display-stretch);
+  letter-spacing: var(--display-tracking);
+  text-transform: var(--display-transform);
+  line-height: var(--leading-tight);
+}
+
+.body {
+  margin: 0;
+  max-inline-size: 62ch;
+  color: var(--color-ink);
+  font-size: var(--text-md);
+  line-height: var(--leading-body);
+}
+.body[data-size='sm'] {
+  font-size: var(--text-sm);
+}
+.body[data-size='lg'] {
+  font-size: var(--text-lg);
+  line-height: var(--leading-snug);
+}
+.body[data-tone='muted'] {
+  color: var(--color-ink-muted);
+}
+.body[data-tone='subtle'] {
+  color: var(--color-ink-subtle);
+}
+
+.figure {
+  color: var(--color-ink);
+  font-family: var(--font-numeric);
+  font-stretch: var(--numeric-stretch);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-weight: var(--label-weight);
+  font-size: var(--text-md);
+  line-height: 1;
+  white-space: nowrap;
+}
+.figure[data-size='sm'] {
+  font-size: var(--text-sm);
+}
+.figure[data-size='lg'] {
+  font-size: var(--text-xl);
+}
+.figure[data-size='xl'] {
+  font-family: var(--font-display);
+  font-weight: var(--display-weight);
+  font-size: var(--text-display-sm);
+  letter-spacing: var(--display-tracking);
+}
+.figure[data-tone='muted'] {
+  color: var(--color-ink-muted);
+}
+.figure[data-tone='accent'] {
+  color: var(--color-accent-text);
+}
+.figure[data-tone='critical'] {
+  color: var(--tone-critical-text);
+}
+.figure[data-tone='positive'] {
+  color: var(--tone-positive-text);
+}
+
+.label {
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+  font-weight: var(--label-weight);
+  letter-spacing: var(--label-tracking);
+  text-transform: var(--label-transform);
+}
+
+.navLink {
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+  font-weight: var(--label-weight);
+  text-decoration: none;
+  padding-block: var(--space-1);
+  border-block-end: var(--border-width) solid transparent;
+}
+.navLink:hover {
+  color: var(--color-ink);
+}
+.navLink[aria-current='page'] {
+  color: var(--color-ink);
+  border-block-end-color: var(--color-accent);
+}
+
+.wordmark {
+  color: var(--color-ink);
+  font-family: var(--heading-font);
+  font-weight: var(--heading-weight);
+  letter-spacing: var(--heading-tracking);
+  text-transform: var(--heading-transform);
+  font-size: var(--text-lg);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.cell {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-2);
+  min-block-size: var(--space-8);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-field);
+  background: var(--color-surface-sunken);
+  color: var(--color-ink);
+  font-size: var(--text-sm);
+}
+.cell[data-tall] {
+  min-block-size: var(--space-10);
+}
+
+.bar {
+  display: block;
+  block-size: var(--space-1);
+  border-radius: var(--radius-chip);
+  background: var(--color-line);
+  overflow: hidden;
+}
+.barFill {
+  display: block;
+  block-size: 100%;
+  background: var(--color-accent);
+}
+.bar[data-tone='critical'] .barFill {
+  background: var(--tone-critical);
+}
+
+.artwork {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+}
+.artworkGround {
+  fill: var(--color-surface-sunken);
+}
+.artworkLine {
+  fill: none;
+  stroke: var(--color-line-strong);
+  stroke-width: 1;
+}
+.artworkLine * {
+  vector-effect: non-scaling-stroke;
+}
+.artworkStrong {
+  stroke: var(--color-ink-muted);
+  stroke-width: 2;
+}
+.artworkAccent {
+  fill: var(--color-accent);
+  stroke: none;
+}
+.artworkDot {
+  fill: var(--color-line-strong);
+}

@@ -1,0 +1,36 @@
+/*
+ * Figures follow the surrounding size (1em) in the numeric face, tabular. Tone sets the
+ * text colour: positive/critical use the tone texts (AA on canvas), neutral is muted.
+ *
+ * Component tokens: none.
+ */
+.delta {
+  --_ink: var(--color-ink-muted);
+
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.3em;
+  color: var(--_ink);
+  font-family: var(--font-numeric);
+  font-stretch: var(--numeric-stretch);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-weight: var(--label-weight);
+  white-space: nowrap;
+}
+.delta[data-tone='positive'] {
+  --_ink: var(--tone-positive-text);
+}
+.delta[data-tone='critical'] {
+  --_ink: var(--tone-critical-text);
+}
+
+.glyph {
+  flex: none;
+  align-self: center;
+  inline-size: 0.62em;
+  block-size: 0.62em;
+  fill: currentColor;
+}
+.delta[data-direction='down'] .glyph {
+  rotate: 180deg;
+}

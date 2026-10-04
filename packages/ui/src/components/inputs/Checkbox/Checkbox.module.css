@@ -1,0 +1,114 @@
+/*
+ * Component tokens (themes may set any of these on [data-theme]):
+ *   --checkbox-radius          default calc(var(--radius-field) * 0.4)
+ *   --control-checked-bg       default var(--color-accent)   (shared with Radio, Switch)
+ *   --control-checked-border   default var(--color-accent)
+ *   --control-checked-ink      default var(--color-accent-ink)
+ *   --control-border           default var(--color-line-control) (unchecked edge, ≥ 3:1)
+ *   --control-shadow           default var(--shadow-active) — the printed offset in Fiesta, none elsewhere
+ */
+.checkbox {
+  --_s: calc(var(--control-sm) * 0.5625);
+  /* An unchecked box is identified only by its edge, so it needs 3:1 (WCAG 1.4.11):
+     line-strong alone is a ~2:1 hairline in the quieter themes. */
+  --_border: var(--control-border, var(--color-line-control));
+
+  all: unset;
+  box-sizing: border-box;
+  position: relative;
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  inline-size: var(--_s);
+  block-size: var(--_s);
+  border: var(--border-width) solid var(--_border);
+  border-radius: var(--checkbox-radius, calc(var(--radius-field) * 0.4));
+  background-color: var(--color-surface);
+  color: var(--control-checked-ink, var(--color-accent-ink));
+  box-shadow: var(--control-shadow, var(--shadow-active));
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--dur-1) var(--ease-out),
+    border-color var(--dur-1) var(--ease-out),
+    box-shadow var(--dur-1) var(--ease-out),
+    translate var(--dur-1) var(--ease-spring);
+}
+.checkbox[data-size='sm'] {
+  --_s: calc(var(--control-sm) * 0.5);
+}
+.checkbox[data-size='lg'] {
+  --_s: calc(var(--control-sm) * 0.6875);
+}
+
+/* Bigger hit area than the glyph, without changing layout. */
+.checkbox::before {
+  content: '';
+  position: absolute;
+  inset: calc(var(--space-2) * -1);
+}
+
+@media (hover: hover) {
+  .checkbox:hover:not([data-disabled], [data-state='checked'], [data-state='indeterminate']) {
+    --_border: color-mix(in oklch, var(--color-line-strong), var(--color-ink) 65%);
+  }
+}
+
+.checkbox[data-state='checked'],
+.checkbox[data-state='indeterminate'] {
+  --_border: var(--control-checked-border, var(--color-accent));
+  background-color: var(--control-checked-bg, var(--color-accent));
+}
+
+.checkbox[data-invalid]:not([data-state='checked']) {
+  --_border: var(--tone-critical);
+}
+
+.checkbox:active:not([data-disabled]) {
+  translate: var(--active-shift) var(--active-shift);
+  box-shadow: none;
+}
+
+.checkbox:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.checkbox[data-disabled] {
+  cursor: not-allowed;
+  opacity: 0.45;
+  box-shadow: none;
+}
+
+.indicator {
+  display: grid;
+  place-items: center;
+  inline-size: 100%;
+  block-size: 100%;
+  animation: tick-in var(--dur-2) var(--ease-spring);
+}
+
+.check,
+.dash {
+  grid-area: 1 / 1;
+  inline-size: 88%;
+  block-size: 88%;
+  stroke-width: calc(var(--icon-stroke) * 1.4);
+}
+.indicator[data-state='checked'] .dash,
+.indicator[data-state='indeterminate'] .check {
+  display: none;
+}
+
+@keyframes tick-in {
+  from {
+    opacity: 0;
+    scale: 0.5;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .indicator {
+    animation: none;
+  }
+}
