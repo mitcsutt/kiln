@@ -3,7 +3,7 @@ import { StatusDot, Text, type Tone } from '@mitcsutt/kiln-ui'
 import {
   getFormRuntime,
   useResolvedForm,
-  useRuntimeVersion,
+  useRuntimeValue,
   type AnyKitForm,
 } from '#core/runtime/formRuntime'
 
@@ -31,11 +31,10 @@ const TONE: Record<FormStatusKind, Tone> = {
 export function FormStatus({ form, show = ALL }: FormStatusProps) {
   const resolved = useResolvedForm(form)
   const runtime = getFormRuntime(resolved)
-  useRuntimeVersion(runtime)
+  const autosave = useRuntimeValue(runtime, (current) => current.autosave)
   const isDirty = useSelector(resolved.store, (state) => !state.isDefaultValue)
   const messages = runtime.options.messages
 
-  const autosave = runtime.autosave
   let kind: FormStatusKind | null = null
   if (autosave === 'saving' && show.includes('saving')) kind = 'saving'
   else if (autosave === 'error' && show.includes('error')) kind = 'error'

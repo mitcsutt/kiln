@@ -1929,7 +1929,7 @@ axe-core runs on every field conformance render and every layout in the test sui
 
 ## 12. Performance
 
-Rules, enforced in review and by `test/perf.test.tsx`:
+Rules, enforced in review and by the perf tests: `test/perf.test.tsx`, `test/qa/perf.test.tsx` (the §12.9 acceptance form) and `test/qa/rerenders.test.tsx`, which names every component that re-renders (`recordCommits()` in `test/renders.ts`, a test-only reader of React's commit hook), so a layout, badge, summary or submit button re-rendering for nothing fails it.
 
 ### 12.1 The form host never subscribes
 
@@ -1937,7 +1937,7 @@ TanStack's `useForm` doesn't. **Never read `form.state` in render.**
 
 ### 12.2 Fields subscribe narrowly
 
-Field components subscribe only through their `AppField` plus one boolean (`submitted`).
+Field components subscribe only through their `AppField` plus one primitive (`submitted`, and whether the field's errors were revealed). The typed-shorthand components (`form.TextField`, `item.fields.TextField`) are `memo`'d, so a host re-render (an autosave status, host state) or a Repeater's structural change doesn't reach a field whose props are unchanged.
 
 ### 12.3 Primitive selectors
 
@@ -1945,7 +1945,7 @@ Form-wide reads are **primitive selectors** (`s => s.isSubmitting`). A derived o
 
 ### 12.4 Small subscriptions
 
-Scope counts are numbers; `When` is a boolean; `useFieldValue` is one path.
+Scope counts are numbers; `When` is a boolean; `useFieldValue` is one path. Runtime state that isn't form state (the lock, the autosave status) is read as a slice with `useRuntimeValue(runtime, select)`, so a component re-renders only when its slice changes, never on every runtime notification. A scope count is one number read from the form store, the runtime's inactive paths and the scope's names together.
 
 ### 12.5 Arrays
 

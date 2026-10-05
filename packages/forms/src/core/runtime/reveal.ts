@@ -7,7 +7,9 @@ const REVEALED = '~revealed'
 const QUIET = '~revealedQuietly'
 
 function flag(meta: unknown, key: string): boolean {
-  return typeof meta === 'object' && meta !== null && (meta as Record<string, unknown>)[key] === true
+  return (
+    typeof meta === 'object' && meta !== null && (meta as Record<string, unknown>)[key] === true
+  )
 }
 
 /** Whether a field meta carries the "errors revealed" mark set by `revealFieldErrors`. */
@@ -44,12 +46,7 @@ export function revealFieldErrors(
   const quiet = options.quiet === true
   for (const name of names) {
     form.setFieldMeta(name, (prev) => {
-      if (
-        prev.isTouched &&
-        prev.isBlurred &&
-        isRevealedMeta(prev) &&
-        isQuietMeta(prev) === quiet
-      )
+      if (prev.isTouched && prev.isBlurred && isRevealedMeta(prev) && isQuietMeta(prev) === quiet)
         return prev
       return { ...prev, isTouched: true, isBlurred: true, [REVEALED]: true, [QUIET]: quiet }
     })

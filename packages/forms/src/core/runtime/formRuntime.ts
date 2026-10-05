@@ -47,7 +47,7 @@ export interface RuntimeDeriveRule {
   compute: (values: unknown) => unknown
 }
 
-/** Per-form state that is not form values (§5.1). Not React state: subscribe via `useRuntimeVersion`. */
+/** Per-form state that is not form values (§5.1). Not React state: read it with `useRuntimeValue`. */
 export interface FormRuntime {
   options: FormRuntimeOptions
   fields: Map<string, FieldRegistration>
@@ -94,8 +94,7 @@ export interface FormRuntime {
    * a row uses the row's `newItem` value for it, as a top-level field uses the form defaults.
    */
   itemTemplates: Map<string, () => unknown>
-  /** Monotonic counter, bumped by `notify()`. */
-  version: number
+  /** Calls every listener; components re-render only if the slice they read changed. */
   subscribe: (listener: () => void) => () => void
   notify(): void
 }
@@ -138,7 +137,6 @@ export function createFormRuntime(): FormRuntime {
     registry: null,
     derive: new Map(),
     itemTemplates: new Map(),
-    version: 0,
     subscribe(listener) {
       listeners.add(listener)
       return () => {
@@ -146,7 +144,6 @@ export function createFormRuntime(): FormRuntime {
       }
     },
     notify() {
-      runtime.version += 1
       for (const listener of [...listeners]) listener()
     },
   }
@@ -215,13 +212,13 @@ export function useResolvedForm(form?: AnyKitForm): AnyFormApi {
   return resolved
 }
 
-/** Re-renders when the runtime notifies (inactive map, autosave status, lock). */
-export function useRuntimeVersion(runtime: FormRuntime): number {
-  return useSyncExternalStore(
-    runtime.subscribe,
-    () => runtime.version,
-    () => runtime.version,
-  )
+/**
+ * One slice of the runtime (the lock, the autosave status), re-rendering only when it changes.
+ * `select` must return a primitive (or a value that is stable while the slice is unchanged).
+ */
+export function useRuntimeValue<T>(runtime: FormRuntime, select: (runtime: FormRuntime) => T): T {
+  const read = () => select(runtime)
+  return useSyncExternalStore(runtime.subscribe, read, read)
 }
 
 function rebuildInactive(runtime: FormRuntime): void {

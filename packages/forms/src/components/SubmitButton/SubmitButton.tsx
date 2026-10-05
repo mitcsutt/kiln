@@ -4,7 +4,7 @@ import { Button, VisuallyHidden, type ButtonProps } from '@mitcsutt/kiln-ui'
 import {
   getFormRuntime,
   useResolvedForm,
-  useRuntimeVersion,
+  useRuntimeValue,
   type AnyKitForm,
 } from '#core/runtime/formRuntime'
 
@@ -47,13 +47,13 @@ export const SubmitButton = forwardRef<HTMLButtonElement, SubmitButtonProps>(fun
 ) {
   const resolved = useResolvedForm(form)
   const runtime = getFormRuntime(resolved)
-  useRuntimeVersion(runtime)
+  const locked = useRuntimeValue(runtime, (current) => current.locked)
   const isSubmitting = useSelector(resolved.store, (state) => state.isSubmitting)
   // Only subscribed when `requireChanges` needs it: otherwise the first keystroke would
   // re-render every submit button for nothing (§12).
   const noChanges = useSelector(resolved.store, (state) => requireChanges && state.isDefaultValue)
   const reasonId = useId()
-  const inert = isSubmitting || runtime.locked || noChanges
+  const inert = isSubmitting || locked || noChanges
   const messages = runtime.options.messages
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {

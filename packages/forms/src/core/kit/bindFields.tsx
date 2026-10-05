@@ -1,4 +1,4 @@
-import type { ComponentType, ReactNode } from 'react'
+import { memo, type ComponentType, type ReactNode } from 'react'
 import { useFieldPresentation } from '#core/binding/presentation'
 import type { FieldRegistry } from '#core/kit/types'
 import { resolveFormPath } from '#core/kit/formPath'
@@ -59,14 +59,18 @@ function createBound(api: { AppField: unknown }, kind: string, component: unknow
     if (asyncDebounceMs !== undefined) fieldOptions.asyncDebounceMs = asyncDebounceMs
     return <AppField {...fieldOptions}>{() => <Component {...props} />}</AppField>
   }
-  Bound.displayName = `Bound(${fieldComponentName(kind)})`
-  return Bound
+  // A bound field depends only on its props, context and its own field subscription, so an
+  // unchanged `<form.TextField name label />` skips the host's re-renders (an autosave status,
+  // `useUnsavedChanges`, host state) and a Repeater's structural ones (§12).
+  const Memo = memo(Bound)
+  Memo.displayName = `Bound(${fieldComponentName(kind)})`
+  return Memo
 }
 
 /**
  * The typed-shorthand components for `api` (a form, a `withForm` form, a field group): each
  * renders `<api.AppField name={prefix + name}>` around the registered field (in view mode, a
- * read-only `ViewField` instead — no TanStack field). Memoised per
+ * read-only `ViewField` instead — no TanStack field). Each is `memo`'d, and the set is cached per
  * (api, registry, prefix) so identities are stable across renders and `useFields` calls.
  */
 export function bindFields(
