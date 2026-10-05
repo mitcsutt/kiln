@@ -2,6 +2,7 @@ import { pageSchema } from 'fumadocs-core/source/schema'
 import { defineConfig, defineDocs } from 'fumadocs-mdx/config'
 import { z } from 'zod'
 import { remarkCodeTitle } from './src/mdx/remark-code-title'
+import { remarkExamples } from './src/mdx/remark-examples'
 
 /**
  * `exports` names the public exports a page documents. The tree test checks that every
@@ -23,7 +24,9 @@ export const docs = defineDocs({
 
 export default defineConfig({
   mdxOptions: {
-    remarkPlugins: (plugins) => [...plugins, remarkCodeTitle],
+    // `<Examples of>` expands first, so its headings get ids, reach the table of contents and
+    // the search index, and land in the processed Markdown.
+    remarkPlugins: (plugins) => [remarkExamples, ...plugins, remarkCodeTitle],
     // Code renders through kiln-ui's CodeBlock, which is unhighlighted by design.
     rehypeCodeOptions: false,
   },

@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Form, FormTextField, useAppForm, useFieldValue } from '@mitcsutt/kiln-forms'
+import { Code, Stack, Text } from '@mitcsutt/kiln-ui'
 import { FieldDemo, NEVER_SETTLES, StatesGrid, StoryForm } from '#stories/_kit'
-import { FormTextField } from './FormTextField'
 
 const meta = {
   title: 'Forms/Fields/TextField',
@@ -10,6 +11,30 @@ const meta = {
 
 export default meta
 type Story = StoryObj<typeof meta>
+
+/** A text field bound to `destination`, with the value it holds underneath. */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const form = useAppForm({ defaultValues: { destination: '' } })
+    const value = useFieldValue(form, 'destination')
+    return (
+      <Form form={form} aria-label="TextField example">
+        <Stack gap={4}>
+          <form.TextField
+            name="destination"
+            label="Destination"
+            placeholder="Kelso Bay"
+            autoComplete="off"
+          />
+          <Text size="sm" tone="muted">
+            Value: <Code>{JSON.stringify(value)}</Code>
+          </Text>
+        </Stack>
+      </Form>
+    )
+  },
+}
 
 export const Playground: Story = {
   render: () => (

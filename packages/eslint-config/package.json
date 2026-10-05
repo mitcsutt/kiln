@@ -36,6 +36,10 @@
       "types": "./types/node.d.ts",
       "default": "./node.js"
     },
+    "./docs-stories": {
+      "types": "./types/docs-stories.d.ts",
+      "default": "./docs-stories.js"
+    },
     "./package.json": "./package.json"
   },
   "files": [

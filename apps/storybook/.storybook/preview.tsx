@@ -28,6 +28,9 @@ const withTheme: Decorator = (Story, context) => {
 }
 
 const preview: Preview = {
+  // Every component gets a Storybook Docs page with all its stories. The docs site is a
+  // separate choice: only stories tagged `docs` reach it (ADR 0028).
+  tags: ['autodocs'],
   globalTypes: {
     theme: {
       description: 'Theme',

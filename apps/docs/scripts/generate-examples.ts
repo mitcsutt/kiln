@@ -1,15 +1,18 @@
 /**
- * Indexes the docs examples into `.generated/examples.ts` (the live components) and
- * `.generated/example-sources.json` (their source, as a reader copies it). The preview and the
- * code under it come from the same file, so they can't disagree. Both are keyed by the id
- * `exampleId` in `src/lib/examples.ts` reads:
+ * Indexes the docs examples into `.generated/examples.ts` (the live components),
+ * `.generated/example-sources.json` (their source, as a reader copies it) and
+ * `.generated/example-docs.json` (the docs stories of each stories file, for `<Examples of>`).
+ * All three are keyed by the id `exampleId` in `src/lib/examples.ts` reads:
  *
- * `Button#Hierarchy` is the `Hierarchy` export of the `*.examples.tsx` file beside `Button`
- * (`examples-files.ts`), which a page shows with `<Example of="Button" name="Hierarchy" />`.
+ * - `Button#Hierarchy` is the `Hierarchy` story of `Button.stories.tsx`, tagged `docs`
+ *   (`stories-examples.ts`, ADR 0028), or the `Hierarchy` export of the `*.examples.tsx` file
+ *   beside `Button` (`examples-files.ts`, ADR 0025). A page shows it with
+ *   `<Example of="Button" name="Hierarchy" />`.
  *
- * The code shown is the example's slice (`extract-example.ts`): its export and the helpers
- * and imports it uses. Each slice is also written to `.generated/examples/`, which the
- * app's typecheck includes, so a slice that wouldn't work when copied fails the build.
+ * The code shown is the example's slice (`extract-example.ts`): its component and the helpers
+ * and imports it uses. Each slice is written to `.generated/examples/`, which the app's
+ * typecheck includes, so a slice that wouldn't work when copied fails the build, and the live
+ * preview renders that same slice, so the preview is the code shown.
  *
  *   node scripts/generate-examples.ts
  */
@@ -17,12 +20,12 @@ import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { dirname, join, relative, resolve, sep } from 'node:path'
 import { examplesFiles } from './examples-files.ts'
 import { exampleNames, extractExample } from './extract-example.ts'
+import { docsStoriesFiles, type DocsStory } from './stories-examples.ts'
 
 const app = resolve(import.meta.dirname, '..')
 const repo = resolve(app, '../..')
 const outDir = join(app, '.generated')
 const snippetDir = join(outDir, 'examples')
-const clientDir = join(outDir, 'client')
 
 /** One live example: where it's read from, and the file its slice is written to. */
 interface Entry {
@@ -30,6 +33,8 @@ interface Entry {
   file: string
   exportName: string
   snippet: string
+  /** The text the slice is cut from: the file itself, or a stories file read as examples. */
+  text?: string
 }
 
 /** An import path from `from` (a file) to `to`, without the extension. */
@@ -41,35 +46,22 @@ function importPath(from: string, to: string): string {
 }
 
 const entries: Entry[] = []
-const imports: string[] = []
+const owners = new Map<string, string>()
 
-// An examples file carries no 'use client' (ADR 0025), so each gets a generated client module
-// that re-exports its examples, and the registry imports them from there. A page then loads
-// only the examples it shows.
-rmSync(clientDir, { recursive: true, force: true })
+function own(of: string, file: string) {
+  const other = owners.get(of)
+  if (other) throw new Error(`${other} and ${file} are both the examples of ${of}.`)
+  owners.set(of, file)
+}
+
 for (const { of, file } of examplesFiles(repo)) {
+  own(of, file)
   const path = join(repo, file)
   const names = exampleNames(path, readFileSync(path, 'utf8'))
   if (names.length === 0) throw new Error(`${file} exports no examples.`)
   if (names.includes('default')) {
     throw new Error(`${file} has a default export. Name each example (\`Usage\` by default).`)
   }
-  const client = join(clientDir, `${of}.tsx`)
-  mkdirSync(dirname(client), { recursive: true })
-  writeFileSync(
-    client,
-    [
-      `// Generated from ${file} by scripts/generate-examples.ts. Do not edit.`,
-      "'use client'",
-      '',
-      `export { ${names.join(', ')} } from '${importPath(client, path)}'`,
-      '',
-    ].join('\n'),
-  )
-  const locals = names.map((name, index) => `${name} as e${String(entries.length + index)}`)
-  imports.push(
-    `import { ${locals.join(', ')} } from '${importPath(join(outDir, 'examples.ts'), client)}'`,
-  )
   for (const name of names) {
     entries.push({
       id: `${of}#${name}`,
@@ -78,6 +70,41 @@ for (const { of, file } of examplesFiles(repo)) {
       snippet: `${of}.${name}.tsx`,
     })
   }
+}
+
+/** The docs stories of each stories file, in file order, for `<Examples of>`. */
+const docs: Record<string, DocsStory[]> = {}
+for (const { of, file, stories, examples } of docsStoriesFiles(repo)) {
+  own(of, file)
+  docs[of] = stories
+  for (const { name } of stories) {
+    entries.push({
+      id: `${of}#${name}`,
+      file: join(repo, file),
+      exportName: name,
+      snippet: `${of}.${name}.tsx`,
+      text: examples,
+    })
+  }
+}
+
+// Each slice carries 'use client' (the packages don't, ADR 0019), so the registry is a list of
+// client references and a page loads only the examples it shows.
+rmSync(snippetDir, { recursive: true, force: true })
+const sources: Record<string, string> = {}
+const imports: string[] = []
+for (const [index, { id, file, exportName, snippet, text }] of entries.entries()) {
+  const code = await extractExample(file, text ?? readFileSync(file, 'utf8'), exportName)
+  sources[id] = code
+  const out = join(snippetDir, snippet)
+  mkdirSync(dirname(out), { recursive: true })
+  writeFileSync(
+    out,
+    `// Generated from ${relative(repo, file).split(sep).join('/')} by scripts/generate-examples.ts. Do not edit.\n'use client'\n\n${code}`,
+  )
+  imports.push(
+    `import { ${exportName} as e${String(index)} } from '${importPath(join(outDir, 'examples.ts'), out)}'`,
+  )
 }
 
 mkdirSync(outDir, { recursive: true })
@@ -94,18 +121,8 @@ writeFileSync(
     '',
   ].join('\n'),
 )
-
-rmSync(snippetDir, { recursive: true, force: true })
-const sources: Record<string, string> = {}
-for (const { id, file, exportName, snippet } of entries) {
-  const code = await extractExample(file, readFileSync(file, 'utf8'), exportName)
-  sources[id] = code
-  const out = join(snippetDir, snippet)
-  mkdirSync(dirname(out), { recursive: true })
-  writeFileSync(
-    out,
-    `// Generated from ${relative(repo, file).split(sep).join('/')} by scripts/generate-examples.ts. Do not edit.\n${code}`,
-  )
-}
 writeFileSync(join(outDir, 'example-sources.json'), `${JSON.stringify(sources, null, 2)}\n`)
-console.log(`examples: ${String(entries.length)}`)
+writeFileSync(join(outDir, 'example-docs.json'), `${JSON.stringify(docs, null, 2)}\n`)
+console.log(
+  `examples: ${String(entries.length)} (${String(Object.values(docs).flat().length)} docs stories)`,
+)

@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { allApi } from '@/lib/api'
-import { exampleId, exampleIds } from '@/lib/examples'
+import { docsStories, docsStoriesOwners, exampleId, exampleIds } from '@/lib/examples'
 import { contentDir, contentPages, repoDir, storyTitles, titleToPath } from './content'
 
 const pages = contentPages()
@@ -104,6 +104,27 @@ describe('page references', () => {
     const owners = new Set(exampleIds().flatMap((id) => (id.includes('#') ? id.split('#', 1) : [])))
     expect([...owners].filter((of) => !of.includes('/') && !known.has(of))).toEqual([])
   })
+
+  // ADR 0028: a story tagged `docs` is written for the docs site, so a page must show it.
+  it('shows every docs story on a page', () => {
+    const shown = new Set<string>()
+    for (const { body } of pages) {
+      for (const [, of = ''] of body.matchAll(/<Examples\b[^>]*\bof="([^"]*)"/g)) {
+        for (const { name } of docsStories(of)) shown.add(exampleId({ of, name }))
+      }
+      for (const [tag] of body.matchAll(/<Example\b[^>]*\/>/g)) {
+        const of = /\bof="([^"]*)"/.exec(tag)?.[1]
+        const name = /\bname="([^"]*)"/.exec(tag)?.[1]
+        if (of) shown.add(exampleId({ of, name }))
+      }
+    }
+    const unshown = docsStoriesOwners().flatMap((of) =>
+      docsStories(of)
+        .map(({ name }) => exampleId({ of, name }))
+        .filter((id) => !shown.has(id)),
+    )
+    expect(unshown).toEqual([])
+  })
 })
 
 /**
@@ -115,6 +136,11 @@ function exampleProblems(body: string, { exports, ids }: { exports: Set<string>;
   const known = new Set(ids)
   const files = new Set(ids.flatMap((id) => (id.includes('#') ? id.split('#', 1) : [])))
   const problems: string[] = []
+  for (const [tag] of body.matchAll(/<Examples\b[^>]*\/>/g)) {
+    const of = /\bof="([^"]*)"/.exec(tag)?.[1]
+    if (of === undefined) problems.push(`${tag}: no \`of\``)
+    else if (!docsStoriesOwners().includes(of)) problems.push(`${tag}: ${of} has no docs stories`)
+  }
   for (const [tag] of body.matchAll(/<Example\b[^>]*\/>/g)) {
     const of = /\bof="([^"]*)"/.exec(tag)?.[1]
     const name = /\bname="([^"]*)"/.exec(tag)?.[1]

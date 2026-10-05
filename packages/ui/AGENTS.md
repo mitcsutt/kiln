@@ -70,9 +70,15 @@ Groups: `layout`, `typography`, `actions`, `inputs`, `display`, `navigation`, `f
 - Story-level `globals` _lock_ the toolbar in Storybook 10. To show a component in a specific theme/mode, add explicit stories (e.g. "Table, night") rather than meta-level globals.
 - `title: 'UI/<Group>/<Name>'` ([ADR 0010](../../docs/adr/0010-information-architecture.md)), `component`, `args`, a `Playground` story plus stories that show real use (hierarchy, tones, sizes, states, composition). `satisfies Meta<typeof X>`.
 - Realistic, invented content (specific names, amounts, places), sentence case, no lorem ipsum, no emoji, nothing copied from a real product.
-- Import siblings via `#components/...`; never inline-style the component under test (story-only layout wrappers should use `Stack`/`Inline`/`Grid` where they exist).
+- Workbench stories import siblings via `#components/...`; docs stories (below) import from `@mitcsutt/kiln-ui`. Never inline-style the component under test (story-only layout wrappers should use `Stack`/`Inline`/`Grid` where they exist).
 - Stories must look right in **every theme, light and dark**.
 - Every story is also a browser test in `apps/storybook` (`pnpm test:storybook`, [ADR 0018](../../docs/adr/0018-storybook-workbench.md)): it must render, its `play` function must pass, and axe must find no violations, in every theme and mode. An interactive component should have a story whose `play` function drives its main interaction. Turn off an axe rule only on the one story that needs it, with the reason beside it.
+
+**Docs stories** (tagged `docs`, [ADR 0028](../../docs/adr/0028-docs-stories.md))
+
+- A story tagged `docs` (`tags: ['docs']` on the story, never on the meta) is a docs example: the docs site shows it, in file order, with its JSDoc as the caption (Markdown) and its code underneath. Every other story is a workbench story and needs no tag. Storybook's own Docs page shows every story (`tags: ['autodocs']` in the preview).
+- A docs story has a JSDoc caption, a `render` that takes no args (a named function when it uses hooks), imports from packages only (`@mitcsutt/kiln-ui`, `react`, never `#…` or relative), and lays out with `Stack`/`Inline`/`Grid`, never `style`. `kiln/docs-story` enforces all four. A `Playground` is never a docs story.
+- A page shows them with `<Examples of="<Name>" />`: the first follows the lead without a heading, and each later one gets its `name`, or its export name in sentence case, as a heading. Renaming a docs story changes its heading, anchor and Storybook URL. `<Example of="<Name>" name="<Story>" />` shows one.
 
 **Examples** (`<Name>.examples.tsx`, [ADR 0025](../../docs/adr/0025-colocated-examples.md))
 

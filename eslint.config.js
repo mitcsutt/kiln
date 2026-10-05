@@ -1,4 +1,5 @@
 import base from '@mitcsutt/kiln-eslint-config/base'
+import docsStories from '@mitcsutt/kiln-eslint-config/docs-stories'
 import node from '@mitcsutt/kiln-eslint-config/node'
 import react from '@mitcsutt/kiln-eslint-config/react'
 import storybook from '@mitcsutt/kiln-eslint-config/storybook'
@@ -175,6 +176,12 @@ export default defineConfig(
       'no-restricted-syntax': ['error', ...FORMS_SYNTAX],
       '@typescript-eslint/no-restricted-imports': ['error', { patterns: FORMS_IMPORT_PATTERNS }],
     },
+  },
+  {
+    // ADR 0028: a story tagged `docs` is a docs example, the code readers copy.
+    name: 'kiln/workspace/docs-stories',
+    files: ['packages/*/src/**/*.stories.tsx'],
+    extends: [docsStories],
   },
   {
     name: 'kiln/workspace/storybook',
