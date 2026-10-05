@@ -24,8 +24,6 @@ interface RecurringInvoice {
 
 type InvoiceForm = KitForm<RecurringInvoice, undefined, typeof kit.registries.fields>
 
-const YEAR_END = new Date('2026-12-31T00:00:00')
-
 const CADENCE_LABEL: Record<string, string> = {
   week: 'one a week',
   fortnight: 'one a fortnight',
@@ -47,12 +45,13 @@ function nthDate(first: Date, cadence: string, n: number): Date {
   return new Date(first.getFullYear(), first.getMonth(), first.getDate() + n * days)
 }
 
-/** How many invoices go out between the start date and 31 December at the chosen cadence. */
+/** How many invoices go out from the start date to 31 December of that year at the chosen cadence. */
 function invoicesByYearEnd(start: string, cadence: string | number | null): number {
   if (!start || typeof cadence !== 'string' || !(cadence in CADENCE_LABEL)) return 0
   const first = new Date(`${start}T00:00:00`)
+  const yearEnd = new Date(first.getFullYear(), 11, 31)
   let count = 0
-  while (count < 60 && nthDate(first, cadence, count) <= YEAR_END) count += 1
+  while (count < 60 && nthDate(first, cadence, count) <= yearEnd) count += 1
   return count
 }
 
@@ -61,12 +60,11 @@ function Forecast({ form }: { form: InvoiceForm }) {
   const start = useFieldValue(form, 'start')
   const cadence = useFieldValue(form, 'cadence')
   const count = invoicesByYearEnd(start, cadence)
-  const total = amount !== null && start !== '' ? amount * count : null
+  const total = amount !== null && count > 0 ? amount * count : null
   const cadenceLabel = typeof cadence === 'string' ? (CADENCE_LABEL[cadence] ?? '') : ''
 
   let hint = 'Fill in the sentence and the total appears here.'
-  if (total !== null && count === 0) hint = 'The first invoice goes out after 31 December.'
-  if (total !== null && count > 0) {
+  if (total !== null) {
     hint = `${String(count)} ${count === 1 ? 'invoice' : 'invoices'}, ${cadenceLabel}, from ${dateLabel(start)}.`
   }
 
