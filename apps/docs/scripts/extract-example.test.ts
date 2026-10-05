@@ -1,5 +1,5 @@
 import { resolve } from 'node:path'
-import { extractExample, sliceExample } from './extract-example'
+import { exampleNames, extractExample, sliceExample } from './extract-example'
 
 // A path inside the app, so Prettier resolves the repo's config.
 const file = resolve(import.meta.dirname, 'Fixture.examples.tsx')
@@ -269,5 +269,39 @@ export function Usage() {
   return <Button>Publish</Button>
 }
 `)
+  })
+})
+
+describe('exampleNames', () => {
+  it('lists the examples a file exports, and not its helpers', () => {
+    const text = `import { Text } from '@mitcsutt/kiln-ui'
+
+const ROUTES = ['Harbour loop']
+
+export function Usage() {
+  return <Text>{ROUTES[0]}</Text>
+}
+
+export const Empty = () => <Text>No routes</Text>
+`
+    expect(exampleNames(file, text)).toEqual(['Usage', 'Empty'])
+  })
+
+  it.each([
+    ['an interface', 'export interface RouteProps { name: string }'],
+    ['a type alias', 'export type RouteProps = { name: string }'],
+    ['a type in an export list', 'type RouteProps = { name: string }\nexport { RouteProps }'],
+  ])('rejects %s, naming the file and the type', (_, declaration) => {
+    const text = `import { Text } from '@mitcsutt/kiln-ui'
+
+${declaration}
+
+export function Usage() {
+  return <Text>Harbour loop</Text>
+}
+`
+    expect(() => exampleNames(file, text)).toThrow(
+      `${file} exports the type RouteProps. Keep helpers and types unexported.`,
+    )
   })
 })

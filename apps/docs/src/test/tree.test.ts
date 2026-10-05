@@ -1,6 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { allApi } from '@/lib/api'
+import { exampleId, exampleIds } from '@/lib/examples'
 import { contentDir, contentPages, repoDir, storyTitles, titleToPath } from './content'
 
 const pages = contentPages()
@@ -96,8 +97,83 @@ describe('page references', () => {
   })
 
   it.each(pages)('$path uses examples that exist', ({ body }) => {
-    for (const match of body.matchAll(/<Example\b[^>]*\bname="([^"]+)"/g)) {
-      expect(existsSync(join(contentDir, '../../examples', `${match[1] ?? ''}.tsx`))).toBe(true)
+    expect(exampleProblems(body, { exports: known, ids: exampleIds() })).toEqual([])
+  })
+
+  it('names each examples file after a public export', () => {
+    const owners = new Set(exampleIds().flatMap((id) => (id.includes('#') ? id.split('#', 1) : [])))
+    expect([...owners].filter((of) => !of.includes('/') && !known.has(of))).toEqual([])
+  })
+})
+
+/**
+ * What's wrong with a page's `<Example />` tags (ADR 0025). `of` names a public export that has
+ * an examples file, or a guide's examples file by its path, and `name` is one of that file's
+ * exports. A tag with only `name` is a file in `examples/`.
+ */
+function exampleProblems(body: string, { exports, ids }: { exports: Set<string>; ids: string[] }) {
+  const known = new Set(ids)
+  const files = new Set(ids.flatMap((id) => (id.includes('#') ? id.split('#', 1) : [])))
+  const problems: string[] = []
+  for (const [tag] of body.matchAll(/<Example\b[^>]*\/>/g)) {
+    const of = /\bof="([^"]*)"/.exec(tag)?.[1]
+    const name = /\bname="([^"]*)"/.exec(tag)?.[1]
+    if (of === undefined) {
+      if (!name || !existsSync(join(contentDir, '../../examples', `${name}.tsx`))) {
+        problems.push(`${tag}: no file at examples/${name ?? ''}.tsx`)
+      }
+    } else if (!of.includes('/') && !exports.has(of)) {
+      problems.push(`${tag}: ${of} isn't a public export`)
+    } else if (!files.has(of)) {
+      problems.push(`${tag}: ${of} has no examples file`)
+    } else if (!known.has(exampleId({ of, name }))) {
+      problems.push(`${tag}: the examples of ${of} don't export ${name ?? 'Usage'}`)
     }
+  }
+  return problems
+}
+
+describe('exampleProblems', () => {
+  const check = (body: string) =>
+    exampleProblems(body, {
+      exports: new Set(['Button', 'Card']),
+      ids: ['Button#Usage', 'Button#Hierarchy', 'forms/getting-started/schemas#Usage'],
+    })
+
+  it('accepts an export, a guide path and a file in examples/', () => {
+    expect(
+      check(`<Example of="Button" />
+<Example of="Button" name="Hierarchy" layout="bleed" />
+<Example name="Hierarchy" of="Button" />
+<Example of="forms/getting-started/schemas" />
+<Example name="ui/actions/button/hierarchy" />`),
+    ).toEqual([])
+  })
+
+  it('rejects a name that is not a public export', () => {
+    expect(check('<Example of="Buton" />')).toEqual([
+      `<Example of="Buton" />: Buton isn't a public export`,
+    ])
+  })
+
+  it('rejects an export with no examples file', () => {
+    expect(check('<Example of="Card" />')).toEqual([
+      '<Example of="Card" />: Card has no examples file',
+    ])
+    expect(check('<Example of="forms/getting-started/arrays" />')).toEqual([
+      '<Example of="forms/getting-started/arrays" />: forms/getting-started/arrays has no examples file',
+    ])
+  })
+
+  it('rejects an example the file does not export', () => {
+    expect(check('<Example of="Button" name="Sizes" />')).toEqual([
+      `<Example of="Button" name="Sizes" />: the examples of Button don't export Sizes`,
+    ])
+  })
+
+  it('rejects a missing file in examples/', () => {
+    expect(check('<Example name="ui/actions/nothing" />')).toEqual([
+      '<Example name="ui/actions/nothing" />: no file at examples/ui/actions/nothing.tsx',
+    ])
   })
 })

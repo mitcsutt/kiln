@@ -1,8 +1,13 @@
 /**
- * Indexes `examples/**\/*.tsx` into `.generated/examples.ts` (the live components) and
- * `.generated/example-sources.json` (their source, as a reader copies it). A page shows an
- * example with `<Example name="ui/actions/button/hierarchy" />`: the preview and the code
- * under it come from the same file, so they can't disagree.
+ * Indexes the docs examples into `.generated/examples.ts` (the live components) and
+ * `.generated/example-sources.json` (their source, as a reader copies it). The preview and the
+ * code under it come from the same file, so they can't disagree. Both are keyed by the id
+ * `exampleId` in `src/lib/examples.ts` reads:
+ *
+ * - `Button#Hierarchy`: the `Hierarchy` export of a `*.examples.tsx` file beside its code
+ *   (`examples-files.ts`), which a page shows with `<Example of="Button" name="Hierarchy" />`.
+ * - `ui/actions/button/hierarchy`: the default export of `examples/ui/actions/button/hierarchy.tsx`,
+ *   shown with `<Example name="ui/actions/button/hierarchy" />`, until it moves beside its code.
  *
  * The code shown is the example's slice (`extract-example.ts`): its export and the helpers
  * and imports it uses. Each slice is also written to `.generated/examples/`, which the
@@ -12,22 +17,40 @@
  */
 import { globSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { dirname, join, relative, resolve, sep } from 'node:path'
-import { extractExample } from './extract-example.ts'
+import { examplesFiles } from './examples-files.ts'
+import { exampleNames, extractExample } from './extract-example.ts'
 
 const app = resolve(import.meta.dirname, '..')
+const repo = resolve(app, '../..')
 const dir = join(app, 'examples')
 const outDir = join(app, '.generated')
 const snippetDir = join(outDir, 'examples')
+const clientDir = join(outDir, 'client')
 
-const files = globSync('**/*.tsx', { cwd: dir }).sort()
-const names = files.map((file) =>
-  file
+/** One live example: where it's read from, and the file its slice is written to. */
+interface Entry {
+  id: string
+  file: string
+  exportName: string
+  snippet: string
+}
+
+/** An import path from `from` (a file) to `to`, without the extension. */
+function importPath(from: string, to: string): string {
+  const path = relative(dirname(from), to.replace(/\.tsx$/, ''))
+    .split(sep)
+    .join('/')
+  return path.startsWith('.') ? path : `./${path}`
+}
+
+const entries: Entry[] = []
+const imports: string[] = []
+
+for (const file of globSync('**/*.tsx', { cwd: dir }).sort()) {
+  const name = file
     .replace(/\.tsx$/, '')
     .split(sep)
-    .join('/'),
-)
-
-for (const file of files) {
+    .join('/')
   const source = readFileSync(join(dir, file), 'utf8')
   if (!source.startsWith("'use client'")) {
     throw new Error(`examples/${file} must start with 'use client' (it renders in the browser).`)
@@ -35,12 +58,48 @@ for (const file of files) {
   if (!/^export default function \w+/m.test(source)) {
     throw new Error(`examples/${file} must have an \`export default function\`.`)
   }
+  imports.push(
+    `import e${String(entries.length)} from '${importPath(join(outDir, 'examples.ts'), join(dir, name))}'`,
+  )
+  entries.push({ id: name, file: join(dir, file), exportName: 'default', snippet: `${name}.tsx` })
 }
 
-const imports = names.map(
-  (name, index) => `import e${String(index)} from '${relative(outDir, join(dir, name))}'`,
-)
-const entries = names.map((name, index) => `  '${name}': e${String(index)},`)
+// An examples file carries no 'use client' (ADR 0025), so each gets a generated client module
+// that re-exports its examples, and the registry imports them from there. A page then loads
+// only the examples it shows.
+rmSync(clientDir, { recursive: true, force: true })
+for (const { of, file } of examplesFiles(repo)) {
+  const path = join(repo, file)
+  const names = exampleNames(path, readFileSync(path, 'utf8'))
+  if (names.length === 0) throw new Error(`${file} exports no examples.`)
+  if (names.includes('default')) {
+    throw new Error(`${file} has a default export. Name each example (\`Usage\` by default).`)
+  }
+  const client = join(clientDir, `${of}.tsx`)
+  mkdirSync(dirname(client), { recursive: true })
+  writeFileSync(
+    client,
+    [
+      `// Generated from ${file} by scripts/generate-examples.ts. Do not edit.`,
+      "'use client'",
+      '',
+      `export { ${names.join(', ')} } from '${importPath(client, path)}'`,
+      '',
+    ].join('\n'),
+  )
+  const locals = names.map((name, index) => `${name} as e${String(entries.length + index)}`)
+  imports.push(
+    `import { ${locals.join(', ')} } from '${importPath(join(outDir, 'examples.ts'), client)}'`,
+  )
+  for (const name of names) {
+    entries.push({
+      id: `${of}#${name}`,
+      file: path,
+      exportName: name,
+      snippet: `${of}.${name}.tsx`,
+    })
+  }
+}
 
 mkdirSync(outDir, { recursive: true })
 writeFileSync(
@@ -51,7 +110,7 @@ writeFileSync(
     ...imports,
     '',
     'export const examples: Record<string, ComponentType> = {',
-    ...entries,
+    ...entries.map(({ id }, index) => `  '${id}': e${String(index)},`),
     '}',
     '',
   ].join('\n'),
@@ -59,16 +118,15 @@ writeFileSync(
 
 rmSync(snippetDir, { recursive: true, force: true })
 const sources: Record<string, string> = {}
-for (const [index, name] of names.entries()) {
-  const file = join(dir, files[index] ?? '')
-  const code = await extractExample(file, readFileSync(file, 'utf8'), 'default')
-  sources[name] = code
-  const snippet = join(snippetDir, `${name}.tsx`)
-  mkdirSync(dirname(snippet), { recursive: true })
+for (const { id, file, exportName, snippet } of entries) {
+  const code = await extractExample(file, readFileSync(file, 'utf8'), exportName)
+  sources[id] = code
+  const out = join(snippetDir, snippet)
+  mkdirSync(dirname(out), { recursive: true })
   writeFileSync(
-    snippet,
-    `// Generated from examples/${name}.tsx by scripts/generate-examples.ts. Do not edit.\n${code}`,
+    out,
+    `// Generated from ${relative(repo, file).split(sep).join('/')} by scripts/generate-examples.ts. Do not edit.\n${code}`,
   )
 }
 writeFileSync(join(outDir, 'example-sources.json'), `${JSON.stringify(sources, null, 2)}\n`)
-console.log(`examples: ${String(names.length)}`)
+console.log(`examples: ${String(entries.length)}`)
