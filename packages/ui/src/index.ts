@@ -20,6 +20,7 @@ export type {
   ThemeProviderProps,
   ThemeScopeProps,
   ThemeContextValue,
+  ThemeScriptOptions,
   ThemeName,
   BuiltInThemeName,
   ThemeMeta,

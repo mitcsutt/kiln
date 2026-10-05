@@ -1,7 +1,8 @@
 import { runInThisContext } from 'node:vm'
 import { render, screen, waitFor } from '@testing-library/react'
 import { ThemeProvider, ThemeScope } from './ThemeProvider'
-import { themeScript, useTheme } from './context'
+import { useTheme } from './context'
+import { themeScript } from './script'
 
 function ModeProbe() {
   const { mode } = useTheme()
@@ -31,6 +32,34 @@ describe('ThemeProvider', () => {
       </ThemeProvider>,
     )
     await waitFor(() => expect(screen.getByTestId('mode')).toHaveTextContent('light'))
+  })
+
+  it('reads and writes the mode under a custom storageKey', async () => {
+    localStorage.setItem('kiln-color-mode', 'dark')
+    localStorage.setItem('my-app:mode', 'light')
+    function ModeSetter() {
+      const { mode, setMode } = useTheme()
+      return (
+        <button
+          type="button"
+          onClick={() => {
+            setMode('system')
+          }}
+        >
+          {mode}
+        </button>
+      )
+    }
+    render(
+      <ThemeProvider defaultMode="dark" storageKey="my-app:mode">
+        <ModeSetter />
+      </ThemeProvider>,
+    )
+    await waitFor(() => expect(screen.getByRole('button')).toHaveTextContent('light'))
+    screen.getByRole('button').click()
+    await waitFor(() => expect(screen.getByRole('button')).toHaveTextContent('system'))
+    expect(localStorage.getItem('my-app:mode')).toBe('system')
+    expect(localStorage.getItem('kiln-color-mode')).toBe('dark')
   })
 })
 
@@ -104,5 +133,19 @@ describe('themeScript', () => {
     localStorage.setItem('kiln-color-mode', 'dark')
     runInThisContext(themeScript('ledger', 'light'))
     expect(document.documentElement.dataset.mode).toBe('dark')
+  })
+
+  it('reads the mode from a custom storageKey', () => {
+    localStorage.setItem('kiln-color-mode', 'dark')
+    runInThisContext(themeScript('ledger', 'light', { storageKey: 'my-app:mode' }))
+    expect(document.documentElement.dataset.mode).toBe('light')
+    localStorage.setItem('my-app:mode', 'system')
+    runInThisContext(themeScript('ledger', 'light', { storageKey: 'my-app:mode' }))
+    expect(document.documentElement.dataset.mode).toBe('system')
+  })
+
+  it('cannot close its own script tag, whatever the storage key', () => {
+    const script = themeScript('paper', 'light', { storageKey: '</script>' })
+    expect(script).not.toContain('</script>')
   })
 })

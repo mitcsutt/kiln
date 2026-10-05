@@ -136,9 +136,20 @@ The relevant shape (the real file also carries the published-package metadata):
     "#*": ["./src/*", "./src/*.ts", "./src/*.tsx", "./src/*/index.ts", "./src/*/index.tsx"],
   },
   // In the workspace the entries point at source; publishConfig swaps in the built dist files.
+  // `kiln-dist` points a linked consumer at the same dist files (ADR 0022).
   "exports": {
-    ".": "./src/index.ts",
-    "./schema": "./src/schema/core/index.ts", // React-free: types, parse, conditions, rules → Standard Schema
+    ".": {
+      "kiln-dist": { "types": "./dist/index.d.ts", "default": "./dist/index.js" },
+      "default": "./src/index.ts",
+    },
+    // React-free: types, parse, conditions, rules → Standard Schema
+    "./schema": {
+      "kiln-dist": {
+        "types": "./dist/schema/core/index.d.ts",
+        "default": "./dist/schema/core/index.js",
+      },
+      "default": "./src/schema/core/index.ts",
+    },
     "./package.json": "./package.json",
   },
   "peerDependencies": {

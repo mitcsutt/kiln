@@ -13,6 +13,26 @@ pnpm add -D @mitcsutt/kiln-eslint-config eslint typescript
 
 It needs ESLint 10 and a TypeScript version that typescript-eslint supports. `eslint-plugin-jsx-a11y` hasn't added ESLint 10 to its peer range yet, so your package manager may warn about it. The package's own tests run every jsx-a11y rule on ESLint 10.
 
+To silence that warning with pnpm 10 or later, allow ESLint 10 for the plugin in `pnpm-workspace.yaml`:
+
+```yaml title="pnpm-workspace.yaml"
+peerDependencyRules:
+  allowedVersions:
+    eslint-plugin-jsx-a11y>eslint: '10'
+```
+
+With pnpm 9, the same rule goes in the root `package.json`:
+
+```json title="package.json"
+{
+  "pnpm": {
+    "peerDependencyRules": {
+      "allowedVersions": { "eslint-plugin-jsx-a11y>eslint": "10" }
+    }
+  }
+}
+```
+
 ## Compose the layers
 
 Each export is a list of config objects that adds to `base` without repeating it. Start with `base` and add what your project needs:
@@ -62,7 +82,8 @@ The type-checked rules need type information for each file they lint, JavaScript
 - **No warnings.** Plugin presets that ship warnings (react-hooks, Storybook, Vitest, Testing Library, jsx-a11y) have them raised to errors, and a test fails if the combined exports contain any warn-level rule. A plugin upgrade that adds a warning can therefore be a breaking change for this package.
 - **Unused disable comments are errors** (`reportUnusedDisableDirectives`), so a suppression can't outlive the problem it hid.
 - **Type-only imports** are enforced both ways: `consistent-type-imports`, `consistent-type-exports` and `no-import-type-side-effects`.
-- **Dependencies are checked.** Test files, stories and tool config files (`*.config.*`, `.storybook/`) may import dev dependencies, and nothing else may.
+- **Dependencies are checked.** Test files, stories, tool config files (`*.config.*`, `.storybook/`) and scripts (any `scripts/` folder) may import dev dependencies, and nothing else may.
+- **Template literals take strings and numbers.** `${count} items` is fine; `undefined`, `null`, booleans and objects are errors, because they print something no reader should see. Convert them on purpose (`String(done)`, `user.name`).
 - **Formatting is Prettier's.** `eslint-config-prettier` is the last object in `base`, so no rule fights the formatter. Use it with the [Prettier config](/docs/tooling/prettier-config).
 
 ## Adding your own rules

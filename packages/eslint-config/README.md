@@ -10,7 +10,15 @@ pnpm add -D @mitcsutt/kiln-eslint-config eslint typescript
 
 It needs ESLint 10 and a TypeScript version that [typescript-eslint](https://typescript-eslint.io/users/dependency-versions) supports.
 
-`eslint-plugin-jsx-a11y` hasn't declared ESLint 10 in its peer range yet, so your package manager may warn about it. This package's tests run its rules on ESLint 10.
+`eslint-plugin-jsx-a11y` hasn't declared ESLint 10 in its peer range yet, so your package manager may warn about it. This package's tests run its rules on ESLint 10. To silence the warning with pnpm 10 or later, add this to `pnpm-workspace.yaml`:
+
+```yaml
+peerDependencyRules:
+  allowedVersions:
+    eslint-plugin-jsx-a11y>eslint: '10'
+```
+
+With pnpm 9, put the same rule in your root `package.json`, under `"pnpm": { "peerDependencyRules": { "allowedVersions": { "eslint-plugin-jsx-a11y>eslint": "10" } } }`.
 
 ## Usage
 
@@ -38,7 +46,7 @@ Type-aware rules need every linted file to belong to a `tsconfig.json`, includin
 | `storybook` | `eslint-plugin-storybook` rules for stories and `.storybook/main`                                                                                                                                                           |
 | `node`      | Node.js globals, for scripts and tool config files                                                                                                                                                                          |
 
-Unused `eslint-disable` comments are errors. Test files, stories and tool config files (`*.config.*`, `.storybook/`) may import dev dependencies, and nothing else can.
+Unused `eslint-disable` comments are errors. Test files, stories, tool config files (`*.config.*`, `.storybook/`) and scripts (`scripts/`) may import dev dependencies, and nothing else can. Template literals take strings and numbers; anything else (`undefined`, `null`, booleans, objects) has to be converted on purpose.
 
 ## Docs
 

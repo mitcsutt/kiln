@@ -6,7 +6,7 @@ The themeable component system. **Read the root [`DESIGN.md`](../../DESIGN.md) f
 
 ```
 src/
-  index.ts                 public barrel: the only entry consumers use
+  index.ts                 public barrel: the entry consumers use (plus theme/script.ts as ./theme-script)
   styles/index.css         base stylesheet: layer order + fonts + tokens + reset + Paper
   tokens/                  foundation.css (derived scales) · base.css (reset) · fonts.css · fonts-fiesta.css
                            · responsive-props.css (non-inheriting responsive inputs)

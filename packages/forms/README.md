@@ -151,6 +151,8 @@ The package ships agent skills in `skills/`, built from the docs pages: componen
 npx @tanstack/intent@latest install
 ```
 
+If your `package.json` already has an `intent.skills` list, Intent loads only the packages it names: add `@mitcsutt/kiln-forms` to it, then check with `npx @tanstack/intent@latest list`.
+
 ## Docs
 
 Full documentation, with every field, layout and hook, lives on the [Kiln docs site](https://kiln.mitchellsutton.com). Until it's live, see the [design reference](https://github.com/mitcsutt/kiln/blob/main/packages/forms/docs/design.md) in the repository.

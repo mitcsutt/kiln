@@ -49,6 +49,13 @@
       "budget": 1000
     },
     {
+      "name": "import { themeScript } from theme-script",
+      "import": "{ themeScript }",
+      "from": "dist/theme/script.js",
+      "isolatedTo": "dist/theme/script.js",
+      "budget": 600
+    },
+    {
       "name": "Everything (import *)",
       "import": "* as kiln",
       "from": "dist/index.js",

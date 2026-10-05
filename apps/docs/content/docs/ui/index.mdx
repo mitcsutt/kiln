@@ -81,6 +81,44 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 `suppressHydrationWarning` on `<html>` is needed because the script changes its attributes before React hydrates.
 
+### Name the storage key
+
+The reader's mode is stored in `localStorage` under `kiln-color-mode`. Every app on one origin shares that key, so a choice made in one carries into the next. Give each app its own key with `storageKey`, or keep a key the app already used so returning readers keep their choice. Pass the same key to `themeScript`:
+
+```tsx
+;<ThemeProvider theme="ledger" defaultMode="light" storageKey="budget:color-mode">
+  …
+</ThemeProvider>
+
+themeScript('ledger', 'light', { storageKey: 'budget:color-mode' })
+```
+
+### Without server rendering
+
+A single-page app served from a static `index.html` still paints before React loads, so it needs the script too. Generate it at build time instead of copying it by hand. The config runs in Node, so import `themeScript` from `@mitcsutt/kiln-ui/theme-script`: that entry has no React and nothing else to load. With Vite, a small plugin in the config puts it at the top of `<head>`:
+
+```ts title="vite.config.ts"
+import { themeScript } from '@mitcsutt/kiln-ui/theme-script'
+import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite'
+
+export default defineConfig({
+  plugins: [
+    react(),
+    {
+      name: 'kiln-theme-script',
+      transformIndexHtml: () => [
+        {
+          tag: 'script',
+          children: themeScript('ledger', 'light', { storageKey: 'budget:color-mode' }),
+          injectTo: 'head-prepend',
+        },
+      ],
+    },
+  ],
+})
+```
+
 ### With the Next.js App Router
 
 Kiln's components use React state and context, so they render in client components. Put `ThemeProvider` in a file marked `'use client'`, and import Kiln components from client components:

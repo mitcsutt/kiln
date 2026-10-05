@@ -12,13 +12,14 @@ import { DEFAULT_THEME } from './themes'
 import type { ColorMode, ThemeName } from './themes'
 import type { ThemeContextValue } from './context'
 
-import { ThemeContext, STORAGE_KEY } from './context'
+import { ThemeContext } from './context'
+import { DEFAULT_STORAGE_KEY } from './script'
 
 const DARK_QUERY = '(prefers-color-scheme: dark)'
 
-function readStoredMode(): ColorMode | undefined {
+function readStoredMode(storageKey: string): ColorMode | undefined {
   try {
-    const v = typeof localStorage === 'undefined' ? null : localStorage.getItem(STORAGE_KEY)
+    const v = typeof localStorage === 'undefined' ? null : localStorage.getItem(storageKey)
     return v === 'light' || v === 'dark' || v === 'system' ? v : undefined
   } catch {
     return undefined
@@ -36,10 +37,10 @@ function subscribeToStorage(onChange: () => void): () => void {
  * The mode stored by an earlier visit, read only on the client (`undefined` while
  * rendering on the server and during hydration, so markup always matches).
  */
-function useStoredMode(enabled: boolean): ColorMode | undefined {
+function useStoredMode(enabled: boolean, storageKey: string): ColorMode | undefined {
   return useSyncExternalStore(
     subscribeToStorage,
-    () => (enabled ? readStoredMode() : undefined),
+    () => (enabled ? readStoredMode(storageKey) : undefined),
     () => undefined,
   )
 }
@@ -80,6 +81,12 @@ export interface ThemeProviderProps {
   /** Persist the user's mode choice in localStorage. Default `true`. */
   persistMode?: boolean
   /**
+   * The localStorage key the mode is stored under (default `kiln-color-mode`). Give each
+   * app on one origin its own key, or keep an existing one so readers' choices carry over.
+   * Pass the same key to `themeScript`.
+   */
+  storageKey?: string
+  /**
    * Where to write `data-theme` / `data-mode`. `document` (default) targets `<html>`,
    * which is what an app wants. Use `<ThemeScope>` for nested, local themes.
    */
@@ -101,6 +108,7 @@ export function ThemeProvider({
   onThemeChange,
   onModeChange,
   persistMode = true,
+  storageKey = DEFAULT_STORAGE_KEY,
   target = 'document',
   children,
 }: ThemeProviderProps) {
@@ -120,7 +128,7 @@ export function ThemeProvider({
     if (modeProp) setChosenMode(modeProp)
   }
   // A stored choice wins over `defaultMode`, uncontrolled only.
-  const storedMode = useStoredMode(persistMode && !modeProp)
+  const storedMode = useStoredMode(persistMode && !modeProp, storageKey)
   const modeState = chosenMode ?? storedMode ?? defaultMode
 
   useEffect(() => {
@@ -146,14 +154,14 @@ export function ThemeProvider({
       setChosenMode(m)
       if (persistMode && typeof localStorage !== 'undefined') {
         try {
-          localStorage.setItem(STORAGE_KEY, m)
+          localStorage.setItem(storageKey, m)
         } catch {
           /* storage unavailable — ignore */
         }
       }
       onModeChange?.(m)
     },
-    [onModeChange, persistMode],
+    [onModeChange, persistMode, storageKey],
   )
 
   const value = useMemo<ThemeContextValue>(

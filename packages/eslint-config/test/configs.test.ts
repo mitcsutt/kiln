@@ -111,6 +111,24 @@ describe('base', () => {
     )
   })
 
+  it('lets scripts and config files import dev dependencies', async () => {
+    const code = "import { describe } from 'vitest'\n\nexport const suite = describe\n"
+    for (const file of ['scripts/generate.ts', 'tools/scripts/generate.mjs', 'vite.config.ts']) {
+      expect(await ruleIds(linter, file, code), file).not.toContain(
+        'import-x/no-extraneous-dependencies',
+      )
+    }
+  })
+
+  it('allows numbers in template literals, but not nullish values or booleans', async () => {
+    const rule = '@typescript-eslint/restrict-template-expressions'
+    const label = (type: string) =>
+      `declare const value: ${type}\n\nexport const label = \`\${value} items\`\n`
+    expect(await ruleIds(linter, 'count.ts', label('number'))).not.toContain(rule)
+    expect(await ruleIds(linter, 'missing.ts', label('string | undefined'))).toContain(rule)
+    expect(await ruleIds(linter, 'done.ts', label('boolean'))).toContain(rule)
+  })
+
   it('applies Vitest rules to test files', async () => {
     const code =
       "import { expect, it } from 'vitest'\n\nit.only('adds', () => {\n  expect(1 + 1).toBe(2)\n})\n"
