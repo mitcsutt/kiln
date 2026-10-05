@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Accordion, Text } from '@mitcsutt/kiln-ui'
 import { expect, userEvent, within } from 'storybook/test'
 import { storyRoot } from '#components/_story/storyRoot'
-import { Accordion } from './Accordion'
 
 const meta = {
   title: 'UI/Navigation/Accordion',
@@ -52,11 +52,6 @@ export const Playground: Story = {
   },
 }
 
-/** A bordered surface — standing on the page, with Fiesta's print offset. */
-export const Contained: Story = {
-  args: { variant: 'contained' },
-}
-
 /** Several sections open at once: this month's plan usage. */
 export const Multiple: Story = {
   args: { type: 'multiple', defaultValue: ['storage', 'seats'] },
@@ -100,4 +95,64 @@ export const InlineNote: Story = {
       </Accordion>
     </div>
   ),
+}
+
+/**
+ * `type="single"` opens one section at a time (and is collapsible unless you pass
+ * `collapsible={false}`); `type="multiple"` lets any number stay open. A single item works as a
+ * disclosure for an inline "why do we ask this?" note. Set the heading level of the triggers with
+ * `level` on `Accordion.Trigger`.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Accordion type="single" defaultValue="bikes">
+        <Accordion.Item value="bikes">
+          <Accordion.Trigger>Can I bring a bike?</Accordion.Trigger>
+          <Accordion.Content>
+            <Text>Yes, outside the morning peak. Fold-up bikes ride at any time.</Text>
+          </Accordion.Content>
+        </Accordion.Item>
+        <Accordion.Item value="dogs">
+          <Accordion.Trigger>Are dogs allowed?</Accordion.Trigger>
+          <Accordion.Content>
+            <Text>Dogs on a lead travel free on every ferry and bus.</Text>
+          </Accordion.Content>
+        </Accordion.Item>
+        <Accordion.Item value="refunds">
+          <Accordion.Trigger>How do refunds work?</Accordion.Trigger>
+          <Accordion.Content>
+            <Text>Unused tickets are refunded in full up to an hour before departure.</Text>
+          </Accordion.Content>
+        </Accordion.Item>
+      </Accordion>
+    )
+  },
+}
+
+/**
+ * `variant="divided"` (the default) separates sections with rules. `variant="contained"` puts them
+ * in a framed box, for a few sections inside a page.
+ */
+export const Contained: Story = {
+  tags: ['docs'],
+  render: function Contained() {
+    return (
+      <Accordion type="multiple" variant="contained" size="sm">
+        <Accordion.Item value="weekday">
+          <Accordion.Trigger>Weekday fares</Accordion.Trigger>
+          <Accordion.Content>
+            <Text size="sm">Single £2.80, return £5.00, day pass £7.50.</Text>
+          </Accordion.Content>
+        </Accordion.Item>
+        <Accordion.Item value="weekend">
+          <Accordion.Trigger>Weekend fares</Accordion.Trigger>
+          <Accordion.Content>
+            <Text size="sm">Single £2.40, family day pass £14.00.</Text>
+          </Accordion.Content>
+        </Accordion.Item>
+      </Accordion>
+    )
+  },
 }

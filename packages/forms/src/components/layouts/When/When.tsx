@@ -51,6 +51,30 @@ function resetToDefaults(form: AnyKitForm, names: readonly string[]): void {
 const NO_NAMES: readonly string[] = []
 
 /**
+ * Shows fields only when a condition holds. Hidden fields stop validating and are reset in what's
+ * submitted.
+ *
+ * @remarks
+ * `When` renders its children only while a condition holds. Hidden fields unmount, so their
+ * validators stop, their errors clear, and by default their values go back to their defaults in
+ * what `onSubmit` receives. What the reader typed survives hiding and showing while they're
+ * editing; only the payload is pruned.
+ *
+ * @example In a schema
+ * Any node takes `when`:
+ *
+ * ```json
+ * {
+ *   "kind": "textarea",
+ *   "name": "address",
+ *   "label": "Postal address",
+ *   "when": { "field": "delivery", "op": "eq", "value": "post" }
+ * }
+ * ```
+ *
+ * See [Conditions](/docs/forms/schema/conditions) for every operator.
+ *
+ * @privateRemarks
  * Conditional rendering (§6.6). Children unmount while `is(values)` (or `condition`) is false (their validators
  * stop) and every path they governed — collected from the fields mounted inside, remembered after
  * they hide, plus `names` — becomes inactive with the `whenHidden` policy: errors cleared, and

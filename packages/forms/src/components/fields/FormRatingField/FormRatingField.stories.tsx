@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Form, useAppForm, useFieldValue } from '@mitcsutt/kiln-forms'
+import { Code, Stack, Text } from '@mitcsutt/kiln-ui'
 import { FieldDemo, NEVER_SETTLES, StatesGrid, StoryForm } from '#stories/_kit'
 import { FormRatingField } from './FormRatingField'
 
@@ -150,4 +152,26 @@ export const ViewMode: Story = {
       {(form) => <form.RatingField name="value" label="Rate this session" />}
     </FieldDemo>
   ),
+}
+
+/**
+ * A clearable rating bound to `rating`, with the value it holds underneath: `null` until a star is
+ * chosen.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const form = useAppForm({ defaultValues: { rating: null as number | null } })
+    const value = useFieldValue(form, 'rating')
+    return (
+      <Form form={form} aria-label="RatingField example">
+        <Stack gap={4}>
+          <form.RatingField name="rating" label="How was your crossing?" clearable />
+          <Text size="sm" tone="muted">
+            Value: <Code>{JSON.stringify(value)}</Code>
+          </Text>
+        </Stack>
+      </Form>
+    )
+  },
 }

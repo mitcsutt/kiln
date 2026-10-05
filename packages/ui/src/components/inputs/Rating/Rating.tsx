@@ -34,6 +34,14 @@ export interface RatingProps extends Omit<
 const defaultItemLabel = (n: number, max: number) => `${String(n)} of ${String(max)}`
 
 /**
+ * A star rating that's one tab stop, with arrow keys to choose and a preview on hover.
+ *
+ * @remarks
+ * `Rating` is a radio group whose radios are stars, so it's one tab stop and the arrow keys move
+ * and choose. Stars up to the rating fill with the accent, and hovering previews a rating before
+ * you choose. `clearable` lets pressing the chosen star again clear it.
+ *
+ * @privateRemarks
  * A star rating — a Radix RadioGroup whose radios are stars, so it's one tab stop and the
  * arrow keys move and choose. Stars up to the rating fill with the accent; hovering
  * previews a rating before you choose it. Label it with a `<Field>` (see `RatingField`) or

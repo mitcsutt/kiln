@@ -1,7 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Inline } from '#components/layout/Inline'
-import { Stack } from '#components/layout/Stack'
-import { Skeleton } from './Skeleton'
+import { Inline, Skeleton, Stack } from '@mitcsutt/kiln-ui'
 
 const meta = {
   title: 'UI/Display/Skeleton',
@@ -54,4 +52,24 @@ export const Shapes: Story = {
       <Skeleton width={9} height={9} radius="surface" />
     </Inline>
   ),
+}
+
+/**
+ * Every piece is `aria-hidden`. Announce loading once, on the region that's loading (`aria-busy`,
+ * or a [Spinner](/docs/ui/feedback/spinner) with a label), rather than once per bar. The shimmer
+ * stops under reduced motion.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Stack gap={4} aria-busy="true" aria-label="Loading departures" role="status">
+        <Inline gap={3}>
+          <Skeleton.Circle size="md" />
+          <Skeleton width="1/3" height="heading" />
+        </Inline>
+        <Skeleton.Text lines={3} />
+      </Stack>
+    )
+  },
 }

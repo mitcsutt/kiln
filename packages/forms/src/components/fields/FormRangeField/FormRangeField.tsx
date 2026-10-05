@@ -13,6 +13,27 @@ export interface FormRangeFieldProps
   extends Omit<UiRangeSliderFieldProps, ControlledKeys>, CommonFieldProps<[number, number]> {}
 
 /**
+ * A low and high value on one track.
+ *
+ * @remarks
+ * It renders kiln-ui's {@link RangeSliderField | RangeSliderField}.
+ *
+ * @example In a schema
+ * ```json
+ * {
+ *   "kind": "range",
+ *   "name": "window",
+ *   "label": "Departure window",
+ *   "min": 5,
+ *   "max": 23,
+ *   "thumbLabels": ["Earliest", "Latest"]
+ * }
+ * ```
+ *
+ * @value `[number, number]`
+ * @empty none: it always has a value
+ *
+ * @privateRemarks
  * A low–high range on one track (§7.2 `range`). Always has a value (no empty state).
  */
 export const FormRangeField = defineField<[number, number]>()(function FormRangeField({

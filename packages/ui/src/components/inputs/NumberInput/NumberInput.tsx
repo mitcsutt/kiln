@@ -46,6 +46,14 @@ export interface NumberInputProps extends Omit<
 }
 
 /**
+ * A number typed as text, as a spinbutton. Formatted when you leave it, raw while you edit it.
+ *
+ * @remarks
+ * `NumberInput` is a WAI-ARIA spinbutton, never `type="number"` (which mangles locales, scrolls on
+ * the wheel and hides what you typed). It shows the number formatted for the locale when blurred
+ * ("1,450.5") and raw while focused ("1450.5"), so editing never fights the grouping.
+ *
+ * @privateRemarks
  * A number typed as text — a WAI-ARIA spinbutton, never `type="number"`. Formatted in the
  * locale when blurred ("1,450.5"), raw while focused ("1450.5"), so editing never fights the
  * grouping. ↑/↓ step, PgUp/PgDn step ×10, Home/End jump to `min`/`max`, Enter commits.

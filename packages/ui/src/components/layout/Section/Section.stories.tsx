@@ -1,11 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Stack } from '#components/layout/Stack'
+import { Button, Container, Heading, Section, Stack, Text } from '@mitcsutt/kiln-ui'
 import { Inline } from '#components/layout/Inline'
-import { Container } from '#components/layout/Container'
 import { Split } from '#components/layout/Split'
-import { Button } from '#components/actions/Button'
 import { Body, Figure, Label, Title } from '#components/layout/_story/StoryKit'
-import { Section } from './Section'
 
 const meta = {
   title: 'UI/Layout/Section',
@@ -130,4 +127,37 @@ export const PageRhythm: Story = {
       </Section>
     </>
   ),
+}
+
+/**
+ * Vary `space` between neighbours. The scale is non-linear for this reason: a page of `space={8}`
+ * everywhere has no rhythm at all.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  parameters: { layout: 'fullscreen' },
+  render: function Usage() {
+    return (
+      <>
+        <Section space={7}>
+          <Container width="text">
+            <Stack gap={3}>
+              <Heading level={3} size="2xl">
+                Ride the coast for less
+              </Heading>
+              <Text tone="muted">An annual pass covers every ferry and bus in the bay.</Text>
+            </Stack>
+          </Container>
+        </Section>
+        <Section space={6} surface="inverse" divider="top">
+          <Container width="text">
+            <Stack gap={4} align="start">
+              <Text>Commuting every day? The pass pays for itself in five weeks.</Text>
+              <Button>Buy an annual pass</Button>
+            </Stack>
+          </Container>
+        </Section>
+      </>
+    )
+  },
 }

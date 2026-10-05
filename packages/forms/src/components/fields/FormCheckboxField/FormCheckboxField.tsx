@@ -14,7 +14,27 @@ export interface FormCheckboxFieldProps
     Omit<UiCheckboxFieldProps, ControlledKeys | 'checked' | 'defaultChecked' | 'onCheckedChange'>,
     CommonFieldProps<boolean> {}
 
-/** A single checkbox bound to a `boolean` path (§7.2 `checkbox`). Empty is `false`. */
+/**
+ * A single checkbox bound to a `boolean` path.
+ *
+ * @remarks
+ * It renders kiln-ui's {@link CheckboxField | CheckboxField}.
+ *
+ * @example In a schema
+ * ```json
+ * {
+ *   "kind": "checkbox",
+ *   "name": "terms",
+ *   "label": "I've read the terms of carriage"
+ * }
+ * ```
+ *
+ * @value `boolean`
+ * @empty `false`
+ *
+ * @privateRemarks
+ * A single checkbox bound to a `boolean` path (§7.2 `checkbox`). Empty is `false`.
+ */
 export const FormCheckboxField = defineField<boolean>()(function FormCheckboxField({
   warn,
   excluded,

@@ -88,8 +88,10 @@ export function analyseSchema(schema: UntypedFormSchema): SchemaAnalysis {
 }
 
 /**
- * Initial values for a schema of unknown shape (server-driven forms, §10.8): each root-scope field
+ * Initial values for a schema of unknown shape (server-driven forms): each root-scope field
  * gets its `defaultValue`, else `empties[kind]` when given; each repeater gets `[]`.
+ *
+ * @privateRemarks Design reference §10.8.
  */
 export function schemaDefaultValues(
   schema: UntypedFormSchema,

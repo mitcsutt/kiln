@@ -9,7 +9,7 @@ sources:
   - mitcsutt/kiln:apps/docs/content/docs/forms/getting-started/validation.mdx
   - mitcsutt/kiln:apps/docs/content/docs/forms/schema/rules.mdx
   - mitcsutt/kiln:apps/docs/content/docs/forms/schema/server-validation.mdx
-  - mitcsutt/kiln:apps/docs/content/docs/forms/layouts/error-summary.mdx
+  - mitcsutt/kiln:packages/forms/src/components/form/ErrorSummary/ErrorSummary.tsx
 ---
 
 <!-- Generated from the Kiln docs by apps/docs/src/skills. Edit the docs pages, then run `pnpm generate:skills`. -->
@@ -159,7 +159,7 @@ revealing its tab/accordion/step first. Resolves `true` when something got focus
 declare function focusField(form: AnyKitForm, name: string): Promise<boolean>
 ```
 
-Reveals the field's tab/accordion/step chain, then focuses its control (§5.6).
+Reveals the field's tab/accordion/step chain, then focuses its control.
 
 `normaliseError` turns whatever a validator returned (a string, a Standard Schema issue, an array of them) into one shape, for custom fields and layouts that show errors themselves.
 

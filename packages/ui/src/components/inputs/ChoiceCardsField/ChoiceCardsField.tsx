@@ -20,6 +20,13 @@ export type ChoiceCardsFieldProps = FieldLabelProps &
   (ChoiceCardsSingleProps | ChoiceCardsMultipleProps)
 
 /**
+ * Choice cards under a legend, with help, warning and error for the set.
+ *
+ * @remarks
+ * `ChoiceCardsField` is {@link ChoiceCards | ChoiceCards} under a {@link Fieldset | Fieldset}
+ * legend. Use `type="single"` for one of the cards, `type="multiple"` for any number.
+ *
+ * @privateRemarks
  * `ChoiceCards` under a `<Fieldset>` legend, with help, warning and error for the set.
  * `className`/`style` go to the fieldset; `ref`, `id`, `name` and the rest go to the cards.
  *

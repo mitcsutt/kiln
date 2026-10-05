@@ -320,6 +320,15 @@ const SelectBase = forwardRef<HTMLButtonElement, SelectProps>(function Select(
   )
 })
 
+/**
+ * Pick one option from a list. A styled listbox with keyboard support and native form submission.
+ *
+ * @remarks
+ * `Select` is Radix Select with Kiln's look: a button that opens a listbox, with typeahead, arrow
+ * keys and grouped options. Pass `options`, or `groups` for labelled sections. `name` adds a
+ * hidden input so it submits with a native form. For a labelled select, use {@link SelectField |
+ * SelectField}.
+ */
 export const Select = markFieldAware(
   Object.assign(SelectBase, {
     Root: SelectRoot,

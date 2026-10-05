@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { CheckboxGroupField } from './CheckboxGroupField'
+import { CheckboxGroupField } from '@mitcsutt/kiln-ui'
 
 const notifications = [
   { value: 'mentions', label: 'Mentions', description: 'When someone tags you in a comment' },
@@ -37,3 +37,24 @@ export const WithWarning: Story = {
 }
 
 export const Validating: Story = { args: { validating: true } }
+
+/**
+ * `selectAllLabel` adds a parent checkbox, and `columns` lays a long set out in a grid.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <CheckboxGroupField
+        label="Alert me about"
+        description="For your saved routes only"
+        defaultValue={['delays']}
+        options={[
+          { value: 'delays', label: 'Delays over 5 minutes' },
+          { value: 'platform', label: 'Berth changes' },
+          { value: 'works', label: 'Planned works' },
+        ]}
+      />
+    )
+  },
+}

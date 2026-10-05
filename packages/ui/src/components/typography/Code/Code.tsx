@@ -10,6 +10,14 @@ export interface CodeProps extends HTMLAttributes<HTMLElement> {
 }
 
 /**
+ * Inline code. A command, a token or a file name, sized to sit on the line it's in.
+ *
+ * @remarks
+ * `Code` marks a short piece of code inside text. It's sized relative to its surroundings, so it
+ * sits on the same line in a heading or a caption. For blocks of code, use {@link CodeBlock |
+ * CodeBlock}.
+ *
+ * @privateRemarks
  * Inline code: a token, a command, a file name. Sized relative to the surrounding
  * text so it sits on the same line in a heading or a caption. For blocks, use CodeBlock.
  *

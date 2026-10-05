@@ -1,6 +1,6 @@
 # 0025. Docs examples live beside their code, and each is sliced from its file
 
-- **Status:** Accepted
+- **Status:** Superseded by [0028](0028-docs-stories.md) (its slicer and slice typecheck carry over)
 - **Date:** 2026-10-05
 
 ## Context

@@ -17,6 +17,13 @@ export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
 }
 
 /**
+ * A short word or count that says what state something is in. Live, delayed, 3 new.
+ *
+ * @remarks
+ * A `Badge` is status: what state a thing is in right now. For categories and metadata (a line, a
+ * facility, a topic) use a {@link Tag | Tag}, which is quieter.
+ *
+ * @privateRemarks
  * A short status or count: "Live", "Over quota", "3 new", "Overdue".
  * Metadata and categories are Tags; a Badge says what *state* something is in.
  */

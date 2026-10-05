@@ -14,6 +14,14 @@ const toCss = (ratio: AspectRatioPreset | number): string =>
   typeof ratio === 'number' ? String(ratio) : ratio.replace('/', ' / ')
 
 /**
+ * A frame that keeps its proportions, for images, video, maps and charts.
+ *
+ * @remarks
+ * `AspectRatio` holds a ratio as its width changes. Its child (an image, a video, an iframe, an
+ * SVG) fills it and is cropped with `object-fit: cover`. It has no edge or radius of its own: wrap
+ * it in `Media` or a `Card` for those.
+ *
+ * @privateRemarks
  * A frame that holds its proportions; its child (image, video, iframe, SVG) fills it
  * and is cropped with `object-fit: cover`. It has no edge or radius of its own —
  * wrap it (Media, Card) for that.

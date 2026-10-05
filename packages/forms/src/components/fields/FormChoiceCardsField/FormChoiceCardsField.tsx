@@ -25,6 +25,31 @@ export interface FormChoiceCardsFieldProps
 }
 
 /**
+ * One choice from a handful of cards, for options that need a sentence or a price each.
+ *
+ * @remarks
+ * It renders kiln-ui's {@link ChoiceCardsField | ChoiceCardsField} with `type="single"`.
+ *
+ * @example In a schema
+ * ```json
+ * {
+ *   "kind": "choiceCards",
+ *   "name": "plan",
+ *   "label": "Pass",
+ *   "options": [
+ *     {
+ *       "value": "month",
+ *       "label": "Month",
+ *       "description": "Renews automatically"
+ *     }
+ *   ]
+ * }
+ * ```
+ *
+ * @value the options' value type, or `null`
+ * @empty `null`
+ *
+ * @privateRemarks
  * One choice from a handful of cards (§7.2 `choiceCards`, ui `type="single"`). Option values
  * keep their primitive type; empty is `null`.
  */

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Stack } from '#components/layout/Stack'
-import { AmountInput } from './AmountInput'
+import { AmountInput, Stack, Text } from '@mitcsutt/kiln-ui'
+import { useState } from 'react'
 
 const meta = {
   title: 'UI/Inputs/AmountInput',
@@ -65,4 +65,31 @@ export const Currencies: Story = {
 
 export const Refund: Story = {
   args: { 'aria-label': 'Adjustment', allowNegative: true, defaultValue: -2500 },
+}
+
+/**
+ * `value` is a number in `unit`s: `major` (pounds, the default) or `minor` (pence), so you can
+ * store integers. `allowNegative` permits refunds and corrections. `showCurrency` controls the
+ * leading symbol. `name` submits a plain number.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const [value, setValue] = useState<number | null>(96)
+    return (
+      <Stack gap={3}>
+        <AmountInput
+          aria-label="Top-up amount"
+          currency="GBP"
+          locale="en-GB"
+          value={value}
+          onValueChange={setValue}
+          min={5}
+        />
+        <Text size="sm" tone="muted">
+          Value: {String(value)}
+        </Text>
+      </Stack>
+    )
+  },
 }

@@ -26,6 +26,14 @@ export interface IconButtonProps extends Omit<
 }
 
 /**
+ * A square button that's just an icon, with the accessible name it can't show.
+ *
+ * @remarks
+ * `IconButton` is for toolbars and dense rows where the icon is universally understood: search,
+ * close, copy, more. Its `label` is required, because the label is the button's only name for
+ * screen reader users. If the icon isn't obvious, use a `Button` with words.
+ *
+ * @privateRemarks
  * A square, icon-only Button. Shares Button's variants, tones, sizes, `asChild` and
  * `loading` — it *is* a Button with the padding taken out — so the two always match.
  * Defaults to the quiet `ghost` + `neutral` pairing used in toolbars and headers.

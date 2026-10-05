@@ -22,6 +22,19 @@ export type DialogSize = 'sm' | 'md' | 'lg'
 export type DialogProps = ComponentPropsWithoutRef<typeof DialogPrimitive.Root>
 
 /**
+ * A modal dialog that traps focus, closes on Escape, and returns focus to whatever opened it.
+ *
+ * @remarks
+ * `Dialog` interrupts to ask for a decision or a small piece of input. It's Radix Dialog
+ * underneath: focus moves into it and is trapped there, Escape and the scrim close it, page scroll
+ * locks, and focus returns to the trigger when it closes.
+ *
+ * ## Themes
+ *
+ * A dialog opened inside a `ThemeScope` renders in that scope's theme, even though it's portalled
+ * to the end of the document.
+ *
+ * @privateRemarks
  * Modal dialog root. Controlled (`open` + `onOpenChange`) or uncontrolled (`defaultOpen`).
  * Focus is trapped while open, Escape and the scrim close it, and focus returns to the
  * trigger on close.

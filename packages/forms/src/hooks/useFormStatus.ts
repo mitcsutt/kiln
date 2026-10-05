@@ -15,7 +15,19 @@ export interface FormStatusState {
   hasErrors: boolean
 }
 
-/** Form-wide status; each slice is its own primitive selector, the object is memoised (§6.5). */
+/**
+ * The form's state at a glance (dirty, submitting, submitted, valid), re-rendering only when a
+ * part of it changes.
+ *
+ * @remarks
+ * `useFormStatus` reads the form-wide state you build interface around: whether it's dirty,
+ * submitting or submitted, whether it can submit, and how many times it's been submitted. Each
+ * part is its own selector and the result is memoised, so a component using it re-renders only
+ * when something it reads actually changes.
+ *
+ * @privateRemarks
+ * Form-wide status; each slice is its own primitive selector, the object is memoised (§6.5).
+ */
 export function useFormStatus(form?: AnyKitForm): FormStatusState {
   const resolved = useResolvedForm(form)
   const store = resolved.store

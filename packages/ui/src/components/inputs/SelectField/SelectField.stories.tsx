@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { SelectField } from '@mitcsutt/kiln-ui'
 import { Stack } from '#components/layout/Stack'
 import { taskCategories, countryGroups } from '#components/inputs/internal/storyData'
-import { SelectField } from './SelectField'
 
 const meta = {
   title: 'UI/Inputs/SelectField',
@@ -41,5 +41,27 @@ export const Countries: Story = {
     placeholder: 'Choose a country',
     required: false,
     optional: true,
+  },
+}
+
+/**
+ * With a `placeholder` and no value, nothing is chosen until the reader picks, which is usually
+ * right: a pre-chosen default is easy to submit by accident.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <SelectField
+        label="Home station"
+        description="We'll show its departures first"
+        placeholder="Choose a station"
+        options={[
+          { value: 'harbour', label: 'Harbour Square' },
+          { value: 'kelso', label: 'Kelso Bay Pier' },
+          { value: 'marram', label: 'Marram Point' },
+        ]}
+      />
+    )
   },
 }

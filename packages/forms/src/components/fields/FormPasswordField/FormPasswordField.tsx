@@ -12,6 +12,25 @@ export interface FormPasswordFieldProps
   extends Omit<UiPasswordFieldProps, ControlledKeys>, CommonFieldProps<string> {}
 
 /**
+ * A password field with a show and hide toggle, bound to a `string` path.
+ *
+ * @remarks
+ * It renders kiln-ui's {@link PasswordField | PasswordField}.
+ *
+ * @example In a schema
+ * ```json
+ * {
+ *   "kind": "password",
+ *   "name": "password",
+ *   "label": "Password",
+ *   "autoComplete": "new-password"
+ * }
+ * ```
+ *
+ * @value `string`
+ * @empty `''`
+ *
+ * @privateRemarks
  * A password field bound to a `string` path (§7.2 `password`). Empty is `''`. View mode never
  * shows the password text — a fixed-length mask, so the view doesn't leak its length either.
  */

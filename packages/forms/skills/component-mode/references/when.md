@@ -8,6 +8,15 @@ Source: https://kiln.mitchellsutton.com/docs/forms/layouts/when
 
 `When` renders its children only while a condition holds. Hidden fields unmount, so their validators stop, their errors clear, and by default their values go back to their defaults in what `onSubmit` receives. What the reader typed survives hiding and showing while they're editing; only the payload is pruned.
 
+Choose "Post it to me", type an address, switch back to collecting, and submit: the address is submitted empty.
+
+- `is` takes a function of the values. `condition` takes the JSON condition schema mode uses.
+- `whenHidden` is `'prune'` (the default), `'keep'` (submit the hidden value anyway) or `'reset'` (clear it as soon as it hides).
+- `names` lists paths the block governs that haven't been shown yet, such as a hidden server value in an edit form.
+- `fallback` renders in place of the children while hidden.
+
+It re-renders only when visibility flips, not on every change.
+
 ```tsx
 import { Form, SubmitButton, useAppForm, When } from '@mitcsutt/kiln-forms'
 import { Code, Stack, Text } from '@mitcsutt/kiln-ui'
@@ -47,15 +56,6 @@ export function Usage() {
 }
 ```
 
-Choose "Post it to me", type an address, switch back to collecting, and submit: the address is submitted empty.
-
-- `is` takes a function of the values. `condition` takes the JSON condition schema mode uses.
-- `whenHidden` is `'prune'` (the default), `'keep'` (submit the hidden value anyway) or `'reset'` (clear it as soon as it hides).
-- `names` lists paths the block governs that haven't been shown yet, such as a hidden server value in an edit form.
-- `fallback` renders in place of the children while hidden.
-
-It re-renders only when visibility flips, not on every change.
-
 ## In a schema
 
 Any node takes `when`:
@@ -86,3 +86,15 @@ See [Conditions](https://kiln.mitchellsutton.com/docs/forms/schema/conditions) f
 | `fallback` | `ReactNode` |  | Rendered instead while hidden. |
 | `children` (required) | `ReactNode` |  |  |
 | `scopeNames` | `readonly string[]` |  |  |
+
+`Condition`:
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `field` | `K` |  |  |
+| `op` | `'empty' \| 'in' \| 'eq' \| 'neq' \| 'notIn' \| 'truthy' \| 'falsy' \| 'notEmpty'` |  |  |
+| `value` | `number` |  |  |
+| `context` | `K` |  |  |
+| `all` | `readonly Condition<T, C>[]` |  |  |
+| `any` | `readonly Condition<T, C>[]` |  |  |
+| `not` | `Condition<T, C>` |  |  |

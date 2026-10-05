@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Form, useAppForm, useFieldValue } from '@mitcsutt/kiln-forms'
+import { Code, Stack, Text } from '@mitcsutt/kiln-ui'
 import type { FieldOption } from '#kit/contracts'
 import { FieldDemo, NEVER_SETTLES, primitive, StatesGrid, StoryForm } from '#stories/_kit'
 import { FormSelectField } from './FormSelectField'
@@ -174,4 +176,36 @@ export const ViewMode: Story = {
       {(form) => <form.SelectField name="value" label="Category" options={categories} />}
     </FieldDemo>
   ),
+}
+
+/**
+ * Option values are typed to the bound path, so an option the path can't hold is a type error.
+ * `emptyOption` adds a first option, with your label, that writes `null`. View mode shows the
+ * chosen option's label.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const form = useAppForm({ defaultValues: { pass: null as 'week' | 'month' | 'year' | null } })
+    const value = useFieldValue(form, 'pass')
+    return (
+      <Form form={form} aria-label="SelectField example">
+        <Stack gap={4}>
+          <form.SelectField
+            name="pass"
+            label="Pass"
+            placeholder="Choose a pass"
+            options={[
+              { value: 'week', label: 'Week' },
+              { value: 'month', label: 'Month' },
+              { value: 'year', label: 'Year' },
+            ]}
+          />
+          <Text size="sm" tone="muted">
+            Value: <Code>{JSON.stringify(value)}</Code>
+          </Text>
+        </Stack>
+      </Form>
+    )
+  },
 }

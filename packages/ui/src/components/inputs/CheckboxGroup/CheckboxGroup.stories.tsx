@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { CheckboxGroup } from '@mitcsutt/kiln-ui'
 import { Fieldset } from '#components/inputs/Fieldset'
-import { CheckboxGroup } from './CheckboxGroup'
 
 const notifications = [
   { value: 'mentions', label: 'Mentions', description: 'When someone tags you in a comment' },
@@ -87,3 +87,26 @@ export const Invalid: Story = {
 export const ReadOnly: Story = { args: { readOnly: true } }
 
 export const Disabled: Story = { args: { disabled: true } }
+
+/**
+ * Facilities from a list of options, in two columns from `sm` up, with a select-all checkbox.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <CheckboxGroup
+        aria-label="Facilities"
+        columns={{ base: 1, sm: 2 }}
+        selectAllLabel="All facilities"
+        defaultValue={['step-free']}
+        options={[
+          { value: 'step-free', label: 'Step-free access' },
+          { value: 'toilets', label: 'Toilets' },
+          { value: 'bikes', label: 'Bike racks' },
+          { value: 'cafe', label: 'Café', description: 'Open until 18:00' },
+        ]}
+      />
+    )
+  },
+}

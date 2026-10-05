@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import type { FileValue } from '@mitcsutt/kiln-ui'
+import { Form, useAppForm, useFieldValue } from '@mitcsutt/kiln-forms'
+import { Code, Stack, Text, type FileValue } from '@mitcsutt/kiln-ui'
 import { FieldDemo, NEVER_SETTLES, StatesGrid, StoryForm } from '#stories/_kit'
 import { FormFileField } from './FormFileField'
 
@@ -195,4 +196,34 @@ export const ViewMode: Story = {
       {(form) => <form.FileField name="value" label="Avatar" />}
     </FieldDemo>
   ),
+}
+
+/**
+ * Upload in `onSubmit`, where you have the `File` objects. Files that were uploaded earlier come
+ * back in as `StoredFile`s (`{ id, name, size, type }`), so an edit form can show what's already
+ * saved. Files rejected for type, size or count become a field error.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const form = useAppForm({ defaultValues: { photo: [] as readonly FileValue[] } })
+    const value = useFieldValue(form, 'photo')
+    return (
+      <Form form={form} aria-label="FileField example">
+        <Stack gap={4}>
+          <form.FileField
+            name="photo"
+            label="Photo for your pass"
+            accept="image/jpeg,image/png"
+            maxSize={5_000_000}
+            preview="thumbnails"
+          />
+          <Text size="sm" tone="muted">
+            Value:{' '}
+            <Code>{value.length ? value.map((file) => file.name).join(', ') : 'No files'}</Code>
+          </Text>
+        </Stack>
+      </Form>
+    )
+  },
 }

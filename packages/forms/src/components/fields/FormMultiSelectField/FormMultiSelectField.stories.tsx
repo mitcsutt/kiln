@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Form, useAppForm, useFieldValue } from '@mitcsutt/kiln-forms'
+import { Code, Stack, Text } from '@mitcsutt/kiln-ui'
 import { FieldDemo, NEVER_SETTLES, StatesGrid, StoryForm } from '#stories/_kit'
 import { FormMultiSelectField } from './FormMultiSelectField'
 
@@ -190,4 +192,39 @@ export const ViewMode: Story = {
       {(form) => <form.MultiSelectField name="value" label="Labels" options={labels} />}
     </FieldDemo>
   ),
+}
+
+const STOPS = [
+  { value: 'harbour', label: 'Harbour Square' },
+  { value: 'kelso', label: 'Kelso Bay Pier' },
+  { value: 'marram', label: 'Marram Point' },
+  { value: 'northpoint', label: 'Northpoint Library' },
+  { value: 'quay', label: 'Old Quay' },
+]
+
+/**
+ * It takes `options` or `loadOptions` like the combobox field, and `maxSelected` caps the choice.
+ * Free text isn't allowed: `creatable` is single-choice only.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const form = useAppForm({ defaultValues: { stops: ['harbour'] as string[] } })
+    const value = useFieldValue(form, 'stops')
+    return (
+      <Form form={form} aria-label="MultiSelectField example">
+        <Stack gap={4}>
+          <form.MultiSelectField
+            name="stops"
+            label="Favourite stops"
+            maxSelected={3}
+            options={STOPS}
+          />
+          <Text size="sm" tone="muted">
+            Value: <Code>{JSON.stringify(value)}</Code>
+          </Text>
+        </Stack>
+      </Form>
+    )
+  },
 }

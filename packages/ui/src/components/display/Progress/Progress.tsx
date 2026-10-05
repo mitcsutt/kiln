@@ -34,6 +34,14 @@ export interface ProgressProps extends Omit<
 const percent = (value: number, max: number) => `${String(Math.round((value / max) * 100))}%`
 
 /**
+ * How far along a task is, like an upload or a sync, or that it's under way when nobody knows how
+ * far.
+ *
+ * @remarks
+ * `Progress` shows a task moving toward done. For a quantity against a limit (seats taken, storage
+ * used), use {@link Meter | Meter}: a meter is a level, not a journey.
+ *
+ * @privateRemarks
  * How far along a task is: an upload, an import, a sync in progress.
  * For a quantity against a limit (usage vs quota) use `Meter` instead.
  *

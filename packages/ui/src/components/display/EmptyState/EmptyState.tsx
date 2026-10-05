@@ -25,6 +25,14 @@ export interface EmptyStateProps extends Omit<HTMLAttributes<HTMLDivElement>, 't
 }
 
 /**
+ * What to show when there's nothing to show yet. A plain title, a line of direction, one action.
+ *
+ * @remarks
+ * `EmptyState` replaces content that doesn't exist yet: no saved routes, no results for a filter.
+ * It's typographic: a title that says what's empty, a sentence that says what to do, and one
+ * action that does it.
+ *
+ * @privateRemarks
  * The view when there's nothing to show yet. Typographic: a plain title, a line of
  * direction, one action.
  *

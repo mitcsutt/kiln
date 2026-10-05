@@ -50,6 +50,13 @@ export interface DateRangeFieldProps
 const EMPTY: DateRangeValue = { start: '', end: '' }
 
 /**
+ * A start and end date as two native date inputs under one legend.
+ *
+ * @remarks
+ * `DateRangeField` is two native date inputs, side by side and wrapping on a phone, under one
+ * legend. Native inputs mean the platform's own date picker and its accessibility.
+ *
+ * @privateRemarks
  * A date range as two native date inputs under one legend, side by side and wrapping
  * when narrow. The start can't pass the end and the end can't come before the start
  * (each input's `min`/`max` follows the other). `id` goes to the start input; the ref to

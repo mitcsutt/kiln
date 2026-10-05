@@ -36,6 +36,16 @@ const GLYPH: Record<AlertTone, ReactNode> = {
 }
 
 /**
+ * An inline message about the thing next to it. A hairline frame, the tone in its glyph, never a
+ * coloured stripe.
+ *
+ * @remarks
+ * `Alert` tells the reader something about the content around it: an error loading it, a change to
+ * it, a success. It's a full hairline frame with the tone in the glyph and a short tab on the top
+ * edge, and its title in the heading face. It isn't a tinted box by default, and it never has a
+ * coloured stripe down the left edge.
+ *
+ * @privateRemarks
  * An inline message about the thing next to it. A full hairline frame, the tone in the
  * glyph and a short tab on the top edge, the title in the heading face — never a tinted
  * box by default, never a coloured stripe down the left edge.

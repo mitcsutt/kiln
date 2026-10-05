@@ -33,6 +33,14 @@ export interface ModeToggleProps {
 }
 
 /**
+ * Switches the colour mode between light, dark and the system setting, through the theme provider.
+ *
+ * @remarks
+ * `ModeToggle` reads and sets the mode from `useTheme()`, so it needs a `ThemeProvider` above it,
+ * and it throws without one: a toggle that silently does nothing is worse than a loud error. The
+ * choice is remembered, and `themeScript` applies it before the first paint on the next visit.
+ *
+ * @privateRemarks
  * Reads and sets the colour mode from `useTheme()`. **Requires `<ThemeProvider>`** —
  * like `useTheme`, it throws outside one, because a mode toggle that silently does
  * nothing is worse than a loud error.

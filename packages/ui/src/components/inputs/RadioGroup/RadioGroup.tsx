@@ -120,4 +120,13 @@ const RadioGroupItem = forwardRef<HTMLButtonElement, RadioGroupItemProps>(functi
   )
 })
 
+/**
+ * One choice from a short list. One tab stop, with arrow keys to move and choose.
+ *
+ * @remarks
+ * `RadioGroup` is Radix RadioGroup with Kiln's look. The group is one tab stop, and arrow keys
+ * move between options and select them. Compose `RadioGroup.Item`s with your own labels, or use
+ * {@link RadioGroupField | RadioGroupField}, which lays the options out with labels and
+ * descriptions under a legend.
+ */
 export const RadioGroup = markFieldAware(Object.assign(RadioGroupRoot, { Item: RadioGroupItem }))

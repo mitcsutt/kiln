@@ -227,6 +227,15 @@ const ComboboxPopup = forwardRef<HTMLDivElement, PopupProps>(function ComboboxPo
 /* ─── Combobox ────────────────────────────────────────────────────────────── */
 
 /**
+ * Type to filter and pick from a list. Single or multiple, free text if you allow it, ready for
+ * async options.
+ *
+ * @remarks
+ * `Combobox` is an ARIA 1.2 combobox: a text input that filters a listbox as you type. With
+ * `multiple`, chosen values become removable chips in the box. With `creatable`, typed text that
+ * matches nothing can be added as a value.
+ *
+ * @privateRemarks
  * Type to filter, pick from a list (ARIA 1.2 combobox with a listbox popup). Single or
  * `multiple` (chosen values become removable chips), `creatable` for free text, and
  * async-ready: pass `filter="none"`, `loading` and the loader's results as `options`.

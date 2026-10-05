@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { RangeSliderField } from '@mitcsutt/kiln-ui'
 import { Stack } from '#components/layout/Stack'
-import { RangeSliderField } from './RangeSliderField'
 
 const meta = {
   title: 'UI/Inputs/RangeSliderField',
@@ -32,3 +32,24 @@ type Story = StoryObj<typeof meta>
 export const Playground: Story = {}
 
 export const WithError: Story = { args: { error: 'The range is wider than any listing we have' } }
+
+/**
+ * A fare range in pounds, with each thumb named and the values shown.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <RangeSliderField
+        label="Fare range"
+        thumbLabels={['Lowest fare', 'Highest fare']}
+        defaultValue={[2, 8]}
+        min={0}
+        max={12}
+        step={0.5}
+        showValue
+        formatOptions={{ style: 'currency', currency: 'GBP' }}
+      />
+    )
+  },
+}

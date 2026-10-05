@@ -30,6 +30,15 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
 }
 
 /**
+ * A single-line text input with leading and trailing slots, a numeric mode and three sizes.
+ *
+ * @remarks
+ * `Input` is the bare text box. Native props (`value`, `onChange`, `type`, `name`, `autoComplete`)
+ * and the ref go to the `<input>`; `className` and `style` go to the visible box around it. Inside
+ * a {@link Field | Field} it picks up its label, description and invalid state; outside one, give
+ * it an `aria-label`. For the usual labelled field, use {@link TextField | TextField}.
+ *
+ * @privateRemarks
  * Single-line text input. Native props (`value`, `onChange`, `type`, `name`…) go to the
  * `<input>`, as does the ref; `className`/`style` go to the visible box around it.
  *

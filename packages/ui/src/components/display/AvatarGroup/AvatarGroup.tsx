@@ -13,6 +13,13 @@ export interface AvatarGroupProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 /**
+ * An overlapping row of avatars, like who's on a crew or who reacted, with a count for the rest.
+ *
+ * @remarks
+ * `AvatarGroup` overlaps its `Avatar` children and, past `max`, replaces the rest with a count.
+ * Give it an `aria-label` that names the group.
+ *
+ * @privateRemarks
  * An overlapping stack of `Avatar`s — who reacted, who owns a project, who's in a group.
  *
  * <AvatarGroup max={4} aria-label="Members"><Avatar name="Noor" />…</AvatarGroup>

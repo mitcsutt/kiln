@@ -9,6 +9,13 @@ export interface CheckboxGroupFieldProps
   extends FieldLabelProps, Omit<CheckboxGroupProps, 'invalid' | keyof FieldLabelProps> {}
 
 /**
+ * Several choices from a set, under one legend, with help, warning and error for the set.
+ *
+ * @remarks
+ * `CheckboxGroupField` is a {@link CheckboxGroup | CheckboxGroup} under a {@link Fieldset |
+ * Fieldset} legend. The error and warning describe the set, not one box.
+ *
+ * @privateRemarks
  * A `CheckboxGroup` under a `<Fieldset>` legend, with help, warning and error for the
  * group as a whole. `className`/`style` go to the fieldset; `ref`, `id` and the rest go to
  * the group.

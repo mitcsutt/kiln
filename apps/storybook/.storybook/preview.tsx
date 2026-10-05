@@ -27,7 +27,29 @@ const withTheme: Decorator = (Story, context) => {
   )
 }
 
+/**
+ * A component's description on its Docs page, from the TSDoc the docs site shows: the summary and
+ * `@remarks`, without the other tags (`@privateRemarks`, `@value`, `@example`…), and with
+ * `{@link X | text}` as its text. react-docgen hands over the whole doc comment (ADR 0029).
+ */
+function componentDescription(component: unknown): string | null {
+  const docgen = (component as { __docgenInfo?: { description?: string } } | null | undefined)
+    ?.__docgenInfo
+  if (!docgen?.description) return null
+  const [summary = '', ...tags] = docgen.description.split(/^@(?=\w)/m)
+  const remarks = tags.find((tag) => tag.startsWith('remarks'))?.replace(/^remarks\s*/, '') ?? ''
+  return [summary.trim(), remarks.trim()]
+    .filter(Boolean)
+    .join('\n\n')
+    .replace(/\{@link\s+([^}|\s]+)\s*(?:\|\s*([^}]+))?\}/g, (_, name: string, text?: string) =>
+      (text ?? name).trim(),
+    )
+}
+
 const preview: Preview = {
+  // Every component gets a Storybook Docs page with all its stories. The docs site is a
+  // separate choice: only stories tagged `docs` reach it (ADR 0028).
+  tags: ['autodocs'],
   globalTypes: {
     theme: {
       description: 'Theme',
@@ -64,6 +86,7 @@ const preview: Preview = {
   decorators: [withTheme],
   parameters: {
     layout: 'padded',
+    docs: { extractComponentDescription: componentDescription },
     backgrounds: { disable: true },
     controls: {
       expanded: true,

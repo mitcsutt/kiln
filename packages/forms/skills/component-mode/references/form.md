@@ -8,6 +8,8 @@ Source: https://kiln.mitchellsutton.com/docs/forms/layouts/form
 
 `Form` renders a `<form noValidate>` and connects it to a form from `useAppForm`. Pressing Enter or a submit button validates and calls your `onSubmit`; a submit while one is already in flight is ignored; a reset button resets the form. It forwards its ref to the `<form>`.
 
+Give it an accessible name, with `aria-label` or `aria-labelledby`, so assistive technology can list it as a form landmark.
+
 ```tsx
 import { Form, ResetButton, SubmitButton, useAppForm } from '@mitcsutt/kiln-forms'
 import { Inline, Stack, Text } from '@mitcsutt/kiln-ui'
@@ -37,11 +39,11 @@ export function Usage() {
 }
 ```
 
-Give it an accessible name, with `aria-label` or `aria-labelledby`, so assistive technology can list it as a form landmark.
-
 ## Disabled, read-only and view
 
 `disabled` and `readOnly` apply to every field inside, and `mode="view"` renders every field as read-only text (see [View mode](https://kiln.mitchellsutton.com/docs/forms/getting-started/view-mode)).
+
+They mean different things for the payload. A read-only field can be focused and is submitted, but isn't validated. A disabled field can't be focused and isn't validated either. Neither has errors.
 
 ```tsx
 import { Form, useAppForm } from '@mitcsutt/kiln-forms'
@@ -74,8 +76,6 @@ export function States() {
   )
 }
 ```
-
-They mean different things for the payload. A read-only field can be focused and is submitted, but isn't validated. A disabled field can't be focused and isn't validated either. Neither has errors.
 
 ## In a schema
 

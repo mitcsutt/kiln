@@ -18,6 +18,14 @@ export interface SwitchProps extends Omit<
 }
 
 /**
+ * An on-off setting that takes effect at once.
+ *
+ * @remarks
+ * `Switch` is for a setting that applies immediately, like turning alerts on. For a choice that's
+ * submitted with a form, a checkbox says more clearly that nothing happens until you submit.
+ * `label` puts a label beside it; inside a settings list, use {@link SwitchField | SwitchField}.
+ *
+ * @privateRemarks
  * An on/off setting that applies immediately (Radix Switch). For a choice that's
  * submitted with a form, prefer a checkbox. The ref and `className` go to the switch.
  *

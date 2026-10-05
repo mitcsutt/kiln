@@ -302,7 +302,11 @@ export interface KitFormOptions<T, O = T, M = undefined> {
   errorVisibility?: ErrorVisibility
   validators?: KitFormValidators<NoInfer<T>>
   listeners?: KitFormListeners
-  /** Derived fields: recompute `field` from other fields (§6.9). */
+  /**
+   * Derived fields: recompute `field` from other fields.
+   *
+   * @privateRemarks Design reference §6.9.
+   */
   derive?: readonly DeriveRule<NoInfer<T>>[]
   onSubmitMeta?: M
   onSubmit?: (ctx: {

@@ -1,7 +1,11 @@
 import { useContext } from 'react'
 import { FormStepsContext, type StepsApi } from '#components/layouts/FormSteps/context'
 
-/** The steps API inside `FormSteps` — for custom chrome (§9.8). */
+/**
+ * The steps API inside `FormSteps` — for custom chrome.
+ *
+ * @privateRemarks Design reference §9.8.
+ */
 export function useFormSteps(): StepsApi {
   const context = useContext(FormStepsContext)
   if (!context)

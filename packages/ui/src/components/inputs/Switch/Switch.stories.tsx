@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Stack, Switch } from '@mitcsutt/kiln-ui'
+import { useState } from 'react'
 import { expect, userEvent, within } from 'storybook/test'
 import { storyRoot } from '#components/_story/storyRoot'
 import { Inline } from '#components/layout/Inline'
-import { Stack } from '#components/layout/Stack'
-import { Switch } from './Switch'
 
 const meta = {
   title: 'UI/Inputs/Switch',
@@ -47,4 +47,21 @@ export const Settings: Story = {
       <Switch label="Reduce motion on the board" />
     </Stack>
   ),
+}
+
+/**
+ * Alerts that turn on and off at once, a small switch and a disabled one.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const [alerts, setAlerts] = useState(true)
+    return (
+      <Stack gap={4}>
+        <Switch label="Delay alerts" checked={alerts} onCheckedChange={setAlerts} />
+        <Switch label="Quiet hours" size="sm" />
+        <Switch label="Share my location" disabled />
+      </Stack>
+    )
+  },
 }

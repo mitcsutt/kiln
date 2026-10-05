@@ -1,8 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Button } from '#components/actions/Button'
-import { Stack } from '#components/layout/Stack'
+import { ActionBar, Button, Stack, TextField } from '@mitcsutt/kiln-ui'
 import { Text } from '#components/typography/Text'
-import { ActionBar } from './ActionBar'
 
 const meta = {
   title: 'UI/Layout/ActionBar',
@@ -71,4 +69,31 @@ export const Sticky: Story = {
 
 export const AsFooter: Story = {
   args: { as: 'footer' },
+}
+
+/**
+ * `sticky` keeps the bar at the bottom of the viewport while a long form scrolls, so save is
+ * always in reach.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Stack gap={5}>
+        <TextField label="Route name" defaultValue="Morning commute" />
+        <ActionBar>
+          <Button variant="ghost" tone="neutral">
+            Cancel
+          </Button>
+          <Button>Save route</Button>
+        </ActionBar>
+        <ActionBar align="between">
+          <Button variant="outline" tone="critical">
+            Delete route
+          </Button>
+          <Button>Save route</Button>
+        </ActionBar>
+      </Stack>
+    )
+  },
 }

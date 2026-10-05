@@ -20,6 +20,13 @@ export type ChipGroupFieldProps = FieldLabelProps &
   (ChipGroupSingleProps | ChipGroupMultipleProps)
 
 /**
+ * A group of chips under a legend, with help, warning and error for the group.
+ *
+ * @remarks
+ * `ChipGroupField` is a {@link ChipGroup | ChipGroup} under a {@link Fieldset | Fieldset} legend.
+ * `type="multiple"` picks several, `type="single"` at most one.
+ *
+ * @privateRemarks
  * A `ChipGroup` under a `<Fieldset>` legend, with help, warning and error for the group.
  * `className`/`style` go to the fieldset; `ref`, `id`, `name` and the rest go to the group.
  *

@@ -19,11 +19,10 @@ src/
     <Name>.tsx             component (named export, forwardRef)
     <Name>.module.css      styles (CSS Module, UNLAYERED: see below)
     <Name>.test.tsx        behaviour tests (Vitest + Testing Library)
-    <Name>.stories.tsx     Storybook stories (title 'UI/<Group>/<Name>')
-    <Name>.examples.tsx    docs examples, one named export each (see "Examples" below)
+    <Name>.stories.tsx     Storybook stories (title 'UI/<Group>/<Name>'), docs stories included
     index.ts               re-exports component + types
-  docs/                    foundation stories (tokens, type, space), pattern stories, and guide
-                           examples with no single owner (<topic>.examples.tsx, named by path)
+  docs/                    foundation stories (tokens, type, space), pattern stories, and the
+                           docs stories of guides with no single owner (<topic>.stories.tsx)
   test/                    Vitest setup and test helpers
 ```
 
@@ -70,15 +69,21 @@ Groups: `layout`, `typography`, `actions`, `inputs`, `display`, `navigation`, `f
 - Story-level `globals` _lock_ the toolbar in Storybook 10. To show a component in a specific theme/mode, add explicit stories (e.g. "Table, night") rather than meta-level globals.
 - `title: 'UI/<Group>/<Name>'` ([ADR 0010](../../docs/adr/0010-information-architecture.md)), `component`, `args`, a `Playground` story plus stories that show real use (hierarchy, tones, sizes, states, composition). `satisfies Meta<typeof X>`.
 - Realistic, invented content (specific names, amounts, places), sentence case, no lorem ipsum, no emoji, nothing copied from a real product.
-- Import siblings via `#components/...`; never inline-style the component under test (story-only layout wrappers should use `Stack`/`Inline`/`Grid` where they exist).
+- Workbench stories import siblings via `#components/...`; docs stories (below) import from `@mitcsutt/kiln-ui`. Never inline-style the component under test (story-only layout wrappers should use `Stack`/`Inline`/`Grid` where they exist).
 - Stories must look right in **every theme, light and dark**.
 - Every story is also a browser test in `apps/storybook` (`pnpm test:storybook`, [ADR 0018](../../docs/adr/0018-storybook-workbench.md)): it must render, its `play` function must pass, and axe must find no violations, in every theme and mode. An interactive component should have a story whose `play` function drives its main interaction. Turn off an axe rule only on the one story that needs it, with the reason beside it.
 
-**Examples** (`<Name>.examples.tsx`, [ADR 0025](../../docs/adr/0025-colocated-examples.md))
+**Docs stories** (tagged `docs`, [ADR 0028](../../docs/adr/0028-docs-stories.md))
 
-- The code readers copy from the docs site. Each named export is one example (`Usage` for the default); a page renders it with `<Example of="<Name>" name="<Export>" />`, and shows only the slice of the file that export needs.
-- Only imports and declarations at the top level, imports only from packages (`@mitcsutt/kiln-ui`, `react`, never `#…` or relative), and only examples exported. Shared helpers are plain unexported declarations. Lint enforces all three.
-- Storybook runs each example as a story under `UI/<Group>/<Name>/Examples` ([ADR 0026](../../docs/adr/0026-docs-examples-in-storybook.md)), so the story rules above apply: invented content, right in every theme and mode, no axe violations.
+- A story tagged `docs` (`tags: ['docs']` on the story, never on the meta) is a docs example: the docs site shows it, in file order, with its JSDoc as the caption (Markdown) and its code underneath. Every other story is a workbench story and needs no tag. Storybook's own Docs page shows every story (`tags: ['autodocs']` in the preview).
+- A docs story has a JSDoc caption, a `render` that takes no args (a named function when it uses hooks), imports from packages only (`@mitcsutt/kiln-ui`, `react`, never `#…` or relative), and lays out with `Stack`/`Inline`/`Grid`, never `style`. `kiln/docs-story` enforces all four. A `Playground` is never a docs story.
+- A page shows them with `<Examples of="<Name>" />`: the first follows the lead without a heading, and each later one gets its `name`, or its export name in sentence case, as a heading. Renaming a docs story changes its heading, anchor and Storybook URL. `<Example of="<Name>" name="<Story>" />` shows one.
+
+**Docs page** (generated from TSDoc, [ADR 0029](../../docs/adr/0029-generated-reference-pages.md))
+
+- The component's docs page is built from its TSDoc and docs stories; there's no MDX to write. The summary (one or two sentences) is the page's description, and also the hover text consumers see. `@remarks` is the lead, in Markdown; its `##` sections follow the examples. `{@link Other | text}` links to another export's page.
+- It's public copy: DESIGN.md's copy rules apply. Notes for maintainers, design-document references (`§`) included, go in `@privateRemarks`, which no page shows. `apps/docs/src/test/reference.test.ts` fails on a `§` in what a page shows.
+- Defaults come from the destructured props (`variant = 'solid'`); write `@defaultValue` only for a default the code applies elsewhere.
 
 **Tests** (`<Name>.test.tsx`): behaviour, not snapshots: roles/labels, keyboard, controlled/uncontrolled state, data attributes, ref forwarding, responsive var mapping. `vi`, `describe`, `it`, `expect` are globals. Use `must()` from `#test/must` for a node a test needs to exist, rather than a `!` assertion.
 

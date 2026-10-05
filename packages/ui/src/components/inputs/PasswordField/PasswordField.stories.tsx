@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Stack } from '#components/layout/Stack'
-import { PasswordField } from './PasswordField'
+import { PasswordField, Stack } from '@mitcsutt/kiln-ui'
 
 const meta = {
   title: 'UI/Inputs/PasswordField',
@@ -37,5 +36,24 @@ export const WithError: Story = {
     autoComplete: 'new-password',
     defaultValue: 'atlas2026',
     error: 'Use at least 12 characters',
+  },
+}
+
+/**
+ * Describe the rules up front in `description`, rather than revealing them one error at a time.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Stack gap={5}>
+        <PasswordField label="Current password" autoComplete="current-password" />
+        <PasswordField
+          label="New password"
+          autoComplete="new-password"
+          description="At least 12 characters. A short sentence works well."
+        />
+      </Stack>
+    )
   },
 }

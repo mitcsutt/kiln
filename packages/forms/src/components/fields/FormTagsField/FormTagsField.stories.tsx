@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Form, useAppForm, useFieldValue } from '@mitcsutt/kiln-forms'
+import { Code, Stack, Text } from '@mitcsutt/kiln-ui'
 import { FieldDemo, NEVER_SETTLES, StatesGrid, StoryForm } from '#stories/_kit'
 import { FormTagsField } from './FormTagsField'
 
@@ -160,4 +162,26 @@ export const ViewMode: Story = {
       {(form) => <form.TagsField name="value" label="Labels" />}
     </FieldDemo>
   ),
+}
+
+/**
+ * Labels bound to `labels`, lowercased as they're added and capped at five, with the value they
+ * hold underneath.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const form = useAppForm({ defaultValues: { labels: ['commute'] as readonly string[] } })
+    const value = useFieldValue(form, 'labels')
+    return (
+      <Form form={form} aria-label="TagsField example">
+        <Stack gap={4}>
+          <form.TagsField name="labels" label="Labels" maxTags={5} normalise="lowercase" />
+          <Text size="sm" tone="muted">
+            Value: <Code>{JSON.stringify(value)}</Code>
+          </Text>
+        </Stack>
+      </Form>
+    )
+  },
 }

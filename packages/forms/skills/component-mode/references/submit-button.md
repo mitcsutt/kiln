@@ -8,6 +8,8 @@ Source: https://kiln.mitchellsutton.com/docs/forms/layouts/submit-button
 
 `SubmitButton` is a `Button` with `type="submit"` that knows the form's state. It shows a spinner while submitting. It's **never `disabled`**: when it can't act (while submitting, after a locking submit, or with `requireChanges` before anything has changed) it's `aria-disabled`, ignores presses, and carries a visually hidden reason. A disabled button can't be focused, so keyboard and screen reader users would never find out why they can't go on.
 
+Outside the `<form>` element (in a dialog footer, a sticky header), pass `formId` to submit a form by its id, and `form` to read its state. `submitMeta` passes a value through to `onSubmit` as `meta`, for a form with two submit buttons ("Save draft" and "Publish").
+
 ```tsx
 import { Form, SubmitButton, useAppForm } from '@mitcsutt/kiln-forms'
 import { Stack } from '@mitcsutt/kiln-ui'
@@ -29,8 +31,6 @@ export function Usage() {
 }
 ```
 
-Outside the `<form>` element (in a dialog footer, a sticky header), pass `formId` to submit a form by its id, and `form` to read its state. `submitMeta` passes a value through to `onSubmit` as `meta`, for a form with two submit buttons ("Save draft" and "Publish").
-
 ## In a schema
 
 ```json
@@ -45,7 +45,7 @@ Outside the `<form>` element (in a dialog footer, a sticky header), pass `formId
 | --- | --- | --- | --- |
 | `form` | `AnyKitForm` |  | Defaults to the form in context. Required for a button outside `<Form>`. |
 | `formId` | `string` |  | The `id` of the `<Form>` to submit from outside it (native `form` attribute). |
-| `requireChanges` | `boolean` |  | Stays `aria-disabled` (with a spoken reason) until something changed. |
+| `requireChanges` | `boolean` | `false` | Stays `aria-disabled` (with a spoken reason) until something changed. |
 | `submitMeta` | `unknown` |  | Meta passed to `onSubmit` for this button (`form.handleSubmit(meta)`). |
 | `hideBelow` | `'sm' \| 'md' \| 'lg' \| 'xl'` |  | Hide below this breakpoint (e.g. `md` → hidden on phones, shown from 48em). |
 | `hideAbove` | `'sm' \| 'md' \| 'lg' \| 'xl'` |  | Hide from this breakpoint up (e.g. `md` → shown on phones only). |

@@ -11,7 +11,7 @@
  * instead of being listed one by one.
  */
 import { mkdirSync, writeFileSync } from 'node:fs'
-import { dirname, join, resolve, sep } from 'node:path'
+import { dirname, join, relative, resolve, sep } from 'node:path'
 import ts from 'typescript'
 
 const root = resolve(import.meta.dirname, '../../..')
@@ -37,11 +37,29 @@ export interface ApiProp {
   deprecated?: boolean
 }
 
+/** An `@example` tag: its title (the text on the tag's line) and its body. */
+export interface ApiExample {
+  title?: string
+  body: string
+}
+
 export interface ApiEntry {
   name: string
   package: string
+  /** The file that declares it, relative to the repo. */
+  file: string
   kind: 'component' | 'function' | 'type' | 'constant'
+  /** The TSDoc summary: a page's description when the export owns one. */
   description: string
+  /** `@remarks`: a page's lead and its sections, in Markdown. */
+  remarks?: string
+  /** `@example` tags. One with a title (`@example In a schema`) is a section of its page. */
+  examples?: ApiExample[]
+  /** `@deprecated`, with its reason. */
+  deprecated?: string
+  /** A bound field's `@value` and `@empty`: the value it holds, and its empty value. */
+  value?: string
+  empty?: string
   /** Function and hook signatures, as TypeScript prints them. */
   signature?: string
   /** Own properties of a props or options type. */
@@ -79,8 +97,20 @@ const PRINT: ts.TypeFormatFlags =
 const DECLARATION: ts.TypeFormatFlags =
   ts.TypeFormatFlags.NoTruncation | ts.TypeFormatFlags.UseSingleQuotesForStringLiteralType
 
+/** Doc comment text, with `{@link X | text}` kept whole (`displayPartsToString` drops the `|`). */
+function partsText(parts: readonly ts.SymbolDisplayPart[] | undefined): string {
+  let text = ''
+  let previous: string | undefined
+  for (const part of parts ?? []) {
+    if (part.kind === 'linkText' && previous === 'linkName') text += ' | '
+    text += part.text
+    previous = part.kind
+  }
+  return text
+}
+
 function docs(symbol: ts.Symbol): string {
-  return ts.displayPartsToString(symbol.getDocumentationComment(checker)).trim()
+  return partsText(symbol.getDocumentationComment(checker)).trim()
 }
 
 function jsDocTag(symbol: ts.Symbol, tag: string): string | undefined {
@@ -109,22 +139,113 @@ function defaultOf(symbol: ts.Symbol, description: string): string | undefined {
   return undefined
 }
 
-/**
- * A compound component's doc comment sits on its root (`const CardRoot = forwardRef(…)`),
- * not on `export const Card = Object.assign(CardRoot, {…})`.
- */
-function componentDocs(symbol: ts.Symbol): string {
-  const own = docs(symbol)
-  if (own) return own
+/** A compound component's root: `CardRoot` in `export const Card = Object.assign(CardRoot, {…})`. */
+function compoundRoot(symbol: ts.Symbol): ts.Symbol | undefined {
   const decl = symbol.getDeclarations()?.[0]
-  if (!decl || !ts.isVariableDeclaration(decl) || !decl.initializer) return ''
+  if (!decl || !ts.isVariableDeclaration(decl) || !decl.initializer) return undefined
   const init = decl.initializer
-  if (ts.isCallExpression(init) && init.expression.getText() === 'Object.assign') {
-    const first = init.arguments[0]
-    const rootSymbol = first ? checker.getSymbolAtLocation(first) : undefined
-    if (rootSymbol) return docs(rootSymbol)
+  if (!ts.isCallExpression(init) || init.expression.getText() !== 'Object.assign') return undefined
+  const first = init.arguments[0]
+  return first ? checker.getSymbolAtLocation(first) : undefined
+}
+
+/**
+ * The symbol that carries an export's doc comment. A compound component's sits on its root
+ * (`const CardRoot = forwardRef(…)`), not on `export const Card = Object.assign(CardRoot, {…})`.
+ */
+function documented(symbol: ts.Symbol): ts.Symbol {
+  if (docs(symbol) || symbol.getJsDocTags(checker).length) return symbol
+  return compoundRoot(symbol) ?? symbol
+}
+
+/**
+ * The block tags of a symbol's doc comment, read from its source so the Markdown inside keeps
+ * its indentation (the checker's tag text drops the indent of code in a fence).
+ */
+function blockTags(symbol: ts.Symbol): { name: string; text: string }[] {
+  const decl = symbol.getDeclarations()?.[0]
+  const jsDoc = decl ? ts.getJSDocCommentsAndTags(decl).filter(ts.isJSDoc).at(-1) : undefined
+  if (!jsDoc) return []
+  const lines = jsDoc
+    .getText()
+    .replace(/^\/\*\*/, '')
+    .replace(/\*\/$/, '')
+    .split('\n')
+    .map((line) => line.replace(/^\s*\* ?/, ''))
+  const tags: { name: string; text: string }[] = []
+  let fence = false
+  for (const line of lines) {
+    const tag = fence ? null : /^@(\w+)\s?(.*)$/.exec(line)
+    const last = tags.at(-1)
+    if (tag) tags.push({ name: tag[1] ?? '', text: tag[2] ?? '' })
+    else if (last) last.text += `\n${line}`
+    if (/^\s*(```|~~~)/.test(line)) fence = !fence
   }
-  return ''
+  return tags.map(({ name, text }) => ({ name, text: text.trim() }))
+}
+
+/** The page-facing tags of an export's doc comment. `@privateRemarks` is for maintainers only. */
+function pageTags(symbol: ts.Symbol): Partial<ApiEntry> {
+  const out: Partial<ApiEntry> = {}
+  const examples: ApiExample[] = []
+  for (const tag of blockTags(symbol)) {
+    const text = tag.text
+    if (tag.name === 'remarks') out.remarks = text
+    else if (tag.name === 'deprecated') out.deprecated = text
+    else if (tag.name === 'value') out.value = text
+    else if (tag.name === 'empty') out.empty = text
+    else if (tag.name === 'example') {
+      const [first = '', ...rest] = text.split('\n')
+      examples.push(
+        first.trim() && !first.trim().startsWith('```')
+          ? { title: first.trim(), body: rest.join('\n').trim() }
+          : { body: text },
+      )
+    }
+  }
+  if (examples.length) out.examples = examples
+  return out
+}
+
+/**
+ * Defaults a component sets by destructuring its props (`{ variant = 'solid' }`), as
+ * react-docgen reads them for Storybook. A string literal is shown without its quotes, like
+ * the defaults read from doc comments.
+ */
+function destructuredDefaults(symbol: ts.Symbol): Map<string, string> {
+  const defaults = new Map<string, string>()
+  const decl = (compoundRoot(symbol) ?? symbol).getDeclarations()?.[0]
+  const find = (node: ts.Node | undefined): ts.SignatureDeclaration | undefined => {
+    if (!node) return undefined
+    if (
+      ts.isFunctionDeclaration(node) ||
+      ts.isFunctionExpression(node) ||
+      ts.isArrowFunction(node)
+    ) {
+      return node
+    }
+    if (!ts.isCallExpression(node)) return undefined
+    for (const argument of node.arguments) {
+      const found = find(argument)
+      if (found) return found
+    }
+    return find(node.expression)
+  }
+  const fn =
+    decl && ts.isFunctionDeclaration(decl)
+      ? decl
+      : decl && ts.isVariableDeclaration(decl)
+        ? find(decl.initializer)
+        : undefined
+  const first = fn?.parameters[0]?.name
+  if (!first || !ts.isObjectBindingPattern(first)) return defaults
+  for (const element of first.elements) {
+    if (!element.initializer || element.dotDotDotToken) continue
+    const name = (element.propertyName ?? element.name).getText()
+    const value = element.initializer
+    defaults.set(name, ts.isStringLiteralLike(value) ? value.text : value.getText())
+  }
+  return defaults
 }
 
 const LITERAL =
@@ -290,6 +411,7 @@ function membersOf(type: ts.Type): string[] {
 }
 
 const api: Record<string, ApiEntry> = {}
+const componentDefaults = new Map<string, Map<string, string>>()
 
 for (const entry of entries) {
   const sourceFile = program.getSourceFile(entry.file)
@@ -308,9 +430,10 @@ for (const entry of entries) {
     if (!isKilnSource(decl.getSourceFile().fileName)) continue
 
     const description = docs(symbol)
+    const file = relative(root, decl.getSourceFile().fileName).split(sep).join('/')
     if (symbol.flags & (ts.SymbolFlags.Interface | ts.SymbolFlags.TypeAlias)) {
       const type = checker.getDeclaredTypeOfSymbol(symbol)
-      const result: ApiEntry = { name, package: entry.pkg, kind: 'type', description }
+      const result: ApiEntry = { name, package: entry.pkg, file, kind: 'type', description }
       // An alias of a value set (`Space`, `Tone`, `Responsive<T>`) is shown as its definition.
       const objectLike =
         Boolean(type.getFlags() & ts.TypeFlags.Object) ||
@@ -340,9 +463,12 @@ for (const entry of entries) {
       const result: ApiEntry = {
         name,
         package: entry.pkg,
+        file,
         kind: 'component',
-        description: componentDocs(symbol),
+        description: docs(documented(symbol)),
+        ...pageTags(documented(symbol)),
       }
+      componentDefaults.set(name, destructuredDefaults(symbol))
       const members = membersOf(type)
       if (members.length) result.members = members
       api[name] = result
@@ -353,8 +479,10 @@ for (const entry of entries) {
       api[name] = {
         name,
         package: entry.pkg,
+        file,
         kind: 'function',
         description,
+        ...pageTags(symbol),
         signature: signatures
           .map(
             (s) =>
@@ -364,7 +492,22 @@ for (const entry of entries) {
       }
       continue
     }
-    api[name] = { name, package: entry.pkg, kind: 'constant', description }
+    api[name] = {
+      name,
+      package: entry.pkg,
+      file,
+      kind: 'constant',
+      description,
+      ...pageTags(symbol),
+    }
+  }
+}
+
+// A component's destructured defaults fill its props table where no doc comment gives one.
+for (const [name, defaults] of componentDefaults) {
+  for (const prop of api[`${name}Props`]?.props ?? []) {
+    const fallback = defaults.get(prop.name)
+    if (prop.default === undefined && fallback !== undefined) prop.default = fallback
   }
 }
 

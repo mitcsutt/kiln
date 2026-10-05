@@ -1,9 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Inline, Text } from '@mitcsutt/kiln-ui'
-import { Form } from '#components/form/Form'
-import { SubmitButton } from '#components/form/SubmitButton'
+import { Form, ResetButton, SubmitButton, useAppForm } from '@mitcsutt/kiln-forms'
+import { Inline, Stack, Text } from '@mitcsutt/kiln-ui'
 import { kit } from '#kit/defaultKit'
-import { ResetButton } from './ResetButton'
 
 const meta = {
   title: 'Forms/Layouts/ResetButton',
@@ -61,4 +59,27 @@ function ToDefaultsVsBaseline() {
 export const ToDefaultsVsBaselineStory: Story = {
   name: 'To defaults vs. baseline',
   render: () => <ToDefaultsVsBaseline />,
+}
+
+/**
+ * `to="baseline"` resets to the last saved values (after a rebaselining submit or an autosave)
+ * rather than the original defaults.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const form = useAppForm({ defaultValues: { from: 'Harbour Square', to: 'Kelso Bay Pier' } })
+    return (
+      <Form form={form} aria-label="Plan a trip">
+        <Stack gap={5}>
+          <form.TextField name="from" label="From" />
+          <form.TextField name="to" label="To" />
+          <Inline gap={3}>
+            <SubmitButton>Find sailings</SubmitButton>
+            <ResetButton>Start again</ResetButton>
+          </Inline>
+        </Stack>
+      </Form>
+    )
+  },
 }

@@ -9,6 +9,13 @@ export interface SegmentedFieldProps
     Omit<SegmentedControlProps, 'children' | 'invalid' | keyof FieldLabelProps> {}
 
 /**
+ * A labelled segmented control for one of two to five peers, always one selected.
+ *
+ * @remarks
+ * `SegmentedField` is a {@link SegmentedControl | SegmentedControl} with a label, description and
+ * error. It always has one segment selected, so it suits choices with a sensible default.
+ *
+ * @privateRemarks
  * A labelled `SegmentedControl` — one of 2–5 peers, always one selected. The control is
  * labelled by the Field's label and described by its help, warning and error.
  * `className`/`style` go to the Field; `ref`, `id`, `name` and the rest go to the control.

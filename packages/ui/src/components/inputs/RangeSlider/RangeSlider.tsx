@@ -23,6 +23,14 @@ export interface RangeSliderProps extends Omit<
 const DEFAULT_THUMB_LABELS = ['Minimum', 'Maximum'] as const
 
 /**
+ * A low and high value on one track, each thumb with its own name.
+ *
+ * @remarks
+ * `RangeSlider` picks a range: a departure window, a price band. The wrapper is a group, labelled
+ * by its Field or `aria-label`, and each thumb is a slider named by `thumbLabels`.
+ * `minStepsBetweenThumbs` keeps the thumbs apart.
+ *
+ * @privateRemarks
  * A low–high range on one track ("Price range": £500–£5,000). The wrapper is a
  * `role="group"` labelled by the surrounding `<Field>` (see `RangeSliderField`) or
  * `aria-label`; each thumb is a `role="slider"` named by `thumbLabels`. The ref and `id`

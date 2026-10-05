@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Form, useAppForm, useFieldValue } from '@mitcsutt/kiln-forms'
+import { Code, Stack, Text } from '@mitcsutt/kiln-ui'
 import { FieldDemo, NEVER_SETTLES, StatesGrid, StoryForm } from '#stories/_kit'
 import { FormSwitchField } from './FormSwitchField'
 
@@ -158,4 +160,29 @@ export const ViewMode: Story = {
       {(form) => <form.SwitchField name="value" label="Email me when a task is due" />}
     </FieldDemo>
   ),
+}
+
+/**
+ * In view mode it reads "Yes" or "No", from the kit's `messages`.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const form = useAppForm({ defaultValues: { alerts: true } })
+    const value = useFieldValue(form, 'alerts')
+    return (
+      <Form form={form} aria-label="SwitchField example">
+        <Stack gap={4}>
+          <form.SwitchField
+            name="alerts"
+            label="Delay alerts"
+            description="A notification when a saved route runs late"
+          />
+          <Text size="sm" tone="muted">
+            Value: <Code>{JSON.stringify(value)}</Code>
+          </Text>
+        </Stack>
+      </Form>
+    )
+  },
 }

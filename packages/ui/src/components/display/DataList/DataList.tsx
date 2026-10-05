@@ -15,6 +15,14 @@ export interface DataListProps extends HTMLAttributes<HTMLDListElement> {
 }
 
 /**
+ * Label and value pairs as a real description list. A ticket's details, an account's facts.
+ *
+ * @remarks
+ * `DataList` renders label and value pairs as a `<dl>`, so assistive technology reads each label
+ * with its value. Labels sit in a column beside their values (`orientation="horizontal"`, the
+ * default), or above them.
+ *
+ * @privateRemarks
  * Label/value pairs as a real `<dl>`: a project's facts, a release's region and start time,
  * an account's details.
  *

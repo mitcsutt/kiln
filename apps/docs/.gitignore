@@ -4,3 +4,18 @@ next-env.d.ts
 .generated/
 # Written from DESIGN.md by scripts/generate-design-rules.ts
 content/docs/ui/foundations/design-rules.mdx
+# Reference pages, written from each export's TSDoc and stories by scripts/generate-pages.ts
+# (ADR 0029). A hand-written page in these folders needs a `!` line here.
+content/docs/ui/actions/*.mdx
+content/docs/ui/display/*.mdx
+content/docs/ui/feedback/*.mdx
+content/docs/ui/inputs/*.mdx
+content/docs/ui/layout/*.mdx
+content/docs/ui/navigation/*.mdx
+content/docs/ui/overlays/*.mdx
+content/docs/ui/typography/*.mdx
+content/docs/forms/fields/*.mdx
+content/docs/forms/hooks/*.mdx
+content/docs/forms/layouts/*.mdx
+!content/docs/forms/layouts/custom-layouts.mdx
+!content/docs/forms/layouts/stack-and-inline.mdx

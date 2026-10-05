@@ -38,6 +38,19 @@ export interface TableProps extends TableHTMLAttributes<HTMLTableElement> {
 }
 
 /**
+ * A semantic data table with numeric columns that line up, sortable headers and a footer for
+ * totals.
+ *
+ * @remarks
+ * `Table` is a real `<table>` with Kiln's styles: rules between rows, numeric columns in tabular
+ * figures, and a wrapper that scrolls sideways on narrow screens instead of breaking the layout.
+ *
+ * ## Density, stripes and sticky headers
+ *
+ * `density="compact"` for dense data, `striped` for alternating fills (rules usually read better),
+ * and `stickyHeader` to keep the header in view while the rows scroll inside the table.
+ *
+ * @privateRemarks
  * A semantic, styled data table: project boards, ledgers, audit logs. The wrapper scrolls
  * horizontally on narrow screens; `ref` and native props go to the `<table>`.
  *

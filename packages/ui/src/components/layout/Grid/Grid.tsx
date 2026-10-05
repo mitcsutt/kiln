@@ -111,6 +111,15 @@ const GridItem = forwardRef<HTMLElement, GridItemProps>(function GridItem(
 })
 
 /**
+ * Two-dimensional layout, either with a column count per breakpoint or as an auto-fill grid that
+ * needs no breakpoints.
+ *
+ * @remarks
+ * `Grid` has two modes. With `columns`, you choose how many equal columns there are, per
+ * breakpoint. With `minItemWidth`, the grid fits as many columns as there's room for, each at
+ * least that wide, so it adapts to its container without a single breakpoint.
+ *
+ * @privateRemarks
  * Two-dimensional layout: either a fixed column count (responsive) or an
  * intrinsic auto-fill grid that needs no breakpoints at all.
  *

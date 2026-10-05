@@ -22,6 +22,30 @@ export interface FormCheckboxGroupFieldProps
 }
 
 /**
+ * Any number of choices from a short list, as checkboxes under a legend.
+ *
+ * @remarks
+ * It renders kiln-ui's {@link CheckboxGroupField | CheckboxGroupField}.
+ *
+ * @example In a schema
+ * ```json
+ * {
+ *   "kind": "checkboxGroup",
+ *   "name": "facilities",
+ *   "label": "Facilities you need",
+ *   "options": [
+ *     {
+ *       "value": "step-free",
+ *       "label": "Step-free access"
+ *     }
+ *   ]
+ * }
+ * ```
+ *
+ * @value an array of the options' value type
+ * @empty `[]`
+ *
+ * @privateRemarks
  * Any number of choices from a short list, as checkboxes (§7.2 `checkboxGroup`). Option values
  * keep their primitive type; empty is `[]`.
  */

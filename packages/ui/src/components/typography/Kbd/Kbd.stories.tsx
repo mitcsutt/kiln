@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Kbd, Text } from '@mitcsutt/kiln-ui'
 import { Stack } from '#components/layout/Stack'
-import { Text } from '#components/typography/Text'
-import { Kbd } from './Kbd'
 
 const meta = {
   title: 'UI/Typography/Kbd',
@@ -28,4 +27,18 @@ export const Shortcuts: Story = {
       </Text>
     </Stack>
   ),
+}
+
+/**
+ * A shortcut written as one key after another, and a small key.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Text>
+        Press <Kbd>⌘</Kbd> <Kbd>K</Kbd> to search, or <Kbd size="sm">Esc</Kbd> to close.
+      </Text>
+    )
+  },
 }

@@ -52,6 +52,13 @@ function resolveStatus(step: StepperStep, index: number, currentIndex: number): 
 }
 
 /**
+ * Where you are in a multi-step flow. A step indicator, not a form control.
+ *
+ * @remarks
+ * `Stepper` shows the steps of a flow and which one you're on. It doesn't hold the form: drive it
+ * and the step content from the same state, and pair it with an `ActionBar` for back and next.
+ *
+ * @privateRemarks
  * A step indicator for a multi-step flow — not a form control. Pair with `ActionBar`
  * for the Back / Next / Submit row and drive both from the same current-step state.
  *

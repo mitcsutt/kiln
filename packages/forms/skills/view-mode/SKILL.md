@@ -7,7 +7,7 @@ metadata:
   library: "@mitcsutt/kiln-forms"
 sources:
   - mitcsutt/kiln:apps/docs/content/docs/forms/getting-started/view-mode.mdx
-  - mitcsutt/kiln:apps/docs/content/docs/forms/layouts/form-review.mdx
+  - mitcsutt/kiln:packages/forms/src/components/layouts/FormReview/FormReview.tsx
 ---
 
 <!-- Generated from the Kiln docs by apps/docs/src/skills. Edit the docs pages, then run `pnpm generate:skills`. -->

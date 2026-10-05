@@ -1,11 +1,9 @@
-import { useEffect } from 'react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Text } from '@mitcsutt/kiln-ui'
+import { Form, FormStatus, useAppForm, useAutosave } from '@mitcsutt/kiln-forms'
+import { Inline, Stack, Text } from '@mitcsutt/kiln-ui'
+import { useEffect } from 'react'
 import { StatesGrid } from '#stories/_kit'
-import { useAutosave } from '#hooks'
-import { Form } from '#components/form/Form'
 import { kit } from '#kit/defaultKit'
-import { FormStatus } from './FormStatus'
 
 const meta = {
   title: 'Forms/Layouts/FormStatus',
@@ -126,4 +124,27 @@ function ScopedDemo() {
 export const Scoped: Story = {
   name: 'Scoped to one state',
   render: () => <ScopedDemo />,
+}
+
+/**
+ * Edit the notes and watch the status. `show` picks which states it reports. The text comes from
+ * the kit's `messages`.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const form = useAppForm({ defaultValues: { notes: 'Window seat if possible.' } })
+    useAutosave(form, () => new Promise((resolve) => setTimeout(resolve, 900)), { debounceMs: 600 })
+    return (
+      <Form form={form} aria-label="Trip notes">
+        <Stack gap={4}>
+          <Inline justify="between">
+            <Text weight="strong">Trip notes</Text>
+            <FormStatus />
+          </Inline>
+          <form.TextareaField name="notes" label="Notes" labelHidden autoResize />
+        </Stack>
+      </Form>
+    )
+  },
 }

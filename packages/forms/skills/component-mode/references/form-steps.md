@@ -8,6 +8,11 @@ Source: https://kiln.mitchellsutton.com/docs/forms/layouts/form-steps
 
 `FormSteps` shows a [Stepper](https://kiln.mitchellsutton.com/docs/ui/navigation/stepper) and one step at a time, with Back and Next. **Next** validates the current step's fields; if any are invalid it stays, shows their errors and focuses the first. Otherwise it moves on, focuses the new step's heading and announces "Step 2 of 3". On the last step, Next submits the form. The final submit validates every step, and an error in an earlier step takes you back to it.
 
+- `linear` (on by default) stops the reader skipping ahead past an invalid step.
+- Control the step with `value` and `onValueChange` to keep it in the URL, so a link can open the form at a step.
+- A `FormStep` takes a Standard Schema as `schema` for extra checks on that step only.
+- Wrap a step in [`When`](./when.md) to make it conditional: it leaves the sequence while hidden, and its values are pruned. See [Onboarding](./onboarding.md).
+
 ```tsx
 import { Form, FormStep, FormSteps, useAppForm } from '@mitcsutt/kiln-forms'
 import { Alert } from '@mitcsutt/kiln-ui'
@@ -41,7 +46,9 @@ export function Usage() {
           <form.TextField
             name="to"
             label="To"
-            validators={{ onDynamic: ({ value }) => (value ? undefined : 'Where are you going?') }}
+            validators={{
+              onDynamic: ({ value }) => (value ? undefined : 'Where are you going?'),
+            }}
           />
         </FormStep>
         <FormStep value="when" title="When">
@@ -59,11 +66,6 @@ export function Usage() {
   )
 }
 ```
-
-- `linear` (on by default) stops the reader skipping ahead past an invalid step.
-- Control the step with `value` and `onValueChange` to keep it in the URL, so a link can open the form at a step.
-- A `FormStep` takes a Standard Schema as `schema` for extra checks on that step only.
-- Wrap a step in [`When`](./when.md) to make it conditional: it leaves the sequence while hidden, and its values are pruned. See [Onboarding](./onboarding.md).
 
 ## Your own navigation
 
@@ -122,12 +124,6 @@ export function CustomNav() {
 }
 ```
 
-```ts
-declare function useFormSteps(): StepsApi
-```
-
-The steps API inside `FormSteps` — for custom chrome (§9.8).
-
 ## In a schema
 
 ```json
@@ -139,6 +135,12 @@ The steps API inside `FormSteps` — for custom chrome (§9.8).
 ```
 
 ## API
+
+```ts
+declare function useFormSteps(): StepsApi
+```
+
+The steps API inside `FormSteps` — for custom chrome.
 
 `FormStepsProps`:
 

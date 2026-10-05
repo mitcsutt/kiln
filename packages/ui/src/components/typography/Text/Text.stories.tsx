@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Stack } from '#components/layout/Stack'
+import { Stack, Text } from '@mitcsutt/kiln-ui'
 import { Inline } from '#components/layout/Inline'
-import { Text, type TextSize, type TextTone } from './Text'
+import type { TextSize, TextTone } from './Text'
 
 const meta = {
   title: 'UI/Typography/Text',
@@ -126,4 +126,37 @@ export const Measure: Story = {
       </Text>
     </Stack>
   ),
+}
+
+/**
+ * - `tone` is `default`, `muted`, `subtle`, `accent`, `positive`, `caution`, `critical` or
+ *   `inverse`. Status tones use each tone's AA text colour.
+ * - `numeric` switches to tabular, lining figures in the theme's numeric face, for times and
+ *   counts that line up.
+ * - `truncate` cuts to one line with an ellipsis, or to a number of lines (`truncate={2}`).
+ * - `measure` caps the line length at a named width (`text` is about 68 characters).
+ *
+ * For long-form writing with headings, lists and quotes, use [Prose](/docs/ui/typography/prose).
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Stack gap={3}>
+        <Text size="lg">The coastal line runs every 20 minutes until midnight.</Text>
+        <Text>Bikes travel free outside the morning peak.</Text>
+        <Text size="sm" tone="muted">
+          Updated 3 minutes ago
+        </Text>
+        <Text tone="critical" weight="medium">
+          Kelso Bay Pier is closed for repairs.
+        </Text>
+        <Text numeric>Departures: 07:10, 07:30, 07:50</Text>
+        <Text truncate={2} measure="narrow">
+          Long service notices can be clamped to a number of lines, so a list of them stays even
+          when one of the notices runs on much longer than the others do.
+        </Text>
+      </Stack>
+    )
+  },
 }

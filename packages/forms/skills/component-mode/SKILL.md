@@ -12,17 +12,17 @@ sources:
   - mitcsutt/kiln:apps/docs/content/docs/forms/getting-started/account-settings.mdx
   - mitcsutt/kiln:apps/docs/content/docs/forms/getting-started/onboarding.mdx
   - mitcsutt/kiln:apps/docs/content/docs/forms/getting-started/recurring-invoice.mdx
-  - mitcsutt/kiln:apps/docs/content/docs/forms/layouts/form.mdx
-  - mitcsutt/kiln:apps/docs/content/docs/forms/layouts/form-section.mdx
-  - mitcsutt/kiln:apps/docs/content/docs/forms/layouts/form-grid.mdx
-  - mitcsutt/kiln:apps/docs/content/docs/forms/layouts/form-steps.mdx
-  - mitcsutt/kiln:apps/docs/content/docs/forms/layouts/form-tabs.mdx
-  - mitcsutt/kiln:apps/docs/content/docs/forms/layouts/repeater.mdx
-  - mitcsutt/kiln:apps/docs/content/docs/forms/layouts/when.mdx
-  - mitcsutt/kiln:apps/docs/content/docs/forms/layouts/submit-button.mdx
-  - mitcsutt/kiln:apps/docs/content/docs/forms/hooks/use-field-value.mdx
-  - mitcsutt/kiln:apps/docs/content/docs/forms/hooks/use-form-status.mdx
-  - mitcsutt/kiln:apps/docs/content/docs/forms/hooks/use-unsaved-changes.mdx
+  - mitcsutt/kiln:packages/forms/src/components/form/Form/Form.tsx
+  - mitcsutt/kiln:packages/forms/src/components/layouts/FormSection/FormSection.tsx
+  - mitcsutt/kiln:packages/forms/src/components/layouts/FormGrid/FormGrid.tsx
+  - mitcsutt/kiln:packages/forms/src/components/layouts/FormSteps/FormSteps.tsx
+  - mitcsutt/kiln:packages/forms/src/components/layouts/FormTabs/FormTabs.tsx
+  - mitcsutt/kiln:packages/forms/src/components/layouts/Repeater/Repeater.tsx
+  - mitcsutt/kiln:packages/forms/src/components/layouts/When/When.tsx
+  - mitcsutt/kiln:packages/forms/src/components/form/SubmitButton/SubmitButton.tsx
+  - mitcsutt/kiln:packages/forms/src/hooks/useFieldValue.ts
+  - mitcsutt/kiln:packages/forms/src/hooks/useFormStatus.ts
+  - mitcsutt/kiln:packages/forms/src/hooks/useUnsavedChanges.ts
 ---
 
 <!-- Generated from the Kiln docs by apps/docs/src/skills. Edit the docs pages, then run `pnpm generate:skills`. -->
@@ -324,7 +324,7 @@ Beyond `defaultValues` and `onSubmit`, the options you'll reach for most:
 | `errorVisibility` | `ErrorVisibility` |  | When errors become visible. Default 'blur' = isBlurred \|\| submitted. |
 | `validators` | `KitFormValidators<NoInfer<T>>` |  |  |
 | `listeners` | `KitFormListeners` |  |  |
-| `derive` | `readonly DeriveRule<NoInfer<T>>[]` |  | Derived fields: recompute `field` from other fields (§6.9). |
+| `derive` | `readonly DeriveRule<NoInfer<T>>[]` |  | Derived fields: recompute `field` from other fields. |
 | `onSubmitMeta` | `M` |  |  |
 | `onSubmit` | `((ctx: { value: NoInfer<T>; output: NoInfer<O>; formApi: AnyFormApi; meta: NoInfer<M>; }) => unknown)` |  |  |
 | `onSubmitError` | `(ctx: { error: unknown; formApi: AnyFormApi }) => void` |  | Called for non-FormSubmitError throws. Default: console.error + form-level `messages.submitFailed`. |

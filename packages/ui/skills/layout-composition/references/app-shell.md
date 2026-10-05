@@ -8,6 +8,8 @@ Source: https://kiln.mitchellsutton.com/docs/ui/layout/app-shell
 
 `AppShell` is the outermost frame of an app: landmarks in the right order, a skip link, a sticky header, and a hand-over between a phone's bottom bar and a desktop's sidebar or header nav. These docs are an `AppShell`.
 
+The window above scrolls; narrow it below `md` and the header links give way to the bottom bar.
+
 ```tsx
 import {
   AppShell,
@@ -86,8 +88,6 @@ export function Usage() {
 }
 ```
 
-The window above scrolls; narrow it below `md` and the header links give way to the bottom bar.
-
 ## Slots
 
 `AppShell.Header`, `AppShell.Sidebar`, `AppShell.Main`, `AppShell.Footer` and `AppShell.BottomBar` place themselves, so their order in JSX doesn't affect the layout. Keep it the same as the reading order anyway: header, sidebar, main, footer, bottom bar.
@@ -108,7 +108,7 @@ The window above scrolls; narrow it below `md` and the header links give way to 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `skipLinkLabel` | `string` | `"Skip to content"` | Text of the skip link rendered before everything else. Default "Skip to content". |
-| `navBreakpoint` | `'md' \| 'lg'` |  | Where navigation hands over from phone to desktop: from this breakpoint up the `Sidebar` appears and the `BottomBar` is removed, so there is never a width with neither. `md` (48em) or `lg` (64em, default). Pair it with the same value on `BottomNav hideAbove` and header `NavLinks hideBelow`. |
+| `navBreakpoint` | `'md' \| 'lg'` | `lg` | Where navigation hands over from phone to desktop: from this breakpoint up the `Sidebar` appears and the `BottomBar` is removed, so there is never a width with neither. `md` (48em) or `lg` (64em, default). Pair it with the same value on `BottomNav hideAbove` and header `NavLinks hideBelow`. |
 | `mainId` | `string` |  | Id given to `AppShell.Main` (the skip link target). Generated when omitted. |
 
 Also accepts every prop of `HTMLAttributes<HTMLDivElement>`.
@@ -121,6 +121,9 @@ Also accepts every prop of `HTMLAttributes<HTMLDivElement>`.
 
 Also accepts every prop of `HTMLAttributes<HTMLElement>`.
 
+
+Accepts every prop of `HTMLAttributes<HTMLElement>`.
+
 `AppShellSidebarProps`:
 
 | Prop | Type | Default | Description |
@@ -128,6 +131,10 @@ Also accepts every prop of `HTMLAttributes<HTMLElement>`.
 | `side` | `'start' \| 'end'` | `start` | Which side of Main it sits on. Logical, so it follows writing direction. Default `start`. |
 
 Also accepts every prop of `HTMLAttributes<HTMLElement>`.
+
+
+
+
 
 ### Component tokens
 

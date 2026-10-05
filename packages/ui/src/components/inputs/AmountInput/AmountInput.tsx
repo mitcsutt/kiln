@@ -77,6 +77,14 @@ const fromMinor = (minor: number, unit: AmountUnit, digits: number) =>
   unit === 'minor' ? minor : Number(`${String(minor)}e-${String(digits)}`)
 
 /**
+ * Money typed as text, with the currency's decimals, grouped when you leave it.
+ *
+ * @remarks
+ * `AmountInput` is a text box for money, not a spinbutton: arrow keys shouldn't nudge a payment.
+ * Its decimal places come from the `currency`, it's tabular and right-aligned like every amount,
+ * and it's grouped when blurred ("1,450.00") and raw while focused.
+ *
+ * @privateRemarks
  * Money, typed as text (a textbox, not a spinbutton — arrow keys shouldn't nudge an invoice
  * total). Decimals come from the currency; grouped when blurred ("1,450.00"), raw while
  * focused ("1450.00"). Tabular and right-aligned like every amount. The ref goes to the

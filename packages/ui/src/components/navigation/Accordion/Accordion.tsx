@@ -97,6 +97,13 @@ const AccordionContent = forwardRef<HTMLDivElement, AccordionContentProps>(
 )
 
 /**
+ * Expandable sections with a turning chevron. Also Kiln's disclosure, for a single "why?" note.
+ *
+ * @remarks
+ * `Accordion` stacks sections whose content expands under their heading. It's Radix Accordion
+ * underneath, so triggers are buttons inside headings, and arrow keys move between them.
+ *
+ * @privateRemarks
  * Radix Accordion: expandable sections with a rotating chevron and a height animation.
  * Also the library's disclosure: use one `type="single"` item for an inline "why?" note.
  * Single accordions are `collapsible` unless you pass `collapsible={false}`.

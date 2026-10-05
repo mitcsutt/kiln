@@ -63,6 +63,14 @@ function splitter(delimiters: readonly string[]): RegExp | null {
 }
 
 /**
+ * Free-form tags in one box. Enter or a comma adds one, Backspace removes the last.
+ *
+ * @remarks
+ * `TagsInput` collects short free-form values: type and press Enter (or a comma) to add one, press
+ * Backspace in an empty box to remove the last, or use each chip's remove button. Pasting splits
+ * on the delimiters. With `name`, each tag submits as its own hidden input.
+ *
+ * @privateRemarks
  * Free-form tags in one box: type and press Enter (or a comma) to add, Backspace on an
  * empty box removes the last, each chip has a remove button. Paste splits on the
  * delimiters. The ref and native input props go to the text input; `className`/`style`

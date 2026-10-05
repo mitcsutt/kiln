@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { ColorField } from '@mitcsutt/kiln-ui'
 import { Stack } from '#components/layout/Stack'
-import { ColorField } from './ColorField'
 
 const LABEL_COLOURS = [
   { value: '#e5664f', label: 'Coral' },
@@ -42,5 +42,27 @@ export const WithError: Story = {
     swatchesOnly: true,
     required: true,
     error: 'Pick a colour for the Design label',
+  },
+}
+
+/**
+ * Named presets (`swatches`) are easier to choose between than a free picker, and each has a name
+ * screen readers can say.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <ColorField
+        label="Line colour"
+        description="Used on the map and in the timetable"
+        defaultValue="#1f6f8b"
+        swatches={[
+          { value: '#1f6f8b', label: 'Harbour blue' },
+          { value: '#2e8b57', label: 'Coastal green' },
+          { value: '#c4553d', label: 'Signal red' },
+        ]}
+      />
+    )
   },
 }

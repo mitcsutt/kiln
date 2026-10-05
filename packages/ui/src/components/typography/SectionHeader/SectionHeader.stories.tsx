@@ -1,9 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Button, SectionHeader, Stack } from '@mitcsutt/kiln-ui'
 import { ArrowUpRightIcon, PlusIcon } from '#icons'
-import { Button } from '#components/actions/Button'
-import { Stack } from '#components/layout/Stack'
 import { Amount } from '#components/typography/Amount'
-import { SectionHeader } from './SectionHeader'
 
 const meta = {
   title: 'UI/Typography/SectionHeader',
@@ -70,4 +68,34 @@ export const Sections: Story = {
       <SectionHeader level={3} title="Recent releases" />
     </Stack>
   ),
+}
+
+/**
+ * `level` and `size` work as on [Heading](/docs/ui/typography/heading). `divider` rules it off
+ * from what follows. `titleId` sets the heading's `id`, so a `<section aria-labelledby>` can point
+ * at it.
+ *
+ * Use a kicker sparingly: a short label over one title is useful, a tracked label over every
+ * section on the page is noise.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Stack gap={7}>
+        <SectionHeader
+          title="Saved routes"
+          description="Three routes, two with disruptions today."
+          actions={<Button size="sm">Plan a route</Button>}
+        />
+        <SectionHeader
+          level={3}
+          size="lg"
+          kicker="Coastal line"
+          title="Weekend timetable"
+          divider
+        />
+      </Stack>
+    )
+  },
 }

@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { FileDrop } from '@mitcsutt/kiln-ui'
 import { Stack } from '#components/layout/Stack'
-import { FileDrop, type StoredFile } from './FileDrop'
+import type { StoredFile } from './FileDrop'
 
 const earlierReceipts: StoredFile[] = [
   { id: 'r-112', name: 'invoice-2026-09-28.pdf', size: 184_000, type: 'application/pdf' },
@@ -63,4 +64,24 @@ export const Disabled: Story = {
 
 export const Invalid: Story = {
   args: { invalid: true },
+}
+
+/**
+ * `accept`, `maxFiles` and `maxSize` constrain what's taken, and `onReject` says what was turned
+ * away and why. `preview` shows the chosen files as a `list` or as `thumbnails`.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <FileDrop
+        aria-label="Proof of concession"
+        accept="image/*,application/pdf"
+        multiple
+        maxFiles={2}
+        maxSize={5_000_000}
+        preview="thumbnails"
+      />
+    )
+  },
 }

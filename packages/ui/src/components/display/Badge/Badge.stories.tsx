@@ -1,7 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Inline } from '#components/layout/Inline'
-import { Stack } from '#components/layout/Stack'
-import { Badge } from './Badge'
+import { Badge, Inline, Stack } from '@mitcsutt/kiln-ui'
 
 const meta = {
   title: 'UI/Display/Badge',
@@ -13,8 +11,6 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Playground: Story = {}
-
-const TONES = ['neutral', 'accent', 'positive', 'caution', 'critical', 'info'] as const
 const LABELS: Record<(typeof TONES)[number], string> = {
   neutral: 'Upcoming',
   accent: 'Live',
@@ -57,4 +53,41 @@ export const CountsAndDots: Story = {
       <Badge variant="outline">Beta</Badge>
     </Inline>
   ),
+}
+
+const TONES = ['neutral', 'accent', 'positive', 'caution', 'critical', 'info'] as const
+
+/**
+ * `tone` carries the meaning: `positive`, `caution`, `critical` and `info` for status, `accent`
+ * for something current, `neutral` for counts. `variant` is `soft` (the default), `solid` for the
+ * one badge that must shout, or `outline`. `dot` adds a leading dot, for live states.
+ *
+ * Keep badges to a word or two, and don't use colour alone: "Delayed" in the caution tone says it
+ * twice.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Stack gap={3}>
+        {(['soft', 'solid', 'outline'] as const).map((variant) => (
+          <Inline key={variant} gap={2}>
+            {TONES.map((tone) => (
+              <Badge key={tone} tone={tone} variant={variant}>
+                {tone}
+              </Badge>
+            ))}
+          </Inline>
+        ))}
+        <Inline gap={2}>
+          <Badge tone="positive" dot>
+            Live
+          </Badge>
+          <Badge tone="critical" size="sm">
+            3 delayed
+          </Badge>
+        </Inline>
+      </Stack>
+    )
+  },
 }

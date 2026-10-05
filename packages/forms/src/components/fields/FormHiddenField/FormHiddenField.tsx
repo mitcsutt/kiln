@@ -7,6 +7,20 @@ export interface FormHiddenFieldProps {
 }
 
 /**
+ * A hidden input that carries a `string` value into the form's native `FormData`.
+ *
+ * @example In a schema
+ * ```json
+ * {
+ *   "kind": "hidden",
+ *   "name": "source"
+ * }
+ * ```
+ *
+ * @value `string`
+ * @empty `''`
+ *
+ * @privateRemarks
  * A non-visual `<input type="hidden">` carrying a `string` path into native `FormData` (§7.2
  * `hidden`) — the only markup `@mitcsutt/kiln-forms` renders itself. Nothing renders in view mode.
  */

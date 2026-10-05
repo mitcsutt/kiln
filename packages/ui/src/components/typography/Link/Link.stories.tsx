@@ -1,8 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Stack } from '#components/layout/Stack'
+import { Link, Stack, Text } from '@mitcsutt/kiln-ui'
 import { Inline } from '#components/layout/Inline'
-import { Text } from '#components/typography/Text'
-import { Link } from './Link'
 
 const meta = {
   title: 'UI/Typography/Link',
@@ -68,4 +66,41 @@ export const UnderlineOnHover: Story = {
       </Link>
     </Inline>
   ),
+}
+
+/**
+ * `external` adds `target="_blank"`, `rel="noopener noreferrer"`, a small arrow, and a visually
+ * hidden "(opens in new tab)" for screen readers. `underline="hover"` is for quiet links in dense
+ * places like footers, where it's clear from context that they're links. With `asChild`, your
+ * router's link renders with Link's styles:
+ *
+ * ```tsx
+ * <Link asChild>
+ *   <NextLink href="/fares">Fares and passes</NextLink>
+ * </Link>
+ * ```
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Stack gap={3}>
+        <Text>
+          Read the <Link href="#accessibility">accessibility guide</Link> before you travel.
+        </Text>
+        <Text>
+          Fares are set by the{' '}
+          <Link href="https://example.com" external>
+            regional transport board
+          </Link>
+          .
+        </Text>
+        <Text size="sm">
+          <Link href="#terms" tone="muted" underline="hover">
+            Terms of carriage
+          </Link>
+        </Text>
+      </Stack>
+    )
+  },
 }

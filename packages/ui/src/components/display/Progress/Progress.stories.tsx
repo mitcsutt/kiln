@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Stack } from '#components/layout/Stack'
-import { Progress } from './Progress'
+import { Progress, Stack } from '@mitcsutt/kiln-ui'
 
 const meta = {
   title: 'UI/Display/Progress',
@@ -42,4 +41,22 @@ export const SizesAndTones: Story = {
       <Progress size="md" tone="neutral" aria-label="Page load" value={40} />
     </Stack>
   ),
+}
+
+/**
+ * `value={null}` is indeterminate: the task is under way but its length is unknown. `label` names
+ * the bar, `showValue` prints the percentage (change the text with `formatValue`), and `tone`
+ * marks success or trouble.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Stack gap={5}>
+        <Progress label="Uploading timetable.csv" value={64} showValue />
+        <Progress label="Syncing saved routes" value={null} />
+        <Progress label="Import finished" value={100} tone="positive" size="sm" />
+      </Stack>
+    )
+  },
 }

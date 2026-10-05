@@ -1,10 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Form, FormActions, ResetButton, SubmitButton, useAppForm } from '@mitcsutt/kiln-forms'
+import { Stack } from '@mitcsutt/kiln-ui'
 import { actionsFixture, actionsSchema } from '#stories/fixtures/structure'
 import { parityStory } from '#stories/parity'
-import { ResetButton } from '#components/form/ResetButton'
-import { SubmitButton } from '#components/form/SubmitButton'
 import { StoryForm } from '#stories/_kit'
-import { FormActions } from './FormActions'
 
 const meta = {
   title: 'Forms/Layouts/FormActions',
@@ -37,3 +36,24 @@ export const ComponentAndSchema: Story = parityStory(actionsFixture, actionsSche
   'ResetButton',
   'SubmitButton',
 ])
+
+/**
+ * A reset and a submit button at either end, with the form's status at the start.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const form = useAppForm({ defaultValues: { name: 'Coastal line' } })
+    return (
+      <Form form={form} aria-label="Line name">
+        <Stack gap={5}>
+          <form.TextField name="name" label="Line name" />
+          <FormActions align="between" status>
+            <ResetButton>Discard changes</ResetButton>
+            <SubmitButton requireChanges>Save line</SubmitButton>
+          </FormActions>
+        </Stack>
+      </Form>
+    )
+  },
+}

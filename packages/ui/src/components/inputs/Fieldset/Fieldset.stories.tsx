@@ -1,10 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Fieldset, Grid, TextField } from '@mitcsutt/kiln-ui'
 import { CheckboxField } from '#components/inputs/CheckboxField'
 import { RadioGroupField } from '#components/inputs/RadioGroupField'
-import { TextField } from '#components/inputs/TextField'
 import { Container } from '#components/layout/Container'
 import { Stack } from '#components/layout/Stack'
-import { Fieldset } from './Fieldset'
 
 const meta = {
   title: 'UI/Inputs/Fieldset',
@@ -101,4 +100,27 @@ export const Horizontal: Story = {
       </Stack>
     </Container>
   ),
+}
+
+/**
+ * `description`, `error` and `warning` describe the whole group. `disabled` disables every control
+ * inside, as native fieldsets do. `layout="horizontal"` puts the legend in the label column, lined
+ * up with horizontal fields. `legendHidden` hides the legend visually when a heading above already
+ * says it.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Fieldset legend="Delivery address" description="We post passes second class.">
+        <Grid columns={{ base: 1, sm: 2 }} gap={4}>
+          <Grid.Item span={{ base: 1, sm: 2 }}>
+            <TextField label="Street" autoComplete="address-line1" />
+          </Grid.Item>
+          <TextField label="Town" autoComplete="address-level2" />
+          <TextField label="Postcode" autoComplete="postal-code" />
+        </Grid>
+      </Fieldset>
+    )
+  },
 }

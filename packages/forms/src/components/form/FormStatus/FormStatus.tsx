@@ -25,6 +25,19 @@ const TONE: Record<FormStatusKind, Tone> = {
 }
 
 /**
+ * A polite status line. Unsaved changes, saving, saved or couldn't save.
+ *
+ * @remarks
+ * `FormStatus` says what's happening to the form's data in a polite live region, so screen readers
+ * hear it without losing their place: "Unsaved changes", "Saving…", "Saved", "Couldn't save". It
+ * pairs with {@link useAutosave | `useAutosave`}.
+ *
+ * @example In a schema
+ * ```json
+ * { "content": "status" }
+ * ```
+ *
+ * @privateRemarks
  * A polite status line: "Unsaved changes", "Saving…", "Saved", "Couldn't save". Pairs with
  * `useAutosave`. The live region is always rendered so changes are announced.
  */

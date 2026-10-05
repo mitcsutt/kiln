@@ -48,6 +48,14 @@ export interface AmountProps extends Omit<NumeralProps, 'format' | 'signDisplay'
 }
 
 /**
+ * Money, formatted for its currency and locale, in tabular figures, with an accounting style for
+ * negatives.
+ *
+ * @remarks
+ * `Amount` is a {@link Numeral | Numeral} for money. It formats the currency for the locale, uses
+ * tabular figures and a true minus sign, and can show negatives in parentheses like a ledger.
+ *
+ * @privateRemarks
  * Money. Built on <Numeral>: tabular figures in the theme's numeric face, a true minus,
  * en-AU / AUD by default. A currency the locale has no symbol for shows its narrow symbol
  * when that is unambiguous (GBP → £ in en-AU) and its ISO code otherwise (USD in en-AU).

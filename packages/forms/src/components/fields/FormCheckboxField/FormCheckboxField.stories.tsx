@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Form, useAppForm, useFieldValue } from '@mitcsutt/kiln-forms'
+import { Code, Stack, Text } from '@mitcsutt/kiln-ui'
 import { FieldDemo, NEVER_SETTLES, StatesGrid, StoryForm } from '#stories/_kit'
 import { FormCheckboxField } from './FormCheckboxField'
 
@@ -145,4 +147,29 @@ export const ViewMode: Story = {
       {(form) => <form.CheckboxField name="value" label="Mark as urgent" />}
     </FieldDemo>
   ),
+}
+
+/**
+ * A `required` rule on a checkbox means it must be ticked.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const form = useAppForm({ defaultValues: { terms: false } })
+    const value = useFieldValue(form, 'terms')
+    return (
+      <Form form={form} aria-label="CheckboxField example">
+        <Stack gap={4}>
+          <form.CheckboxField
+            name="terms"
+            label="I've read the terms of carriage"
+            description="Including the rules for bikes and dogs"
+          />
+          <Text size="sm" tone="muted">
+            Value: <Code>{JSON.stringify(value)}</Code>
+          </Text>
+        </Stack>
+      </Form>
+    )
+  },
 }

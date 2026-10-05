@@ -24,6 +24,30 @@ export interface FormChipsFieldProps
 }
 
 /**
+ * Any number of choices from a row of chips.
+ *
+ * @remarks
+ * It renders kiln-ui's {@link ChipGroupField | ChipGroupField} with `type="multiple"`.
+ *
+ * @example In a schema
+ * ```json
+ * {
+ *   "kind": "chips",
+ *   "name": "days",
+ *   "label": "Days you travel",
+ *   "options": [
+ *     {
+ *       "value": "mon",
+ *       "label": "Mon"
+ *     }
+ *   ]
+ * }
+ * ```
+ *
+ * @value an array of the options' value type
+ * @empty `[]`
+ *
+ * @privateRemarks
  * Any number of choices from a row of chips (§7.2 `chips`, ui `type="multiple"`). Option values
  * keep their primitive type; empty is `[]`.
  */

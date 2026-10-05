@@ -1,10 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { MoonIcon, SegmentedControl, Stack, SunIcon, SystemIcon, Text } from '@mitcsutt/kiln-ui'
+import { useState } from 'react'
 import { expect, userEvent, within } from 'storybook/test'
 import { storyRoot } from '#components/_story/storyRoot'
-import { useState } from 'react'
-import { MoonIcon, SunIcon, SystemIcon } from '#icons'
-import { Stack } from '#components/layout/Stack'
-import { SegmentedControl } from './SegmentedControl'
 
 const periods = [
   { value: 'month', label: 'Month' },
@@ -140,4 +138,78 @@ export const Disabled: Story = {
       defaultValue="today"
     />
   ),
+}
+
+/**
+ * Pass segments as `options`, or compose `SegmentedControl.Item`s. Control it with `value` and
+ * `onValueChange`, or use `defaultValue`. Segments are always equal widths.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const [view, setView] = useState('list')
+    return (
+      <Stack gap={3} align="start">
+        <SegmentedControl aria-label="Timetable view" value={view} onValueChange={setView}>
+          <SegmentedControl.Item value="list">List</SegmentedControl.Item>
+          <SegmentedControl.Item value="map">Map</SegmentedControl.Item>
+          <SegmentedControl.Item value="grid">Grid</SegmentedControl.Item>
+        </SegmentedControl>
+        <Text size="sm" tone="muted">
+          Showing the {view} view
+        </Text>
+      </Stack>
+    )
+  },
+}
+
+/**
+ * `size` and `fullWidth` take responsive values: a large, full-width control with thumb-sized
+ * segments on a phone, and a medium inline one from `md` up.
+ */
+export const Responsive: Story = {
+  name: 'Responsive sizing',
+  tags: ['docs'],
+  render: function Responsive() {
+    return (
+      <SegmentedControl
+        aria-label="Departures"
+        size={{ base: 'lg', md: 'md' }}
+        fullWidth={{ base: true, md: false }}
+        defaultValue="today"
+        options={[
+          { value: 'today', label: 'Today' },
+          { value: 'tomorrow', label: 'Tomorrow' },
+          { value: 'weekend', label: 'Weekend' },
+        ]}
+      />
+    )
+  },
+}
+
+const MODES = [
+  { value: 'light', label: 'Light', icon: <SunIcon /> },
+  { value: 'dark', label: 'Dark', icon: <MoonIcon /> },
+  { value: 'system', label: 'System', icon: <SystemIcon /> },
+]
+
+/**
+ * Segments can carry an icon. With `iconOnly`, the labels become each segment's accessible name.
+ */
+export const Icons: Story = {
+  tags: ['docs'],
+  render: function Icons() {
+    return (
+      <Stack gap={4} align="start">
+        <SegmentedControl aria-label="Map style" options={MODES} defaultValue="dark" />
+        <SegmentedControl
+          aria-label="Map style"
+          iconOnly
+          size="sm"
+          options={MODES}
+          defaultValue="system"
+        />
+      </Stack>
+    )
+  },
 }

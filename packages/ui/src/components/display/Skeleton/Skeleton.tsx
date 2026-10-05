@@ -43,6 +43,14 @@ export interface SkeletonProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 /**
+ * Placeholder shapes for content on its way, hidden from assistive technology.
+ *
+ * @remarks
+ * `Skeleton` holds the shape of content while it loads, so the page doesn't jump when it arrives.
+ * `Skeleton.Text` is lines of text, `Skeleton.Circle` is an avatar, and `Skeleton` itself is a
+ * block with a `width` and `height`.
+ *
+ * @privateRemarks
  * Placeholder for content that's on its way. Every piece is `aria-hidden`: announce
  * loading once on the region that's loading (`aria-busy`, or a `Spinner` label), not per bar.
  *

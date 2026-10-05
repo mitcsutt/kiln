@@ -35,6 +35,14 @@ function supportsFieldSizing(): boolean {
 }
 
 /**
+ * Multi-line text in the same box as Input, growing with its content if you let it.
+ *
+ * @remarks
+ * `Textarea` shares Input's box, states and focus ring. `autoResize` grows it with its content
+ * from `rows` up to `maxRows`, then it scrolls. For a labelled textarea with a character count,
+ * use {@link TextareaField | TextareaField}.
+ *
+ * @privateRemarks
  * Multi-line text. Same box, states and focus ring as `Input`.
  *
  * <Textarea autoResize rows={2} maxRows={8} />

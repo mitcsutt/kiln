@@ -7,5 +7,21 @@ apps/docs/.source/
 apps/docs/.next/
 apps/docs/next-env.d.ts
 
+# Reference pages, written from TSDoc and stories by apps/docs/scripts/generate-pages.ts and
+# gitignored there: the same globs as apps/docs/.gitignore
+apps/docs/content/docs/ui/actions/*.mdx
+apps/docs/content/docs/ui/display/*.mdx
+apps/docs/content/docs/ui/feedback/*.mdx
+apps/docs/content/docs/ui/inputs/*.mdx
+apps/docs/content/docs/ui/layout/*.mdx
+apps/docs/content/docs/ui/navigation/*.mdx
+apps/docs/content/docs/ui/overlays/*.mdx
+apps/docs/content/docs/ui/typography/*.mdx
+apps/docs/content/docs/forms/fields/*.mdx
+apps/docs/content/docs/forms/hooks/*.mdx
+apps/docs/content/docs/forms/layouts/*.mdx
+!apps/docs/content/docs/forms/layouts/custom-layouts.mdx
+!apps/docs/content/docs/forms/layouts/stack-and-inline.mdx
+
 # Built from the docs by apps/docs/src/skills; the drift test compares them byte for byte
 packages/*/skills/

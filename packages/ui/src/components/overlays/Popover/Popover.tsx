@@ -13,6 +13,13 @@ import styles from './Popover.module.css'
 export type PopoverProps = ComponentPropsWithoutRef<typeof PopoverPrimitive.Root>
 
 /**
+ * A non-modal panel anchored to its trigger, for details, a filter or a small form.
+ *
+ * @remarks
+ * `Popover` opens a floating panel beside its trigger. It's non-modal: the rest of the page stays
+ * usable, and it closes on Escape or a click outside, returning focus to the trigger.
+ *
+ * @privateRemarks
  * Non-modal floating panel anchored to a trigger: invoice details, a filter, a small
  * form. Opens on click, closes on Escape or an outside click, returns focus. For
  * hover-only hints use `Tooltip`; for a list of commands use `DropdownMenu`.

@@ -32,6 +32,18 @@ function FormActionsInner({ align = 'end', sticky, status = false, children }: F
   )
 }
 
+/**
+ * The row of buttons at the end of a form, with the status line if you want it.
+ *
+ * @remarks
+ * `FormActions` is an {@link ActionBar | ActionBar} for forms. `status` adds a `FormStatus` at its
+ * start, and `sticky` keeps it in view while a long form scrolls.
+ *
+ * @example In a schema
+ * ```json
+ * { "layout": "actions", "align": "end", "children": [{ "content": "submit", "label": "Save line" }] }
+ * ```
+ */
 export function FormActions(props: FormActionsProps) {
   return (
     <FieldViewListBoundary>

@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Form, useAppForm, useFieldValue } from '@mitcsutt/kiln-forms'
+import { Code, Stack, Text } from '@mitcsutt/kiln-ui'
 import { FieldDemo, NEVER_SETTLES, StatesGrid, StoryForm } from '#stories/_kit'
 import { FormAmountField } from './FormAmountField'
 
@@ -174,4 +176,26 @@ export const ViewMode: Story = {
       )}
     </FieldDemo>
   ),
+}
+
+/**
+ * `currency` is required. Use `unit="minor"` to store integer minor units (pence, cents), which is
+ * the safe way to keep money: never a float. View mode always shows the formatted amount.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const form = useAppForm({ defaultValues: { topUp: 20 } })
+    const value = useFieldValue(form, 'topUp')
+    return (
+      <Form form={form} aria-label="AmountField example">
+        <Stack gap={4}>
+          <form.AmountField name="topUp" label="Top-up" currency="GBP" locale="en-GB" min={5} />
+          <Text size="sm" tone="muted">
+            Value: <Code>{JSON.stringify(value)}</Code>
+          </Text>
+        </Stack>
+      </Form>
+    )
+  },
 }

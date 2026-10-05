@@ -22,7 +22,25 @@ export interface FormDateFieldProps
   max?: string
 }
 
-/** A native date input bound to an ISO `YYYY-MM-DD` string (§7.2). Empty is `''`. */
+/**
+ * A native date input bound to an ISO date string.
+ *
+ * @example In a schema
+ * ```json
+ * {
+ *   "kind": "date",
+ *   "name": "travelDate",
+ *   "label": "Travel date",
+ *   "min": "2026-10-01"
+ * }
+ * ```
+ *
+ * @value `string` (`YYYY-MM-DD`)
+ * @empty `''`
+ *
+ * @privateRemarks
+ * A native date input bound to an ISO `YYYY-MM-DD` string (§7.2). Empty is `''`.
+ */
 export const FormDateField = defineField<string>()(function FormDateField({
   warn,
   excluded,

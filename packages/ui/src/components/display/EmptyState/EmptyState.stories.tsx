@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Button } from '#components/actions/Button'
+import { Button, EmptyState, Stack } from '@mitcsutt/kiln-ui'
 import { PlusIcon } from '#icons'
-import { EmptyState } from './EmptyState'
 
 const meta = {
   title: 'UI/Display/EmptyState',
@@ -57,5 +56,36 @@ export const NoMatches: Story = {
         Clear filter
       </Button>
     ),
+  },
+}
+
+/**
+ * `framed` marks the frame with printer's crop marks rather than a dashed box. `align="center"`
+ * suits an empty state that fills a region; left-aligned (the default) suits one inside a page.
+ * `media` adds an illustration, and `titleAs` sets the heading level.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Stack gap={6}>
+        <EmptyState
+          title="No saved routes yet"
+          description="Save a route from any timetable and its next departures show up here."
+          action={<Button>Find a route</Button>}
+        />
+        <EmptyState
+          framed
+          align="center"
+          title="No sailings match"
+          description="Try a different day, or include services that need a booking."
+          action={
+            <Button variant="outline" tone="neutral">
+              Clear filters
+            </Button>
+          }
+        />
+      </Stack>
+    )
   },
 }

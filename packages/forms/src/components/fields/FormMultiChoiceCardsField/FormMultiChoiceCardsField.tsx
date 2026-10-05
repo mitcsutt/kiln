@@ -27,6 +27,30 @@ export interface FormMultiChoiceCardsFieldProps
 }
 
 /**
+ * Any number of choices from a handful of cards.
+ *
+ * @remarks
+ * It renders kiln-ui's {@link ChoiceCardsField | ChoiceCardsField} with `type="multiple"`.
+ *
+ * @example In a schema
+ * ```json
+ * {
+ *   "kind": "multiChoiceCards",
+ *   "name": "extras",
+ *   "label": "Add-ons",
+ *   "options": [
+ *     {
+ *       "value": "bike",
+ *       "label": "Bike space"
+ *     }
+ *   ]
+ * }
+ * ```
+ *
+ * @value an array of the options' value type
+ * @empty `[]`
+ *
+ * @privateRemarks
  * Any number of choices from a handful of cards (§7.2 `multiChoiceCards`, ui `type="multiple"`).
  * Option values keep their primitive type; empty is `[]`.
  */

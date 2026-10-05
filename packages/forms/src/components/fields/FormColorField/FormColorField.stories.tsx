@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Form, useAppForm, useFieldValue } from '@mitcsutt/kiln-forms'
+import { Code, Stack, Text } from '@mitcsutt/kiln-ui'
 import { FieldDemo, NEVER_SETTLES, StatesGrid, StoryForm } from '#stories/_kit'
 import { FormColorField } from './FormColorField'
 
@@ -182,4 +184,33 @@ export const ViewMode: Story = {
       {(form) => <form.ColorField name="value" label="Label colour" swatches={labelColours} />}
     </FieldDemo>
   ),
+}
+
+/**
+ * View mode shows the matching swatch's name beside the hex code.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const form = useAppForm({ defaultValues: { lineColour: '#1f6f8b' } })
+    const value = useFieldValue(form, 'lineColour')
+    return (
+      <Form form={form} aria-label="ColorField example">
+        <Stack gap={4}>
+          <form.ColorField
+            name="lineColour"
+            label="Line colour"
+            swatches={[
+              { value: '#1f6f8b', label: 'Harbour blue' },
+              { value: '#2e8b57', label: 'Coastal green' },
+              { value: '#c4553d', label: 'Signal red' },
+            ]}
+          />
+          <Text size="sm" tone="muted">
+            Value: <Code>{JSON.stringify(value)}</Code>
+          </Text>
+        </Stack>
+      </Form>
+    )
+  },
 }

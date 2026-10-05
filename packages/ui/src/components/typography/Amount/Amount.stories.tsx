@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Stack } from '#components/layout/Stack'
+import { Amount, Stack } from '@mitcsutt/kiln-ui'
 import { Inline } from '#components/layout/Inline'
 import { Text } from '#components/typography/Text'
-import { Amount } from './Amount'
 
 const meta = {
   title: 'UI/Typography/Amount',
@@ -88,4 +87,28 @@ export const Hero: Story = {
       </Text>
     </Stack>
   ),
+}
+
+/**
+ * - `currency` (default `AUD`) and `locale` (default `en-AU`). A currency the locale has no symbol
+ *   for shows its narrow symbol when that's unambiguous, and its ISO code otherwise.
+ * - `accounting` shows a negative as `($1,234.50)` in the critical tone.
+ * - `showSign` adds a plus to positive values; `tone="auto"` colours both signs.
+ * - `compact` abbreviates large values (`$2.5M`), and `precision` sets the decimal places.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Stack gap={3} align="start">
+        <Amount value={1234.5} />
+        <Amount value={42} currency="GBP" locale="en-GB" />
+        <Amount value={-86.2} currency="EUR" locale="de-DE" />
+        <Amount value={-1234.5} accounting />
+        <Amount value={312.75} showSign tone="auto" />
+        <Amount value={2450000} compact />
+        <Amount value={96} currency="GBP" locale="en-GB" size="display-sm" />
+      </Stack>
+    )
+  },
 }

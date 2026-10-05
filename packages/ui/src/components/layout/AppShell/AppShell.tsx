@@ -22,6 +22,35 @@ export interface AppShellProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 /**
+ * The frame of an app screen. A header, an optional sidebar, the main region, a footer and a
+ * phone-only bottom bar.
+ *
+ * @remarks
+ * `AppShell` is the outermost frame of an app: landmarks in the right order, a skip link, a sticky
+ * header, and a hand-over between a phone's bottom bar and a desktop's sidebar or header nav.
+ * These docs are an `AppShell`.
+ *
+ * ## Slots
+ *
+ * `AppShell.Header`, `AppShell.Sidebar`, `AppShell.Main`, `AppShell.Footer` and
+ * `AppShell.BottomBar` place themselves, so their order in JSX doesn't affect the layout. Keep it
+ * the same as the reading order anyway: header, sidebar, main, footer, bottom bar.
+ *
+ * - **Header** is sticky by default (`sticky={false}` to scroll it away). Put a `Container` and an
+ *   `Inline` inside.
+ * - **Sidebar** appears from `navBreakpoint` up. It sits at the start of the main region
+ *   (`side="end"` for the other side), scrolls on its own, and stays below the header.
+ * - **Main** is the `<main>` landmark and the skip link's target.
+ * - **BottomBar** is pinned to the bottom of the viewport below `navBreakpoint`, and pads for the
+ *   phone's home indicator.
+ *
+ * ## Navigation hand-over
+ *
+ * `navBreakpoint` (`md` or `lg`, default `lg`) is the one width where phone navigation gives way
+ * to desktop navigation, so there's never a width with neither. Pair it with the same value on
+ * `BottomNav hideAbove` and the header's `NavLinks hideBelow`.
+ *
+ * @privateRemarks
  * The frame of an app screen: header, optional sidebar, main, footer, and a
  * mobile-only bottom bar. Slots place themselves; order in JSX doesn't matter,
  * but keep DOM order = reading order (Header, Sidebar, Main, Footer, BottomBar).

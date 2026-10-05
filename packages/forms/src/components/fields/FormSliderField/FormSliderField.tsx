@@ -13,6 +13,27 @@ export interface FormSliderFieldProps
   extends Omit<UiSliderFieldProps, ControlledKeys>, CommonFieldProps<number> {}
 
 /**
+ * One number from a continuous range.
+ *
+ * @remarks
+ * It renders kiln-ui's {@link SliderField | SliderField}.
+ *
+ * @example In a schema
+ * ```json
+ * {
+ *   "kind": "slider",
+ *   "name": "walk",
+ *   "label": "Longest walk to a stop",
+ *   "min": 200,
+ *   "max": 2000,
+ *   "step": 100
+ * }
+ * ```
+ *
+ * @value `number`
+ * @empty none: it always has a value
+ *
+ * @privateRemarks
  * One number from a continuous range (§7.2 `slider`). Always has a value (no empty state);
  * clearing is not a concept a continuous control has.
  */

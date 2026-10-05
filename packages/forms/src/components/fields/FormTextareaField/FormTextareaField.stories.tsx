@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Form, useAppForm, useFieldValue } from '@mitcsutt/kiln-forms'
+import { Code, Stack, Text } from '@mitcsutt/kiln-ui'
 import { FieldDemo, NEVER_SETTLES, StatesGrid, StoryForm } from '#stories/_kit'
 import { FormTextareaField } from './FormTextareaField'
 
@@ -145,4 +147,32 @@ export const ViewMode: Story = {
       {(form) => <form.TextareaField name="value" label="Notes" />}
     </FieldDemo>
   ),
+}
+
+/**
+ * `autoResize` grows it with its content up to `maxRows`.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const form = useAppForm({ defaultValues: { notes: '' } })
+    const value = useFieldValue(form, 'notes')
+    return (
+      <Form form={form} aria-label="TextareaField example">
+        <Stack gap={4}>
+          <form.TextareaField
+            name="notes"
+            label="Notes for the crew"
+            description="A wheelchair space, a large bag, anything we should know"
+            autoResize
+            maxLength={300}
+            showCount
+          />
+          <Text size="sm" tone="muted">
+            Value: <Code>{JSON.stringify(value)}</Code>
+          </Text>
+        </Stack>
+      </Form>
+    )
+  },
 }

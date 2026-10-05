@@ -30,6 +30,14 @@ export interface SectionHeaderProps extends Omit<HTMLAttributes<HTMLElement>, 't
 }
 
 /**
+ * The title block for a page or section. Heading, description and actions in one aligned row.
+ *
+ * @remarks
+ * `SectionHeader` puts a section's title, an optional kicker and description, and its actions in
+ * one component, so they align with each other and wrap together on a phone. The title, kicker and
+ * description are grouped in an `<hgroup>`.
+ *
+ * @privateRemarks
  * The title block for a page or section: optional kicker, heading, description and
  * actions. Title, kicker and description are grouped in an <hgroup>.
  *

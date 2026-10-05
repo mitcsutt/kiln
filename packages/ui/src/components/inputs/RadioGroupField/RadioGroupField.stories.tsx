@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { RadioGroupField } from './RadioGroupField'
+import { RadioGroupField } from '@mitcsutt/kiln-ui'
 
 const periods = [
   { value: 'weekly', label: 'Weekly' },
@@ -40,3 +40,25 @@ export const WithError: Story = {
 }
 
 export const ReadOnly: Story = { args: { readOnly: true } }
+
+/**
+ * `orientation="horizontal"` puts short options in a row. For five or more options, a
+ * [SelectField](/docs/ui/inputs/select-field) takes less room; for options that need a price or a
+ * sentence, [ChoiceCardsField](/docs/ui/inputs/choice-cards-field).
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <RadioGroupField
+        label="Seat preference"
+        defaultValue="window"
+        options={[
+          { value: 'window', label: 'Window' },
+          { value: 'aisle', label: 'Aisle' },
+          { value: 'none', label: 'No preference', description: 'Faster boarding' },
+        ]}
+      />
+    )
+  },
+}

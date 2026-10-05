@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { OneTimeCodeField } from './OneTimeCodeField'
+import { OneTimeCodeField } from '@mitcsutt/kiln-ui'
 
 const meta = {
   title: 'UI/Inputs/OneTimeCodeField',
@@ -24,4 +24,20 @@ export const Expired: Story = {
 
 export const Checking: Story = {
   args: { defaultValue: '482913', validating: true, readOnly: true },
+}
+
+/**
+ * Say where the code was sent in the description, so the reader knows where to look.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <OneTimeCodeField
+        label="Verification code"
+        description="We sent six digits to the number ending 4417"
+        length={6}
+      />
+    )
+  },
 }

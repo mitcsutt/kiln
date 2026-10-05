@@ -14,6 +14,15 @@ export interface ToggleChipProps extends ComponentPropsWithoutRef<typeof Toggle.
 }
 
 /**
+ * An independent on-off filter that sits in a row with others, with an optional count.
+ *
+ * @remarks
+ * A `ToggleChip` is a pressed or unpressed button, announced as a toggle (`aria-pressed`). Each
+ * chip in a row is independent, so a row of them is a set of filters, not a choice of one. For a
+ * set of chips that act together (one of, or several of, one field), use {@link ChipGroup |
+ * ChipGroup}.
+ *
+ * @privateRemarks
  * A pressable filter chip — an on/off switch that reads as a word ("Mine", "Overdue
  * only"). Built on Radix Toggle, so it is a real `<button aria-pressed>`; use
  * `pressed`/`onPressedChange` (controlled) or `defaultPressed`.

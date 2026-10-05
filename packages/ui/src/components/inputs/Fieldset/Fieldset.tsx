@@ -51,6 +51,14 @@ export interface FieldsetProps extends FieldsetHTMLAttributes<HTMLFieldSetElemen
 }
 
 /**
+ * Groups related controls under one legend, with a description and an error for the group.
+ *
+ * @remarks
+ * `Fieldset` is a `<fieldset>` and `<legend>` with Kiln's styles: an address block, a set of
+ * checkboxes, a radio group. Screen readers announce the legend with each control inside, so
+ * "Town" becomes "Delivery address, Town".
+ *
+ * @privateRemarks
  * Groups related controls under a legend: a RadioGroup, a set of CheckboxFields, or an
  * address block. `disabled` disables every control inside (native fieldset behaviour).
  *

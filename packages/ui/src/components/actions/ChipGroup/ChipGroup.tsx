@@ -70,6 +70,15 @@ function ChipContent({ option }: { option: ChipOption }) {
 }
 
 /**
+ * A set of chips that picks one value or several, as a single field.
+ *
+ * @remarks
+ * `ChipGroup` is one field made of chips: `type="multiple"` for several of a set, `type="single"`
+ * for at most one (pressing the chosen chip again clears it). Arrow keys move between chips, and
+ * `name` adds hidden inputs so it submits with a native form. Give it a name with a `Fieldset`
+ * legend or an `aria-label`.
+ *
+ * @privateRemarks
  * A set of chips that together make one answer — "Email alerts", "Labels". The chips look
  * exactly like `ToggleChip` (they share its style module) but behave as a group (Radix
  * ToggleGroup): one tab stop, arrow keys move between chips, Space/Enter presses.

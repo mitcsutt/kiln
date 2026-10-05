@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Form, useAppForm, useFieldValue } from '@mitcsutt/kiln-forms'
+import { Code, Stack, Text } from '@mitcsutt/kiln-ui'
 import { FieldDemo, NEVER_SETTLES, StatesGrid, StoryForm } from '#stories/_kit'
 import { FormPasswordField } from './FormPasswordField'
 
@@ -163,4 +165,31 @@ export const ViewMode: Story = {
       )}
     </FieldDemo>
   ),
+}
+
+/**
+ * `autoComplete` is required. In view mode it shows a fixed-length mask, so the view never reveals
+ * the password or its length.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const form = useAppForm({ defaultValues: { password: '' } })
+    const value = useFieldValue(form, 'password')
+    return (
+      <Form form={form} aria-label="PasswordField example">
+        <Stack gap={4}>
+          <form.PasswordField
+            name="password"
+            label="Password"
+            autoComplete="new-password"
+            description="At least 12 characters"
+          />
+          <Text size="sm" tone="muted">
+            Value: <Code>{JSON.stringify(value)}</Code>
+          </Text>
+        </Stack>
+      </Form>
+    )
+  },
 }

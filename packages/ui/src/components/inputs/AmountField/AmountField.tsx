@@ -7,6 +7,13 @@ export interface AmountFieldProps
   extends FieldLabelProps, Omit<AmountInputProps, 'invalid' | keyof FieldLabelProps> {}
 
 /**
+ * A labelled money input with the currency's decimals and tabular figures.
+ *
+ * @remarks
+ * `AmountField` is a {@link Field | Field} around an {@link AmountInput | AmountInput}. `currency`
+ * is required, and sets the decimal places and the symbol.
+ *
+ * @privateRemarks
  * Label + AmountInput + description + error. Input props (`currency`, `unit`, `value`…)
  * and the ref go to the text input; `className`/`style` go to the wrapper.
  *

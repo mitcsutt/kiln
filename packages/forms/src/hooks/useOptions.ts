@@ -64,6 +64,16 @@ function isAbort(error: unknown): boolean {
 }
 
 /**
+ * Options from a loader, debounced, cached and cancelled when superseded. The hook behind async
+ * comboboxes.
+ *
+ * @remarks
+ * `useOptions(source, options)` turns a loader into options for a list: it debounces the query,
+ * aborts the previous request when a new one starts, and caches recent results (50 entries, keyed
+ * by the query and its dependencies). Static options pass straight through. The bound combobox and
+ * multi-select fields use it for `loadOptions`; use it directly for your own controls.
+ *
+ * @privateRemarks
  * Static options pass through; a loader is debounced, aborts the previous request and caches
  * results (LRU, 50 entries, key = query + JSON of deps). The loader is read through a ref, so an
  * inline loader (new identity every render) neither refetches nor loops; change `deps` to reload.

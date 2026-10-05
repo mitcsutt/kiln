@@ -61,6 +61,14 @@ const PauseIcon = createIcon('PauseIcon', <path d="M7.5 5.5v9M12.5 5.5v9" />)
 const PlayIcon = createIcon('PlayIcon', <path d="M7 5.25v9.5L14.75 10z" />)
 
 /**
+ * A horizontal ticker for live updates, with a pause control, that stops for reduced motion.
+ *
+ * @remarks
+ * `Marquee` scrolls a row of items in a loop, like live departures along a station board. The
+ * content is rendered twice for a seamless loop, but the copy is `aria-hidden` and inert, so
+ * screen readers and the tab order meet it once.
+ *
+ * @privateRemarks
  * A horizontal ticker: live status, a features strip, a top-accounts summary.
  *
  * The content is rendered twice for a seamless loop; the copy is `aria-hidden` and

@@ -87,6 +87,24 @@ function FormSectionInner({
   )
 }
 
+/**
+ * A titled group of fields, as a fieldset and legend, that can be disabled or made read-only as
+ * one.
+ *
+ * @remarks
+ * `FormSection` groups fields under a title. By default it's a `<fieldset>` with the title as its
+ * `<legend>`, so screen readers announce the group with each field. `as="section"` makes it a
+ * `<section>` with a heading instead, for a chapter of a long form.
+ *
+ * @example In a schema
+ * ```json
+ * {
+ *   "layout": "section",
+ *   "title": "Contact details",
+ *   "children": [{ "kind": "text", "name": "name", "label": "Full name" }]
+ * }
+ * ```
+ */
 export function FormSection(props: FormSectionProps) {
   return (
     <FieldViewListBoundary>

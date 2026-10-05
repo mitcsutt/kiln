@@ -72,8 +72,10 @@ function evaluateContext(c: UntypedContextCondition, context: Record<string, unk
 }
 
 /**
- * Evaluates a JSON condition (§10.3) against form values (root paths) and the render context.
+ * Evaluates a JSON condition against form values (root paths) and the render context.
  * Pure: no React, no form instance. `all: []` is true, `any: []` is false.
+ *
+ * @privateRemarks Design reference §10.3.
  */
 export function evaluateCondition(
   c: UntypedCondition,
