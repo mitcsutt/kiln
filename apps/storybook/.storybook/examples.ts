@@ -6,8 +6,9 @@
  *
  * The title comes from the owner's stories: `Button.examples.tsx` takes the title of
  * `Button.stories.tsx` in the same package, plus `/Examples` (`UI/Actions/Button/Examples`).
- * Without owner stories it comes from the path: a guide topic under `src/docs/<guide>/` is
- * `<Package>/Docs/<Guide>/<Topic>`, and any other file is its folder path plus `/Examples`.
+ * Without owner stories it lands on the same tree: a guide topic under `src/docs/<guide>/` is
+ * `<Package>/<Guide>/<Topic>`, and any other file takes the group and naming of the sibling
+ * components' stories, plus `/Examples`.
  * The indexer and the Vite plugin below give Storybook and the Vitest addon the same
  * default export, so the sidebar, the dev server and the tests agree.
  */
@@ -54,9 +55,38 @@ function label(segment: string): string {
 }
 
 /**
- * The title for an examples file without owner stories, from its path under the package:
- * `src/docs/<guide>/<topic>.examples.tsx` is `<Package>/Docs/<Guide>/<Topic>`, and any other
- * file is its folder path plus `/Examples` (with the owner added when the folder isn't it).
+ * The title an owner's stories would have, from the stories of its sibling components:
+ * their group, and their naming (`FormAmountField` is `Forms/Fields/AmountField`, so
+ * `FormHiddenField` is `Forms/Fields/HiddenField`). Siblings are the other component
+ * folders beside the owner's folder or, in a flat folder, the stories beside the file.
+ */
+function siblingTitle(file: string, owner: string): string | undefined {
+  const dir = dirname(file)
+  const stories =
+    basename(dir) === owner
+      ? readdirSync(dirname(dir)).map((name) => join(dirname(dir), name, `${name}.stories.tsx`))
+      : existsSync(dir)
+        ? readdirSync(dir).map((name) => join(dir, name))
+        : []
+  for (const path of stories.filter((path) => path.endsWith('.stories.tsx') && existsSync(path))) {
+    const title = storiesTitle(path)
+    if (!title) continue
+    const at = title.lastIndexOf('/')
+    const name = title.slice(at + 1)
+    const component = basename(path).replace(/\.stories\.tsx$/, '')
+    if (!component.endsWith(name)) continue
+    const prefix = component.slice(0, component.length - name.length)
+    const ownerName = owner.startsWith(prefix) ? owner.slice(prefix.length) : owner
+    return `${title.slice(0, at)}/${ownerName}/Examples`
+  }
+  return undefined
+}
+
+/**
+ * The title for an examples file without owner stories, on the ADR 0010 tree:
+ * `src/docs/<guide>/<topic>.examples.tsx` is `<Package>/<Guide>/<Topic>`, like the guide
+ * stories, and any other file takes its sibling components' group (`siblingTitle`). With
+ * neither, it is `<Package>/<Owner>/Examples`, which the tree test reports.
  */
 function pathTitle(file: string, owner: string): string {
   const source = packageSource(file)
@@ -64,10 +94,9 @@ function pathTitle(file: string, owner: string): string {
   const folders = dirname(file).slice(source.length).split(sep).filter(Boolean)
   const root = PACKAGES[name] ?? label(name)
   if (folders.length === 2 && folders[0] === 'docs') {
-    return [root, 'Docs', ...folders.slice(1), owner].map(label).join('/')
+    return [root, ...folders.slice(1), owner].map(label).join('/')
   }
-  const segments = folders.at(-1) === owner ? folders : [...folders, owner]
-  return [root, ...segments, 'Examples'].map(label).join('/')
+  return siblingTitle(file, owner) ?? `${root}/${owner}/Examples`
 }
 
 /**

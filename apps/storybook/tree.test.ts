@@ -7,7 +7,7 @@
  * sidebar shows.
  */
 import { execFileSync } from 'node:child_process'
-import { globSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { globSync, mkdtempSync, readFileSync, rmSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { tmpdir } from 'node:os'
 import { dirname, join, relative, resolve, sep } from 'node:path'
@@ -137,26 +137,31 @@ describe('the Storybook tree', () => {
 })
 
 describe('the title of an examples file without owner stories', () => {
-  const dir = mkdtempSync(join(tmpdir(), 'kiln-examples-title-'))
-  afterAll(() => {
-    rmSync(dir, { recursive: true, force: true })
-  })
-
-  /** Writes an empty examples file at `path` under a scratch package and returns it. */
-  function examplesFile(path: string): string {
-    const file = join(dir, 'packages', path)
-    mkdirSync(dirname(file), { recursive: true })
-    writeFileSync(file, '')
-    return file
+  /** Whether a title sits under a node of the ADR 0010 tree. */
+  const onTree = (title: string) => {
+    const [top = '', group = ''] = title.split('/')
+    return TREE[top]?.includes(group) ?? false
   }
 
-  it('names a guide topic by its path (<Package>/Docs/<Guide>/<Topic>)', () => {
-    const file = examplesFile('forms/src/docs/getting-started/first-form.examples.tsx')
-    expect(examplesTitle(file)).toBe('Forms/Docs/Getting started/First form')
+  it('names a guide topic by its path (<Package>/<Guide>/<Topic>)', () => {
+    const title = examplesTitle(
+      join(ROOT, 'packages/forms/src/docs/getting-started/first-form.examples.tsx'),
+    )
+    expect(title).toBe('Forms/Getting started/First form')
+    expect(onTree(title)).toBe(true)
   })
 
-  it('names a storyless owner by its folder path plus Examples', () => {
-    const file = examplesFile('forms/src/fields/FormHiddenField/FormHiddenField.examples.tsx')
-    expect(examplesTitle(file)).toBe('Forms/Fields/FormHiddenField/Examples')
+  it("names a storyless owner like its sibling components' stories, plus Examples", () => {
+    const field = examplesTitle(
+      join(ROOT, 'packages/forms/src/components/fields/FormNewField/FormNewField.examples.tsx'),
+    )
+    const component = examplesTitle(
+      join(ROOT, 'packages/ui/src/components/actions/NewAction/NewAction.examples.tsx'),
+    )
+    expect([field, component]).toEqual([
+      'Forms/Fields/NewField/Examples',
+      'UI/Actions/NewAction/Examples',
+    ])
+    expect([field, component].every(onTree)).toBe(true)
   })
 })
