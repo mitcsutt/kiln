@@ -69,7 +69,7 @@ The agent skills that `kiln-ui` and `kiln-forms` ship are built from docs pages,
 
 To open the Storybook workbench, run `pnpm --filter @mitcsutt/kiln-storybook dev`. The story tests need Chromium from Playwright the first time: `pnpm --filter @mitcsutt/kiln-storybook exec playwright install chromium`. They start in Paper, light; set `STORYBOOK_THEME` and `STORYBOOK_MODE` to run them in another theme or mode, as CI does for every one.
 
-CI runs all of these except `format` and `generate:skills` on every pull request and on `main`, plus a changeset check on pull requests, and they must all pass. On a pull request it also comments the size report, compared with the base branch.
+CI runs all of these except `format` and `generate:skills` on every pull request (not on pushes to `main`, which the pull request already checked), plus a changeset check on pull requests, and they must all pass. On a pull request it also comments the size report, compared with the base branch.
 
 ## Developing against a local Kiln
 
