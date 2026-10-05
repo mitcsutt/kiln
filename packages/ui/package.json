@@ -1,6 +1,6 @@
 {
   "name": "@mitcsutt/kiln-ui",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Kiln: a themeable React design system on Radix primitives, plain CSS and design tokens",
   "keywords": [
     "kiln",

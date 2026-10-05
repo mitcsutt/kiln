@@ -1,6 +1,6 @@
 {
   "name": "@mitcsutt/kiln-forms",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Kiln forms: typed React forms on TanStack Form, in component or JSON schema mode, rendered through kiln-ui",
   "keywords": [
     "kiln",

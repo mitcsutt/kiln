@@ -1,5 +1,11 @@
 # @mitcsutt/kiln-forms
 
+## 0.1.3
+
+### Patch Changes
+
+- 4834a79: The agent skills' examples now declare each example as a named export (`export function Usage()`) instead of a default export, matching the docs, where the examples now sit beside the code they document. The examples are otherwise unchanged.
+
 ## 0.1.2
 
 ### Patch Changes
