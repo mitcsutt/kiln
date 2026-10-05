@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Inline, RadioGroup, Text } from '@mitcsutt/kiln-ui'
 import { Fieldset } from '#components/inputs/Fieldset'
-import { RadioGroup } from './RadioGroup'
 
 const meta = {
   title: 'UI/Inputs/RadioGroup',
@@ -67,4 +67,33 @@ export const Invalid: Story = {
       </RadioGroup>
     </Fieldset>
   ),
+}
+
+/**
+ * One deck from three, with the car deck disabled.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <RadioGroup aria-label="Deck" defaultValue="upper">
+        {[
+          { value: 'upper', label: 'Upper deck' },
+          { value: 'lower', label: 'Lower deck' },
+          { value: 'car', label: 'Car deck', disabled: true },
+        ].map((option) => (
+          <Inline key={option.value} gap={3}>
+            <RadioGroup.Item
+              value={option.value}
+              id={`deck-${option.value}`}
+              disabled={option.disabled}
+            />
+            <Text as="label" htmlFor={`deck-${option.value}`}>
+              {option.label}
+            </Text>
+          </Inline>
+        ))}
+      </RadioGroup>
+    )
+  },
 }

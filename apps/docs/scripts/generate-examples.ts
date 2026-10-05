@@ -5,8 +5,7 @@
  * All three are keyed by the id `exampleId` in `src/lib/examples.ts` reads:
  *
  * - `Button#Hierarchy` is the `Hierarchy` story of `Button.stories.tsx`, tagged `docs`
- *   (`stories-examples.ts`, ADR 0028), or the `Hierarchy` export of the `*.examples.tsx` file
- *   beside `Button` (`examples-files.ts`, ADR 0025). A page shows it with
+ *   (`stories-examples.ts`, ADR 0028). A page shows it with
  *   `<Example of="Button" name="Hierarchy" />`.
  *
  * The code shown is the example's slice (`extract-example.ts`): its component and the helpers
@@ -16,10 +15,9 @@
  *
  *   node scripts/generate-examples.ts
  */
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { mkdirSync, rmSync, writeFileSync } from 'node:fs'
 import { dirname, join, relative, resolve, sep } from 'node:path'
-import { examplesFiles } from './examples-files.ts'
-import { exampleNames, extractExample } from './extract-example.ts'
+import { extractExample } from './extract-example.ts'
 import { docsStoriesFiles, type DocsStory } from './stories-examples.ts'
 
 const app = resolve(import.meta.dirname, '..')
@@ -33,8 +31,8 @@ interface Entry {
   file: string
   exportName: string
   snippet: string
-  /** The text the slice is cut from: the file itself, or a stories file read as examples. */
-  text?: string
+  /** The stories file read as an examples file, which the slice is cut from. */
+  text: string
 }
 
 /** An import path from `from` (a file) to `to`, without the extension. */
@@ -52,24 +50,6 @@ function own(of: string, file: string) {
   const other = owners.get(of)
   if (other) throw new Error(`${other} and ${file} are both the examples of ${of}.`)
   owners.set(of, file)
-}
-
-for (const { of, file } of examplesFiles(repo)) {
-  own(of, file)
-  const path = join(repo, file)
-  const names = exampleNames(path, readFileSync(path, 'utf8'))
-  if (names.length === 0) throw new Error(`${file} exports no examples.`)
-  if (names.includes('default')) {
-    throw new Error(`${file} has a default export. Name each example (\`Usage\` by default).`)
-  }
-  for (const name of names) {
-    entries.push({
-      id: `${of}#${name}`,
-      file: path,
-      exportName: name,
-      snippet: `${of}.${name}.tsx`,
-    })
-  }
 }
 
 /** The docs stories of each stories file, in file order, for `<Examples of>`. */
@@ -94,7 +74,7 @@ rmSync(snippetDir, { recursive: true, force: true })
 const sources: Record<string, string> = {}
 const imports: string[] = []
 for (const [index, { id, file, exportName, snippet, text }] of entries.entries()) {
-  const code = await extractExample(file, text ?? readFileSync(file, 'utf8'), exportName)
+  const code = await extractExample(file, text, exportName)
   sources[id] = code
   const out = join(snippetDir, snippet)
   mkdirSync(dirname(out), { recursive: true })

@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Tabs, Text } from '@mitcsutt/kiln-ui'
 import { expect, userEvent, within } from 'storybook/test'
 import { storyRoot } from '#components/_story/storyRoot'
 import { Stack } from '#components/layout/Stack'
-import { Tabs } from './Tabs'
 
 const meta = {
   title: 'UI/Navigation/Tabs',
@@ -39,25 +39,6 @@ export const Playground: Story = {
     )
     await expect(canvas.getByRole('tabpanel')).toHaveTextContent('Priya Nair')
   },
-}
-
-/** Compact pills for a view switch inside a panel — a storage breakdown. */
-export const Pill: Story = {
-  args: { variant: 'pill', defaultValue: 'projects' },
-  render: (args) => (
-    <Tabs {...args}>
-      <Tabs.List aria-label="Storage breakdown">
-        <Tabs.Trigger value="projects">Projects</Tabs.Trigger>
-        <Tabs.Trigger value="members">Members</Tabs.Trigger>
-        <Tabs.Trigger value="file-types">File types</Tabs.Trigger>
-      </Tabs.List>
-      <Tabs.Content value="projects">
-        Atlas redesign 52 GB · Billing migration 21 GB · Help centre 8 GB
-      </Tabs.Content>
-      <Tabs.Content value="members">Priya Nair 18 GB · Tomás Ortega 11 GB</Tabs.Content>
-      <Tabs.Content value="file-types">Images 44 GB · Video 29 GB · Documents 8 GB</Tabs.Content>
-    </Tabs>
-  ),
 }
 
 /** Long lists scroll sideways on phones instead of wrapping. */
@@ -120,4 +101,60 @@ export const Vertical: Story = {
       <Tabs.Content value="export">Export CSV for 2025–26</Tabs.Content>
     </Tabs>
   ),
+}
+
+/**
+ * Use tabs for peers the reader moves between: timetables by day, settings by area. Don't use them
+ * for steps in order (that's a [Stepper](/docs/ui/navigation/stepper)) or for switching how the
+ * same data is drawn (that's a [SegmentedControl](/docs/ui/actions/segmented-control)). Name the
+ * list with `aria-label`.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Tabs defaultValue="weekdays">
+        <Tabs.List aria-label="Coastal line timetable">
+          <Tabs.Trigger value="weekdays">Weekdays</Tabs.Trigger>
+          <Tabs.Trigger value="saturday">Saturday</Tabs.Trigger>
+          <Tabs.Trigger value="sunday">Sunday and holidays</Tabs.Trigger>
+        </Tabs.List>
+        <Tabs.Content value="weekdays">
+          <Text>Every 20 minutes from 06:10 to 23:50.</Text>
+        </Tabs.Content>
+        <Tabs.Content value="saturday">
+          <Text>Every 30 minutes from 07:00 to 23:30.</Text>
+        </Tabs.Content>
+        <Tabs.Content value="sunday">
+          <Text>Hourly from 08:00 to 22:00.</Text>
+        </Tabs.Content>
+      </Tabs>
+    )
+  },
+}
+
+/**
+ * `variant="underline"` (the default) sits on a hairline and marks the current tab with an accent
+ * bar, for page-level sections. `variant="pill"` is compact, for switching views inside a card or
+ * panel.
+ */
+export const Pill: Story = {
+  name: 'Pill tabs',
+  tags: ['docs'],
+  render: function Pill() {
+    return (
+      <Tabs defaultValue="map" variant="pill">
+        <Tabs.List aria-label="Route view">
+          <Tabs.Trigger value="map">Map</Tabs.Trigger>
+          <Tabs.Trigger value="stops">Stops</Tabs.Trigger>
+        </Tabs.List>
+        <Tabs.Content value="map">
+          <Text tone="muted">The route on a map of the bay.</Text>
+        </Tabs.Content>
+        <Tabs.Content value="stops">
+          <Text tone="muted">Fourteen stops, from Harbour Square to Marram Point.</Text>
+        </Tabs.Content>
+      </Tabs>
+    )
+  },
 }

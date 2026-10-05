@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Stack } from '#components/layout/Stack'
-import { Meter } from './Meter'
+import { Meter, meterTone, Stack, Text } from '@mitcsutt/kiln-ui'
 
 const aud = new Intl.NumberFormat('en-AU', {
   style: 'currency',
@@ -124,4 +123,52 @@ export const Sizes: Story = {
       <Meter size="lg" label="Bandwidth" value={0.52} low={0.75} high={1} optimum={0} />
     </Stack>
   ),
+}
+
+/**
+ * `valueLabel` is the spoken and printed value ("212 of 320 seats"). `segments` splits the bar
+ * into discrete cells, for small counts.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Stack gap={5}>
+        <Meter
+          label="Ferry capacity"
+          value={212}
+          max={320}
+          high={280}
+          optimum={0}
+          valueLabel="212 of 320 seats"
+        />
+        <Meter
+          label="Timetable storage"
+          value={86}
+          max={90}
+          high={80}
+          optimum={0}
+          valueLabel="86 GB of 90 GB"
+        />
+        <Meter label="Bike racks free" value={2} max={12} low={3} optimum={12} segments={12} />
+      </Stack>
+    )
+  },
+}
+
+/**
+ * `meterTone` returns the tone a meter would pick. Unlike the native `<meter>`, a value past `max`
+ * still counts as past `high`: a plan over its quota must not read as fine.
+ */
+export const Tone: Story = {
+  name: 'The tone without the bar',
+  tags: ['docs'],
+  render: function Tone() {
+    return (
+      <Text>
+        Using 94 GB of a 90 GB storage quota reads as{' '}
+        <strong>{meterTone(94, { min: 0, max: 90, high: 80, optimum: 0 })}</strong>.
+      </Text>
+    )
+  },
 }

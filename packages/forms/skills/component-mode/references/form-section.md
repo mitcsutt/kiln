@@ -14,7 +14,12 @@ import { Stack } from '@mitcsutt/kiln-ui'
 
 export function Usage() {
   const form = useAppForm({
-    defaultValues: { name: 'Ines Varga', email: 'ines@example.com', card: '4417', expiry: '09/28' },
+    defaultValues: {
+      name: 'Ines Varga',
+      email: 'ines@example.com',
+      card: '4417',
+      expiry: '09/28',
+    },
   })
   return (
     <Form form={form} aria-label="Account">

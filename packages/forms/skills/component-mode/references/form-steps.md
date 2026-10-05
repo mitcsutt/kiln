@@ -41,7 +41,9 @@ export function Usage() {
           <form.TextField
             name="to"
             label="To"
-            validators={{ onDynamic: ({ value }) => (value ? undefined : 'Where are you going?') }}
+            validators={{
+              onDynamic: ({ value }) => (value ? undefined : 'Where are you going?'),
+            }}
           />
         </FormStep>
         <FormStep value="when" title="When">

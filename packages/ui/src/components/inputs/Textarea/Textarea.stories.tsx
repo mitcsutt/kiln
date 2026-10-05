@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Textarea } from '@mitcsutt/kiln-ui'
 import { Stack } from '#components/layout/Stack'
-import { Textarea } from './Textarea'
 
 const meta = {
   title: 'UI/Inputs/Textarea',
@@ -55,4 +55,22 @@ export const States: Story = {
       <Textarea aria-label="Disabled" defaultValue="Imported from a CSV upload" disabled rows={2} />
     </Stack>
   ),
+}
+
+/**
+ * A message that grows from two rows to six as it's typed.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Textarea
+        aria-label="Message to the crew"
+        placeholder="Anything the crew should know, like a wheelchair space or a large bag"
+        autoResize
+        rows={2}
+        maxRows={6}
+      />
+    )
+  },
 }

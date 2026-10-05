@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { RangeSlider } from '@mitcsutt/kiln-ui'
 import { Stack } from '#components/layout/Stack'
-import { RangeSlider } from './RangeSlider'
 
 const pounds: Intl.NumberFormatOptions = {
   style: 'currency',
@@ -62,3 +62,24 @@ export const MeetingWindow: Story = {
 }
 
 export const Invalid: Story = { args: { invalid: true } }
+
+/**
+ * A departure window between 05:00 and 23:00, at least an hour wide.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <RangeSlider
+        aria-label="Departure window"
+        defaultValue={[7, 10]}
+        min={5}
+        max={23}
+        minStepsBetweenThumbs={1}
+        thumbLabels={['Earliest departure', 'Latest departure']}
+        showValue
+        formatOptions={{ style: 'unit', unit: 'hour' }}
+      />
+    )
+  },
+}

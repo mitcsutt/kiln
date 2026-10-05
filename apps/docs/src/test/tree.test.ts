@@ -21,6 +21,10 @@ describe('one tree for the docs and Storybook', () => {
   it.each(stories)('$title has a docs page', ({ title, stories: names }) => {
     const path = titleToPath(title)
     if (paths.has(pagePath(path))) return
+    // A guide's stories file that holds only docs stories (`Forms/Getting started/First form`)
+    // is shown on other pages, which the 'shows every docs story on a page' check covers.
+    const docs = docsStoriesOwners().includes(path) ? docsStories(path) : []
+    if (docs.length && names.every((name) => docs.some((story) => story.name === name))) return
     expect(names.length, `${path} is neither a page nor a folder of pages`).toBeGreaterThan(0)
     for (const name of names) expect(paths.has(`${path}/${titleToPath(name)}`), name).toBe(true)
   })
@@ -100,9 +104,8 @@ describe('page references', () => {
     expect(exampleProblems(body, { exports: known, ids: exampleIds() })).toEqual([])
   })
 
-  it('names each examples file after a public export', () => {
-    const owners = new Set(exampleIds().flatMap((id) => (id.includes('#') ? id.split('#', 1) : [])))
-    expect([...owners].filter((of) => !of.includes('/') && !known.has(of))).toEqual([])
+  it('names each stories file with docs stories after a public export, or a guide by its path', () => {
+    expect(docsStoriesOwners().filter((of) => !of.includes('/') && !known.has(of))).toEqual([])
   })
 
   // ADR 0028: a story tagged `docs` is written for the docs site, so a page must show it.
@@ -128,9 +131,9 @@ describe('page references', () => {
 })
 
 /**
- * What's wrong with a page's `<Example />` tags (ADR 0025). `of` names a public export that has
- * an examples file, or a guide's examples file by its path, and `name` is one of that file's
- * exports.
+ * What's wrong with a page's `<Example />` and `<Examples />` tags (ADR 0028). `of` names a
+ * public export whose stories file has docs stories, or a guide's stories file by its path, and
+ * `name` is one of that file's docs stories.
  */
 function exampleProblems(body: string, { exports, ids }: { exports: Set<string>; ids: string[] }) {
   const known = new Set(ids)
@@ -149,9 +152,9 @@ function exampleProblems(body: string, { exports, ids }: { exports: Set<string>;
     } else if (!of.includes('/') && !exports.has(of)) {
       problems.push(`${tag}: ${of} isn't a public export`)
     } else if (!files.has(of)) {
-      problems.push(`${tag}: ${of} has no examples file`)
+      problems.push(`${tag}: ${of} has no docs stories`)
     } else if (!known.has(exampleId({ of, name }))) {
-      problems.push(`${tag}: the examples of ${of} don't export ${name ?? 'Usage'}`)
+      problems.push(`${tag}: ${of} has no docs story ${name ?? 'Usage'}`)
     }
   }
   return problems
@@ -179,18 +182,18 @@ describe('exampleProblems', () => {
     ])
   })
 
-  it('rejects an export with no examples file', () => {
+  it('rejects an export with no docs stories', () => {
     expect(check('<Example of="Card" />')).toEqual([
-      '<Example of="Card" />: Card has no examples file',
+      '<Example of="Card" />: Card has no docs stories',
     ])
     expect(check('<Example of="forms/getting-started/arrays" />')).toEqual([
-      '<Example of="forms/getting-started/arrays" />: forms/getting-started/arrays has no examples file',
+      '<Example of="forms/getting-started/arrays" />: forms/getting-started/arrays has no docs stories',
     ])
   })
 
-  it('rejects an example the file does not export', () => {
+  it('rejects a docs story the file does not have', () => {
     expect(check('<Example of="Button" name="Sizes" />')).toEqual([
-      `<Example of="Button" name="Sizes" />: the examples of Button don't export Sizes`,
+      '<Example of="Button" name="Sizes" />: Button has no docs story Sizes',
     ])
   })
 

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Stack } from '#components/layout/Stack'
+import { Box, Button, Grid, Inline, Stack, Text, TextField } from '@mitcsutt/kiln-ui'
 import styles from './Foundations.module.css'
 
 const meta = {
@@ -50,4 +50,59 @@ export const Widths: Story = {
       ))}
     </Stack>
   ),
+}
+
+/**
+ * `data-density` multiplies the theme's own density for a subtree: `compact` by 0.85,
+ * `comfortable` by 1.15. Spacing, control heights and gaps all follow. Use it for a dense admin
+ * table inside an otherwise roomy page.
+ */
+export const Density: Story = {
+  tags: ['docs'],
+  render: function Density() {
+    return (
+      <Inline gap={7} align="start">
+        {(['compact', undefined, 'comfortable'] as const).map((density) => (
+          <div key={density ?? 'default'} data-density={density}>
+            <Stack gap={4}>
+              <Text size="sm" tone="muted">
+                {density ?? 'Theme default'}
+              </Text>
+              <TextField label="Berth" defaultValue="3" />
+              <Button size="sm">Board now</Button>
+            </Stack>
+          </div>
+        ))}
+      </Inline>
+    )
+  },
+}
+
+const STOPS = ['Harbour', 'Northpoint', 'Kelso Bay', 'Ferry Lane', 'Old Quay', 'Marram Point']
+
+/**
+ * Layout props that make sense per breakpoint take either a value or a map of values, from `base`
+ * up:
+ *
+ * ```ts
+ * type Responsive<T> = T | Partial<Record<'base' | 'sm' | 'md' | 'lg' | 'xl', T>>
+ * ```
+ *
+ * Breakpoints are mobile-first viewport widths: `sm` 40em, `md` 48em, `lg` 64em, `xl` 80em.
+ * Structural components also take `hideBelow` and `hideAbove`, so responsive visibility is a prop
+ * too: `<NavLinks hideBelow="md">` beside `<BottomNav hideAbove="md">`.
+ */
+export const ResponsiveProps: Story = {
+  tags: ['docs'],
+  render: function ResponsiveProps() {
+    return (
+      <Grid columns={{ base: 1, sm: 2, lg: 3 }} gap={{ base: 3, md: 5 }}>
+        {STOPS.map((stop) => (
+          <Box key={stop} padding={4} border radius="surface">
+            <Text weight="medium">{stop}</Text>
+          </Box>
+        ))}
+      </Grid>
+    )
+  },
 }

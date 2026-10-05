@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { RatingField } from './RatingField'
+import { RatingField } from '@mitcsutt/kiln-ui'
 
 const meta = {
   title: 'UI/Inputs/RatingField',
@@ -24,3 +24,19 @@ export const WithError: Story = {
 }
 
 export const Horizontal: Story = { args: { layout: 'horizontal', defaultValue: 5 } }
+
+/**
+ * A clearable rating with a label and a description.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <RatingField
+        label="How was your crossing?"
+        description="Your rating is anonymous"
+        clearable
+      />
+    )
+  },
+}

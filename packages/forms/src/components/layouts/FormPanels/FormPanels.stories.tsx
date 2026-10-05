@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Form, FormPanel, FormPanels, useAppForm } from '@mitcsutt/kiln-forms'
+import { Button } from '@mitcsutt/kiln-ui'
 import { panelsFixture, panelsSchema } from '#stories/fixtures/structure'
 import { parityStory } from '#stories/parity'
 import { StoryForm } from '#stories/_kit'
-import { FormPanel, FormPanels } from './FormPanels'
 
 const meta = {
   title: 'Forms/Layouts/FormPanels',
@@ -35,3 +36,37 @@ export const ComponentAndSchema: Story = parityStory(panelsFixture, panelsSchema
   'FormPanels',
   'FormPanels.Panel',
 ])
+
+/**
+ * `actions` puts buttons in a panel's header.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const form = useAppForm({
+      defaultValues: {
+        home: { label: 'Home', stop: 'Harbour Square' },
+        work: { label: 'Work', stop: 'Northpoint Library' },
+      },
+    })
+    return (
+      <Form form={form} aria-label="Saved places">
+        <FormPanels columns={{ base: 1, md: 2 }}>
+          <FormPanel title="Home" description="Your usual starting point">
+            <form.TextField name="home.stop" label="Nearest stop" />
+          </FormPanel>
+          <FormPanel
+            title="Work"
+            actions={
+              <Button size="sm" variant="ghost" tone="critical">
+                Remove
+              </Button>
+            }
+          >
+            <form.TextField name="work.stop" label="Nearest stop" />
+          </FormPanel>
+        </FormPanels>
+      </Form>
+    )
+  },
+}

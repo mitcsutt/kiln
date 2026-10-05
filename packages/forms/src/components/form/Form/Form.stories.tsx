@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Text } from '@mitcsutt/kiln-ui'
+import { Form, ResetButton, SubmitButton, useAppForm } from '@mitcsutt/kiln-forms'
+import { Grid, Inline, Stack, Text } from '@mitcsutt/kiln-ui'
+import { useState } from 'react'
 import type { AnyKitForm } from '#runtime/formRuntime'
-import { SubmitButton } from '#components/form/SubmitButton'
 import { kit } from '#kit/defaultKit'
-import { Form } from './Form'
 
 const meta = {
   title: 'Forms/Layouts/Form',
@@ -94,4 +94,73 @@ function ViewModeDemo() {
 
 export const ViewMode: Story = {
   render: () => <ViewModeDemo />,
+}
+
+/**
+ * Give it an accessible name, with `aria-label` or `aria-labelledby`, so assistive technology can
+ * list it as a form landmark.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const [sent, setSent] = useState('')
+    const form = useAppForm({
+      defaultValues: { route: 'Morning commute' },
+      onSubmit: async ({ value }) => {
+        await new Promise((resolve) => setTimeout(resolve, 500))
+        setSent(value.route)
+      },
+    })
+    return (
+      <Form form={form} aria-label="Rename route">
+        <Stack gap={5}>
+          <form.TextField name="route" label="Route name" />
+          <Inline gap={3}>
+            <SubmitButton>Save name</SubmitButton>
+            <ResetButton>Undo changes</ResetButton>
+          </Inline>
+          {sent ? <Text tone="muted">Saved as {sent}.</Text> : null}
+        </Stack>
+      </Form>
+    )
+  },
+}
+
+function Example({ state }: { state: 'disabled' | 'readOnly' }) {
+  const form = useAppForm({ defaultValues: { name: 'Ines Varga', stop: 'Harbour Square' } })
+  return (
+    <Form
+      form={form}
+      aria-label={state}
+      disabled={state === 'disabled'}
+      readOnly={state === 'readOnly'}
+    >
+      <form.TextField
+        name="name"
+        label={state === 'disabled' ? 'Name (disabled)' : 'Name (read-only)'}
+      />
+      <form.TextField name="stop" label="Home stop" />
+    </Form>
+  )
+}
+
+/**
+ * `disabled` and `readOnly` apply to every field inside, and `mode="view"` renders every field as
+ * read-only text (see [View mode](/docs/forms/getting-started/view-mode)).
+ *
+ * They mean different things for the payload. A read-only field can be focused and is submitted,
+ * but isn't validated. A disabled field can't be focused and isn't validated either. Neither has
+ * errors.
+ */
+export const States: Story = {
+  name: 'Disabled, read-only and view',
+  tags: ['docs'],
+  render: function States() {
+    return (
+      <Grid columns={{ base: 1, sm: 2 }} gap={6}>
+        <Example state="disabled" />
+        <Example state="readOnly" />
+      </Grid>
+    )
+  },
 }

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { ChoiceCards } from '@mitcsutt/kiln-ui'
 import { Fieldset } from '#components/inputs/Fieldset'
 import { Amount } from '#components/typography/Amount'
-import { ChoiceCards } from './ChoiceCards'
 
 const perYear = (n: number) => (
   <>
@@ -99,3 +99,30 @@ export const Invalid: Story = {
 }
 
 export const ReadOnly: Story = { args: { readOnly: true } }
+
+/**
+ * Each option has a `label`, and optionally a `description` and a `meta` (usually the price).
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <ChoiceCards
+        aria-label="Pass"
+        type="single"
+        defaultValue="month"
+        columns={{ base: 1, sm: 3 }}
+        options={[
+          { value: 'week', label: 'Week', description: 'Seven days from first use', meta: '£24' },
+          { value: 'month', label: 'Month', description: 'A calendar month', meta: '£82' },
+          {
+            value: 'year',
+            label: 'Year',
+            description: 'Twelve months, night buses included',
+            meta: '£790',
+          },
+        ]}
+      />
+    )
+  },
+}

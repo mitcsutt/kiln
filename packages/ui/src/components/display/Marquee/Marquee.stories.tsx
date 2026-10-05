@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Marquee } from '@mitcsutt/kiln-ui'
 import { Stack } from '#components/layout/Stack'
 import { LiveIndicator } from '#components/feedback/LiveIndicator'
-import { Marquee } from './Marquee'
 
 const features = [
   'Unlimited projects',
@@ -97,4 +97,25 @@ export const AllSurfaces: Story = {
       <Marquee {...args} surface="accent" label={`${args.label} (accent)`} />
     </Stack>
   ),
+}
+
+const UPDATES = [
+  '07:10 Kelso Bay: on time',
+  '07:25 Old Quay: boarding at berth 2',
+  '07:30 Marram Point: 4 min late',
+  '07:40 Northpoint: on time',
+  '07:55 Harbour loop: on time',
+]
+
+/**
+ * It pauses on hover and has a pause button by default (WCAG 2.2.2 asks for one on anything that
+ * moves for more than five seconds). Under `prefers-reduced-motion` it stops and becomes a row you
+ * can scroll. `label` names the region, `speed` and `direction` set the movement, and `surface`
+ * puts it on an `accent` or `inverse` band.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return <Marquee label="Departures" items={UPDATES} speed="slow" separator="·" />
+  },
 }

@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Form, useAppForm, useFieldValue } from '@mitcsutt/kiln-forms'
+import { Code, Stack, Text } from '@mitcsutt/kiln-ui'
 import { FieldDemo, NEVER_SETTLES, StatesGrid, StoryForm } from '#stories/_kit'
 import { FormSegmentedField } from './FormSegmentedField'
 
@@ -163,4 +165,32 @@ export const ViewMode: Story = {
       {(form) => <form.SegmentedField name="value" label="Report period" options={periods} />}
     </FieldDemo>
   ),
+}
+
+/**
+ * A segmented control always shows one segment selected, so give the path a sensible default.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const form = useAppForm({ defaultValues: { journey: 'return' } })
+    const value = useFieldValue(form, 'journey')
+    return (
+      <Form form={form} aria-label="SegmentedField example">
+        <Stack gap={4}>
+          <form.SegmentedField
+            name="journey"
+            label="Journey"
+            options={[
+              { value: 'single', label: 'Single' },
+              { value: 'return', label: 'Return' },
+            ]}
+          />
+          <Text size="sm" tone="muted">
+            Value: <Code>{JSON.stringify(value)}</Code>
+          </Text>
+        </Stack>
+      </Form>
+    )
+  },
 }

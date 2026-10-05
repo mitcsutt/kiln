@@ -1,6 +1,6 @@
 # 0026. Docs examples run as Storybook stories
 
-- **Status:** Accepted (amends [0018](0018-storybook-workbench.md))
+- **Status:** Superseded by [0028](0028-docs-stories.md)
 - **Date:** 2026-10-05
 
 ## Context

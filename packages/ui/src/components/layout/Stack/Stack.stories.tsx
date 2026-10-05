@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Inline } from '#components/layout/Inline'
+import { Button, Heading, Inline, Stack, Text } from '@mitcsutt/kiln-ui'
 import { Body, Cell, Figure, Label, Title } from '#components/layout/_story/StoryKit'
-import { Stack } from './Stack'
 
 const meta = {
   title: 'UI/Layout/Stack',
@@ -24,7 +23,7 @@ export const Playground: Story = {
 }
 
 /** Rules between items instead of boxes around them. The rule sits in the middle of the gap. */
-export const Dividers: Story = {
+export const DividedList: Story = {
   render: () => (
     <Stack as="ul" gap={4} dividers>
       {[
@@ -58,4 +57,52 @@ export const Responsive: Story = {
       </Stack>
     </Stack>
   ),
+}
+
+/**
+ * `align` sets the cross-axis alignment (`stretch` by default, so children fill the width). Use
+ * `align="start"` when a child like a button should keep its own width.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Stack gap={4} align="start">
+        <Heading level={3} size="xl">
+          Night bus N14
+        </Heading>
+        <Text tone="muted">Every 20 minutes from Harbour Square until 04:40.</Text>
+        <Button size="sm">Save route</Button>
+      </Stack>
+    )
+  },
+}
+
+const STOPS = [
+  { name: 'Harbour Square', time: '23:10' },
+  { name: 'Northpoint Library', time: '23:18' },
+  { name: 'Kelso Bay Pier', time: '23:31' },
+]
+
+/**
+ * `dividers` draws a hairline between every child, centred in the gap. It's usually better than a
+ * card per item: lists, settings rows and timelines read as one document.
+ */
+export const Dividers: Story = {
+  name: 'Rules between items',
+  tags: ['docs'],
+  render: function Dividers() {
+    return (
+      <Stack gap={{ base: 3, md: 4 }} dividers>
+        {STOPS.map((stop) => (
+          <Inline key={stop.name} justify="between">
+            <Text>{stop.name}</Text>
+            <Text numeric tone="muted">
+              {stop.time}
+            </Text>
+          </Inline>
+        ))}
+      </Stack>
+    )
+  },
 }

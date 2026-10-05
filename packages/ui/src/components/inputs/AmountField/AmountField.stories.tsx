@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { AmountField } from '@mitcsutt/kiln-ui'
 import { Stack } from '#components/layout/Stack'
-import { AmountField } from './AmountField'
 
 const meta = {
   title: 'UI/Inputs/AmountField',
@@ -33,4 +33,24 @@ export const WithError: Story = {
 
 export const Warning: Story = {
   args: { defaultValue: 245000, warning: 'That is £1,000 more than last month' },
+}
+
+/**
+ * Store money in minor units (`unit="minor"`, integer pence) so it's never a float.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <AmountField
+        label="Top-up"
+        description="Between £5 and £200"
+        currency="GBP"
+        locale="en-GB"
+        defaultValue={20}
+        min={5}
+        max={200}
+      />
+    )
+  },
 }

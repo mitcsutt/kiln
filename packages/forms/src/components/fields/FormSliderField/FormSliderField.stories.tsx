@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Form, useAppForm, useFieldValue } from '@mitcsutt/kiln-forms'
+import { Code, Stack, Text } from '@mitcsutt/kiln-ui'
 import { FieldDemo, NEVER_SETTLES, StatesGrid, StoryForm } from '#stories/_kit'
 import { FormSliderField } from './FormSliderField'
 
@@ -200,4 +202,34 @@ export const ViewMode: Story = {
       )}
     </FieldDemo>
   ),
+}
+
+/**
+ * A slider always has a value. If "no answer" is a real state, a number field or a select is a
+ * better fit.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const form = useAppForm({ defaultValues: { walk: 800 } })
+    const value = useFieldValue(form, 'walk')
+    return (
+      <Form form={form} aria-label="SliderField example">
+        <Stack gap={4}>
+          <form.SliderField
+            name="walk"
+            label="Longest walk to a stop"
+            min={200}
+            max={2000}
+            step={100}
+            showValue
+            formatOptions={{ style: 'unit', unit: 'meter' }}
+          />
+          <Text size="sm" tone="muted">
+            Value: <Code>{JSON.stringify(value)}</Code>
+          </Text>
+        </Stack>
+      </Form>
+    )
+  },
 }

@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { TagsInput } from '@mitcsutt/kiln-ui'
 import { expect, userEvent, within } from 'storybook/test'
 import { storyRoot } from '#components/_story/storyRoot'
 import { Stack } from '#components/layout/Stack'
-import { TagsInput } from './TagsInput'
 
 const meta = {
   title: 'UI/Inputs/TagsInput',
@@ -70,4 +70,23 @@ export const Disabled: Story = {
 
 export const Invalid: Story = {
   args: { invalid: true, defaultValue: [] },
+}
+
+/**
+ * `normalise` (`trim`, `lowercase` or `none`) cleans each tag, `allowDuplicates` permits repeats,
+ * `maxTags` caps the count, and `onReject` tells you why a tag wasn't added.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <TagsInput
+        aria-label="Route labels"
+        defaultValue={['commute', 'weekend']}
+        maxTags={5}
+        normalise="lowercase"
+        placeholder="Add a label"
+      />
+    )
+  },
 }

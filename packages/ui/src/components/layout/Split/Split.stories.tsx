@@ -1,11 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Stack } from '#components/layout/Stack'
+import { Box, Heading, Split, Stack, Text } from '@mitcsutt/kiln-ui'
 import { Inline } from '#components/layout/Inline'
 import { Container } from '#components/layout/Container'
 import { Section } from '#components/layout/Section'
 import { AspectRatio } from '#components/layout/AspectRatio'
 import { Artwork, Body, Cell, Label, Title } from '#components/layout/_story/StoryKit'
-import { Split } from './Split'
 
 const meta = {
   title: 'UI/Layout/Split',
@@ -132,7 +131,7 @@ export const MediaAndCopy: Story = {
   ),
 }
 
-export const Ratios: Story = {
+export const EveryRatio: Story = {
   render: () => (
     <Stack gap={3}>
       {(['1/1', '1/2', '2/1', '1/3', '3/1', '5/7', '7/5', '4/8', '8/4'] as const).map((ratio) => {
@@ -146,4 +145,57 @@ export const Ratios: Story = {
       })}
     </Stack>
   ),
+}
+
+const CHANGES = [
+  'Route 7 now stops at Ferry Lane on weekdays.',
+  'Night buses run every 15 minutes on Fridays.',
+  'Kelso Bay Pier reopens on 3 November.',
+]
+
+/**
+ * A heading and a list of changes in a 5/7 split, stacked on a phone.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Split ratio="5/7" gap={{ base: 5, md: 7 }}>
+        <Heading level={3} size="2xl">
+          Timetable changes this month
+        </Heading>
+        <Stack gap={4} dividers>
+          {CHANGES.map((change) => (
+            <Text key={change}>{change}</Text>
+          ))}
+        </Stack>
+      </Split>
+    )
+  },
+}
+
+/**
+ * `ratio` is one of `1/1`, `1/2`, `2/1`, `1/3`, `3/1`, `5/7`, `7/5`, `4/8` or `8/4`. `5/7` is the
+ * default. `reverse` swaps the visual order without changing the reading order.
+ */
+export const Ratios: Story = {
+  tags: ['docs'],
+  render: function Ratios() {
+    return (
+      <Stack gap={4}>
+        {(['1/1', '1/2', '1/3', '5/7'] as const).map((ratio) => (
+          <Split key={ratio} ratio={ratio} gap={3} collapseBelow="sm">
+            <Box padding={3} surface="sunken" radius="field">
+              <Text size="sm">{ratio}</Text>
+            </Box>
+            <Box padding={3} border radius="field">
+              <Text size="sm" tone="muted">
+                The wider side
+              </Text>
+            </Box>
+          </Split>
+        ))}
+      </Stack>
+    )
+  },
 }

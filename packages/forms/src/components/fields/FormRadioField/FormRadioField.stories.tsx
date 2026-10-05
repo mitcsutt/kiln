@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Form, useAppForm, useFieldValue } from '@mitcsutt/kiln-forms'
+import { Code, Stack, Text } from '@mitcsutt/kiln-ui'
 import type { FieldOption } from '#kit/contracts'
 import { FieldDemo, NEVER_SETTLES, primitive, StatesGrid, StoryForm } from '#stories/_kit'
 import { FormRadioField } from './FormRadioField'
@@ -167,4 +169,33 @@ export const ViewMode: Story = {
       {(form) => <form.RadioField name="value" label="T-shirt size" options={shirtSizes} />}
     </FieldDemo>
   ),
+}
+
+/**
+ * Exported as `FormRadioField`, named after its kind. For five or more options, a select field
+ * takes less room.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const form = useAppForm({ defaultValues: { deck: null as string | null } })
+    const value = useFieldValue(form, 'deck')
+    return (
+      <Form form={form} aria-label="RadioField example">
+        <Stack gap={4}>
+          <form.RadioField
+            name="deck"
+            label="Deck"
+            options={[
+              { value: 'upper', label: 'Upper deck', description: 'Best views' },
+              { value: 'lower', label: 'Lower deck', description: 'Closest to the café' },
+            ]}
+          />
+          <Text size="sm" tone="muted">
+            Value: <Code>{JSON.stringify(value)}</Code>
+          </Text>
+        </Stack>
+      </Form>
+    )
+  },
 }

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Stack } from '#components/layout/Stack'
-import { TextField } from './TextField'
+import { Stack, TextField } from '@mitcsutt/kiln-ui'
+import { useState } from 'react'
 
 const meta = {
   title: 'UI/Inputs/TextField',
@@ -59,5 +59,40 @@ export const CharacterCount: Story = {
     defaultValue: 'A shared component library for the web and mobile apps.',
     maxLength: 80,
     showCount: true,
+  },
+}
+
+/**
+ * `onValueChange` gives you the string without the event. `showCount` with `maxLength` shows how
+ * many characters are left. Use the right `type` and `autoComplete` (`email`, `tel`,
+ * `postal-code`): phones show the right keyboard, and browsers can fill the field in.
+ *
+ * To bind it to form state and validation, use kiln-forms'
+ * [FormTextField](/docs/forms/fields/text-field), which renders this component.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const [name, setName] = useState('')
+    return (
+      <Stack gap={5}>
+        <TextField
+          label="Route name"
+          description="Shown on your home screen"
+          placeholder="Morning commute"
+          value={name}
+          onValueChange={setName}
+          maxLength={32}
+          showCount
+        />
+        <TextField label="Email" type="email" autoComplete="email" required />
+        <TextField
+          label="Discount code"
+          optional
+          error="That code expired on 30 September"
+          defaultValue="SUMMER26"
+        />
+      </Stack>
+    )
   },
 }

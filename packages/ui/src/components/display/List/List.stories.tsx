@@ -1,13 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Amount, Avatar, ChevronRightIcon, List, Text } from '@mitcsutt/kiln-ui'
 import { Stack } from '#components/layout/Stack'
-import { Avatar } from '#components/display/Avatar'
 import { Badge } from '#components/display/Badge'
 import { Tag } from '#components/display/Tag'
-import { Amount } from '#components/typography/Amount'
 import { Numeral } from '#components/typography/Numeral'
 import { LiveIndicator } from '#components/feedback/LiveIndicator'
 import { StatusDot } from '#components/feedback/StatusDot'
-import { List } from './List'
 
 const portrait = new URL('../Avatar/portrait.story.svg', import.meta.url).href
 
@@ -216,4 +214,69 @@ export const HighlightedWithTones: Story = {
       </List>
     </Stack>
   ),
+}
+
+const TRIPS = [
+  { who: 'Ines Varga', route: 'Harbour Square to Kelso Bay', when: 'Today, 07:10', fare: 4.2 },
+  { who: 'Tomasz Okoro', route: 'Old Quay to Northpoint', when: 'Today, 08:45', fare: 2.8 },
+  { who: 'Priya Halvorsen', route: 'Marram Point to Harbour Square', when: 'Yesterday', fare: 6.5 },
+]
+
+/**
+ * `density="compact"` tightens rows; `divided={false}` drops the rules; `as="ol"` makes it
+ * ordered.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <List>
+        {TRIPS.map((trip) => (
+          <List.Item key={trip.who}>
+            <List.Leading>
+              <Avatar name={trip.who} size="sm" />
+            </List.Leading>
+            <List.Content>
+              <Text weight="medium">{trip.route}</Text>
+              <List.Description>
+                {trip.who}, {trip.when}
+              </List.Description>
+            </List.Content>
+            <List.Trailing>
+              <Amount value={trip.fare} currency="GBP" locale="en-GB" />
+            </List.Trailing>
+          </List.Item>
+        ))}
+      </List>
+    )
+  },
+}
+
+const LINES = ['Coastal line', 'Harbour loop', 'Market shuttle']
+
+/**
+ * `interactive` gives a row a hover fill, and `asChild` lets the row be a link, so the whole row
+ * is one target. `selected` marks the current row and `highlighted` marks "you".
+ */
+export const Interactive: Story = {
+  name: 'Rows that act',
+  tags: ['docs'],
+  render: function Interactive() {
+    return (
+      <List density="compact">
+        {LINES.map((line, index) => (
+          <List.Item key={line} interactive asChild selected={index === 0}>
+            <a href={`#${line.toLowerCase().replace(/ /g, '-')}`}>
+              <List.Content>
+                <Text weight="medium">{line}</Text>
+              </List.Content>
+              <List.Trailing>
+                <ChevronRightIcon />
+              </List.Trailing>
+            </a>
+          </List.Item>
+        ))}
+      </List>
+    )
+  },
 }

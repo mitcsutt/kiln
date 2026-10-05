@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Prose } from '@mitcsutt/kiln-ui'
 import { CodeBlock } from '#components/display/CodeBlock'
 import { Table } from '#components/display/Table'
 import { Alert } from '#components/feedback/Alert'
 import { Quote } from '#components/typography/Quote'
-import { Prose } from './Prose'
 
 const meta = {
   title: 'UI/Typography/Prose',
@@ -189,4 +189,37 @@ export const WithComponents: Story = {
       </Alert>
     </Prose>
   ),
+}
+
+/**
+ * Kiln components placed inside `Prose` keep their own styles: `Prose` stops at any element with
+ * `data-kiln-component`, which every Kiln component sets on its root. Its rules sit at one-class
+ * specificity, so a `className` you pass always wins.
+ *
+ * `size` is `sm`, `md` (the theme's `--prose-size`) or `lg`. `--prose-measure` changes the line
+ * length (68 characters by default).
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Prose as="article">
+        <h2>Travelling with a bike</h2>
+        <p>
+          Bikes ride free on every ferry and on buses marked with the cycle symbol, outside the
+          morning peak. Fold-up bikes are welcome at any time.
+        </p>
+        <ul>
+          <li>Two bikes per ferry crossing, first come, first served.</li>
+          <li>
+            Tandems and cargo bikes need a <strong>booked space</strong>.
+          </li>
+        </ul>
+        <blockquote>Lock your bike to the rack on the car deck, not to the railings.</blockquote>
+        <p>
+          Questions? Ask a crew member, or <a href="#contact">write to us</a>.
+        </p>
+      </Prose>
+    )
+  },
 }

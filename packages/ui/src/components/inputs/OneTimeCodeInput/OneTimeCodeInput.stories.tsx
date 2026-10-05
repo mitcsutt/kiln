@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Stack } from '#components/layout/Stack'
-import { OneTimeCodeInput } from './OneTimeCodeInput'
+import { OneTimeCodeInput, Stack, Text } from '@mitcsutt/kiln-ui'
+import { useState } from 'react'
 
 const meta = {
   title: 'UI/Inputs/OneTimeCodeInput',
@@ -47,4 +47,24 @@ export const Sizes: Story = {
       <OneTimeCodeInput {...args} size="lg" aria-label="Code, large" />
     </Stack>
   ),
+}
+
+/**
+ * `length` sets the number of cells, `validationType` limits what can be typed (`numeric` by
+ * default), and `masked` hides the characters. The cells are a group, labelled by the surrounding
+ * Field.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const [done, setDone] = useState('')
+    return (
+      <Stack gap={3}>
+        <OneTimeCodeInput aria-label="Verification code" length={6} onComplete={setDone} />
+        <Text size="sm" tone="muted">
+          {done ? `Checking ${done}` : 'Paste or type the code from the text message'}
+        </Text>
+      </Stack>
+    )
+  },
 }

@@ -28,8 +28,8 @@ Each record captures one decision: the context, what was decided, and what follo
 | [0022](0022-linked-consumers.md)                   | Linked consumers resolve built output through `kiln-dist`    | Accepted                           |
 | [0023](0023-theme-script-entry.md)                 | A React-free `theme-script` entry that plain Node loads      | Accepted                           |
 | [0024](0024-kiln-forms-source-layout.md)           | `kiln-forms` source layout: components by group, no `core`   | Accepted                           |
-| [0025](0025-colocated-examples.md)                 | Docs examples live beside their code, sliced per export      | Accepted                           |
-| [0026](0026-docs-examples-in-storybook.md)         | Docs examples run as Storybook stories                       | Accepted                           |
+| [0025](0025-colocated-examples.md)                 | Docs examples live beside their code, sliced per export      | Superseded by 0028                 |
+| [0026](0026-docs-examples-in-storybook.md)         | Docs examples run as Storybook stories                       | Superseded by 0028                 |
 | [0027](0027-storybook-tests-without-isolation.md)  | Story tests share one page per worker, not one per file      | Accepted                           |
 | [0028](0028-docs-stories.md)                       | Docs examples are stories tagged `docs`, opted in one by one | Accepted                           |
 

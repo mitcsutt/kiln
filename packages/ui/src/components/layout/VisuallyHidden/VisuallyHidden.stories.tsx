@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Inline, Text, VisuallyHidden } from '@mitcsutt/kiln-ui'
 import { Stack } from '#components/layout/Stack'
 import { Button } from '#components/actions/Button'
 import { PlusIcon } from '#icons'
 import { Body } from '#components/layout/_story/StoryKit'
-import { VisuallyHidden } from './VisuallyHidden'
 
 const meta = {
   title: 'UI/Layout/VisuallyHidden',
@@ -37,4 +37,26 @@ export const SkipLink: Story = {
       <Body tone="muted">Press Tab to reveal the skip link above this line.</Body>
     </Stack>
   ),
+}
+
+/**
+ * Screen readers announce the rating above as "4.2 out of 5, from 318 passenger reviews". `as`
+ * renders it as another element, such as a heading (`as="h2"`). `focusable` makes a hidden link
+ * appear when it receives focus, which is how a skip link works.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Inline gap={2}>
+        <Text numeric weight="strong">
+          4.2
+        </Text>
+        <Text tone="muted" aria-hidden="true">
+          ★
+        </Text>
+        <VisuallyHidden>out of 5, from 318 passenger reviews</VisuallyHidden>
+      </Inline>
+    )
+  },
 }

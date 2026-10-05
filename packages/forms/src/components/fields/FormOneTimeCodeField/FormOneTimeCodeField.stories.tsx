@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Form, useAppForm, useFieldValue } from '@mitcsutt/kiln-forms'
+import { Code, Stack, Text } from '@mitcsutt/kiln-ui'
 import { FieldDemo, NEVER_SETTLES, StatesGrid, StoryForm } from '#stories/_kit'
 import { FormOneTimeCodeField } from './FormOneTimeCodeField'
 
@@ -150,4 +152,31 @@ export const ViewMode: Story = {
       {(form) => <form.OneTimeCodeField name="value" label="Verification code" length={6} />}
     </FieldDemo>
   ),
+}
+
+/**
+ * `submitOnComplete` submits the form as soon as the last cell is filled, which suits a sign-in
+ * screen with nothing else on it.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const form = useAppForm({ defaultValues: { code: '' } })
+    const value = useFieldValue(form, 'code')
+    return (
+      <Form form={form} aria-label="OneTimeCodeField example">
+        <Stack gap={4}>
+          <form.OneTimeCodeField
+            name="code"
+            label="Verification code"
+            description="Six digits, sent to the number ending 4417"
+            length={6}
+          />
+          <Text size="sm" tone="muted">
+            Value: <Code>{JSON.stringify(value)}</Code>
+          </Text>
+        </Stack>
+      </Form>
+    )
+  },
 }

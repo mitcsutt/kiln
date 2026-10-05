@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Inline } from '#components/layout/Inline'
+import { Inline, LiveIndicator } from '@mitcsutt/kiln-ui'
 import { Stack } from '#components/layout/Stack'
-import { LiveIndicator } from './LiveIndicator'
 
 const meta = {
   title: 'UI/Feedback/LiveIndicator',
@@ -49,4 +48,23 @@ export const Sizes: Story = {
       <LiveIndicator size="md" variant="pill" label="Live" />
     </Inline>
   ),
+}
+
+/**
+ * It's deliberately not a live region: a counter that announced itself every minute would be
+ * noise. If a change matters, announce it where it happens. For states that sit still, use a
+ * [StatusDot](/docs/ui/feedback/status-dot).
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Inline gap={5}>
+        <LiveIndicator />
+        <LiveIndicator label="Tracking" tone="positive" />
+        <LiveIndicator label="Live map" variant="pill" />
+        <LiveIndicator label="Paused" tone="neutral" pulse={false} size="sm" />
+      </Inline>
+    )
+  },
 }

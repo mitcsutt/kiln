@@ -63,7 +63,7 @@ Run these from the repo root. Turborepo runs each one across the workspace and c
 
 To work on one package, filter to it, for example `pnpm turbo run test --filter=@mitcsutt/kiln-eslint-config`.
 
-To run the docs site, run `pnpm --filter @mitcsutt/kiln-docs dev` and open http://localhost:3000. Pages are MDX in `apps/docs/content/docs`, and each live example is a named export of a `*.examples.tsx` file beside the code it documents, which the page shows with `<Example of="…" />`; API tables come from the package types. [`apps/docs/README.md`](apps/docs/README.md) has the details.
+To run the docs site, run `pnpm --filter @mitcsutt/kiln-docs dev` and open http://localhost:3000. Pages are MDX in `apps/docs/content/docs`, and each live example is a story tagged `docs` in the stories file beside the code it documents, which the page shows with `<Examples of="…" />` or `<Example of="…" />`; API tables come from the package types. [`apps/docs/README.md`](apps/docs/README.md) has the details.
 
 The agent skills that `kiln-ui` and `kiln-forms` ship are built from docs pages, which `apps/docs/src/skills/manifest.ts` lists ([ADR 0011](docs/adr/0011-ai-tooling.md)). After you change one of those pages, run `pnpm generate:skills` and commit the result: the docs tests fail while a skill differs from its pages. Never edit a file in `packages/*/skills` by hand.
 
@@ -197,7 +197,7 @@ It asks which packages changed, the bump for each (`patch`, `minor` or `major`),
 pnpm changeset --minor @mitcsutt/kiln-eslint-config -m "Add the node preset"
 ```
 
-The `Changeset` CI job fails when a pull request changes a published package without adding a changeset. Changes that only touch tests (`test/`, `*.test.*`), stories (`*.stories.*`) or docs examples (`*.examples.*`) don't count. If a change needs no release, such as a README typo, add an empty changeset instead: `pnpm changeset --empty`. `pnpm changeset status --since=origin/main` runs the same check locally once your changeset is committed.
+The `Changeset` CI job fails when a pull request changes a published package without adding a changeset. Changes that only touch tests (`test/`, `*.test.*`) or stories (`*.stories.*`, docs examples included) don't count. If a change needs no release, such as a README typo, add an empty changeset instead: `pnpm changeset --empty`. `pnpm changeset status --since=origin/main` runs the same check locally once your changeset is committed.
 
 While packages are on `0.x`, a breaking change is a `minor` bump. Rule changes in the config packages are semver changes: a new error-level ESLint rule is a minor or major bump, never a patch.
 

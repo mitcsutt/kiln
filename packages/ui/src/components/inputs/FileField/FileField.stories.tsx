@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { FileField } from '@mitcsutt/kiln-ui'
 import { Stack } from '#components/layout/Stack'
 import type { StoredFile } from '#components/inputs/FileDrop'
-import { FileField } from './FileField'
 
 const earlierReceipts: StoredFile[] = [
   { id: 'r-112', name: 'invoice-2026-09-28.pdf', size: 184_000, type: 'application/pdf' },
@@ -40,4 +40,22 @@ export const Receipts: Story = {
 
 export const WithError: Story = {
   args: { required: true, error: 'office-scan.heic is not a JPG, PNG or PDF' },
+}
+
+/**
+ * Put the constraints (types and size) in the description, so nobody finds out by being rejected.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <FileField
+        label="Photo for your pass"
+        description="A JPEG or PNG under 5 MB, face straight on"
+        accept="image/jpeg,image/png"
+        maxSize={5_000_000}
+        preview="thumbnails"
+      />
+    )
+  },
 }

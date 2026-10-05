@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { SliderField } from '@mitcsutt/kiln-ui'
 import { Stack } from '#components/layout/Stack'
-import { SliderField } from './SliderField'
 
 const meta = {
   title: 'UI/Inputs/SliderField',
@@ -38,3 +38,24 @@ export const WithError: Story = {
 }
 
 export const Horizontal: Story = { args: { layout: 'horizontal' } }
+
+/**
+ * Show the value (`showValue`): a slider's position alone is hard to read exactly.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <SliderField
+        label="Maximum walk to a stop"
+        description="We'll only suggest routes within this distance"
+        defaultValue={800}
+        min={200}
+        max={2000}
+        step={100}
+        showValue
+        formatOptions={{ style: 'unit', unit: 'meter' }}
+      />
+    )
+  },
+}

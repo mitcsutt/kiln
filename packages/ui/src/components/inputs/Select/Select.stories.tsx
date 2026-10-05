@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Select } from '@mitcsutt/kiln-ui'
 import { Stack } from '#components/layout/Stack'
 import { taskCategories, periods, countryGroups } from '#components/inputs/internal/storyData'
-import { Select } from './Select'
 
 const meta = {
   title: 'UI/Inputs/Select',
@@ -95,4 +95,37 @@ export const Compound: Story = {
       </Select.Root>
     </Stack>
   ),
+}
+
+/**
+ * For more than a dozen options, or options people know by name, a
+ * [Combobox](/docs/ui/inputs/combobox) that filters as you type is faster.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Select
+        aria-label="Ticket type"
+        placeholder="Choose a ticket"
+        groups={[
+          {
+            label: 'Single journeys',
+            options: [
+              { value: 'single', label: 'Single' },
+              { value: 'return', label: 'Return' },
+            ],
+          },
+          {
+            label: 'Passes',
+            options: [
+              { value: 'day', label: 'Day pass' },
+              { value: 'week', label: 'Week pass' },
+              { value: 'annual', label: 'Annual pass', disabled: true },
+            ],
+          },
+        ]}
+      />
+    )
+  },
 }

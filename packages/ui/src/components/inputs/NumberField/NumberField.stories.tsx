@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { NumberField } from '@mitcsutt/kiln-ui'
 import { Stack } from '#components/layout/Stack'
-import { NumberField } from './NumberField'
 
 const meta = {
   title: 'UI/Inputs/NumberField',
@@ -42,4 +42,24 @@ export const Horizontal: Story = {
       <NumberField {...args} />
     </Stack>
   ),
+}
+
+/**
+ * The value is `number | null` (empty is `null`, not `0`). `clampOnBlur` pulls an out-of-range
+ * value back inside when the reader leaves the field.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <NumberField
+        label="Passengers"
+        description="Children under five travel free and don't need a seat"
+        defaultValue={2}
+        min={1}
+        max={9}
+        stepper
+      />
+    )
+  },
 }

@@ -19,11 +19,10 @@ src/
     <Name>.tsx             component (named export, forwardRef)
     <Name>.module.css      styles (CSS Module, UNLAYERED: see below)
     <Name>.test.tsx        behaviour tests (Vitest + Testing Library)
-    <Name>.stories.tsx     Storybook stories (title 'UI/<Group>/<Name>')
-    <Name>.examples.tsx    docs examples, one named export each (see "Examples" below)
+    <Name>.stories.tsx     Storybook stories (title 'UI/<Group>/<Name>'), docs stories included
     index.ts               re-exports component + types
-  docs/                    foundation stories (tokens, type, space), pattern stories, and guide
-                           examples with no single owner (<topic>.examples.tsx, named by path)
+  docs/                    foundation stories (tokens, type, space), pattern stories, and the
+                           docs stories of guides with no single owner (<topic>.stories.tsx)
   test/                    Vitest setup and test helpers
 ```
 
@@ -79,12 +78,6 @@ Groups: `layout`, `typography`, `actions`, `inputs`, `display`, `navigation`, `f
 - A story tagged `docs` (`tags: ['docs']` on the story, never on the meta) is a docs example: the docs site shows it, in file order, with its JSDoc as the caption (Markdown) and its code underneath. Every other story is a workbench story and needs no tag. Storybook's own Docs page shows every story (`tags: ['autodocs']` in the preview).
 - A docs story has a JSDoc caption, a `render` that takes no args (a named function when it uses hooks), imports from packages only (`@mitcsutt/kiln-ui`, `react`, never `#…` or relative), and lays out with `Stack`/`Inline`/`Grid`, never `style`. `kiln/docs-story` enforces all four. A `Playground` is never a docs story.
 - A page shows them with `<Examples of="<Name>" />`: the first follows the lead without a heading, and each later one gets its `name`, or its export name in sentence case, as a heading. Renaming a docs story changes its heading, anchor and Storybook URL. `<Example of="<Name>" name="<Story>" />` shows one.
-
-**Examples** (`<Name>.examples.tsx`, [ADR 0025](../../docs/adr/0025-colocated-examples.md))
-
-- The code readers copy from the docs site. Each named export is one example (`Usage` for the default); a page renders it with `<Example of="<Name>" name="<Export>" />`, and shows only the slice of the file that export needs.
-- Only imports and declarations at the top level, imports only from packages (`@mitcsutt/kiln-ui`, `react`, never `#…` or relative), and only examples exported. Shared helpers are plain unexported declarations. Lint enforces all three.
-- Storybook runs each example as a story under `UI/<Group>/<Name>/Examples` ([ADR 0026](../../docs/adr/0026-docs-examples-in-storybook.md)), so the story rules above apply: invented content, right in every theme and mode, no axe violations.
 
 **Tests** (`<Name>.test.tsx`): behaviour, not snapshots: roles/labels, keyboard, controlled/uncontrolled state, data attributes, ref forwarding, responsive var mapping. `vi`, `describe`, `it`, `expect` are globals. Use `must()` from `#test/must` for a node a test needs to exist, rather than a `!` assertion.
 

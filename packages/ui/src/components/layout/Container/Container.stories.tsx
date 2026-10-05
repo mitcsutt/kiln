@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Stack } from '#components/layout/Stack'
+import { Container, Stack, Text } from '@mitcsutt/kiln-ui'
 import { Section } from '#components/layout/Section'
 import { Body, Cell, Title } from '#components/layout/_story/StoryKit'
-import { Container } from './Container'
 
 const meta = {
   title: 'UI/Layout/Container',
@@ -57,4 +56,24 @@ export const Article: Story = {
       </Container>
     </Section>
   ),
+}
+
+/**
+ * The `narrow`, `text` and `content` widths, one above the other.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Stack gap={4}>
+        {(['narrow', 'text', 'content'] as const).map((width) => (
+          <Container key={width} width={width}>
+            <Text size="sm" tone="muted">
+              width=&quot;{width}&quot;: the timetable for the coastal line, laid out to this width.
+            </Text>
+          </Container>
+        ))}
+      </Stack>
+    )
+  },
 }

@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { PasswordInput } from '@mitcsutt/kiln-ui'
 import { expect, userEvent, within } from 'storybook/test'
 import { storyRoot } from '#components/_story/storyRoot'
 import { Stack } from '#components/layout/Stack'
-import { PasswordInput } from './PasswordInput'
 
 const meta = {
   title: 'UI/Inputs/PasswordInput',
@@ -50,4 +50,20 @@ export const Sizes: Story = {
       <PasswordInput {...args} size="lg" aria-label="Password, large" />
     </Stack>
   ),
+}
+
+/**
+ * A current password, hidden until the toggle shows it.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <PasswordInput
+        aria-label="Password"
+        autoComplete="current-password"
+        defaultValue="harbour-lights-42"
+      />
+    )
+  },
 }

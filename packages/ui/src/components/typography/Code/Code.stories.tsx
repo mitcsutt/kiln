@@ -1,8 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Stack } from '#components/layout/Stack'
-import { Text } from '#components/typography/Text'
-import { Heading } from '#components/typography/Heading'
-import { Code } from './Code'
+import { Code, Heading, Stack, Text } from '@mitcsutt/kiln-ui'
 
 const meta = {
   title: 'UI/Typography/Code',
@@ -32,4 +29,23 @@ export const InContext: Story = {
       </Text>
     </Stack>
   ),
+}
+
+/**
+ * Code inside a sentence and inside a heading, sized to each.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Stack gap={3}>
+        <Text>
+          Run <Code>pnpm add @mitcsutt/kiln-ui</Code>, then import <Code>styles.css</Code> once.
+        </Text>
+        <Heading level={3} size="lg">
+          The <Code>gap</Code> prop
+        </Heading>
+      </Stack>
+    )
+  },
 }

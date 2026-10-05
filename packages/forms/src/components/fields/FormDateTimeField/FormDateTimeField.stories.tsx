@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Form, useAppForm, useFieldValue } from '@mitcsutt/kiln-forms'
+import { Code, Stack, Text } from '@mitcsutt/kiln-ui'
 import { FieldDemo, NEVER_SETTLES, StatesGrid, StoryForm } from '#stories/_kit'
 import { FormDateTimeField } from './FormDateTimeField'
 
@@ -133,4 +135,26 @@ export const ViewMode: Story = {
       {(form) => <form.DateTimeField name="value" label="Send at" />}
     </FieldDemo>
   ),
+}
+
+/**
+ * It renders kiln-ui's [TextField](/docs/ui/inputs/text-field) with `type="datetime-local"`. The
+ * value has no time zone: store the zone separately if it matters.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const form = useAppForm({ defaultValues: { pickup: '' } })
+    const value = useFieldValue(form, 'pickup')
+    return (
+      <Form form={form} aria-label="DateTimeField example">
+        <Stack gap={4}>
+          <form.DateTimeField name="pickup" label="Pick-up time" />
+          <Text size="sm" tone="muted">
+            Value: <Code>{JSON.stringify(value)}</Code>
+          </Text>
+        </Stack>
+      </Form>
+    )
+  },
 }

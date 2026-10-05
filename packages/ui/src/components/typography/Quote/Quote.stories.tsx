@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Stack } from '#components/layout/Stack'
-import { Quote } from './Quote'
+import { Quote, Stack } from '@mitcsutt/kiln-ui'
 
 const meta = {
   title: 'UI/Typography/Quote',
@@ -58,4 +57,24 @@ export const Sizes: Story = {
       </Quote>
     </Stack>
   ),
+}
+
+/**
+ * `cite` is the attribution; `citeUrl` links it and sets the `cite` attribute on the
+ * `<blockquote>`.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Stack gap={6}>
+        <Quote cite="Marta Lindqvist, commuter since 2009">
+          The 07:10 ferry is the only meeting I have never once been late for.
+        </Quote>
+        <Quote size="sm" cite="Harbour Gazette" citeUrl="https://example.com">
+          A timetable you can read at a glance from the back of a crowded pier.
+        </Quote>
+      </Stack>
+    )
+  },
 }

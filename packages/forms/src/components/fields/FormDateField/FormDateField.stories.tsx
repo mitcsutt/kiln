@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Form, useAppForm, useFieldValue } from '@mitcsutt/kiln-forms'
+import { Code, Stack, Text } from '@mitcsutt/kiln-ui'
 import { FieldDemo, NEVER_SETTLES, StatesGrid, StoryForm } from '#stories/_kit'
 import { FormDateField } from './FormDateField'
 
@@ -135,4 +137,27 @@ export const ViewMode: Story = {
       {(form) => <form.DateField name="value" label="Date" />}
     </FieldDemo>
   ),
+}
+
+/**
+ * Dates are ISO strings, never `Date` objects: they survive JSON and don't drift across time
+ * zones. It renders kiln-ui's [TextField](/docs/ui/inputs/text-field) with `type="date"`, so the
+ * platform's own date picker does the work.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const form = useAppForm({ defaultValues: { travelDate: '' } })
+    const value = useFieldValue(form, 'travelDate')
+    return (
+      <Form form={form} aria-label="DateField example">
+        <Stack gap={4}>
+          <form.DateField name="travelDate" label="Travel date" min="2026-10-01" />
+          <Text size="sm" tone="muted">
+            Value: <Code>{JSON.stringify(value)}</Code>
+          </Text>
+        </Stack>
+      </Form>
+    )
+  },
 }

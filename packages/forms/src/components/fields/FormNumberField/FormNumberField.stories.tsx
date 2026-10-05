@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Form, useAppForm, useFieldValue } from '@mitcsutt/kiln-forms'
+import { Code, Stack, Text } from '@mitcsutt/kiln-ui'
 import { FieldDemo, NEVER_SETTLES, StatesGrid, StoryForm } from '#stories/_kit'
 import { FormNumberField } from './FormNumberField'
 
@@ -155,4 +157,27 @@ export const ViewMode: Story = {
       {(form) => <form.NumberField name="value" label="Instalments" />}
     </FieldDemo>
   ),
+}
+
+/**
+ * Model a number that can be empty as `number | null`. It binds to a plain `number` path too, but
+ * clearing it still writes `null`, and a `required` rule reports it. In view mode the value is
+ * formatted with the field's own `formatOptions` and `locale`.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const form = useAppForm({ defaultValues: { passengers: 2 } })
+    const value = useFieldValue(form, 'passengers')
+    return (
+      <Form form={form} aria-label="NumberField example">
+        <Stack gap={4}>
+          <form.NumberField name="passengers" label="Passengers" min={1} max={9} stepper />
+          <Text size="sm" tone="muted">
+            Value: <Code>{JSON.stringify(value)}</Code>
+          </Text>
+        </Stack>
+      </Form>
+    )
+  },
 }

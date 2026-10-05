@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Form, FormAside, useAppForm } from '@mitcsutt/kiln-forms'
+import { Stack } from '@mitcsutt/kiln-ui'
 import { asideFixture, asideSchema } from '#stories/fixtures/structure'
 import { parityStory } from '#stories/parity'
 import { StoryForm } from '#stories/_kit'
-import { FormAside } from './FormAside'
 
 const meta = {
   title: 'Forms/Layouts/FormAside',
@@ -34,3 +35,26 @@ export const Playground: Story = {
 }
 
 export const ComponentAndSchema: Story = parityStory(asideFixture, asideSchema, ['FormAside'])
+
+/**
+ * The fields are a group labelled by the heading. `ratio` is `4/8` (the default), `5/7` or `1/3`.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const form = useAppForm({ defaultValues: { name: 'Ines Varga', bio: '', alerts: true } })
+    return (
+      <Form form={form} aria-label="Profile">
+        <Stack gap={8} dividers>
+          <FormAside title="Profile" description="Shown to people you share routes with.">
+            <form.TextField name="name" label="Display name" />
+            <form.TextareaField name="bio" label="About you" optional />
+          </FormAside>
+          <FormAside title="Alerts" description="Email only. Nothing is sent to your phone.">
+            <form.SwitchField name="alerts" label="Delays on saved routes" />
+          </FormAside>
+        </Stack>
+      </Form>
+    )
+  },
+}

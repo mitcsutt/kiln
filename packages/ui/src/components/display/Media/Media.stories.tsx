@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Grid, Media } from '@mitcsutt/kiln-ui'
 import { Inline } from '#components/layout/Inline'
 import { Stack } from '#components/layout/Stack'
-import { Media } from './Media'
 
 const portrait = new URL('../Avatar/portrait.story.svg', import.meta.url).href
 
@@ -47,5 +47,33 @@ export const Fallback: Story = {
     alt: 'Billing settings with the Team plan selected',
     caption: 'Billing settings · Team plan',
     fallback: 'Screenshot unavailable',
+  },
+}
+
+/**
+ * `alt` is required. Describe what the image shows, or pass an empty string for a purely
+ * decorative one. `fit` is `cover` or `contain`, `radius` is `media` (the default), `surface` or
+ * `none`, and `fallback` replaces the failure state. `imgProps` reaches the `<img>` for anything
+ * else, like `srcSet`.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Grid columns={{ base: 1, sm: 2 }} gap={5}>
+        <Media
+          src="/images/harbour.svg"
+          alt="The ferry at Harbour Square pier at dusk"
+          ratio="16/9"
+          caption="Harbour Square at dusk"
+        />
+        <Media
+          src="/missing/route-map.png"
+          alt="Route map of the coastal line"
+          ratio="16/9"
+          caption="When an image fails, the frame keeps its shape"
+        />
+      </Grid>
+    )
   },
 }

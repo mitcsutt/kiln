@@ -1,9 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Stack } from '#components/layout/Stack'
+import { NavLinks, Stack } from '@mitcsutt/kiln-ui'
 import { Inline } from '#components/layout/Inline'
 import { BottomNav } from '#components/navigation/BottomNav'
 import { createIcon, SearchIcon } from '#icons'
-import { NavLinks } from './NavLinks'
 
 const meta = {
   title: 'UI/Navigation/NavLinks',
@@ -111,4 +110,44 @@ export const PairedWithBottomNav: Story = {
       </BottomNav>
     </Stack>
   ),
+}
+
+const LINKS = ['Departures', 'Routes', 'Fares', 'Accessibility']
+
+/**
+ * Every `<nav>` on a page needs its own name, so give each `NavLinks` a `label`. Pass `active` to
+ * the current item. For your router's links, use `asChild`:
+ *
+ * ```tsx
+ * <NavLinks.Item asChild active={pathname === '/routes'}>
+ *   <NextLink href="/routes">Routes</NextLink>
+ * </NavLinks.Item>
+ * ```
+ *
+ * `hideBelow` hides the whole nav on small screens, so it can hand over to a
+ * [BottomNav](/docs/ui/navigation/bottom-nav): `<NavLinks hideBelow="md">` beside `<BottomNav
+ * hideAbove="md">`.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Stack gap={6}>
+        <NavLinks label="Main">
+          {LINKS.map((link, index) => (
+            <NavLinks.Item key={link} href={`#${link.toLowerCase()}`} active={index === 1}>
+              {link}
+            </NavLinks.Item>
+          ))}
+        </NavLinks>
+        <NavLinks label="Account" orientation="vertical" size="sm">
+          <NavLinks.Item href="#profile" active>
+            Profile
+          </NavLinks.Item>
+          <NavLinks.Item href="#passes">Passes</NavLinks.Item>
+          <NavLinks.Item href="#history">Trip history</NavLinks.Item>
+        </NavLinks>
+      </Stack>
+    )
+  },
 }

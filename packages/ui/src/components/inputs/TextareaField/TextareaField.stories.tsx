@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { TextareaField } from '@mitcsutt/kiln-ui'
 import { Stack } from '#components/layout/Stack'
-import { TextareaField } from './TextareaField'
 
 const meta = {
   title: 'UI/Inputs/TextareaField',
@@ -32,5 +32,25 @@ export const WithError: Story = {
     defaultValue: 'Invoice for September and October',
     error: 'Split this into two invoices, one per month',
     optional: false,
+  },
+}
+
+/**
+ * `autoResize` grows it up to `maxRows`. `showCount` with `maxLength` counts down the characters
+ * left.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <TextareaField
+        label="What went wrong?"
+        description="Tell us the date, the route and what happened."
+        autoResize
+        maxRows={8}
+        maxLength={600}
+        showCount
+      />
+    )
   },
 }

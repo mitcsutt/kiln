@@ -1,7 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { SearchIcon } from '#icons'
-import { Stack } from '#components/layout/Stack'
-import { Input } from './Input'
+import { Input, SearchIcon, Stack } from '@mitcsutt/kiln-ui'
 
 const meta = {
   title: 'UI/Inputs/Input',
@@ -66,4 +64,28 @@ export const States: Story = {
       <Input aria-label="Disabled" defaultValue="Imported from the time tracker" disabled />
     </Stack>
   ),
+}
+
+/**
+ * `leading` and `trailing` hold an icon, a currency or a unit inside the box. `numeric` sets
+ * tabular figures, right alignment and `inputMode="decimal"`, for money and quantities. `htmlSize`
+ * is the native `size` attribute (width in characters), since `size` is the control height.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Stack gap={4}>
+        <Input
+          aria-label="Search stops"
+          placeholder="Search stops"
+          leading={<SearchIcon />}
+          type="search"
+        />
+        <Input aria-label="Fare" numeric leading="£" trailing="GBP" placeholder="0.00" />
+        <Input aria-label="Booking reference" size="sm" defaultValue="BAY-40Q" />
+        <Input aria-label="Booking reference" invalid defaultValue="BAY-4" />
+      </Stack>
+    )
+  },
 }

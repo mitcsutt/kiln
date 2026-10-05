@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Rating, Stack } from '@mitcsutt/kiln-ui'
 import { expect, userEvent, waitFor, within } from 'storybook/test'
 import { storyRoot } from '#components/_story/storyRoot'
-import { Stack } from '#components/layout/Stack'
-import { Rating } from './Rating'
 
 const meta = {
   title: 'UI/Inputs/Rating',
@@ -56,3 +55,18 @@ export const ReadOnly: Story = { args: { readOnly: true, defaultValue: 3 } }
 export const Invalid: Story = { args: { invalid: true, defaultValue: null } }
 
 export const Disabled: Story = { args: { disabled: true } }
+
+/**
+ * `max` sets the number of stars, and `itemLabel` names each one for screen readers.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Stack gap={4}>
+        <Rating aria-label="Rate your crossing" defaultValue={4} clearable />
+        <Rating aria-label="Rate the café" defaultValue={3} max={5} size="sm" readOnly />
+      </Stack>
+    )
+  },
+}

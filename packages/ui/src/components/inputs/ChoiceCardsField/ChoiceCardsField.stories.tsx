@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { ChoiceCardsField } from '@mitcsutt/kiln-ui'
 import { Amount } from '#components/typography/Amount'
-import { ChoiceCardsField } from './ChoiceCardsField'
 
 const perYear = (n: number) => (
   <>
@@ -51,3 +51,34 @@ type Story = StoryObj<typeof meta>
 export const Playground: Story = {}
 
 export const WithError: Story = { args: { error: 'Choose a plan to continue' } }
+
+/**
+ * Keep it to a handful of cards. Past five or six, a list is easier to scan.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <ChoiceCardsField
+        label="Add-ons"
+        description="Choose any"
+        type="multiple"
+        columns={{ base: 1, sm: 2 }}
+        options={[
+          {
+            value: 'bike',
+            label: 'Bike space',
+            description: 'Reserved on every crossing',
+            meta: '£2',
+          },
+          {
+            value: 'lounge',
+            label: 'Lounge',
+            description: 'Quiet seats and a hot drink',
+            meta: '£6',
+          },
+        ]}
+      />
+    )
+  },
+}

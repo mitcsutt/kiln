@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Stack } from '#components/layout/Stack'
-import { Slider } from './Slider'
+import { Slider, Stack } from '@mitcsutt/kiln-ui'
 
 const meta = {
   title: 'UI/Inputs/Slider',
@@ -52,3 +51,35 @@ export const Small: Story = { args: { size: 'sm' } }
 export const Invalid: Story = { args: { invalid: true, defaultValue: 45 } }
 
 export const Disabled: Story = { args: { disabled: true } }
+
+/**
+ * `marks` labels points under the track, and a mark's label becomes the thumb's spoken value when
+ * it lands there. `showValue` prints the value, formatted with `formatOptions`. `onValueCommit`
+ * fires when the drag ends, for work you don't want to do on every move.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Stack gap={6}>
+        <Slider
+          aria-label="Walking distance"
+          defaultValue={800}
+          min={0}
+          max={2000}
+          step={100}
+          showValue
+          formatOptions={{ style: 'unit', unit: 'meter' }}
+        />
+        <Slider
+          aria-label="Seats"
+          defaultValue={2}
+          min={1}
+          max={6}
+          marks={[1, 2, 3, 4, 5, 6].map((value) => ({ value, label: String(value) }))}
+          size="sm"
+        />
+      </Stack>
+    )
+  },
+}

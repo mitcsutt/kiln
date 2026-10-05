@@ -1,8 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Stack } from '#components/layout/Stack'
-import { Inline } from '#components/layout/Inline'
-import { Text } from '#components/typography/Text'
-import { Numeral } from './Numeral'
+import { formatNumeral, Inline, Numeral, signOf, Stack, Text } from '@mitcsutt/kiln-ui'
 
 const meta = {
   title: 'UI/Typography/Numeral',
@@ -83,4 +80,66 @@ export const PrefixAndSuffix: Story = {
       </Text>
     </Stack>
   ),
+}
+
+/**
+ * - `format` takes any `Intl.NumberFormatOptions`: percentages, compact notation, units.
+ * - `locale` defaults to `en-AU`.
+ * - `signDisplay` controls the sign, and `tone="auto"` colours positive and negative values with
+ *   the positive and critical tones. Negatives use a true minus sign (U+2212), as wide as a plus.
+ * - `prefix` and `suffix` add text before and after, outside the figures.
+ *
+ * Separators and symbols are set proportionally. Some faces make a tabular comma as wide as a
+ * digit, which reads as "1 , 017"; right-aligned columns still line up.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Stack gap={4}>
+        <Inline gap={2} align="baseline">
+          <Numeral value={18432} size="2xl" />
+          <Text tone="muted">passengers this week</Text>
+        </Inline>
+        <Inline gap={5}>
+          <Numeral
+            value={0.184}
+            format={{ style: 'percent', maximumFractionDigits: 1 }}
+            signDisplay="exceptZero"
+            tone="auto"
+          />
+          <Numeral
+            value={-0.042}
+            format={{ style: 'percent', maximumFractionDigits: 1 }}
+            signDisplay="exceptZero"
+            tone="auto"
+          />
+          <Numeral value={7.4} suffix=" km" />
+          <Numeral value={1250000} format={{ notation: 'compact' }} />
+        </Inline>
+      </Stack>
+    )
+  },
+}
+
+const change = -0.042
+
+/**
+ * `formatNumeral` returns the same text as a plain string, for titles, `aria-label`s and CSV
+ * exports. `formatNumeralParts` splits it into runs of figures and marks, and `signOf` resolves a
+ * number's sign, treating `-0` as zero.
+ */
+export const Format: Story = {
+  name: 'Formatting without the component',
+  tags: ['docs'],
+  render: function Format() {
+    return (
+      <Stack gap={2}>
+        <Text>Plain string: {formatNumeral(18432)}</Text>
+        <Text>
+          Sign of {change}: {signOf(change)}
+        </Text>
+      </Stack>
+    )
+  },
 }
