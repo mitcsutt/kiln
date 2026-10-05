@@ -43,6 +43,17 @@
       },
       "default": "./src/index.ts"
     },
+    "./theme-script": {
+      "kiln-dist": {
+        "types": "./dist/theme/script.d.ts",
+        "default": "./dist/theme/script.js"
+      },
+      "node": {
+        "types": "./dist/theme/script.d.ts",
+        "default": "./dist/theme/script.js"
+      },
+      "default": "./src/theme/script.ts"
+    },
     "./styles.css": {
       "kiln-dist": "./dist/styles.css",
       "default": "./src/styles/index.css"
@@ -68,6 +79,10 @@
         "types": "./dist/index.d.ts",
         "default": "./dist/index.js"
       },
+      "./theme-script": {
+        "types": "./dist/theme/script.d.ts",
+        "default": "./dist/theme/script.js"
+      },
       "./styles.css": "./dist/styles.css",
       "./themes/monograph.css": "./dist/themes/monograph.css",
       "./themes/ledger.css": "./dist/themes/ledger.css",
@@ -83,7 +98,7 @@
   "scripts": {
     "build": "vite build",
     "build:watch": "vite build --watch",
-    "check:package": "pnpm pack --out node_modules/.cache/kiln-pack/package.tgz > /dev/null && publint --pack pnpm --strict && attw node_modules/.cache/kiln-pack/package.tgz --profile esm-only --exclude-entrypoints ./styles.css ./themes/monograph.css ./themes/ledger.css ./themes/fiesta.css",
+    "check:package": "pnpm pack --out node_modules/.cache/kiln-pack/package.tgz > /dev/null && publint --pack pnpm --strict && attw node_modules/.cache/kiln-pack/package.tgz --profile esm-only --exclude-entrypoints ./styles.css ./themes/monograph.css ./themes/ledger.css ./themes/fiesta.css && node scripts/check-theme-script-entry.ts node_modules/.cache/kiln-pack/package.tgz",
     "check:skills": "intent validate",
     "lint": "eslint --max-warnings=0 .",
     "size": "node ../../size-report.ts",

@@ -95,10 +95,10 @@ themeScript('ledger', 'light', { storageKey: 'budget:color-mode' })
 
 ### Without server rendering
 
-A single-page app served from a static `index.html` still paints before React loads, so it needs the script too. Generate it at build time instead of copying it by hand. With Vite, a small plugin in the config puts it at the top of `<head>`:
+A single-page app served from a static `index.html` still paints before React loads, so it needs the script too. Generate it at build time instead of copying it by hand. The config runs in Node, so import `themeScript` from `@mitcsutt/kiln-ui/theme-script`: that entry has no React and nothing else to load. With Vite, a small plugin in the config puts it at the top of `<head>`:
 
 ```ts title="vite.config.ts"
-import { themeScript } from '@mitcsutt/kiln-ui'
+import { themeScript } from '@mitcsutt/kiln-ui/theme-script'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 

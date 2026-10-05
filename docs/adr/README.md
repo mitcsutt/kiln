@@ -26,5 +26,6 @@ Each record captures one decision: the context, what was decided, and what follo
 | [0020](0020-agent-skills.md)                       | How the agent skills are built from the docs              | Accepted                  |
 | [0021](0021-forms-context-in-nested-components.md) | Typed form context for nested components in `kiln-forms`  | Accepted                  |
 | [0022](0022-linked-consumers.md)                   | Linked consumers resolve built output through `kiln-dist` | Accepted                  |
+| [0023](0023-theme-script-entry.md)                 | A React-free `theme-script` entry that plain Node loads   | Accepted                  |
 
 New records use the next number and the same headings: Status, Context, Decision, Consequences.

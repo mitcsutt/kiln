@@ -50,7 +50,7 @@ export function App() {
 
 - **Your own theme** is one CSS file against the token contract, selected the same way (`theme="harbour"`).
 
-Each theme has light and dark modes (`data-mode`, or `mode`/`defaultMode` on `ThemeProvider`), and `data-density` makes any subtree denser or roomier. For SSR (or a static `index.html`) without a flash of the wrong mode, render `themeScript(theme, defaultMode)` in your document `<head>`. The mode is stored under `kiln-color-mode`; pass `storageKey` to `ThemeProvider` and `themeScript` to give each app on one origin its own key.
+Each theme has light and dark modes (`data-mode`, or `mode`/`defaultMode` on `ThemeProvider`), and `data-density` makes any subtree denser or roomier. For SSR (or a static `index.html`) without a flash of the wrong mode, render `themeScript(theme, defaultMode)` in your document `<head>`. Node-side tooling, like a Vite config that writes it into `index.html`, imports it from `@mitcsutt/kiln-ui/theme-script`, which loads without React. The mode is stored under `kiln-color-mode`; pass `storageKey` to `ThemeProvider` and `themeScript` to give each app on one origin its own key.
 
 ## Fonts
 

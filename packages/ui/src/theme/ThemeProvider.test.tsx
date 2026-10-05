@@ -1,7 +1,8 @@
 import { runInThisContext } from 'node:vm'
 import { render, screen, waitFor } from '@testing-library/react'
 import { ThemeProvider, ThemeScope } from './ThemeProvider'
-import { themeScript, useTheme } from './context'
+import { useTheme } from './context'
+import { themeScript } from './script'
 
 function ModeProbe() {
   const { mode } = useTheme()

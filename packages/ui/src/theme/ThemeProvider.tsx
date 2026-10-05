@@ -12,7 +12,8 @@ import { DEFAULT_THEME } from './themes'
 import type { ColorMode, ThemeName } from './themes'
 import type { ThemeContextValue } from './context'
 
-import { ThemeContext, DEFAULT_STORAGE_KEY } from './context'
+import { ThemeContext } from './context'
+import { DEFAULT_STORAGE_KEY } from './script'
 
 const DARK_QUERY = '(prefers-color-scheme: dark)'
 

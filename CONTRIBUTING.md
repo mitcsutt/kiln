@@ -127,11 +127,11 @@ When an app that uses Kiln turns up a problem, fix it in Kiln and try the fix in
 
 Without the dedupe the browser may work while server rendering fails with "Invalid hook call", because Kiln's dependencies load React from Kiln's `node_modules`. Types have the same split: a linked `dist/*.d.ts` reads React's types from Kiln's `node_modules`, so keep the app's `@types/react` and `@types/react-dom` at the versions in Kiln's catalog while it's linked, or JSX types come from two copies.
 
-A config file that imports Kiln (a Vite plugin that calls `themeScript`, say) runs in Node, outside the bundler, so it needs the condition too. Run the tool with `NODE_OPTIONS=--conditions=kiln-dist`, and for Vite add `--configLoader native` so Node loads the config itself.
+Code that runs in Node outside the bundler, such as a Vite config or a script, doesn't get the `kiln-dist` condition, so importing a linked package's root entry resolves to Kiln's source, which Node can't load (`ERR_UNSUPPORTED_DIR_IMPORT`). A published install is fine, because its `exports` point at `dist`. The supported way is to import only what has a Node entry: `@mitcsutt/kiln-ui/theme-script` (`themeScript` and `DEFAULT_STORAGE_KEY`), whose `node` condition points at the built file, linked or not ([ADR 0023](docs/adr/0023-theme-script-entry.md)). If Node-side tooling needs something else from Kiln, give it the same kind of entry rather than working around it in the app.
 
 The config packages (`kiln-eslint-config`, `kiln-tsconfig` and `kiln-prettier-config`) link with a plain `link:` and need none of the above: they have no build, and their own dependencies, such as the ESLint plugins, resolve from Kiln's `node_modules`.
 
-When you add a new `exports` subpath to a package, give it both conditions: `default` for the source and `kiln-dist` for the file `publishConfig.exports` names. The build fails if `kiln-dist` and `publishConfig.exports` differ.
+When you add a new `exports` subpath to a package, give it both conditions: `default` for the source and `kiln-dist` for the file `publishConfig.exports` names, plus `node` with the same file if plain Node should load it. The build fails if `kiln-dist` or `node` differs from `publishConfig.exports`.
 
 ### Make the link reversible
 

@@ -79,15 +79,17 @@ function checkLinkedExports(root: string): void {
   for (const subpath of subpaths) {
     if (subpath === './package.json') continue
     const target = exports[subpath]
-    const linked =
-      typeof target === 'object' && target !== null && 'kiln-dist' in target
-        ? target['kiln-dist']
-        : undefined
-    if (JSON.stringify(linked) !== JSON.stringify(published[subpath])) {
-      throw new Error(
-        `${join(root, 'package.json')}: exports["${subpath}"]["kiln-dist"] must equal ` +
-          `publishConfig.exports["${subpath}"] (ADR 0022)`,
-      )
+    const conditions = typeof target === 'object' && target !== null ? target : {}
+    // `node` is optional: a subpath that plain Node loads gets the built file too (ADR 0023).
+    for (const condition of ['kiln-dist', 'node']) {
+      if (condition === 'node' && !(condition in conditions)) continue
+      const built = (conditions as Record<string, unknown>)[condition]
+      if (JSON.stringify(built) !== JSON.stringify(published[subpath])) {
+        throw new Error(
+          `${join(root, 'package.json')}: exports["${subpath}"]["${condition}"] must equal ` +
+            `publishConfig.exports["${subpath}"] (ADR 0022)`,
+        )
+      }
     }
   }
 }
