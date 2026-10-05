@@ -1,13 +1,14 @@
 /**
  * Keeps the Storybook tree on the ADR 0010 structure, which the docs site shares:
  * every title sits under a known group, ui and forms titles follow their source
- * folders, every docs examples file follows one of two naming rules, and every component's
- * stories include a `Playground`. The naming rules: a guide file under `src/docs/` is named
- * by path, with a title on an ADR 0010 group and no `/Examples`; every other examples file
- * is named by owner, `<owner>/Examples`, where `<owner>` is the owner's stories title when
- * the owner has stories and otherwise a title on an ADR 0010 group. It reads the index Storybook itself builds from
- * `.storybook/main.ts` (`storybook index`), so it sees the titles and stories the
- * sidebar shows.
+ * folders, every docs examples file follows its naming rule, and every component's stories
+ * include a `Playground`. The naming rules, shared with the indexer (`examplesRule` in
+ * `.storybook/examples.ts`): an examples file whose owner has stories is
+ * `<owner stories title>/Examples`; otherwise a guide under `src/docs/` is named by path, on
+ * an ADR 0010 group and without `/Examples`; otherwise it is `<owner>/Examples`, with the
+ * owner on an ADR 0010 group. It reads the index Storybook itself builds from
+ * `.storybook/main.ts` (`storybook index`), so it sees the titles and stories the sidebar
+ * shows.
  */
 import { execFileSync } from 'node:child_process'
 import { globSync, mkdtempSync, readFileSync, rmSync } from 'node:fs'
@@ -17,7 +18,7 @@ import { dirname, join, relative, resolve, sep } from 'node:path'
 
 import type { StoryIndex } from 'storybook/internal/types'
 
-import { examplesTitle } from './.storybook/examples.ts'
+import { examplesRule, examplesTitle } from './.storybook/examples.ts'
 
 const ROOT = join(import.meta.dirname, '../..')
 
@@ -70,33 +71,34 @@ function onGroup(title: string): boolean {
   return TREE[top]?.includes(group) ?? false
 }
 
-/** Every indexed stories file's title, by package and stories name (`forms:useAutosave`). */
+/** Every indexed stories file's title, by file. */
 const STORIES = new Map(
-  TITLES.flatMap(({ file, title }) => {
-    const match = /^packages\/([^/]+)\/.*\/([^/]+)\.stories\.tsx$/.exec(file)
-    return match ? [[`${match[1] ?? ''}:${match[2] ?? ''}`, title] as const] : []
-  }),
+  TITLES.filter(({ file }) => file.endsWith('.stories.tsx')).map(({ file, title }) => [
+    file,
+    title,
+  ]),
 )
 
 /**
- * Why an examples file's title breaks the naming rules, if it does: a guide under
- * `src/docs/` is named by path, on an ADR 0010 group and without `/Examples`; any other
- * file is `<owner>/Examples`, where `<owner>` is the owner's stories title or, when the
- * owner has no stories, a title on an ADR 0010 group.
+ * Why an examples file's title breaks the naming rules, if it does. The rule comes from
+ * `examplesRule`, the one the indexer uses: with owner stories, `<owner stories title>/Examples`;
+ * otherwise a guide under `src/docs/` is named by path, on an ADR 0010 group, without
+ * `/Examples` and without taking a stories title; otherwise `<owner>/Examples` with the owner
+ * on an ADR 0010 group.
  */
 function examplesTitleProblem(file: string, title: string): string | undefined {
-  const match = /^packages\/([^/]+)\/src\/(docs\/)?(?:.*\/)?([^/]+)\.examples\.tsx$/.exec(file)
-  if (!match) return 'not under a package src/'
-  const [, pkg = '', guide, owner = ''] = match
-  if (guide) {
+  const rule = examplesRule(join(ROOT, file))
+  if (rule.kind === 'owner') {
+    const stories = STORIES.get(relative(ROOT, rule.stories).split(sep).join('/'))
+    return title === `${stories ?? ''}/Examples` ? undefined : `expected ${stories ?? '?'}/Examples`
+  }
+  if (rule.kind === 'guide') {
     if (title.endsWith('/Examples')) return 'a guide is named by path, without /Examples'
+    if ([...STORIES.values()].includes(title)) return 'a guide takes the title of a stories file'
     return onGroup(title) ? undefined : 'not on an ADR 0010 group'
   }
   if (!title.endsWith('/Examples')) return 'expected <owner>/Examples'
-  const prefix = title.slice(0, -'/Examples'.length)
-  const stories = STORIES.get(`${pkg}:${owner}`)
-  if (stories) return prefix === stories ? undefined : `expected ${stories}/Examples`
-  return onGroup(prefix) ? undefined : 'not on an ADR 0010 group'
+  return onGroup(title.slice(0, -'/Examples'.length)) ? undefined : 'not on an ADR 0010 group'
 }
 
 describe('the Storybook tree', () => {
@@ -171,32 +173,56 @@ describe('the Storybook tree', () => {
   })
 })
 
-describe('the title of an examples file without owner stories', () => {
-  /** The title the indexer gives `file`, checked against the naming rules. */
-  function titled(file: string): string {
+describe('the title of an examples file', () => {
+  /** The title the indexer gives `file`, and why it breaks the naming rules, if it does. */
+  function titled(file: string): { title: string; problem: string | undefined } {
     const title = examplesTitle(join(ROOT, file))
-    expect(examplesTitleProblem(file, title)).toBeUndefined()
-    return title
+    return { title, problem: examplesTitleProblem(file, title) }
   }
 
-  it('names a guide topic by its path (<Package>/<Guide>/<Topic>)', () => {
-    expect(titled('packages/forms/src/docs/getting-started/first-form.examples.tsx')).toBe(
-      'Forms/Getting started/First form',
-    )
+  it("takes the owner's stories title for a guide topic beside its stories", () => {
+    expect(titled('packages/ui/src/docs/patterns/Settings.examples.tsx')).toEqual({
+      title: 'UI/Patterns/Settings/Examples',
+      problem: undefined,
+    })
+  })
+
+  it('names a guide topic without stories by its path (<Package>/<Guide>/<Topic>)', () => {
+    expect(titled('packages/forms/src/docs/getting-started/first-form.examples.tsx')).toEqual({
+      title: 'Forms/Getting started/First form',
+      problem: undefined,
+    })
+  })
+
+  it('names a guide topic by its path at any depth under src/docs/', () => {
+    expect(
+      titled('packages/forms/src/docs/getting-started/layouts/side-by-side.examples.tsx'),
+    ).toEqual({ title: 'Forms/Getting started/Layouts/Side by side', problem: undefined })
+  })
+
+  // Owner stories match with exact case, so a lowercase name gets the same title on a
+  // case-insensitive file system as on Linux CI, and the tree test reports the clash.
+  it('matches owner stories with exact case, and reports a guide that takes a stories title', () => {
+    expect(titled('packages/ui/src/docs/patterns/settings.examples.tsx')).toEqual({
+      title: 'UI/Patterns/Settings',
+      problem: 'a guide takes the title of a stories file',
+    })
   })
 
   it("names a storyless owner like its sibling components' stories, plus Examples", () => {
     expect(
       titled('packages/forms/src/components/fields/FormNewField/FormNewField.examples.tsx'),
-    ).toBe('Forms/Fields/NewField/Examples')
-    expect(titled('packages/ui/src/components/actions/NewAction/NewAction.examples.tsx')).toBe(
-      'UI/Actions/NewAction/Examples',
-    )
+    ).toEqual({ title: 'Forms/Fields/NewField/Examples', problem: undefined })
+    expect(titled('packages/ui/src/components/actions/NewAction/NewAction.examples.tsx')).toEqual({
+      title: 'UI/Actions/NewAction/Examples',
+      problem: undefined,
+    })
   })
 
   it('names a storyless hook in a flat folder like its sibling hooks, plus Examples', () => {
-    expect(titled('packages/forms/src/hooks/useScopeErrors.examples.tsx')).toBe(
-      'Forms/Hooks/useScopeErrors/Examples',
-    )
+    expect(titled('packages/forms/src/hooks/useScopeErrors.examples.tsx')).toEqual({
+      title: 'Forms/Hooks/useScopeErrors/Examples',
+      problem: undefined,
+    })
   })
 })

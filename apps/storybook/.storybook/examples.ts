@@ -4,11 +4,16 @@
  * code on the docs site. The workbench loads them as stories all the same, so every
  * example renders, passes axe and runs in every theme and mode under `pnpm test:storybook`.
  *
- * The title comes from the owner's stories: `Button.examples.tsx` takes the title of
- * `Button.stories.tsx` in the same package, plus `/Examples` (`UI/Actions/Button/Examples`).
- * Without owner stories it lands on the same tree: a guide topic under `src/docs/<guide>/` is
- * `<Package>/<Guide>/<Topic>`, and any other file takes the group and naming of the sibling
- * components' stories, plus `/Examples`.
+ * One rule (`examplesRule`) decides the title, and `tree.test.ts` checks titles with it:
+ *
+ * - **Owner stories exist** (`<Owner>.stories.tsx`, matched with exact case): the owner's
+ *   stories title plus `/Examples`. `Button.examples.tsx` is `UI/Actions/Button/Examples`.
+ * - **Otherwise, a guide under `src/docs/`**, at any depth: named by path, on its ADR 0010
+ *   group and without `/Examples`. `docs/getting-started/first-form.examples.tsx` is
+ *   `Forms/Getting started/First form`.
+ * - **Otherwise, a storyless owner**: the group and naming of its sibling components'
+ *   stories, plus `/Examples`.
+ *
  * The indexer and the Vite plugin below give Storybook and the Vitest addon the same
  * default export, so the sidebar, the dev server and the tests agree.
  */
@@ -88,47 +93,60 @@ function siblingTitle(file: string, owner: string): string | undefined {
   return undefined
 }
 
-/**
- * The title for an examples file without owner stories, on the ADR 0010 tree:
- * `src/docs/<guide>/<topic>.examples.tsx` is `<Package>/<Guide>/<Topic>`, like the guide
- * stories, and any other file takes its sibling components' group (`siblingTitle`). With
- * neither, it is `<Package>/<Owner>/Examples`, which the tree test reports.
- */
-function pathTitle(file: string, owner: string): string {
-  const source = packageSource(file)
-  const name = basename(dirname(source))
-  const folders = dirname(file).slice(source.length).split(sep).filter(Boolean)
-  const root = PACKAGES[name] ?? label(name)
-  if (folders.length === 2 && folders[0] === 'docs') {
-    return [root, ...folders.slice(1), owner].map(label).join('/')
-  }
-  return siblingTitle(file, owner) ?? `${root}/${owner}/Examples`
-}
+/** Which naming rule an examples file follows. */
+export type ExamplesRule =
+  { kind: 'owner'; stories: string } | { kind: 'guide' } | { kind: 'storyless' }
 
 /**
- * The Storybook title for an examples file: its owner's stories title plus `/Examples`.
- * The owner's stories are `<Owner>.stories.tsx` beside it or, failing that, the one file
- * of that name elsewhere in the package (forms hooks keep theirs in `src/stories/hooks`).
- * With no owner stories, the title comes from the path (`pathTitle`).
+ * The naming rule for an examples file. Its owner's stories are `<Owner>.stories.tsx`
+ * beside it or, failing that, the one file of that name elsewhere in the package (forms
+ * hooks keep theirs in `src/stories/hooks`). Names are compared with exact case, so the
+ * rule is the same on a case-insensitive file system and on Linux CI.
  */
-export function examplesTitle(file: string): string {
+export function examplesRule(file: string): ExamplesRule {
   const owner = basename(file).replace(EXAMPLES_FILE, '')
   const name = `${owner}.stories.tsx`
+  const source = packageSource(file)
+  const candidates = walk(source).filter((path) => basename(path) === name)
   const beside = join(dirname(file), name)
-  const stories = existsSync(beside)
-    ? [beside]
-    : walk(packageSource(file)).filter((path) => basename(path) === name)
-  if (stories.length === 0) return pathTitle(file, owner)
+  const stories = candidates.includes(beside) ? [beside] : candidates
   if (stories.length > 1) {
     throw new Error(
       `${file}: found ${String(stories.length)} ${name} files in the package. ` +
         `An examples file takes its title from its owner's stories, so there must be at most one.`,
     )
   }
-  const [path = ''] = stories
-  const title = storiesTitle(path)
-  if (!title) throw new Error(`${path}: no string \`title\` in the meta`)
-  return `${title}/Examples`
+  const [path] = stories
+  if (path) return { kind: 'owner', stories: path }
+  return file.startsWith(join(source, 'docs') + sep) ? { kind: 'guide' } : { kind: 'storyless' }
+}
+
+/** The package's top-level tree node: `UI` for `packages/ui`, `Forms` for `packages/forms`. */
+function packageNode(source: string): string {
+  const name = basename(dirname(source))
+  return PACKAGES[name] ?? label(name)
+}
+
+/**
+ * The Storybook title for an examples file, by its naming rule (`examplesRule`). A guide's
+ * folders under `src/docs/` and its topic become the path (`Forms/Getting started/First
+ * form`). A storyless owner whose siblings have no stories gets `<Package>/<Owner>/Examples`,
+ * which the tree test reports.
+ */
+export function examplesTitle(file: string): string {
+  const rule = examplesRule(file)
+  const owner = basename(file).replace(EXAMPLES_FILE, '')
+  const source = packageSource(file)
+  if (rule.kind === 'owner') {
+    const title = storiesTitle(rule.stories)
+    if (!title) throw new Error(`${rule.stories}: no string \`title\` in the meta`)
+    return `${title}/Examples`
+  }
+  if (rule.kind === 'guide') {
+    const folders = dirname(file).slice(join(source, 'docs').length).split(sep).filter(Boolean)
+    return [packageNode(source), ...[...folders, owner].map(label)].join('/')
+  }
+  return siblingTitle(file, owner) ?? `${packageNode(source)}/${owner}/Examples`
 }
 
 /** The examples file as CSF: its code plus the default export Storybook needs. */

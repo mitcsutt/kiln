@@ -11,4 +11,4 @@ The developer workbench for `@mitcsutt/kiln-ui` and `@mitcsutt/kiln-forms`. It l
 
 The tests need Playwright's Chromium once: `pnpm --filter @mitcsutt/kiln-storybook exec playwright install chromium`. They start in Paper, light. Set `STORYBOOK_THEME` (`paper`, `monograph`, `ledger`, `fiesta`) and `STORYBOOK_MODE` (`light`, `dark`) to run them in another theme or mode. CI runs every combination.
 
-`tree.test.ts` keeps story titles on the shared docs tree ([ADR 0010](../../docs/adr/0010-information-architecture.md)), checks that every component has a `Playground` story, and checks that every examples file sits under its owner's title plus `/Examples`.
+`tree.test.ts` keeps story titles on the shared docs tree ([ADR 0010](../../docs/adr/0010-information-architecture.md)), checks that every component has a `Playground` story, and checks every examples file against its naming rule ([ADR 0026](../../docs/adr/0026-docs-examples-in-storybook.md)): `<owner stories title>/Examples`, a guide under `src/docs/` named by path, or a storyless owner on its group plus `/Examples`.
