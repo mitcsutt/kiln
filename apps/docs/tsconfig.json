@@ -3,6 +3,7 @@
   "compilerOptions": {
     "types": ["node", "vitest/globals"],
     "plugins": [{ "name": "next" }],
+    "allowImportingTsExtensions": true,
     "paths": {
       "@/*": ["./src/*"],
       "fumadocs-mdx:collections/*": ["./.source/*"]
@@ -14,7 +15,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    ".source/**/*.ts"
+    ".source/**/*.ts",
+    ".generated/examples/**/*.tsx"
   ],
   "exclude": ["node_modules", ".next"]
 }
