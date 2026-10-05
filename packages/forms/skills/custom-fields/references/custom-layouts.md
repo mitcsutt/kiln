@@ -95,7 +95,7 @@ Submit it empty and each panel counts its own errors.
 - **`FieldPresentation`** tells the fields below it how to render: `layout`, `labelHidden`, `errorPlacement`, `mode`, `disabled`, `readOnly`. It merges with any presentation above it. `useFieldPresentation()` reads it.
 - **`FieldViewListBoundary`** keeps view mode valid: fields below it render their own description lists instead of adding items to a list above.
 
-`useFormContext()` returns the form inside any `Form`, for a layout that needs form state without a `form` prop.
+`useFormContext()` returns the form inside any `Form`, for a layout that needs form state without a `form` prop. See [Form context](https://kiln.mitchellsutton.com/docs/forms/getting-started/form-context).
 
 ```ts
 declare function useScopeErrors(scope: ScopeHandle | null, form?: AnyKitForm | undefined): number

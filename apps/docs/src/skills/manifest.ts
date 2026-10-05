@@ -97,12 +97,13 @@ export const skills: SkillSpec[] = [
     name: 'component-mode',
     title: 'Write a form in component mode',
     description:
-      'Use when building a form in React with @mitcsutt/kiln-forms in JSX: installing it, useAppForm, form.AppField and the typed form.<Kind>Field components, default values, onSubmit, layouts like FormSection, FormSteps, FormTabs and Repeater, conditional fields with When, and submit buttons.',
+      'Use when building a form in React with @mitcsutt/kiln-forms in JSX: installing it, useAppForm, form.AppField and the typed form.<Kind>Field components, default values, onSubmit, splitting a form into components with withForm or reading it from context in nested components with useTypedAppFormContext, layouts like FormSection, FormSteps, FormTabs and Repeater, conditional fields with When, and submit buttons.',
     purpose:
       'Build typed forms with useAppForm, where each field is bound to a path of the values and rendered through kiln-ui.',
     type: 'core',
     pages: ['forms/index', 'forms/getting-started/component-mode'],
     references: [
+      'forms/getting-started/form-context',
       'forms/getting-started/account-settings',
       'forms/getting-started/onboarding',
       'forms/getting-started/recurring-invoice',

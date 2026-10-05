@@ -7,6 +7,7 @@ export const kit = createFormKit({ fields: defaultFields })
 export const {
   useAppForm,
   withForm,
+  useTypedAppFormContext,
   withFieldGroup,
   useFields,
   defineFormSchema,

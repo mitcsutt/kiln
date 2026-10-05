@@ -1,7 +1,7 @@
 import { useMemo, useState, type ComponentType, type ReactNode } from 'react'
 import { createFormHook, type AnyFormApi } from '@tanstack/react-form'
 import { ErrorSummary, FormStatus, ResetButton, SubmitButton } from '#components'
-import { fieldContext, formContext } from '#core/contexts'
+import { fieldContext, formContext, useFormContext } from '#core/contexts'
 import { isDev } from '#core/env'
 import { bindFields, fieldComponentName } from '#core/kit/bindFields'
 import { createKitAppField, type KitAppFieldProps } from '#core/kit/kitAppField'
@@ -92,6 +92,15 @@ function buildKit<R extends FieldRegistry, X>(registries: { fields: R } & X): Fo
     return WithForm
   }
 
+  // `<Form>` and `<form.AppForm>` both provide the object `useAppForm` returned, shorthand
+  // fields included, so only the type needs restoring. `options` is read for its types only.
+  function useTypedAppFormContext<T, O = T, M = undefined>(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars -- infers T and M; see above
+    _options: KitFormOptions<T, O, M>,
+  ): KitForm<T, M, R> {
+    return useFormContext() as unknown as KitForm<T, M, R>
+  }
+
   function useFields<A extends { AppField: unknown; state: { values: unknown } }>(
     api: A,
   ): BoundFields<ValuesOf<A>, R> {
@@ -129,6 +138,7 @@ function buildKit<R extends FieldRegistry, X>(registries: { fields: R } & X): Fo
   return {
     useAppForm,
     withForm,
+    useTypedAppFormContext,
     withFieldGroup: hook.withFieldGroup,
     useFields,
     extend: extend as unknown as FormKit<R, X>['extend'],

@@ -7,6 +7,7 @@ export {
   kit,
   useAppForm,
   withForm,
+  useTypedAppFormContext,
   withFieldGroup,
   useFields,
   defineFormSchema,
