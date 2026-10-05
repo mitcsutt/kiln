@@ -10,7 +10,7 @@
       "name": "import { FormTextField }",
       "import": "{ FormTextField }",
       "from": "dist/index.js",
-      "isolatedTo": "dist/fields/FormTextField/FormTextField.js",
+      "isolatedTo": "dist/components/fields/FormTextField/FormTextField.js",
       "budget": 4800
     },
     {

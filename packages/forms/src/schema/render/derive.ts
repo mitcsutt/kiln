@@ -1,5 +1,5 @@
-import type { Computer } from '#core/kit/types'
-import type { RuntimeDeriveRule } from '#core/runtime/formRuntime'
+import type { Computer } from '#kit/types'
+import type { RuntimeDeriveRule } from '#runtime/formRuntime'
 import { childNodes, isFieldNode, isRepeaterNode } from '#schema/core/nodes'
 import type { UntypedFormSchema, UntypedNode } from '#schema/core/types'
 import { warnOnce } from '#schema/render/warn'

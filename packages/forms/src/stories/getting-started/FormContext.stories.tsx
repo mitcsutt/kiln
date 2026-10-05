@@ -3,11 +3,11 @@ import { Inline, Stack, Text } from '@mitcsutt/kiln-ui'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect, userEvent, within } from 'storybook/test'
 import { storyRoot } from '#stories/_kit'
-import { Form, SubmitButton } from '#components'
-import { useFieldValue, useFormStatus } from '#core/hooks'
-import { formOptions } from '#core/kit/formOptions'
-import { kit } from '#kit'
-import { FormSection } from '#layouts'
+import { Form, SubmitButton } from '#components/form'
+import { useFieldValue, useFormStatus } from '#hooks'
+import { formOptions } from '#kit/formOptions'
+import { kit } from '#kit/defaultKit'
+import { FormSection } from '#components/layouts'
 
 /*
  * A workshop booking whose fields and readers sit several components below the form. None of

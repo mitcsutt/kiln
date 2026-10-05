@@ -1,6 +1,6 @@
 /** Parity fixtures: `Repeater` in its three variants (§9.9). */
-import { kit } from '#kit'
-import { Repeater } from '#layouts'
+import { kit } from '#kit/defaultKit'
+import { Repeater } from '#components/layouts'
 import { defineParity } from '#stories/fixtures/parity'
 
 interface Guest {

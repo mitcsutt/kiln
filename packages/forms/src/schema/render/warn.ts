@@ -1,4 +1,4 @@
-import { isDev } from '#core/env'
+import { isDev } from '#utils/env'
 
 const warned = new Set<string>()
 

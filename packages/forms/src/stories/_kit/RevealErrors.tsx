@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { useFormContext } from '#core/contexts'
+import { useFormContext } from '#kit/contexts'
 
 /**
  * Story kit helper: a field's `error`/`warning` only become visible after a blur or a

@@ -9,9 +9,9 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import type { ReactNode } from 'react'
 import { describe, expect, it } from 'vitest'
-import { ErrorSummary } from '#components/ErrorSummary'
-import { SubmitButton } from '#components/SubmitButton'
-import { FormSection } from '#layouts/FormSection'
+import { ErrorSummary } from '#components/form/ErrorSummary'
+import { SubmitButton } from '#components/form/SubmitButton'
+import { FormSection } from '#components/layouts/FormSection'
 import { renderForm } from '#test/renderForm'
 import { must } from '#test/must'
 

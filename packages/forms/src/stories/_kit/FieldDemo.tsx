@@ -1,7 +1,7 @@
 import { useId, type ReactNode } from 'react'
-import { Form } from '#components'
-import { kit } from '#kit'
-import type { KitForm } from '#core/kit/types'
+import { Form } from '#components/form'
+import { kit } from '#kit/defaultKit'
+import type { KitForm } from '#kit/types'
 import { RevealErrors } from './RevealErrors'
 
 type DefaultForm<T> = KitForm<T, undefined, typeof kit.registries.fields>

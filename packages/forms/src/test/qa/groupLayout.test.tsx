@@ -7,7 +7,7 @@
  */
 import { screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-import { FormRows } from '#layouts/FormRows'
+import { FormRows } from '#components/layouts/FormRows'
 import { renderForm } from '#test/renderForm'
 
 const plans = [

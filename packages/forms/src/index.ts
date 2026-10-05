@@ -1,8 +1,8 @@
 // Public API (§2.5 lists the core; Appendix A records the additions). Keep the spec in step when this changes.
 
 // Kit (default instance + factory)
-export { createFormKit } from '#core/kit/createFormKit'
-export { formOptions } from '#core/kit/formOptions'
+export { createFormKit } from '#kit/createFormKit'
+export { formOptions } from '#kit/formOptions'
 export {
   kit,
   useAppForm,
@@ -13,7 +13,7 @@ export {
   defineFormSchema,
   SchemaForm,
   SchemaNode,
-} from '#kit'
+} from '#kit/defaultKit'
 export type {
   FormKit,
   KitForm,
@@ -39,10 +39,10 @@ export type {
   KitFormSchema,
   SchemaFormProps,
   SchemaNodeProps,
-} from '#core/kit/types'
+} from '#kit/types'
 
 // Field authoring (custom fields)
-export { defineField, defineOptionField, defineOptionsField } from '#core/kit/contracts'
+export { defineField, defineOptionField, defineOptionsField } from '#kit/contracts'
 export type {
   Primitive,
   FieldOption,
@@ -50,41 +50,44 @@ export type {
   ExactContract,
   OptionContract,
   OptionsContract,
-} from '#core/kit/contracts'
-export { useFieldBinding, accepts } from '#core/binding/useFieldBinding'
+} from '#kit/contracts'
+export { useFieldBinding, accepts } from '#hooks/useFieldBinding'
 export type {
   FieldBinding,
   FieldBindingOptions,
   CommonFieldProps,
   BoundFieldProps,
-} from '#core/binding/useFieldBinding'
-export { useOptionMapping } from '#core/binding/optionValues'
-export type { OptionMapping, UiOption } from '#core/binding/optionValues'
-export { FieldView, FieldViewList, FieldViewListBoundary } from '#core/binding/FieldView'
-export type { FieldViewProps } from '#core/binding/FieldView'
-export { useFieldContext, useFormContext } from '#core/contexts'
-export { normaliseError } from '#core/binding/errors'
-export type { FormError, NormalisedError, ErrorVisibility } from '#core/binding/errors'
-export { FieldPresentation, useFieldPresentation } from '#core/binding/presentation'
-export type { FieldPresentationProps, FieldPresentationValue } from '#core/binding/presentation'
-export { FieldScope, useFieldScope } from '#core/scope/FieldScope'
-export type { ScopeHandle, FieldScopeProps } from '#core/scope/FieldScope'
-export { useScopeErrors } from '#core/scope/useScopeErrors'
-export { focusField, focusFirstInvalid } from '#core/runtime/focus'
+} from '#hooks/useFieldBinding'
+export { useOptionMapping } from '#hooks/useOptionMapping'
+export type { OptionMapping, UiOption } from '#hooks/useOptionMapping'
+export { FieldView, FieldViewList, FieldViewListBoundary } from '#components/fields/FieldView'
+export type { FieldViewProps } from '#components/fields/FieldView'
+export { useFieldContext, useFormContext } from '#kit/contexts'
+export { normaliseError } from '#runtime/errors'
+export type { FormError, NormalisedError, ErrorVisibility } from '#runtime/errors'
+export { FieldPresentation, useFieldPresentation } from '#components/fields/FieldPresentation'
+export type {
+  FieldPresentationProps,
+  FieldPresentationValue,
+} from '#components/fields/FieldPresentation'
+export { FieldScope, useFieldScope } from '#components/layouts/FieldScope'
+export type { ScopeHandle, FieldScopeProps } from '#components/layouts/FieldScope'
+export { useScopeErrors } from '#hooks/useScopeErrors'
+export { focusField, focusFirstInvalid } from '#runtime/focus'
 
 // Fields (bound) — also available as kit.fields / field.X / form.X
-export * from '#fields'
-export { defaultFields } from '#fields/defaultFields'
+export * from '#components/fields'
+export { defaultFields } from '#components/fields/defaultFields'
 
 // Form components
-export { Form, SubmitButton, ResetButton, ErrorSummary, FormStatus } from '#components'
+export { Form, SubmitButton, ResetButton, ErrorSummary, FormStatus } from '#components/form'
 export type {
   FormProps,
   SubmitButtonProps,
   ResetButtonProps,
   ErrorSummaryProps,
   FormStatusProps,
-} from '#components'
+} from '#components/form'
 
 // Layouts
 export {
@@ -107,7 +110,7 @@ export {
   FormActions,
   FormReview,
   When,
-} from '#layouts'
+} from '#components/layouts'
 export type {
   FormGridProps,
   FormGridItemProps,
@@ -131,7 +134,7 @@ export type {
   FormActionsProps,
   WhenProps,
   WhenHidden,
-} from '#layouts'
+} from '#components/layouts'
 
 // Hooks
 export {
@@ -141,7 +144,7 @@ export {
   useAutosave,
   useUnsavedChanges,
   useOptions,
-} from '#core/hooks'
+} from '#hooks'
 export type {
   FormStatusState,
   ServerValuesOptions,
@@ -150,12 +153,12 @@ export type {
   OptionsLoader,
   UseOptionsOptions,
   UseOptionsResult,
-} from '#core/hooks'
+} from '#hooks'
 
 // Submission & errors
-export { FormSubmitError, applyServerErrors } from '#core/runtime/serverErrors'
-export { defaultMessages } from '#core/runtime/messages'
-export type { FormMessages } from '#core/runtime/messages'
+export { FormSubmitError, applyServerErrors } from '#runtime/serverErrors'
+export { defaultMessages } from '#runtime/messages'
+export type { FormMessages } from '#runtime/messages'
 
 // Schema
 export {

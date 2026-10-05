@@ -1,8 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi, type MockInstance } from 'vitest'
-import { Form } from '#components/Form'
-import { defaultMessages } from '#core/runtime/messages'
-import { kit } from '#kit'
+import { Form } from '#components/form/Form'
+import { defaultMessages } from '#runtime/messages'
+import { kit } from '#kit/defaultKit'
 import { testRegistryNames } from '#schema/core/__fixtures__/registry'
 import {
   parseFormSchema,

@@ -7,7 +7,7 @@
  */
 import { screen, waitFor } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-import { FormSteps } from '#layouts/FormSteps'
+import { FormSteps } from '#components/layouts/FormSteps'
 import { renderForm } from '#test/renderForm'
 
 const required = ({ value }: { value: string }) => (value === '' ? 'Enter a value' : undefined)

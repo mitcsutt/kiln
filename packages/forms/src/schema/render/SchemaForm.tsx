@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react'
-import type { AnyKitForm } from '#core/kit/types'
-import { registerDerive, toFormApi } from '#core/runtime/formRuntime'
+import type { AnyKitForm } from '#kit/types'
+import { registerDerive, toFormApi } from '#runtime/formRuntime'
 import { analyseSchema } from '#schema/core/collect'
 import type { UntypedFormSchema } from '#schema/core/types'
 import {

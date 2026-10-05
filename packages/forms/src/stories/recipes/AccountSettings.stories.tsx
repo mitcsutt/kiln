@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Button, Heading, Inline, Stack, Text, type FileValue } from '@mitcsutt/kiln-ui'
-import { Form, FormStatus, SubmitButton } from '#components'
-import { useAutosave } from '#core/hooks'
-import { kit, useFields } from '#kit'
-import { FormActions, FormAside, FormRows } from '#layouts'
+import { Form, FormStatus, SubmitButton } from '#components/form'
+import { useAutosave } from '#hooks'
+import { kit, useFields } from '#kit/defaultKit'
+import { FormActions, FormAside, FormRows } from '#components/layouts'
 import { recipeParameters } from '#stories/recipes/parameters'
 import { RecipeFrame } from '#stories/recipes/RecipeFrame'
 

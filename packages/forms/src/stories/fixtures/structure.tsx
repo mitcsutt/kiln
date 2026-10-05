@@ -1,8 +1,8 @@
 /** Parity fixtures: the plain structural layouts (§9.1–9.5, §9.12 and `stack` / `inline`). */
 import { Inline, Stack } from '@mitcsutt/kiln-ui'
-import { ResetButton } from '#components/ResetButton'
-import { SubmitButton } from '#components/SubmitButton'
-import { kit } from '#kit'
+import { ResetButton } from '#components/form/ResetButton'
+import { SubmitButton } from '#components/form/SubmitButton'
+import { kit } from '#kit/defaultKit'
 import {
   FormActions,
   FormAside,
@@ -12,7 +12,7 @@ import {
   FormPanels,
   FormRows,
   FormSection,
-} from '#layouts'
+} from '#components/layouts'
 import { defineParity } from '#stories/fixtures/parity'
 
 // --- stack ---------------------------------------------------------------------------------

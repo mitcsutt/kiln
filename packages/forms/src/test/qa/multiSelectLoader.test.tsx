@@ -10,9 +10,9 @@
  */
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { Form } from '#components/Form'
-import type { OptionsLoader } from '#core/hooks/useOptions'
-import { kit } from '#kit'
+import { Form } from '#components/form/Form'
+import type { OptionsLoader } from '#hooks/useOptions'
+import { kit } from '#kit/defaultKit'
 import { defineLoader } from '#schema/core/registry'
 import { renderForm } from '#test/renderForm'
 

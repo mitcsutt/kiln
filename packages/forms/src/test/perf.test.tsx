@@ -1,9 +1,9 @@
 import { memo } from 'react'
 import { screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-import { ErrorSummary } from '#components/ErrorSummary'
-import { SubmitButton } from '#components/SubmitButton'
-import type { kit } from '#kit'
+import { ErrorSummary } from '#components/form/ErrorSummary'
+import { SubmitButton } from '#components/form/SubmitButton'
+import type { kit } from '#kit/defaultKit'
 import { countRenders, RenderCounter, resetRenderCounts } from '#test/perf'
 import { renderForm } from '#test/renderForm'
 

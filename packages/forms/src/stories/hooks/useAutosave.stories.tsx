@@ -2,10 +2,10 @@ import { Stack } from '@mitcsutt/kiln-ui'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect, userEvent, within } from 'storybook/test'
 import { storyRoot } from '#stories/_kit'
-import { Form } from '#components/Form'
-import { FormStatus } from '#components/FormStatus'
-import { useAutosave } from '#core/hooks'
-import { kit } from '#kit'
+import { Form } from '#components/form/Form'
+import { FormStatus } from '#components/form/FormStatus'
+import { useAutosave } from '#hooks'
+import { kit } from '#kit/defaultKit'
 
 const meta = {
   title: 'Forms/Hooks/useAutosave',

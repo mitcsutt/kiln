@@ -1,5 +1,5 @@
-import type { NormalisedError } from '#core/binding/errors'
-import { resolveMessage, type FormMessages } from '#core/runtime/messages'
+import type { NormalisedError } from '#runtime/errors'
+import { resolveMessage, type FormMessages } from '#runtime/messages'
 import { MAX_PATTERN_INPUT } from '#schema/core/patterns'
 import { isNamedValidator } from '#schema/core/registry'
 import type { NamedValidator, RuleName, UntypedRule, ValidatorResult } from '#schema/core/types'

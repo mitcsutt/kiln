@@ -11,8 +11,8 @@ import {
   Text,
   TextareaField,
 } from '@mitcsutt/kiln-ui'
-import { Form } from '#components'
-import { kit } from '#kit'
+import { Form } from '#components/form'
+import { kit } from '#kit/defaultKit'
 import { parseFormSchema, schemaDefaultValues, type UntypedFormSchema } from '#schema'
 
 /*

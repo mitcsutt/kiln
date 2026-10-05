@@ -1,4 +1,4 @@
-import type { EmptyObject } from '#core/kit/types'
+import type { EmptyObject } from '#kit/types'
 import type { FormSchema } from '#schema/core/types'
 
 /**

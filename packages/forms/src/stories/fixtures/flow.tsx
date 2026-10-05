@@ -1,10 +1,10 @@
 /** Parity fixtures: sentence, review, `when` and the content nodes (§9.10, §9.11, §6.6, §10.1). */
 import { Alert, Divider, Heading, Stack, Text } from '@mitcsutt/kiln-ui'
-import { ErrorSummary } from '#components/ErrorSummary'
-import { FormStatus } from '#components/FormStatus'
-import { SubmitButton } from '#components/SubmitButton'
-import { kit } from '#kit'
-import { FormReview, FormSentence, When } from '#layouts'
+import { ErrorSummary } from '#components/form/ErrorSummary'
+import { FormStatus } from '#components/form/FormStatus'
+import { SubmitButton } from '#components/form/SubmitButton'
+import { kit } from '#kit/defaultKit'
+import { FormReview, FormSentence, When } from '#components/layouts'
 import { defineParity } from '#stories/fixtures/parity'
 
 // --- sentence --------------------------------------------------------------------------------

@@ -21,7 +21,7 @@ import type {
   Space,
   TabsVariant,
 } from '@mitcsutt/kiln-ui'
-import type { OptionsLoader } from '#core/hooks/useOptions'
+import type { OptionsLoader } from '#hooks/useOptions'
 import type {
   ContractOf,
   ExactContract,
@@ -30,8 +30,8 @@ import type {
   OptionsContract,
   Primitive,
   PropsOf,
-} from '#core/kit/contracts'
-import type { ArrayPaths, EmptyObject, ItemOf, PathsFor } from '#core/kit/types'
+} from '#kit/contracts'
+import type { ArrayPaths, EmptyObject, ItemOf, PathsFor } from '#kit/types'
 
 // ---------------------------------------------------------------------------------------------
 // JSON

@@ -1,5 +1,5 @@
 import { Inline, Stack } from '@mitcsutt/kiln-ui'
-import type { LayoutComponent } from '#core/kit/types'
+import type { LayoutComponent } from '#kit/types'
 import {
   FormAccordion,
   FormAccordionItem,
@@ -17,7 +17,7 @@ import {
   FormSteps,
   FormTab,
   FormTabs,
-} from '#layouts'
+} from '#components/layouts'
 import type { DefaultLayoutKey } from '#schema/core/types'
 
 /** The default schema layout registry (§9.0 table): every `layout` key → its §9 component. */

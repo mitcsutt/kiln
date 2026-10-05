@@ -3,9 +3,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useState } from 'react'
 import { expect, userEvent, within } from 'storybook/test'
 import { storyRoot } from '#stories/_kit'
-import { Form } from '#components/Form'
-import { useServerValues } from '#core/hooks'
-import { kit } from '#kit'
+import { Form } from '#components/form/Form'
+import { useServerValues } from '#hooks'
+import { kit } from '#kit/defaultKit'
 
 const meta = {
   title: 'Forms/Hooks/useServerValues',

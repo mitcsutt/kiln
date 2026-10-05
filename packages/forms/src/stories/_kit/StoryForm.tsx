@@ -1,9 +1,9 @@
 import { useState, type ReactNode } from 'react'
 import { CodeBlock, Stack } from '@mitcsutt/kiln-ui'
-import { Form, ResetButton, SubmitButton } from '#components'
-import { FormActions } from '#layouts'
-import { kit } from '#kit'
-import type { KitForm } from '#core/kit/types'
+import { Form, ResetButton, SubmitButton } from '#components/form'
+import { FormActions } from '#components/layouts'
+import { kit } from '#kit/defaultKit'
+import type { KitForm } from '#kit/types'
 
 type DefaultForm<T> = KitForm<T, undefined, typeof kit.registries.fields>
 

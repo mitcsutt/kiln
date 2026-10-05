@@ -1,4 +1,4 @@
-import type { CustomNodeComponent, CustomNodeProps } from '#core/kit/types'
+import type { CustomNodeComponent, CustomNodeProps } from '#kit/types'
 import type { JsonObject } from '#schema/core/types'
 
 /**

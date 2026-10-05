@@ -1,12 +1,7 @@
 import { createContext, useContext } from 'react'
 import type { AnyFormApi } from '@tanstack/react-form'
-import type { OptionsLoader } from '#core/hooks/useOptions'
-import type {
-  AnyKitForm,
-  CustomNodeComponent,
-  FieldRegistry,
-  LayoutComponent,
-} from '#core/kit/types'
+import type { OptionsLoader } from '#hooks/useOptions'
+import type { AnyKitForm, CustomNodeComponent, FieldRegistry, LayoutComponent } from '#kit/types'
 import type { SchemaAnalysis } from '#schema/core/collect'
 import type { Computer, NamedValidator, UntypedFormSchema } from '#schema/core/types'
 

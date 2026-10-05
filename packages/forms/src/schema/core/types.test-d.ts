@@ -2,7 +2,7 @@
  * Schema type tests (§10.1–10.4). Checked by `tsc --noEmit` (the package `typecheck`); never
  * executed. Every `@ts-expect-error` must be used — an unused one fails the typecheck.
  */
-import type { defaultFields } from '#fields/defaultFields'
+import type { defaultFields } from '#components/fields/defaultFields'
 import { defineSchemaFor } from '#schema/core/define'
 import type { TableColumnWidth } from '@mitcsutt/kiln-ui'
 import type {

@@ -1,6 +1,13 @@
 /** Parity fixtures: the scope-bearing layouts — tabs, accordion and steps (§9.6–9.8). */
-import { kit } from '#kit'
-import { FormAccordion, FormAccordionItem, FormStep, FormSteps, FormTab, FormTabs } from '#layouts'
+import { kit } from '#kit/defaultKit'
+import {
+  FormAccordion,
+  FormAccordionItem,
+  FormStep,
+  FormSteps,
+  FormTab,
+  FormTabs,
+} from '#components/layouts'
 import { defineParity } from '#stories/fixtures/parity'
 
 // --- tabs + tab ------------------------------------------------------------------------------
