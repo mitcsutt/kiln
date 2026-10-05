@@ -74,7 +74,7 @@ export function applyServerValues(
   runtime.baseline = { values: data, source: runtime.userDefaults }
   form.update({ ...form.options, defaultValues: data })
   // Resets every field's meta and the submit count, so kept errors are revealed again below
-  // (quietly: they were already announced, and nothing new happened to them).
+  // (quietly after a submit, as a submit's errors render; otherwise live, as they were).
   form.reset(merged, { keepDefaultValues: true })
 
   for (const { name, errorMap, errorSourceMap } of kept) {
@@ -83,7 +83,7 @@ export function applyServerValues(
   revealFieldErrors(
     form,
     kept.map(({ name }) => name),
-    { quiet: true },
+    { quiet: submissionAttempts > 0 },
   )
 }
 

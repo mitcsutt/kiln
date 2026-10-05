@@ -160,11 +160,29 @@ describe('useServerValues error restore', () => {
     },
   )
 
-  it('restores errors without announcing them again', async () => {
+  it('restores errors after a submit without announcing them again', async () => {
     const { rerender } = render(<Invite />)
     await submitEmpty()
     rerender(<Invite data={{ email: '', city: 'York' }} />)
+    expect(screen.getByText('Enter an email')).toBeInTheDocument()
+    expect(screen.getByLabelText('Email')).toHaveAttribute('aria-invalid', 'true')
     expect(screen.queryByRole('alert')).not.toBeInTheDocument()
+  })
+
+  it('still announces a new error after a refresh in a never-submitted form', async () => {
+    const user = userEvent.setup()
+    const { rerender } = render(<Invite errorVisibility="blur" />)
+    const email = screen.getByLabelText('Email')
+    await user.type(email, 'a')
+    await user.clear(email)
+    await user.tab()
+    expect(await screen.findByText('Enter an email')).toBeInTheDocument()
+    rerender(<Invite errorVisibility="blur" data={{ email: '', city: 'York' }} />)
+    expect(screen.getByText('Enter an email')).toBeInTheDocument()
+    await user.type(email, 'a')
+    await waitFor(() => expect(screen.queryByText('Enter an email')).not.toBeInTheDocument())
+    await user.clear(email)
+    expect(await screen.findByRole('alert')).toHaveTextContent('Enter an email')
   })
 })
 
