@@ -90,7 +90,9 @@ export function storyTitles(): { title: string; file: string; stories: string[] 
   for (const entry of entries) {
     if (entry.type !== 'story' || !entry.exportName) continue
     const file = relative(repoDir, resolve(storybookDir, entry.importPath)).split(sep).join('/')
-    if (!file.startsWith('packages/')) continue
+    // Docs examples (`<Owner>.examples.tsx`) are listed under their owner's title plus
+    // `/Examples`; the owner's own stories already map that title to a page.
+    if (!file.startsWith('packages/') || file.endsWith('.examples.tsx')) continue
     const story = byFile.get(file) ?? { title: entry.title, file, stories: [] }
     story.stories.push(entry.exportName)
     byFile.set(file, story)

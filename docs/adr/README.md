@@ -21,7 +21,7 @@ Each record captures one decision: the context, what was decided, and what follo
 | [0015](0015-kiln-ui-port.md)                       | How `kiln-ui` was ported: theming, build, tests            | Accepted                  |
 | [0016](0016-trusted-publishing.md)                 | Trusted publishing, switched on by the owner               | Accepted                  |
 | [0017](0017-kiln-forms-port.md)                    | How `kiln-forms` was ported: names, entries, checks        | Accepted, amended by 0024 |
-| [0018](0018-storybook-workbench.md)                | How the Storybook workbench is built and tested            | Accepted                  |
+| [0018](0018-storybook-workbench.md)                | How the Storybook workbench is built and tested            | Accepted, amended by 0026 |
 | [0019](0019-docs-site.md)                          | How the docs site is built: Fumadocs core, Kiln chrome     | Accepted, amended by 0025 |
 | [0020](0020-agent-skills.md)                       | How the agent skills are built from the docs               | Accepted                  |
 | [0021](0021-forms-context-in-nested-components.md) | Typed form context for nested components in `kiln-forms`   | Accepted                  |
@@ -29,5 +29,6 @@ Each record captures one decision: the context, what was decided, and what follo
 | [0023](0023-theme-script-entry.md)                 | A React-free `theme-script` entry that plain Node loads    | Accepted                  |
 | [0024](0024-kiln-forms-source-layout.md)           | `kiln-forms` source layout: components by group, no `core` | Accepted                  |
 | [0025](0025-colocated-examples.md)                 | Docs examples live beside their code, sliced per export    | Accepted                  |
+| [0026](0026-docs-examples-in-storybook.md)         | Docs examples run as Storybook stories                     | Accepted                  |
 
 New records use the next number and the same headings: Status, Context, Decision, Consequences.

@@ -197,7 +197,7 @@ It asks which packages changed, the bump for each (`patch`, `minor` or `major`),
 pnpm changeset --minor @mitcsutt/kiln-eslint-config -m "Add the node preset"
 ```
 
-The `Changeset` CI job fails when a pull request changes a published package without adding a changeset. Changes that only touch tests (`test/`, `*.test.*`) or stories (`*.stories.*`) don't count. If a change needs no release, such as a README typo, add an empty changeset instead: `pnpm changeset --empty`. `pnpm changeset status --since=origin/main` runs the same check locally once your changeset is committed.
+The `Changeset` CI job fails when a pull request changes a published package without adding a changeset. Changes that only touch tests (`test/`, `*.test.*`), stories (`*.stories.*`) or docs examples (`*.examples.*`) don't count. If a change needs no release, such as a README typo, add an empty changeset instead: `pnpm changeset --empty`. `pnpm changeset status --since=origin/main` runs the same check locally once your changeset is committed.
 
 While packages are on `0.x`, a breaking change is a `minor` bump. Rule changes in the config packages are semver changes: a new error-level ESLint rule is a minor or major bump, never a patch.
 
