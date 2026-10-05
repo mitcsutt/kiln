@@ -2,7 +2,7 @@
 
 Kiln releases with [Changesets](https://changesets.dev). Each package has its own version ([ADR 0008](adr/0008-versioning-and-release.md)), and npm publishing goes through trusted publishing with provenance ([ADR 0016](adr/0016-trusted-publishing.md)).
 
-Nothing has been published yet. The pipeline is in place, but publishing stays switched off until the [prerequisites](#prerequisites) below are done.
+All five packages are on npm. Their first versions (`0.1.0`) were published by hand on 2026-10-05, so they have no provenance. The [prerequisites](#prerequisites) below are done, and later versions publish from the release workflow.
 
 ## How a release happens
 
@@ -14,11 +14,11 @@ Pull requests opened by the workflow's `GITHUB_TOKEN` don't trigger other workfl
 
 ## Prerequisites
 
-The repository owner does these once. None of them are in the repo, and no secrets are needed.
+The repository owner does these once. None of them are in the repo, and no secrets are needed. They were done on 2026-10-05 for the five current packages. Steps 5 and 6 still apply to any new package.
 
 1. **Own the `@mitcsutt` scope on npm.** Every package publishes as `@mitcsutt/kiln-*` with public access. The npm account that owns the scope needs two-factor authentication turned on.
 2. **Allow Actions to open pull requests.** In the repository settings, under _Actions > General_, turn on _Allow GitHub Actions to create and approve pull requests_. Without it, the version job fails with `GitHub Actions is not permitted to create or approve pull requests`.
-3. **Create the `npm` environment.** Under _Settings > Environments_, create an environment named `npm` and add yourself as a required reviewer. Each publish then waits for approval.
+3. **Create the `npm` environment.** Under _Settings > Environments_, create an environment named `npm`. Under _Deployment branches and tags_, restrict it to `main`. GitHub only offers required reviewers on public repositories and some paid plans. Where they're available, add yourself so each publish waits for approval. While the repository is private, the manual gate is merging the "Version packages" pull request.
 4. **Make the repository public before the first publish.** npm only creates provenance attestations for packages published from a public repository. From a private repository, the publish still succeeds, but without provenance. [ADR 0013](adr/0013-licence-and-visibility.md) plans for the repository to go public at `1.0.0`, so publishing `0.x` with provenance means going public sooner. That's the owner's call.
 5. **Publish each new package once by hand.** npm sets up trusted publishing in a package's settings page, which only exists once the package does. For each package that isn't on npm yet, publish its first version locally from a clean checkout of `main`:
 
@@ -30,9 +30,9 @@ The repository owner does these once. None of them are in the repo, and no secre
    git push --follow-tags
    ```
 
-   Versions published this way have no provenance. If npm has since added a way to set up trusted publishing before a package's first publish, use that and skip this step.
+   Versions published this way have no provenance. A newly published scoped package can take a few minutes to appear on the public registry, so wait before looking for its settings page or running `npm view`. If npm has since added a way to set up trusted publishing before a package's first publish, use that and skip this step.
 
-6. **Add a trusted publisher to each package.** On npmjs.com, open each package's _Settings > Trusted publishing_ and add a GitHub Actions publisher: owner `mitcsutt`, repository `kiln`, workflow `release.yml`, environment `npm`. Then set _Publishing access_ to require two-factor authentication and disallow tokens.
+6. **Add a trusted publisher to each package.** On npmjs.com, open each package's _Settings > Trusted publishing_ and add a GitHub Actions publisher: owner `mitcsutt`, repository `kiln`, workflow `release.yml`, environment `npm`. Under _Allowed actions_, `npm stage publish` is always allowed. Also allow publishing directly, because the release workflow publishes directly and a staged publish would need promoting by hand. Leave dist-tag management off. Then, under _Settings > Publishing access_, choose _Require two-factor authentication and disallow bypass 2fa tokens (recommended)_. npm notes that every publishing-access option works with trusted publishers, so the workflow keeps publishing.
 7. **Switch publishing on.** Under _Settings > Secrets and variables > Actions > Variables_, add a repository variable `NPM_PUBLISH_ENABLED` set to `true`. Until it exists, the workflow still opens version pull requests but skips the pack and publish jobs.
 
 Steps 5 and 6 also apply later, whenever a new package joins the repo.
