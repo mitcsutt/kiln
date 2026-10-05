@@ -50,7 +50,7 @@ export function App() {
 
 - **Your own theme** is one CSS file against the token contract, selected the same way (`theme="harbour"`).
 
-Each theme has light and dark modes (`data-mode`, or `mode`/`defaultMode` on `ThemeProvider`), and `data-density` makes any subtree denser or roomier. For SSR without a flash of the wrong mode, render `themeScript(theme, defaultMode)` in your document `<head>`.
+Each theme has light and dark modes (`data-mode`, or `mode`/`defaultMode` on `ThemeProvider`), and `data-density` makes any subtree denser or roomier. For SSR (or a static `index.html`) without a flash of the wrong mode, render `themeScript(theme, defaultMode)` in your document `<head>`. The mode is stored under `kiln-color-mode`; pass `storageKey` to `ThemeProvider` and `themeScript` to give each app on one origin its own key.
 
 ## Fonts
 
@@ -63,6 +63,8 @@ The package ships agent skills in `skills/`, built from the docs pages: setting 
 ```sh
 npx @tanstack/intent@latest install
 ```
+
+If your `package.json` already has an `intent.skills` list, Intent loads only the packages it names: add `@mitcsutt/kiln-ui` to it, then check with `npx @tanstack/intent@latest list`.
 
 ## Docs
 

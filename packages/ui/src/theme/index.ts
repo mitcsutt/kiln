@@ -1,6 +1,6 @@
 export { ThemeProvider, ThemeScope } from './ThemeProvider'
 export type { ThemeProviderProps, ThemeScopeProps } from './ThemeProvider'
 export { useTheme, themeScript } from './context'
-export type { ThemeContextValue } from './context'
+export type { ThemeContextValue, ThemeScriptOptions } from './context'
 export { THEMES, THEME_META, MODES, DEFAULT_THEME } from './themes'
 export type { ThemeName, BuiltInThemeName, ThemeMeta, ColorMode } from './themes'
