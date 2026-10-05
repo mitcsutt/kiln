@@ -28,7 +28,7 @@ const json: unknown = {
 
 const result = parseFormSchema(json, { kinds: Object.keys(kit.registries.fields) })
 
-export default function Untrusted() {
+export function Usage() {
   if (result.ok) return <Text>Valid schema</Text>
   return (
     <Stack gap={3}>

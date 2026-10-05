@@ -6,17 +6,17 @@ exports: [ChipGroup]
 
 `ChipGroup` is one field made of chips: `type="multiple"` for several of a set, `type="single"` for at most one (pressing the chosen chip again clears it). Arrow keys move between chips, and `name` adds hidden inputs so it submits with a native form. Give it a name with a `Fieldset` legend or an `aria-label`.
 
-<Example name="ui/actions/chip-group/multiple" />
+<Example of="ChipGroup" name="Multiple" />
 
 ## One of a set
 
-<Example name="ui/actions/chip-group/single" />
+<Example of="ChipGroup" name="Single" />
 
 ## Errors
 
 Inside a `Fieldset` with an `error`, the chips take the critical edge and `aria-invalid`. Use [ChipGroupField](/docs/ui/inputs/chip-group-field) for the label, description and error in one component.
 
-<Example name="ui/actions/chip-group/invalid" />
+<Example of="ChipGroup" name="Invalid" />
 
 ## API
 

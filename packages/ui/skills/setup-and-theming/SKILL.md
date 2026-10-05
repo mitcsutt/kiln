@@ -70,7 +70,7 @@ Screens are built from layout primitives and typed props, never utility classes 
 ```tsx
 import { Button, Container, Heading, Inline, Section, Stack, Text } from '@mitcsutt/kiln-ui'
 
-export default function FirstScreen() {
+export function Usage() {
   return (
     <Section space={7}>
       <Container width="text">

@@ -66,9 +66,13 @@ function storiesFiles(source: string): Map<string, string[]> {
   return stories
 }
 
-/** The `title` in a stories file's meta. Stories titles are string literals (ADR 0010). */
+/**
+ * The `title` in a stories file's meta, read as Storybook reads it, so a `title` elsewhere in
+ * the file (a fixture's, a prop's) can't be taken for it.
+ */
 function storiesTitle(file: string): string | undefined {
-  return /^\s*title:\s*'([^']+)'/m.exec(readFileSync(file, 'utf8'))?.[1]
+  const csf = loadCsf(readFileSync(file, 'utf8'), { fileName: file, makeTitle: (title) => title })
+  return csf.parse().meta.title
 }
 
 const PACKAGES: Record<string, string> = { ui: 'UI', forms: 'Forms' }

@@ -77,7 +77,7 @@ const schema = defineFormSchema<LostProperty>()({
   },
 })
 
-export default function SchemaFormExample() {
+export function Usage() {
   const form = useAppForm<LostProperty>({
     defaultValues: { item: '', route: null, description: '', contact: false, email: '' },
     onSubmit: () => new Promise((resolve) => setTimeout(resolve, 500)),

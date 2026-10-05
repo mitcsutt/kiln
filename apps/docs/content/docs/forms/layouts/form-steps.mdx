@@ -6,7 +6,7 @@ exports: [FormSteps, FormStep, useFormSteps]
 
 `FormSteps` shows a [Stepper](/docs/ui/navigation/stepper) and one step at a time, with Back and Next. **Next** validates the current step's fields; if any are invalid it stays, shows their errors and focuses the first. Otherwise it moves on, focuses the new step's heading and announces "Step 2 of 3". On the last step, Next submits the form. The final submit validates every step, and an error in an earlier step takes you back to it.
 
-<Example name="forms/layouts/form-steps/usage" />
+<Example of="FormSteps" />
 
 - `linear` (on by default) stops the reader skipping ahead past an invalid step.
 - Control the step with `value` and `onValueChange` to keep it in the URL, so a link can open the form at a step.
@@ -17,7 +17,7 @@ exports: [FormSteps, FormStep, useFormSteps]
 
 `nav="none"` removes the built-in buttons, and `useFormSteps()` inside the steps gives you the state and the moves: `next()`, `back()`, `goTo(step)`, `index`, `count`, `isFirst`, `isLast`.
 
-<Example name="forms/layouts/form-steps/custom-nav" />
+<Example of="FormSteps" name="CustomNav" />
 
 <ApiSignature of="useFormSteps" />
 

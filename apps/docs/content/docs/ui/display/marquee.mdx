@@ -6,7 +6,7 @@ exports: [Marquee]
 
 `Marquee` scrolls a row of items in a loop, like live departures along a station board. The content is rendered twice for a seamless loop, but the copy is `aria-hidden` and inert, so screen readers and the tab order meet it once.
 
-<Example name="ui/display/marquee/usage" />
+<Example of="Marquee" />
 
 It pauses on hover and has a pause button by default (WCAG 2.2.2 asks for one on anything that moves for more than five seconds). Under `prefers-reduced-motion` it stops and becomes a row you can scroll. `label` names the region, `speed` and `direction` set the movement, and `surface` puts it on an `accent` or `inverse` band.
 

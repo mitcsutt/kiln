@@ -38,6 +38,12 @@
     letter-spacing: inherit;
   }
 
+  /* A select's text takes the theme's ink above, so its box takes the theme's surface. Left
+     to the browser, a dark-mode select is a grey the ink falls short of AA on. */
+  select {
+    background-color: var(--color-surface);
+  }
+
   button {
     cursor: pointer;
   }

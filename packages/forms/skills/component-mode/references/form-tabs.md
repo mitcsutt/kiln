@@ -23,7 +23,7 @@ const required = (message: string) => ({
   onDynamic: ({ value }: { value: string }) => (value.trim() ? undefined : message),
 })
 
-export default function Usage() {
+export function Usage() {
   const form = useAppForm({ defaultValues: { name: '', email: '', stop: '', notes: '' } })
   return (
     <Form form={form} aria-label="New member">

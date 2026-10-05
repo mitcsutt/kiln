@@ -11,7 +11,7 @@ Source: https://kiln.mitchellsutton.com/docs/forms/layouts/form-grid
 ```tsx
 import { Form, FormGrid, FormGridItem, useAppForm } from '@mitcsutt/kiln-forms'
 
-export default function Usage() {
+export function Usage() {
   const form = useAppForm({
     defaultValues: { street: '', town: '', postcode: '', country: 'GB' },
   })

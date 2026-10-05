@@ -70,7 +70,7 @@ const schema = defineFormSchema<Signup>()({
   },
 })
 
-export default function Rules() {
+export function Usage() {
   const form = useAppForm<Signup>({
     defaultValues: { email: '', username: '', age: null, stops: [] },
   })

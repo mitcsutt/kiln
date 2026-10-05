@@ -12,7 +12,7 @@ Source: https://kiln.mitchellsutton.com/docs/forms/hooks/use-unsaved-changes
 import { Form, SubmitButton, useAppForm, useUnsavedChanges } from '@mitcsutt/kiln-forms'
 import { Stack, Text } from '@mitcsutt/kiln-ui'
 
-export default function Usage() {
+export function Usage() {
   const form = useAppForm({
     defaultValues: { note: '' },
     onSubmit: () => new Promise((resolve) => setTimeout(resolve, 400)),

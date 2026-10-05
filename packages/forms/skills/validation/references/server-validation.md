@@ -46,7 +46,7 @@ async function check(): Promise<string> {
   return JSON.stringify(outcome.issues ?? { value: outcome.value })
 }
 
-export default function Server() {
+export function Usage() {
   const [result, setResult] = useState('')
   return (
     <Stack gap={3} align="start">

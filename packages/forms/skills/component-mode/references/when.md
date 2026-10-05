@@ -13,7 +13,7 @@ import { Form, SubmitButton, useAppForm, When } from '@mitcsutt/kiln-forms'
 import { Code, Stack, Text } from '@mitcsutt/kiln-ui'
 import { useState } from 'react'
 
-export default function Usage() {
+export function Usage() {
   const [submitted, setSubmitted] = useState('')
   const form = useAppForm({
     defaultValues: { delivery: 'collect', address: '' },

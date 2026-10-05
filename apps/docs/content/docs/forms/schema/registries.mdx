@@ -6,7 +6,7 @@ exports: [defineLoader, defineValidator, defineComputer, defineCustomNode]
 
 A schema is JSON, so it can't contain functions. Instead the kit holds them, and the schema refers to them by key. Typed schemas check the keys: referencing a loader that isn't registered is a type error.
 
-<Example name="forms/schema/registries" />
+<Example of="forms/schema/registries" />
 
 | Registry     | Define with                                                 | Referenced by                                           |
 | ------------ | ----------------------------------------------------------- | ------------------------------------------------------- |

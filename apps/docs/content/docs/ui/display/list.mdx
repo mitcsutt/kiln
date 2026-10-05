@@ -6,7 +6,7 @@ exports: [List]
 
 `List` is for rows of similar things: trips, people, invoices, recent activity. Each row has up to three slots: `List.Leading` (an avatar, an icon, a rank), `List.Content` (a title and `List.Description`), and `List.Trailing` (an amount, a time, an action). Rows are divided by hairlines.
 
-<Example name="ui/display/list/usage" />
+<Example of="List" />
 
 `density="compact"` tightens rows; `divided={false}` drops the rules; `as="ol"` makes it ordered.
 
@@ -14,7 +14,7 @@ exports: [List]
 
 `interactive` gives a row a hover fill, and `asChild` lets the row be a link, so the whole row is one target. `selected` marks the current row and `highlighted` marks "you".
 
-<Example name="ui/display/list/interactive" />
+<Example of="List" name="Interactive" />
 
 ## API
 

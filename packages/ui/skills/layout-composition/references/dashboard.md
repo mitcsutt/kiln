@@ -41,7 +41,7 @@ const STATUS = {
   empty: { tone: 'critical', label: 'Empty' },
 } as const
 
-export default function Dashboard() {
+export function Usage() {
   return (
     <Section space={7}>
       <Container width="wide">

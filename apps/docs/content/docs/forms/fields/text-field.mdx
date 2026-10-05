@@ -10,7 +10,7 @@ It renders kiln-ui's [TextField](/docs/ui/inputs/text-field).
 | ------ | ---------------- | --------------- | -------- | ----- |
 | `text` | `form.TextField` | `FormTextField` | `string` | `''`  |
 
-<Example name="forms/fields/text-field/usage" />
+<Example of="FormTextField" />
 
 `type` (`text`, `email`, `tel`, `url` or `search`) sets the keyboard and autofill only. Validation comes from your rules or schema, so `type="email"` doesn't check the address by itself. A text field can't bind to a union like `'admin' | 'member'`: a text box would write any string, so use a select, radio or segmented field.
 

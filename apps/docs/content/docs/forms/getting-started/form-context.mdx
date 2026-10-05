@@ -6,7 +6,7 @@ exports: [useTypedAppFormContext, useFormContext]
 
 `<Form form={form}>` puts the form in React context, so any component below it can reach the form without a `form` prop, however deep it sits. `useTypedAppFormContext(options)` returns that form typed against your values, with the same `form.TextField`, `form.state` and `form.Subscribe` you get from `useAppForm`.
 
-<Example name="forms/getting-started/form-context" />
+<Example of="forms/getting-started/form-context" />
 
 Nothing between the form and its fields passes `form` down. `AttendeeFields` and `SessionFields` render bound fields, `Summary` reads two values, and `Footer` reads the form's status.
 

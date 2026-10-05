@@ -26,7 +26,7 @@ import { Stack } from '@mitcsutt/kiln-ui'
 
 const TAKEN = ['ines', 'harbourmaster', 'admin']
 
-export default function Validation() {
+export function Usage() {
   const form = useAppForm({
     defaultValues: { username: '', seats: null as number | null, promo: '' },
     onSubmit: async ({ value }) => {

@@ -6,7 +6,7 @@ exports: [Repeater]
 
 `Repeater` edits an array of objects: passengers, legs of a journey, line items. Each item gets typed shorthand fields relative to itself (`item.fields.TextField name="name"`), and the repeater handles adding, removing and moving items, focus after each change, and announcing it.
 
-<Example name="forms/layouts/repeater/usage" />
+<Example of="Repeater" />
 
 - `newItem` is the value a new item starts with (or a function returning one).
 - `min` and `max` bound the count: at `max`, Add is `aria-disabled` with a reason; at `min`, Remove is hidden.
@@ -17,7 +17,7 @@ exports: [Repeater]
 
 `variant="table"` renders each item as a row and each field as a cell, with `columns` giving the headers. Labels stay for assistive technology but aren't shown, and errors render in the cell. `reorderable` adds move up and move down buttons: keyboard first, no dragging.
 
-<Example name="forms/layouts/repeater/table" />
+<Example of="Repeater" name="Table" />
 
 `variant="cards"` puts each item in a card.
 

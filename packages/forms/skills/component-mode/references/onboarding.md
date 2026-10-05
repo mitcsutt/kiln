@@ -33,7 +33,7 @@ const required = (message: string) => ({
   onDynamic: ({ value }: { value: string }) => (value.trim() === '' ? message : undefined),
 })
 
-export default function Onboarding() {
+export function Usage() {
   const [submitted, setSubmitted] = useState<Application | null>(null)
   const form = useAppForm<Application>({
     defaultValues: {

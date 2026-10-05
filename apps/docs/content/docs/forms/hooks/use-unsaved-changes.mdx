@@ -6,7 +6,7 @@ exports: [useUnsavedChanges]
 
 `useUnsavedChanges(form)` adds a `beforeunload` prompt while the form differs from its baseline, so closing or reloading the tab asks first. It returns whether the form is dirty, so your router's own navigation blocker can use the same answer.
 
-<Example name="forms/hooks/use-unsaved-changes/usage" />
+<Example of="useUnsavedChanges" />
 
 Pass `when: false` to switch the guard off, for example while a save is in flight.
 

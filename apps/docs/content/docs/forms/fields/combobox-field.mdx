@@ -10,7 +10,7 @@ It renders kiln-ui's [ComboboxField](/docs/ui/inputs/combobox-field).
 | ---------- | -------------------- | ------------------- | ---------------------------------- | ------ |
 | `combobox` | `form.ComboboxField` | `FormComboboxField` | the options' value type, or `null` | `null` |
 
-<Example name="forms/fields/combobox-field/usage" />
+<Example of="FormComboboxField" />
 
 `loadOptions` is called with the query, the form's values and an abort signal. Requests are debounced, a superseded request is aborted, and results are cached per query. `reloadOn` lists fields that should reload the options when they change (a region after a country). `creatable` lets the reader keep text that matches no option. In schema mode, functions can't live in JSON, so a loader is registered by key and referenced with `optionsFrom`.
 

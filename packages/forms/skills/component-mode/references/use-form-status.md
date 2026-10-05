@@ -12,7 +12,7 @@ Source: https://kiln.mitchellsutton.com/docs/forms/hooks/use-form-status
 import { Form, SubmitButton, useAppForm, useFormStatus } from '@mitcsutt/kiln-forms'
 import { DataList, Stack } from '@mitcsutt/kiln-ui'
 
-export default function Usage() {
+export function Usage() {
   const form = useAppForm({
     defaultValues: { route: 'Morning commute' },
     onSubmit: () => new Promise((resolve) => setTimeout(resolve, 1000)),

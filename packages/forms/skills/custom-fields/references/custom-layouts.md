@@ -49,7 +49,7 @@ const required = (message: string) => ({
   onDynamic: ({ value }: { value: string }) => (value.trim() ? undefined : message),
 })
 
-export default function Usage() {
+export function Usage() {
   const form = useAppForm({ defaultValues: { outFrom: '', outTo: '', backFrom: '', backTo: '' } })
   return (
     <Form form={form} aria-label="Return journey">

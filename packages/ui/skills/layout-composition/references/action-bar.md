@@ -11,7 +11,7 @@ Source: https://kiln.mitchellsutton.com/docs/ui/layout/action-bar
 ```tsx
 import { ActionBar, Button, Stack, TextField } from '@mitcsutt/kiln-ui'
 
-export default function Usage() {
+export function Usage() {
   return (
     <Stack gap={5}>
       <TextField label="Route name" defaultValue="Morning commute" />

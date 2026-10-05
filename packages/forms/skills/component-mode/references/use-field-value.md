@@ -14,7 +14,7 @@ import { Stack } from '@mitcsutt/kiln-ui'
 
 const POSTCODES: Record<string, string> = { GB: 'KB4 2PQ', IE: 'D02 X285' }
 
-export default function Usage() {
+export function Usage() {
   const form = useAppForm({ defaultValues: { country: 'GB', postcode: '' } })
   const country = useFieldValue(form, 'country')
   return (

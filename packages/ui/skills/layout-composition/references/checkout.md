@@ -33,7 +33,7 @@ const BASKET = [
 
 const subtotal = BASKET.reduce((sum, item) => sum + item.price, 0)
 
-export default function Checkout() {
+export function Usage() {
   return (
     <Section space={7}>
       <Container width="content">

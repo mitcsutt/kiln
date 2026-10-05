@@ -45,7 +45,7 @@ const schema = defineFormSchema<Feedback>()({
   },
 })
 
-export default function ContentNodes() {
+export function Usage() {
   const form = useAppForm<Feedback>({ defaultValues: { rating: null, comments: '' } })
   return (
     <Form form={form} aria-label="Rate your crossing">

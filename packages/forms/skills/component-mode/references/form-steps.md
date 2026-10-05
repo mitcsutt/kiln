@@ -13,7 +13,7 @@ import { Form, FormStep, FormSteps, useAppForm } from '@mitcsutt/kiln-forms'
 import { Alert } from '@mitcsutt/kiln-ui'
 import { useState } from 'react'
 
-export default function Usage() {
+export function Usage() {
   const [done, setDone] = useState(false)
   const form = useAppForm({
     defaultValues: { from: '', to: '', date: '', passengers: 1 },
@@ -103,7 +103,7 @@ function Nav() {
   )
 }
 
-export default function CustomNav() {
+export function CustomNav() {
   const form = useAppForm({ defaultValues: { name: '', stop: '' } })
   return (
     <Form form={form} aria-label="Quick setup">

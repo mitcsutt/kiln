@@ -6,7 +6,7 @@ exports: [SchemaForm, SchemaNode, defineFormSchema]
 
 In schema mode, a form is a JSON object: a tree of field nodes (`{ kind: 'text', name: 'email' }`), layout nodes (`{ layout: 'grid' }`) and content nodes (`{ content: 'heading' }`). `SchemaForm` renders it with the same components component mode uses, so the two produce the same markup.
 
-<Example name="forms/getting-started/schema-form" />
+<Example of="forms/getting-started/schema-mode" />
 
 Tick "Email me if it turns up" and the email field appears; untick it and the field is removed, its rules stop running, and its value goes back to its default before submission.
 

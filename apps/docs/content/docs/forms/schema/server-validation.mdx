@@ -6,7 +6,7 @@ exports: [toStandardSchema, schemaDefaultValues, defineSchemaFor]
 
 `@mitcsutt/kiln-forms/schema` is the React-free half of the package: parsing, conditions and rules, with no React, no TanStack Form and no kiln-ui. It loads in plain Node. `toStandardSchema(schema)` turns a schema's rules into a [Standard Schema](https://standardschema.dev), so a server enforces exactly what the form does.
 
-<Example name="forms/schema/server" />
+<Example of="forms/schema/server-validation" />
 
 The phone field is hidden (contact is off), so it isn't validated, and `isAdmin` isn't a field, so it's dropped from the output.
 

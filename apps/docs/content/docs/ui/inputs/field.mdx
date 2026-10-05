@@ -6,7 +6,7 @@ exports: [Field, useFieldControl]
 
 Every input in Kiln exists twice. The bare control (`Input`, `NumberInput`, `Combobox`) works anywhere, and the `*Field` version (`TextField`, `NumberField`, `ComboboxField`) adds the label, description, error and warning. `Field` is what the `*Field`s are made of, and what you use to give any other control the same treatment.
 
-<Example name="ui/inputs/field/usage" />
+<Example of="Field" />
 
 The label is wired to the control (`htmlFor`), the description and messages to `aria-describedby`, and an error sets `aria-invalid` on the control. Kiln's controls read this wiring from the `Field` around them, so you never pass ids by hand.
 
@@ -23,13 +23,13 @@ An error replaces the warning while it shows. Plain fields show whatever `error`
 
 `layout="stack"` (the default) puts the label above the control. `horizontal` gives the label and the control their own columns, stacking below `sm`. `inline` hides the label visually so the control can sit in a sentence. The group fields (checkbox and radio groups, chips, choice cards, date range) take the same `layout`.
 
-<Example name="ui/inputs/field/layouts" />
+<Example of="Field" name="Layouts" />
 
 ## Your own control
 
 `useFieldControl()` returns the surrounding `Field`'s wiring (`id`, `describedBy`, `invalid`, `disabled`, and so on), or `null` outside one. Kiln's controls call it themselves; call it from your own control to make it Field-aware.
 
-<Example name="ui/inputs/field/custom-control" />
+<Example of="Field" name="CustomControl" />
 
 <ApiSignature of="useFieldControl" />
 

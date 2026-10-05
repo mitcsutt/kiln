@@ -49,7 +49,7 @@ const schema = z.object({
   ticket: z.enum(['single', 'return', 'day']),
 })
 
-export default function FirstForm() {
+export function Usage() {
   const [booked, setBooked] = useState<string | null>(null)
   const form = useAppForm({
     defaultValues: { name: '', email: '', ticket: 'return' },
@@ -173,7 +173,7 @@ Model a number that can be empty as `number | null`: empty number fields write `
 import { Form, SubmitButton, useAppForm } from '@mitcsutt/kiln-forms'
 import { Stack } from '@mitcsutt/kiln-ui'
 
-export default function Canonical() {
+export function Canonical() {
   const form = useAppForm({ defaultValues: { reference: '' } })
   return (
     <Form form={form} aria-label="Find a booking">
@@ -203,9 +203,9 @@ Inside `AppField`, `field.TextField` isn't checked against the value type (TanSt
 ```tsx
 import {
   Form,
+  formOptions,
   FormSection,
   SubmitButton,
-  formOptions,
   useAppForm,
   withForm,
 } from '@mitcsutt/kiln-forms'
@@ -230,7 +230,7 @@ const ContactDetails = withForm({
   },
 })
 
-export default function WithForm() {
+export function WithForm() {
   const form = useAppForm(passengerOptions)
   return (
     <Form form={form} aria-label="Passenger">
@@ -284,7 +284,7 @@ const NewPassword = withFieldGroup({
   },
 })
 
-export default function FieldGroup() {
+export function FieldGroup() {
   const form = useAppForm({ defaultValues: { password: { next: '', confirm: '' } } })
   return (
     <Form form={form} aria-label="Change password">

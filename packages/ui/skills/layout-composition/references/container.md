@@ -11,7 +11,7 @@ Source: https://kiln.mitchellsutton.com/docs/ui/layout/container
 ```tsx
 import { Container, Stack, Text } from '@mitcsutt/kiln-ui'
 
-export default function Usage() {
+export function Usage() {
   return (
     <Stack gap={4}>
       {(['narrow', 'text', 'content'] as const).map((width) => (

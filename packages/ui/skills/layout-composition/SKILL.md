@@ -50,7 +50,7 @@ Vary the rhythm. Adjacent sections shouldn't share a `space` step, and a page us
 ```tsx
 import { Button, Inline, Stack, Text, TextField } from '@mitcsutt/kiln-ui'
 
-export default function Density() {
+export function Density() {
   return (
     <Inline gap={7} align="start">
       {(['compact', undefined, 'comfortable'] as const).map((density) => (
@@ -96,7 +96,7 @@ import { Box, Grid, Text } from '@mitcsutt/kiln-ui'
 
 const STOPS = ['Harbour', 'Northpoint', 'Kelso Bay', 'Ferry Lane', 'Old Quay', 'Marram Point']
 
-export default function ResponsiveProps() {
+export function ResponsiveProps() {
   return (
     <Grid columns={{ base: 1, sm: 2, lg: 3 }} gap={{ base: 3, md: 5 }}>
       {STOPS.map((stop) => (
@@ -124,7 +124,7 @@ A column of things with consistent space between them. The layout you'll reach f
 ```tsx
 import { Button, Heading, Stack, Text } from '@mitcsutt/kiln-ui'
 
-export default function Usage() {
+export function Usage() {
   return (
     <Stack gap={4} align="start">
       <Heading level={3} size="xl">
@@ -152,7 +152,7 @@ const STOPS = [
   { name: 'Kelso Bay Pier', time: '23:31' },
 ]
 
-export default function Dividers() {
+export function Dividers() {
   return (
     <Stack gap={{ base: 3, md: 4 }} dividers>
       {STOPS.map((stop) => (
@@ -196,7 +196,7 @@ Things in a row that wrap when they run out of room. Button rows, tag lists, too
 ```tsx
 import { Badge, Button, Inline, Text } from '@mitcsutt/kiln-ui'
 
-export default function Usage() {
+export function Usage() {
   return (
     <Inline gap={3} justify={{ base: 'start', md: 'between' }}>
       <Inline gap={2}>
@@ -244,7 +244,7 @@ import { Box, Grid, Text } from '@mitcsutt/kiln-ui'
 
 const LINES = ['Red', 'Harbour', 'Coastal', 'Night', 'Airport', 'Orbital', 'Market', 'University']
 
-export default function Columns() {
+export function Columns() {
   return (
     <Grid columns={{ base: 1, sm: 2, lg: 4 }} gap={4}>
       {LINES.map((line) => (
@@ -266,7 +266,7 @@ import { Box, Grid, Text } from '@mitcsutt/kiln-ui'
 
 const PIERS = ['North pier', 'South pier', 'Ferry terminal', 'Lifeboat station', 'Fish market']
 
-export default function AutoFill() {
+export function AutoFill() {
   return (
     <Grid minItemWidth="xs" gap={4}>
       {PIERS.map((pier) => (
@@ -286,7 +286,7 @@ export default function AutoFill() {
 ```tsx
 import { Box, Grid, Text } from '@mitcsutt/kiln-ui'
 
-export default function Items() {
+export function Items() {
   return (
     <Grid columns={{ base: 1, md: 3 }} gap={4}>
       <Grid.Item span={{ base: 1, md: 2 }}>
@@ -357,7 +357,7 @@ const CHANGES = [
   'Kelso Bay Pier reopens on 3 November.',
 ]
 
-export default function Usage() {
+export function Usage() {
   return (
     <Split ratio="5/7" gap={{ base: 5, md: 7 }}>
       <Heading level={3} size="2xl">
@@ -380,7 +380,7 @@ export default function Usage() {
 ```tsx
 import { Box, Split, Stack, Text } from '@mitcsutt/kiln-ui'
 
-export default function Ratios() {
+export function Ratios() {
   return (
     <Stack gap={4}>
       {(['1/1', '1/2', '1/3', '5/7'] as const).map((ratio) => (
@@ -425,7 +425,7 @@ A full-bleed band of vertical space, with an optional surface and rules. Put a C
 ```tsx
 import { Button, Container, Heading, Section, Stack, Text } from '@mitcsutt/kiln-ui'
 
-export default function Usage() {
+export function Usage() {
   return (
     <>
       <Section space={7}>

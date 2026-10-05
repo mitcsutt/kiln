@@ -109,7 +109,7 @@ describe('page references', () => {
 /**
  * What's wrong with a page's `<Example />` tags (ADR 0025). `of` names a public export that has
  * an examples file, or a guide's examples file by its path, and `name` is one of that file's
- * exports. A tag with only `name` is a file in `examples/`.
+ * exports.
  */
 function exampleProblems(body: string, { exports, ids }: { exports: Set<string>; ids: string[] }) {
   const known = new Set(ids)
@@ -119,9 +119,7 @@ function exampleProblems(body: string, { exports, ids }: { exports: Set<string>;
     const of = /\bof="([^"]*)"/.exec(tag)?.[1]
     const name = /\bname="([^"]*)"/.exec(tag)?.[1]
     if (of === undefined) {
-      if (!name || !existsSync(join(contentDir, '../../examples', `${name}.tsx`))) {
-        problems.push(`${tag}: no file at examples/${name ?? ''}.tsx`)
-      }
+      problems.push(`${tag}: no \`of\``)
     } else if (!of.includes('/') && !exports.has(of)) {
       problems.push(`${tag}: ${of} isn't a public export`)
     } else if (!files.has(of)) {
@@ -140,13 +138,12 @@ describe('exampleProblems', () => {
       ids: ['Button#Usage', 'Button#Hierarchy', 'forms/getting-started/schemas#Usage'],
     })
 
-  it('accepts an export, a guide path and a file in examples/', () => {
+  it('accepts an export and a guide path', () => {
     expect(
       check(`<Example of="Button" />
 <Example of="Button" name="Hierarchy" layout="bleed" />
 <Example name="Hierarchy" of="Button" />
-<Example of="forms/getting-started/schemas" />
-<Example name="ui/actions/button/hierarchy" />`),
+<Example of="forms/getting-started/schemas" />`),
     ).toEqual([])
   })
 
@@ -171,9 +168,7 @@ describe('exampleProblems', () => {
     ])
   })
 
-  it('rejects a missing file in examples/', () => {
-    expect(check('<Example name="ui/actions/nothing" />')).toEqual([
-      '<Example name="ui/actions/nothing" />: no file at examples/ui/actions/nothing.tsx',
-    ])
+  it('rejects a tag without `of`', () => {
+    expect(check('<Example name="Hierarchy" />')).toEqual(['<Example name="Hierarchy" />: no `of`'])
   })
 })

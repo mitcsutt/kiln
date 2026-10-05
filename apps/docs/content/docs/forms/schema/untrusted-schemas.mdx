@@ -6,7 +6,7 @@ exports: [parseFormSchema]
 
 A schema that arrives at runtime (from a CMS, a database, an API) could be wrong, or hostile. Run it through `parseFormSchema` before rendering it, or before using it on a server. It never throws: every problem comes back as an issue with the exact path where it was found.
 
-<Example name="forms/schema/untrusted" />
+<Example of="forms/schema/untrusted-schemas" />
 
 ```ts
 import { parseFormSchema } from '@mitcsutt/kiln-forms/schema'

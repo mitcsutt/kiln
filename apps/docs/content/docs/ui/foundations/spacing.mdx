@@ -17,7 +17,7 @@ Vary the rhythm. Adjacent sections shouldn't share a `space` step, and a page us
 
 `data-density` multiplies the theme's own density for a subtree: `compact` by 0.85, `comfortable` by 1.15. Spacing, control heights and gaps all follow. Use it for a dense admin table inside an otherwise roomy page.
 
-<Example name="ui/foundations/density" />
+<Example of="ui/foundations/spacing" name="Density" />
 
 ## Widths
 
@@ -41,7 +41,7 @@ Layout props that make sense per breakpoint take either a value or a map of valu
 type Responsive<T> = T | Partial<Record<'base' | 'sm' | 'md' | 'lg' | 'xl', T>>
 ```
 
-<Example name="ui/foundations/responsive-props" />
+<Example of="ui/foundations/spacing" name="ResponsiveProps" />
 
 Breakpoints are mobile-first viewport widths: `sm` 40em, `md` 48em, `lg` 64em, `xl` 80em. Structural components also take `hideBelow` and `hideAbove`, so responsive visibility is a prop too: `<NavLinks hideBelow="md">` beside `<BottomNav hideAbove="md">`.
 

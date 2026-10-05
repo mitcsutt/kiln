@@ -25,7 +25,7 @@ function Chart({ label }: { label: string }) {
   )
 }
 
-export default function Usage() {
+export function Usage() {
   return (
     <Grid columns={{ base: 1, sm: 3 }} gap={4}>
       {(['16/9', '4/3', '1/1'] as const).map((ratio) => (

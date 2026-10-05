@@ -6,7 +6,7 @@ exports: [RelativeTime, formatRelativeTime, formatAbsoluteTime]
 
 `RelativeTime` renders a `<time>` that reads "3 mins ago" or "in 2 hours", and updates itself (every 30 seconds by default). The full date is always in its `title`.
 
-<Example name="ui/feedback/relative-time/usage" />
+<Example of="RelativeTime" />
 
 It's safe to server-render: the server and the first client render both show the absolute date, because no clock is read during render, so hydration can't disagree about "now". The relative wording appears once the component has mounted.
 
@@ -16,7 +16,7 @@ It's safe to server-render: the server and the first client render both show the
 
 `formatRelativeTime` and `formatAbsoluteTime` return the strings, for a tooltip, a notification or an `aria-label`.
 
-<Example name="ui/feedback/relative-time/format" />
+<Example of="RelativeTime" name="Format" />
 
 <ApiSignature of="formatRelativeTime" />
 
