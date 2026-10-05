@@ -6,7 +6,7 @@ import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescrip
 import { importX } from 'eslint-plugin-import-x'
 import tseslint from 'typescript-eslint'
 
-import { CONFIG_FILES, SOURCE_FILES, STORY_FILES, TEST_FILES } from './globs.js'
+import { CONFIG_FILES, SCRIPT_FILES, SOURCE_FILES, STORY_FILES, TEST_FILES } from './globs.js'
 import { asErrors } from './severity.js'
 
 /**
@@ -49,6 +49,20 @@ export default defineConfig(
       ],
       '@typescript-eslint/consistent-type-exports': 'error',
       '@typescript-eslint/no-import-type-side-effects': 'error',
+      // `strictTypeChecked`'s options, except numbers. A number always prints as digits, so
+      // `${count} items` is the intended output, not the object, `undefined` or `null` the
+      // rule exists to catch. Every option is listed because options replace, not merge.
+      '@typescript-eslint/restrict-template-expressions': [
+        'error',
+        {
+          allowAny: false,
+          allowBoolean: false,
+          allowNever: false,
+          allowNullish: false,
+          allowNumber: true,
+          allowRegExp: false,
+        },
+      ],
     },
   },
   {
@@ -66,7 +80,7 @@ export default defineConfig(
       'import-x/no-extraneous-dependencies': [
         'error',
         {
-          devDependencies: [...TEST_FILES, ...STORY_FILES, ...CONFIG_FILES],
+          devDependencies: [...TEST_FILES, ...STORY_FILES, ...CONFIG_FILES, ...SCRIPT_FILES],
           peerDependencies: true,
           optionalDependencies: false,
         },

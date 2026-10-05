@@ -18,3 +18,6 @@ export const CONFIG_FILES = [
   '**/*.config.{js,mjs,cjs,ts,mts,cts}',
   '**/.storybook/**/*.{js,jsx,mjs,cjs,ts,tsx,mts,cts}',
 ]
+
+/** Build, codegen and maintenance scripts, which may import dev dependencies. */
+export const SCRIPT_FILES = ['**/scripts/**/*.{js,mjs,cjs,ts,mts,cts}']
