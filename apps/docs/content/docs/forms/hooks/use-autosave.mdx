@@ -6,7 +6,7 @@ exports: [useAutosave]
 
 `useAutosave(form, save, options)` calls `save` with the form's values after a quiet moment. A newer save aborts the one in flight (through the `signal` it's given), a successful save makes the saved values the new clean baseline, and the status (saving, saved, failed) is reported to [`FormStatus`](/docs/forms/layouts/form-status).
 
-<Example name="forms/hooks/use-autosave/usage" />
+<Example of="useAutosave" />
 
 By default it saves only when the form is valid. Before each save it runs the edited fields' validators, even before a field's first blur, so a stale "valid" never lets a bad value through. The errors it finds stay hidden until the form's normal error timing shows them.
 

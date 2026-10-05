@@ -24,7 +24,7 @@ A Kiln theme is one CSS file. It sets the tokens in the [contract](references/to
 ```tsx
 import { Box, Button, Heading, Inline, Stack, Text, ThemeScope } from '@mitcsutt/kiln-ui'
 
-export default function CustomTheme() {
+export function Usage() {
   return (
     <ThemeScope theme="harbour">
       <Box padding={6}>

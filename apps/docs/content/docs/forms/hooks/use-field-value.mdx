@@ -6,7 +6,7 @@ exports: [useFieldValue]
 
 `useFieldValue(form, name)` subscribes to one path and returns its value, typed to that path. Use it when one field's label, placeholder or options depend on another's value.
 
-<Example name="forms/hooks/use-field-value/usage" />
+<Example of="useFieldValue" />
 
 To reset a dependent field when its parent changes, use a field listener, as the country field above does with `form.resetField('postcode')`. In schema mode the same thing is `resets: ['postcode']`.
 

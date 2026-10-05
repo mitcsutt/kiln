@@ -4,10 +4,8 @@
  * code under it come from the same file, so they can't disagree. Both are keyed by the id
  * `exampleId` in `src/lib/examples.ts` reads:
  *
- * - `Button#Hierarchy`: the `Hierarchy` export of a `*.examples.tsx` file beside its code
- *   (`examples-files.ts`), which a page shows with `<Example of="Button" name="Hierarchy" />`.
- * - `ui/actions/button/hierarchy`: the default export of `examples/ui/actions/button/hierarchy.tsx`,
- *   shown with `<Example name="ui/actions/button/hierarchy" />`, until it moves beside its code.
+ * `Button#Hierarchy` is the `Hierarchy` export of the `*.examples.tsx` file beside `Button`
+ * (`examples-files.ts`), which a page shows with `<Example of="Button" name="Hierarchy" />`.
  *
  * The code shown is the example's slice (`extract-example.ts`): its export and the helpers
  * and imports it uses. Each slice is also written to `.generated/examples/`, which the
@@ -15,14 +13,13 @@
  *
  *   node scripts/generate-examples.ts
  */
-import { globSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { dirname, join, relative, resolve, sep } from 'node:path'
 import { examplesFiles } from './examples-files.ts'
 import { exampleNames, extractExample } from './extract-example.ts'
 
 const app = resolve(import.meta.dirname, '..')
 const repo = resolve(app, '../..')
-const dir = join(app, 'examples')
 const outDir = join(app, '.generated')
 const snippetDir = join(outDir, 'examples')
 const clientDir = join(outDir, 'client')
@@ -45,24 +42,6 @@ function importPath(from: string, to: string): string {
 
 const entries: Entry[] = []
 const imports: string[] = []
-
-for (const file of globSync('**/*.tsx', { cwd: dir }).sort()) {
-  const name = file
-    .replace(/\.tsx$/, '')
-    .split(sep)
-    .join('/')
-  const source = readFileSync(join(dir, file), 'utf8')
-  if (!source.startsWith("'use client'")) {
-    throw new Error(`examples/${file} must start with 'use client' (it renders in the browser).`)
-  }
-  if (!/^export default function \w+/m.test(source)) {
-    throw new Error(`examples/${file} must have an \`export default function\`.`)
-  }
-  imports.push(
-    `import e${String(entries.length)} from '${importPath(join(outDir, 'examples.ts'), join(dir, name))}'`,
-  )
-  entries.push({ id: name, file: join(dir, file), exportName: 'default', snippet: `${name}.tsx` })
-}
 
 // An examples file carries no 'use client' (ADR 0025), so each gets a generated client module
 // that re-exports its examples, and the registry imports them from there. A page then loads

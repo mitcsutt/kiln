@@ -6,7 +6,7 @@ exports: [IconButton]
 
 `IconButton` is for toolbars and dense rows where the icon is universally understood: search, close, copy, more. Its `label` is required, because the label is the button's only name for screen reader users. If the icon isn't obvious, use a `Button` with words.
 
-<Example name="ui/actions/icon-button/usage" />
+<Example of="IconButton" />
 
 It takes the same `variant`, `tone`, `size`, `loading` and `asChild` props as `Button`. Ghost and neutral are the defaults, for the everyday toolbar.
 
@@ -14,13 +14,13 @@ It takes the same `variant`, `tone`, `size`, `loading` and `asChild` props as `B
 
 `shape="auto"` follows the theme's action radius, so it's a pill in Monograph and a square in Paper. `round` and `square` pin the shape.
 
-<Example name="ui/actions/icon-button/shapes-and-sizes" />
+<Example of="IconButton" name="ShapesAndSizes" />
 
 ## Beside a button
 
 An `IconButton` matches a `Button` of the same size, so a "more actions" button can sit beside the primary action. `showTitle` adds a native tooltip with the label, for pointer users who want to check before pressing.
 
-<Example name="ui/actions/icon-button/beside-button" />
+<Example of="IconButton" name="BesideButton" />
 
 ## API
 

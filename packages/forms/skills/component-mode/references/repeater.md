@@ -18,7 +18,7 @@ interface Passenger {
   bike: boolean
 }
 
-export default function Usage() {
+export function Usage() {
   const form = useAppForm({
     defaultValues: { passengers: [{ name: 'Ines Varga', age: 34, bike: true }] as Passenger[] },
   })
@@ -68,7 +68,7 @@ interface Leg {
   fare: number | null
 }
 
-export default function Table() {
+export function Table() {
   const form = useAppForm({
     defaultValues: {
       legs: [

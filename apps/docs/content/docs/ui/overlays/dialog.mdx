@@ -6,7 +6,7 @@ exports: [Dialog]
 
 `Dialog` interrupts to ask for a decision or a small piece of input. It's Radix Dialog underneath: focus moves into it and is trapped there, Escape and the scrim close it, page scroll locks, and focus returns to the trigger when it closes.
 
-<Example name="ui/overlays/dialog/usage" layout="centered" />
+<Example of="Dialog" layout="centered" />
 
 `Dialog.Content` takes the `title` (the dialog's accessible name) and a `description`. Every dialog needs a name, so if you leave `title` out, render a `Dialog.Title` yourself. Name the buttons for what they do: "Keep booking" and "Cancel booking", never "OK" and "Cancel".
 
@@ -16,7 +16,7 @@ exports: [Dialog]
 
 Control `open` to close the dialog when the form submits.
 
-<Example name="ui/overlays/dialog/form" />
+<Example of="Dialog" name="Form" />
 
 ## Themes
 

@@ -13,7 +13,7 @@ import { Form, ResetButton, SubmitButton, useAppForm } from '@mitcsutt/kiln-form
 import { Inline, Stack, Text } from '@mitcsutt/kiln-ui'
 import { useState } from 'react'
 
-export default function Usage() {
+export function Usage() {
   const [sent, setSent] = useState('')
   const form = useAppForm({
     defaultValues: { route: 'Morning commute' },
@@ -65,7 +65,7 @@ function Example({ state }: { state: 'disabled' | 'readOnly' }) {
   )
 }
 
-export default function States() {
+export function States() {
   return (
     <Grid columns={{ base: 1, sm: 2 }} gap={6}>
       <Example state="disabled" />

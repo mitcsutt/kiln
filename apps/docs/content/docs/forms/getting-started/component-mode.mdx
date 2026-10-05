@@ -48,7 +48,7 @@ Model a number that can be empty as `number | null`: empty number fields write `
 
 `form` _is_ TanStack Form's form API, so everything from TanStack works: `form.AppField` with a render prop, `form.Subscribe`, `form.store`, `form.setFieldValue`. The bound shorthand is a convenience over `AppField`, not a replacement.
 
-<Example name="forms/getting-started/canonical" />
+<Example of="forms/getting-started/component-mode" name="Canonical" />
 
 Inside `AppField`, `field.TextField` isn't checked against the value type (TanStack can't do it there); a development-only guard catches a mismatch at runtime instead.
 
@@ -56,7 +56,7 @@ Inside `AppField`, `field.TextField` isn't checked against the value type (TanSt
 
 `withForm` makes a component out of part of a form, typed against the same values. Share the options between the form and its pieces with `formOptions`.
 
-<Example name="forms/getting-started/with-form" />
+<Example of="forms/getting-started/component-mode" name="WithForm" />
 
 For a component several levels below the form, read the form from context instead of passing it down: see [Form context](/docs/forms/getting-started/form-context).
 
@@ -64,7 +64,7 @@ For a component several levels below the form, read the form from context instea
 
 `withFieldGroup` makes a group of fields that binds wherever a form has the right shape, and `useFields(group)` gives typed shorthand inside it. Bind the group with `fields="password"`: TypeScript checks that `password` has the group's shape.
 
-<Example name="forms/getting-started/field-group" />
+<Example of="forms/getting-started/component-mode" name="FieldGroup" />
 
 <ApiSignature of="useFields" />
 

@@ -39,7 +39,7 @@ function invoicesThisYear(start: string, cadence: Cadence): number {
   return Math.floor(days / (cadence === 'week' ? 7 : 14)) + 1
 }
 
-export default function RecurringInvoice() {
+export function Usage() {
   const form = useAppForm<Schedule>({
     defaultValues: {
       client: 'Northwind Studio',

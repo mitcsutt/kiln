@@ -11,9 +11,9 @@ Source: https://kiln.mitchellsutton.com/docs/forms/getting-started/form-context
 ```tsx
 import {
   Form,
+  formOptions,
   FormSection,
   SubmitButton,
-  formOptions,
   useAppForm,
   useFieldValue,
   useFormStatus,
@@ -91,7 +91,7 @@ function Footer() {
   )
 }
 
-export default function FormContext() {
+export function Usage() {
   const [booked, setBooked] = useState<string | null>(null)
   const form = useAppForm({
     ...bookingOptions,

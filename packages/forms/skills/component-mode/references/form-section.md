@@ -12,7 +12,7 @@ Source: https://kiln.mitchellsutton.com/docs/forms/layouts/form-section
 import { Form, FormSection, useAppForm } from '@mitcsutt/kiln-forms'
 import { Stack } from '@mitcsutt/kiln-ui'
 
-export default function Usage() {
+export function Usage() {
   const form = useAppForm({
     defaultValues: { name: 'Ines Varga', email: 'ines@example.com', card: '4417', expiry: '09/28' },
   })

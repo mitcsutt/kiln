@@ -11,7 +11,7 @@ Source: https://kiln.mitchellsutton.com/docs/ui/layout/divider
 ```tsx
 import { Divider, Inline, Stack, Text } from '@mitcsutt/kiln-ui'
 
-export default function Usage() {
+export function Usage() {
   return (
     <Stack gap={4}>
       <Text>Morning departures</Text>

@@ -77,7 +77,7 @@ function PasswordForm() {
   )
 }
 
-export default function AccountSettings() {
+export function Usage() {
   const form = useAppForm<Profile>({
     defaultValues: {
       name: 'Ines Varga',

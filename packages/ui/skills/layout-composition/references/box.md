@@ -11,7 +11,7 @@ Source: https://kiln.mitchellsutton.com/docs/ui/layout/box
 ```tsx
 import { Box, Stack, Text } from '@mitcsutt/kiln-ui'
 
-export default function Usage() {
+export function Usage() {
   return (
     <Stack gap={4}>
       <Box padding={{ base: 4, md: 5 }} surface="sunken" radius="surface">

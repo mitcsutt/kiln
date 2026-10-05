@@ -6,7 +6,7 @@ exports: [Skeleton]
 
 `Skeleton` holds the shape of content while it loads, so the page doesn't jump when it arrives. `Skeleton.Text` is lines of text, `Skeleton.Circle` is an avatar, and `Skeleton` itself is a block with a `width` and `height`.
 
-<Example name="ui/display/skeleton/usage" />
+<Example of="Skeleton" />
 
 Every piece is `aria-hidden`. Announce loading once, on the region that's loading (`aria-busy`, or a [Spinner](/docs/ui/feedback/spinner) with a label), rather than once per bar. The shimmer stops under reduced motion.
 

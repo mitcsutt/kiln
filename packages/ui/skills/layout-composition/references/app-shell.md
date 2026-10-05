@@ -32,7 +32,7 @@ const ICONS = [
   <SystemIcon key="a" />,
 ]
 
-export default function Usage() {
+export function Usage() {
   return (
     <AppShell navBreakpoint="md">
       <AppShell.Header>

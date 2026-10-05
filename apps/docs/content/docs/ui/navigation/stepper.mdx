@@ -6,7 +6,7 @@ exports: [Stepper]
 
 `Stepper` shows the steps of a flow and which one you're on. It doesn't hold the form: drive it and the step content from the same state, and pair it with an `ActionBar` for back and next.
 
-<Example name="ui/navigation/stepper/usage" />
+<Example of="Stepper" />
 
 Each step has a `value`, a `label`, an optional `description`, and a `status` (`complete`, `current`, `upcoming` or `error`). With `onStepSelect`, completed steps become buttons that jump back. `compactBelow` collapses it to "Step 2 of 4" on small screens; `orientation="vertical"` stacks it for a sidebar.
 

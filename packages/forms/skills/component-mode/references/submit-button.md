@@ -12,7 +12,7 @@ Source: https://kiln.mitchellsutton.com/docs/forms/layouts/submit-button
 import { Form, SubmitButton, useAppForm } from '@mitcsutt/kiln-forms'
 import { Stack } from '@mitcsutt/kiln-ui'
 
-export default function Usage() {
+export function Usage() {
   const form = useAppForm({
     defaultValues: { nickname: 'Morning commute' },
     onSubmit: () => new Promise((resolve) => setTimeout(resolve, 1200)),

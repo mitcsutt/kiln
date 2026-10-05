@@ -6,7 +6,7 @@ exports: [Numeral, formatNumeral, formatNumeralParts, signOf]
 
 `Numeral` formats a number with `Intl.NumberFormat` and sets it in the theme's numeric face with tabular, lining figures, so a column of them lines up and a changing value doesn't jitter. It renders a `<data value>` element, so the raw value travels with the formatted text.
 
-<Example name="ui/typography/numeral/usage" />
+<Example of="Numeral" />
 
 - `format` takes any `Intl.NumberFormatOptions`: percentages, compact notation, units.
 - `locale` defaults to `en-AU`.
@@ -19,7 +19,7 @@ Separators and symbols are set proportionally. Some faces make a tabular comma a
 
 `formatNumeral` returns the same text as a plain string, for titles, `aria-label`s and CSV exports. `formatNumeralParts` splits it into runs of figures and marks, and `signOf` resolves a number's sign, treating `-0` as zero.
 
-<Example name="ui/typography/numeral/format" />
+<Example of="Numeral" name="Format" />
 
 <ApiSignature of="formatNumeral" />
 

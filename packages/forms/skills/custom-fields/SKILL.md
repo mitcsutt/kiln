@@ -74,7 +74,7 @@ const PhoneField = defineField<string>()(function PhoneField({
 // and { kind: 'phone' } in schemas. Import useAppForm from that module from then on.
 const { useAppForm } = kit.extend({ fields: { phone: PhoneField } })
 
-export default function CustomField() {
+export function Usage() {
   const form = useAppForm({ defaultValues: { mobile: '' } })
   return (
     <Form form={form} aria-label="Text me updates">

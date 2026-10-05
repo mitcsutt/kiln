@@ -6,7 +6,7 @@ exports: [useFormStatus]
 
 `useFormStatus` reads the form-wide state you build interface around: whether it's dirty, submitting or submitted, whether it can submit, and how many times it's been submitted. Each part is its own selector and the result is memoised, so a component using it re-renders only when something it reads actually changes.
 
-<Example name="forms/hooks/use-form-status/usage" />
+<Example of="useFormStatus" />
 
 `isDirty` compares the current values with the baseline (the defaults, or the last saved values), so undoing an edit makes the form clean again. Inside a `Form`, the `form` argument is optional.
 

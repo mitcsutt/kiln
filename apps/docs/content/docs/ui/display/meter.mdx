@@ -6,7 +6,7 @@ exports: [Meter, meterTone]
 
 `Meter` shows where a value sits in a range: seats taken, storage used, API requests against a monthly quota. Give it `low`, `high` and `optimum` thresholds and the tone follows the value, so 60% of capacity is calm, 90% is a warning, and over the limit is critical.
 
-<Example name="ui/display/meter/usage" />
+<Example of="Meter" />
 
 `valueLabel` is the spoken and printed value ("212 of 320 seats"). `segments` splits the bar into discrete cells, for small counts.
 
@@ -14,7 +14,7 @@ exports: [Meter, meterTone]
 
 `meterTone` returns the tone a meter would pick. Unlike the native `<meter>`, a value past `max` still counts as past `high`: a plan over its quota must not read as fine.
 
-<Example name="ui/display/meter/tone" />
+<Example of="Meter" name="Tone" />
 
 <ApiSignature of="meterTone" />
 

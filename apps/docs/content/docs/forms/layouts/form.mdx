@@ -6,7 +6,7 @@ exports: [Form]
 
 `Form` renders a `<form noValidate>` and connects it to a form from `useAppForm`. Pressing Enter or a submit button validates and calls your `onSubmit`; a submit while one is already in flight is ignored; a reset button resets the form. It forwards its ref to the `<form>`.
 
-<Example name="forms/layouts/form/usage" />
+<Example of="Form" />
 
 Give it an accessible name, with `aria-label` or `aria-labelledby`, so assistive technology can list it as a form landmark.
 
@@ -14,7 +14,7 @@ Give it an accessible name, with `aria-label` or `aria-labelledby`, so assistive
 
 `disabled` and `readOnly` apply to every field inside, and `mode="view"` renders every field as read-only text (see [View mode](/docs/forms/getting-started/view-mode)).
 
-<Example name="forms/layouts/form/states" />
+<Example of="Form" name="States" />
 
 They mean different things for the payload. A read-only field can be focused and is submitted, but isn't validated. A disabled field can't be focused and isn't validated either. Neither has errors.
 

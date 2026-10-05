@@ -40,15 +40,15 @@ export function Anchor({ href = '', children, ...rest }: ComponentProps<'a'>) {
 }
 
 /**
- * A live example with its source underneath: `<Example of="Button" name="Hierarchy" />`, or
- * `<Example name="ui/actions/button/hierarchy" />` for a file in `examples/` (`exampleId`).
+ * A live example with its source underneath: `<Example of="Button" name="Hierarchy" />`
+ * (`exampleId`).
  */
 export function Example({
   of,
   name,
   layout,
 }: {
-  of?: string
+  of: string
   name?: string
   layout?: PreviewLayout
 }) {

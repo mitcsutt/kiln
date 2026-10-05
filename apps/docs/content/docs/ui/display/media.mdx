@@ -6,7 +6,7 @@ exports: [Media]
 
 `Media` frames an image: it holds a ratio while loading, fits the image, loads lazily, and when the image fails it keeps its shape and shows a quiet fallback instead of a broken-image icon.
 
-<Example name="ui/display/media/usage" />
+<Example of="Media" />
 
 `alt` is required. Describe what the image shows, or pass an empty string for a purely decorative one. `fit` is `cover` or `contain`, `radius` is `media` (the default), `surface` or `none`, and `fallback` replaces the failure state. `imgProps` reaches the `<img>` for anything else, like `srcSet`.
 

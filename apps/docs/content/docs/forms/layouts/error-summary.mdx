@@ -6,7 +6,7 @@ exports: [ErrorSummary]
 
 `ErrorSummary` renders nothing until a submit attempt fails. Then it shows a critical alert listing every error in document order, each a link that focuses its field (revealing the tab, accordion item or step it's in). Form-level errors are listed first. It's announced on every failed submit, and with the default `focusOnInvalid`, focus moves to it.
 
-<Example name="forms/layouts/error-summary/usage" />
+<Example of="ErrorSummary" />
 
 Press the button with the fields empty, then follow a link. Put the summary at the top of the form, where a reader returning to it starts. Fields inside still show their own errors.
 

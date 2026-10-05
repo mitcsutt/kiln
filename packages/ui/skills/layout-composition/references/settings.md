@@ -28,7 +28,7 @@ import {
   TextField,
 } from '@mitcsutt/kiln-ui'
 
-export default function Settings() {
+export function Usage() {
   return (
     <Section space={7}>
       <Container width="content">

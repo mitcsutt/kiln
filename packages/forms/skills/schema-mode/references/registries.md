@@ -87,7 +87,7 @@ const schema = bay.defineFormSchema<Change>()({
   },
 })
 
-export default function Registries() {
+export function Usage() {
   const form = bay.useAppForm<Change>({
     defaultValues: { reference: '', stop: null, adults: 2, children: 1, total: 10.5 },
   })

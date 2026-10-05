@@ -62,7 +62,7 @@ const schema = defineFormSchema<Booking, { member: boolean }>()({
   },
 })
 
-export default function Conditions() {
+export function Usage() {
   const form = useAppForm<Booking>({
     defaultValues: { ticket: 'single', returnDate: '', group: 2, groupLeader: '', promo: '' },
   })

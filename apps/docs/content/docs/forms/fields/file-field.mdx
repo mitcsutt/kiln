@@ -10,7 +10,7 @@ It renders kiln-ui's [FileField](/docs/ui/inputs/file-field).
 | ------ | ---------------- | --------------- | ----------------------------------- | ----- |
 | `file` | `form.FileField` | `FormFileField` | `ReadonlyArray<File \| StoredFile>` | `[]`  |
 
-<Example name="forms/fields/file-field/usage" />
+<Example of="FormFileField" />
 
 Upload in `onSubmit`, where you have the `File` objects. Files that were uploaded earlier come back in as `StoredFile`s (`{ id, name, size, type }`), so an edit form can show what's already saved. Files rejected for type, size or count become a field error.
 

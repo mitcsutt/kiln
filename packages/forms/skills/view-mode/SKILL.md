@@ -23,7 +23,7 @@ import { Form, useAppForm } from '@mitcsutt/kiln-forms'
 import { SegmentedControl, Stack } from '@mitcsutt/kiln-ui'
 import { useState } from 'react'
 
-export default function ViewMode() {
+export function Usage() {
   const [mode, setMode] = useState<'edit' | 'view'>('view')
   const form = useAppForm({
     defaultValues: {

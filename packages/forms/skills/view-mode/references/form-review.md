@@ -11,7 +11,7 @@ Source: https://kiln.mitchellsutton.com/docs/forms/layouts/form-review
 ```tsx
 import { Form, FormReview, useAppForm } from '@mitcsutt/kiln-forms'
 
-export default function Usage() {
+export function Usage() {
   const form = useAppForm({
     defaultValues: {
       from: 'Harbour Square',

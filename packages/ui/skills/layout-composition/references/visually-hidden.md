@@ -11,7 +11,7 @@ Source: https://kiln.mitchellsutton.com/docs/ui/layout/visually-hidden
 ```tsx
 import { Inline, Text, VisuallyHidden } from '@mitcsutt/kiln-ui'
 
-export default function Usage() {
+export function Usage() {
   return (
     <Inline gap={2}>
       <Text numeric weight="strong">
