@@ -213,7 +213,9 @@ describe('useServerValues error restore', () => {
     const user = userEvent.setup()
     const { rerender } = render(<Steps />)
     await user.click(screen.getByRole('button', { name: 'Next' }))
-    await waitFor(() => expect(screen.getAllByText('Enter a value')).toHaveLength(2))
+    await waitFor(() => {
+      expect(screen.getAllByText('Enter a value')).toHaveLength(2)
+    })
     expect(screen.queryByRole('alert')).not.toBeInTheDocument()
     rerender(<Steps data={{ name: '', email: '', city: 'York' }} />)
     expect(screen.getAllByText('Enter a value')).toHaveLength(2)
