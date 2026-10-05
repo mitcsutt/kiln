@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "turbo run build",
+    "build:watch": "turbo run build:watch",
     "test": "turbo run test",
     "lint": "turbo run lint lint:root format:check",
     "lint:root": "eslint --max-warnings=0 --ignore-pattern 'apps/**' --ignore-pattern 'packages/**' .",

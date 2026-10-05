@@ -51,6 +51,7 @@ Run these from the repo root. Turborepo runs each one across the workspace and c
 | `pnpm typecheck`       | `tsc --noEmit` in every package and at the root                       |
 | `pnpm test`            | Vitest in every package                                               |
 | `pnpm build`           | Builds every package that has a build step                            |
+| `pnpm build:watch`     | Rebuilds `kiln-ui` and `kiln-forms` on every change, for a linked app |
 | `pnpm test:react18`    | The runtime packages' test suites again, on React 18.3                |
 | `pnpm test:storybook`  | Every story as a browser test: render, `play` function and axe        |
 | `pnpm check:links`     | Builds the docs site, serves it and fails on any broken internal link |
@@ -69,6 +70,62 @@ The agent skills that `kiln-ui` and `kiln-forms` ship are built from docs pages,
 To open the Storybook workbench, run `pnpm --filter @mitcsutt/kiln-storybook dev`. The story tests need Chromium from Playwright the first time: `pnpm --filter @mitcsutt/kiln-storybook exec playwright install chromium`. They start in Paper, light; set `STORYBOOK_THEME` and `STORYBOOK_MODE` to run them in another theme or mode, as CI does for every one.
 
 CI runs all of these except `format` and `generate:skills` on every pull request and on `main`, plus a changeset check on pull requests, and they must all pass. On a pull request it also comments the size report, compared with the base branch.
+
+## Developing against a local Kiln
+
+When an app that uses Kiln turns up a problem, fix it in Kiln and try the fix in the app before releasing it. Link the app to your Kiln checkout and keep it linked until the app work is done, so every Kiln change it needs ships in one pull request and one release. The linked app uses the built packages, the same JavaScript, declarations and CSS that npm would give it ([ADR 0022](docs/adr/0022-linked-consumers.md)).
+
+1. In Kiln, install and build, then leave the watch build running so every change is rebuilt. The examples below assume the checkout sits next to the app, in `../kiln`; adjust the paths to match yours.
+
+   ```sh
+   pnpm install
+   pnpm build:watch
+   ```
+
+2. In the app, point the Kiln dependencies at the checkout, and add the packages Kiln depends on, at the versions in Kiln's `pnpm-workspace.yaml` catalog. A linked package doesn't install its dependencies into the app, and the app's own copies are what keep it to one React.
+
+   ```json
+   {
+     "dependencies": {
+       "@mitcsutt/kiln-ui": "link:../kiln/packages/ui",
+       "@mitcsutt/kiln-forms": "link:../kiln/packages/forms",
+       "radix-ui": "^1.6.7",
+       "@tanstack/react-form": "^1.33.5"
+     }
+   }
+   ```
+
+3. Tell the app's bundler to use the built files (the `kiln-dist` condition), to dedupe React and Kiln's dependencies, and to serve files from the checkout. For Vite (and Vitest, Storybook and TanStack Start, which use its config):
+
+   ```ts
+   import {
+     defaultClientConditions,
+     defaultServerConditions,
+     defineConfig,
+     searchForWorkspaceRoot,
+   } from 'vite'
+
+   export default defineConfig({
+     resolve: {
+       conditions: ['kiln-dist', ...defaultClientConditions],
+       dedupe: ['react', 'react-dom', 'radix-ui', '@tanstack/react-form'],
+     },
+     ssr: { resolve: { conditions: ['kiln-dist', ...defaultServerConditions] } },
+     server: {
+       fs: { allow: [searchForWorkspaceRoot(process.cwd()), '../kiln/packages'] },
+     },
+   })
+   ```
+
+4. Tell TypeScript to use the built declarations, in the app's `tsconfig.json`. Without this it type-checks Kiln's source under the app's settings.
+
+   ```json
+   { "compilerOptions": { "customConditions": ["kiln-dist"] } }
+   ```
+
+Without the dedupe the browser may work while server rendering fails with "Invalid hook call", because Kiln's dependencies load React from Kiln's `node_modules`. When you add a new `exports` subpath to a package, give it both conditions: `default` for the source and `kiln-dist` for the file `publishConfig.exports` names. The build fails if `kiln-dist` and `publishConfig.exports` differ.
+
+When the app work is done, open the Kiln pull request with a changeset for each change. Once it is released, switch the app back to the published versions and remove the setup above.
 
 ## Conventions
 

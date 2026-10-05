@@ -5,7 +5,9 @@
  *   export default defineLibraryConfig({ root: import.meta.dirname, ... })
  *
  * It produces what publishing needs and nothing the workspace needs (the workspace
- * consumes `src/` directly):
+ * consumes `src/` directly). `vite build --watch` (each package's `build:watch`) keeps the
+ * output current for an app that links a local checkout and resolves it through the
+ * `kiln-dist` export condition (ADR 0022):
  *
  * - ESM only, one output file per source module (`preserveModules`), so bundlers can
  *   drop what a consumer doesn't import. Source maps alongside.
@@ -57,10 +59,41 @@ const require = createRequire(import.meta.url)
 interface PackageJson {
   dependencies?: Record<string, string>
   peerDependencies?: Record<string, string>
+  exports?: Record<string, unknown>
+  publishConfig?: { exports?: Record<string, unknown> }
+}
+
+function readPackageJson(root: string): PackageJson {
+  return JSON.parse(readFileSync(join(root, 'package.json'), 'utf8')) as PackageJson
+}
+
+/**
+ * Each `exports` subpath points the workspace at `src/` (`default`) and a linked consumer at
+ * `dist/` (`kiln-dist`, ADR 0022). The `kiln-dist` target must be exactly what publishing
+ * ships, so a linked app tests the package it will install.
+ */
+function checkLinkedExports(root: string): void {
+  const { exports = {}, publishConfig } = readPackageJson(root)
+  const published = publishConfig?.exports ?? {}
+  const subpaths = new Set([...Object.keys(exports), ...Object.keys(published)])
+  for (const subpath of subpaths) {
+    if (subpath === './package.json') continue
+    const target = exports[subpath]
+    const linked =
+      typeof target === 'object' && target !== null && 'kiln-dist' in target
+        ? target['kiln-dist']
+        : undefined
+    if (JSON.stringify(linked) !== JSON.stringify(published[subpath])) {
+      throw new Error(
+        `${join(root, 'package.json')}: exports["${subpath}"]["kiln-dist"] must equal ` +
+          `publishConfig.exports["${subpath}"] (ADR 0022)`,
+      )
+    }
+  }
 }
 
 function externals(root: string): RegExp[] {
-  const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8')) as PackageJson
+  const pkg = readPackageJson(root)
   const names = [...Object.keys(pkg.dependencies ?? {}), ...Object.keys(pkg.peerDependencies ?? {})]
   return names.map((name) => new RegExp(`^${name.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&')}($|/)`))
 }
@@ -170,6 +203,21 @@ function libraryAssets(options: Required<Pick<LibraryOptions, 'root'>> & Library
     apply: 'build',
     // After Vite's own CSS plugin, so the component stylesheet already exists.
     enforce: 'post',
+    config(config) {
+      // `build:watch` keeps `dist/` for linked consumers. Emptying it on every rebuild would
+      // leave them without files (declarations especially) until the rebuild finishes.
+      if (config.build?.watch) return { build: { emptyOutDir: false } }
+    },
+    buildStart() {
+      // The global stylesheets are bundled by hand, outside the module graph, so watch mode
+      // only rebuilds on a change to one of them if it is told to watch them.
+      const sheets = [options.baseStylesheet, ...Object.values(options.stylesheets ?? {})]
+      for (const sheet of sheets.filter((s) => s !== undefined)) {
+        const seen = new Set<string>()
+        bundleCss(resolve(root, sheet), join(outDir, 'styles.css'), assetsDir, assetsOut, seen)
+        for (const file of seen) this.addWatchFile(file)
+      }
+    },
     generateBundle(_, bundle) {
       if (options.baseStylesheet) {
         const styles = Object.values(bundle).find(
@@ -202,6 +250,7 @@ function libraryAssets(options: Required<Pick<LibraryOptions, 'root'>> & Library
 
 export function defineLibraryConfig(options: LibraryOptions): UserConfig {
   const { root, entry = 'src/index.ts', classPrefix = '' } = options
+  checkLinkedExports(root)
   return defineConfig({
     root,
     plugins: [react(), libraryAssets(options)],

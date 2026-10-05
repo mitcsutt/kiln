@@ -34,8 +34,20 @@
     ]
   },
   "exports": {
-    ".": "./src/index.ts",
-    "./schema": "./src/schema/core/index.ts",
+    ".": {
+      "kiln-dist": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "default": "./src/index.ts"
+    },
+    "./schema": {
+      "kiln-dist": {
+        "types": "./dist/schema/core/index.d.ts",
+        "default": "./dist/schema/core/index.js"
+      },
+      "default": "./src/schema/core/index.ts"
+    },
     "./package.json": "./package.json"
   },
   "publishConfig": {
@@ -59,6 +71,7 @@
   ],
   "scripts": {
     "build": "vite build",
+    "build:watch": "vite build --watch",
     "check:package": "pnpm pack --out node_modules/.cache/kiln-pack/package.tgz > /dev/null && publint --pack pnpm --strict && attw node_modules/.cache/kiln-pack/package.tgz --profile esm-only && node scripts/check-schema-entry.ts node_modules/.cache/kiln-pack/package.tgz",
     "check:skills": "intent validate",
     "lint": "eslint --max-warnings=0 .",
