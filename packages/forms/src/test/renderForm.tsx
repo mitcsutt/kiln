@@ -1,9 +1,9 @@
 import type { ReactNode } from 'react'
 import { render, type RenderResult } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Form } from '#components/Form'
-import type { KitForm, KitFormOptions } from '#core/kit/types'
-import { kit } from '#kit'
+import { Form } from '#components/form/Form'
+import type { KitForm, KitFormOptions } from '#kit/types'
+import { kit } from '#kit/defaultKit'
 
 type DefaultForm<T, M = undefined> = KitForm<T, M, typeof kit.registries.fields>
 

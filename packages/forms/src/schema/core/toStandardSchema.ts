@@ -1,5 +1,5 @@
 import type { StandardSchemaV1, StandardSchemaV1Issue } from '@tanstack/react-form'
-import { mergeMessages, type FormMessages } from '#core/runtime/messages'
+import { mergeMessages, type FormMessages } from '#runtime/messages'
 import { evaluateCondition } from '#schema/core/conditions'
 import {
   DISABLED,

@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useState } from 'react'
 import { expect, userEvent, within } from 'storybook/test'
 import { storyRoot } from '#stories/_kit'
-import { useOptions, type OptionsLoader } from '#core/hooks'
+import { useOptions, type OptionsLoader } from '#hooks'
 
 const meta = {
   title: 'Forms/Hooks/useOptions',

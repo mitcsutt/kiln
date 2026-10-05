@@ -69,42 +69,50 @@ consuming app            composes forms; may extend the kit with its own fields 
 
 ```
 index.ts                         public barrel (§2.5)
-kit.ts                           the default kit: createFormKit({ fields: defaultFields, ... })
-core/
-  contexts.ts                    createFormHookContexts() → fieldContext, formContext, useFieldContext, useFormContext
-  kit/
-    contracts.ts                 Primitive, FieldOption, contracts, FIELD_CONTRACT, FieldDef, define*Field
-    types.ts                     PathsFor, FieldComponentName, BoundFields, KitForm, KitFormOptions, FormKit
-    createFormKit.tsx            the factory (§3)
-    bindFields.tsx               runtime for form.XField / useFields / Repeater item fields
-    formOptions.ts               typed identity helper
-  runtime/
-    formRuntime.ts               WeakMap<FormApi, FormRuntime>: config, field registry, inactive map, reveal
-    validationLogic.ts           kitValidationLogic (reward-early + inactive gating)
-    standardSchema.ts            validate + route issues to paths + filter inactive
-    submit.ts                    submit pipeline (prune → parse → onSubmit → afterSubmit → errors)
-    serverErrors.ts              FormSubmitError, applyServerErrors
-    focus.ts                     focusField, focusFirstInvalid (DOM order, reveal chain)
-    messages.ts                  FormMessages, defaultMessages, interpolate
-    shallow.ts                   shallowEqual (for useSelector compare), no react-store dependency
-  binding/
-    useFieldBinding.ts           the binding hook (§4)
-    errors.ts                    normaliseError, pickError (slot priority), FormError types
-    visibility.ts                errorVisibility policies
-    presentation.tsx             FieldPresentation context (layout hints, mode, disabled/readOnly cascade)
-    optionValues.ts              useOptionMapping (§7.3)
-    FieldView.tsx                view-mode rendering (A.4)
-  scope/
-    FieldScope.tsx               nested scopes collecting mounted field names + reveal()
-    useScopeErrors.ts            error count selector for a scope
-  hooks/
-    useFormStatus  useFieldValue  useServerValues  useAutosave  useUnsavedChanges  useOptions
-components/                      Form, SubmitButton, ResetButton, ErrorSummary, FormStatus
-fields/Form<Name>Field/          Form<Name>Field.tsx, .test.tsx, .stories.tsx, index.ts
-fields/defaultFields.ts          the default registry object (kind → bound field)
-layouts/<Name>/                  FormGrid, FormSection, FormAside, FormRows, FormPanels, FormTabs,
+components/
+  fields/
+    Form<Name>Field/             Form<Name>Field.tsx, .test.tsx, .stories.tsx, index.ts
+    FieldView/                   view-mode rendering: FieldView, FieldViewList, FieldViewListBoundary (A.4)
+    FieldPresentation/           FieldPresentation context (layout hints, mode, disabled/readOnly cascade)
+    internal/                    field-authoring plumbing (controlledKeys, formatTemporal)
+    defaultFields.ts             the default registry object (kind → bound field)
+  layouts/
+    <Name>/                      FormGrid, FormSection, FormAside, FormRows, FormPanels, FormTabs,
                                  FormAccordion, FormSteps, Repeater, FormSentence, FormActions,
                                  FormReview, When (+ tests + stories + index.ts)
+    FieldScope/                  nested scopes collecting mounted field names + reveal()
+    internal/                    part registry, error badge, announcer
+  form/                          Form, SubmitButton, ResetButton, ErrorSummary, FormStatus
+hooks/
+  useFieldBinding.ts             the binding hook (§4)
+  useOptionMapping.ts            option value mapping (§7.3)
+  useScopeErrors.ts              error count for a scope
+  useFormStatus  useFieldValue  useServerValues  useAutosave  useUnsavedChanges  useOptions
+kit/
+  defaultKit.ts                  the default kit: createFormKit({ fields: defaultFields, ... })
+  createFormKit.tsx              the factory (§3)
+  contexts.ts                    createFormHookContexts() → fieldContext, formContext, useFieldContext, useFormContext
+  contracts.ts                   Primitive, FieldOption, contracts, FIELD_CONTRACT, FieldDef, define*Field
+  accepts.ts                     runtime value guards for the canonical path (§4.2.12)
+  types.ts                       PathsFor, FieldComponentName, BoundFields, KitForm, KitFormOptions, FormKit
+  bindFields.tsx                 runtime for form.XField / useFields / Repeater item fields
+  formOptions.ts                 typed identity helper
+runtime/
+  formRuntime.ts                 WeakMap<FormApi, FormRuntime>: config, field registry, inactive map, reveal
+  validationLogic.ts             kitValidationLogic (reward-early + inactive gating)
+  standardSchema.ts              validate + route issues to paths + filter inactive
+  submit.ts                      submit pipeline (prune → parse → onSubmit → afterSubmit → errors)
+  serverErrors.ts                FormSubmitError, applyServerErrors
+  focus.ts                       focusField, focusFirstInvalid (DOM order, reveal chain)
+  messages.ts                    FormMessages, defaultMessages, interpolate
+  errors.ts                      normaliseError, pickError (slot priority), FormError types
+  visibility.ts                  errorVisibility policies
+  reveal.ts                      revealFieldErrors, the shared "are errors visible" rule
+  fieldDisplay.ts                what a field shows: error, warning, live announcement (§4.2.3–6)
+  labels.ts                      visible label text for summary links
+utils/
+  env.ts  paths.ts               isDev, useIsomorphicLayoutEffect; path formatting
+  shallow.ts                     shallowEqual (for useSelector compare), no react-store dependency
 schema/
   core/                          React-free (also published as `@mitcsutt/kiln-forms/schema`)
     types  conditions  rules  parseFormSchema  toStandardSchema  collect  fieldFlags  ...
@@ -116,11 +124,11 @@ stories/                         shared story helpers, parity fixtures, Getting 
 ../scripts/check-schema-entry.ts  the ./schema entry in plain Node, from the packed tarball
 ```
 
-Folder-per-component mirrors kiln-ui ("always a folder, never a flat file").
+Folder-per-component, grouped under `components/`, mirrors kiln-ui ("always a folder, never a flat file"). Public hooks are flat files in `hooks/`; a hook owned by one component sits next to it (`useFormSteps`, `useFieldPresentation`). The build was first ported with `fields/`, `layouts/` and `components/` at the top level and the rest in `core/`; [ADR 0024](../../../docs/adr/0024-kiln-forms-source-layout.md) records the move to this layout.
 
 ### 2.3 Imports
 
-- Inside the package, use **`#` subpath imports**, aligned with kiln-ui: `package.json` has `"imports": { "#*": ["./src/*", "./src/*.ts", "./src/*.tsx", "./src/*/index.ts", "./src/*/index.tsx"] }`, so code writes `import { useFieldBinding } from '#core/binding/useFieldBinding'`. Never `../../`, and never import `src/index.ts` internally.
+- Inside the package, use **`#` subpath imports**, aligned with kiln-ui: `package.json` has `"imports": { "#*": ["./src/*", "./src/*.ts", "./src/*.tsx", "./src/*/index.ts", "./src/*/index.tsx"] }`, so code writes `import { useFieldBinding } from '#hooks/useFieldBinding'`. Never `../../`, and never import `src/index.ts` internally.
 - From kiln-ui, import only the public barrel (`import { Field, Stack } from '@mitcsutt/kiln-ui'`), never deep paths.
 
 ### 2.4 `package.json`
@@ -192,7 +200,7 @@ A consumer with custom fields creates its own kit and imports from there (§3.4)
 
 ## 3. The kit
 
-### 3.1 Value contracts and `FieldDef` (`core/kit/contracts.ts`)
+### 3.1 Value contracts and `FieldDef` (`kit/contracts.ts`)
 
 ```ts
 export type Primitive = string | number | boolean
@@ -250,7 +258,7 @@ export const defineOptionsField =
 
 The define helpers are identity at runtime. `FIELD_CONTRACT` is a real exported symbol so declaration emit can name it.
 
-### 3.2 Path typing (`core/kit/types.ts`)
+### 3.2 Path typing (`kit/types.ts`)
 
 Verified with tsc 5.9 and 6.0.
 
@@ -290,7 +298,7 @@ export type FieldComponentName<K extends string> = `${Capitalize<K>}Field`
 export type FieldRegistry = Record<string, FieldDef<Contract, any>>
 ```
 
-Rules this encodes (each has a `@ts-expect-error` test in `core/kit/types.test-d.tsx`):
+Rules this encodes (each has a `@ts-expect-error` test in `kit/types.test-d.tsx`):
 
 | Binding                                                                              | Result                                                                              |
 | ------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------- |
@@ -305,7 +313,7 @@ Rules this encodes (each has a `@ts-expect-error` test in `core/kit/types.test-d
 
 The names in the table are the kit shorthand (`form.TextField`); the exported components are `FormTextField` and so on (§2.5).
 
-### 3.3 `createFormKit` (`core/kit/createFormKit.tsx`)
+### 3.3 `createFormKit` (`kit/createFormKit.tsx`)
 
 ```ts
 export interface KitRegistries<R extends FieldRegistry> {
@@ -574,7 +582,7 @@ View mode renders through kiln-ui's `DataList` (A.4); kiln-forms adds no markup 
 12. **Dev guard**: `if (import.meta.env.DEV && !accepts(value)) console.error(...)`, once per field. It catches wrong components in the canonical `field.X` path that TypeScript cannot check.
 13. **View mode**: `mode === 'view'` → the field renders its display value, with no control and no validation UI.
 
-### 4.3 Error normalisation (`core/binding/errors.ts`)
+### 4.3 Error normalisation (`runtime/errors.ts`)
 
 ```ts
 export type FormError =
@@ -599,7 +607,7 @@ The displayed text is `formatError(normalised)` (kit-level, overridable per form
 
 ## 5. Runtime: config, validation, submit
 
-### 5.1 `FormRuntime` (`core/runtime/formRuntime.ts`)
+### 5.1 `FormRuntime` (`runtime/formRuntime.ts`)
 
 Per-form state that isn't form _values_, stored in a `WeakMap<AnyFormApi, FormRuntime>` (created by `useAppForm`, or lazily with defaults for a raw TanStack form):
 
@@ -824,7 +832,7 @@ useOptions(source: OptionsLoader | readonly FieldOption[], opts: { query?; deps?
   { options; status: 'idle' | 'loading' | 'error' | 'ready'; error? }
 ```
 
-`useServerValues` (edit mode, §13 #2 to #4): when `data` changes (deep compare), the new baseline is `data`. Values are merged per leaf path: the user's value if that path differs from the _old_ baseline (dirty), else `data`'s. Then `form.update({ defaultValues: data })`, `form.reset(merged, { keepDefaultValues: true })`, and the error maps of paths that had visible errors are restored. It must pass: refresh while editing; an array add then remove round trip is clean; save then clean (`rebaseline`); refetch after save is clean.
+`useServerValues` (edit mode, §13 #2 to #4): when `data` changes (deep compare), the new baseline is `data`. Values are merged per leaf path: the user's value if that path differs from the _old_ baseline (dirty), else `data`'s. Then `form.update({ defaultValues: data })`, `form.reset(merged, { keepDefaultValues: true })`, and the errors that were visible on paths whose value the refresh kept are restored and revealed again: visible under any `errorVisibility` (the reset zeroes the submit count), quiet if the form had been submitted or the field was already quiet (a step's Next), live otherwise. A path that took a new server value drops its old error. It must pass: refresh while editing; an array add then remove round trip is clean; save then clean (`rebaseline`); refetch after save is clean.
 
 `isDirty` everywhere is `!isDefaultValue` (non-persistent), never TanStack's persistent `isDirty`.
 
@@ -959,7 +967,7 @@ Not in v1 (documented alternatives): a calendar popover (a later ADR; use `date`
 
 ### 7.3 Field specifics that aren't obvious
 
-- **Select, Radio, Segmented, ChoiceCards and Chips** with non-string values: the forms field keeps a `Map<string, V>` (`String(v)` keys), so ui components (string-only, Radix) round-trip numbers and booleans losslessly. `emptyOption` uses a sentinel item value; `null` maps to ui `''` (Radix shows the placeholder). One shared helper does this for every option field: `useOptionMapping(options, { emptyOption })` in `#core/binding/optionValues` → `{ uiOptions, toUi(v), fromUi(s), labelOf(v) }` (`labelOf` feeds view mode).
+- **Select, Radio, Segmented, ChoiceCards and Chips** with non-string values: the forms field keeps a `Map<string, V>` (`String(v)` keys), so ui components (string-only, Radix) round-trip numbers and booleans losslessly. `emptyOption` uses a sentinel item value; `null` maps to ui `''` (Radix shows the placeholder). One shared helper does this for every option field: `useOptionMapping(options, { emptyOption })` in `#hooks/useOptionMapping` → `{ uiOptions, toUi(v), fromUi(s), labelOf(v) }` (`labelOf` feeds view mode).
 - **Number and Amount** bound to plain `number`: clearing emits `null` (the value contract is honest about emptiness, and the schema reports "required"). Model clearable numbers as `number | null`.
 - **Amount with `unit: 'minor'`** stores integer minor units (pence, cents). Recommended for money.
 - **File**: ui `onReject` becomes a field `onChange` error, `messages.fileRejected[reason]`. Files are held in state, not uploaded.
@@ -1410,7 +1418,7 @@ export interface ActionBarProps extends HTMLAttributes<HTMLElement>, VisibilityP
 ### 9.0 Shared mechanics
 
 - **Zero CSS**: every layout is a composition of kiln-ui (`Grid`, `Split`, `Stack`, `Inline`, `Fieldset`, `Heading`, `Text`, `Card`, `Tabs`, `Accordion`, `Badge`, `Stepper`, `ActionBar`, `Table`, `List`, `DataList`, `EmptyState`, `IconButton`, `Button`, `VisuallyHidden`).
-- **`FieldScope`** (`core/scope`): a layout region that collects the names of fields mounted inside it (bindings register into every ancestor scope) and exposes `names()`, `subscribe()` and an optional `reveal()`. Nested scopes form the reveal chain (§5.6). `useScopeErrors(scope)` returns the **number** of visible errors in the scope (a primitive selector over `fieldMeta` for the scope's names).
+- **`FieldScope`** (`components/layouts/FieldScope`): a layout region that collects the names of fields mounted inside it (bindings register into every ancestor scope) and exposes `names()`, `subscribe()` and an optional `reveal()`. Nested scopes form the reveal chain (§5.6). `useScopeErrors(scope)` returns the **number** of visible errors in the scope (a primitive selector over `fieldMeta` for the scope's names).
 - **`FieldPresentation`**: layouts that change how fields render (rows, sentence, table cells, review) provide `{ layout, labelHidden, errorPlacement: 'inline' | 'external', mode }`, and bindings merge it.
 - **Hidden but mounted**: tabs, accordion items and steps render inactive panels with `forceMount` + `hidden`, so their fields stay registered, validate on submit, count errors, and can be revealed.
 - **Semantics**: groups of related controls are `<fieldset>`/`<legend>`; chapters with headings are `<section aria-labelledby>`; heading levels are props (`headingLevel`, default 3 inside a page `h2`).
@@ -1929,7 +1937,7 @@ axe-core runs on every field conformance render and every layout in the test sui
 
 ## 12. Performance
 
-Rules, enforced in review and by `test/perf.test.tsx`:
+Rules, enforced in review and by the perf tests: `test/perf.test.tsx`, `test/qa/perf.test.tsx` (the §12.9 acceptance form) and `test/qa/rerenders.test.tsx`, which names every component that re-renders (`recordCommits()` in `test/renders.ts`, a test-only reader of React's commit hook), so a layout, badge, summary or submit button re-rendering for nothing fails it.
 
 ### 12.1 The form host never subscribes
 
@@ -1937,7 +1945,7 @@ TanStack's `useForm` doesn't. **Never read `form.state` in render.**
 
 ### 12.2 Fields subscribe narrowly
 
-Field components subscribe only through their `AppField` plus one boolean (`submitted`).
+Field components subscribe only through their `AppField` plus one primitive (`submitted`, and whether the field's errors were revealed). The typed-shorthand components (`form.TextField`, `item.fields.TextField`) are `memo`'d, so a host re-render (an autosave status, host state) or a Repeater's structural change doesn't reach a field whose props are unchanged.
 
 ### 12.3 Primitive selectors
 
@@ -1945,7 +1953,7 @@ Form-wide reads are **primitive selectors** (`s => s.isSubmitting`). A derived o
 
 ### 12.4 Small subscriptions
 
-Scope counts are numbers; `When` is a boolean; `useFieldValue` is one path.
+Scope counts are numbers; `When` is a boolean; `useFieldValue` is one path. Runtime state that isn't form state (the lock, the autosave status) is read as a slice with `useRuntimeValue(runtime, select)`, so a component re-renders only when its slice changes, never on every runtime notification. A scope count is one number read from the form store, the runtime's inactive paths and the scope's names together.
 
 ### 12.5 Arrays
 
@@ -1977,7 +1985,7 @@ The use cases a form library has to cover, and the feature that covers each. C i
 | --- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 1   | Create with defaults                                                                         | C: typed `defaultValues`, field `defaultValue` (TanStack prioritised defaults). S: node `defaultValue`. No blanket `''` fallback.                                                                              |
 | 2   | Edit, bound to refreshing server data                                                        | C/S: `useServerValues(form, data, { keepDirty })`: an explicit baseline; untouched fields take new server values (§6.5).                                                                                       |
-| 3   | Keep errors across a refresh                                                                 | `useServerValues` with `keepErrors: true` (the default) restores visible error maps.                                                                                                                           |
+| 3   | Keep errors across a refresh                                                                 | `useServerValues` with `keepErrors: true` (the default) keeps visible errors on values the refresh kept.                                                                                                       |
 | 4   | Dirty tracking through refreshes and array operations                                        | `isDirty = !isDefaultValue` (deep compare against the baseline) through `useFormStatus`; tests for array add → remove and save → clean; `useUnsavedChanges`.                                                   |
 | 5   | Disable save when clean or invalid                                                           | `SubmitButton requireChanges` → `aria-disabled` plus a reason. ✗ "disabled when invalid": inaccessible; an invalid submit reveals the errors instead.                                                          |
 | 6   | Prevent double submit                                                                        | `<Form>` ignores submits while submitting; SubmitButton `aria-disabled` + loading; `afterSubmit: 'lock'` for modals.                                                                                           |
@@ -2133,9 +2141,9 @@ Until the Storybook workbench lands, stories are checked by `typecheck` and `lin
 ## 18. How the package is organised
 
 - **Layers** (§2.1): kiln-forms is logic only. It depends on `@tanstack/react-form` and renders everything through its kiln-ui peer. A missing input is added to kiln-ui first, then bound here.
-- **Core** (`src/core`): the kit (§3), the binding hook (§4), the runtime (§5), scopes and hooks. Fields, layouts, form components and the schema renderer are built only on core's public surface.
-- **Fields** (`src/fields`): one folder per bound field, `Form<Kind>Field`, each binding exactly one kiln-ui `*Field` and registered in `defaultFields` under its kind.
-- **Layouts** and **components** (`src/layouts`, `src/components`): composition of kiln-ui primitives with `FieldScope` and `FieldPresentation`; no CSS.
+- **Kit, hooks, runtime** (`src/kit`, `src/hooks`, `src/runtime`, `src/utils`): the kit (§3), the binding hook and the other public hooks (§4, §6.5), and the per-form runtime (§5). Fields, layouts, form components and the schema renderer are built on these.
+- **Fields** (`src/components/fields`): one folder per bound field, `Form<Kind>Field`, each binding exactly one kiln-ui `*Field` and registered in `defaultFields` under its kind, plus `FieldView` and `FieldPresentation`.
+- **Layouts** and **form components** (`src/components/layouts`, `src/components/form`): composition of kiln-ui primitives with `FieldScope` and `FieldPresentation`; no CSS.
 - **Schema** (`src/schema`): `core` is React-free and is the `./schema` entry point; `render` maps nodes onto the same fields and layouts.
 - **Tests** are co-located (`*.test.ts(x)`, `*.test-d.ts(x)`), with shared harnesses in `src/test` (§15). **Stories** are co-located too (§16).
 - **Build**: Vite library mode, ESM only, `preserveModules`, `.d.ts` output; two entry points (`.` and `./schema`). `scripts/check-schema-entry.ts` proves the packed `./schema` entry loads in plain Node with no React installed, and `size.config.json` sets the size budgets.
@@ -2151,13 +2159,13 @@ The body above is the design as planned. These entries record where the build we
 
 - `FieldRegistry = Record<string, FieldDef<Contract, any>>` uses the one `any` §3.2 allows. `never` fails on `ComponentType`'s class branch (`defaultProps`).
 - Submit meta `M` defaults to `undefined`, not `never`. With `never` a `KitForm` isn't assignable to `AnyFormApi`, and `formOptions(...)` spreads infer `undefined` anyway.
-- `AnyKitForm` is structural (`{ store; state: { values? } }`) and lives in `core/kit/types`. A concrete `KitForm<T>`'s generic methods collapse to `never` against `AnyFormApi`, so every public API takes `AnyKitForm` and converts with `toFormApi`. Hooks are generic over `A extends AnyKitForm` for the same reason.
+- `AnyKitForm` is structural (`{ store; state: { values? } }`) and lives in `kit/types`. A concrete `KitForm<T>`'s generic methods collapse to `never` against `AnyFormApi`, so every public API takes `AnyKitForm` and converts with `toFormApi`. Hooks are generic over `A extends AnyKitForm` for the same reason.
 - `coreApi(form)` and `runtime.core` give the core `FormApi`. TanStack's React form is a spread copy whose `options` goes stale after `update()`.
 - `createFormKit<const K extends KitInput>(registries: K)` takes one const generic, with extras `X = Omit<K, 'fields'>`. The planned `<const R, const X>` over an intersection couldn't infer `X`, which widened every layout key to `string`. `extend` works the same way.
 - `kit.defineFormSchema<T, C = {}>()` drops the `C extends Record<string, Primitive>` constraint, so interfaces (no index signature) work as context types.
 - Typed schemas carry an optional phantom `'~types'` marker. Every typed schema is assignable to `UntypedFormSchema` by design, so without it any schema would fit any form. JSON round trips are unaffected because it's never set.
 - `FieldBindingOptions` also takes `layout`, `labelHidden` and `aria-describedby`, so a field's own props beat presentation. `withForm`'s `props` option is merged under passed props, as TanStack does.
-- `useOptionMapping(options, { emptyOption })` in `core/binding/optionValues` was added for the option fields.
+- `useOptionMapping(options, { emptyOption })` in `hooks/useOptionMapping` was added for the option fields.
 - `FormRuntime.registry` holds the kit's field registry (set by `useAppForm`). Repeater uses `bindFields(form, registry, prefix)` for item fields instead of a Proxy over `AppField`.
 - `kit.useTypedAppFormContext(options)` returns the form from context as a `KitForm<T, M, R>`, typed by the shared `formOptions` ([ADR 0021](../../../docs/adr/0021-forms-context-in-nested-components.md)). Both providers hold the object `useAppForm` returned, so only the type is restored. `useFormContext` is wrapped so that both hooks throw a kiln-forms error outside a form.
 

@@ -2,12 +2,12 @@ import { Badge, Inline, Stack } from '@mitcsutt/kiln-ui'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect, userEvent, within } from 'storybook/test'
 import { storyRoot } from '#stories/_kit'
-import { Form } from '#components/Form'
-import { ResetButton } from '#components/ResetButton'
-import { SubmitButton } from '#components/SubmitButton'
-import { useUnsavedChanges } from '#core/hooks'
-import { FormActions } from '#layouts'
-import { kit } from '#kit'
+import { Form } from '#components/form/Form'
+import { ResetButton } from '#components/form/ResetButton'
+import { SubmitButton } from '#components/form/SubmitButton'
+import { useUnsavedChanges } from '#hooks'
+import { FormActions } from '#components/layouts'
+import { kit } from '#kit/defaultKit'
 
 const meta = {
   title: 'Forms/Hooks/useUnsavedChanges',

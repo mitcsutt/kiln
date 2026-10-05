@@ -65,12 +65,12 @@ describe('@mitcsutt/kiln-forms/schema without React', () => {
   it('the parser sees through multi-line and type-only imports', () => {
     const source = [
       "import type { A } from 'react'",
-      "import {\n  b,\n  type C,\n} from '#core/x'",
+      "import {\n  b,\n  type C,\n} from '#runtime/x'",
       "export type { D } from '@mitcsutt/kiln-ui'",
       "export { e } from '#schema/core/e'",
       "import 'side-effect'",
     ].join('\n')
-    expect(runtimeSpecifiers(source)).toEqual(['#core/x', '#schema/core/e', 'side-effect'])
+    expect(runtimeSpecifiers(source)).toEqual(['#runtime/x', '#schema/core/e', 'side-effect'])
   })
 
   it('the runtime import graph reaches no package', async () => {
@@ -78,18 +78,15 @@ describe('@mitcsutt/kiln-forms/schema without React', () => {
     expect(graph.packages).toEqual([])
     for (const file of graph.files) {
       expect(
-        [
-          'schema/core/',
-          'core/runtime/messages.ts',
-          'core/runtime/paths.ts',
-          'core/binding/errors.ts',
-        ].some((ok) => file.startsWith(ok)),
+        ['schema/core/', 'runtime/messages.ts', 'runtime/errors.ts', 'utils/paths.ts'].some((ok) =>
+          file.startsWith(ok),
+        ),
       ).toBe(true)
     }
   })
 
   it('control: a React module is detected', async () => {
-    expect((await runtimeGraph(`${srcDir}core/env.ts`)).packages).toContain('react')
+    expect((await runtimeGraph(`${srcDir}utils/env.ts`)).packages).toContain('react')
   })
 
   it('imports and works', async () => {

@@ -17,11 +17,11 @@
 import { memo, type ReactNode } from 'react'
 import { act, screen, waitFor, within } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-import { ErrorSummary } from '#components/ErrorSummary'
-import { SubmitButton } from '#components/SubmitButton'
-import { FormTabs } from '#layouts/FormTabs'
-import { Repeater } from '#layouts/Repeater'
-import { When } from '#layouts/When'
+import { ErrorSummary } from '#components/form/ErrorSummary'
+import { SubmitButton } from '#components/form/SubmitButton'
+import { FormTabs } from '#components/layouts/FormTabs'
+import { Repeater } from '#components/layouts/Repeater'
+import { When } from '#components/layouts/When'
 import { countRenders, RenderCounter, resetRenderCounts } from '#test/perf'
 import { renderForm } from '#test/renderForm'
 import { must } from '#test/must'
@@ -297,10 +297,10 @@ describe('perf acceptance (§12): 60-field form', () => {
     expect(Object.keys(counts(ALL_FIELDS))).toEqual([])
   })
 
-  // Known gap, kept as an expected failure: §12 says submit re-renders only fields whose error
-  // visibility changed, but the first submit flips every field's `submitted` boolean (§12 rule 2)
-  // and TanStack touches every field's meta, so all 61 fields (incl. all 20 Repeater item fields)
-  // re-render once.
+  // Known gap, kept as an expected failure (A.10): §12 says submit re-renders only fields whose
+  // error visibility changed, but TanStack's `handleSubmit` marks every untouched field touched
+  // and `useField` subscribes to `isTouched`, so all 61 fields (incl. all 20 Repeater item fields)
+  // re-render once. Nothing in the binding can avoid it without replacing `useField`.
   it.fails('first submit re-renders only the 4 invalid fields + summary + submit', async () => {
     const { user } = setup()
     resetRenderCounts()

@@ -10,7 +10,7 @@
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { describe, expect, it } from 'vitest'
-import { FormSteps } from '#layouts/FormSteps'
+import { FormSteps } from '#components/layouts/FormSteps'
 import { renderForm } from '#test/renderForm'
 import { must } from '#test/must'
 

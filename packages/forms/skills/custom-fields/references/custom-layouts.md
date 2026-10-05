@@ -101,8 +101,9 @@ Submit it empty and each panel counts its own errors.
 declare function useScopeErrors(scope: ScopeHandle | null, form?: AnyKitForm | undefined): number
 ```
 
-The number of **visible** errors (per the form's visibility policy) among the scope's fields.
-A primitive selector — re-renders only when the count changes.
+The number of **visible** errors (per the form's visibility policy) among the scope's fields,
+leaving out hidden, disabled, read-only and excluded ones. Re-renders only when the count
+changes.
 
 ```ts
 declare function useFieldScope(): ScopeHandle | null

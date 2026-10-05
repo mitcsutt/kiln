@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import type { OptionsLoader } from '#core/hooks/useOptions'
+import type { OptionsLoader } from '#hooks/useOptions'
 import type {
   AnyKitForm,
   Computer,
@@ -8,7 +8,7 @@ import type {
   KitExtras,
   LayoutComponent,
   NamedValidator,
-} from '#core/kit/types'
+} from '#kit/types'
 import type { UntypedFormSchema } from '#schema/core/types'
 import type { SchemaRegistries } from '#schema/render/context'
 import { defaultLayouts } from '#schema/render/layouts'

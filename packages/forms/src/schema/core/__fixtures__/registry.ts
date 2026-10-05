@@ -10,7 +10,7 @@ import type {
   OptionContract,
   OptionsContract,
   Primitive,
-} from '#core/kit/contracts'
+} from '#kit/contracts'
 import { defineComputer, defineLoader, defineValidator } from '#schema/core/registry'
 import type { Computer, NamedValidator, OptionsLoader } from '#schema/core/types'
 

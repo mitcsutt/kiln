@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { StandardSchemaV1 } from '@tanstack/react-form'
-import { defaultMessages } from '#core/runtime/messages'
+import { defaultMessages } from '#runtime/messages'
 import { defineValidator } from '#schema/core/registry'
 import { toStandardSchema } from '#schema/core/toStandardSchema'
 import type { UntypedFormSchema } from '#schema/core/types'

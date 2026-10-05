@@ -1,4 +1,4 @@
-import type { Primitive } from '#core/kit/contracts'
+import type { Primitive } from '#kit/contracts'
 import type {
   Computer,
   NamedValidator,

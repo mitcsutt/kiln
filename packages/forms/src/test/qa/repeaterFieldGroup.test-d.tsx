@@ -3,8 +3,8 @@
  * `RegistryOf` reads a group's registry from its `AppField` field components, so
  * `item.fields.TextField` is a typed bound component (and wrong paths still fail).
  */
-import { kit } from '#kit'
-import { Repeater } from '#layouts/Repeater'
+import { kit } from '#kit/defaultKit'
+import { Repeater } from '#components/layouts/Repeater'
 
 interface Guest {
   name: string

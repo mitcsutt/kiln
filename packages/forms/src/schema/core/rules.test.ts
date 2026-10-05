@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { defaultMessages, mergeMessages } from '#core/runtime/messages'
+import { defaultMessages, mergeMessages } from '#runtime/messages'
 import { defineValidator } from '#schema/core/registry'
 import { compileRules, todayIso, withRequired } from '#schema/core/rules'
 import type { NamedValidator, UntypedRule } from '#schema/core/types'

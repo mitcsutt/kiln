@@ -3,9 +3,9 @@
  * executed. Every `@ts-expect-error` must be used.
  */
 import type { ReactNode } from 'react'
-import { defineField, type FieldOption } from '#core/kit/contracts'
-import type { LayoutRenderProps } from '#core/kit/types'
-import { kit } from '#kit'
+import { defineField, type FieldOption } from '#kit/contracts'
+import type { LayoutRenderProps } from '#kit/types'
+import { kit } from '#kit/defaultKit'
 import { defineLoader, defineValidator } from '#schema/core/registry'
 import type { UntypedFormSchema } from '#schema/core/types'
 import { defineCustomNode } from '#schema/render/defineCustomNode'

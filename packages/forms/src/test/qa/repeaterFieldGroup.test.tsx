@@ -6,8 +6,8 @@
 import type { ComponentType } from 'react'
 import { screen, within } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-import { kit } from '#kit'
-import { Repeater } from '#layouts/Repeater'
+import { kit } from '#kit/defaultKit'
+import { Repeater } from '#components/layouts/Repeater'
 import { renderForm } from '#test/renderForm'
 
 interface Guest {

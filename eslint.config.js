@@ -13,7 +13,7 @@ const FORMS_NO_STYLING =
 // packages/forms/AGENTS.md: `#` subpath imports inside the package, kiln-ui from its barrel
 // only, and no CSS.
 const FORMS_IMPORT_PATTERNS = [
-  { group: ['../*'], message: 'Import with a `#` subpath import (`#core/...`).' },
+  { group: ['../*'], message: 'Import with a `#` subpath import (`#runtime/...`).' },
   { group: ['@mitcsutt/kiln-ui/*'], message: 'Import @mitcsutt/kiln-ui from its barrel.' },
   { group: ['*.css'], message: FORMS_NO_STYLING },
 ]

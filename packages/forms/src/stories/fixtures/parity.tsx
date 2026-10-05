@@ -6,9 +6,9 @@
  * (`schema/render/parity.test.tsx`) and by the layout stories.
  */
 import type { ComponentType, ReactNode } from 'react'
-import { Form } from '#components/Form'
-import type { EmptyObject, KitForm } from '#core/kit/types'
-import { kit } from '#kit'
+import { Form } from '#components/form/Form'
+import type { EmptyObject, KitForm } from '#kit/types'
+import { kit } from '#kit/defaultKit'
 
 /** The default kit's form for values `T` (what component-mode fixtures receive). */
 export type FixtureForm<T> = KitForm<T, undefined, typeof kit.registries.fields>

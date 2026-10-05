@@ -1,13 +1,13 @@
 import { createElement, useMemo, type ComponentType } from 'react'
 import { getBy, useSelector } from '@tanstack/react-form'
-import { useOptions } from '#core/hooks/useOptions'
-import type { FieldOption } from '#core/kit/contracts'
-import { bindFields, fieldComponentName } from '#core/kit/bindFields'
-import type { AnyKitForm } from '#core/kit/types'
-import { coreApi, getFormRuntime } from '#core/runtime/formRuntime'
-import { shallowEqual } from '#core/runtime/shallow'
-import { FormComboboxField } from '#fields/FormComboboxField'
-import { FormMultiSelectField } from '#fields/FormMultiSelectField'
+import { useOptions } from '#hooks/useOptions'
+import type { FieldOption } from '#kit/contracts'
+import { bindFields, fieldComponentName } from '#kit/bindFields'
+import type { AnyKitForm } from '#kit/types'
+import { coreApi, getFormRuntime } from '#runtime/formRuntime'
+import { shallowEqual } from '#utils/shallow'
+import { FormComboboxField } from '#components/fields/FormComboboxField'
+import { FormMultiSelectField } from '#components/fields/FormMultiSelectField'
 import {
   DISABLED,
   EXCLUDED,

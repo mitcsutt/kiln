@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { useEffect, useRef, useState } from 'react'
 import { Button, Code, Grid, Heading, Inline, Stack, Text } from '@mitcsutt/kiln-ui'
-import { Form } from '#components'
-import { kit } from '#kit'
-import { FormGrid, FormStep, FormSteps, When } from '#layouts'
+import { Form } from '#components/form'
+import { kit } from '#kit/defaultKit'
+import { FormGrid, FormStep, FormSteps, When } from '#components/layouts'
 import { recipeParameters } from '#stories/recipes/parameters'
 import { RecipeFrame, SubmittedOutput } from '#stories/recipes/RecipeFrame'
 

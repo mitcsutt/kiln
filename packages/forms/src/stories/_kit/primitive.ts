@@ -1,4 +1,4 @@
-import type { Primitive } from '#core/kit/contracts'
+import type { Primitive } from '#kit/contracts'
 
 /**
  * Types a demo value as any primitive (or empty), the widest value an option field binds,

@@ -1,8 +1,8 @@
 import { createElement, useCallback, useMemo, type ComponentType, type ReactNode } from 'react'
 import { Alert, Divider, Heading, Text, type AlertTone, type HeadingLevel } from '@mitcsutt/kiln-ui'
-import { ErrorSummary, FormStatus, ResetButton, SubmitButton } from '#components'
-import { useFieldPresentation } from '#core/binding/presentation'
-import { Repeater, When } from '#layouts'
+import { ErrorSummary, FormStatus, ResetButton, SubmitButton } from '#components/form'
+import { useFieldPresentation } from '#components/fields/FieldPresentation'
+import { Repeater, When } from '#components/layouts'
 import {
   contentNodeProps,
   isContentNode,
