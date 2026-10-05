@@ -14,7 +14,7 @@ A bound field wraps one kiln-ui `*Field`, so the field needs no CSS and no new c
 
 ## Steps
 
-1. **Folder.** Create `packages/forms/src/components/fields/Form<Name>Field/` with `Form<Name>Field.tsx`, `Form<Name>Field.test.tsx`, `Form<Name>Field.stories.tsx` and `index.ts`.
+1. **Folder.** Create `packages/forms/src/components/fields/Form<Name>Field/` with `Form<Name>Field.tsx`, `Form<Name>Field.test.tsx`, `Form<Name>Field.stories.tsx`, `Form<Name>Field.examples.tsx` and `index.ts`.
 2. **Contract.** Wrap the component in `defineField<V>()`, or `defineOptionField<B>()` and `defineOptionsField<B>()` for one or many choices. The contract decides which value paths the field can bind to.
 3. **Binding.** Call `useFieldBinding` with the props, an `accepts` guard and the `empty` value. Spread `binding.fieldProps` and `binding.ref` onto the kiln-ui field, and wire `value`, `setValue` and `onBlur`.
 4. **View mode.** When `binding.mode` is `'view'`, return `FieldView` with the value formatted for reading.
@@ -22,7 +22,7 @@ A bound field wraps one kiln-ui `*Field`, so the field needs no CSS and no new c
 6. **Schema.** If the field takes props a schema can't safely set, check the untrusted-schema rules in packages/forms/AGENTS.md.
 7. **Tests.** Run `runFieldConformance` from the test harness in the field's test, as packages/forms/AGENTS.md describes, plus tests for its own behaviour.
 8. **Stories.** Title `Forms/Fields/<Name>Field`, with a `Playground` story and real states, with invented content.
-9. **Docs page.** Add `apps/docs/content/docs/forms/fields/<kebab-name>-field.mdx` (copy `text-field.mdx`) with `exports: [Form<Name>Field]`, list it in that folder's `meta.json`, add its example in `apps/docs/examples/forms/fields/<kebab-name>-field/usage.tsx`, and end the page with an `## API` section holding `<ApiTable of="Form<Name>FieldProps" />`. Update the field count on `forms/index.mdx` if it changes, then run `pnpm generate:skills`, because that page is part of the `component-mode` skill.
+9. **Docs page.** Add `apps/docs/content/docs/forms/fields/<kebab-name>-field.mdx` (copy `text-field.mdx`) with `exports: [Form<Name>Field]`, list it in that folder's `meta.json`, write its example as `export function Usage()` in `Form<Name>Field.examples.tsx` (copy `FormTextField.examples.tsx`) and render it with `<Example of="Form<Name>Field" />`, and end the page with an `## API` section holding `<ApiTable of="Form<Name>FieldProps" />`. Update the field count on `forms/index.mdx` if it changes, then run `pnpm generate:skills`, because that page is part of the `component-mode` skill.
 10. **Changeset:** `pnpm changeset`, a `minor` bump for `@mitcsutt/kiln-forms`.
 
 ## Check it
