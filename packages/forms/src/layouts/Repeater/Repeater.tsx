@@ -57,6 +57,7 @@ import {
   toFormApi,
   type FieldRegistration,
 } from '#core/runtime/formRuntime'
+import { readLegend } from '#core/runtime/labels'
 import type { FormMessages } from '#core/runtime/messages'
 import { scopeChain, useScopeNode } from '#core/scope/FieldScope'
 import { useAnnouncer } from '#layouts/internal/announcer'
@@ -156,15 +157,6 @@ function cellsOf(node: ReactNode): ReactNode[] {
     else out.push(child)
   }
   return out
-}
-
-function legendText(element: HTMLElement | null, fallback: string): string {
-  const legend = element?.querySelector('legend')
-  if (!legend) return fallback
-  const clone = legend.cloneNode(true) as HTMLElement
-  for (const hidden of clone.querySelectorAll('[aria-hidden="true"]')) hidden.remove()
-  const text = clone.textContent.replace(/\s+/g, ' ').trim()
-  return text === '' ? fallback : text
 }
 
 type PendingFocus = () => void
@@ -337,7 +329,7 @@ function RepeaterBody({ field, props }: { field: AnyFieldApi; props: LooseProps 
         const element = groupRef.current
         if (element) focusTarget(element)?.focus()
       },
-      getLabel: () => legendText(groupRef.current, name),
+      getLabel: () => readLegend(groupRef.current, name),
     }
     runtime.fields.set(name, entry)
     return () => {

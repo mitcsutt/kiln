@@ -1,18 +1,13 @@
 import { useCallback, useEffect, useId, useRef, type RefCallback } from 'react'
 import { useSelector, type AnyFieldApi, type AnyFormApi } from '@tanstack/react-form'
+import type { FieldLayout } from '@mitcsutt/kiln-ui'
 import { useFieldContext } from '#core/contexts'
 import { isDev, useIsomorphicLayoutEffect } from '#core/env'
-import { pickErrors } from '#core/binding/errors'
-import type { FieldLayout } from '@mitcsutt/kiln-ui'
 import { useFieldPresentation } from '#core/binding/presentation'
-import { isErrorVisible } from '#core/binding/visibility'
+import { fieldDisplay } from '#core/runtime/fieldDisplay'
 import { focusTarget } from '#core/runtime/focus'
-import {
-  formatErrorText,
-  getFormRuntime,
-  markInactive,
-  type FieldRegistration,
-} from '#core/runtime/formRuntime'
+import { getFormRuntime, markInactive, type FieldRegistration } from '#core/runtime/formRuntime'
+import { readFieldLabel } from '#core/runtime/labels'
 import { isQuietMeta, isRevealedMeta } from '#core/runtime/reveal'
 import { scopeChain, useScopeNode } from '#core/scope/FieldScope'
 
@@ -89,72 +84,22 @@ export interface FieldBinding<V> {
   fieldProps: BoundFieldProps
 }
 
-/** Text of a label-like element, minus `aria-hidden` marks (required stars, spinners). */
-function labelText(element: Element): string {
-  const clone = element.cloneNode(true) as HTMLElement
-  for (const hidden of clone.querySelectorAll('[aria-hidden="true"]')) hidden.remove()
-  return clone.textContent.replace(/\s+/g, ' ').trim()
-}
-
-/** The legend of a `<fieldset>` (its own, not a nested one's). */
-function legendOf(fieldset: Element): Element | null {
-  for (const child of fieldset.children) if (child.tagName === 'LEGEND') return child
-  return null
-}
-
-/** The element's own name source: `aria-labelledby`, `${id}-label`, `label[for]` or `labels`. */
-function ownLabel(control: HTMLElement): Element | null {
-  const doc = control.ownerDocument
-  const labelledBy = control.getAttribute('aria-labelledby')
-  if (labelledBy) {
-    const first = labelledBy
-      .split(/\s+/)
-      .map((ref) => doc.getElementById(ref))
-      .find((el) => el !== null)
-    if (first) return first
-  }
-  if (control.id) {
-    const byId = doc.getElementById(`${control.id}-label`)
-    if (byId) return byId
-  }
-  const labels = (control as HTMLInputElement).labels
-  if (labels && labels.length > 0) return labels[0] ?? null
-  if (control.id)
-    return (
-      [...doc.querySelectorAll('label')].find((element) => element.htmlFor === control.id) ?? null
-    )
-  return null
-}
-
-/**
- * Visible label text of a field (ErrorSummary links), read from the DOM so it is
- * whatever the user sees. Group fields are named by their `<fieldset>`'s legend:
- * - the field's root (the nearest ancestor-or-self carrying `data-field={name}`) is itself a
- *   fieldset (DateRange: the control is an inner "Start date" input) → that legend;
- * - the control has no name of its own (a radiogroup/group inside a Fieldset) → the nearest
- *   enclosing fieldset's legend;
- * - otherwise the control's own label. Falls back to `fallback` (the path).
- */
-function readLabel(control: HTMLElement | null, name: string, fallback: string): string {
-  if (!control) return fallback
-  let root: HTMLElement | null = control
-  while (root && root.getAttribute('data-field') !== name) root = root.parentElement
-  const source =
-    (root?.tagName === 'FIELDSET' ? legendOf(root) : null) ??
-    ownLabel(control) ??
-    (() => {
-      const fieldset = control.closest('fieldset')
-      return fieldset ? legendOf(fieldset) : null
-    })()
-  if (!source) return fallback
-  const text = labelText(source)
-  return text === '' ? fallback : text
-}
-
 function joinIds(...ids: (string | undefined)[]): string | undefined {
   const joined = ids.filter((id): id is string => typeof id === 'string' && id !== '').join(' ')
   return joined === '' ? undefined : joined
 }
+
+/** `props` without its `undefined` entries: bound props and state omit unset keys (§4.1). */
+function defined<T extends object>(props: { [K in keyof T]: T[K] | undefined }): T {
+  return Object.fromEntries(Object.entries(props).filter(([, value]) => value !== undefined)) as T
+}
+
+// The field's submit-attempt state, packed into one primitive so its selector re-renders the field
+// only when a bit flips: the form was submitted; this field's errors were revealed (a step's
+// Next, a rejected file); that reveal was quiet (no per-field alert, like a submit).
+const SUBMITTED = 1
+const REVEALED = 2
+const QUIET = 4
 
 /**
  * THE binding hook (§4): ids, error visibility + normalisation, warnings, disabled/readOnly/excluded
@@ -171,25 +116,19 @@ export function useFieldBinding<V>(options: FieldBindingOptions<V>): FieldBindin
   const name = api.name as string
   const value = api.state.value as V
   const meta = api.state.meta
-  // One primitive selector: bit 1 = the form was submitted, bit 2 = this field's errors were
-  // revealed (a step's Next, a rejected file) — both make its errors visible under any policy;
-  // bit 4 = that reveal was a quiet scoped attempt (no per-field alert, like a submit).
   const attempt = useSelector(form.store, (state) => {
     const fieldMeta = (state.fieldMeta as Record<string, unknown>)[name]
     return (
-      (state.submissionAttempts > 0 ? 1 : 0) |
-      (isRevealedMeta(fieldMeta) ? 2 : 0) |
-      (isQuietMeta(fieldMeta) ? 4 : 0)
+      (state.submissionAttempts > 0 ? SUBMITTED : 0) |
+      (isRevealedMeta(fieldMeta) ? REVEALED : 0) |
+      (isQuietMeta(fieldMeta) ? QUIET : 0)
     )
   })
-  const submitted = (attempt & 1) === 1
-  const revealed = (attempt & 2) === 2
-  const quietReveal = (attempt & 4) === 4
 
   const mode = presentation.mode ?? 'edit'
   const disabled = presentation.disabled === true || options.disabled === true
   const readOnly = presentation.readOnly === true || options.readOnly === true
-  const excluded = Boolean(options.excluded)
+  const excluded = options.excluded === true
   const inactive = disabled || readOnly || excluded
   const reason = disabled ? 'disabled' : readOnly ? 'readOnly' : 'excluded'
 
@@ -200,16 +139,20 @@ export function useFieldBinding<V>(options: FieldBindingOptions<V>): FieldBindin
     return markInactive(form, [name], reason, excluded ? 'prune' : 'keep')
   }, [form, name, inactive, reason, excluded, mode])
 
-  // §4.2.10 — focus registration (+ every ancestor scope). A view-mode copy never registers: it
-  // has no control, and registering would take over the real field's focus entry and put the
-  // name into the review's scopes (counts, step validation).
+  // The field-level default, which pruning and `When`'s reset use before the form's.
+  const fieldDefault: unknown = api.options.defaultValue
+  useIsomorphicLayoutEffect(() => {
+    if (fieldDefault !== undefined) runtime.fieldDefaults.set(name, fieldDefault)
+  }, [runtime, name, fieldDefault])
+
+  // §4.2.10 — focus registration (+ every ancestor scope), once per mount. A view-mode copy never
+  // registers: it has no control, and registering would take over the real field's focus entry
+  // and put the name into the review's scopes (counts, step validation).
   const elementRef = useRef<HTMLElement | null>(null)
   const ref = useCallback<RefCallback<HTMLElement>>((element) => {
     elementRef.current = element
   }, [])
   useIsomorphicLayoutEffect(() => {
-    const fieldDefault: unknown = api.options.defaultValue
-    if (fieldDefault !== undefined) runtime.fieldDefaults.set(name, fieldDefault)
     if (mode === 'view') return undefined
     const chain = scopeChain(scopeNode)
     const unregister = chain.map((scope) => scope.register(name))
@@ -224,7 +167,7 @@ export function useFieldBinding<V>(options: FieldBindingOptions<V>): FieldBindin
         if (current) focusTarget(current)?.focus()
       },
       getLabel: () =>
-        readLabel(
+        readFieldLabel(
           typeof document === 'undefined'
             ? null
             : (document.getElementById(id) ?? elementRef.current),
@@ -237,7 +180,7 @@ export function useFieldBinding<V>(options: FieldBindingOptions<V>): FieldBindin
       for (const done of unregister) done()
       if (runtime.fields.get(name) === entry) runtime.fields.delete(name)
     }
-  }, [runtime, name, id, scopeNode, api, mode])
+  }, [runtime, name, id, scopeNode, mode])
 
   // §4.2.12 — dev guard for the canonical path, once per field.
   const warned = useRef(false)
@@ -251,62 +194,58 @@ export function useFieldBinding<V>(options: FieldBindingOptions<V>): FieldBindin
     )
   }, [accept, value, name])
 
+  // The FieldApi's handlers are stable for its lifetime; `api` itself is a new object per change.
+  const { handleChange, handleBlur } = api
   const setValue = useCallback(
     (next: V) => {
       if (disabled || readOnly) return
-      api.handleChange(next)
+      handleChange(next)
     },
-    [api, disabled, readOnly],
+    [handleChange, disabled, readOnly],
   )
   const onBlur = useCallback(() => {
-    api.handleBlur()
-  }, [api])
+    handleBlur()
+  }, [handleBlur])
 
-  // §4.2.3–6 — one visible message per field, warnings under the same policy.
-  const errorMap = meta.errorMap as Record<string, unknown>
-  const first = pickErrors(errorMap)[0]
-  const visible = revealed || isErrorVisible(runtime.options.errorVisibility, meta, submitted)
-  const showError = mode === 'edit' && !inactive && first !== undefined && visible
-  const errorText = showError ? formatErrorText(runtime, first) : undefined
-  const warningText =
-    mode === 'edit' && !showError && visible ? (options.warn?.(value) ?? undefined) : undefined
-  const warning = warningText === '' ? undefined : warningText
-
+  const warn = options.warn
+  const display = fieldDisplay(runtime, {
+    mode,
+    inactive,
+    meta,
+    submitted: (attempt & SUBMITTED) !== 0,
+    revealed: (attempt & REVEALED) !== 0,
+    quiet: (attempt & QUIET) !== 0,
+    warning: warn ? () => warn(value) : undefined,
+  })
   const external = presentation.errorPlacement === 'external'
-  const layout = options.layout ?? presentation.layout
-  const labelHidden = options.labelHidden ?? presentation.labelHidden
-  const describedBy = joinIds(
-    options['aria-describedby'],
-    external ? presentation.describedBy?.(name) : undefined,
-  )
 
-  // §11.4 — inline errors announce as they appear, except after a submit or a scoped attempt
-  // (Next): those announce once themselves and move focus, so N alerts at once would bury it.
-  const fieldProps: BoundFieldProps = {
+  const fieldProps = defined<BoundFieldProps>({
     id,
     name,
     'data-field': name,
-    errorLive: !submitted && !quietReveal,
-  }
-  if (errorText !== undefined) fieldProps.error = errorText === '' ? true : errorText
-  if (external) fieldProps.errorHidden = true
-  if (warning !== undefined) fieldProps.warning = warning
-  if (options.required !== undefined) fieldProps.required = options.required
-  if (disabled) fieldProps.disabled = true
-  if (readOnly) fieldProps.readOnly = true
-  if (meta.isValidating) fieldProps.validating = true
-  if (layout !== undefined) fieldProps.layout = layout
-  if (labelHidden !== undefined) fieldProps.labelHidden = labelHidden
-  if (describedBy !== undefined) fieldProps['aria-describedby'] = describedBy
-
-  const state: FieldBinding<V>['state'] = {
-    showError,
+    error: display.error === '' ? true : display.error,
+    errorLive: display.errorLive,
+    errorHidden: external || undefined,
+    warning: display.warning,
+    required: options.required,
+    disabled: disabled || undefined,
+    readOnly: readOnly || undefined,
+    validating: meta.isValidating || undefined,
+    layout: options.layout ?? presentation.layout,
+    labelHidden: options.labelHidden ?? presentation.labelHidden,
+    'aria-describedby': joinIds(
+      options['aria-describedby'],
+      external ? presentation.describedBy?.(name) : undefined,
+    ),
+  })
+  const state = defined<FieldBinding<V>['state']>({
+    showError: display.showError,
+    error: display.error,
+    warning: display.warning,
     isValidating: meta.isValidating,
     isDirty: !meta.isDefaultValue,
     inactive,
-  }
-  if (errorText !== undefined) state.error = errorText
-  if (warning !== undefined) state.warning = warning
+  })
 
   return { api, name, id, value, setValue, onBlur, ref, mode, state, fieldProps }
 }
