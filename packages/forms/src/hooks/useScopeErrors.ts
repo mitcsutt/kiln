@@ -10,9 +10,9 @@ interface MetaLike extends VisibilityMeta {
 }
 
 /**
- * The number of **visible** errors (per the form's visibility policy) among the scope's fields.
- * It depends on the form's state, the runtime's inactive paths and the scope's names, and is
- * read from all three as one number: it re-renders only when the count changes.
+ * The number of **visible** errors (per the form's visibility policy) among the scope's fields,
+ * leaving out hidden, disabled, read-only and excluded ones. Re-renders only when the count
+ * changes.
  */
 export function useScopeErrors(scope: ScopeHandle | null, form?: AnyKitForm): number {
   const resolved = useResolvedForm(form)
@@ -30,6 +30,7 @@ export function useScopeErrors(scope: ScopeHandle | null, form?: AnyKitForm): nu
     },
     [resolved, runtime, scope],
   )
+  // One number read from the form's state, the inactive paths and the scope's names together.
   const count = () => {
     const names = scope?.names() ?? []
     if (names.length === 0) return 0
