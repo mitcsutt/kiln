@@ -13,7 +13,7 @@ pnpm check:links                           # build, serve, and fail on any broke
 ```
 content/docs/         MDX pages and meta.json files: the sidebar tree (docs/tree.json at the root)
 examples/             one file per live example, named by its path: <Example name="ui/actions/button/hierarchy" />
-scripts/              generate-api.ts, generate-tokens.ts, generate-examples.ts, extract-example.ts, generate-design-rules.ts, check-links.ts
+scripts/              generate-api.ts, generate-tokens.ts, generate-examples.ts, examples-files.ts, extract-example.ts, generate-design-rules.ts, check-links.ts
 src/app/              routes: pages, /api/search, /llms.txt, /llms-full.txt, /docs/<page>.md
 src/components/       the site chrome, MDX components, foundations specimens
 src/skills/           the agent skills kiln-ui and kiln-forms ship, built from these pages
