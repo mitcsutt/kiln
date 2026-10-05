@@ -32,6 +32,15 @@ const columns = (ratio: SplitRatio, reverse: boolean): string => {
 }
 
 /**
+ * An asymmetric two-column layout that stacks on small screens. A heading beside its list, a label
+ * beside its content.
+ *
+ * @remarks
+ * `Split` takes exactly two children and puts them side by side in a ratio. Asymmetric splits read
+ * as designed; a 50/50 split of a heading and a list rarely does. Below `collapseBelow` (`md` by
+ * default) the two stack, first child on top.
+ *
+ * @privateRemarks
  * An asymmetric two-column layout: a heading beside its list, a label hang column,
  * media beside copy. Stacks below `collapseBelow`.
  *

@@ -7,6 +7,13 @@ export interface OneTimeCodeFieldProps
   extends FieldLabelProps, Omit<OneTimeCodeInputProps, 'invalid' | keyof FieldLabelProps> {}
 
 /**
+ * A labelled one-time code input, filled by typing, pasting or a text message.
+ *
+ * @remarks
+ * `OneTimeCodeField` is a {@link Field | Field} around a {@link OneTimeCodeInput |
+ * OneTimeCodeInput}. The label names the group of cells.
+ *
+ * @privateRemarks
  * Label + OneTimeCodeInput + description + error. The label names the group of cells
  * (and clicking it focuses the first); `className`/`style` go to the wrapper, the ref to
  * the group.

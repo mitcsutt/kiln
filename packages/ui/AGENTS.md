@@ -79,6 +79,12 @@ Groups: `layout`, `typography`, `actions`, `inputs`, `display`, `navigation`, `f
 - A docs story has a JSDoc caption, a `render` that takes no args (a named function when it uses hooks), imports from packages only (`@mitcsutt/kiln-ui`, `react`, never `#…` or relative), and lays out with `Stack`/`Inline`/`Grid`, never `style`. `kiln/docs-story` enforces all four. A `Playground` is never a docs story.
 - A page shows them with `<Examples of="<Name>" />`: the first follows the lead without a heading, and each later one gets its `name`, or its export name in sentence case, as a heading. Renaming a docs story changes its heading, anchor and Storybook URL. `<Example of="<Name>" name="<Story>" />` shows one.
 
+**Docs page** (generated from TSDoc, [ADR 0029](../../docs/adr/0029-generated-reference-pages.md))
+
+- The component's docs page is built from its TSDoc and docs stories; there's no MDX to write. The summary (one or two sentences) is the page's description, and also the hover text consumers see. `@remarks` is the lead, in Markdown; its `##` sections follow the examples. `{@link Other | text}` links to another export's page.
+- It's public copy: DESIGN.md's copy rules apply. Notes for maintainers, design-document references (`§`) included, go in `@privateRemarks`, which no page shows. `apps/docs/src/test/reference.test.ts` fails on a `§` in what a page shows.
+- Defaults come from the destructured props (`variant = 'solid'`); write `@defaultValue` only for a default the code applies elsewhere.
+
 **Tests** (`<Name>.test.tsx`): behaviour, not snapshots: roles/labels, keyboard, controlled/uncontrolled state, data attributes, ref forwarding, responsive var mapping. `vi`, `describe`, `it`, `expect` are globals. Use `must()` from `#test/must` for a node a test needs to exist, rather than a `!` assertion.
 
 ## Lint

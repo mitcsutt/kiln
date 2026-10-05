@@ -8,6 +8,8 @@ Source: https://kiln.mitchellsutton.com/docs/forms/layouts/error-summary
 
 `ErrorSummary` renders nothing until a submit attempt fails. Then it shows a critical alert listing every error in document order, each a link that focuses its field (revealing the tab, accordion item or step it's in). Form-level errors are listed first. It's announced on every failed submit, and with the default `focusOnInvalid`, focus moves to it.
 
+Press the button with the fields empty, then follow a link. Put the summary at the top of the form, where a reader returning to it starts. Fields inside still show their own errors.
+
 ```tsx
 import { ErrorSummary, Form, SubmitButton, useAppForm } from '@mitcsutt/kiln-forms'
 import { Stack } from '@mitcsutt/kiln-ui'
@@ -40,8 +42,6 @@ export function Usage() {
   )
 }
 ```
-
-Press the button with the fields empty, then follow a link. Put the summary at the top of the form, where a reader returning to it starts. Fields inside still show their own errors.
 
 ## In a schema
 

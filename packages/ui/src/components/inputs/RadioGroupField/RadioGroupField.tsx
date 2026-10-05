@@ -18,6 +18,14 @@ export interface RadioGroupFieldProps
 }
 
 /**
+ * One choice from a short list, with labels, descriptions and a legend for the set.
+ *
+ * @remarks
+ * `RadioGroupField` lays out a {@link RadioGroup | RadioGroup} from `options` under a {@link
+ * Fieldset | Fieldset} legend, each option with a label and an optional description. Arrow keys
+ * move and select.
+ *
+ * @privateRemarks
  * One choice from a short list, under a `<Fieldset>` legend. Arrow keys move and select;
  * the group is one tab stop. `className`/`style` go to the fieldset; `ref`, `id`, `name`
  * and the rest go to the radio group (`name` submits the checked value natively).

@@ -12,8 +12,14 @@ export interface ApiProp {
 export interface ApiEntry {
   name: string
   package: string
+  file: string
   kind: 'component' | 'function' | 'type' | 'constant'
   description: string
+  remarks?: string
+  examples?: { title?: string; body: string }[]
+  deprecated?: string
+  value?: string
+  empty?: string
   signature?: string
   props?: ApiProp[]
   extends?: string[]

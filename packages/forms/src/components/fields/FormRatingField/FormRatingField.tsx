@@ -12,7 +12,27 @@ import { defineField } from '#kit/contracts'
 export interface FormRatingFieldProps
   extends Omit<UiRatingFieldProps, ControlledKeys>, CommonFieldProps<number | null> {}
 
-/** A star rating bound to a `number` path (§7.2 `rating`). Clearing emits `null`. */
+/**
+ * A star rating bound to a `number` path. Clearing it writes `null`.
+ *
+ * @remarks
+ * It renders kiln-ui's {@link RatingField | RatingField}.
+ *
+ * @example In a schema
+ * ```json
+ * {
+ *   "kind": "rating",
+ *   "name": "rating",
+ *   "label": "How was your crossing?"
+ * }
+ * ```
+ *
+ * @value `number \| null`
+ * @empty `null`
+ *
+ * @privateRemarks
+ * A star rating bound to a `number` path (§7.2 `rating`). Clearing emits `null`.
+ */
 export const FormRatingField = defineField<number>()(function FormRatingField({
   warn,
   excluded,

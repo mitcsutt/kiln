@@ -27,6 +27,14 @@ export interface BoxProps extends HTMLAttributes<HTMLElement>, VisibilityProps {
 }
 
 /**
+ * Padding, a surface and an edge, and nothing else. The escape hatch when no other layout fits.
+ *
+ * @remarks
+ * `Box` adds padding, a background surface, a border and a radius to its content. Reach for
+ * `Stack`, `Inline` or `Grid` to arrange things, and for `Card` when something is a self-contained
+ * object. `Box` is for the wells and frames left over.
+ *
+ * @privateRemarks
  * The escape hatch: padding, a surface and an edge — nothing else. Reach for
  * Stack/Inline/Grid for arrangement and Card for self-contained objects first.
  *

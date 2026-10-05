@@ -77,6 +77,14 @@ const TabsContent = forwardRef<HTMLDivElement, TabsContentProps>(function TabsCo
 })
 
 /**
+ * Sections of one view, one visible at a time, switched with arrow keys.
+ *
+ * @remarks
+ * `Tabs` splits one view into sections that share a place on the page. It's Radix Tabs underneath:
+ * arrow keys move between triggers, and the panel follows focus (pass `activationMode="manual"` to
+ * require Enter). Hidden panels stay out of the tab order.
+ *
+ * @privateRemarks
  * Radix Tabs with the library's look. Arrow keys move between triggers (roving focus);
  * activation follows focus by default (`activationMode="manual"` to require Enter).
  *

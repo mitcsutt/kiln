@@ -22,6 +22,14 @@ export interface InlineProps extends HTMLAttributes<HTMLElement>, VisibilityProp
 }
 
 /**
+ * Things in a row that wrap when they run out of room. Button rows, tag lists, toolbars and meta
+ * lines.
+ *
+ * @remarks
+ * `Inline` lays its children out horizontally with a gap, vertically centred, wrapping onto new
+ * lines when they don't fit.
+ *
+ * @privateRemarks
  * Horizontal flow: button rows, tag lists, meta lines, toolbars.
  *
  * <Inline gap={3} justify={{ base: 'start', md: 'between' }}>…</Inline>

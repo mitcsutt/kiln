@@ -38,6 +38,14 @@ export interface StatProps extends Omit<HTMLAttributes<HTMLDivElement>, 'childre
 }
 
 /**
+ * A single labelled figure with its change, set on one baseline. No tile, no icon, no gradient.
+ *
+ * @remarks
+ * `Stat` is a number that matters, with its label and how it changed. It's typographic on purpose:
+ * label, figure and change on one baseline, in the theme's numeric face. A row of them on a
+ * hairline reads better than three tiles with an icon in a tinted circle each.
+ *
+ * @privateRemarks
  * A single labelled figure. Typographic, not decorative: label, number, and the change
  * on one baseline — no tile, no icon, no gradient.
  *

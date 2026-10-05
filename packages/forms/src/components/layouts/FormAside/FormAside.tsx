@@ -51,6 +51,24 @@ function FormAsideInner({
   )
 }
 
+/**
+ * The settings layout. A heading and its reason in a column beside the fields.
+ *
+ * @remarks
+ * `FormAside` puts a section's heading and a sentence about why it matters in a column on the
+ * left, and the fields on the right. Stack several with dividers for a settings page. Below
+ * `collapseBelow` the column stacks above the fields.
+ *
+ * @example In a schema
+ * ```json
+ * {
+ *   "layout": "aside",
+ *   "title": "Profile",
+ *   "description": "Shown to people you share routes with.",
+ *   "children": []
+ * }
+ * ```
+ */
 export function FormAside(props: FormAsideProps) {
   return (
     <FieldViewListBoundary>

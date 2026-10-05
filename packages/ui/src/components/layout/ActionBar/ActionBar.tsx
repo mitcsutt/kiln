@@ -24,6 +24,13 @@ export interface ActionBarProps extends HTMLAttributes<HTMLElement>, VisibilityP
 }
 
 /**
+ * The row of actions at the end of a form or dialog. Cancel, save, continue.
+ *
+ * @remarks
+ * `ActionBar` is a row of buttons with consistent spacing and alignment: `end` by default,
+ * `between` to push a destructive action to the other side, `start` to follow a form's left edge.
+ *
+ * @privateRemarks
  * A row of form/dialog actions — Cancel, Save, Submit. Composes with `Button`; doesn't
  * lay out anything else itself.
  *

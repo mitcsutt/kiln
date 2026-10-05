@@ -126,6 +126,16 @@ const defaultRemoveLabel = (name: string) => `Remove ${name}`
 /* ─── FileDrop ────────────────────────────────────────────────────────────── */
 
 /**
+ * Pick or drop files. The real control is a native file input; dragging is an enhancement.
+ *
+ * @remarks
+ * `FileDrop` is a native `<input type="file">` (visually hidden, labelled by its Field, with the
+ * focus ring on the drop zone) with drag and drop on top. It holds the files in state rather than
+ * uploading them: the value is `File`s, plus any already-stored files you pass back in. The
+ * input's file list is kept in sync where the browser allows, so a native form submit sends the
+ * current files.
+ *
+ * @privateRemarks
  * Pick or drop files. The real control is the native `<input type="file">` (visually
  * hidden, labelled by the surrounding Field, focus ring on the zone); drag-and-drop is an
  * enhancement. Files are held in state, not uploaded: `value` is `File`s plus any

@@ -97,6 +97,16 @@ export function applyServerValues(
 }
 
 /**
+ * Keep an edit form in step with server data that refreshes, without losing what the reader has
+ * typed.
+ *
+ * @remarks
+ * `useServerValues(form, data)` is for edit forms over data that can change underneath them: a
+ * query that refetches, a record someone else edits. When `data` changes, it becomes the new
+ * baseline. Fields the reader hasn't touched take the new values; fields they've edited keep their
+ * edits.
+ *
+ * @privateRemarks
  * Edit mode bound to refreshing server data. Whenever `data` changes (deep compare) it
  * becomes the new baseline; untouched fields take the new values, edited ones keep the user's.
  */

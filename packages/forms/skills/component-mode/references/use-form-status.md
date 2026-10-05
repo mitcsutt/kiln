@@ -8,6 +8,8 @@ Source: https://kiln.mitchellsutton.com/docs/forms/hooks/use-form-status
 
 `useFormStatus` reads the form-wide state you build interface around: whether it's dirty, submitting or submitted, whether it can submit, and how many times it's been submitted. Each part is its own selector and the result is memoised, so a component using it re-renders only when something it reads actually changes.
 
+`isDirty` compares the current values with the baseline (the defaults, or the last saved values), so undoing an edit makes the form clean again. Inside a `Form`, the `form` argument is optional.
+
 ```tsx
 import { Form, SubmitButton, useAppForm, useFormStatus } from '@mitcsutt/kiln-forms'
 import { DataList, Stack } from '@mitcsutt/kiln-ui'
@@ -35,15 +37,14 @@ export function Usage() {
 }
 ```
 
-`isDirty` compares the current values with the baseline (the defaults, or the last saved values), so undoing an edit makes the form clean again. Inside a `Form`, the `form` argument is optional.
-
 ## API
 
 ```ts
 declare function useFormStatus(form?: AnyKitForm | undefined): FormStatusState
 ```
 
-Form-wide status; each slice is its own primitive selector, the object is memoised (§6.5).
+The form's state at a glance (dirty, submitting, submitted, valid), re-rendering only when a
+part of it changes.
 
 `FormStatusState`:
 

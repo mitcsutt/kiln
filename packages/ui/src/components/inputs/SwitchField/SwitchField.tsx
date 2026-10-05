@@ -18,6 +18,14 @@ export interface SwitchFieldProps
   extends FieldLabelProps, Omit<SwitchProps, 'label' | 'invalid' | keyof FieldLabelProps> {}
 
 /**
+ * A settings row, with the label and its help on one side and the switch on the other.
+ *
+ * @remarks
+ * `SwitchField` is the row you'd find in a settings list: the label and its description on the
+ * left, the {@link Switch | Switch} on the right, an error underneath. The whole label is part of
+ * the target.
+ *
+ * @privateRemarks
  * A settings row: the label and its help on the left, the switch on the right, an error
  * line underneath. For a setting that applies as soon as it's flipped; for a choice that
  * is submitted with a form, a CheckboxField reads better. The ref goes to the switch,

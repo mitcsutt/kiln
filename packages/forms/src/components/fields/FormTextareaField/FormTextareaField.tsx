@@ -11,7 +11,29 @@ import { defineField } from '#kit/contracts'
 export interface FormTextareaFieldProps
   extends Omit<UiTextareaFieldProps, ControlledKeys>, CommonFieldProps<string> {}
 
-/** A multi-line text field bound to a `string` path (§7.2 `textarea`). */
+/**
+ * A multi-line text field bound to a `string` path.
+ *
+ * @remarks
+ * It renders kiln-ui's {@link TextareaField | TextareaField}.
+ *
+ * @example In a schema
+ * ```json
+ * {
+ *   "kind": "textarea",
+ *   "name": "notes",
+ *   "label": "Notes for the crew",
+ *   "maxLength": 300,
+ *   "showCount": true
+ * }
+ * ```
+ *
+ * @value `string`
+ * @empty `''`
+ *
+ * @privateRemarks
+ * A multi-line text field bound to a `string` path (§7.2 `textarea`).
+ */
 export const FormTextareaField = defineField<string>()(function FormTextareaField({
   warn,
   excluded,

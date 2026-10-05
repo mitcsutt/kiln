@@ -19,6 +19,13 @@ export interface TagProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'color'>
 }
 
 /**
+ * Quiet metadata, like a category, a facility or a group, in a wrapping list that can be edited.
+ *
+ * @remarks
+ * A `Tag` labels a thing with metadata, and a `TagList` lays several out as a real list that
+ * wraps. Tags are quieter than {@link Badge | badges}, which are for status.
+ *
+ * @privateRemarks
  * Quiet metadata: a category, a stack item, a group. Quieter than `Badge`, which is
  * for status. Group several in a `TagList`.
  */

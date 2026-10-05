@@ -30,6 +30,14 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>, Vi
   asChild?: boolean
 }
 
+/**
+ * The way to act. One solid button per view is the primary action; everything else steps down.
+ *
+ * @remarks
+ * A `Button` starts something: saving, publishing, opening a dialog. If it takes the reader
+ * somewhere instead, it's a link, and `asChild` lets a link look like a button when it's the
+ * primary way forward.
+ */
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
   {
     variant = 'solid',

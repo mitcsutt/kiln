@@ -14,7 +14,27 @@ export interface FormSwitchFieldProps
     Omit<UiSwitchFieldProps, ControlledKeys | 'checked' | 'defaultChecked' | 'onCheckedChange'>,
     CommonFieldProps<boolean> {}
 
-/** A settings-row switch bound to a `boolean` path (§7.2 `switch`). Empty is `false`. */
+/**
+ * A settings-row switch bound to a `boolean` path.
+ *
+ * @remarks
+ * It renders kiln-ui's {@link SwitchField | SwitchField}.
+ *
+ * @example In a schema
+ * ```json
+ * {
+ *   "kind": "switch",
+ *   "name": "alerts",
+ *   "label": "Delay alerts"
+ * }
+ * ```
+ *
+ * @value `boolean`
+ * @empty `false`
+ *
+ * @privateRemarks
+ * A settings-row switch bound to a `boolean` path (§7.2 `switch`). Empty is `false`.
+ */
 export const FormSwitchField = defineField<boolean>()(function FormSwitchField({
   warn,
   excluded,

@@ -50,8 +50,9 @@ async function check(): Promise<string> {
  * ```ts title="api/feedback.ts"
  * import { parseFormSchema, toStandardSchema } from '@mitcsutt/kiln-forms/schema'
  *
- * export async function POST(request: Request) { const parsed = parseFormSchema(storedJson, {
- * kinds: ['text', 'checkbox'] }) if (!parsed.ok) throw new Error('Stored schema is invalid')
+ * export async function POST(request: Request) {
+ *   const parsed = parseFormSchema(storedJson, { kinds: ['text', 'checkbox'] })
+ *   if (!parsed.ok) throw new Error('Stored schema is invalid')
  *
  *   const result = await toStandardSchema(parsed.schema)['~standard'].validate(await request.json())
  *   if (result.issues) return Response.json({ issues: result.issues }, { status: 422 })

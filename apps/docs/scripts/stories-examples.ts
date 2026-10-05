@@ -26,6 +26,12 @@ export interface DocsStory {
   title: string
   /** The JSDoc above the export, as Markdown. */
   description: string
+  /**
+   * How the docs frame it, from the story's Storybook layout: `centered` stays centred,
+   * `fullscreen` is `bleed`, and `fullscreen` in a fixed-height Docs frame
+   * (`parameters.docs.story.inline: false`) is `frame`. Padded, the default, is left out.
+   */
+  layout?: 'centered' | 'bleed' | 'frame'
 }
 
 export interface DocsStoriesFile {
@@ -82,6 +88,28 @@ export function sentenceCase(name: string): string {
     .join(' ')
 }
 
+/**
+ * A doc comment is wrapped to fit the code; the docs join each paragraph and list item back onto one
+ * line, as hand-written Markdown is. Code, tables, quotes and headings are left as they are.
+ */
+export function unwrapLines(markdown: string): string {
+  return markdown
+    .split(/(^```[\s\S]*?^```)/m)
+    .map((part, index) =>
+      index % 2
+        ? part
+        : part
+            .split(/\n\s*\n/)
+            .map((block) =>
+              /^\s*(\||>|#)/.test(block)
+                ? block
+                : block.replace(/\n(?!\s*(?:[-*] |\d+\. ))\s*/g, ' '),
+            )
+            .join('\n\n'),
+    )
+    .join('')
+}
+
 /** The meta object, from `export default meta` or `export default { … }`. */
 function metaObject(source: ts.SourceFile): ts.ObjectLiteralExpression | undefined {
   for (const statement of source.statements) {
@@ -118,6 +146,20 @@ function jsDoc(text: string, statement: ts.Statement): string {
     })
     .filter(Boolean)
     .join('\n\n')
+}
+
+/** A docs story's frame on the docs site, from its `parameters` (see `DocsStory.layout`). */
+function docsLayout(parameters: ts.Expression | undefined): DocsStory['layout'] {
+  if (!parameters || !ts.isObjectLiteralExpression(parameters)) return undefined
+  const layout = property(parameters, 'layout')
+  const value = layout && ts.isStringLiteralLike(layout) ? layout.text : undefined
+  if (value === 'centered') return 'centered'
+  if (value !== 'fullscreen') return undefined
+  const docs = property(parameters, 'docs')
+  const story = docs && ts.isObjectLiteralExpression(docs) ? property(docs, 'story') : undefined
+  const inline =
+    story && ts.isObjectLiteralExpression(story) ? property(story, 'inline') : undefined
+  return inline?.kind === ts.SyntaxKind.FalseKeyword ? 'frame' : 'bleed'
 }
 
 function isExported(statement: ts.Statement): boolean {
@@ -182,10 +224,12 @@ export function readDocsStories(
       examples += `\n\nexport function ${name}() ${code}`
 
       const storyName = property(story, 'name')
+      const layout = docsLayout(property(story, 'parameters'))
       stories.push({
         name,
         title: storyName && ts.isStringLiteralLike(storyName) ? storyName.text : sentenceCase(name),
-        description: jsDoc(text, statement),
+        description: unwrapLines(jsDoc(text, statement)),
+        ...(layout ? { layout } : {}),
       })
     }
   }

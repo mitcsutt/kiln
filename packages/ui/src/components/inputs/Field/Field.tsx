@@ -107,6 +107,32 @@ interface ControlElementProps {
 }
 
 /**
+ * Wires a label, a description, an error and a warning to one control. Every Kiln input works
+ * inside it.
+ *
+ * @remarks
+ * Every input in Kiln exists twice. The bare control (`Input`, `NumberInput`, `Combobox`) works
+ * anywhere, and the `*Field` version (`TextField`, `NumberField`, `ComboboxField`) adds the label,
+ * description, error and warning. `Field` is what the `*Field`s are made of, and what you use to
+ * give any other control the same treatment.
+ *
+ * ## Errors and warnings are two channels
+ *
+ * - **`error`** blocks submission. It sets `aria-invalid`, renders in the critical tone, and is
+ *   announced as it appears.
+ * - **`warning`** is advice ("Usernames are case-sensitive") in the caution tone. It never blocks
+ *   and is never announced as an alert.
+ *
+ * An error replaces the warning while it shows. Plain fields show whatever `error` you pass;
+ * [kiln-forms](/docs/forms) decides _when_ to show one (after the field is blurred or after a
+ * submit attempt). Pass `errorLive={false}` when an error summary owns the announcement, and
+ * `errorHidden` when the layout shows the message somewhere else.
+ *
+ * `required` marks the field for assistive technology; `optional` adds a visible "Optional" (or
+ * your own text) instead, for forms where most fields are required. `validating` shows that an
+ * async check is running.
+ *
+ * @privateRemarks
  * Wires a label, description and error to one control.
  *
  * <Field label="Amount" description="Include GST" error={errors.amount}>

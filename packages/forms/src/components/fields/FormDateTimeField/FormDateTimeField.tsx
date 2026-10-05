@@ -22,7 +22,24 @@ export interface FormDateTimeFieldProps
   max?: string
 }
 
-/** A native `datetime-local` input bound to an ISO `YYYY-MM-DDTHH:mm` string (§7.2). Empty is `''`. */
+/**
+ * A native date and time input bound to an ISO string.
+ *
+ * @example In a schema
+ * ```json
+ * {
+ *   "kind": "dateTime",
+ *   "name": "pickup",
+ *   "label": "Pick-up time"
+ * }
+ * ```
+ *
+ * @value `string` (`YYYY-MM-DDTHH:mm`)
+ * @empty `''`
+ *
+ * @privateRemarks
+ * A native `datetime-local` input bound to an ISO `YYYY-MM-DDTHH:mm` string (§7.2). Empty is `''`.
+ */
 export const FormDateTimeField = defineField<string>()(function FormDateTimeField({
   warn,
   excluded,

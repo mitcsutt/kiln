@@ -10,6 +10,13 @@ export interface PasswordFieldProps
 }
 
 /**
+ * A labelled password input with a show and hide toggle.
+ *
+ * @remarks
+ * `PasswordField` is a {@link Field | Field} around a {@link PasswordInput | PasswordInput}.
+ * `autoComplete` is required: `current-password` to sign in, `new-password` to set one.
+ *
+ * @privateRemarks
  * Label + PasswordInput + description + error. Input props (`autoComplete`, `value`,
  * `visible`…) and the ref go to the input; `className`/`style` go to the wrapper.
  *

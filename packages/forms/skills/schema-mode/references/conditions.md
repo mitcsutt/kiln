@@ -102,5 +102,5 @@ A node whose `when` is false is unmounted: its rules stop running, its errors cl
 declare function evaluateCondition(c: UntypedCondition, values: unknown, context?: Record<string, unknown>): boolean
 ```
 
-Evaluates a JSON condition (§10.3) against form values (root paths) and the render context.
+Evaluates a JSON condition against form values (root paths) and the render context.
 Pure: no React, no form instance. `all: []` is true, `any: []` is false.

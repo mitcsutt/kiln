@@ -22,7 +22,7 @@ Each record captures one decision: the context, what was decided, and what follo
 | [0016](0016-trusted-publishing.md)                 | Trusted publishing, switched on by the owner                 | Accepted                           |
 | [0017](0017-kiln-forms-port.md)                    | How `kiln-forms` was ported: names, entries, checks          | Accepted, amended by 0024          |
 | [0018](0018-storybook-workbench.md)                | How the Storybook workbench is built and tested              | Accepted, amended by 0026 and 0027 |
-| [0019](0019-docs-site.md)                          | How the docs site is built: Fumadocs core, Kiln chrome       | Accepted, amended by 0025          |
+| [0019](0019-docs-site.md)                          | How the docs site is built: Fumadocs core, Kiln chrome       | Accepted, amended by 0025 and 0029 |
 | [0020](0020-agent-skills.md)                       | How the agent skills are built from the docs                 | Accepted                           |
 | [0021](0021-forms-context-in-nested-components.md) | Typed form context for nested components in `kiln-forms`     | Accepted                           |
 | [0022](0022-linked-consumers.md)                   | Linked consumers resolve built output through `kiln-dist`    | Accepted                           |
@@ -32,5 +32,6 @@ Each record captures one decision: the context, what was decided, and what follo
 | [0026](0026-docs-examples-in-storybook.md)         | Docs examples run as Storybook stories                       | Superseded by 0028                 |
 | [0027](0027-storybook-tests-without-isolation.md)  | Story tests share one page per worker, not one per file      | Accepted                           |
 | [0028](0028-docs-stories.md)                       | Docs examples are stories tagged `docs`, opted in one by one | Accepted                           |
+| [0029](0029-generated-reference-pages.md)          | Reference pages are generated from TSDoc and stories         | Accepted                           |
 
 New records use the next number and the same headings: Status, Context, Decision, Consequences.

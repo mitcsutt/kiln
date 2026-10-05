@@ -26,6 +26,21 @@ export interface SectionProps extends HTMLAttributes<HTMLElement>, VisibilityPro
 }
 
 /**
+ * A full-bleed band of vertical space, with an optional surface and rules. Put a Container inside
+ * it for width.
+ *
+ * @remarks
+ * `Section` is how a page gets its rhythm: each band pads itself top and bottom with a step from
+ * the space scale, and can paint a surface across the full width. Width is the `Container`'s job,
+ * so a section is almost always `Section` then `Container`.
+ *
+ * ## Surfaces and bands
+ *
+ * `surface` is `canvas`, `surface`, `sunken`, `inverse` or `accent`. On `inverse` and `accent`,
+ * the colour roles flip for everything inside, so text, links, focus rings and buttons stay
+ * legible with no extra props. `divider` adds a rule at the `top`, `bottom` or `both`.
+ *
+ * @privateRemarks
  * A full-bleed band of vertical rhythm. Put a `Container` inside for width.
  *
  * <Section space={{ base: 7, md: 9 }} surface="sunken" divider="both">

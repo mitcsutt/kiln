@@ -37,6 +37,13 @@ export interface CheckboxFieldProps
 }
 
 /**
+ * A checkbox with its label beside it, optional help underneath and an error line.
+ *
+ * @remarks
+ * `CheckboxField` puts the label to the right of the checkbox, where people look for it, with help
+ * and an error underneath. Use it for a single yes or no: consent, a preference.
+ *
+ * @privateRemarks
  * A checkbox with its label to the right, optional help underneath and an error line.
  *
  * <CheckboxField label="I've read the house rules" error={errors.rules} />

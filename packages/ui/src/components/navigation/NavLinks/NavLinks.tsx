@@ -109,6 +109,15 @@ const NavLinksItem = forwardRef<HTMLAnchorElement, NavLinksItemProps>(function N
 })
 
 /**
+ * A labelled navigation landmark with a list of links. Horizontal for headers, vertical for
+ * sidebars.
+ *
+ * @remarks
+ * `NavLinks` is a `<nav>` with a list of links. The current page is marked with a short accent bar
+ * under the label (horizontal) or an accent dot beside it (vertical), and gets
+ * `aria-current="page"`. These docs' header and sidebar are `NavLinks`.
+ *
+ * @privateRemarks
  * Site / app navigation: a labelled `<nav>` with a list of links. The current page is
  * marked with a short accent bar under the label (horizontal) or an accent dot beside
  * it (vertical) — a mark, not a glowing pill.

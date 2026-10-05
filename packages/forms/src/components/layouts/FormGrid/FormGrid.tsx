@@ -49,6 +49,30 @@ export function FormGridItem({ span, start, children }: FormGridItemProps) {
   )
 }
 
+/**
+ * Fields in columns that collapse on small screens, with items that span.
+ *
+ * @remarks
+ * `FormGrid` lays fields out in columns: two from `md` up by default, one below. `FormGridItem`
+ * spans columns or starts at one, both responsive. Spacers are `start` offsets; there's no string
+ * matrix of field names.
+ *
+ * @example In a schema
+ * ```json
+ * {
+ *   "layout": "grid",
+ *   "columns": { "base": 1, "md": 3 },
+ *   "children": [
+ *     {
+ *       "layout": "gridItem",
+ *       "span": { "base": 1, "md": 3 },
+ *       "children": [{ "kind": "text", "name": "street", "label": "Street" }]
+ *     },
+ *     { "kind": "text", "name": "postcode", "label": "Postcode" }
+ *   ]
+ * }
+ * ```
+ */
 function FormGridRoot(props: FormGridProps) {
   return (
     <FieldViewListBoundary>

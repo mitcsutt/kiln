@@ -23,7 +23,11 @@ export interface FormComboboxFieldProps
     >,
     CommonFieldProps<ComboboxValue | null> {
   options?: readonly FieldOption<ComboboxValue>[]
-  /** Async search (§7.4). Pairs with `reloadOn`/`minQueryLength`; implies `filter="none"`. */
+  /**
+   * Async search. Pairs with `reloadOn`/`minQueryLength`; implies `filter="none"`.
+   *
+   * @privateRemarks Design reference §7.4.
+   */
   loadOptions?: OptionsLoader<ComboboxValue>
   /** Sibling field paths whose values reload (and re-key the cache of) `loadOptions`. */
   reloadOn?: readonly string[]
@@ -31,6 +35,27 @@ export interface FormComboboxFieldProps
 }
 
 /**
+ * A searchable single choice, from fixed `options` or loaded as you type.
+ *
+ * @remarks
+ * It renders kiln-ui's {@link ComboboxField | ComboboxField}.
+ *
+ * @example In a schema
+ * ```json
+ * {
+ *   "kind": "combobox",
+ *   "name": "stop",
+ *   "label": "Stop",
+ *   "optionsFrom": {
+ *     "loader": "stops"
+ *   }
+ * }
+ * ```
+ *
+ * @value the options' value type, or `null`
+ * @empty `null`
+ *
+ * @privateRemarks
  * A searchable single choice (§7.2 `combobox`). Static `options` or async `loadOptions` (debounced,
  * cached, aborts a superseded request — `useOptions`). `creatable` allows free text; the typed
  * value becomes the field value (kept as a string). Empty is `null`.

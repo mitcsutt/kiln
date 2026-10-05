@@ -29,6 +29,14 @@ export interface SheetResponsiveSide {
 export type SheetProps = ComponentPropsWithoutRef<typeof DialogPrimitive.Root>
 
 /**
+ * A panel that slides in from an edge. A drawer on desktop, a bottom sheet on a phone.
+ *
+ * @remarks
+ * `Sheet` is a dialog that slides in from the side or the bottom. It's built on Radix Dialog, so
+ * it traps focus, closes on Escape or a tap on the scrim, locks page scroll and returns focus to
+ * its trigger.
+ *
+ * @privateRemarks
  * A panel that slides in from an edge: side drawers on desktop, a bottom sheet on a
  * phone. Built on the Radix Dialog, so it traps focus, closes on Escape or a scrim tap,
  * locks page scroll and returns focus to its trigger.

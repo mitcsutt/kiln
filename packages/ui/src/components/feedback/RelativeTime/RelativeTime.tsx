@@ -19,6 +19,14 @@ export interface RelativeTimeProps extends Omit<
 }
 
 /**
+ * How long ago, or how long until. A time element that keeps itself current and renders safely on
+ * the server.
+ *
+ * @remarks
+ * `RelativeTime` renders a `<time>` that reads "3 mins ago" or "in 2 hours", and updates itself
+ * (every 30 seconds by default). The full date is always in its `title`.
+ *
+ * @privateRemarks
  * A `<time>` that says how long ago (or until) something happened, and keeps itself current.
  *
  * SSR: the server and the first client render show the absolute date (no clock is read

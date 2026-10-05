@@ -35,6 +35,14 @@ export interface OneTimeCodeInputProps extends Omit<
 }
 
 /**
+ * A one-time code as a row of single-character cells that fill from a paste or a text message.
+ *
+ * @remarks
+ * `OneTimeCodeInput` is Radix OneTimePasswordField with Kiln's look. Typing advances, Backspace
+ * goes back, a pasted or autofilled code fills every cell, and `autoComplete="one-time-code"` lets
+ * a phone offer the code from a text message. `onComplete` fires when every cell is filled.
+ *
+ * @privateRemarks
  * A one-time code as a row of single-character cells (Radix OneTimePasswordField): typing
  * advances, Backspace goes back, a pasted or autofilled code fills every cell, and
  * `autoComplete="one-time-code"` lets phones offer the code from a text message. Cells

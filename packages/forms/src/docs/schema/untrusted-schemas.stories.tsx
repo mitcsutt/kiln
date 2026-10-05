@@ -29,8 +29,10 @@ const result = parseFormSchema(json, { kinds: Object.keys(kit.registries.fields)
  * ```ts
  * import { parseFormSchema } from '@mitcsutt/kiln-forms/schema'
  *
- * const result = parseFormSchema(json, { kinds: ['text', 'select', 'checkbox'], loaders: ['stops']
- * }) if (!result.ok) report(result.issues) else render(result.schema) ```
+ * const result = parseFormSchema(json, { kinds: ['text', 'select', 'checkbox'], loaders: ['stops'] })
+ * if (!result.ok) report(result.issues)
+ * else render(result.schema)
+ * ```
  *
  * The second argument lists the keys the schema may reference: field kinds, layouts, loaders,
  * validators, computers and custom nodes.

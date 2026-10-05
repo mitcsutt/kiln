@@ -10,7 +10,21 @@ export interface ResetButtonProps extends Omit<ButtonProps, 'type' | 'form'> {
   to?: 'defaults' | 'baseline'
 }
 
-/** Resets the form. Quiet by default (`ghost`, `neutral`). Default text: `messages.reset`. */
+/**
+ * Resets the form to its defaults, or to the last saved values. Quiet by default.
+ *
+ * @remarks
+ * `ResetButton` is a `Button` with `type="reset"`, `ghost` and `neutral` unless you say otherwise.
+ * Its default text comes from `messages.reset`.
+ *
+ * @example In a schema
+ * ```json
+ * { "content": "reset", "label": "Start again" }
+ * ```
+ *
+ * @privateRemarks
+ * Resets the form. Quiet by default (`ghost`, `neutral`). Default text: `messages.reset`.
+ */
 export const ResetButton = forwardRef<HTMLButtonElement, ResetButtonProps>(function ResetButton(
   { form, to = 'baseline', variant = 'ghost', tone = 'neutral', onClick, children, ...rest },
   ref,

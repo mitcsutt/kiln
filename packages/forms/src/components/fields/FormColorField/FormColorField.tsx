@@ -12,6 +12,30 @@ export interface FormColorFieldProps
   extends Omit<UiColorFieldProps, ControlledKeys>, CommonFieldProps<string> {}
 
 /**
+ * A colour bound to a `#rrggbb` string.
+ *
+ * @remarks
+ * It renders kiln-ui's {@link ColorField | ColorField}.
+ *
+ * @example In a schema
+ * ```json
+ * {
+ *   "kind": "color",
+ *   "name": "lineColour",
+ *   "label": "Line colour",
+ *   "swatches": [
+ *     {
+ *       "value": "#1f6f8b",
+ *       "label": "Harbour blue"
+ *     }
+ *   ]
+ * }
+ * ```
+ *
+ * @value `string` (`#rrggbb`)
+ * @empty `''`
+ *
+ * @privateRemarks
  * A colour field bound to a `#rrggbb` `string` path (§7.2 `color`). Empty is `''`. View mode
  * shows the matching swatch's name beside the hex code, when one of `swatches` matches.
  */

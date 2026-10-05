@@ -38,6 +38,14 @@ export interface SliderProps extends Omit<
 }
 
 /**
+ * One number from a continuous range, by dragging or with the arrow keys.
+ *
+ * @remarks
+ * `Slider` is Radix Slider with Kiln's look. Arrow keys step, Page Up and Page Down step by ten,
+ * and Home and End jump to the ends. Label it with a Field (see {@link SliderField | SliderField})
+ * or an `aria-label`.
+ *
+ * @privateRemarks
  * One number from a continuous range (Radix Slider). Arrow keys step, Page Up/Down step
  * by ten, Home/End jump to the ends. Label it with a `<Field>` (see `SliderField`) or
  * `aria-label`. The ref and `id` go to the thumb — the focusable `role="slider"`;

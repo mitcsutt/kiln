@@ -8,6 +8,7 @@ export interface DocsStory {
   name: string
   title: string
   description: string
+  layout?: 'centered' | 'bleed' | 'frame'
 }
 
 const lists = docs as Record<string, DocsStory[] | undefined>
@@ -15,8 +16,7 @@ const lists = docs as Record<string, DocsStory[] | undefined>
 /**
  * An example's id in the generated registry (`scripts/generate-examples.ts`).
  * `<Example of="Button" name="Hierarchy" />` is the `Hierarchy` docs story of
- * `Button.stories.tsx` (or the `Hierarchy` export of an examples file beside `Button`), and
- * `Usage` when `name` is left out. A guide is named by its page path
+ * `Button.stories.tsx`, and `Usage` when `name` is left out. A guide is named by its page path
  * (`of="forms/getting-started/first-form"`). ADR 0028 has the convention.
  */
 export function exampleId({ of, name }: { of?: string; name?: string }): string {
@@ -57,8 +57,12 @@ export function docsStoriesOwners(): string[] {
  */
 export function examplesMarkdown(of: string): string {
   return docsStories(of)
-    .map(({ name, title, description }, index) =>
-      [index > 0 ? `## ${title}` : '', description, `<Example of="${of}" name="${name}" />`]
+    .map(({ name, title, description, layout }, index) =>
+      [
+        index > 0 ? `## ${title}` : '',
+        description,
+        `<Example of="${of}" name="${name}"${layout ? ` layout="${layout}"` : ''} />`,
+      ]
         .filter(Boolean)
         .join('\n\n'),
     )

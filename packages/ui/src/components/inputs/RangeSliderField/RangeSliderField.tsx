@@ -7,6 +7,13 @@ export interface RangeSliderFieldProps
   extends FieldLabelProps, Omit<RangeSliderProps, 'invalid' | keyof FieldLabelProps> {}
 
 /**
+ * A labelled range slider, the label naming the group and thumbLabels naming each thumb.
+ *
+ * @remarks
+ * `RangeSliderField` is a {@link Field | Field} around a {@link RangeSlider | RangeSlider}. The
+ * label names the group, and `thumbLabels` name the two thumbs.
+ *
+ * @privateRemarks
  * A labelled `RangeSlider`: the Field's label names the group, `thumbLabels` name the two
  * thumbs. `className`/`style` go to the Field; `ref`, `id`, `name` and the rest go to the
  * range slider's group.

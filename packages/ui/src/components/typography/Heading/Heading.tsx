@@ -61,6 +61,14 @@ function roleAttrs(size: Responsive<HeadingSize>): Record<string, string> {
 }
 
 /**
+ * A heading whose level sets the document outline and whose size sets the look, independently.
+ *
+ * @remarks
+ * `Heading` keeps two things apart that HTML ties together: `level` is the outline (`h1` to `h6`,
+ * for screen readers and search), and `size` is how big it looks. A sidebar's `h2` can be small; a
+ * hero's `h1` can be a display step.
+ *
+ * @privateRemarks
  * A heading. `level` is the outline, `size` is the look — keep them independent.
  *
  * <Heading level={2} size={{ base: '2xl', md: 'display-sm' }}>Recent releases</Heading>

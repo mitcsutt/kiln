@@ -18,6 +18,13 @@ export interface LiveIndicatorProps extends HTMLAttributes<HTMLSpanElement> {
 }
 
 /**
+ * This is happening now. A dot with a slow ring and a short label.
+ *
+ * @remarks
+ * `LiveIndicator` marks something in progress: live tracking, a sync, a recording. The ring pulses
+ * slowly and stops under reduced motion.
+ *
+ * @privateRemarks
  * "This is happening now." A dot with a slow ring and a short label — for a live call,
  * an in-progress sync, a recording.
  *

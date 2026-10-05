@@ -30,6 +30,14 @@ export interface NumeralProps extends Omit<
 }
 
 /**
+ * A formatted number in tabular figures, with its machine-readable value attached.
+ *
+ * @remarks
+ * `Numeral` formats a number with `Intl.NumberFormat` and sets it in the theme's numeric face with
+ * tabular, lining figures, so a column of them lines up and a changing value doesn't jitter. It
+ * renders a `<data value>` element, so the raw value travels with the formatted text.
+ *
+ * @privateRemarks
  * A formatted number. Always tabular, lining figures in the theme's numeric face, and
  * wrapped in <data value> so the machine-readable value travels with it. Separators
  * and symbols are set proportionally: some faces (Schibsted) make a tabular comma as

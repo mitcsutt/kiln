@@ -49,9 +49,9 @@ export const skills: SkillSpec[] = [
       'ui/layout/inline',
       'ui/layout/grid',
       'ui/layout/split',
-      'ui/layout/section',
     ],
     references: [
+      'ui/layout/section',
       'ui/layout/container',
       'ui/layout/box',
       'ui/layout/app-shell',

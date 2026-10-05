@@ -37,6 +37,26 @@ function toMajor(
 }
 
 /**
+ * A money field bound to a `number` path. Clearing it writes `null`.
+ *
+ * @remarks
+ * It renders kiln-ui's {@link AmountField | AmountField}.
+ *
+ * @example In a schema
+ * ```json
+ * {
+ *   "kind": "amount",
+ *   "name": "topUp",
+ *   "label": "Top-up",
+ *   "currency": "GBP",
+ *   "locale": "en-GB"
+ * }
+ * ```
+ *
+ * @value `number \| null`
+ * @empty `null`
+ *
+ * @privateRemarks
  * A money field bound to a `number` path (§7.2 `amount`) — the path may additionally be
  * `null`/`undefined`: clearing the input always emits `null`. `unit: 'minor'` stores integer
  * minor units (recommended for money); view mode always renders a formatted major amount with

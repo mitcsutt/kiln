@@ -8,6 +8,8 @@ Source: https://kiln.mitchellsutton.com/docs/forms/layouts/form-section
 
 `FormSection` groups fields under a title. By default it's a `<fieldset>` with the title as its `<legend>`, so screen readers announce the group with each field. `as="section"` makes it a `<section>` with a heading instead, for a chapter of a long form.
 
+`disabled` and `readOnly` cascade to every field inside. `title` is required: a fieldset without a legend isn't a section, so use a `Stack` for plain grouping. `titleHidden` keeps the title for screen readers only.
+
 ```tsx
 import { Form, FormSection, useAppForm } from '@mitcsutt/kiln-forms'
 import { Stack } from '@mitcsutt/kiln-ui'
@@ -41,8 +43,6 @@ export function Usage() {
   )
 }
 ```
-
-`disabled` and `readOnly` cascade to every field inside. `title` is required: a fieldset without a legend isn't a section, so use a `Stack` for plain grouping. `titleHidden` keeps the title for screen readers only.
 
 ## In a schema
 

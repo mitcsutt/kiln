@@ -133,6 +133,22 @@ export function FormAccordionItem({ scopeNames, ...props }: FormAccordionItemPro
   )
 }
 
+/**
+ * Fields in expandable sections, with error counts on the triggers and every field kept mounted.
+ *
+ * @remarks
+ * `FormAccordion` puts groups of fields in expandable items. Like tabs, each trigger shows its
+ * error count, closed items stay mounted, and an invalid submit opens the item with the first
+ * error. Several items can be open at once (`type="multiple"`, the default).
+ *
+ * @example In a schema
+ * ```json
+ * {
+ *   "layout": "accordion",
+ *   "children": [{ "layout": "accordionItem", "value": "access", "title": "Access", "children": [] }]
+ * }
+ * ```
+ */
 function FormAccordionRoot(props: FormAccordionProps) {
   return (
     <FieldViewListBoundary>

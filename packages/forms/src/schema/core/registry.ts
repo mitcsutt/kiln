@@ -7,14 +7,20 @@ import type {
   ValidatorResult,
 } from '#schema/core/types'
 
-/** Registers an options loader for `optionsFrom: { loader: key }` (§10.5). Identity at runtime. */
+/**
+ * Registers an options loader for `optionsFrom: { loader: key }`. Identity at runtime.
+ *
+ * @privateRemarks Design reference §10.5.
+ */
 export function defineLoader<V extends Primitive>(fn: OptionsLoader<V>): OptionsLoader<V> {
   return fn
 }
 
 /**
- * Registers a validator for `{ rule: 'custom', validator: key, args? }` (§10.5). Return a message to
+ * Registers a validator for `{ rule: 'custom', validator: key, args? }`. Return a message to
  * fail, nothing to pass. `async: true` runs it in the async channel (debounced, abortable).
+ *
+ * @privateRemarks Design reference §10.5.
  */
 export function defineValidator<V = unknown>(
   fn: (value: V, ctx: ValidatorContext) => ValidatorResult | Promise<ValidatorResult>,
@@ -27,7 +33,11 @@ export function defineValidator<V = unknown>(
   }
 }
 
-/** Registers a derived-value function for `compute: { computer: key, from }` (§10.5). */
+/**
+ * Registers a derived-value function for `compute: { computer: key, from }`.
+ *
+ * @privateRemarks Design reference §10.5.
+ */
 export function defineComputer<Out>(fn: (values: unknown) => Out): Computer<Out> {
   return { '~computer': true, compute: fn }
 }

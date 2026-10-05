@@ -22,7 +22,24 @@ export interface FormTimeFieldProps
   max?: string
 }
 
-/** A native time input bound to an ISO `HH:mm` string (§7.2). Empty is `''`. */
+/**
+ * A native time input bound to an ISO time string.
+ *
+ * @example In a schema
+ * ```json
+ * {
+ *   "kind": "time",
+ *   "name": "departs",
+ *   "label": "Departs"
+ * }
+ * ```
+ *
+ * @value `string` (`HH:mm`)
+ * @empty `''`
+ *
+ * @privateRemarks
+ * A native time input bound to an ISO `HH:mm` string (§7.2). Empty is `''`.
+ */
 export const FormTimeField = defineField<string>()(function FormTimeField({
   warn,
   excluded,

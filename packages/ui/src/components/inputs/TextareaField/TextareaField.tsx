@@ -15,6 +15,13 @@ export interface TextareaFieldProps extends FieldLabelProps, Omit<TextareaProps,
 }
 
 /**
+ * A labelled multi-line text field that can grow with its content and count characters.
+ *
+ * @remarks
+ * `TextareaField` is a {@link Field | Field} around a {@link Textarea | Textarea}. Textarea props
+ * and the ref go to the `<textarea>`.
+ *
+ * @privateRemarks
  * Label + Textarea + description + error. Textarea props and the ref go to the
  * `<textarea>`; `className`/`style` go to the field wrapper.
  *

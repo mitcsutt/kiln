@@ -56,6 +56,16 @@ async function validateForSave(form: AnyFormApi): Promise<boolean> {
 }
 
 /**
+ * Save as the reader types, debounced, aborting a save a newer one replaces, and only when the
+ * form is valid.
+ *
+ * @remarks
+ * `useAutosave(form, save, options)` calls `save` with the form's values after a quiet moment. A
+ * newer save aborts the one in flight (through the `signal` it's given), a successful save makes
+ * the saved values the new clean baseline, and the status (saving, saved, failed) is reported to
+ * {@link FormStatus | `FormStatus`}.
+ *
+ * @privateRemarks
  * Debounced save of dirty values: aborts an in-flight save when a newer one starts,
  * rebaselines on success, and reports status to `FormStatus` through the form runtime.
  */

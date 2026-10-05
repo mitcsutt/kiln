@@ -12,6 +12,15 @@ export interface ProseProps extends HTMLAttributes<HTMLElement> {
 }
 
 /**
+ * Styles long-form writing from plain HTML or Markdown, in the theme's prose face, at a reading
+ * measure.
+ *
+ * @remarks
+ * `Prose` styles the raw elements inside it (headings, paragraphs, lists, quotes, code, tables,
+ * figures) with a comfortable measure and a vertical rhythm from the space scale. Use it around
+ * rendered Markdown or MDX, or any HTML you don't control. These docs' pages are `Prose`.
+ *
+ * @privateRemarks
  * Long-form writing. Styles raw HTML/MDX children — headings, lists, quotes, code,
  * figures, tables — in the theme's prose face with a comfortable measure and a
  * vertical rhythm from the space scale.

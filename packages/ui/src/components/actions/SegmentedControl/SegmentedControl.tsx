@@ -234,6 +234,15 @@ const SegmentedControlRoot = forwardRef<HTMLDivElement, SegmentedControlProps>(
   },
 )
 
+/**
+ * A small set of mutually exclusive views or modes, side by side, always one selected.
+ *
+ * @remarks
+ * Use a `SegmentedControl` to switch between two to five views of the same thing: list or map, day
+ * or week. Exactly one segment is always selected. If the choice changes what content is shown
+ * below, consider {@link Tabs | Tabs}; if it's a value in a form, use {@link SegmentedField |
+ * SegmentedField}.
+ */
 export const SegmentedControl = markFieldAware(
   Object.assign(SegmentedControlRoot, { Item: SegmentedControlItem }),
 )

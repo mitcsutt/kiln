@@ -7,18 +7,18 @@ metadata:
   library: "@mitcsutt/kiln-ui"
 sources:
   - mitcsutt/kiln:apps/docs/content/docs/ui/foundations/spacing.mdx
-  - mitcsutt/kiln:apps/docs/content/docs/ui/layout/stack.mdx
-  - mitcsutt/kiln:apps/docs/content/docs/ui/layout/inline.mdx
-  - mitcsutt/kiln:apps/docs/content/docs/ui/layout/grid.mdx
-  - mitcsutt/kiln:apps/docs/content/docs/ui/layout/split.mdx
-  - mitcsutt/kiln:apps/docs/content/docs/ui/layout/section.mdx
-  - mitcsutt/kiln:apps/docs/content/docs/ui/layout/container.mdx
-  - mitcsutt/kiln:apps/docs/content/docs/ui/layout/box.mdx
-  - mitcsutt/kiln:apps/docs/content/docs/ui/layout/app-shell.mdx
-  - mitcsutt/kiln:apps/docs/content/docs/ui/layout/action-bar.mdx
-  - mitcsutt/kiln:apps/docs/content/docs/ui/layout/divider.mdx
-  - mitcsutt/kiln:apps/docs/content/docs/ui/layout/aspect-ratio.mdx
-  - mitcsutt/kiln:apps/docs/content/docs/ui/layout/visually-hidden.mdx
+  - mitcsutt/kiln:packages/ui/src/components/layout/Stack/Stack.tsx
+  - mitcsutt/kiln:packages/ui/src/components/layout/Inline/Inline.tsx
+  - mitcsutt/kiln:packages/ui/src/components/layout/Grid/Grid.tsx
+  - mitcsutt/kiln:packages/ui/src/components/layout/Split/Split.tsx
+  - mitcsutt/kiln:packages/ui/src/components/layout/Section/Section.tsx
+  - mitcsutt/kiln:packages/ui/src/components/layout/Container/Container.tsx
+  - mitcsutt/kiln:packages/ui/src/components/layout/Box/Box.tsx
+  - mitcsutt/kiln:packages/ui/src/components/layout/AppShell/AppShell.tsx
+  - mitcsutt/kiln:packages/ui/src/components/layout/ActionBar/ActionBar.tsx
+  - mitcsutt/kiln:packages/ui/src/components/layout/Divider/Divider.tsx
+  - mitcsutt/kiln:packages/ui/src/components/layout/AspectRatio/AspectRatio.tsx
+  - mitcsutt/kiln:packages/ui/src/components/layout/VisuallyHidden/VisuallyHidden.tsx
   - mitcsutt/kiln:apps/docs/content/docs/ui/patterns/dashboard.mdx
   - mitcsutt/kiln:apps/docs/content/docs/ui/patterns/settings.mdx
   - mitcsutt/kiln:apps/docs/content/docs/ui/patterns/checkout.mdx
@@ -121,6 +121,8 @@ A column of things with consistent space between them. The layout you'll reach f
 
 `Stack` lays its children out vertically with a gap from the space scale. Most screens are stacks of stacks, so most spacing in a Kiln app is a `gap` prop rather than a margin.
 
+`align` sets the cross-axis alignment (`stretch` by default, so children fill the width). Use `align="start"` when a child like a button should keep its own width.
+
 ```tsx
 import { Button, Heading, Stack, Text } from '@mitcsutt/kiln-ui'
 
@@ -136,8 +138,6 @@ export function Usage() {
   )
 }
 ```
-
-`align` sets the cross-axis alignment (`stretch` by default, so children fill the width). Use `align="start"` when a child like a button should keep its own width.
 
 ### Rules between items
 
@@ -180,8 +180,8 @@ export function Dividers() {
 | --- | --- | --- | --- |
 | `gap` | `Responsive<Space>` |  | Space between children, as a step on the theme's space scale. Responsive. |
 | `align` | `Responsive<Align>` | `stretch` | Cross-axis alignment. Responsive. Default `stretch`. |
-| `dividers` | `boolean` |  | Draw a hairline rule between children (the rule sits in the middle of the gap). |
-| `as` | `'div' \| 'section' \| 'article' \| 'aside' \| 'header' \| 'footer' \| 'main' \| 'nav' \| 'ul' \| 'ol' \| 'li' \| 'form' \| 'fieldset'` |  | Render as a different element. Lists get `role="list"` semantics preserved. |
+| `dividers` | `boolean` | `false` | Draw a hairline rule between children (the rule sits in the middle of the gap). |
+| `as` | `'div' \| 'section' \| 'article' \| 'aside' \| 'header' \| 'footer' \| 'main' \| 'nav' \| 'ul' \| 'ol' \| 'li' \| 'form' \| 'fieldset'` | `div` | Render as a different element. Lists get `role="list"` semantics preserved. |
 | `hideBelow` | `'sm' \| 'md' \| 'lg' \| 'xl'` |  | Hide below this breakpoint (e.g. `md` → hidden on phones, shown from 48em). |
 | `hideAbove` | `'sm' \| 'md' \| 'lg' \| 'xl'` |  | Hide from this breakpoint up (e.g. `md` → shown on phones only). |
 
@@ -192,6 +192,8 @@ Also accepts every prop of `HTMLAttributes<HTMLElement>`.
 Things in a row that wrap when they run out of room. Button rows, tag lists, toolbars and meta lines.
 
 `Inline` lays its children out horizontally with a gap, vertically centred, wrapping onto new lines when they don't fit.
+
+`justify` spreads the row (`between` pushes the groups to either end) and takes responsive values, so a header can stack its groups on a phone and spread them from `md` up. `wrap={false}` keeps everything on one line; children then shrink instead. `rowGap` sets the space between wrapped lines when it should differ from `gap`.
 
 ```tsx
 import { Badge, Button, Inline, Text } from '@mitcsutt/kiln-ui'
@@ -214,8 +216,6 @@ export function Usage() {
 }
 ```
 
-`justify` spreads the row (`between` pushes the groups to either end) and takes responsive values, so a header can stack its groups on a phone and spread them from `md` up. `wrap={false}` keeps everything on one line; children then shrink instead. `rowGap` sets the space between wrapped lines when it should differ from `gap`.
-
 ### API
 
 `InlineProps`:
@@ -227,7 +227,7 @@ export function Usage() {
 | `align` | `Responsive<Align>` | `center` | Cross-axis alignment. Default `center`. Responsive. |
 | `justify` | `Responsive<Justify>` | `start` | Main-axis distribution. Default `start`. Responsive. |
 | `wrap` | `boolean` | `true` | Wrap onto new lines. Default `true`. |
-| `as` | `'div' \| 'header' \| 'footer' \| 'nav' \| 'ul' \| 'ol' \| 'li' \| 'span' \| 'p'` |  |  |
+| `as` | `'div' \| 'header' \| 'footer' \| 'nav' \| 'ul' \| 'ol' \| 'li' \| 'span' \| 'p'` | `div` |  |
 | `hideBelow` | `'sm' \| 'md' \| 'lg' \| 'xl'` |  | Hide below this breakpoint (e.g. `md` → hidden on phones, shown from 48em). |
 | `hideAbove` | `'sm' \| 'md' \| 'lg' \| 'xl'` |  | Hide from this breakpoint up (e.g. `md` → shown on phones only). |
 
@@ -238,6 +238,8 @@ Also accepts every prop of `HTMLAttributes<HTMLElement>`.
 Two-dimensional layout, either with a column count per breakpoint or as an auto-fill grid that needs no breakpoints.
 
 `Grid` has two modes. With `columns`, you choose how many equal columns there are, per breakpoint. With `minItemWidth`, the grid fits as many columns as there's room for, each at least that wide, so it adapts to its container without a single breakpoint.
+
+One column on a phone, two from `sm` and four from `lg`.
 
 ```tsx
 import { Box, Grid, Text } from '@mitcsutt/kiln-ui'
@@ -318,7 +320,7 @@ export function Items() {
 | `gap` | `Responsive<Space>` |  | Space between cells (both axes). Responsive. |
 | `rowGap` | `Responsive<Space>` |  | Row gap, if different from `gap`. Responsive. |
 | `align` | `Responsive<Align>` | `stretch` | Cell alignment on the block axis. Default `stretch`. Responsive. |
-| `as` | `'div' \| 'section' \| 'ul' \| 'ol' \| 'dl'` |  |  |
+| `as` | `'div' \| 'section' \| 'ul' \| 'ol' \| 'dl'` | `div` |  |
 | `hideBelow` | `'sm' \| 'md' \| 'lg' \| 'xl'` |  | Hide below this breakpoint (e.g. `md` → hidden on phones, shown from 48em). |
 | `hideAbove` | `'sm' \| 'md' \| 'lg' \| 'xl'` |  | Hide from this breakpoint up (e.g. `md` → shown on phones only). |
 
@@ -347,6 +349,8 @@ Set these in a theme, or on one element, to change this component without touchi
 An asymmetric two-column layout that stacks on small screens. A heading beside its list, a label beside its content.
 
 `Split` takes exactly two children and puts them side by side in a ratio. Asymmetric splits read as designed; a 50/50 split of a heading and a list rarely does. Below `collapseBelow` (`md` by default) the two stack, first child on top.
+
+A heading and a list of changes in a 5/7 split, stacked on a phone.
 
 ```tsx
 import { Heading, Split, Stack, Text } from '@mitcsutt/kiln-ui'
@@ -410,82 +414,17 @@ export function Ratios() {
 | `collapseBelow` | `'sm' \| 'md' \| 'lg'` | `md` | Stack the two children vertically below this breakpoint. Default `md`. |
 | `gap` | `Responsive<Space>` |  | Space between the two sides (and between them when stacked). Responsive. |
 | `align` | `Responsive<Align>` | `start` | Block-axis alignment of the two sides. Default `start`. Responsive. |
-| `reverse` | `boolean` |  | Put the second child first *visually* when split. DOM (and stacked) order is unchanged. |
+| `reverse` | `boolean` | `false` | Put the second child first *visually* when split. DOM (and stacked) order is unchanged. |
 | `children` (required) | `[ReactNode, ReactNode]` |  | Exactly two children: the first and second side. |
-| `as` | `'div' \| 'section' \| 'article' \| 'header' \| 'footer'` |  |  |
+| `as` | `'div' \| 'section' \| 'article' \| 'header' \| 'footer'` | `div` |  |
 
 Also accepts every prop of `HTMLAttributes<HTMLElement>`.
-
-## Section
-
-A full-bleed band of vertical space, with an optional surface and rules. Put a Container inside it for width.
-
-`Section` is how a page gets its rhythm: each band pads itself top and bottom with a step from the space scale, and can paint a surface across the full width. Width is the `Container`'s job, so a section is almost always `Section` then `Container`.
-
-```tsx
-import { Button, Container, Heading, Section, Stack, Text } from '@mitcsutt/kiln-ui'
-
-export function Usage() {
-  return (
-    <>
-      <Section space={7}>
-        <Container width="text">
-          <Stack gap={3}>
-            <Heading level={3} size="2xl">
-              Ride the coast for less
-            </Heading>
-            <Text tone="muted">An annual pass covers every ferry and bus in the bay.</Text>
-          </Stack>
-        </Container>
-      </Section>
-      <Section space={6} surface="inverse" divider="top">
-        <Container width="text">
-          <Stack gap={4} align="start">
-            <Text>Commuting every day? The pass pays for itself in five weeks.</Text>
-            <Button>Buy an annual pass</Button>
-          </Stack>
-        </Container>
-      </Section>
-    </>
-  )
-}
-```
-
-Vary `space` between neighbours. The scale is non-linear for this reason: a page of `space={8}` everywhere has no rhythm at all.
-
-### Surfaces and bands
-
-`surface` is `canvas`, `surface`, `sunken`, `inverse` or `accent`. On `inverse` and `accent`, the colour roles flip for everything inside, so text, links, focus rings and buttons stay legible with no extra props. `divider` adds a rule at the `top`, `bottom` or `both`.
-
-### API
-
-`SectionProps`:
-
-| Prop | Type | Default | Description |
-| --- | --- | --- | --- |
-| `space` | `Responsive<Space>` | `8` | Block padding (top and bottom), as a step on the space scale. Responsive. Vary it: adjacent sections should not share the same step. Default `8`. |
-| `surface` | `'accent' \| 'surface' \| 'canvas' \| 'sunken' \| 'inverse'` |  | Full-bleed band colour. Omit to stay transparent on the canvas. `inverse` and `accent` re-point the ink, line and focus colours so children stay legible. |
-| `divider` | `'top' \| 'bottom' \| 'both'` |  | A hairline across the full bleed at the top, bottom or both edges. |
-| `as` | `'div' \| 'section' \| 'article' \| 'aside' \| 'header' \| 'footer'` |  |  |
-| `hideBelow` | `'sm' \| 'md' \| 'lg' \| 'xl'` |  | Hide below this breakpoint (e.g. `md` → hidden on phones, shown from 48em). |
-| `hideAbove` | `'sm' \| 'md' \| 'lg' \| 'xl'` |  | Hide from this breakpoint up (e.g. `md` → shown on phones only). |
-
-Also accepts every prop of `HTMLAttributes<HTMLElement>`.
-
-#### Component tokens
-
-Set these in a theme, or on one element, to change this component without touching the rest.
-
-| Token | Default and use |
-| --- | --- |
-| `--section-fill` | / --section-on   (read-only) the band's fill and ink on inverse/accent |
-| `--section-space-default` | block padding when `space` is unset (default var(--space-8)) |
-| `--section-divider-color` | hairline colour for `divider` (default var(--color-line)) |
 
 ## References
 
 Read a reference when its description matches the task:
 
+- [Section](references/section.md): A full-bleed band of vertical space, with an optional surface and rules. Put a Container inside it for width.
 - [Container](references/container.md): Centres content at a readable maximum width, with a fluid gutter outside it.
 - [Box](references/box.md): Padding, a surface and an edge, and nothing else. The escape hatch when no other layout fits.
 - [AppShell](references/app-shell.md): The frame of an app screen. A header, an optional sidebar, the main region, a footer and a phone-only bottom bar.

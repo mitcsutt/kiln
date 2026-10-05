@@ -85,6 +85,29 @@ function FormSentenceInner({ label, scopeNames, children }: FormSentenceProps) {
   )
 }
 
+/**
+ * A short form written as a sentence, with its fields inline and its errors listed underneath.
+ *
+ * @remarks
+ * `FormSentence` sets fields inside a sentence. Each field's label is hidden visually but kept for
+ * screen readers, and errors are listed below the sentence rather than breaking it, each linked to
+ * its field.
+ *
+ * @example In a schema
+ * Text between fields is a `text` content node:
+ *
+ * ```json
+ * {
+ *   "layout": "sentence",
+ *   "label": "Departure reminder",
+ *   "children": [
+ *     { "content": "text", "text": "Remind me at " },
+ *     { "kind": "time", "name": "time", "label": "Time" },
+ *     { "content": "text", "text": "." }
+ *   ]
+ * }
+ * ```
+ */
 export function FormSentence(props: FormSentenceProps) {
   return (
     <FieldViewListBoundary>

@@ -12,7 +12,14 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-/** A text field bound to `destination`, with the value it holds underneath. */
+/**
+ * A text field bound to `destination`, with the value it holds underneath.
+ *
+ * `type` (`text`, `email`, `tel`, `url` or `search`) sets the keyboard and autofill only.
+ * Validation comes from your rules or schema, so `type="email"` doesn't check the address by
+ * itself. A text field can't bind to a union like `'admin' | 'member'`: a text box would write
+ * any string, so use a select, radio or segmented field.
+ */
 export const Usage: Story = {
   tags: ['docs'],
   render: function Usage() {

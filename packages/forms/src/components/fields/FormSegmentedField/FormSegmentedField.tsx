@@ -20,6 +20,34 @@ export interface FormSegmentedFieldProps
 }
 
 /**
+ * One of two to five peers, as a segmented control.
+ *
+ * @remarks
+ * It renders kiln-ui's {@link SegmentedField | SegmentedField}.
+ *
+ * @example In a schema
+ * ```json
+ * {
+ *   "kind": "segmented",
+ *   "name": "journey",
+ *   "label": "Journey",
+ *   "options": [
+ *     {
+ *       "value": "single",
+ *       "label": "Single"
+ *     },
+ *     {
+ *       "value": "return",
+ *       "label": "Return"
+ *     }
+ *   ]
+ * }
+ * ```
+ *
+ * @value the options' value type, or `null`
+ * @empty `null`
+ *
+ * @privateRemarks
  * One choice from 2–5 peers, as a `SegmentedControl` (§7.2 `segmented`). Option values keep
  * their primitive type; empty is `null`.
  */

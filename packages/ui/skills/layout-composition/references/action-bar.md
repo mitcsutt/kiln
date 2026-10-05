@@ -8,6 +8,8 @@ Source: https://kiln.mitchellsutton.com/docs/ui/layout/action-bar
 
 `ActionBar` is a row of buttons with consistent spacing and alignment: `end` by default, `between` to push a destructive action to the other side, `start` to follow a form's left edge.
 
+`sticky` keeps the bar at the bottom of the viewport while a long form scrolls, so save is always in reach.
+
 ```tsx
 import { ActionBar, Button, Stack, TextField } from '@mitcsutt/kiln-ui'
 
@@ -32,8 +34,6 @@ export function Usage() {
 }
 ```
 
-`sticky` keeps the bar at the bottom of the viewport while a long form scrolls, so save is always in reach.
-
 ## API
 
 `ActionBarProps`:
@@ -41,7 +41,7 @@ export function Usage() {
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `align` | `'start' \| 'end' \| 'between'` | `end` | Where the actions sit on the row. Default `end`. |
-| `sticky` | `boolean` |  | Pins the bar to the bottom of its scroll container — a canvas surface above a top hairline, at `--z-sticky`. Use inside a scrolling form/dialog body so the primary action stays reachable. |
+| `sticky` | `boolean` | `false` | Pins the bar to the bottom of its scroll container — a canvas surface above a top hairline, at `--z-sticky`. Use inside a scrolling form/dialog body so the primary action stays reachable. |
 | `gap` | `Responsive<Space>` | `3` | Space between actions. Responsive. Default `3`. |
 | `as` | `'div' \| 'footer'` | `div` | Render as `footer` when the bar is the form's own closing landmark. Default `div`. |
 | `hideBelow` | `'sm' \| 'md' \| 'lg' \| 'xl'` |  | Hide below this breakpoint (e.g. `md` → hidden on phones, shown from 48em). |
