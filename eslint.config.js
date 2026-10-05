@@ -18,6 +18,54 @@ const FORMS_IMPORT_PATTERNS = [
   { group: ['*.css'], message: FORMS_NO_STYLING },
 ]
 
+const FORMS_SYNTAX = [
+  {
+    selector:
+      "JSXAttribute[name.name='selector'] > JSXExpressionContainer > ArrowFunctionExpression > ArrayExpression.body",
+    message: FORMS_TUPLE_SELECTOR,
+  },
+  {
+    selector:
+      "JSXAttribute[name.name='selector'] > JSXExpressionContainer > :function ReturnStatement > ArrayExpression.argument",
+    message: FORMS_TUPLE_SELECTOR,
+  },
+  { selector: "JSXAttribute[name.name='style']", message: FORMS_NO_STYLING },
+  { selector: "JSXAttribute[name.name='className']", message: FORMS_NO_STYLING },
+]
+// ADR 0025: a docs examples file is the code readers copy, sliced one export at a time. It
+// holds only imports and declarations, imports only from packages, and exports only examples.
+const EXAMPLES_SYNTAX = [
+  {
+    selector:
+      'Program > :not(ImportDeclaration, ExportNamedDeclaration, ExportDefaultDeclaration, ExportAllDeclaration, FunctionDeclaration, VariableDeclaration, ClassDeclaration, TSTypeAliasDeclaration, TSInterfaceDeclaration, TSEnumDeclaration)',
+    message:
+      "An examples file holds only imports and declarations: the docs slice each example from it (ADR 0025). Leave out 'use client' too.",
+  },
+  {
+    selector: 'ImportDeclaration[specifiers.length=0]',
+    message: 'An examples file has no side-effect imports, so each example works when copied.',
+  },
+  {
+    selector:
+      'ExportDefaultDeclaration, ExportAllDeclaration, ExportNamedDeclaration[declaration=null]',
+    message:
+      'Export each example where it is declared (`export function Usage()`), not as a default export or an export list.',
+  },
+  {
+    selector:
+      "ExportNamedDeclaration:not([declaration=null]):not([declaration.type='FunctionDeclaration']), ExportNamedDeclaration > FunctionDeclaration[id.name=/^[^A-Z]/]",
+    message:
+      'Export only examples, as components (`export function Usage()`). Keep helpers, types and constants unexported.',
+  },
+]
+const EXAMPLES_IMPORT_PATTERNS = [
+  {
+    regex: '^[.#]',
+    message:
+      'Import from packages only (`@mitcsutt/kiln-ui`, `react`), so each example works when copied.',
+  },
+]
+
 // One config for the whole workspace. Each package runs `eslint .` from its
 // own directory and picks this file up, so lint stays cached per package.
 export default defineConfig(
@@ -124,21 +172,7 @@ export default defineConfig(
       'react-refresh/only-export-components': 'off',
       // packages/forms/AGENTS.md: a tuple selector re-renders on every store change (a new
       // array each time). Select a primitive, or use `useSelector` with `shallowEqual`.
-      'no-restricted-syntax': [
-        'error',
-        {
-          selector:
-            "JSXAttribute[name.name='selector'] > JSXExpressionContainer > ArrowFunctionExpression > ArrayExpression.body",
-          message: FORMS_TUPLE_SELECTOR,
-        },
-        {
-          selector:
-            "JSXAttribute[name.name='selector'] > JSXExpressionContainer > :function ReturnStatement > ArrayExpression.argument",
-          message: FORMS_TUPLE_SELECTOR,
-        },
-        { selector: "JSXAttribute[name.name='style']", message: FORMS_NO_STYLING },
-        { selector: "JSXAttribute[name.name='className']", message: FORMS_NO_STYLING },
-      ],
+      'no-restricted-syntax': ['error', ...FORMS_SYNTAX],
       '@typescript-eslint/no-restricted-imports': ['error', { patterns: FORMS_IMPORT_PATTERNS }],
     },
   },
@@ -233,6 +267,31 @@ export default defineConfig(
       ],
       // Parametrised suites name each test from its data (a fixture's name, a field kind).
       'vitest/valid-title': ['error', { allowArguments: true }],
+    },
+  },
+  {
+    name: 'kiln/workspace/examples',
+    files: ['packages/*/src/**/*.examples.tsx'],
+    rules: {
+      // Examples aren't built into the packages, so they may use dev dependencies, like stories.
+      'import-x/no-extraneous-dependencies': [
+        'error',
+        { devDependencies: true, peerDependencies: true, optionalDependencies: false },
+      ],
+      'no-restricted-syntax': ['error', ...EXAMPLES_SYNTAX],
+      '@typescript-eslint/no-restricted-imports': ['error', { patterns: EXAMPLES_IMPORT_PATTERNS }],
+    },
+  },
+  {
+    // The forms rules above still hold for its examples: a later block replaces a rule's options.
+    name: 'kiln/workspace/forms/examples',
+    files: ['packages/forms/src/**/*.examples.tsx'],
+    rules: {
+      'no-restricted-syntax': ['error', ...FORMS_SYNTAX, ...EXAMPLES_SYNTAX],
+      '@typescript-eslint/no-restricted-imports': [
+        'error',
+        { patterns: [...FORMS_IMPORT_PATTERNS, ...EXAMPLES_IMPORT_PATTERNS] },
+      ],
     },
   },
 )
