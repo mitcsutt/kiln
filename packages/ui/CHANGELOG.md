@@ -1,5 +1,13 @@
 # @mitcsutt/kiln-ui
 
+## 0.2.1
+
+### Patch Changes
+
+- 4834a79: A soft `Badge` or `Tag` in a highlighted `Table` row or `List` item is legible in every theme and mode. The row already re-points the tone texts for its fill, and now tints the soft fills from that fill too; before, in Fiesta night, a caution badge on a gold row put the daytime ink on the night soft fill.
+- 4834a79: A plain native `<select>`, such as your own control inside a `Field`, takes the theme's surface as its background. The reset already gave it the theme's ink, so in dark mode the browser's default grey box left the text short of AA contrast on some platforms.
+- 4834a79: The agent skills' examples now declare each example as a named export (`export function Usage()`) instead of a default export, matching the docs, where the examples now sit beside the code they document. The examples are otherwise unchanged.
+
 ## 0.2.0
 
 ### Minor Changes
