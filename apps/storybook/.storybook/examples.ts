@@ -191,6 +191,12 @@ export function examplesPlugin(): Plugin {
       const forget = () => {
         storiesCache.clear()
       }
+      const packages = join(import.meta.dirname, '../../../packages')
+      server.watcher.add(
+        readdirSync(packages)
+          .map((name) => join(packages, name, 'src'))
+          .filter((source) => existsSync(source)),
+      )
       server.watcher.on('add', forget)
       server.watcher.on('unlink', forget)
     },
