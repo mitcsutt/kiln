@@ -57,6 +57,9 @@ function fieldKinds(): Map<string, string> {
   return kinds
 }
 
+/** Escapes `|` for a Markdown table cell. */
+const cell = (text: string) => text.replaceAll('|', '\\|')
+
 /** `text` → `TextField`, as the kit names a field (`fieldComponentName` in kiln-forms). */
 const shorthand = (kind: string) => `${kind.charAt(0).toUpperCase()}${kind.slice(1)}Field`
 
@@ -190,7 +193,7 @@ function render(page: Page): string {
     out.push(
       '| Kind | Shorthand | Export | Value | Empty |',
       '| --- | --- | --- | --- | --- |',
-      `| \`${kind}\` | \`form.${shorthand(kind)}\` | \`${owner.name}\` | ${owner.value} | ${owner.empty} |`,
+      `| \`${kind}\` | \`form.${shorthand(kind)}\` | \`${owner.name}\` | ${cell(owner.value)} | ${cell(owner.empty)} |`,
       '',
     )
   }

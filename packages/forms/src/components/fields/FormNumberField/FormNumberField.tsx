@@ -29,7 +29,7 @@ export interface FormNumberFieldProps
  * }
  * ```
  *
- * @value `number \| null`
+ * @value `number | null`
  * @empty `null`
  *
  * @privateRemarks

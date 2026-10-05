@@ -40,7 +40,7 @@ export interface FormFileFieldProps
  * }
  * ```
  *
- * @value `ReadonlyArray<File \| StoredFile>`
+ * @value `ReadonlyArray<File | StoredFile>`
  * @empty `[]`
  *
  * @privateRemarks

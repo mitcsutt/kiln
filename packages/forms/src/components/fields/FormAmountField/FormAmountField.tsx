@@ -53,7 +53,7 @@ function toMajor(
  * }
  * ```
  *
- * @value `number \| null`
+ * @value `number | null`
  * @empty `null`
  *
  * @privateRemarks

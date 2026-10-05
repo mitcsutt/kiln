@@ -27,7 +27,7 @@ export interface FormRatingFieldProps
  * }
  * ```
  *
- * @value `number \| null`
+ * @value `number | null`
  * @empty `null`
  *
  * @privateRemarks
