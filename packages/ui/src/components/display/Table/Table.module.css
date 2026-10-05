@@ -175,6 +175,13 @@
   --tone-critical-text: var(--_band-critical);
   --tone-info-text: var(--_band-info);
   --color-accent-text: var(--_band-accent);
+  /* Soft fills (a soft Badge or Tag) tint the band, like Section's accent band, so the
+     re-pointed tone texts above stay legible on them in every mode. */
+  --tone-positive-soft: color-mix(in oklab, var(--_band-positive) 8%, var(--_band-fill));
+  --tone-caution-soft: color-mix(in oklab, var(--_band-caution) 8%, var(--_band-fill));
+  --tone-critical-soft: color-mix(in oklab, var(--_band-critical) 8%, var(--_band-fill));
+  --tone-info-soft: color-mix(in oklab, var(--_band-info) 8%, var(--_band-fill));
+  --color-accent-soft: color-mix(in oklab, var(--_band-accent) 8%, var(--_band-fill));
 
   background: var(--_band-fill);
   color: var(--_band-ink);
