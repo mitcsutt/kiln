@@ -20,8 +20,10 @@ src/
     <Name>.module.css      styles (CSS Module, UNLAYERED: see below)
     <Name>.test.tsx        behaviour tests (Vitest + Testing Library)
     <Name>.stories.tsx     Storybook stories (title 'UI/<Group>/<Name>')
+    <Name>.examples.tsx    docs examples, one named export each (see "Examples" below)
     index.ts               re-exports component + types
-  docs/                    foundation stories (tokens, type, space)
+  docs/                    foundation stories (tokens, type, space), pattern stories, and guide
+                           examples with no single owner (<topic>.examples.tsx, named by path)
   test/                    Vitest setup and test helpers
 ```
 
@@ -72,6 +74,12 @@ Groups: `layout`, `typography`, `actions`, `inputs`, `display`, `navigation`, `f
 - Stories must look right in **every theme, light and dark**.
 - Every story is also a browser test in `apps/storybook` (`pnpm test:storybook`, [ADR 0018](../../docs/adr/0018-storybook-workbench.md)): it must render, its `play` function must pass, and axe must find no violations, in every theme and mode. An interactive component should have a story whose `play` function drives its main interaction. Turn off an axe rule only on the one story that needs it, with the reason beside it.
 
+**Examples** (`<Name>.examples.tsx`, [ADR 0025](../../docs/adr/0025-colocated-examples.md))
+
+- The code readers copy from the docs site. Each named export is one example (`Usage` for the default); a page renders it with `<Example of="<Name>" name="<Export>" />`, and shows only the slice of the file that export needs.
+- Only imports and declarations at the top level, imports only from packages (`@mitcsutt/kiln-ui`, `react`, never `#…` or relative), and only examples exported. Shared helpers are plain unexported declarations. Lint enforces all three.
+- Storybook runs each example as a story under `UI/<Group>/<Name>/Examples` ([ADR 0026](../../docs/adr/0026-docs-examples-in-storybook.md)), so the story rules above apply: invented content, right in every theme and mode, no axe violations.
+
 **Tests** (`<Name>.test.tsx`): behaviour, not snapshots: roles/labels, keyboard, controlled/uncontrolled state, data attributes, ref forwarding, responsive var mapping. `vi`, `describe`, `it`, `expect` are globals. Use `must()` from `#test/must` for a node a test needs to exist, rather than a `!` assertion.
 
 ## Lint
@@ -80,7 +88,7 @@ The root `eslint.config.js` applies `base`, `react` and `storybook` from `@mitcs
 
 ## Adding a component checklist
 
-1. Folder + 5 files as above.
+1. Folder + 6 files as above.
 2. Export from `src/index.ts` in its group section (component + prop types).
 3. `pnpm --filter @mitcsutt/kiln-ui typecheck && pnpm --filter @mitcsutt/kiln-ui test && pnpm --filter @mitcsutt/kiln-ui lint`.
 4. Look at it in every theme × mode.

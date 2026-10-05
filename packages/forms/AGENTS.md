@@ -40,6 +40,8 @@ src/
   schema/render/  React renderer: SchemaForm/SchemaNode, field/layout/content/custom node views
   test/           renderForm, runFieldConformance, axe helper, perf harnesses, a11y tree
   stories/        story kit, parity fixtures, layout/schema stories, recipes
+  docs/           guide examples with no single owner (getting-started, layouts, schema):
+                  <topic>.examples.tsx, named by path
 scripts/          check-schema-entry.ts (the ./schema entry in plain Node, from the packed tarball)
 docs/design.md    the design reference (§n)
 ```
@@ -53,7 +55,7 @@ The kit (`createFormKit`) takes one `const K` input: `{ fields, formComponents?,
 ## Adding a field
 
 1. Build the input in `@mitcsutt/kiln-ui` first if it doesn't exist (a bare control plus a `*Field` wrapper in `components/inputs/`).
-2. Create `src/components/fields/Form<Name>Field/` with `Form<Name>Field.tsx`, `index.ts`, `Form<Name>Field.test.tsx` and `Form<Name>Field.stories.tsx` (title `Forms/Fields/<Name>Field`, the kit shorthand).
+2. Create `src/components/fields/Form<Name>Field/` with `Form<Name>Field.tsx`, `index.ts`, `Form<Name>Field.test.tsx`, `Form<Name>Field.stories.tsx` (title `Forms/Fields/<Name>Field`, the kit shorthand) and `Form<Name>Field.examples.tsx` (its docs examples, starting with `Usage`).
 3. Wrap the component in `defineField<V>()(…)`, or `defineOptionField<B>()` / `defineOptionsField<B>()` for one-of and many-of option fields. The contract is what filters which paths the field can bind to.
 4. Call `useFieldBinding<V>({ ...props, accepts: accepts.<guard>, empty })` and spread `binding.fieldProps` and `binding.ref` onto the ui `*Field`. Wire `value`/`setValue`/`onBlur` from the binding and chain the consumer's own `onBlur`. Option fields map values with `useOptionMapping(options, { emptyOption })`. `FormTextField` is the smallest complete example.
 5. Return `<FieldView label={props.label}>{display}</FieldView>` when `binding.mode === 'view'`. Format the value for reading and pass `null`/`''` through so it shows `messages.notProvided`.
@@ -125,6 +127,7 @@ The renderer strips the same unsafe props (`fieldNodeProps`/`layoutNodeProps`), 
 ## Stories and tests
 
 - Stories follow the ui standard ([`packages/ui/AGENTS.md`](../ui/AGENTS.md), "Stories"): realistic invented content, sentence case, no lorem ipsum, no emoji, right in every theme and mode. Titles: `Forms/Fields/<Name>Field`, `Forms/Layouts/<ExportName>`, `Forms/Hooks/<hookName>`, `Forms/Schema/…`, and whole worked forms under `Forms/Getting started/…`. Every field, layout and form component has a `Playground` story. Every story is also a browser test in `apps/storybook` (`pnpm test:storybook`, [ADR 0018](../../docs/adr/0018-storybook-workbench.md)): it must render, its `play` function must pass, and axe must find no violations, in every theme and mode.
+- Docs examples follow the ui standard ([`packages/ui/AGENTS.md`](../ui/AGENTS.md), "Examples"): `<Owner>.examples.tsx` beside each public export, including the hooks in `hooks/`, one named export per example, imports only from packages. Storybook runs them under the owner's stories title plus `/Examples`.
 - Tests are behaviour, not snapshots. `vi`, `describe`, `it` and `expect` are globals. Use `must()` from `#test/must` for a node a test needs to exist, rather than a `!` assertion. Render through `renderForm` from `#test/renderForm`, and check accessibility with `expectNoAxeViolations` from `#test/a11y`.
 
 ## Lint
