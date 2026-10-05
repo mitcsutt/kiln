@@ -1,5 +1,5 @@
 import { resolve } from 'node:path'
-import { exampleNames, extractExample, sliceExample } from './extract-example'
+import { extractExample, sliceExample } from './extract-example'
 
 // A path inside the app, so Prettier resolves the repo's config.
 const file = resolve(import.meta.dirname, 'Fixture.examples.tsx')
@@ -256,13 +256,6 @@ export function Usage() {
 
   it('rejects a name the file does not export', () => {
     expect(() => slice(`export function A() {}\n`, 'B')).toThrow(/no export named B/)
-  })
-})
-
-describe('exampleNames', () => {
-  it('lists the exports in file order', () => {
-    const text = `const HELPER = 1\nexport function Usage() { return HELPER }\nexport function Hierarchy() {}\n`
-    expect(exampleNames(file, text)).toEqual(['Usage', 'Hierarchy'])
   })
 })
 

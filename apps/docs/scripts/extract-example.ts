@@ -111,16 +111,6 @@ function parse(fileName: string, text: string) {
   return { source, checker, exports: checker.getExportsOfModule(module) }
 }
 
-/** The names a file exports, in file order. `default` is the default export. */
-export function exampleNames(fileName: string, text: string): string[] {
-  const { exports } = parse(fileName, text)
-  const start = (symbol: ts.Symbol) => symbol.declarations?.[0]?.getStart() ?? 0
-  return exports
-    .slice()
-    .sort((a, b) => start(a) - start(b))
-    .map((symbol) => symbol.name)
-}
-
 /** The source of one export and everything it reaches, unformatted. */
 export function sliceExample(fileName: string, text: string, exportName: string): string {
   const { source, checker, exports } = parse(fileName, text)
