@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 import { Form } from '#components/form/Form'
 import { SubmitButton } from '#components/form/SubmitButton'
+import { FormSteps } from '#components/layouts/FormSteps'
 import { useFormStatus } from '#hooks/useFormStatus'
 import { mergeDirty, useServerValues } from '#hooks/useServerValues'
 import { kit } from '#kit/defaultKit'
@@ -183,6 +184,40 @@ describe('useServerValues error restore', () => {
     await waitFor(() => expect(screen.queryByText('Enter an email')).not.toBeInTheDocument())
     await user.clear(email)
     expect(await screen.findByRole('alert')).toHaveTextContent('Enter an email')
+  })
+
+  it("keeps a step's quiet errors quiet across a refresh in a never-submitted form", async () => {
+    interface Signup {
+      name: string
+      email: string
+      city: string
+    }
+    const filled = ({ value }: { value: string }) => (value === '' ? 'Enter a value' : undefined)
+    function Steps({ data }: { data?: Signup }) {
+      const form = kit.useAppForm<Signup>({ defaultValues: { name: '', email: '', city: 'Leeds' } })
+      useServerValues(form, data)
+      return (
+        <Form form={form} aria-label="Signup">
+          <FormSteps label="Signup steps">
+            <FormSteps.Step value="you" title="You">
+              <form.TextField name="name" label="Name" validators={{ onDynamic: filled }} />
+              <form.TextField name="email" label="Email" validators={{ onDynamic: filled }} />
+            </FormSteps.Step>
+            <FormSteps.Step value="where" title="Where">
+              <form.TextField name="city" label="City" />
+            </FormSteps.Step>
+          </FormSteps>
+        </Form>
+      )
+    }
+    const user = userEvent.setup()
+    const { rerender } = render(<Steps />)
+    await user.click(screen.getByRole('button', { name: 'Next' }))
+    await waitFor(() => expect(screen.getAllByText('Enter a value')).toHaveLength(2))
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument()
+    rerender(<Steps data={{ name: '', email: '', city: 'York' }} />)
+    expect(screen.getAllByText('Enter a value')).toHaveLength(2)
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument()
   })
 })
 

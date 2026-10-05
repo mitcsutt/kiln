@@ -4,14 +4,14 @@ import { pickErrors } from '#runtime/errors'
 import type { VisibilityMeta } from '#runtime/visibility'
 import { useIsomorphicLayoutEffect } from '#utils/env'
 import { coreApi, getFormRuntime, type AnyKitForm } from '#runtime/formRuntime'
-import { areErrorsVisible, revealFieldErrors } from '#runtime/reveal'
+import { areErrorsVisible, isQuietMeta, revealFieldErrors } from '#runtime/reveal'
 
 export interface ServerValuesOptions {
   /** Keep the user's edits (paths that differ from the old baseline). Default `true`. */
   keepDirty?: boolean
   /**
-   * Keep errors that were visible before the refresh, on values the refresh left alone. Default
-   * `true`.
+   * Keep errors that were visible before the refresh, on values the refresh left alone, each
+   * announced (or quiet) as it was before. Default `true`.
    */
   keepErrors?: boolean
 }
@@ -41,6 +41,7 @@ interface KeptErrors {
   name: string
   errorMap: Record<string, unknown>
   errorSourceMap: Record<string, unknown>
+  quiet: boolean
 }
 
 /**
@@ -56,7 +57,8 @@ export function applyServerValues(
   const form = coreApi(target)
   const { keepDirty = true, keepErrors = true } = opts
   const runtime = getFormRuntime(form)
-  const { fieldMeta, submissionAttempts } = form.state
+  const { fieldMeta } = form.state
+  const submitted = form.state.submissionAttempts > 0
   const values: unknown = form.state.values
   const merged = keepDirty ? mergeDirty(form.options.defaultValues, values, data) : data
 
@@ -65,26 +67,33 @@ export function applyServerValues(
     const metas = fieldMeta as Record<string, (VisibilityMeta & KeptErrors) | undefined>
     for (const [name, meta] of Object.entries(metas)) {
       if (!meta || pickErrors(meta.errorMap).length === 0) continue
-      if (!areErrorsVisible(runtime, meta, submissionAttempts > 0)) continue
+      if (!areErrorsVisible(runtime, meta, submitted)) continue
       if (!evaluate(getBy(merged, name), getBy(values, name))) continue
-      kept.push({ name, errorMap: meta.errorMap, errorSourceMap: meta.errorSourceMap })
+      kept.push({
+        name,
+        errorMap: meta.errorMap,
+        errorSourceMap: meta.errorSourceMap,
+        quiet: submitted || isQuietMeta(meta),
+      })
     }
   }
 
   runtime.baseline = { values: data, source: runtime.userDefaults }
   form.update({ ...form.options, defaultValues: data })
   // Resets every field's meta and the submit count, so kept errors are revealed again below
-  // (quietly after a submit, as a submit's errors render; otherwise live, as they were).
+  // (quiet where a submit or a scoped attempt had quieted them; otherwise live, as they were).
   form.reset(merged, { keepDefaultValues: true })
 
   for (const { name, errorMap, errorSourceMap } of kept) {
     form.setFieldMeta(name, (prev) => ({ ...prev, errorMap, errorSourceMap }))
   }
-  revealFieldErrors(
-    form,
-    kept.map(({ name }) => name),
-    { quiet: submissionAttempts > 0 },
-  )
+  for (const quiet of [true, false]) {
+    revealFieldErrors(
+      form,
+      kept.filter((k) => k.quiet === quiet).map(({ name }) => name),
+      { quiet },
+    )
+  }
 }
 
 /**
