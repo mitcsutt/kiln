@@ -47,7 +47,7 @@ export const Scale: Story = {
 export const Figures: Story = {
   render: () => (
     <Stack gap={3}>
-      {['£4,812.40', '1,207.95', '17 pts', '28/09/2026'].map((figure) => (
+      {['£4,812.40', '1,207.95', '17 tasks', '28/09/2026'].map((figure) => (
         <div key={figure} className={styles.numeric} style={{ fontSize: 'var(--text-2xl)' }}>
           {figure}
         </div>
@@ -60,9 +60,9 @@ export const Figures: Story = {
 export const Prose: Story = {
   render: () => (
     <p className={styles.prose}>
-      Most of the work is deciding what not to build. The rest is making the thing you did build
-      disappear into the task: fast to load, obvious to use, and quiet enough that nobody thinks
-      about the software at all.
+      The first ferry leaves the harbour at a quarter past six and calls at every jetty on the north
+      shore. On weekdays a bus meets it at the terminal; on Sundays the timetable thins out and the
+      last crossing back is at half past seven.
     </p>
   ),
 }

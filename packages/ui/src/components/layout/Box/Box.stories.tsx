@@ -18,10 +18,10 @@ export const Playground: Story = {
   render: (args) => (
     <Box {...args}>
       <Stack gap={2}>
-        <Label>Left to spend this fortnight</Label>
+        <Label>Outstanding this month</Label>
         <Figure size="lg">$1,284.60</Figure>
         <Body size="sm" tone="muted">
-          After rent, bills and the savings transfer on Thursday.
+          Across four open invoices. Two are due on Thursday.
         </Body>
       </Stack>
     </Box>
@@ -49,7 +49,7 @@ export const Surfaces: Story = {
                 {surface}
               </Title>
               <Body size="sm" tone="muted">
-                Groceries · 14 transactions
+                Brightline Labs · 14 invoices
               </Body>
             </Stack>
             <Figure>$612.85</Figure>
@@ -64,7 +64,7 @@ export const Surfaces: Story = {
 export const AxisPadding: Story = {
   render: () => (
     <Box surface="sunken" radius="field" paddingY={3} paddingX={{ base: 4, md: 6 }}>
-      <Body size="sm">Next pay: Thursday 2 October · $3,725.00</Body>
+      <Body size="sm">Next invoice due: Thursday 2 October · $3,725.00</Body>
     </Box>
   ),
 }

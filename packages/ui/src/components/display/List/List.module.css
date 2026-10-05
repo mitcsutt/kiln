@@ -170,7 +170,7 @@
   margin-inline-start: auto;
   text-align: end;
   /*
-   * The row's text face and size, with tabular figures: a bare "7 pts" sits level with the
+   * The row's text face and size, with tabular figures: a bare "7 tasks" sits level with the
    * title instead of looming in the numeric face. Put a <Numeral>/<Amount> here for figures
    * that should carry the numeric face (receipt mono in Ledger).
    */

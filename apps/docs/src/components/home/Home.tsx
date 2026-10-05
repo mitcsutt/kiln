@@ -71,7 +71,7 @@ function Specimen({ theme }: { theme: BuiltInThemeName }) {
           </Delta>
         </Inline>
         <Inline gap={2}>
-          <Button size="sm">Publish fixtures</Button>
+          <Button size="sm">Send invoice</Button>
           <Button size="sm" variant="outline" tone="neutral">
             Export CSV
           </Button>

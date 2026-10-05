@@ -40,7 +40,7 @@ A labelled divider names the group that follows. `spacing` adds space above and 
 | --- | --- | --- | --- |
 | `orientation` | `'horizontal' \| 'vertical'` | `horizontal` | Default `horizontal`. A vertical rule stretches to its flex/grid row. |
 | `strong` | `boolean` |  | Heavier rule in `--color-line-strong` at `--border-width-strong`. |
-| `label` | `ReactNode` |  | Text set into a horizontal rule, e.g. "Knockout stage". It also names the separator. |
+| `label` | `ReactNode` |  | Text set into a horizontal rule, e.g. "Earlier this week". It also names the separator. |
 | `labelPosition` | `'start' \| 'center'` | `start` | Where the label sits. Default `start` (left-aligned by default); `center` for a lone break. |
 | `spacing` | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6 \| 7 \| 8 \| 9 \| 10 \| 11 \| 12` |  | Margin on both sides of the rule (block axis if horizontal, inline if vertical). |
 | `decorative` | `boolean` |  | Purely visual: hide it from assistive tech. Use when the rule only repeats a boundary that headings or landmarks already convey. |

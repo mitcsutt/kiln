@@ -62,18 +62,18 @@ export const Playground: Story = {
   ),
 }
 
-const table = [
-  { club: 'Harbour Hawks', played: 14, pts: 32, form: '+4' },
-  { club: 'Northside Rovers', played: 14, pts: 30, form: '+2' },
-  { club: 'Riverside Athletic', played: 13, pts: 29, form: '0' },
-  { club: 'Eastgate United', played: 14, pts: 27, form: '+6', you: true },
-  { club: 'Millpond FC', played: 14, pts: 24, form: '−1' },
-  { club: 'Quarry Lane', played: 13, pts: 22, form: '+3' },
-  { club: 'Old Town Wanderers', played: 14, pts: 19, form: '0' },
-  { club: 'Westbank Swifts', played: 14, pts: 15, form: '+1' },
+const projects = [
+  { name: 'Atlas redesign', owner: 'Priya Nair', open: 32, change: '+4' },
+  { name: 'Billing migration', owner: 'Tomás Ortega', open: 30, change: '+2' },
+  { name: 'Mobile app', owner: 'Hana Kobayashi', open: 29, change: '0' },
+  { name: 'Help centre', owner: 'Sam Okafor', open: 27, change: '+6', you: true },
+  { name: 'Search revamp', owner: 'Elena Petrova', open: 24, change: '−1' },
+  { name: 'Onboarding emails', owner: 'Priya Nair', open: 22, change: '+3' },
+  { name: 'Status page', owner: 'Tomás Ortega', open: 19, change: '0' },
+  { name: 'Audit log', owner: 'Hana Kobayashi', open: 15, change: '+1' },
 ]
 
-const leagueNav = ['Table', 'Fixtures', 'Results', 'Clubs']
+const trackerNav = ['Projects', 'Releases', 'Tasks', 'People']
 
 /**
  * A header-and-bottom-bar frame: sticky header with the section links on wide screens,
@@ -87,9 +87,9 @@ export const HeaderAndBottomBar: Story = {
       <AppShell.Header>
         <Container width="wide">
           <Inline justify="between" gap={5}>
-            <Wordmark>Sunday League</Wordmark>
+            <Wordmark>Tracker</Wordmark>
             <Inline as="nav" aria-label="Sections" gap={5} hideBelow="md">
-              {leagueNav.map((n, i) => (
+              {trackerNav.map((n, i) => (
                 <NavLink key={n} current={i === 0}>
                   {n}
                 </NavLink>
@@ -104,13 +104,13 @@ export const HeaderAndBottomBar: Story = {
             <Split ratio="1/3" collapseBelow="lg" gap={{ base: 5, lg: 8 }}>
               <Stack gap={3}>
                 <Title level={1} size="xl">
-                  Table
+                  Projects
                 </Title>
-                <Body tone="muted">After round 14. Points update when a result is confirmed.</Body>
+                <Body tone="muted">Sorted by open tasks. Counts update when a task closes.</Body>
               </Stack>
               <Stack as="ol" gap={4} dividers>
-                {table.map((row, i) => (
-                  <li key={row.club}>
+                {projects.map((row, i) => (
+                  <li key={row.name}>
                     <Inline justify="between" gap={4} wrap={false}>
                       <Inline gap={4} wrap={false}>
                         <Figure size="sm" tone="muted">
@@ -118,20 +118,20 @@ export const HeaderAndBottomBar: Story = {
                         </Figure>
                         <Stack gap={0}>
                           <Title level={2} size="md">
-                            {row.club}
-                            {row.you ? ' (your club)' : ''}
+                            {row.name}
+                            {row.you ? ' (your project)' : ''}
                           </Title>
                           <Body size="sm" tone="subtle">
-                            {row.played} played
+                            {row.owner}
                           </Body>
                         </Stack>
                       </Inline>
                       <Inline gap={4} wrap={false} align="baseline">
                         <Figure size="sm" tone="muted">
-                          {row.form}
+                          {row.change}
                         </Figure>
                         <Figure size="lg" tone={i === 0 ? 'accent' : 'default'}>
-                          {row.pts}
+                          {row.open}
                         </Figure>
                       </Inline>
                     </Inline>
@@ -143,14 +143,12 @@ export const HeaderAndBottomBar: Story = {
         </Section>
       </AppShell.Main>
       <AppShell.Footer>
-        <Container width="wide">
-          Results are entered by each home club within an hour of full time.
-        </Container>
+        <Container width="wide">Task counts refresh every five minutes.</Container>
       </AppShell.Footer>
       <AppShell.BottomBar>
         <Container>
           <Inline as="nav" aria-label="Sections" justify="between" gap={3}>
-            {leagueNav.map((n, i) => (
+            {trackerNav.map((n, i) => (
               <NavLink key={n} current={i === 0}>
                 {n}
               </NavLink>
@@ -207,7 +205,7 @@ export const DashboardWithSidebar: Story = {
           <NavLink current>Overview</NavLink>
           <NavLink>Invoices</NavLink>
           <NavLink>Clients</NavLink>
-          <NavLink>Expenses</NavLink>
+          <NavLink>Payments</NavLink>
           <Divider decorative spacing={2} />
           <NavLink>Settings</NavLink>
         </Stack>
@@ -251,7 +249,7 @@ export const DashboardWithSidebar: Story = {
         <BottomNav label="Invoicing sections" position="static" hideAbove="lg">
           <BottomNav.Item href="#overview" icon={<OverviewIcon />} label="Overview" active />
           <BottomNav.Item href="#invoices" icon={<ListIcon />} label="Invoices" />
-          <BottomNav.Item href="#expenses" icon={<BillIcon />} label="Expenses" badge={2} />
+          <BottomNav.Item href="#payments" icon={<BillIcon />} label="Payments" badge={2} />
           <BottomNav.Item href="#search" icon={<SearchIcon />} label="Search" />
         </BottomNav>
       </AppShell.BottomBar>
@@ -266,11 +264,11 @@ export const Site: Story = {
       <AppShell.Header>
         <Container>
           <Inline justify="between" gap={5}>
-            <Wordmark>Fieldwork</Wordmark>
+            <Wordmark>Brightline Labs</Wordmark>
             <Inline as="nav" aria-label="Primary" gap={5}>
-              <NavLink current>Studio</NavLink>
-              <NavLink>Journal</NavLink>
-              <NavLink>Contact</NavLink>
+              <NavLink current>Product</NavLink>
+              <NavLink>Pricing</NavLink>
+              <NavLink>Changelog</NavLink>
             </Inline>
           </Inline>
         </Container>
@@ -280,11 +278,11 @@ export const Site: Story = {
           <Container>
             <Stack gap={5}>
               <Title level={1} size="display">
-                Maps, signage and wayfinding for public places
+                Invoicing for small teams
               </Title>
               <Body size="lg" tone="muted">
-                A four-person studio. This year: a transit map for a coastal city and the signs for
-                a new library.
+                Send invoices, chase late payments and see what each client owes, in one place. Free
+                for your first three clients.
               </Body>
             </Stack>
           </Container>
@@ -293,7 +291,7 @@ export const Site: Story = {
       <AppShell.Footer>
         <Container>
           <Inline justify="between" gap={4}>
-            <span>© 2026 Fieldwork</span>
+            <span>© 2026 Brightline Labs</span>
             <span>Set in the house typeface</span>
           </Inline>
         </Container>

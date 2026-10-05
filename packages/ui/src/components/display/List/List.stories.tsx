@@ -45,39 +45,54 @@ export const Playground: Story = {
 }
 
 const LEADERBOARD = [
-  { name: 'Noor Nguyen', routes: 'Coast path, Ridge loop, Quarry steps', points: 58, active: 2 },
-  { name: 'Kofi Grant', routes: 'Harbour run, Mill lane, Old town', points: 51, active: 1 },
   {
-    name: 'Ada Okafor',
-    routes: 'Ridge loop, River walk, Lighthouse',
-    points: 47,
+    name: 'Priya Nair',
+    projects: 'Atlas redesign, Help centre, Design tokens',
+    reviews: 58,
+    active: 2,
+  },
+  {
+    name: 'Tomás Ortega',
+    projects: 'Billing migration, Invoices API, Audit log',
+    reviews: 51,
+    active: 1,
+  },
+  {
+    name: 'Hana Kobayashi',
+    projects: 'Mobile app, Onboarding, Push notifications',
+    reviews: 47,
     active: 2,
     you: true,
   },
-  { name: 'Ingrid Tran', routes: 'Park circuit, Coast path, Bridge', points: 44, active: 1 },
-  { name: 'Mei Walker', routes: 'Old town, Quarry steps, Canal', points: 39, active: 1 },
-  { name: 'Theo Oduya', routes: 'Harbour run, Bridge, Hill fort', points: 33, active: 0 },
-  { name: 'Amara Raman', routes: 'Canal, Lighthouse, Mill lane', points: 31, active: 0 },
-  { name: 'Diego Kelly', routes: 'River walk, Park circuit, Heath', points: 24, active: 0 },
+  { name: 'Sam Okafor', projects: 'Help centre, Search, Status page', reviews: 44, active: 1 },
+  { name: 'Elena Petrova', projects: 'Atlas redesign, Reports, Exports', reviews: 39, active: 1 },
+  {
+    name: 'Felix Moreau',
+    projects: 'Invoices API, Webhooks, Billing migration',
+    reviews: 33,
+    active: 0,
+  },
+  { name: 'Aisha Rahman', projects: 'Reports, Onboarding, Audit log', reviews: 31, active: 0 },
+  { name: 'Jonas Lindqvist', projects: 'Search, Mobile app, Settings', reviews: 24, active: 0 },
 ]
 
-/** A club leaderboard: rank, runner, routes, points. Your row is highlighted; each row links. */
+/** A review leaderboard: rank, member, projects, reviews. Your row is highlighted; each row links. */
 export const Leaderboard: Story = {
   render: (args) => (
     <Stack style={{ maxWidth: '34rem' }}>
-      <List {...args} as="ol" aria-label="Running club leaderboard">
+      <List {...args} as="ol" aria-label="Code review leaderboard">
         {LEADERBOARD.map((o, i) => (
           <List.Item key={o.name} asChild highlighted={o.you}>
-            <a href={`#runner-${String(i + 1)}`} aria-current={o.you ? 'true' : undefined}>
+            <a href={`#member-${String(i + 1)}`} aria-current={o.you ? 'true' : undefined}>
               <List.Leading>{i + 1}</List.Leading>
               <Avatar name={o.name} src={o.you ? portrait : undefined} size="sm" alt="" />
               <List.Content>
                 {o.you ? `${o.name} (you)` : o.name}
-                <List.Description>{o.routes}</List.Description>
+                <List.Description>{o.projects}</List.Description>
               </List.Content>
               <List.Trailing>
-                {o.active === 0 ? <Badge variant="outline">Resting</Badge> : null}
-                {o.points}
+                {o.active === 0 ? <Badge variant="outline">Away</Badge> : null}
+                {o.reviews}
               </List.Trailing>
             </a>
           </List.Item>
@@ -87,48 +102,48 @@ export const Leaderboard: Story = {
   ),
 }
 
-/** Recent transactions as a compact, static list. */
-export const Transactions: Story = {
+/** Recent invoices as a compact, static list. */
+export const RecentInvoices: Story = {
   args: { density: 'compact' },
   render: (args) => (
     <Stack style={{ maxWidth: '30rem' }}>
-      <List {...args} aria-label="Recent transactions">
+      <List {...args} aria-label="Recent invoices">
         {[
           {
-            payee: 'Corner Grocer',
+            client: 'Northwind Studio',
             when: 'Today',
-            cat: 'Groceries',
-            color: 1 as const,
-            amount: -84.2,
-          },
-          {
-            payee: 'Metro Transit top-up',
-            when: 'Yesterday',
-            cat: 'Transport',
-            color: 4 as const,
-            amount: -50,
-          },
-          {
-            payee: 'Salary — Harbour Labs',
-            when: 'Thu 25 Sep',
-            cat: 'Income',
+            status: 'Paid',
             color: 2 as const,
-            amount: 3725,
+            amount: 4200,
           },
           {
-            payee: 'City Power',
+            client: 'Orchard & Co',
+            when: 'Yesterday',
+            status: 'Credit note',
+            color: 4 as const,
+            amount: -350,
+          },
+          {
+            client: 'Brightline Labs',
+            when: 'Thu 25 Sep',
+            status: 'Sent',
+            color: 1 as const,
+            amount: 8650,
+          },
+          {
+            client: 'Harbourview Clinic',
             when: 'Tue 23 Sep',
-            cat: 'Utilities',
+            status: 'Draft',
             color: 3 as const,
-            amount: -186.45,
+            amount: 186.45,
           },
         ].map((t) => (
-          <List.Item key={t.payee}>
+          <List.Item key={t.client}>
             <List.Content>
-              {t.payee}
+              {t.client}
               <List.Description>{t.when}</List.Description>
             </List.Content>
-            <Tag color={t.color}>{t.cat}</Tag>
+            <Tag color={t.color}>{t.status}</Tag>
             <List.Trailing>
               <Amount value={t.amount} showSign tone={t.amount > 0 ? 'positive' : undefined} />
             </List.Trailing>
@@ -144,11 +159,16 @@ export const Selected: Story = {
   render: (args) => (
     <Stack style={{ maxWidth: '22rem' }}>
       <List {...args} aria-label="Projects">
-        {['Harbour transit map', 'Library signage', 'Field guide', 'Annual report'].map((p, i) => (
-          <List.Item key={p} asChild selected={i === 1}>
+        {[
+          { name: 'Atlas redesign', open: 7 },
+          { name: 'Billing migration', open: 12 },
+          { name: 'Mobile app', open: 4 },
+          { name: 'Help centre', open: 2 },
+        ].map((p, i) => (
+          <List.Item key={p.name} asChild selected={i === 1}>
             <a href={`#project-${String(i)}`} aria-current={i === 1 ? 'page' : undefined}>
-              <List.Content>{p}</List.Content>
-              <List.Trailing>{2026 - Math.floor(i / 2)}</List.Trailing>
+              <List.Content>{p.name}</List.Content>
+              <List.Trailing>{p.open} open</List.Trailing>
             </a>
           </List.Item>
         ))}
@@ -165,25 +185,31 @@ export const Selected: Story = {
 export const HighlightedWithTones: Story = {
   render: (args) => (
     <Stack style={{ maxWidth: '34rem' }}>
-      <List {...args} aria-label="Runners out now">
+      <List {...args} aria-label="Deploys running now">
         {[
-          { name: 'Noor Nguyen', team: 'Coast path · 8.2 km', pts: 3, live: true },
-          { name: 'Ada Okafor', team: 'Ridge loop · 5.4 km', pts: -1, live: true, you: true },
-          { name: 'Ingrid Tran', team: 'Park circuit · 10 km', pts: 0, live: false },
+          { name: 'Priya Nair', target: 'Atlas redesign · production', tasks: 3, live: true },
+          {
+            name: 'Hana Kobayashi',
+            target: 'Mobile app · staging',
+            tasks: -1,
+            live: true,
+            you: true,
+          },
+          { name: 'Sam Okafor', target: 'Help centre · production', tasks: 0, live: false },
         ].map((o) => (
           <List.Item key={o.name} highlighted={o.you}>
             <List.Content>
               {o.you ? `${o.name} (you)` : o.name}
               <List.Description>
                 {o.live ? (
-                  <LiveIndicator size="sm" label={`${o.team} · 41 min`} />
+                  <LiveIndicator size="sm" label={`${o.target} · 4 min`} />
                 ) : (
-                  <StatusDot tone="positive" size="sm" label={`${o.team} · finished`} />
+                  <StatusDot tone="positive" size="sm" label={`${o.target} · done`} />
                 )}
               </List.Description>
             </List.Content>
             <List.Trailing>
-              <Numeral value={o.pts} signDisplay="exceptZero" tone="auto" suffix=" today" />
+              <Numeral value={o.tasks} signDisplay="exceptZero" tone="auto" suffix=" tasks" />
             </List.Trailing>
           </List.Item>
         ))}

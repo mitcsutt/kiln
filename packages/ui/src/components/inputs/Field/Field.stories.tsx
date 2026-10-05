@@ -10,21 +10,21 @@ import { SelectField } from '#components/inputs/SelectField'
 import { Switch } from '#components/inputs/Switch'
 import { TextareaField } from '#components/inputs/TextareaField'
 import { TextField } from '#components/inputs/TextField'
-import { expenseCategories, countryGroups } from '#components/inputs/internal/storyData'
+import { taskCategories, countryGroups } from '#components/inputs/internal/storyData'
 import { Field } from './Field'
 
 const meta = {
   title: 'UI/Inputs/Field',
   component: Field,
   args: {
-    label: 'Payee',
-    description: 'As it appears on your bank statement',
+    label: 'Client',
+    description: 'As it appears on the invoice',
     error: '',
     required: false,
     optional: false,
     labelHidden: false,
     disabled: false,
-    children: <Input placeholder="Corner Grocer" />,
+    children: <Input placeholder="Northwind Studio" />,
   },
   argTypes: { children: { control: false } },
 } satisfies Meta<typeof Field>
@@ -42,8 +42,8 @@ export const Playground: Story = {
   ),
 }
 
-/** An expense form. One solid button; amount in the theme's figures. */
-export const AddExpense: Story = {
+/** An invoice line form. One solid button; amount in the theme's figures. */
+export const AddLineItem: Story = {
   render: () => (
     <Stack
       as="form"
@@ -62,18 +62,18 @@ export const AddExpense: Story = {
         defaultValue="86.40"
         required
       />
-      <SelectField label="Category" groups={expenseCategories} defaultValue="groceries" required />
+      <SelectField label="Category" groups={taskCategories} defaultValue="research" required />
       <TextField label="Date" type="date" defaultValue="2026-09-26" required />
       <TextareaField
         label="Notes"
         optional
         autoResize
         rows={2}
-        placeholder="Half is Oskar's — settle up on Friday"
+        placeholder="Covers the September discovery workshop"
       />
       <Switch label="Repeats every month" />
       <Inline gap={3}>
-        <Button type="submit">Save expense</Button>
+        <Button type="submit">Add line item</Button>
         <Button variant="ghost" tone="neutral">
           Cancel
         </Button>
@@ -82,8 +82,8 @@ export const AddExpense: Story = {
   ),
 }
 
-/** A club sign-up: text, a grouped select, a radio group and a consent box. */
-export const RegisterAClub: Story = {
+/** A workspace sign-up: text, a grouped select, a radio group and a consent box. */
+export const CreateAWorkspace: Story = {
   render: () => (
     <Stack
       as="form"
@@ -104,7 +104,7 @@ export const RegisterAClub: Story = {
       />
       <SelectField
         label="Country"
-        description="Where your club is registered."
+        description="Where your company is registered."
         groups={countryGroups}
         placeholder="Choose a country"
         optional
@@ -117,12 +117,12 @@ export const RegisterAClub: Story = {
         </RadioGroup>
       </Fieldset>
       <CheckboxField
-        label="I've read the league rules"
-        description="Home clubs supply match balls and enter the result within an hour of full time."
+        label="I've read the workspace guidelines"
+        description="Guests can view shared projects but can't edit tasks or invite anyone else."
         required
       />
       <Inline gap={3}>
-        <Button type="submit">Register club</Button>
+        <Button type="submit">Create workspace</Button>
       </Inline>
     </Stack>
   ),
@@ -149,14 +149,14 @@ export const Validation: Story = {
       />
       <SelectField
         label="Category"
-        groups={expenseCategories}
+        groups={taskCategories}
         placeholder="Choose a category"
         error="Choose a category"
       />
       <TextareaField
         label="Notes"
-        defaultValue="Rent for September and October"
-        error="Split this into two expenses, one per month"
+        defaultValue="Design work for September and October"
+        error="Split this into two line items, one per month"
       />
       <Fieldset legend="Plan" error="Choose a plan">
         <RadioGroup orientation="horizontal" invalid>
@@ -165,7 +165,10 @@ export const Validation: Story = {
           <RadioGroup.Item value="50" label="$50" />
         </RadioGroup>
       </Fieldset>
-      <CheckboxField label="I've read the league rules" error="Tick this to register your club" />
+      <CheckboxField
+        label="I've read the workspace guidelines"
+        error="Tick this to join the workspace"
+      />
     </Stack>
   ),
 }
@@ -174,13 +177,13 @@ export const Disabled: Story = {
   render: () => (
     <Stack gap={5} style={formWidth}>
       <TextField
-        label="Account"
-        defaultValue="Everyday 062-000 1234 5678"
+        label="Workspace ID"
+        defaultValue="northwind-studio"
         disabled
-        description="Linked accounts can't be edited here."
+        description="Workspace IDs can't be changed here."
       />
-      <SelectField label="Category" groups={expenseCategories} defaultValue="rent" disabled />
-      <TextareaField label="Notes" defaultValue="Imported from the bank feed" disabled />
+      <SelectField label="Category" groups={taskCategories} defaultValue="backend" disabled />
+      <TextareaField label="Notes" defaultValue="Imported from the time tracker" disabled />
       <CheckboxField label="Include in monthly report" defaultChecked disabled />
       <Switch label="Repeats every month" defaultChecked disabled />
     </Stack>
@@ -199,11 +202,11 @@ export const Warning: Story = {
         warning="This password appears in a data breach list"
       />
       <TextField
-        label="Monthly budget"
+        label="Monthly retainer"
         numeric
         leading="$"
         defaultValue="8500"
-        warning="That's well above your usual spend"
+        warning="That's well above this client's usual retainer"
         error="Enter an amount below $10,000"
       />
     </Stack>
@@ -214,13 +217,8 @@ export const Warning: Story = {
 export const Validating: Story = {
   render: () => (
     <Stack gap={5} style={formWidth}>
-      <TextField label="Club name" defaultValue="Eastgate United" validating />
-      <SelectField
-        label="Postcode area"
-        groups={expenseCategories}
-        placeholder="Looking up…"
-        validating
-      />
+      <TextField label="Workspace name" defaultValue="Northwind Studio" validating />
+      <SelectField label="Category" groups={taskCategories} placeholder="Looking up…" validating />
     </Stack>
   ),
 }
@@ -244,7 +242,7 @@ export const HorizontalLayout: Story = {
       />
       <SelectField
         label="Category"
-        groups={expenseCategories}
+        groups={taskCategories}
         placeholder="Choose a category"
         layout="horizontal"
       />
@@ -257,12 +255,12 @@ export const ReadOnly: Story = {
   render: () => (
     <Stack gap={5} style={formWidth}>
       <TextField
-        label="Account"
-        defaultValue="Everyday 062-000 1234 5678"
+        label="Workspace ID"
+        defaultValue="northwind-studio"
         readOnly
-        description="Linked accounts can't be edited here."
+        description="Workspace IDs can't be changed here."
       />
-      <SelectField label="Category" groups={expenseCategories} defaultValue="rent" readOnly />
+      <SelectField label="Category" groups={taskCategories} defaultValue="backend" readOnly />
       <CheckboxField label="Include in monthly report" defaultChecked readOnly />
     </Stack>
   ),
@@ -272,11 +270,11 @@ export const ReadOnly: Story = {
 export const RenderFunction: Story = {
   render: () => (
     <Stack gap={5} style={formWidth}>
-      <Field label="Savings goal" description="Monthly, in whole dollars" required>
-        {(props) => <Input {...props} numeric leading="$" defaultValue="750" />}
+      <Field label="Hourly rate" description="In whole dollars" required>
+        {(props) => <Input {...props} numeric leading="$" defaultValue="150" />}
       </Field>
-      <Field label="Search transactions" labelHidden>
-        <Input type="search" placeholder="Search transactions" />
+      <Field label="Search invoices" labelHidden>
+        <Input type="search" placeholder="Search invoices" />
       </Field>
     </Stack>
   ),

@@ -39,30 +39,30 @@ export const Sizes: Story = {
   ),
 }
 
-const bills = ['Rent', 'Electricity and gas', 'Internet', 'Phone plan']
+const steps = ['Update the changelog', 'Run the migrations', 'Tag the release', 'Email customers']
 
 /** A "select all" parent is indeterminate while some — not all — children are ticked. */
 export const SelectAll: Story = {
   render: function SelectAllStory() {
-    const [paid, setPaid] = useState<string[]>(['Rent', 'Internet'])
-    const all = paid.length === bills.length
+    const [done, setDone] = useState<string[]>(['Update the changelog', 'Tag the release'])
+    const all = done.length === steps.length
     return (
       <Stack gap={3}>
         <CheckboxField
-          label="Mark all September bills paid"
-          checked={all ? true : paid.length > 0 ? 'indeterminate' : false}
+          label="Mark every release step done"
+          checked={all ? true : done.length > 0 ? 'indeterminate' : false}
           onCheckedChange={(on) => {
-            setPaid(on && !all ? bills : [])
+            setDone(on && !all ? steps : [])
           }}
         />
         <Stack gap={3} style={{ paddingInlineStart: 'var(--space-6)' }}>
-          {bills.map((bill) => (
+          {steps.map((step) => (
             <CheckboxField
-              key={bill}
-              label={bill}
-              checked={paid.includes(bill)}
+              key={step}
+              label={step}
+              checked={done.includes(step)}
               onCheckedChange={(on) => {
-                setPaid((p) => (on ? [...p, bill] : p.filter((b) => b !== bill)))
+                setDone((p) => (on ? [...p, step] : p.filter((s) => s !== step)))
               }}
             />
           ))}

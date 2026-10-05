@@ -6,7 +6,7 @@ const meta = {
   title: 'UI/Display/Progress',
   component: Progress,
   args: {
-    label: 'Importing September transactions',
+    label: 'Importing September invoices',
     value: 64,
     showValue: true,
     tone: 'accent',
@@ -30,14 +30,14 @@ export const ImportProgress: Story = {
 }
 
 export const Indeterminate: Story = {
-  args: { label: 'Fetching live scores', value: null, showValue: false },
+  args: { label: 'Fetching deploy status', value: null, showValue: false },
 }
 
 export const SizesAndTones: Story = {
   render: () => (
     <Stack gap={5}>
-      <Progress size="sm" label="Uploading receipts" value={18} showValue />
-      <Progress size="md" tone="positive" label="Bank feed synced" value={100} showValue />
+      <Progress size="sm" label="Uploading attachments" value={18} showValue />
+      <Progress size="md" tone="positive" label="Calendar synced" value={100} showValue />
       <Progress size="lg" tone="info" label="Building site preview" value={71} showValue />
       <Progress size="md" tone="neutral" aria-label="Page load" value={40} />
     </Stack>

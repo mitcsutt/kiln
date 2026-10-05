@@ -9,16 +9,16 @@ describe('RangeSliderField', () => {
     render(
       <RangeSliderField
         ref={ref}
-        id="budget"
-        label="Budget range"
+        id="price"
+        label="Price range"
         description="Per month"
         min={500}
         max={5000}
       />,
     )
-    const group = screen.getByRole('group', { name: 'Budget range' })
+    const group = screen.getByRole('group', { name: 'Price range' })
     expect(ref.current).toBe(group)
-    expect(group).toHaveAttribute('id', 'budget')
+    expect(group).toHaveAttribute('id', 'price')
     expect(group).toHaveAccessibleDescription('Per month')
     expect(screen.getByRole('slider', { name: 'Minimum' })).toHaveAttribute('aria-valuenow', '500')
     expect(screen.getByRole('slider', { name: 'Maximum' })).toHaveAttribute('aria-valuenow', '5000')
@@ -28,7 +28,7 @@ describe('RangeSliderField', () => {
     const onValueChange = vi.fn()
     const { rerender } = render(
       <RangeSliderField
-        label="Budget range"
+        label="Price range"
         defaultValue={[10, 20]}
         onValueChange={onValueChange}
       />,
@@ -36,7 +36,7 @@ describe('RangeSliderField', () => {
     screen.getByRole('slider', { name: 'Minimum' }).focus()
     await userEvent.keyboard('{ArrowRight}')
     expect(onValueChange).toHaveBeenCalledWith([11, 20])
-    rerender(<RangeSliderField label="Budget range" defaultValue={[10, 20]} disabled />)
+    rerender(<RangeSliderField label="Price range" defaultValue={[10, 20]} disabled />)
     for (const thumb of screen.getAllByRole('slider')) expect(thumb).not.toHaveAttribute('tabindex')
   })
 })

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Stack } from '#components/layout/Stack'
 import { ColorInput } from './ColorInput'
 
-const TEAM_COLOURS = [
+const LABEL_COLOURS = [
   { value: '#e5664f', label: 'Coral' },
   { value: '#d9a521', label: 'Gold' },
   { value: '#1f8f84', label: 'Teal' },
@@ -13,7 +13,7 @@ const meta = {
   title: 'UI/Inputs/ColorInput',
   component: ColorInput,
   args: {
-    'aria-label': 'Team colour',
+    'aria-label': 'Label colour',
     defaultValue: '#1f8f84',
     size: 'md',
     disabled: false,
@@ -36,9 +36,9 @@ export const Empty: Story = {
 }
 
 export const WithSwatches: Story = {
-  args: { swatches: TEAM_COLOURS },
+  args: { swatches: LABEL_COLOURS },
 }
 
 export const SwatchesOnly: Story = {
-  args: { swatches: TEAM_COLOURS, swatchesOnly: true, defaultValue: '#d9a521' },
+  args: { swatches: LABEL_COLOURS, swatchesOnly: true, defaultValue: '#d9a521' },
 }

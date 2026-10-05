@@ -13,13 +13,13 @@ import styles from './Popover.module.css'
 export type PopoverProps = ComponentPropsWithoutRef<typeof PopoverPrimitive.Root>
 
 /**
- * Non-modal floating panel anchored to a trigger: match details, a filter, a small
+ * Non-modal floating panel anchored to a trigger: invoice details, a filter, a small
  * form. Opens on click, closes on Escape or an outside click, returns focus. For
  * hover-only hints use `Tooltip`; for a list of commands use `DropdownMenu`.
  *
  * <Popover>
- *   <Popover.Trigger asChild><Button>Match details</Button></Popover.Trigger>
- *   <Popover.Content aria-label="Match details">…</Popover.Content>
+ *   <Popover.Trigger asChild><Button>Invoice details</Button></Popover.Trigger>
+ *   <Popover.Content aria-label="Invoice details">…</Popover.Content>
  * </Popover>
  */
 function PopoverRoot(props: PopoverProps) {

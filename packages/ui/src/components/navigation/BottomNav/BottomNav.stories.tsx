@@ -24,12 +24,12 @@ const meta = {
   title: 'UI/Navigation/BottomNav',
   component: BottomNav,
   parameters: { layout: 'fullscreen' },
-  args: { label: 'Sunday League', hideAbove: false, position: 'static' },
+  args: { label: 'Workspace', hideAbove: false, position: 'static' },
   render: (args) => (
     <BottomNav {...args}>
-      <BottomNav.Item href="#fixtures" icon={<CalendarIcon />} label="Fixtures" />
-      <BottomNav.Item href="#table" icon={<TableIcon />} label="Table" active />
-      <BottomNav.Item href="#squads" icon={<PeopleIcon />} label="Squads" />
+      <BottomNav.Item href="#calendar" icon={<CalendarIcon />} label="Calendar" />
+      <BottomNav.Item href="#projects" icon={<TableIcon />} label="Projects" active />
+      <BottomNav.Item href="#team" icon={<PeopleIcon />} label="Team" />
       <BottomNav.Item href="#feed" icon={<FeedIcon />} label="Feed" badge={4} />
     </BottomNav>
   ),
@@ -47,9 +47,9 @@ export const Playground: Story = {}
 export const Badges: Story = {
   render: (args) => (
     <BottomNav {...args}>
-      <BottomNav.Item href="#fixtures" icon={<CalendarIcon />} label="Fixtures" active />
+      <BottomNav.Item href="#calendar" icon={<CalendarIcon />} label="Calendar" active />
       <BottomNav.Item href="#search" icon={<SearchIcon />} label="Search" />
-      <BottomNav.Item href="#squads" icon={<PeopleIcon />} label="Squads" badge />
+      <BottomNav.Item href="#team" icon={<PeopleIcon />} label="Team" badge />
       <BottomNav.Item href="#feed" icon={<FeedIcon />} label="Feed" badge={128} />
     </BottomNav>
   ),
@@ -57,11 +57,11 @@ export const Badges: Story = {
 
 /** Three destinations is the minimum worth a tab bar. */
 export const ThreeItems: Story = {
-  args: { label: 'Accounts' },
+  args: { label: 'Billing' },
   render: (args) => (
     <BottomNav {...args}>
       <BottomNav.Item href="#overview" icon={<TableIcon />} label="Overview" active />
-      <BottomNav.Item href="#bills" icon={<CalendarIcon />} label="Bills" badge={2} />
+      <BottomNav.Item href="#invoices" icon={<CalendarIcon />} label="Invoices" badge={2} />
       <BottomNav.Item href="#search" icon={<SearchIcon />} label="Search" />
     </BottomNav>
   ),

@@ -5,13 +5,13 @@ export interface MeterThresholds {
   low?: number
   /** Lower bound of the "high" region. */
   high?: number
-  /** Where the good value lives. Below `low` = less is better (a budget); above `high` = more is better (savings). */
+  /** Where the good value lives. Below `low` = less is better (a quota); above `high` = more is better (a revenue target). */
   optimum?: number
 }
 
 /**
  * The tone `<meter>` would pick. Unlike the element, a value past `max` still counts as
- * being in the region past `high` — an overspent budget must not read as "fine".
+ * being in the region past `high` — a quota that has run over must not read as "fine".
  */
 export function meterTone(
   value: number,

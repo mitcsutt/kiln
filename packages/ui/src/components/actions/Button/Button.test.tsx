@@ -41,11 +41,11 @@ describe('Button', () => {
   it('renders its child when asChild', () => {
     render(
       <Button asChild variant="ghost">
-        <a href="/work">Work</a>
+        <a href="/projects">Projects</a>
       </Button>,
     )
-    const link = screen.getByRole('link', { name: 'Work' })
-    expect(link).toHaveAttribute('href', '/work')
+    const link = screen.getByRole('link', { name: 'Projects' })
+    expect(link).toHaveAttribute('href', '/projects')
     expect(link).toHaveAttribute('data-variant', 'ghost')
     expect(link).not.toHaveAttribute('type')
   })

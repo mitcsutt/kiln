@@ -11,7 +11,7 @@ const meta = {
   title: 'UI/Inputs/SegmentedField',
   component: SegmentedField,
   args: {
-    label: 'Budget period',
+    label: 'Billing period',
     description: 'Totals reset at the start of each',
     options: periods,
     name: 'period',

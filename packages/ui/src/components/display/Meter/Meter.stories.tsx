@@ -2,20 +2,26 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Stack } from '#components/layout/Stack'
 import { Meter } from './Meter'
 
-const aud = new Intl.NumberFormat('en-AU', { style: 'currency', currency: 'AUD' })
+const aud = new Intl.NumberFormat('en-AU', {
+  style: 'currency',
+  currency: 'AUD',
+  maximumFractionDigits: 0,
+})
+
+const gb = (n: number) => `${n.toLocaleString('en-AU')} GB`
 
 const meta = {
   title: 'UI/Display/Meter',
   component: Meter,
   args: {
-    label: 'Groceries',
+    label: 'Storage',
     value: 578.4,
     min: 0,
     max: 680,
     low: 510,
     high: 680,
     optimum: 0,
-    valueLabel: `${aud.format(578.4)} of ${aud.format(680)}`,
+    valueLabel: `${gb(578.4)} of ${gb(680)}`,
     size: 'md',
   },
 } satisfies Meta<typeof Meter>
@@ -25,29 +31,34 @@ type Story = StoryObj<typeof meta>
 
 export const Playground: Story = {}
 
-const categories = [
-  { name: 'Transport', spent: 96, limit: 240 },
-  { name: 'Groceries', spent: 578.4, limit: 680 },
-  { name: 'Dining out', spent: 330, limit: 300 },
+const quotas = [
+  { name: 'Seats', used: 4, limit: 10, unit: (n: number) => `${String(n)} seats` },
+  { name: 'Storage', used: 578.4, limit: 680, unit: gb },
+  {
+    name: 'API requests this month',
+    used: 330_000,
+    limit: 300_000,
+    unit: (n: number) => `${n.toLocaleString('en-AU')} requests`,
+  },
 ]
 
 /**
- * Budget categories at 40%, 85% and 110%. Thresholds are the same for all three
- * (warn from 75%, over the limit is critical); the tone follows on its own.
+ * Plan usage at 40%, 85% and 110%. Thresholds are the same for all three
+ * (warn from 75%, over the quota is critical); the tone follows on its own.
  */
-export const BudgetCategories: Story = {
+export const PlanUsage: Story = {
   render: () => (
     <Stack gap={5}>
-      {categories.map((c) => (
+      {quotas.map((q) => (
         <Meter
-          key={c.name}
-          label={c.name}
-          value={c.spent}
-          max={c.limit}
-          low={c.limit * 0.75}
-          high={c.limit}
+          key={q.name}
+          label={q.name}
+          value={q.used}
+          max={q.limit}
+          low={q.limit * 0.75}
+          high={q.limit}
           optimum={0}
-          valueLabel={`${aud.format(c.spent)} of ${aud.format(c.limit)}`}
+          valueLabel={`${q.unit(q.used)} of ${q.unit(q.limit)}`}
         />
       ))}
     </Stack>
@@ -55,14 +66,14 @@ export const BudgetCategories: Story = {
 }
 
 /**
- * Segments for countable things: training sessions attended out of six this block.
+ * Segments for countable things: onboarding steps finished out of six.
  * `neutral` is the quiet grey for "nothing to report" — it sits back from the toned bars.
  */
 export const Segmented: Story = {
   render: () => (
     <Stack gap={5}>
       <Meter
-        label="Rosa — sessions attended"
+        label="Priya — onboarding steps"
         value={5}
         max={6}
         segments={6}
@@ -71,7 +82,7 @@ export const Segmented: Story = {
         size="lg"
       />
       <Meter
-        label="Jordan — sessions attended"
+        label="Tomás — onboarding steps"
         value={2}
         max={6}
         segments={6}
@@ -80,7 +91,7 @@ export const Segmented: Story = {
         size="lg"
       />
       <Meter
-        label="Amara — sessions attended"
+        label="Hana — onboarding steps"
         value={0}
         max={6}
         segments={6}
@@ -92,25 +103,25 @@ export const Segmented: Story = {
   ),
 }
 
-/** More is better: an emergency fund against its target. */
-export const SavingsGoal: Story = {
+/** More is better: quarterly revenue against its target. */
+export const RevenueTarget: Story = {
   args: {
-    label: 'Emergency fund',
-    value: 6200,
-    max: 10000,
-    low: 3000,
-    high: 8000,
-    optimum: 10000,
-    valueLabel: `${aud.format(6200)} of ${aud.format(10000)}`,
+    label: 'Quarterly revenue',
+    value: 62_000,
+    max: 100_000,
+    low: 30_000,
+    high: 80_000,
+    optimum: 100_000,
+    valueLabel: `${aud.format(62_000)} of ${aud.format(100_000)}`,
   },
 }
 
 export const Sizes: Story = {
   render: () => (
     <Stack gap={5}>
-      <Meter size="sm" label="Utilities" value={0.52} low={0.75} high={1} optimum={0} />
-      <Meter size="md" label="Utilities" value={0.52} low={0.75} high={1} optimum={0} />
-      <Meter size="lg" label="Utilities" value={0.52} low={0.75} high={1} optimum={0} />
+      <Meter size="sm" label="Bandwidth" value={0.52} low={0.75} high={1} optimum={0} />
+      <Meter size="md" label="Bandwidth" value={0.52} low={0.75} high={1} optimum={0} />
+      <Meter size="lg" label="Bandwidth" value={0.52} low={0.75} high={1} optimum={0} />
     </Stack>
   ),
 }

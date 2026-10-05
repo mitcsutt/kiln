@@ -14,12 +14,12 @@ export default function Usage() {
         valueLabel="212 of 320 seats"
       />
       <Meter
-        label="Monthly travel budget"
+        label="Timetable storage"
         value={86}
         max={90}
         high={80}
         optimum={0}
-        valueLabel="£86 of £90"
+        valueLabel="86 GB of 90 GB"
       />
       <Meter label="Bike racks free" value={2} max={12} low={3} optimum={12} segments={12} />
     </Stack>

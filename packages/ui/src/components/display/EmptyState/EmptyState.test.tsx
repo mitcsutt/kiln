@@ -8,14 +8,16 @@ describe('EmptyState', () => {
     render(
       <EmptyState
         ref={ref}
-        title="No expenses yet"
-        description="Add one, or import a CSV from your bank."
-        action={<button type="button">Add expense</button>}
+        title="No invoices yet"
+        description="Create one, or import a CSV from your accounting tool."
+        action={<button type="button">New invoice</button>}
       />,
     )
-    expect(screen.getByRole('heading', { level: 3, name: 'No expenses yet' })).toBeInTheDocument()
-    expect(screen.getByText('Add one, or import a CSV from your bank.')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Add expense' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { level: 3, name: 'No invoices yet' })).toBeInTheDocument()
+    expect(
+      screen.getByText('Create one, or import a CSV from your accounting tool.'),
+    ).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'New invoice' })).toBeInTheDocument()
     expect(ref.current).toHaveAttribute('data-align', 'start')
   })
 

@@ -8,7 +8,7 @@ const meta = {
   title: 'UI/Inputs/Rating',
   component: Rating,
   args: {
-    'aria-label': 'Rate this fixture',
+    'aria-label': 'Rate this release',
     defaultValue: 4,
     max: 5,
     clearable: true,
@@ -42,9 +42,9 @@ export const Playground: Story = {
 export const Sizes: Story = {
   render: (args) => (
     <Stack gap={4}>
-      <Rating {...args} size="sm" aria-label="Rate this fixture, small" />
-      <Rating {...args} size="md" aria-label="Rate this fixture, medium" />
-      <Rating {...args} size="lg" aria-label="Rate this fixture, large" />
+      <Rating {...args} size="sm" aria-label="Rate this release, small" />
+      <Rating {...args} size="md" aria-label="Rate this release, medium" />
+      <Rating {...args} size="lg" aria-label="Rate this release, large" />
     </Stack>
   ),
 }

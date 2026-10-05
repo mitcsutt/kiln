@@ -21,7 +21,7 @@ export type ComboboxFieldProps = ComboboxFieldSingleProps | ComboboxFieldMultipl
  * `multiple`, `creatable`…) and the ref go to the text input; `className`/`style` go to
  * the field wrapper. `onBlur` fires once focus leaves the whole control.
  *
- * <ComboboxField label="Team" options={teams} placeholder="Search 48 nations" />
+ * <ComboboxField label="Country" options={countries} placeholder="Search countries" />
  * <ComboboxField label="Labels" multiple creatable options={labels} maxSelected={5} />
  */
 export const ComboboxField = forwardRef<HTMLInputElement, ComboboxFieldProps>(

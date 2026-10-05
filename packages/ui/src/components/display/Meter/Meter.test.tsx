@@ -3,21 +3,21 @@ import { createRef } from 'react'
 import { Meter } from './Meter'
 import { meterTone } from './meterTone'
 
-const budget = { min: 0, max: 680, low: 510, high: 680, optimum: 0 }
+const quota = { min: 0, max: 680, low: 510, high: 680, optimum: 0 }
 
 describe('meterTone', () => {
-  it('follows <meter> regions when less is better (a budget)', () => {
-    expect(meterTone(272, budget)).toBe('positive') // 40%
-    expect(meterTone(578, budget)).toBe('caution') // 85%
-    expect(meterTone(680, budget)).toBe('caution') // exactly on the limit
-    expect(meterTone(748, budget)).toBe('critical') // 110% — past max still counts
+  it('follows <meter> regions when less is better (a quota)', () => {
+    expect(meterTone(272, quota)).toBe('positive') // 40%
+    expect(meterTone(578, quota)).toBe('caution') // 85%
+    expect(meterTone(680, quota)).toBe('caution') // exactly on the limit
+    expect(meterTone(748, quota)).toBe('critical') // 110% — past max still counts
   })
 
-  it('follows <meter> regions when more is better (savings)', () => {
-    const savings = { min: 0, max: 10_000, low: 3_000, high: 8_000, optimum: 10_000 }
-    expect(meterTone(9_000, savings)).toBe('positive')
-    expect(meterTone(5_000, savings)).toBe('caution')
-    expect(meterTone(1_000, savings)).toBe('critical')
+  it('follows <meter> regions when more is better (a revenue target)', () => {
+    const target = { min: 0, max: 10_000, low: 3_000, high: 8_000, optimum: 10_000 }
+    expect(meterTone(9_000, target)).toBe('positive')
+    expect(meterTone(5_000, target)).toBe('caution')
+    expect(meterTone(1_000, target)).toBe('critical')
   })
 
   it('treats a middle optimum as good in the middle and caution either side', () => {
@@ -31,26 +31,28 @@ describe('meterTone', () => {
 describe('Meter', () => {
   it('is a labelled meter with clamped aria values and value text', () => {
     const ref = createRef<HTMLDivElement>()
-    render(
-      <Meter ref={ref} label="Groceries" value={748} {...budget} valueLabel="$748.00 of $680.00" />,
-    )
-    const meter = screen.getByRole('meter', { name: 'Groceries' })
+    render(<Meter ref={ref} label="Storage" value={748} {...quota} valueLabel="748 GB of 680 GB" />)
+    const meter = screen.getByRole('meter', { name: 'Storage' })
     expect(ref.current).toBe(meter)
     expect(meter).toHaveAttribute('aria-valuenow', '680')
     expect(meter).toHaveAttribute('aria-valuemax', '680')
-    expect(meter).toHaveAttribute('aria-valuetext', '$748.00 of $680.00')
+    expect(meter).toHaveAttribute('aria-valuetext', '748 GB of 680 GB')
     expect(meter).toHaveAttribute('data-tone', 'critical')
     expect(meter).toHaveAttribute('data-over')
   })
 
   it('derives the tone from thresholds at 40%, 85% and 110%', () => {
     const { rerender } = render(
-      <Meter aria-label="Dining out" value={0.4} max={1} low={0.75} high={1} optimum={0} />,
+      <Meter aria-label="API requests" value={0.4} max={1} low={0.75} high={1} optimum={0} />,
     )
     expect(screen.getByRole('meter')).toHaveAttribute('data-tone', 'positive')
-    rerender(<Meter aria-label="Dining out" value={0.85} max={1} low={0.75} high={1} optimum={0} />)
+    rerender(
+      <Meter aria-label="API requests" value={0.85} max={1} low={0.75} high={1} optimum={0} />,
+    )
     expect(screen.getByRole('meter')).toHaveAttribute('data-tone', 'caution')
-    rerender(<Meter aria-label="Dining out" value={1.1} max={1} low={0.75} high={1} optimum={0} />)
+    rerender(
+      <Meter aria-label="API requests" value={1.1} max={1} low={0.75} high={1} optimum={0} />,
+    )
     expect(screen.getByRole('meter')).toHaveAttribute('data-tone', 'critical')
     expect(screen.getByText('110%')).toBeInTheDocument()
   })

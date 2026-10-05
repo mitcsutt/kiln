@@ -15,25 +15,25 @@ export interface StatDelta {
   direction: StatDeltaDirection
   /**
    * Whether the change is good. Defaults from direction (up → positive, down → critical),
-   * so override it when down is good: spending that fell is `direction="down" tone="positive"`.
+   * so override it when down is good: costs that fell are `direction="down" tone="positive"`.
    */
   tone?: StatDeltaTone
 }
 
 export interface StatProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
-  /** What the number is. Sentence case, short: "Spent", "Points", "Left to spend". */
+  /** What the number is. Sentence case, short: "Revenue", "Seats used", "Days left". */
   label: ReactNode
   /** The figure. Usually `<Amount>`/`<Numeral>`; plain strings are set tabular too. */
   value: ReactNode
   /** Change against a comparison period, shown beside the value. */
   delta?: StatDelta
-  /** One line of context under the value: "of $6,200 budgeted", "after 3 matches". */
+  /** One line of context under the value: "of $60,000 target", "after 3 sprints". */
   hint?: ReactNode
   /** Default `md`. `hero` is for the one figure a page is about. */
   size?: StatSize
   /** A hairline above the label — lines up a row of stats like ledger columns. */
   rule?: boolean
-  /** Colour of the value: an overspend in `critical`, the live total in `accent`. Default ink. */
+  /** Colour of the value: an overrun in `critical`, the live total in `accent`. Default ink. */
   tone?: StatTone
 }
 
@@ -41,7 +41,7 @@ export interface StatProps extends Omit<HTMLAttributes<HTMLDivElement>, 'childre
  * A single labelled figure. Typographic, not decorative: label, number, and the change
  * on one baseline — no tile, no icon, no gradient.
  *
- * <Stat label="Spent" value="$4,812.40" delta={{ value: '$212.40', direction: 'up', tone: 'critical' }} />
+ * <Stat label="Costs" value="$4,812.40" delta={{ value: '$212.40', direction: 'up', tone: 'critical' }} />
  */
 export const Stat = forwardRef<HTMLDivElement, StatProps>(function Stat(
   { label, value, delta, hint, size = 'md', rule = false, tone, className, ...rest },

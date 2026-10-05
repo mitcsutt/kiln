@@ -22,10 +22,10 @@ runFieldConformance<string>('color', {
 describe('FormColorField', () => {
   it('binds through the canonical field path and writes a hex colour', async () => {
     const { form, user } = renderForm(
-      (f) => <f.AppField name="colour">{() => <FormColorField label="Team colour" />}</f.AppField>,
+      (f) => <f.AppField name="colour">{() => <FormColorField label="Label colour" />}</f.AppField>,
       { defaultValues: { colour: '' } },
     )
-    await user.type(screen.getByLabelText('Team colour'), '#ff6b57')
+    await user.type(screen.getByLabelText('Label colour'), '#ff6b57')
     expect(form.state.values.colour).toBe('#ff6b57')
   })
 
@@ -34,7 +34,10 @@ describe('FormColorField', () => {
       (f) => (
         <f.AppField name="colour">
           {() => (
-            <FormColorField label="Team colour" swatches={[{ value: '#ff6b57', label: 'Coral' }]} />
+            <FormColorField
+              label="Label colour"
+              swatches={[{ value: '#ff6b57', label: 'Coral' }]}
+            />
           )}
         </f.AppField>
       ),
@@ -45,7 +48,7 @@ describe('FormColorField', () => {
 
   it('falls back to the hex code in view mode when no swatch matches', () => {
     renderForm(
-      (f) => <f.AppField name="colour">{() => <FormColorField label="Team colour" />}</f.AppField>,
+      (f) => <f.AppField name="colour">{() => <FormColorField label="Label colour" />}</f.AppField>,
       { defaultValues: { colour: '#336699' }, formProps: { mode: 'view' } },
     )
     expect(screen.getByText('#336699')).toBeInTheDocument()

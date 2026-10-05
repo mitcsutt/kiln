@@ -141,8 +141,8 @@ describe('compileRules — built-in rules', () => {
 describe('compileRules — messages', () => {
   it('literal message with {value} interpolation', () => {
     expect(
-      message([{ rule: 'min', value: 16, message: 'Players must be {value} or over' }], 12),
-    ).toBe('Players must be 16 or over')
+      message([{ rule: 'min', value: 16, message: 'Members must be {value} or over' }], 12),
+    ).toBe('Members must be 16 or over')
   })
 
   it('$key messages resolve against messages', () => {

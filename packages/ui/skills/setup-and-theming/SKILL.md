@@ -194,4 +194,4 @@ Read a reference when its description matches the task:
 - [Paper](references/paper.md): The neutral default. A typeset proof on good uncoated stock, where the ink is the accent.
 - [Monograph](references/monograph.md): A scholarly monograph read under a desk lamp at night. Blue slate, one ember accent, a big serif display. Dark-first.
 - [Ledger](references/ledger.md): An accountant's ruled book. Green-grey paper, bank-note green, accounting red, and figures set like receipt tape.
-- [Fiesta](references/fiesta.md): A screen-printed matchday poster. Flat spot inks, hard offsets, stadium-signage numerals and springy motion.
+- [Fiesta](references/fiesta.md): A screen-printed festival poster. Flat spot inks, hard offsets, condensed signage numerals and springy motion.

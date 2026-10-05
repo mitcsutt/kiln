@@ -18,12 +18,12 @@ export const Playground: Story = {
   render: (args) => (
     <Inline {...args}>
       {[
-        'Harbour Hawks',
-        'Millpond FC',
-        'Quarry Lane',
-        'Eastgate United',
-        'Westbank Swifts',
-        'Northside Rovers',
+        'Atlas redesign',
+        'Billing migration',
+        'Mobile app',
+        'Help centre',
+        'Search revamp',
+        'Status page',
       ].map((t) => (
         <Cell key={t}>{t}</Cell>
       ))}
@@ -35,12 +35,12 @@ export const Playground: Story = {
 export const HeaderRow: Story = {
   render: () => (
     <Inline justify="between" gap={4} rowGap={3}>
-      <Title level={2}>Transactions</Title>
+      <Title level={2}>Invoices</Title>
       <Inline gap={2}>
         <Button variant="outline" tone="neutral">
           Export CSV
         </Button>
-        <Button>Add expense</Button>
+        <Button>New invoice</Button>
       </Inline>
     </Inline>
   ),
@@ -51,11 +51,11 @@ export const Responsive: Story = {
   render: () => (
     <Stack gap={3}>
       <Inline justify={{ base: 'start', md: 'between' }} gap={3}>
-        <Body>Hawks 3–1 Millpond</Body>
-        <Label>Round 3 · +3 pts</Label>
+        <Body>Atlas redesign</Body>
+        <Label>Sprint 3 · 8 tasks closed</Label>
       </Inline>
       <Inline justify={{ base: 'start', md: 'between' }} gap={3}>
-        <Body>Money left this fortnight</Body>
+        <Body>Outstanding this month</Body>
         <Figure>$1,284.60</Figure>
       </Inline>
     </Stack>

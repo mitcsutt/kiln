@@ -11,7 +11,7 @@ export interface DeltaProps extends HTMLAttributes<HTMLSpanElement> {
   direction: DeltaDirection
   /**
    * Whether the change is good. Defaults from direction (up → positive, down → critical,
-   * flat → neutral); override it when down is good — spending that fell is
+   * flat → neutral); override it when down is good — costs that fell are
    * `direction="down" tone="positive"`.
    */
   tone?: DeltaTone

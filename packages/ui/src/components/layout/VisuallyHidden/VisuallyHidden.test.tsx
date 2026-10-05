@@ -13,8 +13,8 @@ describe('VisuallyHidden', () => {
   })
 
   it('renders headings via `as`', () => {
-    render(<VisuallyHidden as="h2">Group standings</VisuallyHidden>)
-    expect(screen.getByRole('heading', { level: 2, name: 'Group standings' })).toBeInTheDocument()
+    render(<VisuallyHidden as="h2">Open invoices</VisuallyHidden>)
+    expect(screen.getByRole('heading', { level: 2, name: 'Open invoices' })).toBeInTheDocument()
   })
 
   it('marks focusable content so it can reveal on focus', () => {

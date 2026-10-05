@@ -56,7 +56,7 @@ function resolveStatus(step: StepperStep, index: number, currentIndex: number): 
  * for the Back / Next / Submit row and drive both from the same current-step state.
  *
  * <Stepper
- *   steps={[{ value: 'you', label: 'You' }, { value: 'squad', label: 'Squad' }]}
+ *   steps={[{ value: 'you', label: 'You' }, { value: 'team', label: 'Team' }]}
  *   value={step}
  *   onStepSelect={setStep}
  * />

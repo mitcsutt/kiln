@@ -17,22 +17,22 @@ type Story = StoryObj<typeof meta>
 
 export const Playground: Story = {}
 
-/** A squad list's filters: each chip is independent — this is not a radio group. */
+/** A task list's filters: each chip is independent — this is not a radio group. */
 export const FilterBar: Story = {
   render: function Render() {
     const [mine, setMine] = useState(true)
     const [grouped, setGrouped] = useState(false)
-    const [scorers, setScorers] = useState(false)
+    const [overdue, setOverdue] = useState(false)
     return (
       <Inline gap={2}>
         <ToggleChip pressed={mine} onPressedChange={setMine} count={6}>
-          Starters
+          Assigned to me
         </ToggleChip>
         <ToggleChip pressed={grouped} onPressedChange={setGrouped}>
-          Group by position
+          Group by project
         </ToggleChip>
-        <ToggleChip pressed={scorers} onPressedChange={setScorers} count={41}>
-          Scorers only
+        <ToggleChip pressed={overdue} onPressedChange={setOverdue} count={4}>
+          Overdue only
         </ToggleChip>
       </Inline>
     )
@@ -43,18 +43,18 @@ export const Sizes: Story = {
   render: () => (
     <Stack gap={4}>
       <Inline gap={2}>
-        <ToggleChip size="sm">Groceries</ToggleChip>
+        <ToggleChip size="sm">Design</ToggleChip>
         <ToggleChip size="sm" defaultPressed>
-          Utilities
+          Engineering
         </ToggleChip>
         <ToggleChip size="sm" count={3}>
           Recurring
         </ToggleChip>
       </Inline>
       <Inline gap={2}>
-        <ToggleChip size="md">Groceries</ToggleChip>
+        <ToggleChip size="md">Design</ToggleChip>
         <ToggleChip size="md" defaultPressed>
-          Utilities
+          Engineering
         </ToggleChip>
         <ToggleChip size="md" count={3}>
           Recurring
@@ -70,10 +70,10 @@ export const States: Story = {
       <ToggleChip>Off</ToggleChip>
       <ToggleChip defaultPressed>On</ToggleChip>
       <ToggleChip defaultPressed icon={<CheckIcon />}>
-        Reconciled
+        Reviewed
       </ToggleChip>
       <ToggleChip disabled count={0}>
-        Eliminated
+        Archived
       </ToggleChip>
     </Inline>
   ),

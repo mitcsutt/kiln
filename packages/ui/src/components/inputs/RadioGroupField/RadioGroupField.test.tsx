@@ -11,8 +11,10 @@ const periods = [
 
 describe('RadioGroupField', () => {
   it('renders a radiogroup inside a fieldset named by the legend (once), with option descriptions', () => {
-    render(<RadioGroupField label="Pay period" options={periods} defaultValue="monthly" required />)
-    const fieldset = screen.getByRole('group', { name: 'Pay period' })
+    render(
+      <RadioGroupField label="Billing period" options={periods} defaultValue="monthly" required />,
+    )
+    const fieldset = screen.getByRole('group', { name: 'Billing period' })
     const group = screen.getByRole('radiogroup')
     expect(fieldset).toContainElement(group)
     // The legend already names the fieldset: the radiogroup doesn't repeat it.
@@ -28,7 +30,7 @@ describe('RadioGroupField', () => {
     const onValueChange = vi.fn()
     render(
       <RadioGroupField
-        label="Pay period"
+        label="Billing period"
         options={periods}
         defaultValue="weekly"
         onValueChange={onValueChange}
@@ -47,7 +49,7 @@ describe('RadioGroupField', () => {
     const onValueChange = vi.fn()
     render(
       <RadioGroupField
-        label="Pay period"
+        label="Billing period"
         options={periods}
         value="weekly"
         onValueChange={onValueChange}
@@ -62,7 +64,7 @@ describe('RadioGroupField', () => {
     const onValueChange = vi.fn()
     render(
       <RadioGroupField
-        label="Pay period"
+        label="Billing period"
         options={periods}
         defaultValue="weekly"
         readOnly
@@ -81,7 +83,7 @@ describe('RadioGroupField', () => {
       <form>
         <RadioGroupField
           ref={ref}
-          label="Pay period"
+          label="Billing period"
           name="period"
           options={periods}
           defaultValue="monthly"
@@ -101,7 +103,7 @@ describe('RadioGroupField', () => {
     render(
       <>
         <RadioGroupField
-          label="Pay period"
+          label="Billing period"
           options={periods}
           defaultValue="weekly"
           onBlur={onBlur}
@@ -117,8 +119,8 @@ describe('RadioGroupField', () => {
   })
 
   it('passes layout to the fieldset', () => {
-    render(<RadioGroupField label="Pay period" options={periods} layout="horizontal" />)
-    expect(screen.getByRole('group', { name: 'Pay period' })).toHaveAttribute(
+    render(<RadioGroupField label="Billing period" options={periods} layout="horizontal" />)
+    expect(screen.getByRole('group', { name: 'Billing period' })).toHaveAttribute(
       'data-layout',
       'horizontal',
     )

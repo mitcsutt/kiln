@@ -4,22 +4,22 @@ import { createRef } from 'react'
 import { Marquee } from './Marquee'
 import { must } from '#test/must'
 
-const scores = ['Hawks 2–1 Swifts', 'Quarry Lane 0–0 Riverside', 'Rovers 3–1 Millpond']
+const statuses = ['Atlas 2.4 deploying', 'Search reindexed', 'Mobile 3.1 shipped']
 
 describe('Marquee', () => {
   it('is a named region and forwards refs', () => {
     const ref = createRef<HTMLDivElement>()
-    render(<Marquee ref={ref} label="Live scores" items={scores} />)
-    const region = screen.getByRole('region', { name: 'Live scores' })
+    render(<Marquee ref={ref} label="Deploy status" items={statuses} />)
+    const region = screen.getByRole('region', { name: 'Deploy status' })
     expect(ref.current).toBe(region)
   })
 
   it('renders the content twice but hides the copy from assistive tech and the tab order', () => {
     render(
       <Marquee
-        label="Live scores"
-        items={scores.map((s) => (
-          <a key={s} href="#match">
+        label="Deploy status"
+        items={statuses.map((s) => (
+          <a key={s} href="#deploy">
             {s}
           </a>
         ))}
@@ -31,14 +31,20 @@ describe('Marquee', () => {
     expect(lists[0]).not.toHaveAttribute('aria-hidden')
     expect(lists[1]).toHaveAttribute('aria-hidden', 'true')
     expect(lists[1]).toHaveAttribute('inert')
-    // Accessible tree sees each score once.
+    // Accessible tree sees each status once.
     expect(within(region).getAllByRole('link')).toHaveLength(3)
-    expect(within(region).getAllByRole('link', { name: 'Hawks 2–1 Swifts' })).toHaveLength(1)
+    expect(within(region).getAllByRole('link', { name: 'Atlas 2.4 deploying' })).toHaveLength(1)
   })
 
   it('exposes surface, direction and speed as data attributes', () => {
     render(
-      <Marquee label="Skills" items={scores} surface="inverse" direction="right" speed="slow" />,
+      <Marquee
+        label="Features"
+        items={statuses}
+        surface="inverse"
+        direction="right"
+        speed="slow"
+      />,
     )
     const region = screen.getByRole('region')
     expect(region).toHaveAttribute('data-surface', 'inverse')
@@ -49,9 +55,9 @@ describe('Marquee', () => {
   })
 
   it('pauses and resumes from the pause control', async () => {
-    render(<Marquee label="Live scores" items={scores} />)
+    render(<Marquee label="Deploy status" items={statuses} />)
     const region = screen.getByRole('region')
-    const toggle = screen.getByRole('button', { name: 'Pause Live scores' })
+    const toggle = screen.getByRole('button', { name: 'Pause Deploy status' })
     expect(toggle).toHaveAttribute('aria-pressed', 'false')
     await userEvent.click(toggle)
     expect(toggle).toHaveAttribute('aria-pressed', 'true')
@@ -61,14 +67,14 @@ describe('Marquee', () => {
   })
 
   it('can drop the pause control and hover pausing', () => {
-    render(<Marquee label="Skills" items={scores} pauseControl={false} pauseOnHover={false} />)
+    render(<Marquee label="Features" items={statuses} pauseControl={false} pauseOnHover={false} />)
     expect(screen.queryByRole('button')).not.toBeInTheDocument()
     expect(screen.getByRole('region')).not.toHaveAttribute('data-pause-on-hover')
   })
 
   it('accepts children as items', () => {
     render(
-      <Marquee label="Skills">
+      <Marquee label="Features">
         <span>TypeScript</span>
         <span>React</span>
       </Marquee>,

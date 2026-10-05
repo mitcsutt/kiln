@@ -6,8 +6,8 @@ import { Rating } from './Rating'
 
 describe('Rating', () => {
   it('is a radiogroup of named stars; stars up to the value are filled', () => {
-    render(<Rating aria-label="Rate this fixture" defaultValue={3} />)
-    expect(screen.getByRole('radiogroup', { name: 'Rate this fixture' })).toBeInTheDocument()
+    render(<Rating aria-label="Rate this release" defaultValue={3} />)
+    expect(screen.getByRole('radiogroup', { name: 'Rate this release' })).toBeInTheDocument()
     const stars = screen.getAllByRole('radio')
     expect(stars).toHaveLength(5)
     expect(screen.getByRole('radio', { name: '3 of 5' })).toHaveAttribute('aria-checked', 'true')
@@ -22,7 +22,7 @@ describe('Rating', () => {
 
   it('click chooses; arrow keys move and choose; uncontrolled', async () => {
     const onValueChange = vi.fn()
-    render(<Rating aria-label="Rate this fixture" onValueChange={onValueChange} />)
+    render(<Rating aria-label="Rate this release" onValueChange={onValueChange} />)
     await userEvent.click(screen.getByRole('radio', { name: '2 of 5' }))
     expect(onValueChange).toHaveBeenLastCalledWith(2)
     await userEvent.keyboard('{ArrowRight>}')
@@ -37,7 +37,7 @@ describe('Rating', () => {
     const onValueChange = vi.fn()
     render(
       <Rating
-        aria-label="Rate this fixture"
+        aria-label="Rate this release"
         defaultValue={4}
         clearable
         onValueChange={onValueChange}
@@ -50,7 +50,7 @@ describe('Rating', () => {
 
   it('not clearable: clicking the current rating keeps it', async () => {
     const onValueChange = vi.fn()
-    render(<Rating aria-label="Rate this fixture" defaultValue={4} onValueChange={onValueChange} />)
+    render(<Rating aria-label="Rate this release" defaultValue={4} onValueChange={onValueChange} />)
     await userEvent.click(screen.getByRole('radio', { name: '4 of 5' }))
     expect(onValueChange).not.toHaveBeenCalled()
   })
@@ -58,17 +58,17 @@ describe('Rating', () => {
   it('is controlled; null shows no stars', async () => {
     const onValueChange = vi.fn()
     const { rerender } = render(
-      <Rating aria-label="Rate this fixture" value={null} onValueChange={onValueChange} />,
+      <Rating aria-label="Rate this release" value={null} onValueChange={onValueChange} />,
     )
     await userEvent.click(screen.getByRole('radio', { name: '5 of 5' }))
     expect(onValueChange).toHaveBeenCalledWith(5)
     expect(screen.getByRole('radio', { name: '5 of 5' })).toHaveAttribute('aria-checked', 'false')
-    rerender(<Rating aria-label="Rate this fixture" value={5} onValueChange={onValueChange} />)
+    rerender(<Rating aria-label="Rate this release" value={5} onValueChange={onValueChange} />)
     expect(screen.getByRole('radio', { name: '5 of 5' })).toHaveAttribute('aria-checked', 'true')
   })
 
   it('hover previews the rating without choosing it', async () => {
-    render(<Rating aria-label="Rate this fixture" defaultValue={1} />)
+    render(<Rating aria-label="Rate this release" defaultValue={1} />)
     await userEvent.hover(screen.getByRole('radio', { name: '4 of 5' }))
     expect(screen.getByRole('radiogroup')).toHaveAttribute('data-previewing')
     expect(screen.getByRole('radio', { name: '4 of 5' })).toHaveAttribute('data-filled')
@@ -92,7 +92,7 @@ describe('Rating', () => {
     const onValueChange = vi.fn()
     const { rerender } = render(
       <Rating
-        aria-label="Rate this fixture"
+        aria-label="Rate this release"
         defaultValue={2}
         readOnly
         onValueChange={onValueChange}
@@ -102,14 +102,14 @@ describe('Rating', () => {
     await userEvent.click(screen.getByRole('radio', { name: '5 of 5' }))
     expect(onValueChange).not.toHaveBeenCalled()
     expect(screen.getByRole('radio', { name: '2 of 5' })).toHaveAttribute('aria-checked', 'true')
-    rerender(<Rating aria-label="Rate this fixture" disabled />)
+    rerender(<Rating aria-label="Rate this release" disabled />)
     for (const star of screen.getAllByRole('radio')) expect(star).toBeDisabled()
   })
 
   it('emits a hidden input when rated', async () => {
     const { container } = render(
       <form>
-        <Rating aria-label="Rate this fixture" name="rating" clearable />
+        <Rating aria-label="Rate this release" name="rating" clearable />
       </form>,
     )
     const form = container.querySelector('form')
@@ -124,13 +124,13 @@ describe('Rating', () => {
     const onBlur = vi.fn()
     render(
       <>
-        <Field label="Rate this fixture" error="Rate it to continue" required>
+        <Field label="Rate this release" error="Rate it to continue" required>
           <Rating ref={ref} onBlur={onBlur} />
         </Field>
         <button type="button">Save</button>
       </>,
     )
-    const group = screen.getByRole('radiogroup', { name: 'Rate this fixture' })
+    const group = screen.getByRole('radiogroup', { name: 'Rate this release' })
     expect(ref.current).toBe(group)
     expect(group).toHaveAttribute('aria-invalid', 'true')
     expect(group).toHaveAttribute('aria-required', 'true')

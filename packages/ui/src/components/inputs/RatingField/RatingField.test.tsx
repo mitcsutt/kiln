@@ -10,11 +10,11 @@ describe('RatingField', () => {
       <RatingField
         ref={ref}
         id="rating"
-        label="Rate this fixture"
+        label="Rate this release"
         description="Only you see this"
       />,
     )
-    const group = screen.getByRole('radiogroup', { name: 'Rate this fixture' })
+    const group = screen.getByRole('radiogroup', { name: 'Rate this release' })
     expect(ref.current).toBe(group)
     expect(group).toHaveAttribute('id', 'rating')
     expect(group).toHaveAccessibleDescription('Only you see this')
@@ -24,7 +24,7 @@ describe('RatingField', () => {
     const onValueChange = vi.fn()
     render(
       <RatingField
-        label="Rate this fixture"
+        label="Rate this release"
         defaultValue={3}
         clearable
         onValueChange={onValueChange}
@@ -40,7 +40,7 @@ describe('RatingField', () => {
     const onValueChange = vi.fn()
     render(
       <RatingField
-        label="Rate this fixture"
+        label="Rate this release"
         readOnly
         error="Required"
         defaultValue={2}

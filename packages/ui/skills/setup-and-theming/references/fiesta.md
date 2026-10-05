@@ -2,11 +2,11 @@
 
 # Fiesta
 
-> A screen-printed matchday poster. Flat spot inks, hard offsets, stadium-signage numerals and springy motion.
+> A screen-printed festival poster. Flat spot inks, hard offsets, condensed signage numerals and springy motion.
 
 Source: https://kiln.mitchellsutton.com/docs/ui/themes/fiesta
 
-_A screen-printed matchday poster and sticker album._ Screen printing can't do gradients, so neither does Fiesta: flat spot inks on apricot poster stock, everything keylined in aubergine, and a hard misregistered offset where other themes have a soft shadow.
+_A screen-printed festival poster and sticker album._ Screen printing can't do gradients, so neither does Fiesta: flat spot inks on apricot poster stock, everything keylined in aubergine, and a hard misregistered offset where other themes have a soft shadow.
 
 
 ## Use it
@@ -21,12 +21,12 @@ import { ThemeProvider } from '@mitcsutt/kiln-ui'
 </ThemeProvider>
 ```
 
-Fiesta's two faces are declared in its own stylesheet, so they cost nothing unless you import it. It's light-first ("day match"); dark mode is the floodlit night game.
+Fiesta's two faces are declared in its own stylesheet, so they cost nothing unless you import it. It's light-first (the daytime show); dark mode is the floodlit night show.
 
 ## The idea, applied
 
 - **Colour.** Flat spot inks (coral accent, gold highlight, teal positive) on apricot poster stock, all keylined in aubergine ink. Night mode is a floodlit aubergine. A 6% halftone dot screen on the canvas, and no gradients anywhere.
-- **Type.** Big Shoulders, a stadium-signage condensed face, for headings (in capitals), scores and numerals, and Bricolage Grotesque, ink-trapped and a little mischievous, for text. A 1.28 ratio.
+- **Type.** Big Shoulders, a condensed signage face, for headings (in capitals), figures and numerals, and Bricolage Grotesque, ink-trapped and a little mischievous, for text. A 1.28 ratio.
 - **Shape.** 2px ink borders, pills for actions and chips, 18px surfaces, round avatars.
 - **Depth.** The misregistered hard offset (`4px 4px 0` in ink), which presses flat (`--active-shift: 2px`) when you press a control.
 - **Motion.** An overshooting spring: things land with a bump.

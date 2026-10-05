@@ -12,7 +12,7 @@ const meta = {
   title: 'UI/Inputs/RangeSlider',
   component: RangeSlider,
   args: {
-    'aria-label': 'Budget range',
+    'aria-label': 'Price range',
     min: 500,
     max: 5000,
     step: 100,
@@ -38,7 +38,7 @@ type Story = StoryObj<typeof meta>
 export const Playground: Story = {}
 
 /** £500–£5,000, with the ends and the midpoint marked. */
-export const BudgetRange: Story = {
+export const PriceRange: Story = {
   args: {
     marks: [
       { value: 500, label: '£500' },
@@ -48,15 +48,15 @@ export const BudgetRange: Story = {
   },
 }
 
-export const KickOffWindow: Story = {
+export const MeetingWindow: Story = {
   args: {
-    'aria-label': 'Kick-off window',
+    'aria-label': 'Meeting window',
     min: 12,
     max: 22,
     step: 1,
     defaultValue: [15, 20],
     minStepsBetweenThumbs: 1,
-    thumbLabels: ['Earliest kick-off', 'Latest kick-off'],
+    thumbLabels: ['Earliest start', 'Latest start'],
     formatOptions: { style: 'unit', unit: 'hour' },
   },
 }

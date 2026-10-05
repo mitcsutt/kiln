@@ -13,24 +13,24 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-/** Always tabular, always the theme's figure face: Newsreader's partner grotesk, stadium numerals, receipt-tape mono. */
+/** Always tabular, always the theme's figure face: Newsreader's partner grotesk, poster numerals, receipt-tape mono. */
 export const Playground: Story = {}
 
 export const Formats: Story = {
   render: () => (
     <Stack gap={3}>
       <Text>
-        Tickets requested: <Numeral value={6100000} format={{ notation: 'compact' }} />
+        API requests this month: <Numeral value={6100000} format={{ notation: 'compact' }} />
       </Text>
       <Text>
-        Capacity of Harbour Park: <Numeral value={83264} />
+        Active seats across all plans: <Numeral value={83264} />
       </Text>
       <Text>
-        Savings rate:{' '}
+        Trial conversion rate:{' '}
         <Numeral value={0.184} format={{ style: 'percent', maximumFractionDigits: 1 }} />
       </Text>
       <Text>
-        Distance to the stadium:{' '}
+        Distance to the office:{' '}
         <Numeral value={12.4} format={{ style: 'unit', unit: 'kilometer' }} />
       </Text>
     </Stack>
@@ -42,14 +42,14 @@ export const SignAndTone: Story = {
   render: () => (
     <Stack gap={2}>
       {[
-        ['Harbour Hawks', 5],
-        ['Eastgate United', 2],
-        ['Quarry Lane', 0],
-        ['Westbank Swifts', -7],
-      ].map(([team, gd]) => (
-        <Inline key={team} justify="between" gap={4} style={{ maxWidth: '16rem' }}>
-          <Text as="span">{team}</Text>
-          <Numeral value={gd as number} signDisplay="exceptZero" tone="auto" />
+        ['Atlas redesign', 5],
+        ['Billing migration', 2],
+        ['Mobile app', 0],
+        ['Help centre', -7],
+      ].map(([project, change]) => (
+        <Inline key={project} justify="between" gap={4} style={{ maxWidth: '16rem' }}>
+          <Text as="span">{project}</Text>
+          <Numeral value={change as number} signDisplay="exceptZero" tone="auto" />
         </Inline>
       ))}
     </Stack>
@@ -72,14 +72,14 @@ export const PrefixAndSuffix: Story = {
   render: () => (
     <Stack gap={4}>
       <Inline gap={6} align="baseline">
-        <Numeral value={47} suffix=" pts" size="2xl" />
+        <Numeral value={47} suffix=" seats" size="2xl" />
         <Numeral value={3} prefix="#" size="2xl" tone="muted" />
         <Numeral value={1.8} suffix="×" format={{ maximumFractionDigits: 1 }} size="2xl" />
       </Inline>
       <Text>
-        Spain are{' '}
-        <Numeral value={2.35} prefix="≈" suffix=" goals" format={{ maximumFractionDigits: 2 }} /> a
-        game this tournament.
+        The team closes{' '}
+        <Numeral value={2.35} prefix="≈" suffix=" tasks" format={{ maximumFractionDigits: 2 }} /> a
+        day this sprint.
       </Text>
     </Stack>
   ),

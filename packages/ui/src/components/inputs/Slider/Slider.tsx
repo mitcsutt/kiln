@@ -43,7 +43,7 @@ export interface SliderProps extends Omit<
  * `aria-label`. The ref and `id` go to the thumb — the focusable `role="slider"`;
  * `className`/`style` and other props go to the wrapper. `onBlur` fires when focus leaves.
  *
- * <Slider aria-label="Savings rate" defaultValue={20} step={5} showValue formatOptions={{ style: 'unit', unit: 'percent' }} />
+ * <Slider aria-label="Discount rate" defaultValue={20} step={5} showValue formatOptions={{ style: 'unit', unit: 'percent' }} />
  */
 export const Slider = markFieldAware(
   forwardRef<HTMLSpanElement, SliderProps>(function Slider(

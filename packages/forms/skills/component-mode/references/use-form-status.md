@@ -37,6 +37,8 @@ export default function Usage() {
 
 `isDirty` compares the current values with the baseline (the defaults, or the last saved values), so undoing an edit makes the form clean again. Inside a `Form`, the `form` argument is optional.
 
+## API
+
 ```ts
 declare function useFormStatus(form?: AnyKitForm | undefined): FormStatusState
 ```

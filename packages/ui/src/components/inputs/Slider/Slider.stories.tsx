@@ -6,7 +6,7 @@ const meta = {
   title: 'UI/Inputs/Slider',
   component: Slider,
   args: {
-    'aria-label': 'Savings rate',
+    'aria-label': 'Discount rate',
     defaultValue: 20,
     min: 0,
     max: 50,
@@ -33,7 +33,7 @@ export const Playground: Story = {}
 /** Marks label the stops; a thumb on a mark reads the mark's label to screen readers. */
 export const WithMarks: Story = {
   args: {
-    'aria-label': 'Weekly grocery budget',
+    'aria-label': 'Hourly rate',
     min: 100,
     max: 300,
     step: 10,

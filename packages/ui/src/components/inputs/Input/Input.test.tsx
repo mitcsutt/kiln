@@ -9,16 +9,16 @@ describe('Input', () => {
     render(
       <Input
         ref={ref}
-        name="payee"
-        placeholder="Corner Grocer"
+        name="client"
+        placeholder="Northwind Studio"
         className="custom"
-        aria-label="Payee"
+        aria-label="Client"
       />,
     )
-    const input = screen.getByRole('textbox', { name: 'Payee' })
+    const input = screen.getByRole('textbox', { name: 'Client' })
     expect(ref.current).toBe(input)
-    expect(input).toHaveAttribute('name', 'payee')
-    expect(input).toHaveAttribute('placeholder', 'Corner Grocer')
+    expect(input).toHaveAttribute('name', 'client')
+    expect(input).toHaveAttribute('placeholder', 'Northwind Studio')
     expect(input.parentElement).toHaveClass('custom')
   })
 
@@ -42,15 +42,15 @@ describe('Input', () => {
 
   it('works controlled and uncontrolled', async () => {
     const onChange = vi.fn()
-    render(<Input aria-label="Payee" defaultValue="Fresh " onChange={onChange} />)
+    render(<Input aria-label="Client" defaultValue="Orchard " onChange={onChange} />)
     const input = screen.getByRole('textbox')
-    await userEvent.type(input, 'Mkt')
-    expect(input).toHaveValue('Fresh Mkt')
+    await userEvent.type(input, 'Co.')
+    expect(input).toHaveValue('Orchard Co.')
     expect(onChange).toHaveBeenCalledTimes(3)
   })
 
   it('marks disabled on the box and the input', () => {
-    render(<Input aria-label="Payee" disabled />)
+    render(<Input aria-label="Client" disabled />)
     const input = screen.getByRole('textbox')
     expect(input).toBeDisabled()
     expect(input.parentElement).toHaveAttribute('data-disabled')

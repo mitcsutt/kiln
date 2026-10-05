@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { DropdownMenu } from './DropdownMenu'
 
 function OwnerActions({ onSelect }: { onSelect?: (value: string) => void }) {
-  const [sort, setSort] = useState('points')
+  const [sort, setSort] = useState('date')
   const [live, setLive] = useState(true)
   return (
     <DropdownMenu>
@@ -18,12 +18,12 @@ function OwnerActions({ onSelect }: { onSelect?: (value: string) => void }) {
           Live updates
         </DropdownMenu.CheckboxItem>
         <DropdownMenu.RadioGroup value={sort} onValueChange={setSort}>
-          <DropdownMenu.RadioItem value="points">Sort by points</DropdownMenu.RadioItem>
-          <DropdownMenu.RadioItem value="goals">Sort by goals</DropdownMenu.RadioItem>
+          <DropdownMenu.RadioItem value="date">Sort by date</DropdownMenu.RadioItem>
+          <DropdownMenu.RadioItem value="name">Sort by name</DropdownMenu.RadioItem>
         </DropdownMenu.RadioGroup>
         <DropdownMenu.Separator />
         <DropdownMenu.Item tone="critical" onSelect={() => onSelect?.('remove')}>
-          Remove from team
+          Remove from workspace
         </DropdownMenu.Item>
       </DropdownMenu.Content>
     </DropdownMenu>
@@ -40,7 +40,7 @@ describe('DropdownMenu', () => {
       'aria-checked',
       'true',
     )
-    expect(screen.getByRole('menuitemradio', { name: 'Sort by points' })).toHaveAttribute(
+    expect(screen.getByRole('menuitemradio', { name: 'Sort by date' })).toHaveAttribute(
       'aria-checked',
       'true',
     )
@@ -52,7 +52,7 @@ describe('DropdownMenu', () => {
     render(<OwnerActions onSelect={onSelect} />)
     screen.getByRole('button', { name: 'Noor’s options' }).focus()
     await userEvent.keyboard('{Enter}')
-    const remove = screen.getByRole('menuitem', { name: 'Remove from team' })
+    const remove = screen.getByRole('menuitem', { name: 'Remove from workspace' })
     expect(remove).toHaveAttribute('data-tone', 'critical')
     await userEvent.keyboard('{End}')
     expect(remove).toHaveAttribute('data-highlighted')
@@ -72,9 +72,9 @@ describe('DropdownMenu', () => {
       'aria-checked',
       'false',
     )
-    await userEvent.click(screen.getByRole('menuitemradio', { name: 'Sort by goals' }))
+    await userEvent.click(screen.getByRole('menuitemradio', { name: 'Sort by name' }))
     await userEvent.click(trigger)
-    expect(screen.getByRole('menuitemradio', { name: 'Sort by goals' })).toHaveAttribute(
+    expect(screen.getByRole('menuitemradio', { name: 'Sort by name' })).toHaveAttribute(
       'aria-checked',
       'true',
     )

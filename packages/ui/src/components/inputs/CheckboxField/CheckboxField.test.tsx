@@ -22,7 +22,7 @@ describe('CheckboxField', () => {
   it('clicking an indeterminate box reports true', async () => {
     const onCheckedChange = vi.fn()
     render(
-      <CheckboxField label="All bills" checked="indeterminate" onCheckedChange={onCheckedChange} />,
+      <CheckboxField label="All tasks" checked="indeterminate" onCheckedChange={onCheckedChange} />,
     )
     expect(screen.getByRole('checkbox')).toHaveAttribute('aria-checked', 'mixed')
     await userEvent.click(screen.getByRole('checkbox'))

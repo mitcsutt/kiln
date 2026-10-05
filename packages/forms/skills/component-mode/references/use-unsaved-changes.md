@@ -35,6 +35,8 @@ export default function Usage() {
 
 Pass `when: false` to switch the guard off, for example while a save is in flight.
 
+## API
+
 ```ts
 declare function useUnsavedChanges(form: AnyKitForm, opts?: { when?: boolean | undefined; }): boolean
 ```

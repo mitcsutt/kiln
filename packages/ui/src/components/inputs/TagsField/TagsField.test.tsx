@@ -43,13 +43,13 @@ describe('TagsField', () => {
 
   it('passes required, readOnly, disabled and validating through the Field', () => {
     const { rerender } = render(
-      <TagsField label="Labels" required readOnly validating defaultValue={['Rent']} />,
+      <TagsField label="Labels" required readOnly validating defaultValue={['Billing']} />,
     )
     const input = screen.getByRole('textbox')
     expect(input).toHaveAttribute('aria-required', 'true')
     expect(input).toHaveAttribute('readonly')
     expect(input).toHaveAttribute('aria-busy', 'true')
-    expect(screen.queryByRole('button', { name: 'Remove Rent' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Remove Billing' })).not.toBeInTheDocument()
     rerender(<TagsField label="Labels" disabled />)
     expect(input).toBeDisabled()
   })
@@ -62,23 +62,23 @@ describe('TagsField', () => {
       <TagsField
         label="Labels"
         name="labels"
-        defaultValue={['Rent']}
+        defaultValue={['Billing']}
         onValueChange={onValueChange}
         onReject={onReject}
       />,
     )
-    await user.type(screen.getByRole('textbox'), 'Fuel{Enter}rent{Enter}')
-    expect(onValueChange).toHaveBeenNthCalledWith(1, ['Rent', 'Fuel'])
-    // Duplicates compare the normalised text exactly: 'rent' is a different tag.
-    expect(onValueChange).toHaveBeenLastCalledWith(['Rent', 'Fuel', 'rent'])
+    await user.type(screen.getByRole('textbox'), 'Hosting{Enter}billing{Enter}')
+    expect(onValueChange).toHaveBeenNthCalledWith(1, ['Billing', 'Hosting'])
+    // Duplicates compare the normalised text exactly: 'billing' is a different tag.
+    expect(onValueChange).toHaveBeenLastCalledWith(['Billing', 'Hosting', 'billing'])
     expect(onReject).not.toHaveBeenCalled()
-    await user.type(screen.getByRole('textbox'), 'Rent{Enter}')
-    expect(onReject).toHaveBeenCalledWith('Rent', 'duplicate')
+    await user.type(screen.getByRole('textbox'), 'Billing{Enter}')
+    expect(onReject).toHaveBeenCalledWith('Billing', 'duplicate')
     expect(
       [...container.querySelectorAll<HTMLInputElement>('input[name="labels"]')].map(
         (input) => input.value,
       ),
-    ).toEqual(['Rent', 'Fuel', 'rent'])
+    ).toEqual(['Billing', 'Hosting', 'billing'])
   })
 
   it('onBlur fires when focus leaves the whole control', async () => {
@@ -86,7 +86,7 @@ describe('TagsField', () => {
     const onBlur = vi.fn()
     render(
       <>
-        <TagsField label="Labels" defaultValue={['Rent']} onBlur={onBlur} />
+        <TagsField label="Labels" defaultValue={['Billing']} onBlur={onBlur} />
         <button type="button">Next</button>
       </>,
     )

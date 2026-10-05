@@ -53,7 +53,7 @@ export const THEME_META: Record<BuiltInThemeName, ThemeMeta> = {
   fiesta: {
     label: 'Fiesta',
     description:
-      'A screen-printed matchday poster. Flat spot inks, hard offsets, chunky condensed type, springy motion.',
+      'A screen-printed festival poster. Flat spot inks, hard offsets, chunky condensed type, springy motion.',
     stylesheet: '@mitcsutt/kiln-ui/themes/fiesta.css',
   },
 }

@@ -35,7 +35,7 @@ const percent = (value: number, max: number) => `${String(Math.round((value / ma
 
 /**
  * How far along a task is: an upload, an import, a sync in progress.
- * For a quantity against a limit (spent vs budget) use `Meter` instead.
+ * For a quantity against a limit (usage vs quota) use `Meter` instead.
  *
  * `ref` and native/ARIA props land on the `progressbar` element; `className` and `style`
  * on the outer wrapper (label row + track).

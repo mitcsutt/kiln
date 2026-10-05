@@ -42,9 +42,9 @@ export const States: Story = {
 export const Settings: Story = {
   render: () => (
     <Stack gap={4}>
-      <Switch label="Email me when my club kicks off" defaultChecked />
-      <Switch label="Show other members' reactions" defaultChecked />
-      <Switch label="Reduce motion on the table" />
+      <Switch label="Email me when a release ships" defaultChecked />
+      <Switch label="Show other members' comments" defaultChecked />
+      <Switch label="Reduce motion on the board" />
     </Stack>
   ),
 }

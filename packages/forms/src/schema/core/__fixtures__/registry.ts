@@ -108,18 +108,18 @@ export interface TestRegistry {
 }
 
 /** A custom node component's shape (render-side `defineCustomNode` returns something like this). */
-type TeamPreview = (props: { props: { teamId: string; compact?: boolean } }) => null
+type ProjectPreview = (props: { props: { projectId: string; compact?: boolean } }) => null
 
 export interface TestExtras {
-  loaders: { teams: OptionsLoader<string>; merchants: OptionsLoader<string> }
+  loaders: { projects: OptionsLoader<string>; merchants: OptionsLoader<string> }
   validators: { uniqueEmail: NamedValidator<string>; ukPostcode: NamedValidator<string> }
   computers: { remainder: Computer<number> }
-  nodes: { teamPreview: TeamPreview }
+  nodes: { projectPreview: ProjectPreview }
 }
 
 export const testLoaders = {
-  teams: defineLoader<string>(() =>
-    Promise.resolve([{ value: 'riverside', label: 'Riverside Rovers' }]),
+  projects: defineLoader<string>(() =>
+    Promise.resolve([{ value: 'atlas', label: 'Atlas redesign' }]),
   ),
   merchants: defineLoader<string>(() =>
     Promise.resolve([{ value: 'northgate', label: 'Northgate Stationers' }]),
@@ -186,5 +186,5 @@ export const testRegistryNames = {
   loaders: testLoaders,
   validators: testValidators,
   computers: testComputers,
-  nodes: ['teamPreview'],
+  nodes: ['projectPreview'],
 }

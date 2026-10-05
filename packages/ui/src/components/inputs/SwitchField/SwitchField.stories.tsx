@@ -6,7 +6,7 @@ const meta = {
   title: 'UI/Inputs/SwitchField',
   component: SwitchField,
   args: {
-    label: 'Email me when rent is due',
+    label: 'Email me when an invoice is due',
     description: 'Three days before the 1st of each month',
     defaultChecked: true,
     disabled: false,
@@ -29,18 +29,18 @@ export const SettingsList: Story = {
   render: () => (
     <Stack gap={5} dividers style={{ maxInlineSize: '28rem' }}>
       <SwitchField
-        label="Email me when rent is due"
+        label="Email me when an invoice is due"
         description="Three days before the 1st"
         defaultChecked
       />
       <SwitchField
-        label="Round transactions to the nearest pound"
-        description="Applies to new transactions only"
+        label="Round invoice totals to the nearest pound"
+        description="Applies to new invoices only"
       />
-      <SwitchField label="Share this budget with Amara" defaultChecked />
+      <SwitchField label="Share this project with Amara" defaultChecked />
       <SwitchField
-        label="Sync with your bank"
-        description="Your bank connection expired on 2 October"
+        label="Sync with your calendar"
+        description="Your calendar connection expired on 2 October"
         readOnly
       />
     </Stack>
@@ -49,11 +49,11 @@ export const SettingsList: Story = {
 
 export const WithError: Story = {
   args: {
-    label: 'Accept the league rules',
+    label: 'Accept the terms of service',
     description: undefined,
     defaultChecked: false,
     required: true,
-    error: 'Accept the league rules to register your club',
+    error: 'Accept the terms to create your workspace',
   },
 }
 

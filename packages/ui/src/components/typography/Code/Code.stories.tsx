@@ -28,7 +28,7 @@ export const InContext: Story = {
         down.
       </Text>
       <Text size="sm" tone="muted">
-        Budgets live in <Code>src/features/budgets/api/getBudgets.ts</Code>.
+        Invoices live in <Code>src/features/invoices/api/getInvoices.ts</Code>.
       </Text>
     </Stack>
   ),

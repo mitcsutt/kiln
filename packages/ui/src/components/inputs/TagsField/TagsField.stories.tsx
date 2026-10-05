@@ -9,7 +9,7 @@ const meta = {
     label: 'Labels',
     description: 'Press Enter or comma to add. Used to filter reports.',
     placeholder: 'Add a label',
-    defaultValue: ['Essentials', 'School'],
+    defaultValue: ['Backend', 'Frontend'],
     maxTags: 8,
     error: '',
     required: false,

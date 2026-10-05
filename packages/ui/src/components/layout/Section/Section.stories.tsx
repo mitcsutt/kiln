@@ -23,9 +23,9 @@ export const Playground: Story = {
     <Section {...args}>
       <Container>
         <Stack gap={3}>
-          <Title level={2}>Writing</Title>
+          <Title level={2}>Changelog</Title>
           <Body tone="muted">
-            Notes on design systems, TypeScript and building small tools for friends.
+            What shipped this month across the workspace, and what comes next.
           </Body>
         </Stack>
       </Container>
@@ -51,13 +51,13 @@ export const Surfaces: Story = {
             <Inline justify="between" gap={4} align="end">
               <Stack gap={1}>
                 <Label>{surface}</Label>
-                <Title level={2}>Hawks lead by two</Title>
+                <Title level={2}>Release 2.4 ships Thursday</Title>
                 <Body tone="muted">
-                  Rovers and Riverside both won; Westbank lost on penalties in the cup.
+                  Billing and search are merged; the mobile app slips to next week.
                 </Body>
               </Stack>
               <Button variant="outline" tone="neutral">
-                See the table
+                See the release
               </Button>
             </Inline>
           </Container>
@@ -78,10 +78,10 @@ export const PageRhythm: Story = {
         <Container>
           <Stack gap={5}>
             <Title level={1} size="display">
-              Fieldwork
+              Brightline Labs
             </Title>
             <Body size="lg" tone="muted">
-              A four-person studio making maps, signs and books for public places.
+              A five-person software company building invoicing tools for small teams.
             </Body>
           </Stack>
         </Container>
@@ -90,7 +90,7 @@ export const PageRhythm: Story = {
         <Container>
           <Split ratio="1/3" gap={{ base: 3, md: 7 }} collapseBelow="sm" align="baseline">
             <Label>Now</Label>
-            <Body>Signage for a new library, and a transit map for a coastal city.</Body>
+            <Body>Recurring invoices, and a rebuilt client portal.</Body>
           </Split>
         </Container>
       </Section>
@@ -102,15 +102,15 @@ export const PageRhythm: Story = {
             </Title>
             <Stack gap={4} dividers>
               <Inline justify="between" gap={3} wrap={false}>
-                <Body>Drawings revised</Body>
-                <Figure>214</Figure>
+                <Body>Invoices sent</Body>
+                <Figure>2,140</Figure>
               </Inline>
               <Inline justify="between" gap={3} wrap={false}>
-                <Body>Signs approved</Body>
-                <Figure>63</Figure>
+                <Body>Releases shipped</Body>
+                <Figure>6</Figure>
               </Inline>
               <Inline justify="between" gap={3} wrap={false}>
-                <Body>Site visits</Body>
+                <Body>Roadmap items done</Body>
                 <Figure>4 of 8</Figure>
               </Inline>
             </Stack>
@@ -121,10 +121,10 @@ export const PageRhythm: Story = {
         <Container>
           <Inline justify="between" gap={5} align="center">
             <Stack gap={2}>
-              <Title level={2}>Working on something similar?</Title>
-              <Body tone="muted">We reply to most email within a couple of days.</Body>
+              <Title level={2}>Running a small team?</Title>
+              <Body tone="muted">Try it free for 30 days. No card needed.</Body>
             </Stack>
-            <Button tone="accent">Email the studio</Button>
+            <Button tone="accent">Start free trial</Button>
           </Inline>
         </Container>
       </Section>

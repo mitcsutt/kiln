@@ -128,7 +128,7 @@ export default function AccountSettings() {
               <form.SwitchField
                 name="digest"
                 label="Weekly summary"
-                description="Your trips and spending, one email."
+                description="Your trips and receipts, one email."
               />
             </FormRows>
           </FormAside>

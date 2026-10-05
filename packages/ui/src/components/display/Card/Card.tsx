@@ -30,7 +30,7 @@ export interface CardProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 /**
- * A self-contained object: a project, a match, a budget envelope. Use sparingly —
+ * A self-contained object: a project, a release, a plan summary. Use sparingly —
  * most content reads better as a List, Table or plain section (DESIGN §2).
  *
  * <Card><Card.Header><Card.Title>Atlas</Card.Title><Card.Meta>2026</Card.Meta></Card.Header>…</Card>
@@ -120,7 +120,7 @@ const CardFooter = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(fu
   return <div ref={ref} className={cx(styles.footer, className)} {...rest} />
 })
 
-/** Small secondary facts — year, stack, kick-off time. Numbers are tabular. */
+/** Small secondary facts — year, stack, due date. Numbers are tabular. */
 const CardMeta = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(function CardMeta(
   { className, ...rest },
   ref,

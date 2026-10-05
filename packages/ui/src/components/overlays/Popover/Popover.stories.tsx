@@ -21,23 +21,23 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-function MatchDetails({ open, ...args }: PopoverContentProps & { open?: boolean }) {
+function InvoiceDetails({ open, ...args }: PopoverContentProps & { open?: boolean }) {
   return (
     <Popover open={open}>
       <Popover.Trigger asChild>
         <Button variant="outline" tone="neutral">
-          Hawks v Millpond
+          INV-1042
         </Button>
       </Popover.Trigger>
-      <Popover.Content aria-label="Match details" {...args}>
+      <Popover.Content aria-label="Invoice details" {...args}>
         <Stack gap={3}>
           <Stack gap={0}>
-            <Strong>Division two · Round 1</Strong>
-            <Muted>Sun 14 June, 10:30 · Harbour Park, pitch 2</Muted>
+            <Strong>Northwind Studio · Design retainer</Strong>
+            <Muted>Issued 14 September · due 14 October</Muted>
           </Stack>
           <Stack gap={0}>
-            <Row label="Harbour Hawks" value="3" />
-            <Row label="Millpond FC" value="0" />
+            <Row label="Subtotal" value="$1,820.00" />
+            <Row label="GST" value="$182.00" />
           </Stack>
           <Inline gap={2}>
             <Popover.Close asChild>
@@ -46,7 +46,7 @@ function MatchDetails({ open, ...args }: PopoverContentProps & { open?: boolean 
               </Button>
             </Popover.Close>
             <Button size="sm" variant="outline" tone="neutral">
-              Full match report
+              Open invoice
             </Button>
           </Inline>
         </Stack>
@@ -56,24 +56,24 @@ function MatchDetails({ open, ...args }: PopoverContentProps & { open?: boolean 
 }
 
 export const Playground: Story = {
-  render: (args) => <MatchDetails {...args} />,
+  render: (args) => <InvoiceDetails {...args} />,
   play: async ({ canvasElement }) => {
     const trigger = within(storyRoot(canvasElement)).getByRole('button', {
-      name: 'Hawks v Millpond',
+      name: 'INV-1042',
     })
     await userEvent.click(trigger)
-    const details = await screen.findByRole('dialog', { name: 'Match details' })
+    const details = await screen.findByRole('dialog', { name: 'Invoice details' })
     await userEvent.click(within(details).getByRole('button', { name: 'Dismiss' }))
     await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument())
     await expect(trigger).toHaveFocus()
   },
 }
 
-/** Tap a fixture for its details. Pinned open (controlled) so each theme column shows its own. */
-export const MatchDetailsOpen: Story = {
+/** Tap an invoice for its details. Pinned open (controlled) so each theme column shows its own. */
+export const InvoiceDetailsOpen: Story = {
   render: (args) => (
     <Stack gap={0} align="start">
-      <MatchDetails {...args} open />
+      <InvoiceDetails {...args} open />
       <Spacer />
     </Stack>
   ),
@@ -87,14 +87,14 @@ export const WithArrow: Story = {
       <Popover open>
         <Popover.Trigger asChild>
           <Button variant="ghost" tone="neutral">
-            Division two
+            Team plan
           </Button>
         </Popover.Trigger>
-        <Popover.Content aria-label="What is division two?" {...args}>
+        <Popover.Content aria-label="What is the Team plan?" {...args}>
           <Stack gap={1}>
-            <Strong>Division two</Strong>
+            <Strong>Team plan</Strong>
             <Muted>
-              Eight clubs. The top two go up at the end of the season; the bottom one goes down.
+              Up to 25 seats, shared projects and priority support, billed monthly per seat.
             </Muted>
           </Stack>
         </Popover.Content>

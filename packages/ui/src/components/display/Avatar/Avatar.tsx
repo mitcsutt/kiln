@@ -20,7 +20,7 @@ export interface AvatarProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'colo
   /** A highlight ring — marks "you" in a leaderboard or roster. */
   ring?: boolean
   /**
-   * Replace the derived initials — a team code ("GER"), a club crest's letters. Up to three
+   * Replace the derived initials — a company's short code ("NWS"), a logo's letters. Up to three
    * characters; three are set smaller so they fit the frame.
    */
   initials?: string

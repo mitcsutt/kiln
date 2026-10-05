@@ -43,15 +43,15 @@ export const Article: Story = {
       <Container width="text">
         <Stack gap={5}>
           <Title level={1} size="xl">
-            Building a league table that updates itself
+            Building a status page that updates itself
           </Title>
           <Body size="lg">
-            Eight clubs, fourteen rounds and a group chat that wanted live results. The first
+            Eight services, three regions and a support team that wanted live status. The first
             version was a spreadsheet; this is the fourth.
           </Body>
           <Body tone="muted">
-            Home clubs enter results from the touchline. The server only tells the app something
-            changed when a content hash does, so an idle afternoon costs nothing.
+            Each service reports its own health checks. The server only tells the app something
+            changed when a content hash does, so a quiet afternoon costs nothing.
           </Body>
         </Stack>
       </Container>

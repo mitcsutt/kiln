@@ -28,7 +28,7 @@ export interface MarqueeProps extends Omit<HTMLAttributes<HTMLDivElement>, 'chil
   items?: ReactNode[]
   /** Alternative to `items`: each direct child is one item. */
   children?: ReactNode
-  /** Accessible name for the region, e.g. "Live scores". Required: a ticker needs a name. */
+  /** Accessible name for the region, e.g. "Deploy status". Required: a ticker needs a name. */
   label: string
   /** Travel speed. Measured in px/s once mounted, so long and short tickers feel the same. */
   speed?: MarqueeSpeed
@@ -61,13 +61,13 @@ const PauseIcon = createIcon('PauseIcon', <path d="M7.5 5.5v9M12.5 5.5v9" />)
 const PlayIcon = createIcon('PlayIcon', <path d="M7 5.25v9.5L14.75 10z" />)
 
 /**
- * A horizontal ticker: live scores, a skills strip, a standings summary.
+ * A horizontal ticker: live status, a features strip, a top-accounts summary.
  *
  * The content is rendered twice for a seamless loop; the copy is `aria-hidden` and
  * `inert`, so screen readers and the tab order see it once. Under
  * `prefers-reduced-motion` the band stops and becomes a scrollable row.
  *
- * <Marquee label="Live scores" items={[<>Hawks 2–1 Swifts</>, …]} surface="inverse" />
+ * <Marquee label="Deploy status" items={[<>Atlas 2.4 deploying</>, …]} surface="inverse" />
  */
 export const Marquee = forwardRef<HTMLDivElement, MarqueeProps>(function Marquee(
   {

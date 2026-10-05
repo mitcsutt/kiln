@@ -5,8 +5,8 @@ describe('Split', () => {
   it('derives the column template from ratio', () => {
     const { container } = render(
       <Split ratio="1/3">
-        <div>Groups</div>
-        <div>Fixtures</div>
+        <div>Projects</div>
+        <div>Tasks</div>
       </Split>,
     )
     const el = container.firstElementChild as HTMLElement

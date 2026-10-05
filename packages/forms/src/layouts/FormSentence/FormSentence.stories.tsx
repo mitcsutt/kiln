@@ -7,29 +7,29 @@ import { FormSentence } from './FormSentence'
 const meta = {
   title: 'Forms/Layouts/FormSentence',
   component: FormSentence,
-  args: { label: 'Savings goal', children: null },
+  args: { label: 'Recurring invoice', children: null },
 } satisfies Meta<typeof FormSentence>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-interface SavingsGoal {
-  target: number | null
-  goal: string
-  deadline: string
+interface RecurringInvoice {
+  client: string
+  amount: number | null
+  start: string
 }
 
-const goal: SavingsGoal = { target: null, goal: '', deadline: '' }
+const invoice: RecurringInvoice = { client: '', amount: null, start: '' }
 
 /** A form read as one sentence. Each field keeps its own accessible label. */
 export const Playground: Story = {
   render: (args) => (
-    <StoryForm label="Savings goal" defaultValues={goal}>
+    <StoryForm label="Recurring invoice" defaultValues={invoice}>
       {(form) => (
         <FormSentence {...args}>
-          I want to save <form.AmountField name="target" label="Target amount" currency="GBP" /> for{' '}
-          <form.TextField name="goal" label="Goal" htmlSize={14} /> by{' '}
-          <form.DateField name="deadline" label="Deadline" />.
+          Bill <form.TextField name="client" label="Client" htmlSize={14} />{' '}
+          <form.AmountField name="amount" label="Amount" currency="GBP" /> every month starting{' '}
+          <form.DateField name="start" label="Start date" />.
         </FormSentence>
       )}
     </StoryForm>

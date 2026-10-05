@@ -1,6 +1,6 @@
 import { filterOptions, foldText, rankOption } from './filterOptions'
 
-const teams = [
+const countries = [
   { label: 'Australia' },
   { label: 'Austria' },
   { label: 'United States', keywords: ['USA', 'America'] },
@@ -10,7 +10,7 @@ const teams = [
   { label: 'Saudi Arabia', description: 'Western Asia' },
 ]
 
-const labels = (query: string) => filterOptions(teams, query).map((option) => option.label)
+const labels = (query: string) => filterOptions(countries, query).map((option) => option.label)
 
 describe('foldText', () => {
   it('lower-cases, strips diacritics and collapses whitespace', () => {
@@ -21,8 +21,8 @@ describe('foldText', () => {
 
 describe('filterOptions', () => {
   it('returns every option in order for an empty or blank query', () => {
-    expect(labels('')).toEqual(teams.map((team) => team.label))
-    expect(labels('   ')).toHaveLength(teams.length)
+    expect(labels('')).toEqual(countries.map((country) => country.label))
+    expect(labels('   ')).toHaveLength(countries.length)
   })
 
   it('matches case-insensitively and without diacritics', () => {

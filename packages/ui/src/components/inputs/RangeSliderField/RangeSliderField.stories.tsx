@@ -6,9 +6,9 @@ const meta = {
   title: 'UI/Inputs/RangeSliderField',
   component: RangeSliderField,
   args: {
-    label: 'Budget range',
-    description: 'Monthly rent you could manage',
-    name: 'budget',
+    label: 'Price range',
+    description: 'Per seat, per month',
+    name: 'price',
     min: 500,
     max: 5000,
     step: 100,

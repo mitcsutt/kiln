@@ -78,7 +78,7 @@ try {
 
   await page.goto(`${origin}${BASE}?path=/story/${STORY}`)
   const preview = page.frameLocator('#storybook-preview-iframe')
-  await preview.getByRole('button', { name: 'Publish fixtures' }).waitFor({ timeout: 30_000 })
+  await preview.getByRole('button', { name: 'Send invoice' }).waitFor({ timeout: 30_000 })
   await page.waitForLoadState('networkidle')
 
   console.log(`Served at ${BASE}: ${String(entries)} index entries, ${STORY} rendered.`)

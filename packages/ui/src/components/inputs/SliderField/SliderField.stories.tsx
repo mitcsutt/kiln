@@ -6,9 +6,9 @@ const meta = {
   title: 'UI/Inputs/SliderField',
   component: SliderField,
   args: {
-    label: 'Savings rate',
-    description: 'Moved to savings on each pay day',
-    name: 'savingsRate',
+    label: 'Discount rate',
+    description: 'Taken off each invoice',
+    name: 'discountRate',
     defaultValue: 20,
     max: 50,
     step: 5,
@@ -30,11 +30,11 @@ type Story = StoryObj<typeof meta>
 export const Playground: Story = {}
 
 export const WithWarning: Story = {
-  args: { defaultValue: 45, warning: 'That leaves $210 a fortnight for bills' },
+  args: { defaultValue: 45, warning: 'That is higher than most clients get' },
 }
 
 export const WithError: Story = {
-  args: { defaultValue: 50, error: 'Keep at least half your pay for bills' },
+  args: { defaultValue: 50, error: 'Discounts over 40% need sign-off from finance' },
 }
 
 export const Horizontal: Story = { args: { layout: 'horizontal' } }

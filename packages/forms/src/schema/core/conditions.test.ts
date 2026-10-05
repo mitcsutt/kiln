@@ -26,8 +26,8 @@ describe('evaluateCondition — field operators', () => {
     [{ field: 'range', op: 'eq', value: [1, 5] }, true],
     [{ field: 'address', op: 'eq', value: { city: 'Leeds' } }, true],
     [{ field: 'role', op: 'in', value: ['admin', 'owner'] }, true],
-    [{ field: 'role', op: 'in', value: ['player'] }, false],
-    [{ field: 'role', op: 'notIn', value: ['player'] }, true],
+    [{ field: 'role', op: 'in', value: ['member'] }, false],
+    [{ field: 'role', op: 'notIn', value: ['member'] }, true],
     [{ field: 'role', op: 'notIn', value: ['admin'] }, false],
     [{ field: 'age', op: 'gt', value: 29 }, true],
     [{ field: 'age', op: 'gt', value: 30 }, false],
@@ -100,7 +100,7 @@ describe('evaluateCondition — combinators', () => {
 })
 
 describe('evaluateCondition — context', () => {
-  const context = { mode: 'edit', role: 'organiser', flags: ['beta'] }
+  const context = { mode: 'edit', role: 'owner', flags: ['beta'] }
   it('eq / neq / in', () => {
     expect(evaluateCondition({ context: 'mode', op: 'eq', value: 'edit' }, values, context)).toBe(
       true,
@@ -109,11 +109,7 @@ describe('evaluateCondition — context', () => {
       false,
     )
     expect(
-      evaluateCondition(
-        { context: 'role', op: 'in', value: ['organiser', 'admin'] },
-        values,
-        context,
-      ),
+      evaluateCondition({ context: 'role', op: 'in', value: ['owner', 'admin'] }, values, context),
     ).toBe(true)
     expect(
       evaluateCondition({ context: 'flags', op: 'eq', value: ['beta'] }, values, context),

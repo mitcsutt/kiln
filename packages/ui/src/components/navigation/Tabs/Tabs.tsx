@@ -80,12 +80,12 @@ const TabsContent = forwardRef<HTMLDivElement, TabsContentProps>(function TabsCo
  * Radix Tabs with the library's look. Arrow keys move between triggers (roving focus);
  * activation follows focus by default (`activationMode="manual"` to require Enter).
  *
- * <Tabs defaultValue="matches">
- *   <Tabs.List aria-label="Harbour Hawks">
- *     <Tabs.Trigger value="matches">Matches</Tabs.Trigger>
- *     <Tabs.Trigger value="players">Players</Tabs.Trigger>
+ * <Tabs defaultValue="tasks">
+ *   <Tabs.List aria-label="Atlas redesign">
+ *     <Tabs.Trigger value="tasks">Tasks</Tabs.Trigger>
+ *     <Tabs.Trigger value="people">People</Tabs.Trigger>
  *   </Tabs.List>
- *   <Tabs.Content value="matches">…</Tabs.Content>
+ *   <Tabs.Content value="tasks">…</Tabs.Content>
  * </Tabs>
  */
 export const Tabs = Object.assign(TabsRoot, {

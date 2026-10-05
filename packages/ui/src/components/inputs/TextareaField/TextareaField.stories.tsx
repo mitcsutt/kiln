@@ -11,7 +11,7 @@ const meta = {
     optional: true,
     autoResize: true,
     rows: 2,
-    placeholder: "Half is Oskar's — settle up on Friday",
+    placeholder: 'Follow up with Oskar on Friday',
     error: '',
     disabled: false,
   },
@@ -29,8 +29,8 @@ export const Playground: Story = {}
 
 export const WithError: Story = {
   args: {
-    defaultValue: 'Rent for September and October',
-    error: 'Split this into two expenses, one per month',
+    defaultValue: 'Invoice for September and October',
+    error: 'Split this into two invoices, one per month',
     optional: false,
   },
 }

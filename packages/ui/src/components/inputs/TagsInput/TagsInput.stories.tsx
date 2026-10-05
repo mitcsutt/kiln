@@ -10,7 +10,7 @@ const meta = {
   args: {
     'aria-label': 'Labels',
     placeholder: 'Add a label',
-    defaultValue: ['Groceries', 'School'],
+    defaultValue: ['Design', 'Frontend'],
     maxTags: 8,
     normalise: 'trim',
     allowDuplicates: false,
@@ -29,20 +29,20 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-/** Enter or comma adds; Backspace on an empty box removes the last; paste "Rent, Power, Internet". */
+/** Enter or comma adds; Backspace on an empty box removes the last; paste "Billing, Support, Docs". */
 /** Enter adds a tag; each tag has its own remove button. */
 export const Playground: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(storyRoot(canvasElement))
-    await userEvent.type(canvas.getByRole('textbox', { name: /Labels/ }), 'Holiday{Enter}')
-    await expect(canvas.getByRole('button', { name: 'Remove Holiday' })).toBeInTheDocument()
-    await userEvent.click(canvas.getByRole('button', { name: 'Remove Groceries' }))
-    await expect(canvas.queryByRole('button', { name: 'Remove Groceries' })).not.toBeInTheDocument()
+    await userEvent.type(canvas.getByRole('textbox', { name: /Labels/ }), 'Research{Enter}')
+    await expect(canvas.getByRole('button', { name: 'Remove Research' })).toBeInTheDocument()
+    await userEvent.click(canvas.getByRole('button', { name: 'Remove Design' }))
+    await expect(canvas.queryByRole('button', { name: 'Remove Design' })).not.toBeInTheDocument()
   },
 }
 
 export const Labels: Story = {
-  args: { defaultValue: ['Essentials', 'Holiday', 'Car', 'Gifts'] },
+  args: { defaultValue: ['Backend', 'Research', 'Urgent', 'Docs'] },
 }
 
 export const Empty: Story = {

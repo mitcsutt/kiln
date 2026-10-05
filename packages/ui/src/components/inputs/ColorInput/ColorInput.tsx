@@ -34,7 +34,7 @@ export interface ColorInputProps extends Omit<
   onValueChange?: (hex: string) => void
   /** Preset colours, shown as a row of swatch radios under the input. */
   swatches?: readonly ColorSwatch[]
-  /** Only the swatches — no hex input or picker (a team colour from a fixed palette). */
+  /** Only the swatches — no hex input or picker (a label colour from a fixed palette). */
   swatchesOnly?: boolean
   /** Accessible name of the native colour picker button. Default `'Choose colour'`. */
   pickerLabel?: string
@@ -167,7 +167,7 @@ export const ColorInput = markFieldAware(
           required={swatchesOnly && !offPalette ? field.required : undefined}
           aria-required={swatchesOnly ? field.required || undefined : undefined}
           // Swatches only: the group *is* the control, named by the Field label alone. Beside the
-          // hex input it is a second control, "Team colour presets".
+          // hex input it is a second control, "Label colour presets".
           aria-labelledby={
             field.labelId
               ? swatchesOnly

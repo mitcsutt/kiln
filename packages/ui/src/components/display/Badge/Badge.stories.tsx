@@ -6,7 +6,7 @@ import { Badge } from './Badge'
 const meta = {
   title: 'UI/Display/Badge',
   component: Badge,
-  args: { children: 'Over budget', tone: 'critical', variant: 'soft', size: 'sm', dot: false },
+  args: { children: 'Over quota', tone: 'critical', variant: 'soft', size: 'sm', dot: false },
 } satisfies Meta<typeof Badge>
 
 export default meta
@@ -18,10 +18,10 @@ const TONES = ['neutral', 'accent', 'positive', 'caution', 'critical', 'info'] a
 const LABELS: Record<(typeof TONES)[number], string> = {
   neutral: 'Upcoming',
   accent: 'Live',
-  positive: 'Qualified',
+  positive: 'Approved',
   caution: 'Near limit',
-  critical: 'Eliminated',
-  info: 'Division two',
+  critical: 'Overdue',
+  info: 'Team plan',
 }
 
 export const Tones: Story = {
@@ -45,7 +45,7 @@ export const CountsAndDots: Story = {
   render: () => (
     <Inline gap={3}>
       <Badge tone="accent" variant="solid" dot size="md">
-        Live · 67&prime;
+        Live · 128 online
       </Badge>
       <Badge size="md">12 new</Badge>
       <Badge tone="positive" dot>
@@ -54,7 +54,7 @@ export const CountsAndDots: Story = {
       <Badge tone="caution" dot>
         3 unreviewed
       </Badge>
-      <Badge variant="outline">Round of 32</Badge>
+      <Badge variant="outline">Beta</Badge>
     </Inline>
   ),
 }

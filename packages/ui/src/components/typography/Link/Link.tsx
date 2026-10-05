@@ -19,7 +19,7 @@ export interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   external?: boolean
   /**
    * Render the single child element instead of an <a>, merging props and styles.
-   * Use for router links: `<Link asChild><RouterLink to="/work">Work</RouterLink></Link>`.
+   * Use for router links: `<Link asChild><RouterLink to="/projects">Projects</RouterLink></Link>`.
    */
   asChild?: boolean
 }

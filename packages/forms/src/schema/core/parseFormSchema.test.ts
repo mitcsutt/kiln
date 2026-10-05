@@ -25,7 +25,7 @@ describe('parseFormSchema — accepts', () => {
   it.each(Object.entries(storySchemas))('%s (and its JSON round-trip)', (_name, schema) => {
     const json: unknown = JSON.parse(JSON.stringify(schema))
     expect(json).toEqual(schema) // §10.10: registry-only schemas round-trip unchanged
-    // Fixtures are trusted (some use `pattern`, e.g. the league entry's confirmation code).
+    // Fixtures are trusted (some use `pattern`, e.g. the project sign-up's confirmation code).
     const result = parseFormSchema(json, registry, { allowPatterns: true })
     expect(result.ok ? [] : result.issues).toEqual([])
     expect(result.ok && result.schema).toBe(json)
@@ -235,13 +235,13 @@ describe('parseFormSchema — rejects with precise paths', () => {
       'unknown loader, computer and bad dependency lists',
       wrap(
         field({
-          optionsFrom: { loader: 'players', deps: 'league' },
+          optionsFrom: { loader: 'invoices', deps: 'client' },
           compute: { computer: 'sum' },
           resets: [1],
         }),
       ),
       [
-        { path: 'root.optionsFrom.loader', message: 'Unknown loader "players"' },
+        { path: 'root.optionsFrom.loader', message: 'Unknown loader "invoices"' },
         { path: 'root.optionsFrom.deps', message: 'Expected an array of field names' },
         { path: 'root.resets', message: 'Expected an array of field names' },
         { path: 'root.compute.computer', message: 'Unknown computer "sum"' },
@@ -330,16 +330,16 @@ describe('parseFormSchema — rejects with precise paths', () => {
       wrap({
         layout: 'stack',
         children: [
-          { custom: 'leaderboard' },
-          { custom: 'teamPreview', props: [1], teamId: 'riverside' },
+          { custom: 'burndownChart' },
+          { custom: 'projectPreview', props: [1], projectId: 'atlas' },
         ],
       }),
       [
-        { path: 'root.children[0].custom', message: 'Unknown custom node "leaderboard"' },
+        { path: 'root.children[0].custom', message: 'Unknown custom node "burndownChart"' },
         { path: 'root.children[1].props', message: 'Expected a JSON object' },
         {
-          path: 'root.children[1].teamId',
-          message: 'Unexpected key "teamId" (put custom node data in props)',
+          path: 'root.children[1].projectId',
+          message: 'Unexpected key "projectId" (put custom node data in props)',
         },
       ],
     ],

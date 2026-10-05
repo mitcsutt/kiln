@@ -18,7 +18,7 @@ export const Playground: Story = {
         <form.NumberField
           name="value"
           label="Instalments"
-          description="Spread the balance over"
+          description="Spread the invoice balance over"
           min={1}
           max={24}
         />
@@ -47,7 +47,7 @@ export const States: Story = {
                 <form.NumberField
                   name="value"
                   label="Instalments"
-                  description="Spread the balance over"
+                  description="Spread the invoice balance over"
                   min={1}
                   max={24}
                 />
@@ -134,7 +134,13 @@ export const InAForm: Story = {
     <StoryForm defaultValues={{ amount: 48000, instalments: 6 }} label="Set up a payment plan">
       {(form) => (
         <>
-          <form.AmountField name="amount" label="Balance" currency="GBP" unit="minor" required />
+          <form.AmountField
+            name="amount"
+            label="Invoice balance"
+            currency="GBP"
+            unit="minor"
+            required
+          />
           <form.NumberField name="instalments" label="Instalments" min={1} max={24} required />
         </>
       )}

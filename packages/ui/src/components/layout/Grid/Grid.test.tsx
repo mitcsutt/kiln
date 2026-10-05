@@ -23,18 +23,18 @@ describe('Grid', () => {
   it('keeps list semantics when rendered as a list', () => {
     render(
       <Grid as="ul" columns={3}>
-        <Grid.Item as="li">Spain</Grid.Item>
+        <Grid.Item as="li">Atlas redesign</Grid.Item>
       </Grid>,
     )
     expect(screen.getByRole('list')).toBeInTheDocument()
-    expect(screen.getByRole('listitem')).toHaveTextContent('Spain')
+    expect(screen.getByRole('listitem')).toHaveTextContent('Atlas redesign')
   })
 
   describe('Grid.Item', () => {
     it('maps span and start per breakpoint', () => {
       render(
         <Grid.Item data-testid="item" span={{ base: 'full', md: 8 }} start={{ md: 3 }}>
-          Standings
+          Open tasks
         </Grid.Item>,
       )
       const el = screen.getByTestId('item')

@@ -232,7 +232,7 @@ const ComboboxPopup = forwardRef<HTMLDivElement, PopupProps>(function ComboboxPo
  * async-ready: pass `filter="none"`, `loading` and the loader's results as `options`.
  * The ref and native input props go to the text input; `className`/`style` go to the box.
  *
- * <Combobox options={teams} placeholder="Search teams" onValueChange={setTeam} />
+ * <Combobox options={projects} placeholder="Search projects" onValueChange={setProject} />
  * <Combobox multiple options={labels} maxSelected={3} />
  */
 export const Combobox = markFieldAware(

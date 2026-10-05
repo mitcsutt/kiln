@@ -10,8 +10,8 @@ describe('Textarea', () => {
     const textarea = screen.getByRole('textbox', { name: 'Notes' })
     expect(ref.current).toBe(textarea)
     expect(textarea).toHaveAttribute('rows', '4')
-    await userEvent.type(textarea, 'Split with Oskar')
-    expect(textarea).toHaveValue('Split with Oskar')
+    await userEvent.type(textarea, 'Follow up with Oskar')
+    expect(textarea).toHaveValue('Follow up with Oskar')
   })
 
   it('sets autoResize data + row vars', () => {

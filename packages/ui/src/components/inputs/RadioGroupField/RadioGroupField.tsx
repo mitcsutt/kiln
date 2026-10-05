@@ -22,7 +22,7 @@ export interface RadioGroupFieldProps
  * the group is one tab stop. `className`/`style` go to the fieldset; `ref`, `id`, `name`
  * and the rest go to the radio group (`name` submits the checked value natively).
  *
- * <RadioGroupField label="Pay period" name="period" options={periods} defaultValue="monthly" />
+ * <RadioGroupField label="Billing period" name="period" options={periods} defaultValue="monthly" />
  */
 export const RadioGroupField = forwardRef<HTMLDivElement, RadioGroupFieldProps>(
   function RadioGroupField(props, ref) {

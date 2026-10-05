@@ -28,7 +28,7 @@ export type DialogProps = ComponentPropsWithoutRef<typeof DialogPrimitive.Root>
  *
  * <Dialog>
  *   <Dialog.Trigger asChild><Button>Delete</Button></Dialog.Trigger>
- *   <Dialog.Content title="Delete expense?" description="…">
+ *   <Dialog.Content title="Delete invoice?" description="…">
  *     <Dialog.Footer>…</Dialog.Footer>
  *   </Dialog.Content>
  * </Dialog>

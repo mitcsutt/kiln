@@ -14,17 +14,17 @@ type Story = StoryObj<typeof meta>
 
 export const Playground: Story = {}
 
-/** Match minute on a fixture row: the pill keeps the dot legible on any card. */
-export const MatchMinute: Story = {
+/** Status on a list row: the pill keeps the dot legible on any card. */
+export const RowStatus: Story = {
   render: () => (
     <Stack gap={4}>
       <Inline gap={4}>
-        <LiveIndicator variant="pill" label="72'" tone="critical" />
-        <span>Hawks 2–1 Swifts</span>
+        <LiveIndicator variant="pill" label="On air" tone="critical" />
+        <span>Weekly all-hands</span>
       </Inline>
       <Inline gap={4}>
-        <LiveIndicator variant="pill" label="HT" tone="critical" pulse={false} />
-        <span>Eastgate 1–1 Wanderers</span>
+        <LiveIndicator variant="pill" label="Paused" tone="critical" pulse={false} />
+        <span>Release 2.4 rollout</span>
       </Inline>
     </Stack>
   ),

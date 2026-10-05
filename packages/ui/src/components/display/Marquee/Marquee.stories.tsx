@@ -3,21 +3,21 @@ import { Stack } from '#components/layout/Stack'
 import { LiveIndicator } from '#components/feedback/LiveIndicator'
 import { Marquee } from './Marquee'
 
-const services = [
-  'Wayfinding',
-  'Transit maps',
-  'Signage systems',
-  'Type design',
-  'Annual reports',
-  'Exhibition graphics',
-  'Accessibility audits',
-  'Print production',
+const features = [
+  'Unlimited projects',
+  'Invoicing',
+  'Time tracking',
+  'Client portal',
+  'Audit log',
+  'Single sign-on',
+  'Webhooks',
+  'Priority support',
 ]
 
 const meta = {
   title: 'UI/Display/Marquee',
   component: Marquee,
-  args: { label: 'What the studio does', items: services, speed: 'normal', surface: 'plain' },
+  args: { label: "What's in every plan", items: features, speed: 'normal', surface: 'plain' },
   argTypes: { items: { control: false }, separator: { control: false } },
   parameters: { layout: 'fullscreen' },
 } satisfies Meta<typeof Marquee>
@@ -27,46 +27,46 @@ type Story = StoryObj<typeof meta>
 
 export const Playground: Story = {}
 
-/** A matchday ticker: live games carry the indicator, finished ones read FT. */
-export const LiveScores: Story = {
+/** A status ticker: running deploys carry the indicator, finished ones read Done. */
+export const LiveStatus: Story = {
   args: {
-    label: 'Live scores',
+    label: 'Deploy status',
     surface: 'inverse',
     speed: 'slow',
     items: [
       <>
-        <LiveIndicator label="67'" tone="critical" />
-        Harbour Hawks 2–1 Westbank Swifts
+        <LiveIndicator label="Deploying" tone="critical" />
+        Atlas redesign · release 2.4 to production
       </>,
       <>
-        <LiveIndicator label="52'" tone="critical" />
-        Eastgate United 1–1 Old Town Wanderers
+        <LiveIndicator label="Running" tone="critical" />
+        Billing migration · batch 3 of 8
       </>,
-      <>FT · Northside Rovers 3–1 Millpond FC</>,
-      <>FT · Quarry Lane 0–0 Riverside Athletic</>,
-      <>Next · Hawks v Rovers, Sunday 11:00</>,
-      <>FT · Swifts 2–0 Millpond FC</>,
+      <>Done · Mobile app 3.1 in the app stores</>,
+      <>Done · Help centre search reindexed</>,
+      <>Next · Release 2.5 code freeze, Thursday 11:00</>,
+      <>Done · Invoices API 2.0 to staging</>,
     ],
   },
 }
 
-/** League leaders on the accent band — used once, on the table page. */
-export const LeagueLeaders: Story = {
+/** Top accounts on the accent band — used once, on the dashboard. */
+export const TopAccounts: Story = {
   args: {
-    label: 'League leaders',
+    label: 'Top accounts this quarter',
     surface: 'accent',
     items: [
-      'Harbour Hawks 32 pts, 14 played',
-      'Northside Rovers 30 pts',
-      'Riverside Athletic 29 pts',
-      'Eastgate United 27 pts',
-      'Millpond FC 24 pts',
+      'Northwind Studio $32,400, 14 invoices',
+      'Brightline Labs $30,150',
+      'Orchard & Co $29,800',
+      'Fernhill Press $27,300',
+      'Tidewater Books $24,900',
     ],
   },
 }
 
-/** A services strip: plain band between hairlines, travelling right. */
-export const Services: Story = {
+/** A features strip: plain band between hairlines, travelling right. */
+export const Features: Story = {
   args: { direction: 'right', pauseControl: false },
 }
 
@@ -74,16 +74,16 @@ export const Services: Story = {
 export const CustomSeparator: Story = {
   args: {
     separator: '/',
-    label: 'Studio cities',
+    label: 'Office cities',
     items: [
       'Lisbon',
-      'Toronto',
+      'Tallinn',
       'Osaka',
-      'Vancouver',
+      'Cape Town',
       'Valparaíso',
       'Rotterdam',
       'Hobart',
-      'Seattle',
+      'Reykjavík',
     ],
     pauseControl: false,
   },

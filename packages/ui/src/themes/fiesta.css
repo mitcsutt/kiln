@@ -1,12 +1,12 @@
 /*
  * FIESTA — preset (opt-in: import '@mitcsutt/kiln-ui/themes/fiesta.css')
  *
- * Idea: a screen-printed matchday poster / sticker album. Screen printing can't do
+ * Idea: a screen-printed festival poster / sticker album. Screen printing can't do
  * gradients, so neither do we: flat spot inks (coral, gold, teal) on apricot stock,
  * everything outlined in aubergine ink, and a hard misregistered offset instead of a
- * soft shadow. Stadium-signage numerals (Big Shoulders) for scores and headings; an
+ * soft shadow. A condensed signage face (Big Shoulders) for figures, counts and headings; an
  * ink-trapped grotesk (Bricolage) with a bit of mischief for text. Motion overshoots.
- * Light-first ("day match"); dark is the floodlit night game.
+ * Light-first (the daytime show); dark is the floodlit night show.
  */
 
 @layer kiln.reset, kiln.tokens, kiln.themes;
@@ -43,7 +43,7 @@
     --numeral-weight: 600; /* Big Shoulders reads thin at text sizes */
     --numeral-scale: 1.12;
     --mono-stretch: 75%;
-    --table-head-font: var(--font-display); /* stadium-signage caps over the columns */
+    --table-head-font: var(--font-display); /* condensed signage caps over the columns */
 
     --leading-tight: 0.9;
     --leading-snug: 1.1;
@@ -70,7 +70,7 @@
     --radius-avatar: 50%;
 
     /* ── Colour ─────────────────────────────────────────────────────────── */
-    /* Stock: apricot poster paper by day, aubergine night by floodlight. */
+    /* Stock: apricot poster paper by day, aubergine night under floodlights. */
     --color-canvas: light-dark(oklch(0.85 0.105 62), oklch(0.2 0.055 305));
     --color-surface: light-dark(oklch(0.985 0.012 90), oklch(0.265 0.065 305));
     --color-surface-sunken: light-dark(oklch(0.945 0.03 80), oklch(0.225 0.055 305));
@@ -105,11 +105,11 @@
     ); /* AA on apricot stock */
     --color-accent-soft: light-dark(oklch(0.92 0.06 15), oklch(0.36 0.1 10));
 
-    /* Gold spot ink — "you", winners, stickers */
+    /* Gold spot ink — "you", highlights, stickers */
     --color-highlight: light-dark(oklch(0.88 0.165 92), oklch(0.86 0.16 92));
     --color-highlight-ink: oklch(0.22 0.065 300);
     /* Tone text on a gold row (Table/List highlighted): gold is the same in both modes, so
-       the day-match text inks are used — the night ones are pale and vanish on gold. */
+       the daytime-show text inks are used — the night ones are pale and vanish on gold. */
     --highlight-tone-positive-text: oklch(0.42 0.09 190);
     --highlight-tone-caution-text: oklch(0.44 0.1 75);
     --highlight-tone-critical-text: oklch(0.45 0.19 25);

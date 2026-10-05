@@ -21,12 +21,12 @@ export interface StampProps extends HTMLAttributes<HTMLSpanElement> {
 }
 
 /**
- * A rubber-stamp verdict: "Eliminated", "Paid", "Void". A double rule in the display
+ * A rubber-stamp verdict: "Rejected", "Paid", "Void". A double rule in the display
  * face, knocked slightly off square. Decorative but deliberate — use one per object,
  * on the thing it judges.
  *
  * It reads as its text; pass `aria-label` when the visible word needs more context
- * ("Westbank eliminated in the group stage").
+ * ("Invoice 1039 overdue by 12 days").
  */
 export const Stamp = forwardRef<HTMLSpanElement, StampProps>(function Stamp(
   { tone = 'critical', rotate = -6, size = 'md', placement = 'inline', className, style, ...rest },

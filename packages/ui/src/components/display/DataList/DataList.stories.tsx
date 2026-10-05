@@ -9,10 +9,10 @@ const meta = {
   render: (args) => (
     <Stack style={{ maxWidth: '30rem' }}>
       <DataList {...args}>
-        <DataList.Item label="Role">Design and build</DataList.Item>
+        <DataList.Item label="Owner">Priya Nair</DataList.Item>
         <DataList.Item label="Stack">React, Postgres, server-sent events</DataList.Item>
         <DataList.Item label="Timeline">May – July 2026</DataList.Item>
-        <DataList.Item label="Users">8 clubs, 112 matches</DataList.Item>
+        <DataList.Item label="Accounts">1,200 migrated</DataList.Item>
       </DataList>
     </Stack>
   ),
@@ -23,16 +23,16 @@ type Story = StoryObj<typeof meta>
 
 export const Playground: Story = {}
 
-/** Match facts — values line up on one column however long the label. */
-export const MatchFacts: Story = {
+/** Release facts — values line up on one column however long the label. */
+export const ReleaseFacts: Story = {
   args: { divided: true },
   render: (args) => (
     <Stack style={{ maxWidth: '30rem' }}>
       <DataList {...args}>
-        <DataList.Item label="Venue">Harbour Park, pitch 2</DataList.Item>
-        <DataList.Item label="Kick-off">Sun 14 June, 10:30</DataList.Item>
-        <DataList.Item label="Division">Two</DataList.Item>
-        <DataList.Item label="Captains">Kofi (Harbour Hawks) v Mei (Millpond FC)</DataList.Item>
+        <DataList.Item label="Region">Sydney, ap-southeast-2</DataList.Item>
+        <DataList.Item label="Started">Thu 14 Nov, 10:30</DataList.Item>
+        <DataList.Item label="Release">2.4</DataList.Item>
+        <DataList.Item label="Approvers">Tomás (backend) and Hana (mobile app)</DataList.Item>
       </DataList>
     </Stack>
   ),
@@ -43,10 +43,10 @@ export const MetaStrip: Story = {
   args: { orientation: 'vertical', divided: true },
   render: (args) => (
     <DataList {...args}>
-      <DataList.Item label="Pay cycle">Fortnightly</DataList.Item>
-      <DataList.Item label="Next pay">Thu 2 Oct</DataList.Item>
-      <DataList.Item label="Net pay">$3,725.00</DataList.Item>
-      <DataList.Item label="Account">Everyday ··4821</DataList.Item>
+      <DataList.Item label="Billing cycle">Monthly</DataList.Item>
+      <DataList.Item label="Next invoice">Thu 2 Oct</DataList.Item>
+      <DataList.Item label="Amount due">$3,725.00</DataList.Item>
+      <DataList.Item label="Card">Visa ··4821</DataList.Item>
     </DataList>
   ),
 }

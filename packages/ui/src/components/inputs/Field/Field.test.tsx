@@ -32,36 +32,36 @@ describe('Field', () => {
 
   it('has no aria-invalid or describedby without description/error', () => {
     render(
-      <Field label="Payee">
+      <Field label="Client">
         <Input />
       </Field>,
     )
-    const input = screen.getByLabelText('Payee')
+    const input = screen.getByLabelText('Client')
     expect(input).not.toHaveAttribute('aria-invalid')
     expect(input).not.toHaveAttribute('aria-describedby')
   })
 
   it('accepts hint as an alias of description', () => {
     render(
-      <Field label="Payee" hint="As it appears on the statement">
+      <Field label="Client" hint="As it appears on the invoice">
         <Input />
       </Field>,
     )
-    expect(screen.getByLabelText('Payee')).toHaveAccessibleDescription(
-      'As it appears on the statement',
+    expect(screen.getByLabelText('Client')).toHaveAccessibleDescription(
+      'As it appears on the invoice',
     )
   })
 
   it('marks required visually and with aria-required, and shows an optional hint', () => {
     const { rerender } = render(
-      <Field label="Payee" required>
+      <Field label="Client" required>
         <Input />
       </Field>,
     )
     expect(screen.getByText('*')).toHaveAttribute('aria-hidden', 'true')
     expect(screen.getByRole('textbox')).toHaveAttribute('aria-required', 'true')
     rerender(
-      <Field label="Payee" optional>
+      <Field label="Client" optional>
         <Input />
       </Field>,
     )
@@ -93,12 +93,12 @@ describe('Field', () => {
 
   it('passes wiring to a render function', () => {
     render(
-      <Field label="Budget" description="Monthly" required htmlFor="budget">
+      <Field label="Retainer" description="Monthly" required htmlFor="retainer">
         {(props) => <input {...props} />}
       </Field>,
     )
-    const input = screen.getByLabelText(/Budget/)
-    expect(input).toHaveAttribute('id', 'budget')
+    const input = screen.getByLabelText(/Retainer/)
+    expect(input).toHaveAttribute('id', 'retainer')
     expect(input).toHaveAccessibleDescription('Monthly')
     expect(input).toHaveAttribute('aria-required', 'true')
     expect(input).toBeRequired()
@@ -106,11 +106,11 @@ describe('Field', () => {
 
   it('keeps a hidden label accessible', () => {
     render(
-      <Field label="Search transactions" labelHidden>
+      <Field label="Search invoices" labelHidden>
         <Input />
       </Field>,
     )
-    expect(screen.getByLabelText('Search transactions')).toBeInTheDocument()
+    expect(screen.getByLabelText('Search invoices')).toBeInTheDocument()
   })
 
   it('shows a warning and includes it in describedby, after description and before error', () => {
@@ -185,11 +185,11 @@ describe('Field', () => {
 
   it('validating shows a spinner and sets aria-busy on the control', () => {
     const { container } = render(
-      <Field label="Team" validating>
+      <Field label="Workspace name" validating>
         <Input />
       </Field>,
     )
-    expect(screen.getByLabelText('Team')).toHaveAttribute('aria-busy', 'true')
+    expect(screen.getByLabelText('Workspace name')).toHaveAttribute('aria-busy', 'true')
     expect(container.querySelector('[data-size="sm"]')).toBeInTheDocument()
   })
 

@@ -17,7 +17,7 @@ export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
 }
 
 /**
- * A short status or count: "Live", "Over budget", "3 new", "Eliminated".
+ * A short status or count: "Live", "Over quota", "3 new", "Overdue".
  * Metadata and categories are Tags; a Badge says what *state* something is in.
  */
 export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(

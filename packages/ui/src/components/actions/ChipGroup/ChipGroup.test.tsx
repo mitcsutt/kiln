@@ -5,9 +5,9 @@ import { Fieldset } from '#components/inputs/Fieldset'
 import { ChipGroup } from './ChipGroup'
 
 const alerts = [
-  { value: 'goals', label: 'Goals', count: 4 },
-  { value: 'first-red', label: 'Red cards', description: 'Sent at full time' },
-  { value: 'own-goal', label: 'Own goal' },
+  { value: 'mentions', label: 'Mentions', count: 4 },
+  { value: 'comments', label: 'Comments', description: 'Sent once a day' },
+  { value: 'deploys', label: 'Deploys' },
 ]
 
 describe('ChipGroup', () => {
@@ -16,20 +16,20 @@ describe('ChipGroup', () => {
     render(
       <ChipGroup
         type="multiple"
-        aria-label="Match alerts"
+        aria-label="Email alerts"
         options={alerts}
         onValueChange={onValueChange}
       />,
     )
-    expect(screen.getByRole('group', { name: 'Match alerts' })).toBeInTheDocument()
-    const ownGoal = screen.getByRole('button', { name: 'Own goal' })
-    await userEvent.click(ownGoal)
-    await userEvent.click(screen.getByRole('button', { name: 'Goals 4' }))
-    expect(ownGoal).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByRole('group', { name: 'Email alerts' })).toBeInTheDocument()
+    const deploys = screen.getByRole('button', { name: 'Deploys' })
+    await userEvent.click(deploys)
+    await userEvent.click(screen.getByRole('button', { name: 'Mentions 4' }))
+    expect(deploys).toHaveAttribute('aria-pressed', 'true')
     // Option order, not click order.
-    expect(onValueChange).toHaveBeenLastCalledWith(['goals', 'own-goal'])
-    expect(screen.getByRole('button', { name: 'Red cards' })).toHaveAccessibleDescription(
-      'Sent at full time',
+    expect(onValueChange).toHaveBeenLastCalledWith(['mentions', 'deploys'])
+    expect(screen.getByRole('button', { name: 'Comments' })).toHaveAccessibleDescription(
+      'Sent once a day',
     )
   })
 
@@ -38,19 +38,19 @@ describe('ChipGroup', () => {
     render(
       <ChipGroup
         type="single"
-        aria-label="Match alert"
+        aria-label="Email alert"
         options={alerts}
         onValueChange={onValueChange}
       />,
     )
-    expect(screen.getByRole('radiogroup', { name: 'Match alert' })).toBeInTheDocument()
+    expect(screen.getByRole('radiogroup', { name: 'Email alert' })).toBeInTheDocument()
     await userEvent.tab()
-    expect(screen.getByRole('radio', { name: 'Goals 4' })).toHaveFocus()
+    expect(screen.getByRole('radio', { name: 'Mentions 4' })).toHaveFocus()
     await userEvent.keyboard('{ArrowRight}')
-    await waitFor(() => expect(screen.getByRole('radio', { name: 'Red cards' })).toHaveFocus())
+    await waitFor(() => expect(screen.getByRole('radio', { name: 'Comments' })).toHaveFocus())
     await userEvent.keyboard(' ')
-    expect(onValueChange).toHaveBeenLastCalledWith('first-red')
-    expect(screen.getByRole('radio', { name: 'Red cards' })).toHaveAttribute('aria-checked', 'true')
+    expect(onValueChange).toHaveBeenLastCalledWith('comments')
+    expect(screen.getByRole('radio', { name: 'Comments' })).toHaveAttribute('aria-checked', 'true')
     await userEvent.keyboard(' ')
     expect(onValueChange).toHaveBeenLastCalledWith('')
   })
@@ -60,27 +60,24 @@ describe('ChipGroup', () => {
     render(
       <ChipGroup
         type="multiple"
-        aria-label="Match alerts"
+        aria-label="Email alerts"
         options={alerts}
-        value={['own-goal']}
+        value={['deploys']}
         onValueChange={onValueChange}
       />,
     )
-    await userEvent.click(screen.getByRole('button', { name: 'Own goal' }))
+    await userEvent.click(screen.getByRole('button', { name: 'Deploys' }))
     expect(onValueChange).toHaveBeenCalledWith([])
-    expect(screen.getByRole('button', { name: 'Own goal' })).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByRole('button', { name: 'Deploys' })).toHaveAttribute('aria-pressed', 'true')
   })
 
   it('readOnly ignores presses; disabled disables every chip', async () => {
     const { rerender } = render(
-      <ChipGroup type="multiple" aria-label="Match alerts" options={alerts} readOnly />,
+      <ChipGroup type="multiple" aria-label="Email alerts" options={alerts} readOnly />,
     )
-    await userEvent.click(screen.getByRole('button', { name: 'Own goal' }))
-    expect(screen.getByRole('button', { name: 'Own goal' })).toHaveAttribute(
-      'aria-pressed',
-      'false',
-    )
-    rerender(<ChipGroup type="multiple" aria-label="Match alerts" options={alerts} disabled />)
+    await userEvent.click(screen.getByRole('button', { name: 'Deploys' }))
+    expect(screen.getByRole('button', { name: 'Deploys' })).toHaveAttribute('aria-pressed', 'false')
+    rerender(<ChipGroup type="multiple" aria-label="Email alerts" options={alerts} disabled />)
     for (const chip of screen.getAllByRole('button')) expect(chip).toBeDisabled()
   })
 
@@ -89,16 +86,16 @@ describe('ChipGroup', () => {
       <form>
         <ChipGroup
           type="multiple"
-          aria-label="Match alerts"
+          aria-label="Email alerts"
           name="alerts"
           options={alerts}
-          defaultValue={['goals', 'own-goal']}
+          defaultValue={['mentions', 'deploys']}
         />
       </form>,
     )
     const form = container.querySelector('form')
     if (!form) throw new Error('no form')
-    expect(new FormData(form).getAll('alerts')).toEqual(['goals', 'own-goal'])
+    expect(new FormData(form).getAll('alerts')).toEqual(['mentions', 'deploys'])
   })
 
   it('takes its name and invalid state from a Fieldset; forwards the ref; onBlur on leaving', async () => {
@@ -106,7 +103,7 @@ describe('ChipGroup', () => {
     const onBlur = vi.fn()
     render(
       <>
-        <Fieldset legend="Match alerts" error="Pick at least one">
+        <Fieldset legend="Email alerts" error="Pick at least one">
           <ChipGroup ref={ref} type="multiple" options={alerts} onBlur={onBlur} />
         </Fieldset>
         <button type="button">Save</button>
@@ -114,9 +111,9 @@ describe('ChipGroup', () => {
     )
     expect(ref.current).toHaveAttribute('aria-invalid', 'true')
     // The fieldset's legend names the set; the inner group doesn't repeat it.
-    expect(screen.getByRole('group', { name: 'Match alerts' })).toContainElement(ref.current)
+    expect(screen.getByRole('group', { name: 'Email alerts' })).toContainElement(ref.current)
     expect(ref.current).not.toHaveAttribute('aria-labelledby')
-    expect(screen.getByRole('button', { name: 'Own goal' })).toHaveAttribute('data-invalid')
+    expect(screen.getByRole('button', { name: 'Deploys' })).toHaveAttribute('data-invalid')
     await userEvent.tab()
     await userEvent.keyboard('{ArrowRight}')
     expect(onBlur).not.toHaveBeenCalled()

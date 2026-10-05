@@ -65,7 +65,7 @@ The second argument lists the keys the schema may reference: field kinds, layout
 - No prop can reach a DOM sink: `dangerouslySetInnerHTML`, `ref`, `style`, `className`, any `on…` handler, form retargeting (`action`, `formAction`…), and `javascript:`, `vbscript:` and `data:` URLs are all rejected.
 - No field `type` of `submit`, `reset`, `button`, `image`, `file` or `hidden`, and no `pattern` prop.
 - It's bounded: 64 levels deep, 2,000 nodes.
-- No literal `pattern` rules, because no check can promise a regular expression is fast. Register a validator for formats instead. For a source you trust (your own fixtures), pass `{ allowPatterns: true }`: the patterns are then screened by a heuristic, which isn't a guarantee.
+- No literal `pattern` rules, because no check can promise a regular expression is fast. Register a validator for formats instead. For a source you trust (your own schema files), pass `{ allowPatterns: true }`: the patterns are then screened by a heuristic, which isn't a guarantee.
 
 ## What it doesn't do
 

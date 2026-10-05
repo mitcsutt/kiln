@@ -14,7 +14,7 @@ describe('Slider', () => {
   it('is a slider with min, max, value and a formatted aria-valuetext', () => {
     render(
       <Slider
-        aria-label="Weekly budget"
+        aria-label="Hourly rate"
         min={0}
         max={500}
         defaultValue={250}
@@ -22,7 +22,7 @@ describe('Slider', () => {
         locale="en-GB"
       />,
     )
-    const slider = screen.getByRole('slider', { name: 'Weekly budget' })
+    const slider = screen.getByRole('slider', { name: 'Hourly rate' })
     expect(slider).toHaveAttribute('aria-valuemin', '0')
     expect(slider).toHaveAttribute('aria-valuemax', '500')
     expect(slider).toHaveAttribute('aria-valuenow', '250')
@@ -34,7 +34,7 @@ describe('Slider', () => {
     const onValueCommit = vi.fn()
     render(
       <Slider
-        aria-label="Savings rate"
+        aria-label="Discount rate"
         defaultValue={20}
         step={5}
         onValueChange={onValueChange}
@@ -56,14 +56,14 @@ describe('Slider', () => {
   it('is controlled by value', async () => {
     const onValueChange = vi.fn()
     const { rerender } = render(
-      <Slider aria-label="Savings rate" value={40} onValueChange={onValueChange} />,
+      <Slider aria-label="Discount rate" value={40} onValueChange={onValueChange} />,
     )
     const slider = screen.getByRole('slider')
     slider.focus()
     await userEvent.keyboard('{ArrowUp}')
     expect(onValueChange).toHaveBeenCalledWith(41)
     expect(slider).toHaveAttribute('aria-valuenow', '40')
-    rerender(<Slider aria-label="Savings rate" value={41} onValueChange={onValueChange} />)
+    rerender(<Slider aria-label="Discount rate" value={41} onValueChange={onValueChange} />)
     expect(slider).toHaveAttribute('aria-valuenow', '41')
   })
 
@@ -82,7 +82,7 @@ describe('Slider', () => {
     const onValueCommit = vi.fn()
     const { rerender } = render(
       <Slider
-        aria-label="Savings rate"
+        aria-label="Discount rate"
         defaultValue={20}
         readOnly
         onValueChange={onValueChange}
@@ -96,14 +96,14 @@ describe('Slider', () => {
     expect(slider).toHaveAttribute('aria-valuenow', '20')
     expect(onValueChange).not.toHaveBeenCalled()
     expect(onValueCommit).not.toHaveBeenCalled()
-    rerender(<Slider aria-label="Savings rate" defaultValue={20} disabled />)
+    rerender(<Slider aria-label="Discount rate" defaultValue={20} disabled />)
     expect(screen.getByRole('slider')).not.toHaveAttribute('tabindex')
   })
 
   it('emits a hidden input under name', async () => {
     const { container } = render(
       <form>
-        <Slider aria-label="Savings rate" name="rate" defaultValue={20} />
+        <Slider aria-label="Discount rate" name="rate" defaultValue={20} />
       </form>,
     )
     const form = container.querySelector('form')
@@ -117,13 +117,13 @@ describe('Slider', () => {
   it('takes label, description and invalid from a Field; ref and id go to the thumb', () => {
     const ref = createRef<HTMLSpanElement>()
     render(
-      <Field label="Savings rate" description="Of each pay" error="Too high">
+      <Field label="Discount rate" description="Off each invoice" error="Too high">
         <Slider ref={ref} defaultValue={90} />
       </Field>,
     )
-    const slider = screen.getByRole('slider', { name: 'Savings rate' })
+    const slider = screen.getByRole('slider', { name: 'Discount rate' })
     expect(ref.current).toBe(slider)
-    expect(slider).toHaveAccessibleDescription('Of each pay Too high')
+    expect(slider).toHaveAccessibleDescription('Off each invoice Too high')
     expect(slider).toHaveAttribute('aria-invalid', 'true')
     expect(slider.id).toBeTruthy()
   })
@@ -132,7 +132,7 @@ describe('Slider', () => {
     const onBlur = vi.fn()
     render(
       <>
-        <Slider aria-label="Savings rate" onBlur={onBlur} />
+        <Slider aria-label="Discount rate" onBlur={onBlur} />
         <button type="button">Save</button>
       </>,
     )

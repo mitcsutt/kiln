@@ -3,44 +3,47 @@ import userEvent from '@testing-library/user-event'
 import { createRef } from 'react'
 import { Tabs } from './Tabs'
 
-function ClubTabs(props: { variant?: 'underline' | 'pill'; onValueChange?: (v: string) => void }) {
+function ProjectTabs(props: {
+  variant?: 'underline' | 'pill'
+  onValueChange?: (v: string) => void
+}) {
   return (
-    <Tabs defaultValue="matches" variant={props.variant} onValueChange={props.onValueChange}>
-      <Tabs.List aria-label="Harbour Hawks">
-        <Tabs.Trigger value="matches">Matches</Tabs.Trigger>
-        <Tabs.Trigger value="players">Players</Tabs.Trigger>
+    <Tabs defaultValue="tasks" variant={props.variant} onValueChange={props.onValueChange}>
+      <Tabs.List aria-label="Atlas redesign">
+        <Tabs.Trigger value="tasks">Tasks</Tabs.Trigger>
+        <Tabs.Trigger value="people">People</Tabs.Trigger>
         <Tabs.Trigger value="history">History</Tabs.Trigger>
       </Tabs.List>
-      <Tabs.Content value="matches">Harbour Hawks 3 – 0 Millpond FC</Tabs.Content>
-      <Tabs.Content value="players">Sione Taufa · 2 goals</Tabs.Content>
-      <Tabs.Content value="history">Champions 2019, 2022, 2024</Tabs.Content>
+      <Tabs.Content value="tasks">14 open tasks · Due 28 November</Tabs.Content>
+      <Tabs.Content value="people">Priya Nair · design lead</Tabs.Content>
+      <Tabs.Content value="history">Started March, beta September</Tabs.Content>
     </Tabs>
   )
 }
 
 describe('Tabs', () => {
   it('wires tablist, tabs and panels', () => {
-    render(<ClubTabs />)
-    expect(screen.getByRole('tablist', { name: 'Harbour Hawks' })).toBeInTheDocument()
-    const matches = screen.getByRole('tab', { name: 'Matches' })
-    expect(matches).toHaveAttribute('aria-selected', 'true')
-    expect(screen.getByRole('tabpanel')).toHaveTextContent('Harbour Hawks 3 – 0 Millpond FC')
+    render(<ProjectTabs />)
+    expect(screen.getByRole('tablist', { name: 'Atlas redesign' })).toBeInTheDocument()
+    const tasks = screen.getByRole('tab', { name: 'Tasks' })
+    expect(tasks).toHaveAttribute('aria-selected', 'true')
+    expect(screen.getByRole('tabpanel')).toHaveTextContent('14 open tasks · Due 28 November')
   })
 
   it('moves between tabs with arrow keys, looping, and activates on focus', async () => {
     const onValueChange = vi.fn()
-    render(<ClubTabs onValueChange={onValueChange} />)
+    render(<ProjectTabs onValueChange={onValueChange} />)
     await userEvent.tab()
-    expect(screen.getByRole('tab', { name: 'Matches' })).toHaveFocus()
+    expect(screen.getByRole('tab', { name: 'Tasks' })).toHaveFocus()
     await userEvent.keyboard('{ArrowRight}')
-    expect(screen.getByRole('tab', { name: 'Players' })).toHaveFocus()
-    expect(screen.getByRole('tab', { name: 'Players' })).toHaveAttribute('aria-selected', 'true')
-    expect(screen.getByRole('tabpanel')).toHaveTextContent('Sione Taufa')
+    expect(screen.getByRole('tab', { name: 'People' })).toHaveFocus()
+    expect(screen.getByRole('tab', { name: 'People' })).toHaveAttribute('aria-selected', 'true')
+    expect(screen.getByRole('tabpanel')).toHaveTextContent('Priya Nair')
     await userEvent.keyboard('{ArrowLeft}{ArrowLeft}')
     expect(screen.getByRole('tab', { name: 'History' })).toHaveFocus()
     expect(onValueChange).toHaveBeenLastCalledWith('history')
     await userEvent.keyboard('{Home}')
-    expect(screen.getByRole('tab', { name: 'Matches' })).toHaveFocus()
+    expect(screen.getByRole('tab', { name: 'Tasks' })).toHaveFocus()
   })
 
   it('passes the variant down as a data attribute and forwards refs', () => {

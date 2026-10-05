@@ -13,7 +13,7 @@ describe('Fieldset', () => {
         description="Sent to your email"
         error="Choose at least one"
       >
-        <Checkbox aria-label="Kick-off" />
+        <Checkbox aria-label="Assigned tasks" />
       </Fieldset>,
     )
     const group = screen.getByRole('group', { name: 'Notify me about' })
@@ -25,7 +25,7 @@ describe('Fieldset', () => {
   it('disables every control inside', () => {
     render(
       <Fieldset legend="Alerts" disabled>
-        <Checkbox aria-label="Goals" />
+        <Checkbox aria-label="Mentions" />
       </Fieldset>,
     )
     expect(screen.getByRole('checkbox')).toBeDisabled()
@@ -34,7 +34,7 @@ describe('Fieldset', () => {
   it('shows warning (hidden once an error message shows) and validating spinner', () => {
     const { rerender, container } = render(
       <Fieldset legend="Notify me about" warning="You've turned off all channels" validating>
-        <Checkbox aria-label="Kick-off" />
+        <Checkbox aria-label="Assigned tasks" />
       </Fieldset>,
     )
     expect(screen.getByText("You've turned off all channels")).toBeInTheDocument()
@@ -46,7 +46,7 @@ describe('Fieldset', () => {
         warning="You've turned off all channels"
         error="Choose at least one"
       >
-        <Checkbox aria-label="Kick-off" />
+        <Checkbox aria-label="Assigned tasks" />
       </Fieldset>,
     )
     expect(screen.queryByText("You've turned off all channels")).toBeNull()
@@ -55,14 +55,14 @@ describe('Fieldset', () => {
   it('errorLive=false drops role=alert; errorHidden keeps invalid without a message', () => {
     const { rerender } = render(
       <Fieldset legend="Alerts" error="Choose at least one" errorLive={false}>
-        <Checkbox aria-label="Goals" />
+        <Checkbox aria-label="Mentions" />
       </Fieldset>,
     )
     expect(screen.queryByRole('alert')).toBeNull()
     expect(screen.getByText('Choose at least one')).toBeInTheDocument()
     rerender(
       <Fieldset legend="Alerts" error="Choose at least one" errorHidden>
-        <Checkbox aria-label="Goals" />
+        <Checkbox aria-label="Mentions" />
       </Fieldset>,
     )
     expect(screen.queryByText('Choose at least one')).toBeNull()
@@ -72,7 +72,7 @@ describe('Fieldset', () => {
   it('cascades readOnly to controls inside via context', () => {
     render(
       <Fieldset legend="Alerts" readOnly>
-        <Checkbox aria-label="Goals" />
+        <Checkbox aria-label="Mentions" />
       </Fieldset>,
     )
     expect(screen.getByRole('checkbox')).toHaveAttribute('aria-readonly', 'true')

@@ -4,7 +4,7 @@ import { createRef } from 'react'
 import { CodeBlock } from './CodeBlock'
 import { must } from '#test/must'
 
-const code = `export const keys = {\n  fixtures: ['fixtures'] as const,\n}\n`
+const code = `export const keys = {\n  invoices: ['invoices'] as const,\n}\n`
 
 describe('CodeBlock', () => {
   it('renders the code verbatim in a figure named by its title', () => {

@@ -2,30 +2,30 @@ import type { SelectGroup, SelectOption } from '#components/inputs/Select'
 
 /* Real content shared by the inputs stories. Not exported from the package. */
 
-export const expenseCategories: SelectGroup[] = [
+export const taskCategories: SelectGroup[] = [
   {
-    label: 'Home',
+    label: 'Design',
     options: [
-      { value: 'groceries', label: 'Groceries' },
-      { value: 'rent', label: 'Rent' },
-      { value: 'power', label: 'Electricity and gas' },
-      { value: 'internet', label: 'Internet' },
+      { value: 'research', label: 'User research' },
+      { value: 'visual', label: 'Visual design' },
+      { value: 'prototyping', label: 'Prototyping' },
+      { value: 'content', label: 'Content' },
     ],
   },
   {
-    label: 'Getting around',
+    label: 'Engineering',
     options: [
-      { value: 'fuel', label: 'Fuel' },
-      { value: 'transport', label: 'Public transport' },
-      { value: 'rego', label: 'Car registration' },
+      { value: 'frontend', label: 'Frontend' },
+      { value: 'backend', label: 'Backend' },
+      { value: 'infrastructure', label: 'Infrastructure' },
     ],
   },
   {
-    label: 'Personal',
+    label: 'Operations',
     options: [
-      { value: 'eating-out', label: 'Eating out' },
-      { value: 'gym', label: 'Gym membership' },
-      { value: 'streaming', label: 'Streaming', disabled: true },
+      { value: 'support', label: 'Customer support' },
+      { value: 'billing', label: 'Billing' },
+      { value: 'legal', label: 'Legal review', disabled: true },
     ],
   },
 ]
@@ -50,7 +50,7 @@ export const countryGroups: SelectGroup[] = [
     label: 'Europe',
     options: [
       { value: 'fra', label: 'France' },
-      { value: 'ger', label: 'Germany' },
+      { value: 'deu', label: 'Germany' },
       { value: 'esp', label: 'Spain' },
       { value: 'gbr', label: 'United Kingdom' },
     ],

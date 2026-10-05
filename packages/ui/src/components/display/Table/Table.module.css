@@ -72,7 +72,7 @@
 .cell:last-child {
   padding-inline-end: var(--space-2);
 }
-/* Figure columns are narrow; tighter gutters keep a 10-column standings table on a phone. */
+/* Figure columns are narrow; tighter gutters keep a 10-column figures table on a phone. */
 :is(.headerCell, .cell)[data-numeric] {
   padding-inline: var(--space-2);
 }

@@ -106,7 +106,7 @@ export const skills: SkillSpec[] = [
       'forms/getting-started/form-context',
       'forms/getting-started/account-settings',
       'forms/getting-started/onboarding',
-      'forms/getting-started/savings-goal',
+      'forms/getting-started/recurring-invoice',
       'forms/layouts/form',
       'forms/layouts/form-section',
       'forms/layouts/form-grid',

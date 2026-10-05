@@ -7,7 +7,7 @@ import { When } from '#layouts/When'
 import { FormTabs } from './FormTabs'
 
 const required = ({ value }: { value: string }) => (value === '' ? 'Enter a value' : undefined)
-const defaults = { name: '', email: '', team: '', city: '' }
+const defaults = { name: '', email: '', company: '', city: '' }
 
 describe('FormTabs', () => {
   it('renders a named tablist; inactive panels stay mounted but hidden', () => {
@@ -17,8 +17,8 @@ describe('FormTabs', () => {
           <FormTabs.Tab value="you" label="You">
             <f.TextField name="name" label="Full name" />
           </FormTabs.Tab>
-          <FormTabs.Tab value="team" label="Team">
-            <f.TextField name="team" label="Team name" />
+          <FormTabs.Tab value="company" label="Company">
+            <f.TextField name="company" label="Company name" />
           </FormTabs.Tab>
         </FormTabs>
       ),
@@ -26,9 +26,9 @@ describe('FormTabs', () => {
     )
     const list = screen.getByRole('tablist', { name: 'Entry' })
     const tabs = within(list).getAllByRole('tab')
-    expect(tabs.map((tab) => tab.textContent)).toEqual(['You', 'Team'])
+    expect(tabs.map((tab) => tab.textContent)).toEqual(['You', 'Company'])
     expect(tabs[0]).toHaveAttribute('aria-selected', 'true')
-    const hiddenInput = screen.getByLabelText('Team name')
+    const hiddenInput = screen.getByLabelText('Company name')
     expect(hiddenInput.closest('[role="tabpanel"]')).toHaveAttribute('hidden')
     expect(screen.getByLabelText('Full name').closest('[role="tabpanel"]')).not.toHaveAttribute(
       'hidden',
@@ -43,8 +43,12 @@ describe('FormTabs', () => {
             <FormTabs.Tab value="you" label="You">
               <f.TextField name="name" label="Full name" />
             </FormTabs.Tab>
-            <FormTabs.Tab value="team" label="Team">
-              <f.TextField name="team" label="Team name" validators={{ onDynamic: required }} />
+            <FormTabs.Tab value="company" label="Company">
+              <f.TextField
+                name="company"
+                label="Company name"
+                validators={{ onDynamic: required }}
+              />
               <f.TextField name="city" label="Home city" validators={{ onDynamic: required }} />
             </FormTabs.Tab>
           </FormTabs>
@@ -54,11 +58,11 @@ describe('FormTabs', () => {
       { defaultValues: { ...defaults, name: 'Ada' } },
     )
     await user.click(screen.getByRole('button', { name: 'Save' }))
-    const team = await screen.findByRole('tab', { name: 'Team 2 errors' })
+    const company = await screen.findByRole('tab', { name: 'Company 2 errors' })
     expect(screen.getByRole('tab', { name: 'You' })).toBeInTheDocument()
-    await waitFor(() => expect(screen.getByLabelText('Team name')).toHaveFocus())
-    expect(team).toHaveAttribute('aria-selected', 'true')
-    expect(screen.getByLabelText('Team name').closest('[role="tabpanel"]')).not.toHaveAttribute(
+    await waitFor(() => expect(screen.getByLabelText('Company name')).toHaveFocus())
+    expect(company).toHaveAttribute('aria-selected', 'true')
+    expect(screen.getByLabelText('Company name').closest('[role="tabpanel"]')).not.toHaveAttribute(
       'hidden',
     )
   })
@@ -70,7 +74,7 @@ describe('FormTabs', () => {
     }: {
       children: (value: string, set: (v: string) => void) => React.ReactNode
     }) {
-      const [value, setValue] = useState('team')
+      const [value, setValue] = useState('company')
       return <>{children(value, setValue)}</>
     }
     const { user } = renderForm(
@@ -88,8 +92,8 @@ describe('FormTabs', () => {
               <FormTabs.Tab value="you" label="You">
                 <f.TextField name="name" label="Full name" />
               </FormTabs.Tab>
-              <FormTabs.Tab value="team" label="Team">
-                <f.TextField name="team" label="Team name" />
+              <FormTabs.Tab value="company" label="Company">
+                <f.TextField name="company" label="Company name" />
               </FormTabs.Tab>
             </FormTabs>
           )}
@@ -97,7 +101,7 @@ describe('FormTabs', () => {
       ),
       { defaultValues: defaults },
     )
-    expect(screen.getByRole('tab', { name: 'Team' })).toHaveAttribute('aria-selected', 'true')
+    expect(screen.getByRole('tab', { name: 'Company' })).toHaveAttribute('aria-selected', 'true')
     await user.click(screen.getByRole('tab', { name: 'You' }))
     expect(changes).toEqual(['you'])
     expect(screen.getByRole('tab', { name: 'You' })).toHaveAttribute('aria-selected', 'true')
@@ -107,14 +111,14 @@ describe('FormTabs', () => {
     const { user } = renderForm(
       (f) => (
         <>
-          <f.CheckboxField name="hasTeam" label="I play for a team" />
+          <f.CheckboxField name="hasCompany" label="I work for a company" />
           <FormTabs label="Entry">
             <FormTabs.Tab value="you" label="You">
               <f.TextField name="name" label="Full name" />
             </FormTabs.Tab>
-            <When form={f} is={(v) => v.hasTeam}>
-              <FormTabs.Tab value="team" label="Team">
-                <f.TextField name="team" label="Team name" />
+            <When form={f} is={(v) => v.hasCompany}>
+              <FormTabs.Tab value="company" label="Company">
+                <f.TextField name="company" label="Company name" />
               </FormTabs.Tab>
             </When>
             <FormTabs.Tab value="contact" label="Contact">
@@ -123,13 +127,13 @@ describe('FormTabs', () => {
           </FormTabs>
         </>
       ),
-      { defaultValues: { ...defaults, hasTeam: false } },
+      { defaultValues: { ...defaults, hasCompany: false } },
     )
     expect(screen.getAllByRole('tab').map((tab) => tab.textContent)).toEqual(['You', 'Contact'])
-    await user.click(screen.getByLabelText('I play for a team'))
+    await user.click(screen.getByLabelText('I work for a company'))
     expect(screen.getAllByRole('tab').map((tab) => tab.textContent)).toEqual([
       'You',
-      'Team',
+      'Company',
       'Contact',
     ])
   })

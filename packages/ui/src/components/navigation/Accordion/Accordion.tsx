@@ -11,7 +11,7 @@ export type AccordionSize = 'sm' | 'md'
 interface AccordionOwnProps {
   /** `divided` (default): hairlines between items, no box. `contained`: a bordered surface. */
   variant?: AccordionVariant
-  /** `sm` for inline notes ("Why was Wales eliminated?"); `md` for FAQs and sections. */
+  /** `sm` for inline notes ("Why is this invoice overdue?"); `md` for FAQs and sections. */
   size?: AccordionSize
 }
 

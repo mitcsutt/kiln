@@ -6,12 +6,12 @@ import { FileField } from './FileField'
 
 const stored: StoredFile = {
   id: 'r-114',
-  name: 'grocer-receipt.png',
+  name: 'client-lunch-receipt.png',
   size: 98_000,
   type: 'image/png',
 }
 const receipt = () =>
-  new File([new Uint8Array(2000)], 'hardware-receipt.jpg', { type: 'image/jpeg' })
+  new File([new Uint8Array(2000)], 'conference-receipt.jpg', { type: 'image/jpeg' })
 
 describe('FileField', () => {
   it('labels the file input and forwards the ref, id and className', () => {

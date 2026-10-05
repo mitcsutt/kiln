@@ -28,19 +28,19 @@ export const Playground: Story = {}
 
 const SCALE: { size: HeadingSize; text: string }[] = [
   { size: 'display-lg', text: 'Software that stays out of the way' },
-  { size: 'display-md', text: 'Division two table' },
-  { size: 'display-sm', text: 'September spending' },
-  { size: '3xl', text: 'Recent projects, 2019 to now' },
-  { size: '2xl', text: 'Round 14 fixtures' },
-  { size: 'xl', text: 'Groceries and home' },
-  { size: 'lg', text: 'Opening match at Harbour Park' },
-  { size: 'md', text: 'Recent writing' },
-  { size: 'sm', text: 'Club totals' },
+  { size: 'display-md', text: 'Release 2.4 overview' },
+  { size: 'display-sm', text: 'September invoices' },
+  { size: '3xl', text: 'Active projects, 2024 to now' },
+  { size: '2xl', text: 'Sprint 14 tasks' },
+  { size: 'xl', text: 'Billing and plans' },
+  { size: 'lg', text: 'Planning meeting with Northwind Studio' },
+  { size: 'md', text: 'Recent releases' },
+  { size: 'sm', text: 'Team totals' },
 ]
 
 /**
  * The full scale. This is where the themes differ most: Monograph sets a big, tight
- * Newsreader; Fiesta shouts in condensed stadium caps; Ledger stays a compact grotesk.
+ * Newsreader; Fiesta shouts in condensed poster caps; Ledger stays a compact grotesk.
  */
 export const TypeScale: Story = {
   render: () => (
@@ -65,18 +65,18 @@ export const LevelVersusSize: Story = {
     <Stack gap={6}>
       <Stack gap={2}>
         <Heading level={1} size="lg" tone="muted">
-          Monthly budget
+          Monthly revenue
         </Heading>
         <Heading level={2} size="display-md">
-          $4,182.60 spent
+          $4,182.60 invoiced
         </Heading>
       </Stack>
       <Stack gap={2}>
         <Heading level={3} size="sm" tone="muted">
-          Round 1, 14 June
+          Release 2.4, 14 June
         </Heading>
         <Heading level={4} size="2xl">
-          Harbour Hawks v Millpond FC
+          Billing migration and the new pricing page
         </Heading>
       </Stack>
     </Stack>
@@ -88,7 +88,7 @@ export const Responsive: Story = {
   args: {
     level: 2,
     size: { base: '2xl', md: 'display-sm', xl: 'display-md' },
-    children: 'Things I have built for teams',
+    children: 'Tools that keep releases on schedule',
   },
 }
 
@@ -96,10 +96,10 @@ export const Tones: Story = {
   render: () => (
     <Stack gap={4}>
       <Heading level={3} size="2xl">
-        Default — Brazil top the group
+        Default — Atlas redesign is on track
       </Heading>
       <Heading level={3} size="2xl" tone="muted">
-        Muted — Archive, 2022 season
+        Muted — Archive, 2022 releases
       </Heading>
       <Heading level={3} size="2xl" tone="accent">
         Accent — Live now
@@ -113,10 +113,10 @@ export const Measure: Story = {
   render: () => (
     <Stack gap={6}>
       <Heading level={2} size="display-sm" measure="narrow">
-        A budget that survives contact with September
+        An invoice run that survives contact with September
       </Heading>
       <Heading level={3} size="xl" measure="text">
-        How the fixture list keeps every club's home games spread across the season
+        How we cut invoice processing time in half without hiring anyone
       </Heading>
     </Stack>
   ),

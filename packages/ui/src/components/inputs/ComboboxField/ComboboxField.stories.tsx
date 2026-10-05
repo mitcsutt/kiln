@@ -1,16 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Stack } from '#components/layout/Stack'
-import { expenseLabels, countries } from '#components/inputs/Combobox/storyData'
+import { projectLabels, countries } from '#components/inputs/Combobox/storyData'
 import { ComboboxField } from './ComboboxField'
 
 const meta = {
   title: 'UI/Inputs/ComboboxField',
   component: ComboboxField,
   args: {
-    label: 'Team',
-    description: 'The side you follow. Type "USA", "Holland" or "cote".',
+    label: 'Country',
+    description: 'Where your company is registered. Type "USA", "Holland" or "cote".',
     options: countries,
-    placeholder: 'Search 48 nations',
+    placeholder: 'Search countries',
     clearable: true,
     required: true,
     error: '',
@@ -31,11 +31,11 @@ type Story = StoryObj<typeof meta>
 export const Playground: Story = {}
 
 export const WithError: Story = {
-  args: { error: 'Choose a team' },
+  args: { error: 'Choose a country' },
 }
 
 export const WithWarning: Story = {
-  args: { defaultValue: 'ita', warning: 'Picks lock when the group stage starts.' },
+  args: { defaultValue: 'ita', warning: 'Invoices to Italy need a VAT number.' },
 }
 
 export const Labels: Story = {
@@ -48,9 +48,9 @@ export const Labels: Story = {
         multiple
         creatable
         maxSelected={5}
-        options={expenseLabels}
+        options={projectLabels}
         placeholder="Add a label"
-        defaultValue={['essentials', 'school']}
+        defaultValue={['design', 'frontend']}
       />
     </Stack>
   ),

@@ -5,11 +5,11 @@ import { renderForm } from '#test/renderForm'
 import { When, type WhenHidden } from './When'
 
 interface Values {
-  hasTeam: boolean
-  team: string
+  hasCompany: boolean
+  company: string
   name: string
 }
-const defaults: Values = { hasTeam: false, team: 'Default FC', name: '' }
+const defaults: Values = { hasCompany: false, company: 'Northwind Studio', name: '' }
 const required = ({ value }: { value: string }) => (value === '' ? 'Enter a value' : undefined)
 
 function setup(whenHidden?: WhenHidden) {
@@ -17,9 +17,14 @@ function setup(whenHidden?: WhenHidden) {
   const view = renderForm(
     (f) => (
       <>
-        <f.CheckboxField name="hasTeam" label="I play for a team" />
-        <When form={f} is={(v) => v.hasTeam} whenHidden={whenHidden} fallback={<p>No team.</p>}>
-          <f.TextField name="team" label="Team name" />
+        <f.CheckboxField name="hasCompany" label="I work for a company" />
+        <When
+          form={f}
+          is={(v) => v.hasCompany}
+          whenHidden={whenHidden}
+          fallback={<p>No company.</p>}
+        >
+          <f.TextField name="company" label="Company name" />
         </When>
         <SubmitButton>Save</SubmitButton>
       </>
@@ -35,56 +40,60 @@ function setup(whenHidden?: WhenHidden) {
   return { ...view, onSubmit }
 }
 
-async function typeTeamThenHide(user: ReturnType<typeof setup>['user']) {
-  await user.click(screen.getByLabelText('I play for a team'))
-  const team = screen.getByLabelText('Team name')
-  await user.clear(team)
-  await user.type(team, 'Harriers')
-  await user.click(screen.getByLabelText('I play for a team'))
+async function typeCompanyThenHide(user: ReturnType<typeof setup>['user']) {
+  await user.click(screen.getByLabelText('I work for a company'))
+  const company = screen.getByLabelText('Company name')
+  await user.clear(company)
+  await user.type(company, 'Brightline Labs')
+  await user.click(screen.getByLabelText('I work for a company'))
 }
 
 describe('When', () => {
   it('unmounts children while hidden and renders the fallback', async () => {
     const { user } = setup()
-    expect(screen.queryByLabelText('Team name')).toBeNull()
-    expect(screen.getByText('No team.')).toBeInTheDocument()
-    await user.click(screen.getByLabelText('I play for a team'))
-    expect(screen.getByLabelText('Team name')).toBeInTheDocument()
-    expect(screen.queryByText('No team.')).toBeNull()
+    expect(screen.queryByLabelText('Company name')).toBeNull()
+    expect(screen.getByText('No company.')).toBeInTheDocument()
+    await user.click(screen.getByLabelText('I work for a company'))
+    expect(screen.getByLabelText('Company name')).toBeInTheDocument()
+    expect(screen.queryByText('No company.')).toBeNull()
   })
 
   it("prune (default): submits the default while hidden; the user's input survives hide/show", async () => {
     const { user, onSubmit, form } = setup()
-    await typeTeamThenHide(user)
-    expect(form.state.values.team).toBe('Harriers')
+    await typeCompanyThenHide(user)
+    expect(form.state.values.company).toBe('Brightline Labs')
     await user.click(screen.getByRole('button', { name: 'Save' }))
     await waitFor(() => {
       expect(onSubmit).toHaveBeenCalledTimes(1)
     })
-    expect(onSubmit.mock.calls[0]?.[0]).toEqual({ hasTeam: false, team: 'Default FC', name: '' })
-    await user.click(screen.getByLabelText('I play for a team'))
-    expect(screen.getByLabelText('Team name')).toHaveValue('Harriers')
+    expect(onSubmit.mock.calls[0]?.[0]).toEqual({
+      hasCompany: false,
+      company: 'Northwind Studio',
+      name: '',
+    })
+    await user.click(screen.getByLabelText('I work for a company'))
+    expect(screen.getByLabelText('Company name')).toHaveValue('Brightline Labs')
   })
 
   it('keep: submits the current value while hidden', async () => {
     const { user, onSubmit } = setup('keep')
-    await typeTeamThenHide(user)
+    await typeCompanyThenHide(user)
     await user.click(screen.getByRole('button', { name: 'Save' }))
     await waitFor(() => {
       expect(onSubmit).toHaveBeenCalledTimes(1)
     })
-    expect(onSubmit.mock.calls[0]?.[0]).toMatchObject({ team: 'Harriers' })
+    expect(onSubmit.mock.calls[0]?.[0]).toMatchObject({ company: 'Brightline Labs' })
   })
 
   it('reset: resets the value to its default as soon as it hides', async () => {
     const { user, onSubmit, form } = setup('reset')
-    await typeTeamThenHide(user)
-    expect(form.state.values.team).toBe('Default FC')
+    await typeCompanyThenHide(user)
+    expect(form.state.values.company).toBe('Northwind Studio')
     await user.click(screen.getByRole('button', { name: 'Save' }))
     await waitFor(() => {
       expect(onSubmit).toHaveBeenCalledTimes(1)
     })
-    expect(onSubmit.mock.calls[0]?.[0]).toMatchObject({ team: 'Default FC' })
+    expect(onSubmit.mock.calls[0]?.[0]).toMatchObject({ company: 'Northwind Studio' })
   })
 
   it('hidden fields do not validate or block submit, and their errors are cleared', async () => {
@@ -92,20 +101,20 @@ describe('When', () => {
     const { user, form } = renderForm(
       (f) => (
         <>
-          <f.CheckboxField name="hasTeam" label="I play for a team" />
-          <When form={f} is={(v) => v.hasTeam}>
-            <f.TextField name="name" label="Captain" validators={{ onDynamic: required }} />
+          <f.CheckboxField name="hasCompany" label="I work for a company" />
+          <When form={f} is={(v) => v.hasCompany}>
+            <f.TextField name="name" label="Job title" validators={{ onDynamic: required }} />
           </When>
           <SubmitButton>Save</SubmitButton>
         </>
       ),
-      { defaultValues: { ...defaults, hasTeam: true }, onSubmit },
+      { defaultValues: { ...defaults, hasCompany: true }, onSubmit },
     )
     await user.click(screen.getByRole('button', { name: 'Save' }))
     await waitFor(() =>
-      expect(screen.getByLabelText('Captain')).toHaveAttribute('aria-invalid', 'true'),
+      expect(screen.getByLabelText('Job title')).toHaveAttribute('aria-invalid', 'true'),
     )
-    await user.click(screen.getByLabelText('I play for a team'))
+    await user.click(screen.getByLabelText('I work for a company'))
     expect(form.getFieldMeta('name')?.errors ?? []).toEqual([])
     await user.click(screen.getByRole('button', { name: 'Save' }))
     await waitFor(() => {
@@ -118,8 +127,8 @@ describe('When', () => {
     const { user, form } = renderForm(
       (f) => (
         <>
-          <When form={f} is={(v) => v.hasTeam} names={['team']}>
-            <f.TextField name="team" label="Team name" />
+          <When form={f} is={(v) => v.hasCompany} names={['company']}>
+            <f.TextField name="company" label="Company name" />
           </When>
           <SubmitButton>Save</SubmitButton>
         </>
@@ -133,30 +142,30 @@ describe('When', () => {
     )
     // a value the user never saw (loaded from the server while the field was hidden)
     act(() => {
-      form.setFieldValue('team', 'Stale United')
+      form.setFieldValue('company', 'Orchard & Co')
     })
-    expect(form.state.values.team).toBe('Stale United')
+    expect(form.state.values.company).toBe('Orchard & Co')
     await user.click(screen.getByRole('button', { name: 'Save' }))
     await waitFor(() => {
       expect(onSubmit).toHaveBeenCalledTimes(1)
     })
-    expect(onSubmit.mock.calls[0]?.[0]).toMatchObject({ team: 'Default FC' })
+    expect(onSubmit.mock.calls[0]?.[0]).toMatchObject({ company: 'Northwind Studio' })
   })
 
   it('accepts a JSON condition (schema-mode Condition) instead of a predicate', async () => {
     const { user } = renderForm(
       (f) => (
         <>
-          <f.CheckboxField name="hasTeam" label="I play for a team" />
-          <When form={f} condition={{ field: 'hasTeam', op: 'truthy' }}>
-            <f.TextField name="team" label="Team name" />
+          <f.CheckboxField name="hasCompany" label="I work for a company" />
+          <When form={f} condition={{ field: 'hasCompany', op: 'truthy' }}>
+            <f.TextField name="company" label="Company name" />
           </When>
         </>
       ),
       { defaultValues: defaults },
     )
-    expect(screen.queryByLabelText('Team name')).toBeNull()
-    await user.click(screen.getByLabelText('I play for a team'))
-    expect(screen.getByLabelText('Team name')).toBeInTheDocument()
+    expect(screen.queryByLabelText('Company name')).toBeNull()
+    await user.click(screen.getByLabelText('I work for a company'))
+    expect(screen.getByLabelText('Company name')).toBeInTheDocument()
   })
 })

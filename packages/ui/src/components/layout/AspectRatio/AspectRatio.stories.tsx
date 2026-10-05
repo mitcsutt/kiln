@@ -16,7 +16,7 @@ type Story = StoryObj<typeof meta>
 export const Playground: Story = {
   render: (args) => (
     <AspectRatio {...args}>
-      <Artwork kind="pitch" label="Pitch diagram" />
+      <Artwork kind="board" label="Task board" />
     </AspectRatio>
   ),
 }

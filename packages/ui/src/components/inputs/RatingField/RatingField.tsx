@@ -11,7 +11,7 @@ export interface RatingFieldProps
  * by its help, warning and error. `className`/`style` go to the Field; `ref`, `id`, `name`
  * and the rest go to the radiogroup.
  *
- * <RatingField label="Rate this fixture" name="rating" clearable />
+ * <RatingField label="Rate this release" name="rating" clearable />
  */
 export const RatingField = forwardRef<HTMLDivElement, RatingFieldProps>(
   function RatingField(props, ref) {

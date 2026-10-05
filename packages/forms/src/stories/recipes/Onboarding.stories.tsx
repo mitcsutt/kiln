@@ -20,14 +20,14 @@ interface Onboarding {
   payer: string | number | null
   company: { legalName: string; companyNumber: string; vatNumber: string; poNumber: string }
   billing: { invoiceEmail: string; country: string | null; currency: string | number | null }
-  kickoff: { start: string; days: (string | number)[]; notes: string }
+  intro: { start: string; days: (string | number)[]; notes: string }
 }
 
 const STEP_PATHS: Record<string, string> = {
   you: 'you',
   company: 'company',
   billing: 'billing',
-  kickoff: 'kick-off',
+  intro: 'intro-call',
 }
 
 const empty: Onboarding = {
@@ -36,7 +36,7 @@ const empty: Onboarding = {
   payer: null,
   company: { legalName: '', companyNumber: '', vatNumber: '', poNumber: '' },
   billing: { invoiceEmail: '', country: 'GB', currency: 'GBP' },
-  kickoff: { start: '', days: ['tue', 'thu'], notes: '' },
+  intro: { start: '', days: ['tue', 'thu'], notes: '' },
 }
 
 const notBlank = (message: string) => ({
@@ -78,7 +78,7 @@ function OnboardingScreen({
             Welcome aboard
           </Heading>
           <Text measure="text">
-            The kick-off invite is on its way to {result.output.email}. Compare the two panels:
+            The intro call invite is on its way to {result.output.email}. Compare the two panels:
             anything typed on a branch you didn&apos;t take stays in the form but goes back to its
             default in what was submitted.
           </Text>
@@ -122,7 +122,7 @@ function OnboardingScreen({
           value={step}
           onValueChange={setStep}
           headingLevel={2}
-          submitLabel="Book the kick-off"
+          submitLabel="Book the intro call"
         >
           <FormStep value="you" title="You" description="Who we'll be working with day to day.">
             <FormGrid columns={{ base: 1, md: 2 }}>
@@ -239,19 +239,19 @@ function OnboardingScreen({
           </FormStep>
 
           <FormStep
-            value="kickoff"
-            title="Kick-off"
+            value="intro"
+            title="Intro call"
             description="Ninety minutes on a call, then we start shipping."
           >
             <form.DateField
-              name="kickoff.start"
+              name="intro.start"
               label="Earliest start"
               min="2026-11-02"
               required
               validators={notBlank('Pick a start date')}
             />
             <form.ChipsField
-              name="kickoff.days"
+              name="intro.days"
               label="Good days for a weekly check-in"
               options={[
                 { value: 'mon', label: 'Monday' },
@@ -262,7 +262,7 @@ function OnboardingScreen({
               ]}
             />
             <form.TextareaField
-              name="kickoff.notes"
+              name="intro.notes"
               label="Anything we should read first?"
               optional
               rows={3}
@@ -314,7 +314,7 @@ export const DeepLinkedToBilling: Story = {
           email: 'ellie@marshandco.example',
           payer: 'personal',
           billing: { invoiceEmail: 'ellie@marshandco.example', country: 'GB', currency: 'GBP' },
-          kickoff: { start: '2026-11-09', days: ['tue', 'thu'], notes: '' },
+          intro: { start: '2026-11-09', days: ['tue', 'thu'], notes: '' },
         }}
       />
     </RecipeFrame>

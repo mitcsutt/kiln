@@ -28,12 +28,12 @@ describe('ToggleChip', () => {
             setPressed(p)
           }}
         >
-          Scorers only
+          Overdue only
         </ToggleChip>
       )
     }
     render(<Controlled />)
-    const chip = screen.getByRole('button', { name: 'Scorers only' })
+    const chip = screen.getByRole('button', { name: 'Overdue only' })
     expect(chip).toHaveAttribute('aria-pressed', 'true')
     chip.focus()
     await userEvent.keyboard(' ')
@@ -44,10 +44,10 @@ describe('ToggleChip', () => {
   it('renders a count and size for theming', () => {
     render(
       <ToggleChip size="sm" count={12}>
-        Scorers only
+        Overdue only
       </ToggleChip>,
     )
-    const chip = screen.getByRole('button', { name: 'Scorers only 12' })
+    const chip = screen.getByRole('button', { name: 'Overdue only 12' })
     expect(chip).toHaveAttribute('data-size', 'sm')
   })
 })

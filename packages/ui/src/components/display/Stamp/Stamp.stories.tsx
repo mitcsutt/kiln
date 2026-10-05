@@ -9,7 +9,7 @@ import { Stamp } from './Stamp'
 const meta = {
   title: 'UI/Display/Stamp',
   component: Stamp,
-  args: { children: 'Eliminated', tone: 'critical', rotate: -6, size: 'md' },
+  args: { children: 'Rejected', tone: 'critical', rotate: -6, size: 'md' },
 } satisfies Meta<typeof Stamp>
 
 export default meta
@@ -17,39 +17,39 @@ type Story = StoryObj<typeof meta>
 
 export const Playground: Story = {}
 
-const teams = [
-  { name: 'Harbour Hawks', captain: 'Rosa', pts: 7, out: false },
-  { name: 'Eastgate United', captain: 'Ada', pts: 4, out: false },
-  { name: 'Quarry Lane', captain: 'Amara', pts: 3, out: true },
-  { name: 'Westbank Swifts', captain: 'Oskar', pts: 1, out: true },
+const invoices = [
+  { name: 'INV-1042 · Northwind Studio', owner: 'Priya', amount: '$4,200.00', overdue: false },
+  { name: 'INV-1041 · Brightline Labs', owner: 'Tomás', amount: '$8,650.00', overdue: false },
+  { name: 'INV-1039 · Orchard & Co', owner: 'Hana', amount: '$1,240.00', overdue: true },
+  { name: 'INV-1036 · Fernhill Press', owner: 'Sam', amount: '$960.50', overdue: true },
 ]
 
 /**
- * A cup group, composed from plain markup. The stamp sits on the row it
+ * An invoice run, composed from plain markup. The stamp sits on the row it
  * judges; the rest of the row steps back.
  */
-export const EliminatedTeamRow: Story = {
+export const OverdueInvoiceRow: Story = {
   render: () => (
     <Stack as="ul" gap={3} dividers>
-      {teams.map((t) => (
+      {invoices.map((t) => (
         <li key={t.name}>
           <Inline gap={4} justify="between" wrap={false}>
             <Stack gap={1}>
-              <Text as="strong" weight="strong" tone={t.out ? 'muted' : undefined}>
+              <Text as="strong" weight="strong" tone={t.overdue ? 'muted' : undefined}>
                 {t.name}
               </Text>
               <Text as="span" size="sm" tone="muted">
-                Captain: {t.captain}
+                Owner: {t.owner}
               </Text>
             </Stack>
             <Inline gap={4} wrap={false}>
-              {t.out ? (
-                <Stamp size="sm" aria-label={`${t.name} eliminated`}>
-                  Eliminated
+              {t.overdue ? (
+                <Stamp size="sm" aria-label={`${t.name} overdue`}>
+                  Overdue
                 </Stamp>
               ) : null}
               <Text as="span" numeric>
-                {t.pts} {t.pts === 1 ? 'pt' : 'pts'}
+                {t.amount}
               </Text>
             </Inline>
           </Inline>
@@ -62,7 +62,7 @@ export const EliminatedTeamRow: Story = {
 export const Tones: Story = {
   render: () => (
     <Inline gap={6}>
-      <Stamp tone="critical">Eliminated</Stamp>
+      <Stamp tone="critical">Rejected</Stamp>
       <Stamp tone="positive" rotate={4}>
         Paid
       </Stamp>
@@ -87,34 +87,34 @@ export const Sizes: Story = {
     <Inline gap={6}>
       <Stamp size="sm">Approved</Stamp>
       <Stamp size="md">Approved</Stamp>
-      <Stamp size="lg">Champions</Stamp>
+      <Stamp size="lg">Signed off</Stamp>
     </Inline>
   ),
 }
 
 /**
  * `placement="corner"` pins the stamp to the top-end of the nearest positioned ancestor —
- * Card is one — so stamping a team's card doesn't change its height or push its content.
+ * Card is one — so stamping an invoice's card doesn't change its height or push its content.
  */
 export const OnACard: Story = {
   render: () => (
     <Grid columns={2} gap={4} style={{ maxWidth: '44rem' }}>
       <Card>
         <Card.Header>
-          <Card.Title>Quarry Lane</Card.Title>
+          <Card.Title>INV-1039 · Orchard & Co</Card.Title>
         </Card.Header>
-        <Card.Description>Captain: Amara · 3 pts · lost 0–2 to Harbour Hawks</Card.Description>
-        <Stamp placement="corner" size="sm" rotate={-8} aria-label="Quarry Lane eliminated">
-          Eliminated
+        <Card.Description>Due 30 Sep · $1,240.00 · two reminders sent</Card.Description>
+        <Stamp placement="corner" size="sm" rotate={-8} aria-label="INV-1039 overdue">
+          Overdue
         </Stamp>
       </Card>
       <Card>
         <Card.Header>
-          <Card.Title>Harbour Hawks</Card.Title>
+          <Card.Title>INV-1042 · Northwind Studio</Card.Title>
         </Card.Header>
-        <Card.Description>Captain: Rosa · 7 pts · through as group winners</Card.Description>
+        <Card.Description>Paid 2 Oct · $4,200.00 · settled by card</Card.Description>
         <Stamp placement="corner" size="sm" tone="positive" rotate={5}>
-          Through
+          Paid
         </Stamp>
       </Card>
     </Grid>

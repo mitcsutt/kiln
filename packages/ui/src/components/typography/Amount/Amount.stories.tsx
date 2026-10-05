@@ -16,12 +16,12 @@ type Story = StoryObj<typeof meta>
 export const Playground: Story = {}
 
 const LEDGER = [
-  { label: 'Salary', value: 6240 },
-  { label: 'Rent', value: -2340 },
-  { label: 'Groceries', value: -611.18 },
-  { label: 'Electricity', value: -148.9 },
+  { label: 'Client payments', value: 6240 },
+  { label: 'Office lease', value: -2340 },
+  { label: 'Contractors', value: -611.18 },
+  { label: 'Hosting', value: -148.9 },
   { label: 'Tax refund', value: 812.55 },
-  { label: 'Streaming', value: -41.97 },
+  { label: 'Software', value: -41.97 },
 ]
 
 /** Accounting style: negatives in parentheses and red; positives keep a hidden ")" so digits align. */
@@ -40,10 +40,10 @@ export const Accounting: Story = {
       ))}
       <Inline justify="between" gap={4}>
         <Text as="span" size="sm" weight="strong">
-          Left over
+          Net
         </Text>
         <Text as="span" size="sm" weight="strong">
-          <Amount value={3920.5} accounting />
+          <Amount value={3910.5} accounting />
         </Text>
       </Inline>
     </Stack>
@@ -60,31 +60,31 @@ export const Variants: Story = {
         Signed change: <Amount value={218.4} showSign tone="auto" /> vs August
       </Text>
       <Text>
-        Overspent: <Amount value={-82.4} tone="auto" />
+        Refund issued: <Amount value={-82.4} tone="auto" />
       </Text>
       <Text>
         Whole dollars: <Amount value={5200} precision={0} />
       </Text>
       <Text>
-        Compact: <Amount value={1284500} compact /> net worth
+        Compact: <Amount value={1284500} compact /> annual revenue
       </Text>
       <Text>
-        Other currency: <Amount value={380} currency="USD" /> match tickets
+        Other currency: <Amount value={380} currency="USD" /> conference tickets
       </Text>
     </Stack>
   ),
 }
 
-/** The hero of the budget screen: this month's balance, not a stat row with a gradient. */
+/** The hero of the billing screen: this month's outstanding balance, not a stat row with a gradient. */
 export const Hero: Story = {
   render: () => (
     <Stack gap={2}>
       <Text size="sm" tone="muted">
-        Left to spend in September
+        Outstanding in September
       </Text>
       <Amount value={1017.4} size="display-md" />
       <Text size="sm" tone="muted">
-        <Amount value={4182.6} /> of <Amount value={5200} precision={0} /> spent
+        <Amount value={4182.6} /> of <Amount value={5200} precision={0} /> collected
       </Text>
     </Stack>
   ),

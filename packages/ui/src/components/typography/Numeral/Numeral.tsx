@@ -25,7 +25,7 @@ export interface NumeralProps extends Omit<
   size?: NumeralSize
   /** Set before the figures, proportional (not tabular): "≈", "#", "Rank ". Add your own spacing. */
   prefix?: ReactNode
-  /** Set after the figures, proportional: " pts", "×", " km". Add your own spacing. */
+  /** Set after the figures, proportional: " seats", "×", " km". Add your own spacing. */
   suffix?: ReactNode
 }
 

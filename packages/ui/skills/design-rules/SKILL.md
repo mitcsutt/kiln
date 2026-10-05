@@ -20,7 +20,7 @@ These rules come from [DESIGN.md](https://github.com/mitcsutt/kiln/blob/main/DES
 ## Principles
 
 1. **Themes are data, components are structure.** A component never knows which theme it is in. Everything visual is a token; a new theme is one CSS file and zero component changes.
-2. **One idea per theme, drawn from its subject.** Paper is a typeset proof on good stock. Monograph is a scholar's monograph read under a desk lamp. Ledger is an accountant's ruled book. Fiesta is a screen-printed matchday poster. If a choice can't be justified by the idea, it doesn't ship.
+2. **One idea per theme, drawn from its subject.** Paper is a typeset proof on good stock. Monograph is a scholar's monograph read under a desk lamp. Ledger is an accountant's ruled book. Fiesta is a screen-printed festival poster. If a choice can't be justified by the idea, it doesn't ship.
 3. **Props, not styles.** Consumers compose layout and intent through typed props (`gap={5}`, `tone="critical"`, `width="text"`). No utility classes, no inline style soup, no raw px/hex/ms at call sites. `className` exists as an escape hatch, not a workflow.
 4. **Durable by default.** Every component forwards refs, spreads native props, works with React 18 and 19, is keyboard- and screen-reader-complete, respects `prefers-reduced-motion`, and renders on the server.
 5. **Specific beats safe.** The median choice is the wrong choice (see [Not AI slop](#not-ai-slop)).
@@ -40,7 +40,7 @@ Generated UI converges on the statistical median: indigo buttons, Inter, gradien
 
 - **Two families max per theme** (+ a mono for code/figures where the theme needs it), clearly distinct, one with real character.
 - **Big contrast**: the largest display step is ≥ 5× body. Display tracking tightens with size (−0.02 to −0.04em); line-height drops to ~0.9–1.05.
-- **`tabular-nums` on every number that aligns or updates**: scores, money, tables, dates. `<Numeral>`/`<Amount>` do this for you.
+- **`tabular-nums` on every number that aligns or updates**: counts, money, tables, dates. `<Numeral>`/`<Amount>` do this for you.
 - Prose measure ≤ 70ch (`width="text"`). `text-wrap: balance` on headings, `pretty` on paragraphs (the reset does it).
 - **Banned patterns:** accenting one word of a headline in italic/colour; a tracked ALL-CAPS eyebrow over every section; `01 / 02 / 03` numbering on things that aren't a sequence; monospace used as decoration for small labels.
 
@@ -50,7 +50,7 @@ Generated UI converges on the statistical median: indigo buttons, Inter, gradien
 - **Asymmetric splits** (`<Split ratio="5/7">`), a hang column for labels, at least one element per page that breaks the column.
 - **Vary section rhythm.** The space scale is non-linear (4 8 12 16 24 32 48 64 96 144…) and adjacent `<Section>`s should not use the same `space`.
 - **Not everything is a card.** Prefer lists, tables, rules and whitespace. A card needs a reason: it's interactive, draggable, or a self-contained object.
-- The hero is the subject's most characteristic thing: the live league table, the work itself, this month's total. Not a stat row with a gradient.
+- The hero is the subject's most characteristic thing: the open invoices, the release board, today's orders. Not a stat row with a gradient.
 
 ### Components & depth
 
@@ -63,12 +63,12 @@ Generated UI converges on the statistical median: indigo buttons, Inter, gradien
 
 ### Motion
 
-- Motion answers an action or shows a state change (score updated, row expanded, panel opened). **No fade-up-on-scroll, no hover-scale on static cards, no parallax.**
+- Motion answers an action or shows a state change (count updated, row expanded, panel opened). **No fade-up-on-scroll, no hover-scale on static cards, no parallax.**
 - Durations and easings are tokens (`--dur-1/2/3`, `--ease-out`, `--ease-spring`) and collapse to ~0 under `prefers-reduced-motion`.
 
 ### Copy (for stories, docs and examples)
 
-- Sentence case. Specific nouns, active verbs: "Publish fixtures", "Export CSV", "Read the release notes". Never "Get started →", "Learn more", "Elevate", "Seamless", "Unleash".
+- Sentence case. Specific nouns, active verbs: "Send invoice", "Export CSV", "Read the release notes". Never "Get started →", "Learn more", "Elevate", "Seamless", "Unleash".
 - Realistic content in stories and docs: specific names, amounts, places and projects. It's invented, never copied from a real product, and never lorem ipsum.
 
 **Review question for every screen:** _"Would I produce this for any similar page?"_ If yes, change something until the answer is no. Spend boldness in one place; remove one accessory before shipping.

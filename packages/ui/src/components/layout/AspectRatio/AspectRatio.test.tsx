@@ -19,9 +19,9 @@ describe('AspectRatio', () => {
   it('renders its child', () => {
     render(
       <AspectRatio ratio="4/3">
-        <img src="data:," alt="Spending dashboard" />
+        <img src="data:," alt="Revenue dashboard" />
       </AspectRatio>,
     )
-    expect(screen.getByRole('img', { name: 'Spending dashboard' })).toBeInTheDocument()
+    expect(screen.getByRole('img', { name: 'Revenue dashboard' })).toBeInTheDocument()
   })
 })

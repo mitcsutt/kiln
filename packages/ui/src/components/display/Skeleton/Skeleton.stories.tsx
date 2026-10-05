@@ -14,10 +14,10 @@ type Story = StoryObj<typeof meta>
 
 export const Playground: Story = {}
 
-/** A leaderboard loading: one busy region, many silent placeholders. */
-export const LeaderboardLoading: Story = {
+/** A member list loading: one busy region, many silent placeholders. */
+export const MemberListLoading: Story = {
   render: () => (
-    <Stack gap={4} dividers aria-busy="true" aria-label="Loading leaderboard" role="status">
+    <Stack gap={4} dividers aria-busy="true" aria-label="Loading team members" role="status">
       {[0, 1, 2, 3].map((i) => (
         <Inline key={i} gap={4} wrap={false}>
           <Skeleton.Circle />
@@ -32,7 +32,7 @@ export const LeaderboardLoading: Story = {
   ),
 }
 
-/** A case-study page before the MDX arrives. */
+/** A help-centre article before the MDX arrives. */
 export const ArticleLoading: Story = {
   render: () => (
     <Stack gap={5} style={{ maxWidth: '42rem' }}>

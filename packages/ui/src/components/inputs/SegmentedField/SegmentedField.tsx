@@ -13,7 +13,7 @@ export interface SegmentedFieldProps
  * labelled by the Field's label and described by its help, warning and error.
  * `className`/`style` go to the Field; `ref`, `id`, `name` and the rest go to the control.
  *
- * <SegmentedField label="Budget period" name="period" options={periods} layout="horizontal" />
+ * <SegmentedField label="Billing period" name="period" options={periods} layout="horizontal" />
  */
 export const SegmentedField = forwardRef<HTMLDivElement, SegmentedFieldProps>(
   function SegmentedField(props, ref) {

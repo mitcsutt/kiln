@@ -2,9 +2,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { CheckboxGroupField } from './CheckboxGroupField'
 
 const notifications = [
-  { value: 'goals', label: 'Goals', description: 'When a team you drew scores' },
-  { value: 'kickoffs', label: 'Kick-offs' },
-  { value: 'results', label: 'Full-time results' },
+  { value: 'mentions', label: 'Mentions', description: 'When someone tags you in a comment' },
+  { value: 'assigned', label: 'Assigned tasks' },
+  { value: 'releases', label: 'Release notes' },
 ]
 
 const meta = {
@@ -12,7 +12,7 @@ const meta = {
   component: CheckboxGroupField,
   args: {
     label: 'Notify me about',
-    description: 'Sent to the email on your club registration',
+    description: 'Sent to the email on your workspace profile',
     options: notifications,
     name: 'notify',
     selectAllLabel: 'Everything',
@@ -31,8 +31,8 @@ export const WithError: Story = { args: { error: 'Choose at least one', required
 
 export const WithWarning: Story = {
   args: {
-    defaultValue: ['goals', 'kickoffs', 'results'],
-    warning: 'That is about 40 emails a week during the group stage',
+    defaultValue: ['mentions', 'assigned', 'releases'],
+    warning: 'That is about 40 emails a week during a release',
   },
 }
 

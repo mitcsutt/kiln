@@ -86,8 +86,8 @@ describe('Avatar', () => {
   })
 
   it('uses explicit initials and marks three-letter codes', () => {
-    const { container } = render(<Avatar name="Germany" initials="ger" />)
-    expect(screen.getByRole('img', { name: 'Germany' })).toHaveTextContent('GER')
+    const { container } = render(<Avatar name="Northwind Studio" initials="nws" />)
+    expect(screen.getByRole('img', { name: 'Northwind Studio' })).toHaveTextContent('NWS')
     expect(container.querySelector('[data-glyphs="many"]')).not.toBeNull()
   })
 

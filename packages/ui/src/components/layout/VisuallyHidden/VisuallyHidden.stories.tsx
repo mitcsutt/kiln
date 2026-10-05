@@ -8,7 +8,7 @@ import { VisuallyHidden } from './VisuallyHidden'
 const meta = {
   title: 'UI/Layout/VisuallyHidden',
   component: VisuallyHidden,
-  args: { children: 'Group standings', as: 'span', focusable: false },
+  args: { children: 'Open invoices', as: 'span', focusable: false },
 } satisfies Meta<typeof VisuallyHidden>
 
 export default meta
@@ -22,7 +22,7 @@ export const IconLabel: Story = {
   render: () => (
     <Button variant="outline" tone="neutral">
       <PlusIcon aria-hidden />
-      <VisuallyHidden>Add expense</VisuallyHidden>
+      <VisuallyHidden>New invoice</VisuallyHidden>
     </Button>
   ),
 }
@@ -31,8 +31,8 @@ export const IconLabel: Story = {
 export const SkipLink: Story = {
   render: () => (
     <Stack gap={3}>
-      <VisuallyHidden as="a" href="#standings" focusable>
-        Skip to standings
+      <VisuallyHidden as="a" href="#invoices" focusable>
+        Skip to invoices
       </VisuallyHidden>
       <Body tone="muted">Press Tab to reveal the skip link above this line.</Body>
     </Stack>

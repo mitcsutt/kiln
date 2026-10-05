@@ -30,20 +30,20 @@ export const Stack_: Story = {
 }
 
 const CATEGORIES: { label: string; color: TagColor }[] = [
-  { label: 'Groceries', color: 1 },
-  { label: 'Rent', color: 2 },
-  { label: 'Utilities', color: 3 },
-  { label: 'Transport', color: 4 },
-  { label: 'Eating out', color: 5 },
-  { label: 'Health', color: 6 },
-  { label: 'Gifts', color: 7 },
+  { label: 'Design', color: 1 },
+  { label: 'Engineering', color: 2 },
+  { label: 'Marketing', color: 3 },
+  { label: 'Sales', color: 4 },
+  { label: 'Support', color: 5 },
+  { label: 'Finance', color: 6 },
+  { label: 'Legal', color: 7 },
   { label: 'Other', color: 8 },
 ]
 
-/** Categorical colours: spending categories, people. Ink is --color-cat-ink on every slot. */
+/** Categorical colours: departments, people. Ink is --color-cat-ink on every slot. */
 export const Categories: Story = {
   render: () => (
-    <TagList aria-label="Spending categories">
+    <TagList aria-label="Departments">
       {CATEGORIES.map((c) => (
         <Tag key={c.label} color={c.color}>
           {c.label}
@@ -56,7 +56,7 @@ export const Categories: Story = {
 /** Active filters with a remove button each. */
 export const Removable: Story = {
   render: function Render() {
-    const [filters, setFilters] = useState(['Division two', 'Harbour Hawks', 'Cup', 'Noor'])
+    const [filters, setFilters] = useState(['Atlas redesign', 'Overdue', 'This quarter', 'Priya'])
     return (
       <Stack gap={3}>
         <TagList aria-label="Active filters">
@@ -73,10 +73,10 @@ export const Removable: Story = {
         </TagList>
         <TagList aria-label="Categories">
           <Tag color={1} onRemove={() => undefined}>
-            Groceries
+            Design
           </Tag>
           <Tag color={3} onRemove={() => undefined}>
-            Utilities
+            Marketing
           </Tag>
         </TagList>
       </Stack>
@@ -86,7 +86,7 @@ export const Removable: Story = {
 
 export const AsLinks: Story = {
   render: () => (
-    <TagList aria-label="Filter work by topic">
+    <TagList aria-label="Filter articles by topic">
       <Tag asChild>
         <a href="#design-systems">Design systems</a>
       </Tag>

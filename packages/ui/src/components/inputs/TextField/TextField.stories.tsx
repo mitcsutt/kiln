@@ -56,7 +56,7 @@ export const CharacterCount: Story = {
     trailing: undefined,
     placeholder: undefined,
     required: false,
-    defaultValue: 'A themeable component system built for three very different products.',
+    defaultValue: 'A shared component library for the web and mobile apps.',
     maxLength: 80,
     showCount: true,
   },

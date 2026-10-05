@@ -40,8 +40,8 @@ const GLYPH: Record<AlertTone, ReactNode> = {
  * glyph and a short tab on the top edge, the title in the heading face — never a tinted
  * box by default, never a coloured stripe down the left edge.
  *
- * <Alert tone="critical" title="Couldn't load fixtures" action={<Button …>Retry</Button>}>
- *   The results service didn't answer. We'll try again in 30 seconds.
+ * <Alert tone="critical" title="Couldn't load invoices" action={<Button …>Retry</Button>}>
+ *   The billing service didn't answer. We'll try again in 30 seconds.
  * </Alert>
  */
 export const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(

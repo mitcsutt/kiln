@@ -25,30 +25,29 @@ type Story = StoryObj<typeof meta>
 
 export const Playground: Story = {}
 
-const work = [
+const releases = [
   {
-    name: 'Harbour transit map',
+    name: 'Recurring invoices',
     year: '2026',
-    role: 'Cartography',
-    blurb:
-      'Every bus, ferry and tram line in a coastal city on one sheet, with a large-print edition.',
+    role: 'Billing',
+    blurb: 'Bill a client on a schedule, with a reminder before each invoice goes out.',
   },
   {
-    name: 'Library signage',
+    name: 'Client portal',
     year: '2026',
-    role: 'Wayfinding',
-    blurb: 'Signs for four floors and a reading garden, set in one typeface at three sizes.',
+    role: 'Product',
+    blurb: 'Clients see every invoice, pay by card and download receipts in one place.',
   },
   {
-    name: 'Field guide',
+    name: 'Mobile app',
     year: '2025',
-    role: 'Book design',
-    blurb: 'Coastal birds, printed on stock that survives rain and set for reading outdoors.',
+    role: 'Mobile',
+    blurb: 'Send an invoice from your phone and get a notification when it is paid.',
   },
 ]
 
-/** A studio's recent projects: the heading hangs in the narrow column, the list takes the wide one. */
-export const RecentProjects: Story = {
+/** A product's recent releases: the heading hangs in the narrow column, the list takes the wide one. */
+export const RecentReleases: Story = {
   parameters: { layout: 'fullscreen' },
   render: () => (
     <Section space={{ base: 7, md: 9 }}>
@@ -56,14 +55,12 @@ export const RecentProjects: Story = {
         <Split ratio="5/7" gap={{ base: 5, md: 7 }}>
           <Stack gap={3}>
             <Title level={2} size="xl">
-              Recent projects
+              Recent releases
             </Title>
-            <Body tone="muted">
-              Maps, signs and books the studio finished in the last two years.
-            </Body>
+            <Body tone="muted">What the team shipped in the last two years.</Body>
           </Stack>
           <Stack as="ul" gap={6} dividers>
-            {work.map((w) => (
+            {releases.map((w) => (
               <li key={w.name}>
                 <Stack gap={2}>
                   <Inline justify="between" gap={3} align="baseline">
@@ -88,9 +85,9 @@ export const HangColumn: Story = {
   render: () => (
     <Stack gap={4} dividers>
       {[
-        ['Pay period', 'Fortnightly, from Thursday 2 October'],
-        ['Income', '$3,725.00 per pay · $7,450.00 per month'],
-        ['Savings target', '$600.00 per pay, moved on pay day'],
+        ['Billing cycle', 'Monthly, from Thursday 2 October'],
+        ['Plan', 'Team · $49.00 per seat per month'],
+        ['Seats', '12 of 15 in use, billed on the first'],
       ].map(([k, v]) => (
         <Split key={k} ratio="1/3" collapseBelow="sm" gap={{ base: 1, sm: 5 }} align="baseline">
           <Label>{k}</Label>
@@ -115,18 +112,18 @@ export const MediaAndCopy: Story = {
         >
           <AspectRatio ratio="4/3">
             <Artwork
-              kind={reverse ? 'chart' : 'pitch'}
-              label={reverse ? 'Budget trend chart' : 'Pitch diagram'}
+              kind={reverse ? 'chart' : 'board'}
+              label={reverse ? 'Revenue trend chart' : 'Task board'}
             />
           </AspectRatio>
           <Stack gap={3}>
             <Title level={3} size="lg">
-              {reverse ? 'Budget, by pay period' : 'Live standings, every minute'}
+              {reverse ? 'Revenue, by billing cycle' : 'A live task board, every minute'}
             </Title>
             <Body tone="muted">
               {reverse
-                ? 'Categories reset when you’re paid, not on the first of the month.'
-                : 'Scores arrive from three sources in turn; the first that answers wins.'}
+                ? 'Plans renew on each client’s billing date, not on the first of the month.'
+                : 'Updates arrive from three sources in turn; the first that answers wins.'}
             </Body>
           </Stack>
         </Split>
