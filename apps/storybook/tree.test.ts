@@ -1,12 +1,13 @@
 /**
  * Keeps the Storybook tree on the ADR 0010 structure, which the docs site shares:
  * every title sits under a known group, ui and forms titles follow their source
- * folders, and every component's stories include a `Playground`. It reads the index
- * Storybook itself builds from `.storybook/main.ts` (`storybook index`), so it sees
- * the titles and stories the sidebar shows.
+ * folders, every docs examples file sits under its owner's title, and every component's
+ * stories include a `Playground`. It reads the index Storybook itself builds from
+ * `.storybook/main.ts` (`storybook index`), so it sees the titles and stories the
+ * sidebar shows.
  */
 import { execFileSync } from 'node:child_process'
-import { mkdtempSync, readFileSync, rmSync } from 'node:fs'
+import { globSync, mkdtempSync, readFileSync, rmSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { tmpdir } from 'node:os'
 import { dirname, join, relative, resolve, sep } from 'node:path'
@@ -99,6 +100,22 @@ describe('the Storybook tree', () => {
       const expected = `Forms/Fields/${match[1] ?? ''}`
       return title === expected ? [] : [`${file}: ${title}, expected ${expected}`]
     })
+    expect(wrong).toEqual([])
+  })
+
+  it("lists every docs examples file under its owner's title (<owner>/Examples)", () => {
+    const files = globSync('packages/*/src/**/*.examples.tsx', { cwd: ROOT }).sort()
+    const titleOf = new Map(TITLES.map(({ file, title }) => [file, title]))
+    const owners = new Set(
+      TITLES.filter(({ file }) => file.endsWith('.stories.tsx')).map(({ title }) => title),
+    )
+    const wrong = files.flatMap((file) => {
+      const title = titleOf.get(file)
+      if (!title) return [`${file}: not indexed`]
+      const owner = title.replace(/\/Examples$/, '')
+      return title !== owner && owners.has(owner) ? [] : [`${file}: ${title}`]
+    })
+    expect(files.length).toBeGreaterThan(0)
     expect(wrong).toEqual([])
   })
 
