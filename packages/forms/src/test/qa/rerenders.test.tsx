@@ -312,6 +312,21 @@ describe('re-render isolation (§12), per component', () => {
       expect(counts[layout], layout).toBeUndefined()
   })
 
+  it('a refresh after a failed submit keeps its errors without a badge or layout re-render', async () => {
+    const user = userEvent.setup()
+    const { rerender } = render(<Host data={defaults} />)
+    await submit(user)
+    const tracker = recordCommits()
+    rerender(<Host data={{ ...defaults, zip: 'N1 7AA' }} />)
+    expect(screen.getByLabelText('Email')).toHaveAttribute('aria-invalid', 'true')
+    // Reset, then the kept errors put back and revealed: at most twice for those two fields.
+    for (const [label, n] of Object.entries(fields(tracker)))
+      expect(n, label).toBeLessThanOrEqual(label === 'Email' || label === 'T1a' ? 2 : 1)
+    const counts = chrome(tracker)
+    for (const unchanged of ['ErrorBadge', 'FormSectionInner', 'FormTabsRootInner', 'When'])
+      expect(counts[unchanged], unchanged).toBeUndefined()
+  })
+
   it('typing never re-registers the field (focus registry, scopes)', async () => {
     const { form, user } = renderForm<Values>((f) => <Body form={f} />, { defaultValues: defaults })
     const registrations = vi.spyOn(getFormRuntime(form).fields, 'set')
