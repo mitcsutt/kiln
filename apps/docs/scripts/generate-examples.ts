@@ -4,19 +4,20 @@
  * example with `<Example name="ui/actions/button/hierarchy" />`: the preview and the code
  * under it come from the same file, so they can't disagree.
  *
+ * The code shown is the example's slice (`extract-example.ts`): its export and the helpers
+ * and imports it uses. Each slice is also written to `.generated/examples/`, which the
+ * app's typecheck includes, so a slice that wouldn't work when copied fails the build.
+ *
  *   node scripts/generate-examples.ts
  */
-import { globSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
-import { join, relative, resolve, sep } from 'node:path'
+import { globSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { dirname, join, relative, resolve, sep } from 'node:path'
+import { extractExample } from './extract-example.ts'
 
 const app = resolve(import.meta.dirname, '..')
 const dir = join(app, 'examples')
 const outDir = join(app, '.generated')
-
-/** What a reader copies: the file minus the Next.js client directive. */
-export function displaySource(source: string): string {
-  return source.replace(/^'use client'\n+/, '').trimEnd() + '\n'
-}
+const snippetDir = join(outDir, 'examples')
 
 const files = globSync('**/*.tsx', { cwd: dir }).sort()
 const names = files.map((file) =>
@@ -55,11 +56,19 @@ writeFileSync(
     '',
   ].join('\n'),
 )
-const sources = Object.fromEntries(
-  names.map((name, index) => {
-    const file = files[index] ?? ''
-    return [name, displaySource(readFileSync(join(dir, file), 'utf8'))]
-  }),
-)
+
+rmSync(snippetDir, { recursive: true, force: true })
+const sources: Record<string, string> = {}
+for (const [index, name] of names.entries()) {
+  const file = join(dir, files[index] ?? '')
+  const code = await extractExample(file, readFileSync(file, 'utf8'), 'default')
+  sources[name] = code
+  const snippet = join(snippetDir, `${name}.tsx`)
+  mkdirSync(dirname(snippet), { recursive: true })
+  writeFileSync(
+    snippet,
+    `// Generated from examples/${name}.tsx by scripts/generate-examples.ts. Do not edit.\n${code}`,
+  )
+}
 writeFileSync(join(outDir, 'example-sources.json'), `${JSON.stringify(sources, null, 2)}\n`)
 console.log(`examples: ${String(names.length)}`)

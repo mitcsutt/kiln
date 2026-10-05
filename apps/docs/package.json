@@ -35,6 +35,7 @@
     "@types/react-dom": "catalog:",
     "eslint": "catalog:",
     "node-html-parser": "^9.0.4",
+    "prettier": "catalog:",
     "typescript": "catalog:",
     "unist-util-visit": "^5.1.0",
     "vitest": "catalog:",
