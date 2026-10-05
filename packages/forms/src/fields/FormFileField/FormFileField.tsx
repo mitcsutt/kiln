@@ -7,14 +7,10 @@ import {
 } from '@mitcsutt/kiln-ui'
 import { FieldView } from '#core/binding/FieldView'
 import type { ControlledKeys } from '#core/binding/controlledKeys'
-import {
-  accepts,
-  revealFieldErrors,
-  useFieldBinding,
-  type CommonFieldProps,
-} from '#core/binding/useFieldBinding'
+import { accepts, useFieldBinding, type CommonFieldProps } from '#core/binding/useFieldBinding'
 import { defineField } from '#core/kit/contracts'
 import { getFormRuntime } from '#core/runtime/formRuntime'
+import { revealFieldErrors } from '#core/runtime/reveal'
 
 export interface FormFileFieldProps
   extends

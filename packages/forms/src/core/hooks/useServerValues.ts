@@ -1,13 +1,18 @@
 import { useRef } from 'react'
 import { evaluate, getBy } from '@tanstack/react-form'
-import { isErrorVisible } from '#core/binding/visibility'
+import { pickErrors } from '#core/binding/errors'
+import type { VisibilityMeta } from '#core/binding/visibility'
 import { useIsomorphicLayoutEffect } from '#core/env'
 import { coreApi, getFormRuntime, type AnyKitForm } from '#core/runtime/formRuntime'
+import { areErrorsVisible, revealFieldErrors } from '#core/runtime/reveal'
 
 export interface ServerValuesOptions {
   /** Keep the user's edits (paths that differ from the old baseline). Default `true`. */
   keepDirty?: boolean
-  /** Restore errors that were visible before the refresh. Default `true`. */
+  /**
+   * Keep errors that were visible before the refresh, on values the refresh left alone. Default
+   * `true`.
+   */
   keepErrors?: boolean
 }
 
@@ -32,14 +37,16 @@ export function mergeDirty(oldBaseline: unknown, current: unknown, next: unknown
   return evaluate(current, oldBaseline) ? next : current
 }
 
-interface MetaSnapshot {
+interface KeptErrors {
+  name: string
   errorMap: Record<string, unknown>
   errorSourceMap: Record<string, unknown>
 }
 
 /**
  * Applies new server data as the form's baseline (§6.5): new defaults = `data`; values keep the
- * user's dirty edits; visible errors are restored.
+ * user's dirty edits; errors the user could see stay visible where the refresh kept the value
+ * they were about (one the refresh replaced is no longer that error's value).
  */
 export function applyServerValues(
   target: AnyKitForm,
@@ -49,43 +56,35 @@ export function applyServerValues(
   const form = coreApi(target)
   const { keepDirty = true, keepErrors = true } = opts
   const runtime = getFormRuntime(form)
-  const state = form.state
-  const merged = keepDirty ? mergeDirty(form.options.defaultValues, state.values, data) : data
+  const { fieldMeta, submissionAttempts } = form.state
+  const values: unknown = form.state.values
+  const merged = keepDirty ? mergeDirty(form.options.defaultValues, values, data) : data
 
-  const restore = new Map<string, MetaSnapshot>()
+  const kept: KeptErrors[] = []
   if (keepErrors) {
-    const submitted = state.submissionAttempts > 0
-    const fieldMeta = state.fieldMeta as Record<
-      string,
-      | (MetaSnapshot & {
-          isTouched: boolean
-          isBlurred: boolean
-          isDirty: boolean
-          errors: unknown[]
-        })
-      | undefined
-    >
-    for (const [name, meta] of Object.entries(fieldMeta)) {
-      if (!meta || meta.errors.length === 0) continue
-      if (!isErrorVisible(runtime.options.errorVisibility, meta, submitted)) continue
-      restore.set(name, { errorMap: meta.errorMap, errorSourceMap: meta.errorSourceMap })
+    const metas = fieldMeta as Record<string, (VisibilityMeta & KeptErrors) | undefined>
+    for (const [name, meta] of Object.entries(metas)) {
+      if (!meta || pickErrors(meta.errorMap).length === 0) continue
+      if (!areErrorsVisible(runtime, meta, submissionAttempts > 0)) continue
+      if (!evaluate(getBy(merged, name), getBy(values, name))) continue
+      kept.push({ name, errorMap: meta.errorMap, errorSourceMap: meta.errorSourceMap })
     }
   }
 
   runtime.baseline = { values: data, source: runtime.userDefaults }
   form.update({ ...form.options, defaultValues: data })
+  // Resets every field's meta and the submit count, so kept errors are revealed again below
+  // (quietly: they were already announced, and nothing new happened to them).
   form.reset(merged, { keepDefaultValues: true })
 
-  for (const [name, snapshot] of restore) {
-    if (getBy(merged, name) === undefined && getBy(data, name) === undefined) continue
-    form.setFieldMeta(name, (prev) => ({
-      ...prev,
-      isTouched: true,
-      isBlurred: true,
-      errorMap: snapshot.errorMap,
-      errorSourceMap: snapshot.errorSourceMap,
-    }))
+  for (const { name, errorMap, errorSourceMap } of kept) {
+    form.setFieldMeta(name, (prev) => ({ ...prev, errorMap, errorSourceMap }))
   }
+  revealFieldErrors(
+    form,
+    kept.map(({ name }) => name),
+    { quiet: true },
+  )
 }
 
 /**

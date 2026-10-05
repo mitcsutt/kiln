@@ -104,6 +104,70 @@ describe('useServerValues', () => {
   })
 })
 
+describe('useServerValues error restore', () => {
+  interface Invite {
+    email: string
+    city: string
+  }
+  const required = ({ value }: { value: string }) => (value === '' ? 'Enter an email' : undefined)
+
+  function Invite({
+    data,
+    errorVisibility,
+  }: {
+    data?: Invite
+    errorVisibility?: 'blur' | 'submit'
+  }) {
+    const form = kit.useAppForm<Invite>({
+      defaultValues: { email: '', city: 'Leeds' },
+      errorVisibility,
+    })
+    useServerValues(form, data)
+    return (
+      <Form form={form} aria-label="Invite">
+        <form.TextField name="email" label="Email" validators={{ onDynamic: required }} />
+        <form.TextField name="city" label="City" />
+        <SubmitButton>Send</SubmitButton>
+      </Form>
+    )
+  }
+
+  async function submitEmpty() {
+    const user = userEvent.setup()
+    await user.click(screen.getByRole('button', { name: 'Send' }))
+    await act(() => Promise.resolve())
+    expect(screen.getByText('Enter an email')).toBeInTheDocument()
+  }
+
+  it('drops an error when the refresh replaces the value it was about', async () => {
+    const { rerender } = render(<Invite />)
+    await submitEmpty()
+    rerender(<Invite data={{ email: 'ines@example.com', city: 'Leeds' }} />)
+    expect(screen.getByLabelText('Email')).toHaveValue('ines@example.com')
+    expect(screen.queryByText('Enter an email')).not.toBeInTheDocument()
+    expect(screen.getByLabelText('Email')).not.toHaveAttribute('aria-invalid', 'true')
+  })
+
+  it.each(['blur', 'submit'] as const)(
+    'keeps a visible error visible under errorVisibility %s when its value survives',
+    async (errorVisibility) => {
+      const { rerender } = render(<Invite errorVisibility={errorVisibility} />)
+      await submitEmpty()
+      rerender(<Invite errorVisibility={errorVisibility} data={{ email: '', city: 'York' }} />)
+      expect(screen.getByLabelText('City')).toHaveValue('York')
+      expect(screen.getByText('Enter an email')).toBeInTheDocument()
+      expect(screen.getByLabelText('Email')).toHaveAttribute('aria-invalid', 'true')
+    },
+  )
+
+  it('restores errors without announcing them again', async () => {
+    const { rerender } = render(<Invite />)
+    await submitEmpty()
+    rerender(<Invite data={{ email: '', city: 'York' }} />)
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument()
+  })
+})
+
 describe('mergeDirty', () => {
   it('keeps leaves the user changed and takes the rest from the server', () => {
     expect(mergeDirty({ a: 1, b: { c: 1 } }, { a: 2, b: { c: 1 } }, { a: 3, b: { c: 5 } })).toEqual(

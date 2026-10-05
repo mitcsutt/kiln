@@ -8,7 +8,7 @@ exports: [useServerValues]
 
 <Example name="forms/hooks/use-server-values/usage" />
 
-After a save that rebaselines, a refetch returning the saved values leaves the form clean. `keepDirty` and `keepErrors` (both on by default) decide whether edits and visible errors survive a refresh.
+After a save that rebaselines, a refetch returning the saved values leaves the form clean. `keepDirty` and `keepErrors` (both on by default) decide whether edits and visible errors survive a refresh. An error survives only on a value the refresh kept, and it stays visible whatever `errorVisibility` says, without being announced again. A field that takes a new server value drops the error its old value had.
 
 ## API
 

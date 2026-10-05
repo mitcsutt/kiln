@@ -21,7 +21,7 @@ import {
 } from '@mitcsutt/kiln-ui'
 import { FieldViewListBoundary } from '#core/binding/FieldView'
 import { SubmitButton } from '#components/SubmitButton'
-import { revealFieldErrors } from '#core/binding/useFieldBinding'
+import { revealFieldErrors } from '#core/runtime/reveal'
 import { useIsomorphicLayoutEffect } from '#core/env'
 import { focusFirstInvalid, invalidFields, nextFrame } from '#core/runtime/focus'
 import { getFormRuntime, isInactive, toFormApi, useResolvedForm } from '#core/runtime/formRuntime'

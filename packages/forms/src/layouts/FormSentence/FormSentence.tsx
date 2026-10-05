@@ -4,8 +4,8 @@ import { ErrorIcon, Fieldset, Inline, Stack, Text } from '@mitcsutt/kiln-ui'
 import { FieldViewListBoundary } from '#core/binding/FieldView'
 import { pickErrors } from '#core/binding/errors'
 import { FieldPresentation } from '#core/binding/presentation'
-import { isQuietMeta, isRevealedMeta } from '#core/binding/useFieldBinding'
-import { isErrorVisible, type VisibilityMeta } from '#core/binding/visibility'
+import { areErrorsVisible, isQuietMeta } from '#core/runtime/reveal'
+import type { VisibilityMeta } from '#core/binding/visibility'
 import {
   formatErrorText,
   getFormRuntime,
@@ -40,10 +40,7 @@ function SentenceError({ name, id }: { name: string; id: string }) {
     const meta = (state.fieldMeta as Record<string, MetaLike | undefined>)[name]
     if (!meta || isInactive(runtime, name)) return ''
     const first = pickErrors(meta.errorMap)[0]
-    const visible =
-      isRevealedMeta(meta) ||
-      isErrorVisible(runtime.options.errorVisibility, meta, state.submissionAttempts > 0)
-    if (!first || !visible) return ''
+    if (!first || !areErrorsVisible(runtime, meta, state.submissionAttempts > 0)) return ''
     return formatErrorText(runtime, first)
   })
   if (text === '') return null

@@ -36,8 +36,7 @@ import {
 } from '@mitcsutt/kiln-ui'
 import { pickErrors } from '#core/binding/errors'
 import { FieldPresentation, useFieldPresentation } from '#core/binding/presentation'
-import { isQuietMeta, isRevealedMeta } from '#core/binding/useFieldBinding'
-import { isErrorVisible } from '#core/binding/visibility'
+import { areErrorsVisible, isQuietMeta } from '#core/runtime/reveal'
 import { useIsomorphicLayoutEffect } from '#core/env'
 import { bindFields } from '#core/kit/bindFields'
 import type {
@@ -316,17 +315,11 @@ function RepeaterBody({ field, props }: { field: AnyFieldApi; props: LooseProps 
   const submitted = useSelector(api.store, (state) => state.submissionAttempts > 0)
   const meta = field.state.meta
   const first = pickErrors(meta.errorMap as Record<string, unknown>)[0]
-  const visible =
-    isRevealedMeta(meta) ||
-    isErrorVisible(
-      runtime.options.errorVisibility,
-      {
-        isTouched: meta.isTouched,
-        isDirty: meta.isDirty,
-        isBlurred: meta.isBlurred || meta.isTouched,
-      },
-      submitted,
-    )
+  const visible = areErrorsVisible(
+    runtime,
+    { ...meta, isBlurred: meta.isBlurred || meta.isTouched },
+    submitted,
+  )
   const errorText =
     first && visible && !isInactive(runtime, name) ? formatErrorText(runtime, first) : undefined
 

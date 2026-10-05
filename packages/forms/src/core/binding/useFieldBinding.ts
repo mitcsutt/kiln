@@ -13,6 +13,7 @@ import {
   markInactive,
   type FieldRegistration,
 } from '#core/runtime/formRuntime'
+import { isQuietMeta, isRevealedMeta } from '#core/runtime/reveal'
 import { scopeChain, useScopeNode } from '#core/scope/FieldScope'
 
 export { accepts } from '#core/binding/accepts'
@@ -86,62 +87,6 @@ export interface FieldBinding<V> {
   }
   /** Spread onto the @mitcsutt/kiln-ui *Field component. */
   fieldProps: BoundFieldProps
-}
-
-const REVEALED = '~revealed'
-const QUIET = '~revealedQuietly'
-
-/** Whether a field meta carries the "errors revealed" mark set by `revealFieldErrors`. */
-export function isRevealedMeta(meta: unknown): boolean {
-  return (
-    typeof meta === 'object' &&
-    meta !== null &&
-    (meta as Record<string, unknown>)[REVEALED] === true
-  )
-}
-
-/** Whether the reveal was a scoped attempt that announces once itself (no per-field alerts). */
-export function isQuietMeta(meta: unknown): boolean {
-  return (
-    typeof meta === 'object' && meta !== null && (meta as Record<string, unknown>)[QUIET] === true
-  )
-}
-
-export interface RevealOptions {
-  /**
-   * A scoped submit attempt (a step's Next): like a submit, the fields' errors render without
-   * `role="alert"` — the attempt moves focus to the first invalid field / announces
-   * once itself, so N simultaneous alerts would only bury it. Default `false`: a reveal in
-   * response to one field's own event (a rejected file) announces as usual.
-   */
-  quiet?: boolean
-}
-
-/**
- * Makes these fields' errors visible regardless of the visibility policy — a scoped submit
- * attempt (a step's Next), or an immediate response to the user's action (a rejected file).
- * Marks them touched + blurred and sets a meta flag that bindings OR into `submitted`;
- * `form.reset()` clears it with the rest of the meta.
- */
-export function revealFieldErrors(
-  form: AnyFormApi,
-  names: readonly string[],
-  options: RevealOptions = {},
-): void {
-  const quiet = options.quiet === true
-  for (const name of names) {
-    form.setFieldMeta(name, (prev) => {
-      const current = prev as unknown as Record<string, unknown>
-      if (
-        prev.isTouched &&
-        prev.isBlurred &&
-        current[REVEALED] === true &&
-        (current[QUIET] === true) === quiet
-      )
-        return prev
-      return { ...prev, isTouched: true, isBlurred: true, [REVEALED]: true, [QUIET]: quiet }
-    })
-  }
 }
 
 /** Text of a label-like element, minus `aria-hidden` marks (required stars, spinners). */

@@ -1,8 +1,7 @@
 import { useSyncExternalStore } from 'react'
 import { useSelector } from '@tanstack/react-form'
 import { pickErrors } from '#core/binding/errors'
-import { isRevealedMeta } from '#core/binding/useFieldBinding'
-import { isErrorVisible, type VisibilityMeta } from '#core/binding/visibility'
+import type { VisibilityMeta } from '#core/binding/visibility'
 import {
   getFormRuntime,
   isInactive,
@@ -10,6 +9,7 @@ import {
   useRuntimeVersion,
   type AnyKitForm,
 } from '#core/runtime/formRuntime'
+import { areErrorsVisible } from '#core/runtime/reveal'
 import type { ScopeHandle } from '#core/scope/FieldScope'
 
 const noop = () => () => undefined
@@ -42,8 +42,7 @@ export function useScopeErrors(scope: ScopeHandle | null, form?: AnyKitForm): nu
       if (!meta || isInactive(runtime, name)) continue
       if (pickErrors(meta.errorMap).length === 0) continue
       // Revealed by a scoped attempt (a step's Next) = visible under any policy.
-      if (isRevealedMeta(meta) || isErrorVisible(runtime.options.errorVisibility, meta, submitted))
-        count += 1
+      if (areErrorsVisible(runtime, meta, submitted)) count += 1
     }
     return count
   })
