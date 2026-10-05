@@ -6,6 +6,8 @@
  *
  * The title comes from the owner's stories: `Button.examples.tsx` takes the title of
  * `Button.stories.tsx` in the same package, plus `/Examples` (`UI/Actions/Button/Examples`).
+ * Without owner stories it comes from the path: a guide topic under `src/docs/<guide>/` is
+ * `<Package>/Docs/<Guide>/<Topic>`, and any other file is its folder path plus `/Examples`.
  * The indexer and the Vite plugin below give Storybook and the Vitest addon the same
  * default export, so the sidebar, the dev server and the tests agree.
  */
@@ -43,10 +45,36 @@ function storiesTitle(file: string): string | undefined {
   return /^\s*title:\s*'([^']+)'/m.exec(readFileSync(file, 'utf8'))?.[1]
 }
 
+const PACKAGES: Record<string, string> = { ui: 'UI', forms: 'Forms' }
+
+/** A path segment as a title segment: `getting-started` reads `Getting started`. */
+function label(segment: string): string {
+  const words = segment.replaceAll('-', ' ')
+  return words.charAt(0).toUpperCase() + words.slice(1)
+}
+
+/**
+ * The title for an examples file without owner stories, from its path under the package:
+ * `src/docs/<guide>/<topic>.examples.tsx` is `<Package>/Docs/<Guide>/<Topic>`, and any other
+ * file is its folder path plus `/Examples` (with the owner added when the folder isn't it).
+ */
+function pathTitle(file: string, owner: string): string {
+  const source = packageSource(file)
+  const name = basename(dirname(source))
+  const folders = dirname(file).slice(source.length).split(sep).filter(Boolean)
+  const root = PACKAGES[name] ?? label(name)
+  if (folders.length === 2 && folders[0] === 'docs') {
+    return [root, 'Docs', ...folders.slice(1), owner].map(label).join('/')
+  }
+  const segments = folders.at(-1) === owner ? folders : [...folders, owner]
+  return [root, ...segments, 'Examples'].map(label).join('/')
+}
+
 /**
  * The Storybook title for an examples file: its owner's stories title plus `/Examples`.
  * The owner's stories are `<Owner>.stories.tsx` beside it or, failing that, the one file
  * of that name elsewhere in the package (forms hooks keep theirs in `src/stories/hooks`).
+ * With no owner stories, the title comes from the path (`pathTitle`).
  */
 export function examplesTitle(file: string): string {
   const owner = basename(file).replace(EXAMPLES_FILE, '')
@@ -55,10 +83,11 @@ export function examplesTitle(file: string): string {
   const stories = existsSync(beside)
     ? [beside]
     : walk(packageSource(file)).filter((path) => basename(path) === name)
-  if (stories.length !== 1) {
+  if (stories.length === 0) return pathTitle(file, owner)
+  if (stories.length > 1) {
     throw new Error(
       `${file}: found ${String(stories.length)} ${name} files in the package. ` +
-        `An examples file takes its title from its owner's stories, so there must be exactly one.`,
+        `An examples file takes its title from its owner's stories, so there must be at most one.`,
     )
   }
   const [path = ''] = stories

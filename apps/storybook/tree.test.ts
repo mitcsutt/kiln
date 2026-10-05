@@ -7,12 +7,14 @@
  * sidebar shows.
  */
 import { execFileSync } from 'node:child_process'
-import { globSync, mkdtempSync, readFileSync, rmSync } from 'node:fs'
+import { globSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
 import { createRequire } from 'node:module'
 import { tmpdir } from 'node:os'
 import { dirname, join, relative, resolve, sep } from 'node:path'
 
 import type { StoryIndex } from 'storybook/internal/types'
+
+import { examplesTitle } from './.storybook/examples.ts'
 
 const ROOT = join(import.meta.dirname, '../..')
 
@@ -131,5 +133,30 @@ describe('the Storybook tree', () => {
       (file) => component.test(file) && !withPlayground.has(file),
     )
     expect(missing).toEqual([])
+  })
+})
+
+describe('the title of an examples file without owner stories', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'kiln-examples-title-'))
+  afterAll(() => {
+    rmSync(dir, { recursive: true, force: true })
+  })
+
+  /** Writes an empty examples file at `path` under a scratch package and returns it. */
+  function examplesFile(path: string): string {
+    const file = join(dir, 'packages', path)
+    mkdirSync(dirname(file), { recursive: true })
+    writeFileSync(file, '')
+    return file
+  }
+
+  it('names a guide topic by its path (<Package>/Docs/<Guide>/<Topic>)', () => {
+    const file = examplesFile('forms/src/docs/getting-started/first-form.examples.tsx')
+    expect(examplesTitle(file)).toBe('Forms/Docs/Getting started/First form')
+  })
+
+  it('names a storyless owner by its folder path plus Examples', () => {
+    const file = examplesFile('forms/src/fields/FormHiddenField/FormHiddenField.examples.tsx')
+    expect(examplesTitle(file)).toBe('Forms/Fields/FormHiddenField/Examples')
   })
 })

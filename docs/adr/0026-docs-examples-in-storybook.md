@@ -20,6 +20,6 @@ An examples file is CSF without a default export. It carries no Storybook meta, 
 ## Consequences
 
 - An example that renders with an axe violation, or that throws, fails CI in the theme and mode where it breaks.
-- An examples file needs an owner with stories. If no `<Owner>.stories.tsx` exists, or more than one does in the package, indexing fails and names the file.
+- An examples file without owner stories still indexes, with a title from its path. A guide topic, `src/docs/<guide>/<topic>.examples.tsx`, appears as `<Package>/Docs/<Guide>/<Topic>`, and any other file as its folder path plus `/Examples` (`Forms/Fields/FormHiddenField/Examples`). Only an ambiguous owner, with more than one `<Owner>.stories.tsx` in the package, fails indexing and names the file.
 - The story tests grow with every example. Measured locally, the run takes about 0.5 s longer per example with the default isolation, about 0.6 s per examples file, so the roughly 218 docs examples would about double each matrix job.
 - The Storybook sidebar shows each owner as a folder with its stories and an `Examples` group.
