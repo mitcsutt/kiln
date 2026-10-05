@@ -95,7 +95,7 @@ When an app that uses Kiln turns up a problem, fix it in Kiln and try the fix in
    }
    ```
 
-3. Tell the app's bundler to use the built files (the `kiln-dist` condition), to dedupe React and Kiln's dependencies, and to serve files from the checkout. For Vite (and Vitest, Storybook and TanStack Start, which use its config):
+3. Tell the app's bundler to use the built files (the `kiln-dist` condition), to dedupe React and Kiln's dependencies, and to serve files from the checkout. For Vite (and Storybook and TanStack Start, which use its config):
 
    ```ts
    import {
@@ -117,15 +117,59 @@ When an app that uses Kiln turns up a problem, fix it in Kiln and try the fix in
    })
    ```
 
+   Vitest uses these settings only when it reads `vite.config.*`. An app with its own `vitest.config.*` needs the same `resolve` and `ssr` settings there, or a `mergeConfig` with the Vite config.
+
 4. Tell TypeScript to use the built declarations, in the app's `tsconfig.json`. Without this it type-checks Kiln's source under the app's settings.
 
    ```json
    { "compilerOptions": { "customConditions": ["kiln-dist"] } }
    ```
 
-Without the dedupe the browser may work while server rendering fails with "Invalid hook call", because Kiln's dependencies load React from Kiln's `node_modules`. When you add a new `exports` subpath to a package, give it both conditions: `default` for the source and `kiln-dist` for the file `publishConfig.exports` names. The build fails if `kiln-dist` and `publishConfig.exports` differ.
+Without the dedupe the browser may work while server rendering fails with "Invalid hook call", because Kiln's dependencies load React from Kiln's `node_modules`. Types have the same split: a linked `dist/*.d.ts` reads React's types from Kiln's `node_modules`, so keep the app's `@types/react` and `@types/react-dom` at the versions in Kiln's catalog while it's linked, or JSX types come from two copies.
 
-When the app work is done, open the Kiln pull request with a changeset for each change. Once it is released, switch the app back to the published versions and remove the setup above.
+A config file that imports Kiln (a Vite plugin that calls `themeScript`, say) runs in Node, outside the bundler, so it needs the condition too. Run the tool with `NODE_OPTIONS=--conditions=kiln-dist`, and for Vite add `--configLoader native` so Node loads the config itself.
+
+The config packages (`kiln-eslint-config`, `kiln-tsconfig` and `kiln-prettier-config`) link with a plain `link:` and need none of the above: they have no build, and their own dependencies, such as the ESLint plugins, resolve from Kiln's `node_modules`.
+
+When you add a new `exports` subpath to a package, give it both conditions: `default` for the source and `kiln-dist` for the file `publishConfig.exports` names. The build fails if `kiln-dist` and `publishConfig.exports` differ.
+
+### Make the link reversible
+
+Steps 2 to 4 edit files the app commits, so it's easy to commit the linked state by mistake, and undoing it is a manual checklist. An app that links often can keep every committed file in its published state and switch linking on with one gitignored file instead:
+
+- **A switch file.** A script (`pnpm kiln:link <path>`) writes a gitignored file, say `.kiln-link/link.json`, naming the Kiln checkout, each linked package's directory, and the runtime dependencies each one needs from the app (read from Kiln's catalog). `pnpm kiln:unlink` deletes it. Every hook below does nothing while the file is missing.
+- **A pnpm hook for the dependencies.** A `readPackage` hook in `.pnpmfile.cjs` rewrites the Kiln dependencies to `link:` and adds Kiln's runtime dependencies, so `package.json` never changes:
+
+  ```js title=".pnpmfile.cjs"
+  const fs = require('node:fs')
+  const path = require('node:path')
+
+  let link = null
+  try {
+    link = JSON.parse(fs.readFileSync(path.join(__dirname, '.kiln-link/link.json'), 'utf8'))
+  } catch {}
+
+  function readPackage(pkg) {
+    if (!link) return pkg
+    for (const deps of [pkg.dependencies, pkg.devDependencies]) {
+      for (const name of Object.keys(deps ?? {})) {
+        const linked = link.packages[name]
+        if (!linked) continue
+        deps[name] = `link:${linked.dir}`
+        for (const [dep, range] of Object.entries(linked.dependencies)) deps[dep] ??= range
+      }
+    }
+    return pkg
+  }
+
+  module.exports = { hooks: { readPackage } }
+  ```
+
+- **A Vite helper for the bundler.** A function that returns step 3's settings while linked and `{}` otherwise, merged into each Vite and Vitest config with `mergeConfig(config, kilnLink())`.
+- **The TypeScript condition, always on.** `customConditions: ["kiln-dist"]` can stay committed, because published packages don't have the condition.
+- **The lockfile, saved and restored.** Linking rewrites `pnpm-lock.yaml`, so `kiln:link` copies the unlinked lockfile into `.kiln-link/` and `kiln:unlink` puts it back before reinstalling. A lint step that fails while the lockfile contains `link:` catches a linked lockfile on its way into a commit.
+
+When the app work is done, open the Kiln pull request with a changeset for each change. Once it's released, unlink (or undo steps 2 to 4) and update the app to the published versions.
 
 ## Conventions
 
