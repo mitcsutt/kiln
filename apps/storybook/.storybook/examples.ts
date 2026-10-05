@@ -58,22 +58,28 @@ function label(segment: string): string {
  * The title an owner's stories would have, from the stories of its sibling components:
  * their group, and their naming (`FormAmountField` is `Forms/Fields/AmountField`, so
  * `FormHiddenField` is `Forms/Fields/HiddenField`). Siblings are the other component
- * folders beside the owner's folder or, in a flat folder, the stories beside the file.
+ * folders beside the owner's folder or, in a flat folder, the other modules beside the
+ * file, wherever in the package their stories sit (`useAutosave` is `Forms/Hooks/useAutosave`).
  */
 function siblingTitle(file: string, owner: string): string | undefined {
   const dir = dirname(file)
-  const stories =
+  const siblings =
     basename(dir) === owner
-      ? readdirSync(dirname(dir)).map((name) => join(dirname(dir), name, `${name}.stories.tsx`))
+      ? readdirSync(dirname(dir))
       : existsSync(dir)
-        ? readdirSync(dir).map((name) => join(dir, name))
+        ? readdirSync(dir).map((name) => name.split('.')[0] ?? name)
         : []
-  for (const path of stories.filter((path) => path.endsWith('.stories.tsx') && existsSync(path))) {
-    const title = storiesTitle(path)
+  const stories = new Map(
+    walk(packageSource(file))
+      .filter((path) => path.endsWith('.stories.tsx'))
+      .map((path) => [basename(path, '.stories.tsx'), path]),
+  )
+  for (const component of siblings) {
+    const path = stories.get(component)
+    const title = path && component !== owner ? storiesTitle(path) : undefined
     if (!title) continue
     const at = title.lastIndexOf('/')
     const name = title.slice(at + 1)
-    const component = basename(path).replace(/\.stories\.tsx$/, '')
     if (!component.endsWith(name)) continue
     const prefix = component.slice(0, component.length - name.length)
     const ownerName = owner.startsWith(prefix) ? owner.slice(prefix.length) : owner

@@ -1,8 +1,11 @@
 /**
  * Keeps the Storybook tree on the ADR 0010 structure, which the docs site shares:
  * every title sits under a known group, ui and forms titles follow their source
- * folders, every docs examples file sits under its owner's title, and every component's
- * stories include a `Playground`. It reads the index Storybook itself builds from
+ * folders, every docs examples file follows one of two naming rules, and every component's
+ * stories include a `Playground`. The naming rules: a guide file under `src/docs/` is named
+ * by path, with a title on an ADR 0010 group and no `/Examples`; every other examples file
+ * is named by owner, `<owner>/Examples`, where `<owner>` is the owner's stories title when
+ * the owner has stories and otherwise a title on an ADR 0010 group. It reads the index Storybook itself builds from
  * `.storybook/main.ts` (`storybook index`), so it sees the titles and stories the
  * sidebar shows.
  */
@@ -61,6 +64,41 @@ const TITLES = [...new Map(ENTRIES.map(({ file, title }) => [file, title])).entr
 
 const capitalise = (word: string) => word.charAt(0).toUpperCase() + word.slice(1)
 
+/** Whether a title sits on a group of the ADR 0010 tree. */
+function onGroup(title: string): boolean {
+  const [top = '', group = ''] = title.split('/')
+  return TREE[top]?.includes(group) ?? false
+}
+
+/** Every indexed stories file's title, by package and stories name (`forms:useAutosave`). */
+const STORIES = new Map(
+  TITLES.flatMap(({ file, title }) => {
+    const match = /^packages\/([^/]+)\/.*\/([^/]+)\.stories\.tsx$/.exec(file)
+    return match ? [[`${match[1] ?? ''}:${match[2] ?? ''}`, title] as const] : []
+  }),
+)
+
+/**
+ * Why an examples file's title breaks the naming rules, if it does: a guide under
+ * `src/docs/` is named by path, on an ADR 0010 group and without `/Examples`; any other
+ * file is `<owner>/Examples`, where `<owner>` is the owner's stories title or, when the
+ * owner has no stories, a title on an ADR 0010 group.
+ */
+function examplesTitleProblem(file: string, title: string): string | undefined {
+  const match = /^packages\/([^/]+)\/src\/(docs\/)?(?:.*\/)?([^/]+)\.examples\.tsx$/.exec(file)
+  if (!match) return 'not under a package src/'
+  const [, pkg = '', guide, owner = ''] = match
+  if (guide) {
+    if (title.endsWith('/Examples')) return 'a guide is named by path, without /Examples'
+    return onGroup(title) ? undefined : 'not on an ADR 0010 group'
+  }
+  if (!title.endsWith('/Examples')) return 'expected <owner>/Examples'
+  const prefix = title.slice(0, -'/Examples'.length)
+  const stories = STORIES.get(`${pkg}:${owner}`)
+  if (stories) return prefix === stories ? undefined : `expected ${stories}/Examples`
+  return onGroup(prefix) ? undefined : 'not on an ADR 0010 group'
+}
+
 describe('the Storybook tree', () => {
   it('indexes the stories and the workbench pages', () => {
     expect(TITLES.filter(({ file }) => file.startsWith('packages/')).length).toBeGreaterThan(100)
@@ -105,17 +143,14 @@ describe('the Storybook tree', () => {
     expect(wrong).toEqual([])
   })
 
-  it("lists every docs examples file under its owner's title (<owner>/Examples)", () => {
+  it('names every docs examples file by path (guides) or by owner (<owner>/Examples)', () => {
     const files = globSync('packages/*/src/**/*.examples.tsx', { cwd: ROOT }).sort()
     const titleOf = new Map(TITLES.map(({ file, title }) => [file, title]))
-    const owners = new Set(
-      TITLES.filter(({ file }) => file.endsWith('.stories.tsx')).map(({ title }) => title),
-    )
     const wrong = files.flatMap((file) => {
       const title = titleOf.get(file)
       if (!title) return [`${file}: not indexed`]
-      const owner = title.replace(/\/Examples$/, '')
-      return title !== owner && owners.has(owner) ? [] : [`${file}: ${title}`]
+      const problem = examplesTitleProblem(file, title)
+      return problem ? [`${file}: ${title}, ${problem}`] : []
     })
     expect(files.length).toBeGreaterThan(0)
     expect(wrong).toEqual([])
@@ -137,31 +172,31 @@ describe('the Storybook tree', () => {
 })
 
 describe('the title of an examples file without owner stories', () => {
-  /** Whether a title sits under a node of the ADR 0010 tree. */
-  const onTree = (title: string) => {
-    const [top = '', group = ''] = title.split('/')
-    return TREE[top]?.includes(group) ?? false
+  /** The title the indexer gives `file`, checked against the naming rules. */
+  function titled(file: string): string {
+    const title = examplesTitle(join(ROOT, file))
+    expect(examplesTitleProblem(file, title)).toBeUndefined()
+    return title
   }
 
   it('names a guide topic by its path (<Package>/<Guide>/<Topic>)', () => {
-    const title = examplesTitle(
-      join(ROOT, 'packages/forms/src/docs/getting-started/first-form.examples.tsx'),
+    expect(titled('packages/forms/src/docs/getting-started/first-form.examples.tsx')).toBe(
+      'Forms/Getting started/First form',
     )
-    expect(title).toBe('Forms/Getting started/First form')
-    expect(onTree(title)).toBe(true)
   })
 
   it("names a storyless owner like its sibling components' stories, plus Examples", () => {
-    const field = examplesTitle(
-      join(ROOT, 'packages/forms/src/components/fields/FormNewField/FormNewField.examples.tsx'),
-    )
-    const component = examplesTitle(
-      join(ROOT, 'packages/ui/src/components/actions/NewAction/NewAction.examples.tsx'),
-    )
-    expect([field, component]).toEqual([
-      'Forms/Fields/NewField/Examples',
+    expect(
+      titled('packages/forms/src/components/fields/FormNewField/FormNewField.examples.tsx'),
+    ).toBe('Forms/Fields/NewField/Examples')
+    expect(titled('packages/ui/src/components/actions/NewAction/NewAction.examples.tsx')).toBe(
       'UI/Actions/NewAction/Examples',
-    ])
-    expect([field, component].every(onTree)).toBe(true)
+    )
+  })
+
+  it('names a storyless hook in a flat folder like its sibling hooks, plus Examples', () => {
+    expect(titled('packages/forms/src/hooks/useScopeErrors.examples.tsx')).toBe(
+      'Forms/Hooks/useScopeErrors/Examples',
+    )
   })
 })
