@@ -46,6 +46,26 @@ function packageSource(file: string): string {
   return parts.slice(0, at + 1).join(sep)
 }
 
+const storiesCache = new Map<string, Map<string, string[]>>()
+
+/**
+ * Every `<Name>.stories.tsx` in a package source, by `<Name>`, read once per package. The
+ * dev server drops the cache when a file is added or removed (`examplesPlugin`).
+ */
+function storiesFiles(source: string): Map<string, string[]> {
+  let stories = storiesCache.get(source)
+  if (!stories) {
+    stories = new Map()
+    for (const path of walk(source)) {
+      if (!path.endsWith('.stories.tsx')) continue
+      const name = basename(path, '.stories.tsx')
+      stories.set(name, [...(stories.get(name) ?? []), path])
+    }
+    storiesCache.set(source, stories)
+  }
+  return stories
+}
+
 /** The `title` in a stories file's meta. Stories titles are string literals (ADR 0010). */
 function storiesTitle(file: string): string | undefined {
   return /^\s*title:\s*'([^']+)'/m.exec(readFileSync(file, 'utf8'))?.[1]
@@ -74,13 +94,9 @@ function siblingTitle(file: string, owner: string): string | undefined {
       : existsSync(dir)
         ? readdirSync(dir).map((name) => name.split('.')[0] ?? name)
         : []
-  const stories = new Map(
-    walk(packageSource(file))
-      .filter((path) => path.endsWith('.stories.tsx'))
-      .map((path) => [basename(path, '.stories.tsx'), path]),
-  )
+  const stories = storiesFiles(packageSource(file))
   for (const component of siblings) {
-    const path = stories.get(component)
+    const path = stories.get(component)?.[0]
     const title = path && component !== owner ? storiesTitle(path) : undefined
     if (!title) continue
     const at = title.lastIndexOf('/')
@@ -107,7 +123,7 @@ export function examplesRule(file: string): ExamplesRule {
   const owner = basename(file).replace(EXAMPLES_FILE, '')
   const name = `${owner}.stories.tsx`
   const source = packageSource(file)
-  const candidates = walk(source).filter((path) => basename(path) === name)
+  const candidates = storiesFiles(source).get(owner) ?? []
   const beside = join(dirname(file), name)
   const stories = candidates.includes(beside) ? [beside] : candidates
   if (stories.length > 1) {
@@ -171,6 +187,13 @@ export function examplesPlugin(): Plugin {
   return {
     name: 'kiln:examples-meta',
     enforce: 'pre',
+    configureServer(server) {
+      const forget = () => {
+        storiesCache.clear()
+      }
+      server.watcher.on('add', forget)
+      server.watcher.on('unlink', forget)
+    },
     transform(code, id) {
       const file = id.split('?')[0] ?? id
       if (!file.endsWith('.examples.tsx')) return null
