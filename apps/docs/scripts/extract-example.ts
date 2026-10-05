@@ -113,7 +113,16 @@ function parse(fileName: string, text: string) {
 
 /** The names a file exports. In an examples file, those are its examples. */
 export function exampleNames(fileName: string, text: string): string[] {
-  return parse(fileName, text).exports.map((symbol) => symbol.name)
+  const { checker, exports } = parse(fileName, text)
+  return exports.map((symbol) => {
+    const target = symbol.flags & ts.SymbolFlags.Alias ? checker.getAliasedSymbol(symbol) : symbol
+    if (!(target.flags & ts.SymbolFlags.Value)) {
+      throw new Error(
+        `${fileName} exports the type ${symbol.name}. Keep helpers and types unexported.`,
+      )
+    }
+    return symbol.name
+  })
 }
 
 /** The source of one export and everything it reaches, unformatted. */
