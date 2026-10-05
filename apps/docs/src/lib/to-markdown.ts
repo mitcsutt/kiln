@@ -1,6 +1,6 @@
 import tokens from '../../.generated/tokens.json'
 import { getApi, type ApiEntry } from './api'
-import { getExampleSource } from './examples'
+import { exampleId, getExampleSource } from './examples'
 
 function attribute(tag: string, name: string): string | undefined {
   return new RegExp(`${name}="([^"]*)"`).exec(tag)?.[1]
@@ -51,8 +51,8 @@ export function toMarkdown(processed: string): string {
   const expanded = outsideCode(processed, (text) =>
     text
       .replace(/<Example\b[^>]*\/>/g, (tag) => {
-        const name = attribute(tag, 'name')
-        return name ? `\`\`\`tsx\n${getExampleSource(name).trimEnd()}\n\`\`\`` : ''
+        const id = exampleId({ of: attribute(tag, 'of'), name: attribute(tag, 'name') })
+        return `\`\`\`tsx\n${getExampleSource(id).trimEnd()}\n\`\`\``
       })
       .replace(/<ApiTable\b[^>]*\/>/g, (tag) =>
         (attribute(tag, 'of') ?? '')

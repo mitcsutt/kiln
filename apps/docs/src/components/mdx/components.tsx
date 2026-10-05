@@ -2,7 +2,7 @@ import { isValidElement, type ComponentProps, type ReactNode } from 'react'
 import NextLink from 'next/link'
 import { examples } from '../../../.generated/examples'
 import { getApi } from '@/lib/api'
-import { getExampleSource } from '@/lib/examples'
+import { exampleId, getExampleSource } from '@/lib/examples'
 import { Code } from './Code'
 import { Preview, type PreviewLayout } from './Preview'
 import { PropsTable } from './PropsTable'
@@ -39,12 +39,24 @@ export function Anchor({ href = '', children, ...rest }: ComponentProps<'a'>) {
   )
 }
 
-/** A live example from `examples/<name>.tsx`, with its source underneath. */
-export function Example({ name, layout }: { name: string; layout?: PreviewLayout }) {
-  const Component = examples[name]
-  if (!Component) throw new Error(`No example at examples/${name}.tsx`)
+/**
+ * A live example with its source underneath: `<Example of="Button" name="Hierarchy" />`, or
+ * `<Example name="ui/actions/button/hierarchy" />` for a file in `examples/` (`exampleId`).
+ */
+export function Example({
+  of,
+  name,
+  layout,
+}: {
+  of?: string
+  name?: string
+  layout?: PreviewLayout
+}) {
+  const id = exampleId({ of, name })
+  const Component = examples[id]
+  if (!Component) throw new Error(`No example ${id}`)
   return (
-    <Preview code={getExampleSource(name)} layout={layout}>
+    <Preview code={getExampleSource(id)} layout={layout}>
       <Component />
     </Preview>
   )
