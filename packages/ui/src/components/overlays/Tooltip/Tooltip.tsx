@@ -1,4 +1,5 @@
 import {
+  cloneElement,
   createContext,
   forwardRef,
   isValidElement,
@@ -7,6 +8,7 @@ import {
   useRef,
   useState,
   type ComponentPropsWithoutRef,
+  type KeyboardEvent,
   type PointerEvent,
   type ReactElement,
   type ReactNode,
@@ -120,9 +122,11 @@ const ContentInner = forwardRef<
  * ## On disabled triggers
  *
  * A disabled button gets no pointer or focus events, so a tooltip on it could never open. When
- * the trigger is disabled, `Tooltip` wraps it in a focusable span that takes the hover, focus and
- * long press instead, so the reason it's disabled ("You've used all three reactions") still
- * reaches every reader.
+ * the trigger is `disabled`, `Tooltip` marks it `aria-disabled` instead and blocks its clicks
+ * and key presses, so it still looks and announces as disabled, but hover, focus and long press
+ * reach it and the reason it's disabled ("You've used all three reactions") reaches every
+ * reader. It's the same element either way, so a trigger that's disabled while a request is
+ * pending keeps keyboard focus.
  *
  * @privateRemarks
  * A small label that appears on hover and on keyboard focus. Portalled, so it's never
@@ -160,19 +164,33 @@ export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip
   })
   const disabled =
     isValidElement<{ disabled?: unknown }>(children) && children.props.disabled === true
+  // Disabled stays focusable (aria-disabled) and on the same element, so focus survives a
+  // disabled toggle and the hint still opens; activation is blocked here instead.
+  const trigger = disabled
+    ? cloneElement(children as ReactElement<Record<string, unknown>>, {
+        disabled: false,
+        'aria-disabled': true,
+      })
+    : children
+  const block = disabled
+    ? {
+        onClickCapture: (event: SyntheticEvent) => {
+          event.preventDefault()
+          event.stopPropagation()
+        },
+        onKeyDownCapture: (event: KeyboardEvent) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+        },
+      }
+    : {}
   const tooltip = (
     <PortalAnchorContext.Provider value={anchor}>
       <TooltipPrimitive.Root delayDuration={delay} open={isOpen} onOpenChange={setOpen}>
-        <TooltipPrimitive.Trigger asChild ref={composeRefs(anchor)} {...press}>
-          {disabled ? (
-            // A disabled control gets no pointer or focus events: this span takes them instead.
-            // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- focus is how a keyboard reader reaches the hint explaining why the control is disabled
-            <span className={styles.disabledTrigger} tabIndex={0}>
-              {children}
-            </span>
-          ) : (
-            children
-          )}
+        <TooltipPrimitive.Trigger asChild ref={composeRefs(anchor)} {...press} {...block}>
+          {trigger}
         </TooltipPrimitive.Trigger>
         <TooltipPrimitive.Portal container={container}>
           <ContentInner
