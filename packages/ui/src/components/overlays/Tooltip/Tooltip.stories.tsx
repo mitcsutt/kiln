@@ -147,8 +147,9 @@ export const Usage: Story = {
 
 /**
  * `touch="longpress"` opens a tooltip when the trigger is held on a touch screen, and swallows
- * the tap that ends the press. A disabled trigger is wrapped so its tooltip still opens on hover,
- * focus and long press, and can say why it's disabled.
+ * the tap that ends the press. A disabled trigger stays focusable (`aria-disabled`, with its
+ * clicks blocked), so its tooltip still opens on hover, focus and long press, and can say why
+ * it's disabled.
  */
 export const TouchAndDisabled: Story = {
   name: 'Touch and disabled triggers',
