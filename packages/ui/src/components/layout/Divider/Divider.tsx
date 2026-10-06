@@ -1,4 +1,4 @@
-import { forwardRef, useId, type CSSProperties, type HTMLAttributes, type ReactNode } from 'react'
+import { forwardRef, type CSSProperties, type HTMLAttributes, type ReactNode } from 'react'
 import { cx } from '#utils/cx'
 import { mergeStyles } from '#utils/responsive'
 import { space, type Space } from '#utils/tokens'
@@ -13,7 +13,10 @@ export interface DividerProps
   orientation?: DividerOrientation
   /** Heavier rule in `--color-line-strong` at `--border-width-strong`. */
   strong?: boolean
-  /** Text set into a horizontal rule, e.g. "Earlier this week". It also names the separator. */
+  /**
+   * Content set into a horizontal rule, e.g. "Earlier this week". It's real content, read like
+   * any text, and may be a block (a `Stack` of lines); the rules either side are decorative.
+   */
   label?: ReactNode
   /** Where the label sits. Default `start` (left-aligned by default); `center` for a lone break. */
   labelPosition?: 'start' | 'center'
@@ -32,6 +35,9 @@ export interface DividerProps
  * @remarks
  * `Divider` separates groups. For a rule between every item of a list, use `Stack dividers`
  * instead, which spaces the rules for you.
+ *
+ * A labelled divider is a band rather than a separator: its label is content that screen readers
+ * read in place, and the rules either side of it are decorative.
  *
  * @privateRemarks
  * A hairline rule between groups of content. Prefer `Stack dividers` for rules
@@ -55,16 +61,15 @@ export const Divider = forwardRef<HTMLDivElement, DividerProps>(function Divider
   },
   ref,
 ) {
-  const labelId = useId()
   const hasLabel =
     label !== undefined && label !== null && label !== false && orientation === 'horizontal'
   return (
     <div
       ref={ref}
       className={cx(styles.divider, visibilityClass({ hideBelow, hideAbove }), className)}
-      role={decorative ? 'none' : 'separator'}
+      // A labelled band's label is content, which a separator's children can't be.
+      role={decorative || hasLabel ? 'none' : 'separator'}
       aria-orientation={!decorative && orientation === 'vertical' ? 'vertical' : undefined}
-      aria-labelledby={!decorative && hasLabel ? labelId : undefined}
       data-orientation={orientation}
       data-strong={strong || undefined}
       data-label-position={hasLabel ? labelPosition : undefined}
@@ -76,11 +81,7 @@ export const Divider = forwardRef<HTMLDivElement, DividerProps>(function Divider
       )}
       {...rest}
     >
-      {hasLabel ? (
-        <span id={labelId} className={styles.label}>
-          {label}
-        </span>
-      ) : null}
+      {hasLabel ? <div className={styles.label}>{label}</div> : null}
     </div>
   )
 })
