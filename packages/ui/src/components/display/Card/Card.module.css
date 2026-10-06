@@ -110,17 +110,14 @@
   color: var(--color-ink-muted);
 }
 
-/* A categorical keyline along the top: whose card it is, in their Tag's colour. A pseudo-
-   element, so it sits inside the card's edge and radius whatever the variant's shadow is. */
+/* A categorical keyline along the top: whose card it is, in their Tag's colour. The top border
+   of a box the card's own shape, so it follows rounded corners down into the sides. */
 .card[data-color]::before {
   content: '';
   position: absolute;
-  inset-block-start: calc(var(--border-width) * -1);
-  inset-inline: calc(var(--border-width) * -1);
-  block-size: var(--card-keyline-width, var(--space-1));
-  border-start-start-radius: var(--card-radius, var(--radius-surface));
-  border-start-end-radius: var(--card-radius, var(--radius-surface));
-  background: var(--_cat);
+  inset: calc(var(--border-width) * -1);
+  border-block-start: var(--card-keyline-width, var(--space-1)) solid var(--_cat);
+  border-radius: var(--card-radius, var(--radius-surface));
   pointer-events: none;
 }
 .card[data-color='1'] {

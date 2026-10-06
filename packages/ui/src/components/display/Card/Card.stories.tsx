@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Badge, Button, Card, Grid, Inline, Media, Text } from '@mitcsutt/kiln-ui'
+import { expect } from 'storybook/test'
+import { must } from '#test/must'
 import { ArrowUpRightIcon } from '#icons'
 import { Stack } from '#components/layout/Stack'
 import { Tag, TagList } from '#components/display/Tag'
@@ -276,5 +278,12 @@ export const LiveAndPlaceholder: Story = {
         </Card>
       </Grid>
     )
+  },
+  play: async ({ canvasElement }) => {
+    // The owner keyline is the top border of a box the card's shape, so it follows its corners.
+    const card = must(canvasElement.querySelector('[data-color]'), 'the owner card')
+    const keyline = getComputedStyle(card, '::before')
+    await expect(keyline.borderTopLeftRadius).toBe(getComputedStyle(card).borderTopLeftRadius)
+    await expect(keyline.borderTopStyle).toBe('solid')
   },
 }
