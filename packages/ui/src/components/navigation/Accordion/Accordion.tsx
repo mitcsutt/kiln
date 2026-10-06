@@ -1,4 +1,10 @@
-import { createContext, forwardRef, useContext, type ComponentPropsWithoutRef } from 'react'
+import {
+  createContext,
+  forwardRef,
+  useContext,
+  type ComponentPropsWithoutRef,
+  type ReactNode,
+} from 'react'
 import { Accordion as AccordionPrimitive } from 'radix-ui'
 import { cx } from '#utils/cx'
 import { ChevronDownIcon } from '#icons'
@@ -54,10 +60,15 @@ export interface AccordionTriggerProps extends ComponentPropsWithoutRef<
 > {
   /** Heading level wrapping the trigger, for the document outline. Default 3. */
   level?: 2 | 3 | 4 | 5 | 6
+  /**
+   * A figure or badge at the end of the trigger, just before the chevron, like a score beside
+   * a match. Keep it phrasing content (`Numeral`, `Badge`, `Text`): it's inside a button.
+   */
+  trailing?: ReactNode
 }
 
 const AccordionTrigger = forwardRef<HTMLButtonElement, AccordionTriggerProps>(
-  function AccordionTrigger({ level = 3, className, children, ...rest }, ref) {
+  function AccordionTrigger({ level = 3, trailing, className, children, ...rest }, ref) {
     const size = useContext(SizeContext)
     const Heading = headingTag(level)
     return (
@@ -70,6 +81,9 @@ const AccordionTrigger = forwardRef<HTMLButtonElement, AccordionTriggerProps>(
             {...rest}
           >
             <span className={styles.triggerLabel}>{children}</span>
+            {trailing !== undefined ? (
+              <span className={styles.triggerTrailing}>{trailing}</span>
+            ) : null}
             <ChevronDownIcon className={styles.chevron} />
           </AccordionPrimitive.Trigger>
         </Heading>

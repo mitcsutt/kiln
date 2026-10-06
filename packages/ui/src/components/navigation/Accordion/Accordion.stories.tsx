@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Accordion, Text } from '@mitcsutt/kiln-ui'
+import { Accordion, Numeral, Text } from '@mitcsutt/kiln-ui'
 import { expect, userEvent, within } from 'storybook/test'
 import { storyRoot } from '#components/_story/storyRoot'
 
@@ -152,6 +152,34 @@ export const Contained: Story = {
             <Text size="sm">Single £2.40, family day pass £14.00.</Text>
           </Accordion.Content>
         </Accordion.Item>
+      </Accordion>
+    )
+  },
+}
+
+/**
+ * `trailing` puts a figure or badge at the end of the trigger, just before the chevron, so a
+ * row of totals lines up. Keep it phrasing content: it sits inside the trigger's button.
+ */
+export const Trailing: Story = {
+  tags: ['docs'],
+  render: function Trailing() {
+    return (
+      <Accordion type="single" collapsible>
+        {[
+          { day: 'Monday', delay: 4, note: 'Fog at North Point held the 07:35 at the pier.' },
+          { day: 'Tuesday', delay: 0, note: 'Every sailing left on time.' },
+          { day: 'Wednesday', delay: 12, note: 'A crew change at Kelso Bay delayed two sailings.' },
+        ].map((row) => (
+          <Accordion.Item key={row.day} value={row.day}>
+            <Accordion.Trigger trailing={<Numeral value={row.delay} suffix=" min late" />}>
+              {row.day}
+            </Accordion.Trigger>
+            <Accordion.Content>
+              <Text size="sm">{row.note}</Text>
+            </Accordion.Content>
+          </Accordion.Item>
+        ))}
       </Accordion>
     )
   },
