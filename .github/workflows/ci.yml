@@ -15,11 +15,10 @@ env:
 
 # One job per quality gate, each through Turborepo. Add new gates as new jobs
 # that reuse the setup action.
-# runs-on: set repo variable CI_RUNNER=homeserver-ci to run on the home server; unset = GitHub-hosted.
 jobs:
   lint:
     name: Lint
-    runs-on: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/actions/setup
@@ -28,7 +27,7 @@ jobs:
 
   typecheck:
     name: Typecheck
-    runs-on: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/actions/setup
@@ -37,7 +36,7 @@ jobs:
 
   test:
     name: Test
-    runs-on: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/actions/setup
@@ -46,7 +45,7 @@ jobs:
 
   build:
     name: Build
-    runs-on: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/actions/setup
@@ -55,7 +54,7 @@ jobs:
 
   test-react18:
     name: Test (React 18)
-    runs-on: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/actions/setup
@@ -69,7 +68,7 @@ jobs:
   # packages/ui/src/theme/themes.ts.
   storybook-matrix:
     name: Storybook test matrix
-    runs-on: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
+    runs-on: ubuntu-latest
     outputs:
       themes: ${{ steps.pick.outputs.themes }}
     steps:
@@ -103,7 +102,7 @@ jobs:
   storybook-test:
     name: Storybook tests (${{ matrix.theme }}, ${{ matrix.mode }})
     needs: storybook-matrix
-    runs-on: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
@@ -122,7 +121,7 @@ jobs:
 
   storybook-build:
     name: Storybook build
-    runs-on: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/actions/setup
@@ -137,7 +136,7 @@ jobs:
   # internal link and anchor in it resolves (ADR 0019).
   docs:
     name: Docs build and links
-    runs-on: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/actions/setup
@@ -148,7 +147,7 @@ jobs:
   # frontmatter and size, and every code block compiles against the package (ADR 0020).
   skills:
     name: Agent skills
-    runs-on: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/actions/setup
@@ -157,7 +156,7 @@ jobs:
 
   package:
     name: Package checks
-    runs-on: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/actions/setup
@@ -166,7 +165,7 @@ jobs:
 
   size:
     name: Size
-    runs-on: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       pull-requests: write
@@ -220,7 +219,7 @@ jobs:
   changeset:
     name: Changeset
     if: github.event_name == 'pull_request' && !startsWith(github.head_ref, 'changeset-release/')
-    runs-on: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:

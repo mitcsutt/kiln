@@ -25,7 +25,7 @@ jobs:
   select-mode:
     name: Select mode
     if: github.repository == 'mitcsutt/kiln'
-    runs-on: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
+    runs-on: ubuntu-latest
     permissions:
       contents: read
     outputs:
@@ -44,7 +44,7 @@ jobs:
     name: Version packages
     needs: select-mode
     if: needs.select-mode.outputs.mode == 'version'
-    runs-on: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
+    runs-on: ubuntu-latest
     permissions:
       contents: write # commit the version bump
       pull-requests: write # open the "Version packages" pull request
@@ -73,7 +73,7 @@ jobs:
     name: Build and pack
     needs: select-mode
     if: needs.select-mode.outputs.mode == 'publish' && vars.NPM_PUBLISH_ENABLED == 'true'
-    runs-on: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
+    runs-on: ubuntu-latest
     permissions:
       contents: read
     outputs:
@@ -99,8 +99,6 @@ jobs:
   publish:
     name: Publish to npm
     needs: pack
-    # Always GitHub-hosted: npm trusted publishing (OIDC) does not support self-hosted
-    # runners (docs.npmjs.com/trusted-publishers, 2026-09). Move it when npm adds support.
     runs-on: ubuntu-latest
     # Add required reviewers to this environment to approve each publish.
     environment: npm
