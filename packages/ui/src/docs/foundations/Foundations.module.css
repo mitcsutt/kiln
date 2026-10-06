@@ -137,7 +137,7 @@
 }
 
 /*
- * A theme written outside Kiln, as a consumer would (DESIGN.md §4.5): a name of its own
+ * A theme written outside Kiln, as a consumer would (DESIGN.md §4.7): a name of its own
  * and a handful of tokens. Anything it leaves out falls back to Paper at the root.
  */
 :global([data-theme='harbour']) {

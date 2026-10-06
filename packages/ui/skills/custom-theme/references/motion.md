@@ -17,9 +17,9 @@ Motion in Kiln answers an action or shows a change of state: a panel opening, a 
 | `--dur-3`       | 340ms | larger ones: a sheet sliding in, a panel opening |
 | `--ease-out`    |       | things arriving                                  |
 | `--ease-in-out` |       | things moving from one place to another          |
-| `--ease-spring` |       | things landing. Only Fiesta actually bounces     |
+| `--ease-spring` |       | things landing. Fiesta bounces, Riso a little    |
 
-Durations are multiplied by the theme's `--motion-scale`: Monograph runs a little slow (1.1), Ledger brisk (0.8). Hover or focus a row below to see each combination in the current theme:
+Durations are multiplied by the theme's `--motion-scale`: Monograph runs a little slow (1.1), Flightdeck and Ledger brisk (0.8), Fiesta slightly quicker (0.9), and Paper and Riso at 1. Hover or focus a row below to see each combination in the current theme:
 
 
 ## Reduced motion

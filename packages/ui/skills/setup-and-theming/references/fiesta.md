@@ -8,6 +8,8 @@ Source: https://kiln.mitchellsutton.com/docs/ui/themes/fiesta
 
 _A screen-printed festival poster and sticker album._ Screen printing can't do gradients, so neither does Fiesta: flat spot inks on apricot poster stock, everything keylined in aubergine, and a hard misregistered offset where other themes have a soft shadow.
 
+Fiesta predates Kiln's [second-order design rules](https://kiln.mitchellsutton.com/docs/ui/foundations/design-rules#second-order-tells) and ships unchanged for compatibility, so it isn't the model for a new theme.
+
 
 ## Use it
 
@@ -21,7 +23,7 @@ import { ThemeProvider } from '@mitcsutt/kiln-ui'
 </ThemeProvider>
 ```
 
-Fiesta's two faces are declared in its own stylesheet, so they cost nothing unless you import it. It's light-first (the daytime show); dark mode is the floodlit night show.
+Fiesta's faces (Big Shoulders, Bricolage Grotesque and Martian Mono for code) are declared in its own stylesheet, so they cost nothing unless you import it. It's light-first (the daytime show); dark mode is the floodlit night show.
 
 ## The idea, applied
 

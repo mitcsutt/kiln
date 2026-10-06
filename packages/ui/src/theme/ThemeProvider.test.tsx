@@ -16,7 +16,7 @@ describe('ThemeProvider', () => {
 
   it('starts in defaultMode when nothing is stored', () => {
     render(
-      <ThemeProvider theme="monograph" defaultMode="dark">
+      <ThemeProvider theme="flightdeck" defaultMode="dark">
         <ModeProbe />
       </ThemeProvider>,
     )
@@ -27,7 +27,7 @@ describe('ThemeProvider', () => {
   it('lets a stored choice win over defaultMode', async () => {
     localStorage.setItem('kiln-color-mode', 'light')
     render(
-      <ThemeProvider theme="monograph" defaultMode="dark">
+      <ThemeProvider theme="flightdeck" defaultMode="dark">
         <ModeProbe />
       </ThemeProvider>,
     )

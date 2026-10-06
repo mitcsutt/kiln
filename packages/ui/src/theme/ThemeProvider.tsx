@@ -72,8 +72,8 @@ export interface ThemeProviderProps {
   mode?: ColorMode
   /**
    * Uncontrolled starting mode when the user hasn't chosen one yet (default `system`).
-   * A stored choice (see `persistMode`) always wins. Monograph is dark-first, so apps
-   * using it usually pass `defaultMode="dark"`. Pair with `themeScript(theme, defaultMode)`.
+   * A stored choice (see `persistMode`) always wins. Monograph and Flightdeck are dark-first, so apps
+   * using either usually pass `defaultMode="dark"`. Pair with `themeScript(theme, defaultMode)`.
    */
   defaultMode?: ColorMode
   onThemeChange?: (theme: ThemeName) => void
@@ -186,8 +186,8 @@ export interface ThemeScopeProps extends HTMLAttributes<HTMLDivElement> {
 
 /**
  * Renders a subtree in a different theme (and optionally mode). Themes are plain CSS
- * scoped to `[data-theme]`, so scopes nest freely — e.g. a Fiesta card previewed on a
- * Monograph page. Also paints the theme's page background and text colour.
+ * scoped to `[data-theme]`, so scopes nest freely — e.g. a Riso card previewed on a
+ * Flightdeck page. Also paints the theme's page background and text colour.
  */
 export const ThemeScope = forwardRef<HTMLDivElement, ThemeScopeProps>(function ThemeScope(
   { theme, mode, paint = true, ...rest },

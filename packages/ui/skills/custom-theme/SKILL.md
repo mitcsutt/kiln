@@ -48,14 +48,16 @@ export function Usage() {
 
 ## 1. Start from one idea
 
-Strong themes take one idea from their subject and apply it everywhere, with everything else quiet. Paper is a typeset proof; Fiesta is a screen-printed festival poster. Harbour is _the tide table posted at a ferry terminal_. That idea decides the rest:
+Strong themes take one idea from their subject and apply it everywhere, with everything else quiet. Paper is an office that prints for everyone, on grey stock; Riso is a two-drum risograph zine. Harbour is _the tide table posted at a ferry terminal_. That idea decides the rest:
 
 - **Colour**: sea-grey enamel neutrals (hue 225), one signal-orange accent like a channel buoy, sea-glass green for "you".
 - **Type**: heavy upright signage for headings, and every figure in a monospaced face, because tide times are read down a column.
 - **Shape**: squared enamel corners, firm hairlines, flat surfaces.
 - **Motion**: brisk, no bounce.
 
-If a choice can't be justified by the idea, leave it at the default. Pick at most two families and one accent.
+If a choice can't be justified by the idea, leave it at the default. Write the one-line reason for each choice next to its value, and if you can't, change the choice. Pick at most two families and one accent.
+
+Generated UI also converges on a second set of looks: a cream canvas with a terracotta accent, near-black with one acid accent, a mint canvas with forest green, hard-offset shadows on every card, and a short list of "distinctive" fonts. Kiln's newer themes (Paper, Ledger, Flightdeck and Riso) avoid all of them. Monograph and Fiesta predate these rules and are kept unchanged for compatibility, so don't take them as a model. Kiln's [DESIGN.md](https://github.com/mitcsutt/kiln/blob/main/DESIGN.md) lists them in full.
 
 ## 2. Copy the starter file
 
@@ -68,25 +70,25 @@ This is every token in the contract, set to Paper's values, under your theme's n
 @layer kiln.themes {
   [data-theme='harbour'] {
     /* Type roles */
-    --font-display: 'Schibsted Grotesk', ui-sans-serif, system-ui, sans-serif;
-    --font-text: 'Schibsted Grotesk', ui-sans-serif, system-ui, sans-serif;
-    --font-prose: 'Newsreader', 'Iowan Old Style', Georgia, serif;
-    --font-mono: 'Martian Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
-    --font-numeric: 'Newsreader', 'Iowan Old Style', Georgia, serif;
+    --font-display: 'Golos Text', ui-sans-serif, system-ui, sans-serif;
+    --font-text: 'Golos Text', ui-sans-serif, system-ui, sans-serif;
+    --font-prose: 'Golos Text', ui-sans-serif, system-ui, sans-serif;
+    --font-mono: 'Atkinson Hyperlegible Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+    --font-numeric: 'Golos Text', ui-sans-serif, system-ui, sans-serif;
     --type-base: 1rem;
     --display-scale: 1;
     --type-ratio: 1.25;
-    --display-weight: 640;
+    --display-weight: 740;
     --display-style: normal;
     --display-stretch: 100%;
     --display-transform: none;
-    --display-tracking: -0.04em;
+    --display-tracking: -0.025em;
     --display-opsz: 72;
     --heading-font: var(--font-display);
-    --heading-weight: 620;
+    --heading-weight: 650;
     --heading-tracking: -0.015em;
     --heading-transform: none;
-    --label-weight: 560;
+    --label-weight: 600;
     --label-tracking: 0;
     --label-transform: none;
     --numeric-stretch: 100%;
@@ -94,7 +96,7 @@ This is every token in the contract, set to Paper's values, under your theme's n
     --leading-tight: 1;
     --leading-snug: 1.2;
     --leading-body: 1.55;
-    --prose-size: 1.125rem;
+    --prose-size: 1.0625rem;
     --prose-leading: 1.6;
 
     /* Structure & temperament */
@@ -106,35 +108,35 @@ This is every token in the contract, set to Paper's values, under your theme's n
     --icon-stroke: 1.5;
     --border-width: 1px;
     --border-width-strong: 2px;
-    --radius-action: 0.375rem;
-    --radius-field: 0.375rem;
-    --radius-surface: 0.5rem;
-    --radius-media: 0.25rem;
-    --radius-chip: 0.375rem;
+    --radius-action: 0.25rem;
+    --radius-field: 0.25rem;
+    --radius-surface: 0.375rem;
+    --radius-media: 0.125rem;
+    --radius-chip: 999px;
     --radius-avatar: 50%;
 
     /* Colour */
-    --color-canvas: light-dark(oklch(0.976 0.004 85), oklch(0.188 0.005 85));
-    --color-surface: light-dark(oklch(0.993 0.002 85), oklch(0.215 0.006 85));
-    --color-surface-sunken: light-dark(oklch(0.955 0.005 85), oklch(0.165 0.005 85));
-    --color-surface-raised: light-dark(oklch(0.997 0.002 85), oklch(0.245 0.006 85));
-    --color-surface-inverse: light-dark(oklch(0.235 0.008 85), oklch(0.93 0.005 85));
-    --color-ink: light-dark(oklch(0.215 0.008 85), oklch(0.935 0.005 85));
-    --color-ink-muted: light-dark(oklch(0.435 0.008 85), oklch(0.755 0.006 85));
-    --color-ink-subtle: light-dark(oklch(0.515 0.008 85), oklch(0.64 0.006 85));
-    --color-ink-inverse: light-dark(oklch(0.965 0.004 85), oklch(0.2 0.008 85));
-    --color-line: light-dark(oklch(0.9 0.005 85), oklch(0.3 0.006 85));
-    --color-line-strong: light-dark(oklch(0.8 0.006 85), oklch(0.4 0.007 85));
-    --color-accent: light-dark(oklch(0.25 0.008 85), oklch(0.92 0.005 85));
-    --color-accent-hover: light-dark(oklch(0.34 0.008 85), oklch(0.84 0.006 85));
-    --color-accent-ink: light-dark(oklch(0.975 0.004 85), oklch(0.2 0.008 85));
-    --color-accent-text: light-dark(oklch(0.25 0.008 85), oklch(0.92 0.005 85));
-    --color-accent-soft: light-dark(oklch(0.925 0.006 85), oklch(0.285 0.007 85));
-    --color-highlight: light-dark(oklch(0.935 0.035 228), oklch(0.315 0.045 235));
+    --color-canvas: light-dark(oklch(0.952 0.006 250), oklch(0.17 0.008 250));
+    --color-surface: light-dark(oklch(0.995 0.002 250), oklch(0.215 0.009 250));
+    --color-surface-sunken: light-dark(oklch(0.935 0.006 250), oklch(0.14 0.008 250));
+    --color-surface-raised: light-dark(oklch(0.998 0.002 250), oklch(0.25 0.009 250));
+    --color-surface-inverse: light-dark(oklch(0.26 0.06 256), oklch(0.93 0.012 250));
+    --color-ink: light-dark(oklch(0.26 0.06 256), oklch(0.94 0.01 250));
+    --color-ink-muted: light-dark(oklch(0.42 0.06 256), oklch(0.77 0.015 250));
+    --color-ink-subtle: light-dark(oklch(0.47 0.06 256), oklch(0.66 0.015 250));
+    --color-ink-inverse: light-dark(oklch(0.96 0.006 250), oklch(0.2 0.05 256));
+    --color-line: light-dark(oklch(0.9 0.006 250), oklch(0.3 0.01 250));
+    --color-line-strong: light-dark(oklch(0.78 0.012 252), oklch(0.42 0.012 250));
+    --color-accent: light-dark(oklch(0.37 0.1 255), oklch(0.86 0.06 250));
+    --color-accent-hover: light-dark(oklch(0.31 0.095 255), oklch(0.92 0.045 250));
+    --color-accent-ink: light-dark(oklch(0.985 0.005 250), oklch(0.2 0.05 256));
+    --color-accent-text: light-dark(oklch(0.35 0.1 255), oklch(0.86 0.06 250));
+    --color-accent-soft: light-dark(oklch(0.93 0.025 252), oklch(0.285 0.03 252));
+    --color-highlight: light-dark(oklch(0.925 0.045 228), oklch(0.33 0.05 235));
     --color-highlight-ink: var(--color-ink);
     --color-focus: var(--color-ink);
     --color-selection: light-dark(oklch(0.88 0.06 228), oklch(0.42 0.07 235));
-    --color-scrim: light-dark(oklch(0.22 0.008 85 / 0.4), oklch(0.07 0.005 85 / 0.66));
+    --color-scrim: light-dark(oklch(0.22 0.04 258 / 0.4), oklch(0.07 0.01 250 / 0.66));
     --tone-positive: light-dark(oklch(0.52 0.11 155), oklch(0.72 0.12 158));
     --tone-positive-soft: light-dark(oklch(0.94 0.035 155), oklch(0.28 0.045 158));
     --tone-positive-text: light-dark(oklch(0.45 0.1 155), oklch(0.78 0.11 158));
@@ -158,15 +160,15 @@ This is every token in the contract, set to Paper's values, under your theme's n
     --color-cat-5: light-dark(oklch(0.8 0.05 300), oklch(0.7 0.06 300));
     --color-cat-6: light-dark(oklch(0.82 0.06 125), oklch(0.72 0.07 125));
     --color-cat-7: light-dark(oklch(0.8 0.05 195), oklch(0.7 0.06 195));
-    --color-cat-8: light-dark(oklch(0.8 0.01 85), oklch(0.7 0.01 85));
-    --color-cat-ink: oklch(0.21 0.008 85);
+    --color-cat-8: light-dark(oklch(0.8 0.01 250), oklch(0.7 0.01 250));
+    --color-cat-ink: oklch(0.21 0.03 258);
 
     /* Edges & depth */
     --shadow-surface: none;
     --active-shift: 0px;
     --shadow-active: none;
-    --shadow-float: 0 1px 2px oklch(0.2 0.008 85 / 0.1), 0 8px 24px -6px oklch(0.2 0.008 85 / 0.18);
-    --shadow-overlay: 0 2px 4px oklch(0.15 0.008 85 / 0.12), 0 20px 56px -12px oklch(0.15 0.008 85 / 0.32);
+    --shadow-float: 0 1px 2px oklch(0.2 0.04 258 / 0.1), 0 8px 24px -6px oklch(0.2 0.04 258 / 0.18);
+    --shadow-overlay: 0 2px 4px oklch(0.15 0.04 258 / 0.12), 0 20px 56px -12px oklch(0.15 0.04 258 / 0.32);
     --canvas-image: none;
   }
 }
@@ -193,7 +195,7 @@ Work through the file group by group. Keep every token; a theme that leaves one 
 **Type.** Assign families to roles, then set the temperament: the base size, the ratio between steps, the display weight and tracking.
 
 ```css
---font-numeric: 'Martian Mono', ui-monospace, monospace;
+--font-numeric: 'Atkinson Hyperlegible Mono', ui-monospace, monospace;
 --numeric-stretch: 87.5%;
 --display-weight: 780;
 --type-ratio: 1.22;
@@ -201,7 +203,7 @@ Work through the file group by group. Keep every token; a theme that leaves one 
 
 **Structure.** `--density` multiplies every space step and control height; `--motion-scale` multiplies every duration. Radii are roles, so actions, fields, surfaces and avatars can each have their own.
 
-**Depth.** Decide what an edge is. Flat themes set `--shadow-surface: none` and keep soft shadows for floating layers only; Fiesta's hard offset is its edge.
+**Depth.** Decide what an edge is. Flat themes set `--shadow-surface: none` and keep soft shadows for floating layers only; a hard offset belongs only on floating layers, and only when your subject explains it (Riso's misregistered second drum). Fiesta keeps its hard offset on static surfaces as a legacy preset; don't copy that.
 
 The whole Harbour file is in the repository at [`apps/docs/src/styles/harbour.css`](https://github.com/mitcsutt/kiln/blob/main/apps/docs/src/styles/harbour.css).
 
@@ -244,7 +246,7 @@ Kiln ships only the faces its own themes use. Declare your theme's faces in the 
 }
 ```
 
-Harbour itself uses only Schibsted Grotesk and Martian Mono, which Kiln's base stylesheet already loads. That's allowed too.
+Harbour itself uses only Golos Text and Atkinson Hyperlegible Mono, which Kiln's base stylesheet already loads. That's allowed too.
 
 ## 6. Check it everywhere
 
@@ -263,7 +265,7 @@ Then go through the component pages with your theme applied. A few things to loo
 
 When your idea needs something the contract doesn't cover, there are two more levels.
 
-[Optional tokens](references/tokens.md#optional-theme-tokens) are set by only some themes, and every theme scope resets them, so they never leak into a nested theme. Ledger sets `--table-foot-rule`; Fiesta sets the `--highlight-*-text` inks for text on its gold rows.
+[Optional tokens](references/tokens.md#optional-theme-tokens) are set by only some themes, and every theme scope resets them, so they never leak into a nested theme. Ledger sets `--table-foot-rule`; Fiesta and Riso set the `--highlight-*-text` inks for text on their gold and pink-tinted rows.
 
 Component tokens change one component without touching the rest. They're read with a fallback, so setting one is always safe:
 

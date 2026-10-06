@@ -38,14 +38,14 @@ export function App() {
 
 ## Themes
 
-- **`paper`** is the default: neutral, graphite on warm paper. It's in `styles.css` and applies when no theme is set.
-- **`monograph`**, **`ledger`** and **`fiesta`** are presets. Import the ones you use, and select one on the root or on any subtree:
+- **`paper`** is the default: neutral, blue-black ink on grey recycled stock, set in Golos Text. It's in `styles.css` and applies when no theme is set.
+- **`monograph`**, **`ledger`**, **`fiesta`**, **`flightdeck`** (a dark-first glass-cockpit display) and **`riso`** (a two-drum risograph zine) are presets. Monograph and Fiesta predate the current design rules and are kept unchanged for compatibility. Import the ones you use, and select one on the root or on any subtree:
 
   ```tsx
-  import '@mitcsutt/kiln-ui/themes/fiesta.css'
+  import '@mitcsutt/kiln-ui/themes/riso.css'
 
-  <ThemeProvider theme="fiesta" defaultMode="light">…</ThemeProvider>
-  <ThemeScope theme="fiesta">…</ThemeScope>
+  <ThemeProvider theme="riso" defaultMode="light">…</ThemeProvider>
+  <ThemeScope theme="riso">…</ThemeScope>
   ```
 
 - **Your own theme** is one CSS file against the token contract, selected the same way (`theme="harbour"`).
@@ -54,7 +54,7 @@ Each theme has light and dark modes (`data-mode`, or `mode`/`defaultMode` on `Th
 
 ## Fonts
 
-Kiln self-hosts the fonts its themes use, so there's nothing to set up: Schibsted Grotesk, Newsreader and Martian Mono come with `styles.css`, and Big Shoulders and Bricolage Grotesque come with the Fiesta preset. Browsers download a face only when something renders in it. All five are licensed under the SIL Open Font License 1.1, and the licences ship in `dist/assets/fonts/licenses/`. A custom theme loads its own fonts.
+Kiln self-hosts the fonts its themes use, so there's nothing to set up: Golos Text and Atkinson Hyperlegible Mono come with `styles.css` (Paper, and the code font in Ledger and Riso). Each preset brings its own faces: Schibsted Grotesk and Newsreader with Monograph, Big Shoulders and Bricolage Grotesque with Fiesta, Martian Mono with both of those, Archivo with Ledger, B612 and B612 Mono with Flightdeck, and Shantell Sans with Riso. Browsers download a face only when something renders in it. All of them are licensed under the SIL Open Font License 1.1, and the licences ship in `dist/assets/fonts/licenses/`. A custom theme loads its own fonts.
 
 ## For coding agents
 

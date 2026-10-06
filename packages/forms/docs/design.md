@@ -2082,7 +2082,7 @@ The use cases a form library has to cover, and the feature that covers each. C i
 
 - **Performance**: the §12 render-count test.
 - **React 18**: `vitest.react18.config.ts` runs the full suite against React 18.3. React 18 comes from the private `@mitcsutt/kiln-testing-react18` fixture package, whose only dependencies are React 18 and the libraries that import React themselves, so pnpm resolves all of them against React 18 ([ADR 0004](../../../docs/adr/0004-react-18-and-19.md)). kiln-ui runs the same way.
-- **Storybook** (once the workbench hosts the stories): axe over every `Forms/*` story in every theme (Paper, Monograph, Ledger, Fiesta) and both modes, and a real-browser keyboard pass of Combobox and FileDrop, which jsdom can't verify (A.10). Until then, stories are checked by `typecheck` and `lint`.
+- **Storybook** (once the workbench hosts the stories): axe over every `Forms/*` story in every theme (Paper, Monograph, Ledger, Fiesta, Flightdeck, Riso) and both modes, and a real-browser keyboard pass of Combobox and FileDrop, which jsdom can't verify (A.10). Until then, stories are checked by `typecheck` and `lint`.
 
 ### 15.2 Commands that must pass
 

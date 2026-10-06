@@ -8,9 +8,9 @@ The themeable component system. **Read the root [`DESIGN.md`](../../DESIGN.md) f
 src/
   index.ts                 public barrel: the entry consumers use (plus theme/script.ts as ./theme-script)
   styles/index.css         base stylesheet: layer order + fonts + tokens + reset + Paper
-  tokens/                  foundation.css (derived scales) · base.css (reset) · fonts.css · fonts-fiesta.css
+  tokens/                  foundation.css (derived scales) · base.css (reset) · fonts.css (Golos Text, Atkinson Hyperlegible Mono) · one fonts-<preset>.css per preset (monograph, fiesta, ledger, flightdeck, riso) · fonts-martian-mono.css (monograph and fiesta)
                            · responsive-props.css (non-inheriting responsive inputs)
-  themes/                  paper.css (default, in the base) · monograph.css · ledger.css · fiesta.css (opt-in presets)
+  themes/                  paper.css (default, in the base) · monograph.css · ledger.css · fiesta.css · flightdeck.css · riso.css (opt-in presets); tells.test.ts enforces DESIGN.md's second-order tells (monograph and fiesta are exempt)
   theme/                   ThemeProvider, ThemeScope, useTheme, themeScript, THEMES
   icons/                   createIcon + the ~20 built-in glyphs
   utils/                   cx · responsive (Responsive<T>, responsiveVars) · tokens (Space, Tone…) · heading
@@ -56,7 +56,7 @@ Groups: `layout`, `typography`, `actions`, `inputs`, `display`, `navigation`, `f
 - Typography roles: headings use `--heading-font/-weight/-tracking/-transform`; display sizes use `--display-*`; numbers use `--font-numeric` + `font-variant-numeric: tabular-nums lining-nums` + `font-stretch: var(--numeric-stretch)`; labels use `--label-*`.
 - Mobile-first media queries at `40em / 48em / 64em / 80em`.
 - Motion: transitions use `--dur-*`/`--ease-*` only; add a `prefers-reduced-motion` branch for any keyframe animation.
-- Borders: `var(--border-width) solid var(--color-line)`. Soft shadows only on floating layers (`--shadow-float`, `--shadow-overlay`). Surfaces that may "stand" use `--shadow-surface` (none in Paper, Monograph and Ledger; the print offset in Fiesta). Pressed controls travel `--active-shift` toward `--shadow-active`.
+- Borders: `var(--border-width) solid var(--color-line)`. Soft shadows only on floating layers (`--shadow-float`, `--shadow-overlay`). Surfaces that may "stand" use `--shadow-surface` (none in Paper, Monograph, Ledger, Flightdeck and Riso; the print offset in Fiesta, a legacy preset. A new theme never sets a hard offset on a static surface, per DESIGN.md §2). Pressed controls travel `--active-shift` toward `--shadow-active`.
 - Focus: `outline: 2px solid var(--color-focus); outline-offset: 2px` on `:focus-visible`.
 
 **Themes**
@@ -115,5 +115,5 @@ pnpm --filter @mitcsutt/kiln-ui size            # size report against size.confi
 
 - No Tailwind, no CSS-in-JS, no global class names, no `!important` (reduced-motion reset excepted).
 - No `any`, no `@ts-ignore` (a narrowly scoped `@ts-expect-error` with a reason is allowed for polymorphic refs).
-- Don't add theme-specific logic to components (`if (theme === 'fiesta')`). If a theme needs something different, add a component token.
+- Don't add theme-specific logic to components (`if (theme === 'riso')`). If a theme needs something different, add a component token.
 - Don't add dependencies without an ADR. Runtime dependencies today: `radix-ui` only.

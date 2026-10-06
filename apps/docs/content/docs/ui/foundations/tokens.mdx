@@ -42,7 +42,7 @@ Every theme sets every one of these tokens. Together they're Kiln's public themi
 
 ## Optional theme tokens
 
-Some themes set a few more: Fiesta's inks for text on its gold rows, Ledger's table rule. Every theme scope resets these first, so a theme nested inside another falls back to the component's default instead of inheriting its parent's value. Set them only when your theme's idea needs them:
+Some themes set a few more: Fiesta's and Riso's inks for text on their tinted rows, Ledger's table rule. Every theme scope resets these first, so a theme nested inside another falls back to the component's default instead of inheriting its parent's value. Set them only when your theme's idea needs them:
 
 <OptionalThemeTokens />
 
@@ -56,7 +56,7 @@ Radii are roles, not one global roundness. A theme can make actions pills and su
 
 <RadiusRoles />
 
-One edge treatment per element: a border, a shadow or a change of fill, never all three. Static structure uses hairlines. Soft shadows are only for things that float, like popovers and dialogs. Fiesta's hard offset is its one deliberate exception: it's the print misregistration, and it _is_ the edge.
+One edge treatment per element: a border, a shadow or a change of fill, never all three. Static structure uses hairlines. Soft shadows are only for things that float, like popovers and dialogs. Hard offsets never go on static surfaces in a new theme. Fiesta keeps its hard offset as a legacy preset: it's the print misregistration, and it _is_ the edge. Riso's misregistered offset, the second ink drum printing slightly off, is floating-only.
 
 <DepthRoles />
 
@@ -65,13 +65,13 @@ One edge treatment per element: a border, a shadow or a change of fill, never al
 Three attributes select tokens, and they're independent of each other.
 
 ```html
-<html data-theme="monograph" data-mode="dark">
-  <div data-theme="fiesta">a Fiesta panel that keeps the page's dark mode</div>
+<html data-theme="flightdeck" data-mode="dark">
+  <div data-theme="riso">a Riso panel that keeps the page's dark mode</div>
   <div data-density="compact">a denser table</div>
 </html>
 ```
 
-- `data-theme` is `paper`, `monograph`, `ledger`, `fiesta`, or the name of a theme you wrote. No attribute means Paper.
+- `data-theme` is `paper`, `monograph`, `ledger`, `fiesta`, `flightdeck`, `riso`, or the name of a theme you wrote. No attribute means Paper.
 - `data-mode` is `light`, `dark` or `system`. It drives `color-scheme`, which drives every `light-dark()` colour. Leave it off nested scopes and they inherit the page's mode.
 - `data-density` is `compact` or `comfortable`, and multiplies the theme's own density.
 

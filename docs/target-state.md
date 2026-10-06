@@ -67,7 +67,8 @@ Package directories are short (`packages/ui`), and package names carry the brand
   - The component group `components/forms/` becomes `components/inputs/`.
 - **Themes** ([ADR 0003](adr/0003-theming-model.md)):
   - `paper` is the new neutral default. It's applied when no theme is set.
-  - `monograph` is ported from source `studio`, `ledger` from source `ledger`, and `fiesta` from source `fiesta`.
+  - `monograph` is ported from source `studio`, `ledger` from source `ledger`, and `fiesta` from source `fiesta`. `monograph` and `fiesta` are kept unchanged for compatibility.
+  - `flightdeck` and `riso` are added presets, and `paper` and `ledger` are reworked, per [ADR 0030](adr/0030-theme-family-without-ai-tells.md), to avoid the second-order AI tells. Six themes ship in all.
   - Each preset is an opt-in stylesheet import (for example `@mitcsutt/kiln-ui/themes/fiesta.css`). The default stylesheet contains no preset.
   - The theme registry, `ThemeProvider`, `ThemeScope`, `useTheme` and `themeScript` know about `paper` and the presets. They also accept a consumer-defined theme name without a type error or runtime failure.
   - The token contract is documented well enough for a consumer to write a complete theme from scratch without reading Kiln's source.
@@ -154,7 +155,7 @@ The docs site sidebar and the Storybook tree have the **same** nested structure:
 UI/
   Foundations/   Tokens, Colour, Type, Spacing, Motion, Theming
   Actions/  Inputs/  Layout/  Display/  Navigation/  Feedback/  Overlays/  Typography/
-  Themes/        Paper, Monograph, Ledger, Fiesta
+  Themes/        Paper, Monograph, Ledger, Fiesta, Flightdeck, Riso
   Patterns/      generic compositions (e.g. dashboard, settings, checkout)
 Forms/
   Getting started/  Fields/  Layouts/  Hooks/  Schema/
@@ -172,7 +173,7 @@ Tooling/
   - a props/API table generated from the source types
   - copyable usage code
 - **Theming:**
-  - A theme switcher previews every page in `paper`, `monograph`, `ledger` and `fiesta`, in light and dark modes.
+  - A theme switcher previews every page in all six themes (`paper`, `monograph`, `ledger`, `fiesta`, `flightdeck` and `riso`), in light and dark modes.
   - The "Theming" guide teaches someone to write a custom theme against the token contract.
 - Getting-started guides exist for `ui`, `forms` (component mode and schema mode), and each config package.
 - Has full-text search.

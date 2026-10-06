@@ -194,7 +194,7 @@ const DEPTHS = [
   '--shadow-overlay',
 ] as const
 
-/** The four depths. Only floating layers get a soft shadow; Fiesta's offset is its edge. */
+/** The four depths. Only floating layers get a soft shadow; Riso's misregistered offset sits on floating layers too, and Fiesta's offset is its legacy edge. */
 export function DepthRoles() {
   return (
     <div className={styles.specimen} data-kiln-component="specimen">

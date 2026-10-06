@@ -33,13 +33,13 @@ export interface AvatarProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'colo
  * @remarks
  * `Avatar` shows a picture when there is one and falls back to initials when there isn't (or when
  * the image fails to load). The fallback colour comes from the name, so the same person gets the
- * same colour on every screen. Its shape is the theme's `--radius-avatar`: round in Paper and
- * Fiesta, a rounded square in Monograph.
+ * same colour on every screen. Its shape is the theme's `--radius-avatar`: round in Paper, Fiesta
+ * and Riso, a rounded square in Monograph and Ledger, and nearly square in Flightdeck.
  *
  * @privateRemarks
  * A person or entity. Image with an initials fallback on a deterministic categorical
  * colour. Shape comes from `--radius-avatar` (rounded square in Monograph/Ledger, round in
- * Fiesta).
+ * Paper/Fiesta/Riso, nearly square in Flightdeck).
  */
 export const Avatar = forwardRef<HTMLSpanElement, AvatarProps>(function Avatar(
   { src, alt, name, size, color, ring = false, initials, className, ...rest },

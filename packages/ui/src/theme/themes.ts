@@ -10,7 +10,7 @@
  * opt-in preset, add it here. Nothing in `src/components/` should ever change for a new
  * theme.
  */
-export const THEMES = ['paper', 'monograph', 'ledger', 'fiesta'] as const
+export const THEMES = ['paper', 'monograph', 'ledger', 'fiesta', 'flightdeck', 'riso'] as const
 
 /** A theme that ships with Kiln. */
 export type BuiltInThemeName = (typeof THEMES)[number]
@@ -35,7 +35,7 @@ export const THEME_META: Record<BuiltInThemeName, ThemeMeta> = {
   paper: {
     label: 'Paper',
     description:
-      'The neutral default. A typeset proof: graphite ink on warm paper, the ink as the accent, a grotesk for scanning and a book serif for reading.',
+      'The neutral default, built for legibility. Blue-black ink on grey recycled stock with white sheets, Golos Text throughout.',
     stylesheet: null,
   },
   monograph: {
@@ -44,10 +44,16 @@ export const THEME_META: Record<BuiltInThemeName, ThemeMeta> = {
       'A monograph read under a desk lamp at night. Blue-slate, one ember accent, a big serif display. Dark-first.',
     stylesheet: '@mitcsutt/kiln-ui/themes/monograph.css',
   },
+  flightdeck: {
+    label: 'Flightdeck',
+    description:
+      'A glass-cockpit display. Dark blue-grey glass, cyan for what you set, a reverse-video box for what you select, B612 throughout. Dark-first.',
+    stylesheet: '@mitcsutt/kiln-ui/themes/flightdeck.css',
+  },
   ledger: {
     label: 'Ledger',
     description:
-      "An accountant's ruled book. Quiet, dense and numeric: green-grey paper, tabular figures, compact rhythm.",
+      'A columnar accounting pad. Green rules on white, banknote-green actions, red negatives, condensed figures.',
     stylesheet: '@mitcsutt/kiln-ui/themes/ledger.css',
   },
   fiesta: {
@@ -55,6 +61,12 @@ export const THEME_META: Record<BuiltInThemeName, ThemeMeta> = {
     description:
       'A screen-printed festival poster. Flat spot inks, hard offsets, chunky condensed type, springy motion.',
     stylesheet: '@mitcsutt/kiln-ui/themes/fiesta.css',
+  },
+  riso: {
+    label: 'Riso',
+    description:
+      'A two-drum risograph zine. Fluorescent pink and blue ink on white stock, screen tints instead of shadows, a hand-drawn face.',
+    stylesheet: '@mitcsutt/kiln-ui/themes/riso.css',
   },
 }
 

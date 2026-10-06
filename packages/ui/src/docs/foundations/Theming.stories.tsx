@@ -38,14 +38,14 @@ export const Scopes: Story = {
       <div className={styles.scope}>
         <Sample title="The page's own theme" />
       </div>
-      <ThemeScope theme="monograph" className={styles.scope}>
-        <Sample title="Monograph, inherited mode" />
+      <ThemeScope theme="flightdeck" className={styles.scope}>
+        <Sample title="Flightdeck, inherited mode" />
       </ThemeScope>
       <ThemeScope theme="ledger" mode="dark" className={styles.scope}>
         <Sample title="Ledger, always dark" />
       </ThemeScope>
-      <ThemeScope theme="fiesta" className={styles.scope} data-density="compact">
-        <Sample title="Fiesta, compact density" />
+      <ThemeScope theme="riso" className={styles.scope} data-density="compact">
+        <Sample title="Riso, compact density" />
       </ThemeScope>
     </div>
   ),

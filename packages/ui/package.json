@@ -70,6 +70,14 @@
       "kiln-dist": "./dist/themes/fiesta.css",
       "default": "./src/themes/fiesta.css"
     },
+    "./themes/flightdeck.css": {
+      "kiln-dist": "./dist/themes/flightdeck.css",
+      "default": "./src/themes/flightdeck.css"
+    },
+    "./themes/riso.css": {
+      "kiln-dist": "./dist/themes/riso.css",
+      "default": "./src/themes/riso.css"
+    },
     "./package.json": "./package.json"
   },
   "publishConfig": {
@@ -87,6 +95,8 @@
       "./themes/monograph.css": "./dist/themes/monograph.css",
       "./themes/ledger.css": "./dist/themes/ledger.css",
       "./themes/fiesta.css": "./dist/themes/fiesta.css",
+      "./themes/flightdeck.css": "./dist/themes/flightdeck.css",
+      "./themes/riso.css": "./dist/themes/riso.css",
       "./package.json": "./package.json"
     },
     "imports": {}
@@ -98,7 +108,7 @@
   "scripts": {
     "build": "vite build",
     "build:watch": "vite build --watch",
-    "check:package": "pnpm pack --out node_modules/.cache/kiln-pack/package.tgz > /dev/null && publint --pack pnpm --strict && attw node_modules/.cache/kiln-pack/package.tgz --profile esm-only --exclude-entrypoints ./styles.css ./themes/monograph.css ./themes/ledger.css ./themes/fiesta.css && node scripts/check-theme-script-entry.ts node_modules/.cache/kiln-pack/package.tgz",
+    "check:package": "pnpm pack --out node_modules/.cache/kiln-pack/package.tgz > /dev/null && publint --pack pnpm --strict && attw node_modules/.cache/kiln-pack/package.tgz --profile esm-only --exclude-entrypoints ./styles.css ./themes/monograph.css ./themes/ledger.css ./themes/fiesta.css ./themes/flightdeck.css ./themes/riso.css && node scripts/check-theme-script-entry.ts node_modules/.cache/kiln-pack/package.tgz",
     "check:skills": "intent validate",
     "lint": "eslint --max-warnings=0 .",
     "size": "node ../../size-report.ts",

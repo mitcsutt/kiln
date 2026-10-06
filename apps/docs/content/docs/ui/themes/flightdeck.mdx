@@ -1,0 +1,37 @@
+---
+title: Flightdeck
+description: A glass-cockpit flight display. Cyan for what you set, a reverse-video box for what you select, and green, amber and red for status, set in B612. Dark-first.
+---
+
+_A glass-cockpit flight display._ Flightdeck follows the colour convention of electronic flight instruments, where each colour has one fixed meaning, and sets everything in the typefaces designed for Airbus cockpit displays.
+
+<ThemeSpecimen theme="flightdeck" />
+
+## Use it
+
+Flightdeck is a preset, so import its stylesheet. It's dark-first, so pair it with `defaultMode="dark"`, and give `themeScript` the same:
+
+```tsx
+import '@mitcsutt/kiln-ui/styles.css'
+import '@mitcsutt/kiln-ui/themes/flightdeck.css'
+import { ThemeProvider, themeScript } from '@mitcsutt/kiln-ui'
+
+;<html lang="en">
+  <head>
+    <script dangerouslySetInnerHTML={{ __html: themeScript('flightdeck', 'dark') }} />
+  </head>
+  <body>
+    <ThemeProvider theme="flightdeck" defaultMode="dark">
+      …
+    </ThemeProvider>
+  </body>
+</html>
+```
+
+## The idea, applied
+
+- **Colour.** The cockpit convention, mapped onto Kiln's roles. Cyan is the accent: what the pilot sets and acts on. What you selected is a neutral reverse-video box, like the selected line of a flight-management display. Green, amber and red are the positive, caution and critical tones, and info is steel blue. Neutrals are dark blue-grey display glass, never black. Light mode is the day mode of an electronic flight bag: pale cool grey with the cyan darkened to pass contrast.
+- **Type.** B612 for text, display and figures (its digits are already equal width), and B612 Mono for code. B612 ships static regular and bold weights and a Latin subset only, so Latin Extended text falls back to a system face. There are no uppercase transforms.
+- **Shape.** Square instrument bezels: small radii on actions, fields and surfaces. Chips are pills, like annunciator capsules.
+- **Depth.** Hairlines, with no shadow on static surfaces. Floating layers add a very subtle dark shadow, with no glow.
+- **Motion.** Instruments move linearly and quickly: a gentle ease-out, a little faster than the default, and no bounce.

@@ -1,30 +1,35 @@
 /*
  * LEDGER — preset (opt-in: import '@mitcsutt/kiln-ui/themes/ledger.css')
  *
- * Idea: an accountant's ledger. Faint green-grey ruled paper, bank-note green for
- * the one action colour, accounting red for negatives. Numbers are the content, so
- * they get their own face: a condensed monospace, like receipt tape, always
- * tabular. Compact rhythm, small radii, no ornament. Light-first.
+ * Idea: an accountant's columnar pad. White ruled sheet, green horizontal rules,
+ * entries in banknote green and black ink, red for negatives, a yellow highlighter
+ * for the line you circled. Edges are hairlines (the printed green rules); surfaces
+ * stay flat. Figures are set in Archivo at a condensed width (receipt narrowness
+ * without a monospace). Compact rhythm, tight radii like a rubber stamp. Light-first;
+ * dark is a carbon-copy night, not a green-screen terminal.
  */
 
 @layer kiln.reset, kiln.tokens, kiln.themes;
 
+@import '../tokens/fonts-ledger.css';
+
 @layer kiln.themes {
   [data-theme='ledger'] {
     /* ── Type roles ─────────────────────────────────────────────────────── */
-    --font-display: 'Schibsted Grotesk', ui-sans-serif, system-ui, sans-serif;
-    --font-text: 'Schibsted Grotesk', ui-sans-serif, system-ui, sans-serif;
-    --font-prose: 'Schibsted Grotesk', ui-sans-serif, system-ui, sans-serif;
-    --font-mono: 'Martian Mono', ui-monospace, Menlo, monospace;
-    --font-numeric: 'Martian Mono', ui-monospace, Menlo, monospace;
+    --font-display: 'Archivo', ui-sans-serif, system-ui, sans-serif;
+    --font-text: 'Archivo', ui-sans-serif, system-ui, sans-serif;
+    --font-prose: 'Archivo', ui-sans-serif, system-ui, sans-serif;
+    /* Archivo (Omnibus-Type): one width-axis family carries text, titles and figures. */
+    --font-mono: 'Atkinson Hyperlegible Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+    --font-numeric: 'Archivo', ui-sans-serif, system-ui, sans-serif;
 
     --type-base: 0.9375rem; /* 15px */
     --type-ratio: 1.2;
     --display-scale: 1.25; /* gentle body ratio, but display must still reach ≥ 5× body */
 
-    --display-weight: 700;
+    --display-weight: 750; /* heavy column heads, like a printed ledger title */
     --display-style: normal;
-    --display-stretch: 100%;
+    --display-stretch: 87.5%; /* titles slightly condensed, inside Archivo's 62–125% wdth range */
     --display-transform: none;
     --display-tracking: -0.03em;
     --display-opsz: 72;
@@ -35,8 +40,8 @@
     --label-weight: 550;
     --label-tracking: 0;
     --label-transform: none;
-    --numeric-stretch: 80%;
-    --mono-stretch: 80%;
+    --numeric-stretch: 78%; /* figures narrow like receipt tape; Archivo wdth 62–125% */
+    --mono-stretch: 100%; /* Atkinson Hyperlegible Mono has no width axis */
 
     --leading-tight: 1.05;
     --leading-snug: 1.2;
@@ -47,75 +52,80 @@
     /* ── Structure & temperament ────────────────────────────────────────── */
     --density: 0.86;
     --motion-scale: 0.8;
+    /* Flat and brief: a pen stroke, not a bounce. */
     --ease-out: cubic-bezier(0.25, 1, 0.5, 1);
     --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
     --ease-spring: var(--ease-out);
 
     --icon-stroke: 1.5;
-    --border-width: 1px;
+    --border-width: 1px; /* the printed rule: hairline edges, flat surfaces */
     --border-width-strong: 2px;
 
-    --radius-action: 0.3125rem;
-    --radius-field: 0.3125rem;
-    --radius-surface: 0.375rem;
-    --radius-media: 0.25rem;
-    --radius-chip: 0.25rem;
-    --radius-avatar: 0.3125rem;
+    /* Tight corners like a rubber stamp; chips are squarer, avatars are stamps. The highlight has no radius token: it is a flat marker swipe. */
+    --radius-action: 0.1875rem;
+    --radius-field: 0.1875rem;
+    --radius-surface: 0.1875rem;
+    --radius-media: 0.125rem;
+    --radius-chip: 0.125rem;
+    --radius-avatar: 0.25rem;
 
     /* ── Colour ─────────────────────────────────────────────────────────── */
-    --color-canvas: light-dark(oklch(0.968 0.008 145), oklch(0.19 0.012 170));
-    --color-surface: light-dark(oklch(0.992 0.004 145), oklch(0.222 0.013 170));
-    --color-surface-sunken: light-dark(oklch(0.948 0.01 145), oklch(0.17 0.011 170));
-    --color-surface-raised: light-dark(oklch(0.996 0.003 145), oklch(0.25 0.014 170));
-    --color-surface-inverse: light-dark(oklch(0.25 0.02 170), oklch(0.93 0.008 145));
+    /* White ruled paper with the faintest green; the green lives in the rules. Dark: carbon-copy night, a slate-teal sheet (not black) with visibly green rules and a muted banknote green accent. The red money-column rule is not expressible without a new token (out of scope). */
+    --color-canvas: light-dark(oklch(0.985 0.003 150), oklch(0.24 0.018 185));
+    --color-surface: light-dark(oklch(0.998 0.001 150), oklch(0.275 0.019 185));
+    --color-surface-sunken: light-dark(oklch(0.963 0.006 150), oklch(0.215 0.017 185));
+    --color-surface-raised: light-dark(oklch(1 0 0), oklch(0.31 0.02 185));
+    --color-surface-inverse: light-dark(oklch(0.24 0.02 160), oklch(0.95 0.01 170));
 
-    --color-ink: light-dark(oklch(0.24 0.02 170), oklch(0.93 0.008 145));
-    --color-ink-muted: light-dark(oklch(0.45 0.018 170), oklch(0.74 0.012 150));
+    /* Black-green ink, like carbon-paper entries */
+    --color-ink: light-dark(oklch(0.22 0.02 160), oklch(0.93 0.01 160));
+    --color-ink-muted: light-dark(oklch(0.44 0.02 160), oklch(0.83 0.015 175));
     --color-ink-subtle: light-dark(
-      oklch(0.525 0.014 165),
-      oklch(0.635 0.012 160)
+      oklch(0.5 0.02 160),
+      oklch(0.75 0.015 175)
     ); /* AA on sunken/raised */
-    --color-ink-inverse: light-dark(oklch(0.96 0.006 145), oklch(0.22 0.02 170));
+    --color-ink-inverse: light-dark(oklch(0.97 0.006 150), oklch(0.22 0.02 170));
 
-    /* Ledger rule lines */
-    --color-line: light-dark(oklch(0.885 0.018 150), oklch(0.3 0.014 170));
-    --color-line-strong: light-dark(oklch(0.76 0.03 155), oklch(0.4 0.018 170));
+    /* Ledger rules: visible pale green horizontals, deeper green for column heads; dim green at night */
+    --color-line: light-dark(oklch(0.86 0.05 155), oklch(0.39 0.035 165));
+    --color-line-strong: light-dark(oklch(0.7 0.08 155), oklch(0.5 0.05 160));
     --table-foot-rule: 3px double var(--color-ink); /* the accountant's double rule over totals */
-    --stat-fit: 7.5; /* receipt-mono figures are wide: Stat values shrink sooner in narrow columns */
+    --stat-fit: 6; /* condensed figures are narrow, so Stat values can stay large in tight columns */
 
-    --color-accent: light-dark(oklch(0.47 0.085 165), oklch(0.72 0.1 162));
-    --color-accent-hover: light-dark(oklch(0.42 0.08 165), oklch(0.77 0.1 162));
-    --color-accent-ink: light-dark(oklch(0.985 0.008 145), oklch(0.18 0.03 165));
-    --color-accent-text: light-dark(oklch(0.44 0.085 165), oklch(0.78 0.09 162));
-    --color-accent-soft: light-dark(oklch(0.93 0.03 160), oklch(0.29 0.04 165));
+    /* Banknote green: the one action colour, deep enough to carry white text */
+    --color-accent: light-dark(oklch(0.44 0.1 160), oklch(0.76 0.085 155));
+    --color-accent-hover: light-dark(oklch(0.39 0.095 160), oklch(0.81 0.085 155));
+    --color-accent-ink: light-dark(oklch(0.985 0.01 150), oklch(0.2 0.03 160));
+    --color-accent-text: light-dark(oklch(0.42 0.1 160), oklch(0.85 0.08 155));
+    --color-accent-soft: light-dark(oklch(0.93 0.04 158), oklch(0.34 0.035 158));
 
     /* Highlighter yellow — the one thing you circled */
-    --color-highlight: light-dark(oklch(0.95 0.09 102), oklch(0.36 0.06 100));
+    --color-highlight: light-dark(oklch(0.95 0.09 102), oklch(0.42 0.06 100));
     --color-highlight-ink: var(--color-ink);
 
     --color-focus: var(--color-ink);
-    --color-selection: light-dark(oklch(0.93 0.1 102), oklch(0.4 0.07 100));
+    --color-selection: light-dark(oklch(0.93 0.1 102), oklch(0.46 0.07 100));
     --color-scrim: light-dark(oklch(0.24 0.02 170 / 0.4), oklch(0.08 0.01 170 / 0.66));
 
-    --tone-positive: light-dark(oklch(0.5 0.1 155), oklch(0.72 0.11 158));
-    --tone-positive-soft: light-dark(oklch(0.94 0.035 155), oklch(0.28 0.045 158));
-    --tone-positive-text: light-dark(oklch(0.44 0.1 155), oklch(0.78 0.1 158));
+    --tone-positive: light-dark(oklch(0.5 0.1 155), oklch(0.76 0.1 155));
+    --tone-positive-soft: light-dark(oklch(0.94 0.035 155), oklch(0.33 0.04 155));
+    --tone-positive-text: light-dark(oklch(0.44 0.1 155), oklch(0.83 0.09 155));
     --tone-positive-ink: light-dark(oklch(0.985 0.01 155), oklch(0.18 0.03 158));
 
     --tone-caution: light-dark(oklch(0.74 0.14 78), oklch(0.8 0.13 85));
-    --tone-caution-soft: light-dark(oklch(0.95 0.05 88), oklch(0.3 0.05 80));
-    --tone-caution-text: light-dark(oklch(0.5 0.1 70), oklch(0.84 0.11 88));
+    --tone-caution-soft: light-dark(oklch(0.95 0.05 88), oklch(0.35 0.05 80));
+    --tone-caution-text: light-dark(oklch(0.5 0.1 70), oklch(0.87 0.1 88));
     --tone-caution-ink: light-dark(oklch(0.22 0.04 70), oklch(0.2 0.04 80));
 
     /* Accounting red: negatives, overdrawn */
     --tone-critical: light-dark(oklch(0.52 0.18 25), oklch(0.68 0.16 24));
-    --tone-critical-soft: light-dark(oklch(0.945 0.03 22), oklch(0.29 0.055 24));
-    --tone-critical-text: light-dark(oklch(0.49 0.17 25), oklch(0.76 0.13 24));
+    --tone-critical-soft: light-dark(oklch(0.945 0.03 22), oklch(0.34 0.055 24));
+    --tone-critical-text: light-dark(oklch(0.49 0.17 25), oklch(0.82 0.11 24));
     --tone-critical-ink: light-dark(oklch(0.985 0.01 22), oklch(0.18 0.03 24));
 
     --tone-info: light-dark(oklch(0.5 0.07 230), oklch(0.72 0.07 230));
-    --tone-info-soft: light-dark(oklch(0.94 0.02 230), oklch(0.28 0.03 230));
-    --tone-info-text: light-dark(oklch(0.45 0.07 230), oklch(0.78 0.06 230));
+    --tone-info-soft: light-dark(oklch(0.94 0.02 230), oklch(0.33 0.03 230));
+    --tone-info-text: light-dark(oklch(0.45 0.07 230), oklch(0.83 0.06 230));
     --tone-info-ink: light-dark(oklch(0.985 0.01 230), oklch(0.18 0.03 230));
 
     /* Categorical: calm, distinguishable, colour-blind-aware order */

@@ -6,7 +6,7 @@ Each record captures one decision: the context, what was decided, and what follo
 | -------------------------------------------------- | ------------------------------------------------------------ | ---------------------------------- |
 | [0001](0001-standalone-repo-and-naming.md)         | Standalone repo, `@mitcsutt/kiln-*` naming                   | Accepted                           |
 | [0002](0002-port-by-copy.md)                       | Port by copy, rename Press to Kiln                           | Accepted                           |
-| [0003](0003-theming-model.md)                      | Token contract, `paper` default, opt-in presets              | Accepted                           |
+| [0003](0003-theming-model.md)                      | Token contract, `paper` default, opt-in presets              | Accepted, amended by 0030          |
 | [0004](0004-react-18-and-19.md)                    | Support React 18 and 19                                      | Accepted                           |
 | [0005](0005-library-build.md)                      | Vite library mode for every runtime package                  | Accepted, amended by 0022          |
 | [0006](0006-toolchain.md)                          | Monorepo toolchain                                           | Accepted                           |
@@ -15,7 +15,7 @@ Each record captures one decision: the context, what was decided, and what follo
 | [0009](0009-docs-and-storybook.md)                 | Fumadocs for public docs, Storybook as workbench             | Accepted                           |
 | [0010](0010-information-architecture.md)           | One nested tree for docs and Storybook                       | Accepted                           |
 | [0011](0011-ai-tooling.md)                         | Agent skills via TanStack Intent, plus llms.txt              | Accepted                           |
-| [0012](0012-design-standards.md)                   | Carry over the design and authoring standards                | Accepted                           |
+| [0012](0012-design-standards.md)                   | Carry over the design and authoring standards                | Accepted, amended by 0030          |
 | [0013](0013-licence-and-visibility.md)             | MIT, private repo written as public                          | Accepted                           |
 | [0014](0014-config-package-shape.md)               | Shape of the shared config packages                          | Accepted                           |
 | [0015](0015-kiln-ui-port.md)                       | How `kiln-ui` was ported: theming, build, tests              | Accepted                           |
@@ -33,5 +33,6 @@ Each record captures one decision: the context, what was decided, and what follo
 | [0027](0027-storybook-tests-without-isolation.md)  | Story tests share one page per worker, not one per file      | Accepted                           |
 | [0028](0028-docs-stories.md)                       | Docs examples are stories tagged `docs`, opted in one by one | Accepted                           |
 | [0029](0029-generated-reference-pages.md)          | Reference pages are generated from TSDoc and stories         | Accepted                           |
+| [0030](0030-theme-family-without-ai-tells.md)      | New themes without the second-order AI tells                 | Accepted                           |
 
 New records use the next number and the same headings: Status, Context, Decision, Consequences.

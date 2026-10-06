@@ -11,6 +11,8 @@ export default defineLibraryConfig({
     'themes/monograph.css': 'src/themes/monograph.css',
     'themes/ledger.css': 'src/themes/ledger.css',
     'themes/fiesta.css': 'src/themes/fiesta.css',
+    'themes/flightdeck.css': 'src/themes/flightdeck.css',
+    'themes/riso.css': 'src/themes/riso.css',
   },
   assets: 'src/assets',
 })

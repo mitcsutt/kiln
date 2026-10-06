@@ -12,7 +12,7 @@ const read = (path: string) =>
 const declared = (css: string) =>
   new Set([...css.matchAll(/(--[a-zA-Z0-9-]+)\s*:/g)].map((m) => must(m[1])))
 
-const THEMES = ['paper', 'monograph', 'ledger', 'fiesta'] as const
+const THEMES = ['paper', 'monograph', 'ledger', 'fiesta', 'flightdeck', 'riso'] as const
 
 function resetOnEveryTheme(): Set<string> {
   const foundation = read('../tokens/foundation.css')

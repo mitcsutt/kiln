@@ -74,7 +74,7 @@ export const Durations: Story = {
   },
 }
 
-/** The theme's easings, all at `--dur-3`. Paper's spring doesn't bounce; Fiesta's does. */
+/** The theme's easings, all at `--dur-3`. Paper's spring doesn't bounce; Fiesta's does, and Riso's overshoots a little. */
 export const Easings: Story = {
   render: () => (
     <Tracks

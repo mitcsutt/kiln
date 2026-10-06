@@ -105,8 +105,9 @@ export const Usage: Story = {
 }
 
 /**
- * `shape="auto"` follows the theme's action radius, so it's a pill in Monograph and a square in
- * Paper. `round` and `square` pin the shape.
+ * `shape="auto"` follows the theme's action radius, so it's a pill in Monograph and Fiesta, a near
+ * square in Flightdeck and Ledger, and a softly rounded square in Paper and Riso. `round` and
+ * `square` pin the shape.
  */
 export const ShapesAndSizes: Story = {
   tags: ['docs'],
