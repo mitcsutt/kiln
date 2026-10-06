@@ -1,24 +1,18 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { ArrowRightIcon, BottomNav, CircleCheckIcon, SearchIcon, StarIcon } from '@mitcsutt/kiln-ui'
+import {
+  ArrowRightIcon,
+  BottomNav,
+  CalendarIcon,
+  CircleCheckIcon,
+  MessageIcon,
+  SearchIcon,
+  StarIcon,
+  UsersIcon,
+} from '@mitcsutt/kiln-ui'
 import { createIcon } from '#icons'
 
-/* Story-only glyphs on the library's 20px grid — apps bring their own set. */
-const CalendarIcon = createIcon(
-  'CalendarIcon',
-  <>
-    <rect x="3.5" y="4.5" width="13" height="12" rx="1.5" />
-    <path d="M3.5 8.5h13M7 3v3M13 3v3" />
-  </>,
-)
+/* Story-only glyph on the library's 20px grid; the rest ship with Kiln. */
 const TableIcon = createIcon('TableIcon', <path d="M3.5 5.5h13M3.5 10h13M3.5 14.5h13M7.5 5.5v9" />)
-const PeopleIcon = createIcon(
-  'PeopleIcon',
-  <>
-    <circle cx="8" cy="7" r="2.75" />
-    <path d="M3 16c.6-2.6 2.6-4 5-4s4.4 1.4 5 4M13 4.6a2.6 2.6 0 0 1 0 4.8M15 12.2c1 .6 1.7 1.8 2 3.3" />
-  </>,
-)
-const FeedIcon = createIcon('FeedIcon', <path d="M4 4.5h12v8.5H9l-3.5 3v-3H4z" />)
 
 const meta = {
   title: 'UI/Navigation/BottomNav',
@@ -29,8 +23,8 @@ const meta = {
     <BottomNav {...args}>
       <BottomNav.Item href="#calendar" icon={<CalendarIcon />} label="Calendar" />
       <BottomNav.Item href="#projects" icon={<TableIcon />} label="Projects" active />
-      <BottomNav.Item href="#team" icon={<PeopleIcon />} label="Team" />
-      <BottomNav.Item href="#feed" icon={<FeedIcon />} label="Feed" badge={4} />
+      <BottomNav.Item href="#team" icon={<UsersIcon />} label="Team" />
+      <BottomNav.Item href="#feed" icon={<MessageIcon />} label="Feed" badge={4} />
     </BottomNav>
   ),
 } satisfies Meta<typeof BottomNav>
@@ -49,8 +43,8 @@ export const Badges: Story = {
     <BottomNav {...args}>
       <BottomNav.Item href="#calendar" icon={<CalendarIcon />} label="Calendar" active />
       <BottomNav.Item href="#search" icon={<SearchIcon />} label="Search" />
-      <BottomNav.Item href="#team" icon={<PeopleIcon />} label="Team" badge />
-      <BottomNav.Item href="#feed" icon={<FeedIcon />} label="Feed" badge={128} />
+      <BottomNav.Item href="#team" icon={<UsersIcon />} label="Team" badge />
+      <BottomNav.Item href="#feed" icon={<MessageIcon />} label="Feed" badge={128} />
     </BottomNav>
   ),
 }

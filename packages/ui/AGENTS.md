@@ -12,7 +12,7 @@ src/
                            · responsive-props.css (non-inheriting responsive inputs)
   themes/                  paper.css (default, in the base) · monograph.css · ledger.css · fiesta.css · flightdeck.css · riso.css (opt-in presets); tells.test.ts enforces DESIGN.md's second-order tells (monograph and fiesta are exempt)
   theme/                   ThemeProvider, ThemeScope, useTheme, themeScript, THEMES
-  icons/                   createIcon + the ~20 built-in glyphs
+  icons/                   createIcon + the ~40 built-in glyphs
   utils/                   cx · responsive (Responsive<T>, responsiveVars) · tokens (Space, Tone…) · heading
   assets/fonts/            self-hosted variable fonts + their OFL licences
   components/<group>/<Name>/
