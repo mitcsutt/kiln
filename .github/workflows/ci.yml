@@ -61,15 +61,52 @@ jobs:
       - name: Test on React 18.3
         run: pnpm test:react18
 
+  # Picks the themes the story tests run in (ADR 0031). Story and interaction results
+  # don't depend on the theme, but axe's contrast checks do, so a pull request that
+  # touches theme CSS, tokens, the theme registry, Storybook or this workflow runs every
+  # built-in theme; any other runs the default theme only. Both lists come from
+  # packages/ui/src/theme/themes.ts.
+  storybook-matrix:
+    name: Storybook test matrix
+    runs-on: ubuntu-latest
+    outputs:
+      themes: ${{ steps.pick.outputs.themes }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # The merge commit and its first parent, the base branch, to diff against.
+          fetch-depth: 2
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+      - name: Pick the themes
+        id: pick
+        run: |
+          changed=$(git diff --name-only HEAD^1 HEAD)
+          echo "$changed"
+          if echo "$changed" | grep -qE '^(packages/ui/src/(themes|tokens|styles|theme)/|apps/storybook/|\.github/workflows/ci\.yml$)'; then
+            scope=all
+          else
+            scope=default
+          fi
+          echo "Theme scope: $scope"
+          SCOPE=$scope node --input-type=module -e "
+            const { THEMES, DEFAULT_THEME } = await import('./packages/ui/src/theme/themes.ts')
+            const themes = process.env.SCOPE === 'all' ? THEMES : [DEFAULT_THEME]
+            console.log('themes=' + JSON.stringify(themes))
+          " >> "$GITHUB_OUTPUT"
+          cat "$GITHUB_OUTPUT"
+
   # Every story is a browser test: it renders, its play function passes and axe finds
-  # no violations. Run once per built-in theme and mode (ADR 0018).
+  # no violations. Run once per mode, in the themes storybook-matrix picks (ADR 0018, 0031).
   storybook-test:
     name: Storybook tests (${{ matrix.theme }}, ${{ matrix.mode }})
+    needs: storybook-matrix
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        theme: [paper, monograph, ledger, fiesta, flightdeck, riso]
+        theme: ${{ fromJSON(needs.storybook-matrix.outputs.themes) }}
         mode: [light, dark]
     steps:
       - uses: actions/checkout@v7

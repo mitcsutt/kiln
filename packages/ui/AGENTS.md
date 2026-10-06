@@ -71,7 +71,7 @@ Groups: `layout`, `typography`, `actions`, `inputs`, `display`, `navigation`, `f
 - Realistic, invented content (specific names, amounts, places), sentence case, no lorem ipsum, no emoji, nothing copied from a real product.
 - Workbench stories import siblings via `#components/...`; docs stories (below) import from `@mitcsutt/kiln-ui`. Never inline-style the component under test (story-only layout wrappers should use `Stack`/`Inline`/`Grid` where they exist).
 - Stories must look right in **every theme, light and dark**.
-- Every story is also a browser test in `apps/storybook` (`pnpm test:storybook`, [ADR 0018](../../docs/adr/0018-storybook-workbench.md)): it must render, its `play` function must pass, and axe must find no violations, in every theme and mode. An interactive component should have a story whose `play` function drives its main interaction. Turn off an axe rule only on the one story that needs it, with the reason beside it.
+- Every story is also a browser test in `apps/storybook` (`pnpm test:storybook`, [ADR 0018](../../docs/adr/0018-storybook-workbench.md)): it must render, its `play` function must pass, and axe must find no violations, in every theme and mode. CI checks Paper in both modes on every pull request and every theme only when theme CSS, tokens or Storybook change ([ADR 0031](../../docs/adr/0031-storybook-theme-matrix-on-theme-changes.md)), so run another theme locally (`STORYBOOK_THEME`) when a change could look different there. An interactive component should have a story whose `play` function drives its main interaction. Turn off an axe rule only on the one story that needs it, with the reason beside it.
 
 **Docs stories** (tagged `docs`, [ADR 0028](../../docs/adr/0028-docs-stories.md))
 

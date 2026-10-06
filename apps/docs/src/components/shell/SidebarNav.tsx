@@ -141,7 +141,7 @@ function Overview({ tree, pathname }: { tree: PageTree.Root; pathname: string })
   )
 }
 
-/** The sidebar shows one section at a time: the one holding the current page (ADR 0031). */
+/** The sidebar shows one section at a time: the one holding the current page (ADR 0032). */
 export function SidebarNav({ tree }: { tree: PageTree.Root }) {
   const pathname = usePathname()
   const section = sectionOf(tree, pathname)

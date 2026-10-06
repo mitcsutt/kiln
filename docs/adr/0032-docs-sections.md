@@ -1,4 +1,4 @@
-# 0031. The docs sidebar shows one package at a time
+# 0032. The docs sidebar shows one package at a time
 
 - **Status:** Accepted (amends [0019](0019-docs-site.md))
 - **Date:** 2026-10-06
