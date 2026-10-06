@@ -13,13 +13,14 @@ pnpm add -D @mitcsutt/kiln-tsconfig typescript
 
 ## Pick a preset
 
-| Preset    | What it sets                                                                                                                                |
-| --------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| `base`    | `strict`, `noUncheckedIndexedAccess`, `noImplicitOverride`, `verbatimModuleSyntax`, `isolatedModules`, Bundler resolution, an ES2022 target |
-| `react`   | `base`, plus the DOM libraries and the automatic JSX runtime                                                                                |
-| `library` | `base`, plus declarations, declaration maps and source maps                                                                                 |
-| `app`     | `base`, plus `noEmit` and `allowJs`, for code a bundler or framework builds                                                                 |
-| `node`    | `base`, with Node.js resolution (`NodeNext`) and Node types, for scripts and tooling. It needs `@types/node`                                |
+| Preset      | What it sets                                                                                                                                |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `base`      | `strict`, `noUncheckedIndexedAccess`, `noImplicitOverride`, `verbatimModuleSyntax`, `isolatedModules`, Bundler resolution, an ES2022 target |
+| `react`     | `base`, plus the DOM libraries and the automatic JSX runtime                                                                                |
+| `library`   | `base`, plus declarations, declaration maps and source maps                                                                                 |
+| `app`       | `base`, plus `noEmit` and `allowJs`, for code a bundler or framework builds                                                                 |
+| `react-app` | `react` and `app` in one preset, for React apps                                                                                             |
+| `node`      | `base`, with Node.js resolution (`NodeNext`) and Node types, for scripts and tooling. It needs `@types/node`                                |
 
 ```json title="tsconfig.json"
 {
@@ -41,11 +42,11 @@ A React component library takes `library` for declarations and `react` for JSX a
 }
 ```
 
-A Next.js or Vite app takes `app` and `react`. These docs are built that way:
+A Next.js or Vite React app takes `react-app`, which is `app` and `react` in one preset. These docs are built that way. Extending `["app", "react"]` resolves to the same options, but it reaches `base` twice, and esbuild (which Vite and Vitest run) then prints `Base config file "./base.json" forms cycle` on every run:
 
 ```json title="apps/docs/tsconfig.json"
 {
-  "extends": ["@mitcsutt/kiln-tsconfig/app", "@mitcsutt/kiln-tsconfig/react"],
+  "extends": "@mitcsutt/kiln-tsconfig/react-app",
   "compilerOptions": {
     "plugins": [{ "name": "next" }],
     "paths": { "@/*": ["./src/*"] }

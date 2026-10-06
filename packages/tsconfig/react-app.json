@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Kiln React app",
+  "extends": "./react.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "allowJs": true
+  }
+}

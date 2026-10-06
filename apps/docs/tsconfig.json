@@ -1,5 +1,5 @@
 {
-  "extends": ["@mitcsutt/kiln-tsconfig/app", "@mitcsutt/kiln-tsconfig/react"],
+  "extends": "@mitcsutt/kiln-tsconfig/react-app",
   "compilerOptions": {
     "types": ["node", "vitest/globals"],
     "plugins": [{ "name": "next" }],

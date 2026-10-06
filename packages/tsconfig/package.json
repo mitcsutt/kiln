@@ -26,6 +26,8 @@
     "./library.json": "./library.json",
     "./app": "./app.json",
     "./app.json": "./app.json",
+    "./react-app": "./react-app.json",
+    "./react-app.json": "./react-app.json",
     "./node": "./node.json",
     "./node.json": "./node.json",
     "./package.json": "./package.json"
