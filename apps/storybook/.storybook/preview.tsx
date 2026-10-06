@@ -2,6 +2,8 @@ import '@mitcsutt/kiln-ui/styles.css'
 import '@mitcsutt/kiln-ui/themes/monograph.css'
 import '@mitcsutt/kiln-ui/themes/ledger.css'
 import '@mitcsutt/kiln-ui/themes/fiesta.css'
+import '@mitcsutt/kiln-ui/themes/flightdeck.css'
+import '@mitcsutt/kiln-ui/themes/riso.css'
 import './preview.css'
 
 import { DEFAULT_THEME, THEMES, THEME_META, type ColorMode } from '@mitcsutt/kiln-ui'

@@ -2,10 +2,10 @@
  * @mitcsutt/kiln-ui stylesheet. Import it ONCE at the app root, before any app CSS:
  *
  *   import '@mitcsutt/kiln-ui/styles.css'
- *   import '@mitcsutt/kiln-ui/themes/fiesta.css' // optional: any preset you use
+ *   import '@mitcsutt/kiln-ui/themes/riso.css' // optional: any preset you use
  *
- * It holds the reset, the tokens, the default Paper theme and the fonts Paper,
- * Monograph and Ledger use. Presets (Monograph, Ledger, Fiesta) are separate opt-in
+ * It holds the reset, the tokens, the default Paper theme and the fonts Paper and the
+ * mono face the newer presets use. Presets (Monograph, Ledger, Fiesta, Flightdeck, Riso) are separate opt-in
  * stylesheets, so an app pays only for the themes it imports. The published file also
  * carries every component's CSS; in the workspace each component imports its own.
  *

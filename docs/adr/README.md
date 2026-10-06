@@ -31,5 +31,6 @@ Each record captures one decision: the context, what was decided, and what follo
 | [0025](0025-colocated-examples.md)                 | Docs examples live beside their code, sliced per export    | Accepted                           |
 | [0026](0026-docs-examples-in-storybook.md)         | Docs examples run as Storybook stories                     | Accepted                           |
 | [0027](0027-storybook-tests-without-isolation.md)  | Story tests share one page per worker, not one per file    | Accepted                           |
+| [0028](0028-theme-family-without-ai-tells.md)      | New themes without the second-order AI tells               | Accepted (amends 0003, 0012)       |
 
 New records use the next number and the same headings: Status, Context, Decision, Consequences.

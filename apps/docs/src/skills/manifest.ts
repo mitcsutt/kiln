@@ -27,12 +27,19 @@ export const skills: SkillSpec[] = [
     name: 'setup-and-theming',
     title: 'Set up kiln-ui and pick a theme',
     description:
-      'Use when installing @mitcsutt/kiln-ui in a React app: loading its stylesheet, wrapping the app in ThemeProvider, choosing Paper or a preset theme (Monograph, Ledger, Fiesta) and a colour mode, setting the theme before first paint with themeScript under SSR or the Next.js App Router, and passing router links through asChild.',
+      'Use when installing @mitcsutt/kiln-ui in a React app: loading its stylesheet, wrapping the app in ThemeProvider, choosing Paper or a preset theme (Monograph, Ledger, Fiesta, Flightdeck, Riso) and a colour mode, setting the theme before first paint with themeScript under SSR or the Next.js App Router, and passing router links through asChild.',
     purpose:
       'Install kiln-ui, load its CSS, and apply a built-in theme and colour mode correctly on the client and the server.',
     type: 'lifecycle',
     pages: ['ui/index'],
-    references: ['ui/themes/paper', 'ui/themes/monograph', 'ui/themes/ledger', 'ui/themes/fiesta'],
+    references: [
+      'ui/themes/paper',
+      'ui/themes/monograph',
+      'ui/themes/ledger',
+      'ui/themes/fiesta',
+      'ui/themes/flightdeck',
+      'ui/themes/riso',
+    ],
   },
   {
     package: 'ui',

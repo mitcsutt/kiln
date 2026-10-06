@@ -12,6 +12,7 @@
 @layer kiln.reset, kiln.tokens, kiln.themes;
 
 @import '../tokens/fonts-fiesta.css';
+@import '../tokens/fonts-martian-mono.css';
 
 @layer kiln.themes {
   [data-theme='fiesta'] {

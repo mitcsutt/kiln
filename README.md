@@ -73,7 +73,7 @@ Each package's README shows how to wire it up, and the docs site has a getting-s
 
 ## Ideas it's built on
 
-- **Themes are data, components are structure.** A component never knows which theme it's in. A theme is one CSS file of tokens. Kiln ships a neutral default (`paper`) and three presets (`monograph`, `ledger`, `fiesta`), and anyone can write their own.
+- **Themes are data, components are structure.** A component never knows which theme it's in. A theme is one CSS file of tokens. Kiln ships a neutral default (`paper`) and five presets (`monograph`, `ledger`, `fiesta`, `flightdeck`, `riso`), and anyone can write their own.
 - **Props, not styles.** Layout and intent are typed props (`gap={5}`, `tone="critical"`), not utility classes or inline styles.
 - **Durable by default.** Components forward refs, work on React 18 and 19, render on the server, and are complete for keyboard and screen-reader users.
 - **Docs for people and agents.** A docs site for people, Storybook for development, and agent skills shipped inside `kiln-ui` and `kiln-forms` via [TanStack Intent](https://tanstack.com/intent), built from the docs pages, so coding agents in a consumer's project know how to use Kiln correctly.

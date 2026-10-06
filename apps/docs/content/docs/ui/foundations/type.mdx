@@ -17,7 +17,7 @@ A theme picks at most two families (plus a mono where it needs one) and assigns 
 | Numeric | `--font-numeric`, `--numeric-stretch`                                                                                    | `Numeral`, `Amount`, `Stat`, numeric cells |
 | Mono    | `--font-mono`, `--mono-stretch`                                                                                          | `Code`, `CodeBlock`, `Kbd`                 |
 
-Fiesta sets `--heading-transform: uppercase` for poster headlines; Ledger sets its numerals in condensed Martian Mono so a column of figures reads like receipt tape. Neither needed a component change.
+Fiesta sets `--heading-transform: uppercase` for poster headlines. Ledger sets `--numeric-stretch` so its figures use a condensed width of the same family, and a column of money reads like receipt tape. Flightdeck keeps its numerals in B612, whose digits are already equal width, so columns align without a monospace. Neither needed a component change. Riso's Shantell Sans has no tabular figures, so its numerals don't line up in columns.
 
 ## The scale
 
@@ -48,12 +48,15 @@ Every number that aligns or updates uses tabular, lining figures: counts, money,
 
 Kiln self-hosts every face its themes use, so there's nothing to set up:
 
-| Face                | Used by                              | Ships in            |
-| ------------------- | ------------------------------------ | ------------------- |
-| Schibsted Grotesk   | Paper, Monograph, Ledger             | `styles.css`        |
-| Newsreader          | Paper (prose and figures), Monograph | `styles.css`        |
-| Martian Mono        | code everywhere, Ledger's figures    | `styles.css`        |
-| Big Shoulders       | Fiesta display                       | `themes/fiesta.css` |
-| Bricolage Grotesque | Fiesta text                          | `themes/fiesta.css` |
+| Face                               | Used by                         | Ships in                                    |
+| ---------------------------------- | ------------------------------- | ------------------------------------------- |
+| Golos Text                         | Paper                           | `styles.css`                                |
+| Atkinson Hyperlegible Mono         | code in Paper, Ledger and Riso  | `styles.css`                                |
+| Newsreader, Schibsted Grotesk      | Monograph                       | `themes/monograph.css`                      |
+| Martian Mono                       | code in Monograph and Fiesta    | `themes/monograph.css`, `themes/fiesta.css` |
+| Archivo                            | Ledger                          | `themes/ledger.css`                         |
+| Big Shoulders, Bricolage Grotesque | Fiesta                          | `themes/fiesta.css`                         |
+| B612, B612 Mono                    | Flightdeck (B612 Mono for code) | `themes/flightdeck.css`                     |
+| Shantell Sans                      | Riso                            | `themes/riso.css`                           |
 
-Browsers download a face only when something renders in it, so a declared face you never use costs nothing. All five are licensed under the SIL Open Font License 1.1, and the licences ship in the package at `dist/assets/fonts/licenses/`. A theme of your own loads its own fonts: see [Theming](/docs/ui/foundations/theming#5-load-its-fonts).
+Browsers download a face only when something renders in it, so a declared face you never use costs nothing. All of them are licensed under the SIL Open Font License 1.1, and the licences ship in the package at `dist/assets/fonts/licenses/`. A theme of your own loads its own fonts: see [Theming](/docs/ui/foundations/theming#5-load-its-fonts).

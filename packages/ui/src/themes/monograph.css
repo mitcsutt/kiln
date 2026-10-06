@@ -13,6 +13,9 @@
 
 @layer kiln.reset, kiln.tokens, kiln.themes;
 
+@import '../tokens/fonts-monograph.css';
+@import '../tokens/fonts-martian-mono.css';
+
 @layer kiln.themes {
   [data-theme='monograph'] {
     /* ── Type roles ─────────────────────────────────────────────────────── */

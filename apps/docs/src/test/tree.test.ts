@@ -17,7 +17,7 @@ describe('one tree for the docs and Storybook', () => {
   })
 
   // A title is a page (`UI/Actions/Button`), or a docs folder whose stories are its pages
-  // (`UI/Themes` with stories `Paper`, `Fiesta`…, which Storybook lists as `UI/Themes/Paper`).
+  // (`UI/Themes` with stories `Paper`, `Riso`…, which Storybook lists as `UI/Themes/Paper`).
   it.each(stories)('$title has a docs page', ({ title, stories: names }) => {
     const path = titleToPath(title)
     if (paths.has(pagePath(path))) return

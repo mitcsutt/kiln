@@ -21,7 +21,7 @@ import { ThemeProvider } from '@mitcsutt/kiln-ui'
 </ThemeProvider>
 ```
 
-Fiesta's two faces are declared in its own stylesheet, so they cost nothing unless you import it. It's light-first (the daytime show); dark mode is the floodlit night show.
+Fiesta's faces (Big Shoulders, Bricolage Grotesque and Martian Mono for code) are declared in its own stylesheet, so they cost nothing unless you import it. It's light-first (the daytime show); dark mode is the floodlit night show.
 
 ## The idea, applied
 

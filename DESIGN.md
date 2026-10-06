@@ -1,6 +1,6 @@
 # DESIGN.md: the Kiln design system
 
-> One component library, many personalities. `@mitcsutt/kiln-ui` is a single set of React components whose entire look (colour, type, shape, density, depth, motion) is decided by a theme applied at the root. The same `<Button>` is a square graphite key in Paper, a quiet ember pill in Monograph, a crisp ledger key in Ledger and a chunky poster sticker in Fiesta.
+> One component library, many personalities. `@mitcsutt/kiln-ui` is a single set of React components whose entire look (colour, type, shape, density, depth, motion) is decided by a theme applied at the root. The same `<Button>` is a blue-black office-print key in Paper, a quiet ember pill in Monograph, a banknote-green ledger key in Ledger, a chunky poster sticker in Fiesta, a square instrument key in Flightdeck and a hand-cut fluorescent pink pill in Riso.
 
 This document is the contract, and it is **binding** ([ADR 0012](docs/adr/0012-design-standards.md)): its principles, its anti-slop rules and its token contract apply to every component, theme, story and docs page in this repo. Read it before designing a screen, writing a component, or adding a theme. Component-authoring mechanics live in [`packages/ui/AGENTS.md`](packages/ui/AGENTS.md). To change a rule here, change the lint rule or test that enforces it in the same pull request.
 
@@ -9,7 +9,7 @@ This document is the contract, and it is **binding** ([ADR 0012](docs/adr/0012-d
 ## 1. Principles
 
 1. **Themes are data, components are structure.** A component never knows which theme it is in. Everything visual is a token; a new theme is one CSS file and zero component changes.
-2. **One idea per theme, drawn from its subject.** Paper is a typeset proof on good stock. Monograph is a scholar's monograph read under a desk lamp. Ledger is an accountant's ruled book. Fiesta is a screen-printed festival poster. If a choice can't be justified by the idea, it doesn't ship.
+2. **One idea per theme, drawn from its subject.** Paper is an office that prints for everyone, on grey recycled stock in blue-black ink. Monograph is a scholar's monograph read under a desk lamp. Ledger is an accountant's columnar pad. Fiesta is a screen-printed festival poster. Flightdeck is a glass-cockpit display. Riso is a two-drum risograph zine. Monograph and Fiesta predate the second-order rules in §2 and are kept unchanged for compatibility. Every choice in a theme designed since has a one-line reason traced to its subject, written in the stylesheet next to the value. If you can't write the reason, the choice is wrong and it doesn't ship.
 3. **Props, not styles.** Consumers compose layout and intent through typed props (`gap={5}`, `tone="critical"`, `width="text"`). No utility classes, no inline style soup, no raw px/hex/ms at call sites. `className` exists as an escape hatch, not a workflow.
 4. **Durable by default.** Every component forwards refs, spreads native props, works with React 18 and 19, is keyboard- and screen-reader-complete, respects `prefers-reduced-motion`, and renders on the server.
 5. **Specific beats safe.** The median choice is the wrong choice (see §2).
@@ -25,7 +25,7 @@ Generated UI converges on the statistical median: indigo buttons, Inter, gradien
 - Authored in **OKLCH**. Neutrals are **tinted** (chroma 0.004–0.02 toward the theme's hue). Never `#000`/`#fff` surfaces, never stock slate/zinc.
 - **One accent, ~5–10% of pixels**: the primary action, the current item, live state, key data. A second hue only when it carries meaning (`--color-highlight` = "you" / selected; tones = status).
 - **No gradients** unless they encode data. No gradient text. No glow halos in dark mode.
-- No indigo/violet as a primary. No cream `#F4F1EA` + terracotta `#D97757`.
+- No indigo/violet as a primary. No warm cream canvas (such as `#F4F1EA`) and no terracotta or ember accent (such as `#D97757`). See _Second-order tells_ below.
 
 ### Type
 
@@ -34,6 +34,28 @@ Generated UI converges on the statistical median: indigo buttons, Inter, gradien
 - **`tabular-nums` on every number that aligns or updates**: counts, money, tables, dates. `<Numeral>`/`<Amount>` do this for you.
 - Prose measure ≤ 70ch (`width="text"`). `text-wrap: balance` on headings, `pretty` on paragraphs (the reset does it).
 - **Banned patterns:** accenting one word of a headline in italic/colour; a tracked ALL-CAPS eyebrow over every section; `01 / 02 / 03` numbering on things that aren't a sequence; monospace used as decoration for small labels.
+
+### Second-order tells
+
+Models that are told to avoid the tells above converge on a second set instead ([research](https://github.com/mitcsutt/kiln/blob/main/docs/research/ai-design-tells.md), [ADR 0028](https://github.com/mitcsutt/kiln/blob/main/docs/adr/0028-theme-family-without-ai-tells.md)). None of these ships in a new built-in theme:
+
+- A **cream or warm-paper canvas** (hue 40 to 100, with any visible chroma), including apricot and beige.
+- An **ember, terracotta or burnt-orange accent**.
+- A **near-black canvas with one acid or ember accent**.
+- A **mint or sage canvas with a forest-green accent**, which is the cream tell in another hue.
+- **Hard-offset "neo-brutalist" shadows on static surfaces.** A hard offset is allowed only where the theme's subject explains it, and only on floating layers. Fiesta, the legacy preset, keeps its hard offset on static surfaces; no new theme may.
+- **Grain, noise or halftone** on the canvas (`--canvas-image` stays `none`).
+- **Monospace beyond code**: for labels, eyebrows or every figure as decoration. A mono is allowed for figures only when the subject really uses one.
+- A **serif display with one italic accent word**.
+- A font from the banned list below.
+
+`packages/ui/src/themes/tells.test.ts` enforces the checkable part for Paper, Ledger, Flightdeck and Riso: no banned font family in any theme or font stylesheet, no warm-cream light canvas, and no ember, terracotta or indigo accent. The rest is review.
+
+**Legacy exemption.** Monograph and Fiesta are listed as `LEGACY` in that test and are exempt, because they ship unchanged from before these rules ([ADR 0028](https://github.com/mitcsutt/kiln/blob/main/docs/adr/0028-theme-family-without-ai-tells.md)). Monograph still has its ember accent and serif display, and Fiesta its apricot canvas and halftone. Do not treat them as precedent: a new theme gets no exemption, and a redesigned Monograph or Fiesta loses its own.
+
+The banned font families, from the research: the first-order defaults plus the faces models now reach for as "distinctive" escapes (several are on Anthropic's own recommended list): Inter, Roboto, Open Sans, Poppins, Montserrat, Space Grotesk, Space Mono, Geist, DM Sans, DM Serif, Manrope, Plus Jakarta Sans, Outfit, Sora, Syne, Satoshi, Cabinet Grotesk, Clash Display, General Sans, Instrument Sans, Instrument Serif, Fraunces, Playfair Display, Cormorant, Lora, EB Garamond, Newsreader, Bricolage Grotesque, IBM Plex, JetBrains Mono and Fira Code. The list goes stale as model defaults move: change the list in the test and here together.
+
+Beyond the checks, a theme has a subject, and each colour, face, radius and easing has a one-line reason in the stylesheet that traces it to that subject. Each theme also mixes radii on purpose (for example square fields with pill chips), so no theme is one uniform roundness.
 
 ### Layout
 
@@ -46,7 +68,7 @@ Generated UI converges on the statistical median: indigo buttons, Inter, gradien
 ### Components & depth
 
 - **Radii are roles**, not a global roundness: `--radius-action`, `--radius-field`, `--radius-surface`, `--radius-media`, `--radius-chip`, `--radius-avatar`. Nested radii shrink (inner = outer − padding).
-- **One edge treatment per element**: a border _or_ a shadow _or_ a fill change. Static structure uses hairlines; soft shadows are only for things that float (popover, menu, dialog). Fiesta's hard offset is its one deliberate exception: it's the print misregistration, and it _is_ the edge.
+- **One edge treatment per element**: a border _or_ a shadow _or_ a fill change. Static structure uses hairlines; soft shadows are only for things that float (popover, menu, dialog). Hard-offset shadows never go on static surfaces in a new theme. Fiesta keeps its hard offset as a legacy preset: it is the print misregistration, and it _is_ the edge. Riso's misregistered offset (the second ink drum slightly off) is floating-only.
 - **Icons**: the library ships ~20 glyphs on a 20px grid with a themed stroke. At most one icon per row; never an icon in a tinted chip; never emoji as UI.
 - **No left-border-accent callouts.** Alerts are a neutral hairline frame; the tone lives only in the glyph and a short tab on the top edge (`variant="soft"` for a tinted box when it must shout).
 - **Empty states** mark their frame with printer's crop marks, not a dashed box.
@@ -121,16 +143,16 @@ Only some themes set these (Fiesta's gold-row inks, Ledger's table rule…). Eve
 Theme selection is by attribute, and axes are orthogonal:
 
 ```html
-<html data-theme="monograph" data-mode="dark">
+<html data-theme="flightdeck" data-mode="dark">
   <!-- app -->
-  <div data-theme="fiesta">…</div>
+  <div data-theme="riso">…</div>
   <!-- nested theme, inherits mode -->
   <div data-density="compact">…</div>
   <!-- denser subtree -->
 </html>
 ```
 
-- `data-theme`: `paper | monograph | ledger | fiesta`, or the name of a theme you wrote (§4.5). No attribute = Paper.
+- `data-theme`: `paper | monograph | ledger | fiesta | flightdeck | riso`, or the name of a theme you wrote (§4.7). No attribute = Paper.
 - `data-mode`: `light | dark | system` (drives `color-scheme`, which drives every `light-dark()`); omit on nested scopes to inherit.
 - `data-density`: `compact | comfortable` multiplies the theme's own density.
 - Derived scales are re-declared on `:root, [data-theme], [data-density]`, so nested scopes recompute from _their_ inputs.
@@ -155,17 +177,19 @@ Paper is in the base stylesheet. The presets are opt-in stylesheets, so an app p
 
 ### 4.1 Paper: the default (light or dark)
 
-_A typeset proof on good uncoated stock._
+_An office that prints for everyone: grey recycled stock, white sheets, blue-black ink._
 
-- **Colour**: warm-neutral paper (hue 85, chroma ≤ 0.008) and graphite ink. **The ink is the accent**: the primary action, the current item and live state are solid ink, and links are ink told apart by their underline, so Paper sits under any brand without arguing with it. The one other hue is the editor's **non-photo blue**, kept for "you"/selected and text selection. Tones are the only saturated colour on the page.
-- **Type**: **Schibsted Grotesk** for everything you scan (text, headings, display at weight 640 with −0.04em tracking) + **Newsreader** for long reading (prose) and for figures, whose tabular punctuation sits tighter. **Martian Mono** for code. 16px base, 1.25 ratio.
-- **Shape**: square-shouldered: 6px actions, fields and chips, 8px surfaces, round avatars.
-- **Depth**: hairlines only; soft graphite shadows for floating layers.
+- **Colour**: cool grey stock for the canvas, near-white sheets for surfaces, so a surface reads against the page by fill alone. **The ink is the accent**: a blue-black that is the primary action, the current item and live state. Links are ink told apart by their underline, so Paper sits under any brand without arguing with it. The one other hue is the proofreader's **non-photo blue**, kept for "you"/selected and text selection. Tones are the only saturated colour on the page.
+- **Type**: **Golos Text** for everything, from display to prose and figures, and **Atkinson Hyperlegible Mono** for code. Paratype drew Golos for a national public-services website, so it has a plain zero, true tabular figures and distinct I, l and 1. The bundle has no italic file, so italics are synthesised. No serif. 16px base, 1.25 ratio.
+- **Shape**: square-shouldered actions and fields, slightly rounder surfaces, pill chips (the deliberate contrast), round avatars.
+- **Depth**: a fill change, not a border: a sheet on stock needs no edge. Soft blue-black shadows for floating layers.
 - **Motion**: quart ease-out, brisk, no bounce.
 
-### 4.2 Monograph: preset (dark-first)
+### 4.2 Monograph: preset (dark-first, legacy)
 
 _A scholarly monograph read under a desk lamp at night: "modern nostalgia"._ `import '@mitcsutt/kiln-ui/themes/monograph.css'`
+
+Kept unchanged for compatibility. It predates the second-order rules in §2 and is exempt from them. Its stylesheet loads its own faces, and Martian Mono through `tokens/fonts-martian-mono.css`, so the base stylesheet carries none of them.
 
 - **Colour**: blue-slate neutrals (hue 255, never black). One **ember** accent (`oklch(0.72 0.15 52)` dark / `oklch(0.565 0.158 44)` light) that behaves like phosphor: it marks _live_ and _current_, never decorates. A cool slate `highlight`.
 - **Type**: **Newsreader** (display/prose serif, optical sizes, set big at weight ~430 with −0.035em tracking) + **Schibsted Grotesk** (text/UI; a newsroom grotesk). **Martian Mono** only for code. 17px base, 1.25 ratio.
@@ -175,28 +199,51 @@ _A scholarly monograph read under a desk lamp at night: "modern nostalgia"._ `im
 
 ### 4.3 Ledger: preset (light-first)
 
-_An accountant's ruled book._ `import '@mitcsutt/kiln-ui/themes/ledger.css'`
+_An accountant's columnar pad._ `import '@mitcsutt/kiln-ui/themes/ledger.css'`
 
-- **Colour**: faint green-grey ledger paper, **bank-note green** accent, **accounting red** for negatives, **highlighter yellow** highlight.
-- **Type**: **Schibsted Grotesk** throughout + **Martian Mono** condensed (80% width) for all figures: receipt tape, always tabular. 15px base, 1.2 ratio.
-- **Shape**: 5px radii everywhere; compact density (0.86).
-- **Motion**: brief and flat.
+- **Colour**: a white sheet with **green rules** (the lines carry the green, not the canvas), a **banknote-green** accent, **accounting red** for negatives and a flat **highlighter yellow** highlight. Dark mode is a blue-green carbon-copy night, not a green-screen terminal.
+- **Type**: **Archivo** throughout. Figures use its width axis to set condensed with tabular numerals, so a column of money reads like receipt tape without a monospace. **Atkinson Hyperlegible Mono** for code only. 15px base, 1.2 ratio.
+- **Shape**: tight radii everywhere, squarer chips, rounded-square avatars like ledger stamps; compact density (0.86).
+- **Depth**: hairlines in the ledger green; surfaces stay flat.
+- **Motion**: brief and flat, no bounce.
 
-### 4.4 Fiesta: preset (light-first)
+### 4.4 Fiesta: preset (light-first, legacy)
 
 _A screen-printed festival poster and sticker album._ `import '@mitcsutt/kiln-ui/themes/fiesta.css'`
 
+Kept unchanged for compatibility. It predates the second-order rules in §2 and is exempt from them.
+
 - **Colour**: flat spot inks (**coral** accent, **gold** highlight, **teal** positive) on apricot poster stock, all keylined in **aubergine ink**. Night mode is a floodlit aubergine. A 6% halftone dot screen on the canvas; no gradients (screen printing can't do them).
-- **Type**: **Big Shoulders** (condensed signage face; headings in caps, figures, numerals) + **Bricolage Grotesque** (ink-trapped, mischievous text). 1.28 ratio. The preset stylesheet carries these two faces, so they cost nothing unless you import it.
+- **Type**: **Big Shoulders** (condensed signage face; headings in caps, figures, numerals) + **Bricolage Grotesque** (ink-trapped, mischievous text). 1.28 ratio. The preset stylesheet carries these two faces (`tokens/fonts-fiesta.css`), and **Martian Mono** for code comes from `tokens/fonts-martian-mono.css`, so they cost nothing unless you import it.
 - **Shape**: 2px ink borders, pills for actions and chips, 18px surfaces, round avatars.
 - **Depth**: the misregistered **hard offset** (`4px 4px 0 ink`), which presses flat (`--active-shift: 2px`) on `:active`.
 - **Motion**: overshooting spring: things land with a bump.
 
-### 4.5 Writing your own theme
+### 4.5 Flightdeck: preset (dark-first)
+
+_A glass-cockpit flight display._ `import '@mitcsutt/kiln-ui/themes/flightdeck.css'`
+
+- **Colour**: cockpit colour convention, mapped onto Kiln's roles. **Cyan** is the accent: what the pilot sets and acts on. "You"/selected is a neutral **reverse-video box** (a brighter neutral with its text inverted), like the selected line of a flight-management display. Green, amber and red are the status tones, and info is steel blue. Neutrals are dark blue-grey display glass, never black. The light mode is the day mode of an electronic flight bag, with the cyan darkened for contrast.
+- **Type**: **B612** for text, display and figures (its digits are already equal width, so columns align without a monospace), and **B612 Mono** for code. Both were designed for Airbus cockpit displays. B612 ships static 400 and 700 weights and a Latin subset only, so Latin Extended text falls back to system faces. No uppercase transforms.
+- **Shape**: square instrument bezels (small radii on actions, fields and surfaces), with pill chips as annunciator capsules.
+- **Depth**: hairlines, no shadow on static surfaces. Floating layers add a very subtle dark shadow, with no glow.
+- **Motion**: instruments move linearly and quickly: a gentle ease-out, slightly faster than the default, no bounce.
+
+### 4.6 Riso: preset (light-first)
+
+_A two-drum risograph zine._ `import '@mitcsutt/kiln-ui/themes/riso.css'`
+
+- **Colour**: two spot inks, **fluorescent pink** (the accent) and **blue** (the text colour), on bright white stock. Static structure is **screen tints** (a percentage of an ink) rather than borders. The highlight is an overprint: a pink tint with blue ink. Night mode is the same two inks on deep blue stock, not black.
+- **Type**: **Shantell Sans** for every role except code, drawn from the artist Shantell Martin's own handwriting: the handmade element. It has no tabular figures, so numerals are not column-aligned. **Atkinson Hyperlegible Mono** for code. 1.25 ratio.
+- **Shape**: hand-cut and mixed: generous radii on actions and surfaces, small radii on fields, pill chips.
+- **Depth**: a fill change, with no shadow on static surfaces. The one misregistered moment is a hard pink offset on floating layers, as if the second drum printed slightly off.
+- **Motion**: a mild spring: things land with a small overshoot.
+
+### 4.7 Writing your own theme
 
 A theme is one CSS file. You don't need Kiln's source to write one:
 
-1. Start from one idea drawn from your subject (§1.2), then pick two families and one accent (§2).
+1. Start from one idea drawn from a real object or standard (§1.2), then pick two families and one accent (§2), and write a one-line reason for each choice next to its value. Run your theme past the second-order tells in §2.
 2. Declare the layer order, then put every token in §3.2 inside the themes layer, scoped to your name:
 
    ```css
@@ -218,7 +265,7 @@ A theme is one CSS file. You don't need Kiln's source to write one:
 
 Set optional tokens (§3.3) and component tokens (§3.5) only where your idea needs them.
 
-### 4.6 Adding a built-in preset (contributors)
+### 4.8 Adding a built-in preset (contributors)
 
 1. Copy `packages/ui/src/themes/paper.css` to `<name>.css`; change the selector to `[data-theme='<name>']` (drop the `:where(:root)` default) and every value. Keep every token (§3.2).
 2. Export it from `packages/ui/package.json` (both `exports` and `publishConfig.exports`), add it to `stylesheets` in `packages/ui/vite.config.ts` and to `size.config.json`, and add the name to `THEMES` and `THEME_META` in `src/theme/themes.ts`.
@@ -232,17 +279,17 @@ Set optional tokens (§3.3) and component tokens (§3.5) only where your idea ne
 ```tsx
 // app root (once)
 import '@mitcsutt/kiln-ui/styles.css'
-import '@mitcsutt/kiln-ui/themes/monograph.css' // only the presets you use
+import '@mitcsutt/kiln-ui/themes/flightdeck.css' // only the presets you use
 import { ThemeProvider } from '@mitcsutt/kiln-ui'
 
-;<ThemeProvider theme="monograph" defaultMode="dark">
+;<ThemeProvider theme="flightdeck" defaultMode="dark">
   …
 </ThemeProvider>
 ```
 
-- SSR without a flash: render `<script dangerouslySetInnerHTML={{ __html: themeScript('monograph', 'dark') }} />` in `<head>` (same theme and `defaultMode` as the provider; a stored choice wins).
+- SSR without a flash: render `<script dangerouslySetInnerHTML={{ __html: themeScript('flightdeck', 'dark') }} />` in `<head>` (same theme and `defaultMode` as the provider; a stored choice wins).
 - Router links: `<Button asChild><Link to="/work">Work</Link></Button>`, `<Link asChild>`, `<NavLink asChild>`; every navigational component supports `asChild`.
-- Local theme: `<ThemeScope theme="fiesta">…</ThemeScope>` (inherits the page's mode; `paint={false}` skips the canvas background). Portalled overlays opened inside a scope render in that scope's theme.
+- Local theme: `<ThemeScope theme="riso">…</ThemeScope>` (inherits the page's mode; `paint={false}` skips the canvas background). Portalled overlays opened inside a scope render in that scope's theme.
 - Compose screens from layout primitives, not CSS:
 
 ```tsx

@@ -1,0 +1,171 @@
+/*
+ * FLIGHTDECK — preset (opt-in: import '@mitcsutt/kiln-ui/themes/flightdeck.css')
+ *
+ * Idea: a glass cockpit, an electronic flight instrument display. Cockpit colour has fixed
+ * meaning, and Flightdeck maps it onto Kiln's roles exactly:
+ *   CYAN    = values the pilot sets and acts on (the live target)  -> --color-accent
+ *   REVERSE = the selected line of an FMS, a brighter neutral box  -> --color-highlight, selection
+ *   GREEN   = engaged / normal                                    -> --tone-positive
+ *   AMBER   = caution                                             -> --tone-caution
+ *   RED     = warning                                             -> --tone-critical
+ *   WHITE   = static scales and labels                            -> --color-ink
+ *   STEEL   = advisory information                                -> --tone-info
+ * Dark glass is the home mode (blue-grey, never black); light is the day mode of an
+ * electronic flight bag, with the cyan darkened for AA. Dark-first: pair it with
+ * `defaultMode="dark"`.
+ *
+ * Why each group:
+ *  - Type: B612 was drawn for Airbus cockpit displays; B612 Mono is for code only. Figures stay in
+ *    proportional B612, whose digits are already equal width (measured: 1111 = 0000), so
+ *    columns align while "," and "." keep real punctuation widths (the mono gave them full
+ *    digit width: "$12, 400. 00"). It ships only 400 and 700, so every weight is one of them.
+ *  - Edges: instrument bezels, so hairlines on square corners; only floating layers get a
+ *    shadow, and it is a plain dark one (a glass panel has no glow).
+ *  - Shape: square actions, fields and media like bezels and keys; pill chips like the
+ *    annunciator capsules (the deliberate contrast).
+ *  - Motion: instruments slew linearly and quickly; nothing bounces.
+ *
+ * Every theme sets every token in the contract (DESIGN.md §3.2). Colours are authored in
+ * OKLCH; each pair is light-dark(<light>, <dark>).
+ */
+
+@layer kiln.reset, kiln.tokens, kiln.themes;
+
+@import '../tokens/fonts-flightdeck.css';
+
+@layer kiln.themes {
+  [data-theme='flightdeck'] {
+    /* ── Type roles ─────────────────────────────────────────────────────── */
+    --font-display: 'B612', ui-sans-serif, system-ui, sans-serif;
+    --font-text: 'B612', ui-sans-serif, system-ui, sans-serif;
+    --font-prose: 'B612', ui-sans-serif, system-ui, sans-serif;
+    --font-mono: 'B612 Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+    --font-numeric: 'B612', ui-sans-serif, system-ui, sans-serif;
+
+    --type-base: 0.9375rem; /* 15px: instrument text is compact */
+    --display-scale: 1;
+    --type-ratio: 1.25;
+
+    --display-weight: 700; /* B612 is static 400/700 only */
+    --display-style: normal;
+    --display-stretch: 100%; /* no width axis */
+    --display-transform: none;
+    --display-tracking: -0.01em; /* B612 is wide by design; don't crush it */
+    --display-opsz: 72; /* no optical-size axis, inert */
+    --heading-font: var(--font-display);
+    --heading-weight: 700;
+    --heading-tracking: 0;
+    --heading-transform: none;
+    --label-weight: 400;
+    --label-tracking: 0;
+    --label-transform: none;
+    --numeric-stretch: 100%; /* no width axis */
+    --mono-stretch: 100%;
+
+    --leading-tight: 1;
+    --leading-snug: 1.2;
+    --leading-body: 1.5;
+    --prose-size: 1.0625rem;
+    --prose-leading: 1.6;
+
+    /* ── Structure & temperament ────────────────────────────────────────── */
+    --density: 0.94;
+    --motion-scale: 0.8; /* instruments move quickly */
+    --ease-out: cubic-bezier(0.33, 1, 0.68, 1); /* cubic out: a needle settling, no bounce */
+    --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+    --ease-spring: var(--ease-out); /* Flightdeck doesn't bounce */
+
+    --icon-stroke: 1.5;
+    --border-width: 1px; /* bezel hairline */
+    --border-width-strong: 1px;
+
+    --radius-action: 0.125rem; /* keys and bezels: square */
+    --radius-field: 0.125rem;
+    --radius-surface: 0.25rem;
+    --radius-media: 0;
+    --radius-chip: 999px; /* annunciator capsules: the contrast */
+    --radius-avatar: 0.125rem;
+
+    /* ── Colour ─────────────────────────────────────────────────────────── */
+    /* Neutrals: display glass, blue-grey at hue 235, chroma ≤ 0.025, never black. Light is
+       the pale cool-grey day mode of a flight bag. */
+    --color-canvas: light-dark(oklch(0.95 0.008 235), oklch(0.215 0.022 235));
+    --color-surface: light-dark(oklch(0.985 0.004 235), oklch(0.25 0.023 235));
+    --color-surface-sunken: light-dark(oklch(0.925 0.01 235), oklch(0.19 0.02 235));
+    --color-surface-raised: light-dark(oklch(0.995 0.003 235), oklch(0.285 0.024 235));
+    --color-surface-inverse: light-dark(oklch(0.23 0.02 235), oklch(0.93 0.008 235));
+
+    /* Ink: white is the static scale and label colour of the display. */
+    --color-ink: light-dark(oklch(0.24 0.02 235), oklch(0.95 0.005 235));
+    --color-ink-muted: light-dark(oklch(0.42 0.02 235), oklch(0.78 0.012 235));
+    --color-ink-subtle: light-dark(
+      oklch(0.5 0.018 235),
+      oklch(0.69 0.014 235)
+    ); /* AA on sunken/raised: it sets placeholders and meta text */
+    --color-ink-inverse: light-dark(oklch(0.96 0.006 235), oklch(0.2 0.02 235));
+
+    /* Bezel lines: cool grey. */
+    --color-line: light-dark(oklch(0.87 0.012 235), oklch(0.37 0.022 235));
+    --color-line-strong: light-dark(oklch(0.68 0.02 235), oklch(0.53 0.024 235));
+
+    /* Cyan: the values the pilot sets and acts on. Primary action, current item, live state,
+       links. */
+    --color-accent: light-dark(oklch(0.5 0.1 220), oklch(0.8 0.12 210));
+    --color-accent-hover: light-dark(oklch(0.45 0.1 220), oklch(0.85 0.11 210));
+    --color-accent-ink: light-dark(oklch(0.99 0.005 220), oklch(0.2 0.03 235));
+    --color-accent-text: light-dark(oklch(0.44 0.1 220), oklch(0.82 0.11 210));
+    --color-accent-soft: light-dark(oklch(0.94 0.025 215), oklch(0.3 0.045 220));
+
+    /* Reverse video: a neutral, slightly brighter box, like the selected line of an FMS, so
+       "you"/selected rows and text selection need no second hue. */
+    --color-highlight: light-dark(oklch(0.88 0.015 235), oklch(0.36 0.02 235));
+    --color-highlight-ink: light-dark(oklch(0.22 0.02 235), oklch(0.96 0.005 235));
+
+    --color-focus: var(--color-ink); /* neutral — focus must never look like validation */
+    --color-selection: light-dark(oklch(0.82 0.02 235), oklch(0.45 0.025 235));
+    --color-scrim: light-dark(oklch(0.25 0.02 235 / 0.42), oklch(0.08 0.015 235 / 0.66));
+
+    /* Tones: the cockpit alert colours, flat. Green normal, amber caution, red warning,
+       info in steel blue (a different hue from the cyan accent). */
+    --tone-positive: light-dark(oklch(0.5 0.14 148), oklch(0.78 0.17 145));
+    --tone-positive-soft: light-dark(oklch(0.94 0.04 148), oklch(0.29 0.06 148));
+    --tone-positive-text: light-dark(oklch(0.42 0.12 148), oklch(0.82 0.15 145));
+    --tone-positive-ink: light-dark(oklch(0.99 0.01 148), oklch(0.18 0.05 148));
+
+    --tone-caution: light-dark(oklch(0.78 0.15 75), oklch(0.8 0.15 75));
+    --tone-caution-soft: light-dark(oklch(0.95 0.05 85), oklch(0.31 0.06 75));
+    --tone-caution-text: light-dark(oklch(0.48 0.1 65), oklch(0.85 0.13 80));
+    --tone-caution-ink: light-dark(oklch(0.22 0.04 70), oklch(0.2 0.04 70));
+
+    --tone-critical: light-dark(oklch(0.54 0.2 27), oklch(0.66 0.21 27));
+    --tone-critical-soft: light-dark(oklch(0.94 0.035 25), oklch(0.29 0.07 27));
+    --tone-critical-text: light-dark(oklch(0.5 0.19 27), oklch(0.77 0.14 27));
+    --tone-critical-ink: light-dark(oklch(0.99 0.008 25), oklch(0.17 0.04 27));
+
+    --tone-info: light-dark(oklch(0.5 0.1 255), oklch(0.76 0.08 255));
+    --tone-info-soft: light-dark(oklch(0.94 0.02 255), oklch(0.29 0.04 255));
+    --tone-info-text: light-dark(oklch(0.44 0.1 255), oklch(0.82 0.07 255));
+    --tone-info-ink: light-dark(oklch(0.99 0.006 255), oklch(0.18 0.03 255));
+
+    /* Categorical (people, series): the cockpit hues, evenly lit, readable ink on all. */
+    --color-cat-1: light-dark(oklch(0.8 0.09 300), oklch(0.72 0.11 300)); /* violet */
+    --color-cat-2: light-dark(oklch(0.82 0.08 210), oklch(0.72 0.09 210)); /* cyan */
+    --color-cat-3: light-dark(oklch(0.82 0.1 145), oklch(0.72 0.11 145)); /* green */
+    --color-cat-4: light-dark(oklch(0.86 0.1 85), oklch(0.76 0.11 85)); /* amber */
+    --color-cat-5: light-dark(oklch(0.8 0.09 27), oklch(0.7 0.11 27)); /* red */
+    --color-cat-6: light-dark(oklch(0.82 0.07 250), oklch(0.72 0.08 250)); /* blue */
+    --color-cat-7: light-dark(oklch(0.84 0.09 115), oklch(0.74 0.1 115)); /* lime */
+    --color-cat-8: light-dark(oklch(0.8 0.015 235), oklch(0.7 0.02 235)); /* grey */
+    --color-cat-ink: oklch(0.2 0.02 235);
+
+    /* ── Edges & depth ──────────────────────────────────────────────────── */
+    /* Static things get bezel hairlines. Only floating things get a plain dark shadow. */
+    --shadow-surface: none;
+    --active-shift: 0px; /* how far pressed things travel toward their shadow */
+    --shadow-active: none;
+    --shadow-float: 0 1px 2px oklch(0.1 0.02 235 / 0.2), 0 8px 20px -8px oklch(0.1 0.02 235 / 0.35);
+    --shadow-overlay:
+      0 2px 4px oklch(0.1 0.02 235 / 0.2), 0 20px 48px -12px oklch(0.1 0.02 235 / 0.45);
+    --canvas-image: none;
+  }
+}

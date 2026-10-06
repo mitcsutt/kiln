@@ -13,7 +13,7 @@ export interface IconProps extends Omit<SVGProps<SVGSVGElement>, 'ref'> {
 
 /**
  * Base for the library's own glyphs. 20×20 grid, stroke weight is a theme token
- * (`--icon-stroke`), so Fiesta icons are chunky and Monograph icons are fine-lined.
+ * (`--icon-stroke`), so Fiesta icons are chunky and Flightdeck icons are fine-lined.
  * Consumers may pass any SVG/icon node where a component accepts `icon` props.
  */
 export function createIcon(displayName: string, paths: React.ReactNode) {

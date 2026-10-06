@@ -1,9 +1,9 @@
 ---
 title: Ledger
-description: An accountant's ruled book. Green-grey paper, bank-note green, accounting red, and figures set like receipt tape.
+description: An accountant's columnar pad. A white sheet ruled in green, banknote-green actions, accounting red, and figures set condensed instead of in a monospace.
 ---
 
-_An accountant's ruled book._ Quiet, dense and numeric. In Ledger the numbers are the content, so they get their own face: a condensed monospace, always tabular, like receipt tape.
+_An accountant's columnar pad._ Quiet, dense and numeric. In Ledger the numbers are the content, so they get their own treatment: the same face set condensed, always tabular, so a column of money reads like receipt tape.
 
 <ThemeSpecimen theme="ledger" />
 
@@ -23,8 +23,8 @@ Ledger is light-first. It suits screens that are mostly tables and totals: invoi
 
 ## The idea, applied
 
-- **Colour.** Faint green-grey ledger paper, a bank-note green accent, accounting red for negatives and a highlighter-yellow highlight.
-- **Type.** Schibsted Grotesk throughout, and Martian Mono at 80% width for every figure. A 15px base on a 1.2 ratio.
-- **Shape.** 5px radii everywhere, and a compact density of 0.86, so every space step and control is smaller.
-- **Depth.** Hairlines, and a double rule above a table's footer (`--table-foot-rule`), as a ledger totals a column.
-- **Motion.** Brief and flat (`--motion-scale: 0.8`).
+- **Colour.** A white sheet, with the green carried by the rules rather than the paper. Banknote green for actions, accounting red for negatives and a flat highlighter yellow for the highlight. Dark mode is a blue-green carbon-copy night with dim green rules, not a green-screen terminal.
+- **Type.** Archivo throughout. Figures use its width axis to set condensed (`--numeric-stretch`) with tabular numerals, so they get receipt-tape narrowness without a monospace. Atkinson Hyperlegible Mono is for code only. A 15px base on a 1.2 ratio.
+- **Shape.** Tight radii on actions, fields and surfaces, squarer chips, and rounded-square avatars like ledger stamps. A compact density of 0.86, so every space step and control is smaller.
+- **Depth.** Hairlines in the ledger green, with flat surfaces, and a double rule above a table's footer (`--table-foot-rule`), as a ledger totals a column.
+- **Motion.** Brief and flat, with no bounce (`--motion-scale: 0.8`).

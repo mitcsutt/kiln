@@ -8,19 +8,19 @@
  * headings: heavy, upright, slightly tracked. Squared enamel corners, firm hairlines,
  * no bounce.
  *
- * It uses only faces kiln-ui's base stylesheet already loads (Schibsted Grotesk and
- * Martian Mono). A theme with other faces declares its own @font-face in this file.
+ * It uses only faces kiln-ui's base stylesheet already loads (Golos Text
+ * and Atkinson Hyperlegible Mono). A theme with other faces declares its own @font-face in this file.
  */
 @layer kiln.reset, kiln.tokens, kiln.themes;
 
 @layer kiln.themes {
   [data-theme='harbour'] {
     /* Type roles */
-    --font-display: 'Schibsted Grotesk', ui-sans-serif, system-ui, sans-serif;
-    --font-text: 'Schibsted Grotesk', ui-sans-serif, system-ui, sans-serif;
-    --font-prose: 'Schibsted Grotesk', ui-sans-serif, system-ui, sans-serif;
-    --font-mono: 'Martian Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
-    --font-numeric: 'Martian Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+    --font-display: 'Golos Text', ui-sans-serif, system-ui, sans-serif;
+    --font-text: 'Golos Text', ui-sans-serif, system-ui, sans-serif;
+    --font-prose: 'Golos Text', ui-sans-serif, system-ui, sans-serif;
+    --font-mono: 'Atkinson Hyperlegible Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+    --font-numeric: 'Atkinson Hyperlegible Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
     --type-base: 1rem;
     --display-scale: 1.05;
     --type-ratio: 1.22;

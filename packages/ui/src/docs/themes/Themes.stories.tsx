@@ -108,11 +108,17 @@ function Specimen({ theme }: { theme: BuiltInThemeName }) {
 /** The neutral default: no stylesheet beyond the base one. */
 export const Paper: Story = { render: () => <Specimen theme="paper" /> }
 
+/** Flat spot inks, hard offsets, condensed type and springy motion. */
+export const Fiesta: Story = { render: () => <Specimen theme="fiesta" /> }
+
+/** A glass cockpit: cockpit colours with fixed meanings, dark-first. */
+export const Flightdeck: Story = { render: () => <Specimen theme="flightdeck" /> }
+
 /** Dark-first: blue-slate with one ember accent and a big serif display. */
 export const Monograph: Story = { render: () => <Specimen theme="monograph" /> }
 
 /** Quiet, dense and numeric: ruled green-grey paper and tabular figures. */
 export const Ledger: Story = { render: () => <Specimen theme="ledger" /> }
 
-/** Flat spot inks, hard offsets, condensed type and springy motion. */
-export const Fiesta: Story = { render: () => <Specimen theme="fiesta" /> }
+/** A two-drum risograph zine: fluorescent inks and screen tints. */
+export const Riso: Story = { render: () => <Specimen theme="riso" /> }

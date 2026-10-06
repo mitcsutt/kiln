@@ -1,6 +1,6 @@
 ---
 name: setup-and-theming
-description: "Use when installing @mitcsutt/kiln-ui in a React app: loading its stylesheet, wrapping the app in ThemeProvider, choosing Paper or a preset theme (Monograph, Ledger, Fiesta) and a colour mode, setting the theme before first paint with themeScript under SSR or the Next.js App Router, and passing router links through asChild."
+description: "Use when installing @mitcsutt/kiln-ui in a React app: loading its stylesheet, wrapping the app in ThemeProvider, choosing Paper or a preset theme (Monograph, Ledger, Fiesta, Flightdeck, Riso) and a colour mode, setting the theme before first paint with themeScript under SSR or the Next.js App Router, and passing router links through asChild."
 metadata:
   purpose: Install kiln-ui, load its CSS, and apply a built-in theme and colour mode correctly on the client and the server.
   type: lifecycle
@@ -11,6 +11,8 @@ sources:
   - mitcsutt/kiln:apps/docs/content/docs/ui/themes/monograph.mdx
   - mitcsutt/kiln:apps/docs/content/docs/ui/themes/ledger.mdx
   - mitcsutt/kiln:apps/docs/content/docs/ui/themes/fiesta.mdx
+  - mitcsutt/kiln:apps/docs/content/docs/ui/themes/flightdeck.mdx
+  - mitcsutt/kiln:apps/docs/content/docs/ui/themes/riso.mdx
 ---
 
 <!-- Generated from the Kiln docs by apps/docs/src/skills. Edit the docs pages, then run `pnpm generate:skills`. -->
@@ -54,14 +56,14 @@ With no `theme`, you get **Paper**, the neutral default. `ThemeProvider` writes 
 
 ```tsx
 import '@mitcsutt/kiln-ui/styles.css'
-import '@mitcsutt/kiln-ui/themes/monograph.css'
+import '@mitcsutt/kiln-ui/themes/flightdeck.css'
 
-;<ThemeProvider theme="monograph" defaultMode="dark">
+;<ThemeProvider theme="flightdeck" defaultMode="dark">
   …
 </ThemeProvider>
 ```
 
-Presets are separate files, so an app pays only for the ones it imports. [Themes](references/paper.md) shows all four, and [Theming](https://kiln.mitchellsutton.com/docs/ui/foundations/theming) shows how to write your own.
+Presets are separate files, so an app pays only for the ones it imports. [Themes](references/paper.md) shows all six, and [Theming](https://kiln.mitchellsutton.com/docs/ui/foundations/theming) shows how to write your own.
 
 ## Compose a screen
 
@@ -229,7 +231,9 @@ Merges class names, filtering falsy values.
 
 Read a reference when its description matches the task:
 
-- [Paper](references/paper.md): The neutral default. A typeset proof on good uncoated stock, where the ink is the accent.
+- [Paper](references/paper.md): The neutral default. An office that prints for everyone, with white sheets on grey stock, blue-black ink as the accent and Golos Text for type.
 - [Monograph](references/monograph.md): A scholarly monograph read under a desk lamp at night. Blue slate, one ember accent, a big serif display. Dark-first.
-- [Ledger](references/ledger.md): An accountant's ruled book. Green-grey paper, bank-note green, accounting red, and figures set like receipt tape.
+- [Ledger](references/ledger.md): An accountant's columnar pad. A white sheet ruled in green, banknote-green actions, accounting red, and figures set condensed instead of in a monospace.
 - [Fiesta](references/fiesta.md): A screen-printed festival poster. Flat spot inks, hard offsets, condensed signage numerals and springy motion.
+- [Flightdeck](references/flightdeck.md): A glass-cockpit flight display. Cyan for what you set, a reverse-video box for what you select, and green, amber and red for status, set in B612. Dark-first.
+- [Riso](references/riso.md): A two-drum risograph zine. Fluorescent pink and blue on white stock, screen tints instead of borders, and Shantell Sans.

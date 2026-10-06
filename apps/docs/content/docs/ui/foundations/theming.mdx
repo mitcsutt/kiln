@@ -10,14 +10,16 @@ A Kiln theme is one CSS file. It sets the tokens in the [contract](/docs/ui/foun
 
 ## 1. Start from one idea
 
-Strong themes take one idea from their subject and apply it everywhere, with everything else quiet. Paper is a typeset proof; Fiesta is a screen-printed festival poster. Harbour is _the tide table posted at a ferry terminal_. That idea decides the rest:
+Strong themes take one idea from their subject and apply it everywhere, with everything else quiet. Paper is an office that prints for everyone, on grey stock; Riso is a two-drum risograph zine. Harbour is _the tide table posted at a ferry terminal_. That idea decides the rest:
 
 - **Colour**: sea-grey enamel neutrals (hue 225), one signal-orange accent like a channel buoy, sea-glass green for "you".
 - **Type**: heavy upright signage for headings, and every figure in a monospaced face, because tide times are read down a column.
 - **Shape**: squared enamel corners, firm hairlines, flat surfaces.
 - **Motion**: brisk, no bounce.
 
-If a choice can't be justified by the idea, leave it at the default. Pick at most two families and one accent.
+If a choice can't be justified by the idea, leave it at the default. Write the one-line reason for each choice next to its value, and if you can't, change the choice. Pick at most two families and one accent.
+
+Generated UI also converges on a second set of looks: a cream canvas with a terracotta accent, near-black with one acid accent, a mint canvas with forest green, hard-offset shadows on every card, and a short list of "distinctive" fonts. Kiln's newer themes (Paper, Ledger, Flightdeck and Riso) avoid all of them. Monograph and Fiesta predate these rules and are kept unchanged for compatibility, so don't take them as a model. Kiln's [DESIGN.md](https://github.com/mitcsutt/kiln/blob/main/DESIGN.md) lists them in full.
 
 ## 2. Copy the starter file
 
@@ -46,7 +48,7 @@ Work through the file group by group. Keep every token; a theme that leaves one 
 **Type.** Assign families to roles, then set the temperament: the base size, the ratio between steps, the display weight and tracking.
 
 ```css
---font-numeric: 'Martian Mono', ui-monospace, monospace;
+--font-numeric: 'Atkinson Hyperlegible Mono', ui-monospace, monospace;
 --numeric-stretch: 87.5%;
 --display-weight: 780;
 --type-ratio: 1.22;
@@ -54,7 +56,7 @@ Work through the file group by group. Keep every token; a theme that leaves one 
 
 **Structure.** `--density` multiplies every space step and control height; `--motion-scale` multiplies every duration. Radii are roles, so actions, fields, surfaces and avatars can each have their own.
 
-**Depth.** Decide what an edge is. Flat themes set `--shadow-surface: none` and keep soft shadows for floating layers only; Fiesta's hard offset is its edge.
+**Depth.** Decide what an edge is. Flat themes set `--shadow-surface: none` and keep soft shadows for floating layers only; a hard offset belongs only on floating layers, and only when your subject explains it (Riso's misregistered second drum). Fiesta keeps its hard offset on static surfaces as a legacy preset; don't copy that.
 
 The whole Harbour file is in the repository at [`apps/docs/src/styles/harbour.css`](https://github.com/mitcsutt/kiln/blob/main/apps/docs/src/styles/harbour.css).
 
@@ -97,7 +99,7 @@ Kiln ships only the faces its own themes use. Declare your theme's faces in the 
 }
 ```
 
-Harbour itself uses only Schibsted Grotesk and Martian Mono, which Kiln's base stylesheet already loads. That's allowed too.
+Harbour itself uses only Golos Text and Atkinson Hyperlegible Mono, which Kiln's base stylesheet already loads. That's allowed too.
 
 ## 6. Check it everywhere
 
@@ -117,7 +119,7 @@ Then go through the component pages with your theme applied. A few things to loo
 
 When your idea needs something the contract doesn't cover, there are two more levels.
 
-[Optional tokens](/docs/ui/foundations/tokens#optional-theme-tokens) are set by only some themes, and every theme scope resets them, so they never leak into a nested theme. Ledger sets `--table-foot-rule`; Fiesta sets the `--highlight-*-text` inks for text on its gold rows.
+[Optional tokens](/docs/ui/foundations/tokens#optional-theme-tokens) are set by only some themes, and every theme scope resets them, so they never leak into a nested theme. Ledger sets `--table-foot-rule`; Fiesta and Riso set the `--highlight-*-text` inks for text on their gold and pink-tinted rows.
 
 Component tokens change one component without touching the rest. They're read with a fallback, so setting one is always safe:
 
