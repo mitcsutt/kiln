@@ -5,7 +5,7 @@
 
 ## Context
 
-The source monorepo uses pnpm, Turborepo, Vitest, ESLint 9 flat config, Prettier with no config file, and syncpack. Kiln is partly a portfolio piece, so the toolchain should be current, conventional, and a credible example of a well-run library monorepo.
+The source monorepo uses pnpm, Turborepo, Vitest, ESLint 9 flat config, Prettier with no config file, and syncpack. Kiln is a public library monorepo, so the toolchain should be current, conventional, and a credible example of a well-run one.
 
 ## Decision
 

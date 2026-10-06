@@ -6,7 +6,7 @@ import styles from './StatusDot.module.css'
 export interface StatusDotProps extends HTMLAttributes<HTMLSpanElement> {
   /** State colour. Default `neutral`. */
   tone?: Tone
-  /** What the colour means: "Paid", "Through to the round of 32", "Deploying". Always required — colour alone is not information. */
+  /** What the colour means: "Paid", "Awaiting approval", "Deploying". Always required — colour alone is not information. */
   label: ReactNode
   /** Keep the label for screen readers only (e.g. in a dense table with a legend). */
   labelHidden?: boolean

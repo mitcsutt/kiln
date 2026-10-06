@@ -3,10 +3,10 @@
 This is the design reference for `@mitcsutt/kiln-forms`. Code comments cite it as `§n`, `§n.m`, `§13 #n` (a row of the coverage matrix) and `A.n` (Appendix A). Section numbers are stable: rewrite a section's text if the design moves, but don't renumber or remove a heading.
 
 - The binding rules for contributors (how to add a field or a layout, what may and may not go in the package) are in [`packages/forms/AGENTS.md`](../AGENTS.md).
-- Decisions are recorded in [`docs/adr/`](../../../docs/adr/README.md). The kiln-forms port, including how name collisions with kiln-ui were resolved, is [ADR 0017](../../../docs/adr/0017-kiln-forms-port.md).
+- Decisions are recorded in [`docs/adr/`](../../../docs/adr/README.md). How kiln-forms' export names avoid collisions with kiln-ui is [ADR 0017](../../../docs/adr/0017-kiln-forms-port.md).
 - Visual and copy rules come from [`DESIGN.md`](../../../DESIGN.md); kiln-ui component rules come from [`packages/ui/AGENTS.md`](../../ui/AGENTS.md).
 
-Where this document says **must**, a test enforces it. Where it gives a signature, the code implements that signature unless a typecheck proved it impossible; those departures are recorded in Appendix A. Where an Appendix A entry and the body disagree, the entry wins.
+Where this document says **must**, a test enforces it. Where it gives a signature, the code implements it; where TypeScript forces a different signature, Appendix A records the difference and the reason. Where an Appendix A entry and the body disagree, the entry wins.
 
 ---
 
@@ -124,7 +124,7 @@ stories/                         shared story helpers, parity fixtures, Getting 
 ../scripts/check-schema-entry.ts  the ./schema entry in plain Node, from the packed tarball
 ```
 
-Folder-per-component, grouped under `components/`, mirrors kiln-ui ("always a folder, never a flat file"). Public hooks are flat files in `hooks/`; a hook owned by one component sits next to it (`useFormSteps`, `useFieldPresentation`). The build was first ported with `fields/`, `layouts/` and `components/` at the top level and the rest in `core/`; [ADR 0024](../../../docs/adr/0024-kiln-forms-source-layout.md) records the move to this layout.
+Folder-per-component, grouped under `components/`, mirrors kiln-ui ("always a folder, never a flat file"). Public hooks are flat files in `hooks/`; a hook owned by one component sits next to it (`useFormSteps`, `useFieldPresentation`). [ADR 0024](../../../docs/adr/0024-kiln-forms-source-layout.md) records why the source is laid out this way.
 
 ### 2.3 Imports
 
@@ -635,7 +635,7 @@ interface FormRuntime {
 export function getFormRuntime(form: AnyFormApi): FormRuntime
 ```
 
-Runtime state isn't React state. Components that must re-render on it (tab counts) subscribe through `useSyncExternalStore` to a small emitter on the runtime. The build added a few more members (the kit's registry, derive rules, repeater item templates; A.1, A.9, A.11).
+Runtime state isn't React state. Components that must re-render on it (tab counts) subscribe through `useSyncExternalStore` to a small emitter on the runtime. The runtime also holds the kit's registry, derive rules and repeater item templates (A.1, A.9, A.11).
 
 ### 5.2 Validation logic (`kitValidationLogic`)
 
@@ -1502,7 +1502,7 @@ export interface FormRowsProps {
 }
 ```
 
-Provides `FieldPresentation layout="horizontal"`: every ui `Field` inside renders its label and description in a fixed column with the control beside it (collapsing below `sm`). This is the editor-panel "settings row", with no per-field config. Group fields built on `Fieldset` don't follow it yet (A.5).
+Provides `FieldPresentation layout="horizontal"`: every ui `Field` inside renders its label and description in a fixed column with the control beside it (collapsing below `sm`). This is the editor-panel "settings row", with no per-field config. Group fields built on `Fieldset` follow it too (A.5).
 
 ### 9.5 `FormPanels`
 
@@ -1931,7 +1931,7 @@ Errors and warnings use tone tokens plus an icon plus text, never colour alone. 
 
 ### 11.12 Testing
 
-axe-core runs on every field conformance render and every layout in the test suite, and is planned over every `Forms/*` story in every theme and both modes (§15.1).
+axe-core runs on every field conformance render and every layout in the test suite, and over every `Forms/*` story in every theme and both modes in the Storybook workbench (§15.1).
 
 ---
 
@@ -2082,7 +2082,7 @@ The use cases a form library has to cover, and the feature that covers each. C i
 
 - **Performance**: the §12 render-count test.
 - **React 18**: `vitest.react18.config.ts` runs the full suite against React 18.3. React 18 comes from the private `@mitcsutt/kiln-testing-react18` fixture package, whose only dependencies are React 18 and the libraries that import React themselves, so pnpm resolves all of them against React 18 ([ADR 0004](../../../docs/adr/0004-react-18-and-19.md)). kiln-ui runs the same way.
-- **Storybook** (once the workbench hosts the stories): axe over every `Forms/*` story in every theme (Paper, Monograph, Ledger, Fiesta, Flightdeck, Riso) and both modes, and a real-browser keyboard pass of Combobox and FileDrop, which jsdom can't verify (A.10). Until then, stories are checked by `typecheck` and `lint`.
+- **Storybook**: every `Forms/*` story is a browser test in the `apps/storybook` workbench (`pnpm test:storybook`, [ADR 0018](../../../docs/adr/0018-storybook-workbench.md)). It must render, its `play` function must pass, and axe must find no violations, in every theme (Paper, Monograph, Ledger, Fiesta, Flightdeck, Riso) and both modes. Combobox and FileDrop also need a real-browser keyboard pass, which jsdom can't verify (A.10).
 
 ### 15.2 Commands that must pass
 
@@ -2101,7 +2101,7 @@ pnpm lint && pnpm typecheck && pnpm test && pnpm test:react18 && pnpm build && p
 
 ---
 
-## 16. Storybook plan
+## 16. Storybook
 
 Stories are co-located with the source (`<Name>.stories.tsx`) and titled by the shared docs and Storybook tree ([ADR 0010](../../../docs/adr/0010-information-architecture.md)): at the top level, `Forms` always means kiln-forms, and kiln-ui's unbound controls live under `UI/Inputs`. Copy follows DESIGN §2: realistic, invented content, sentence case, no lorem ipsum, no emoji. Every story must be right in every theme and both modes.
 
@@ -2118,7 +2118,7 @@ Stories are co-located with the source (`<Name>.stories.tsx`) and titled by the 
 
 The `Forms/Hooks/` group of the tree holds the hook pages; hooks are exercised inside the field, component and Getting started stories.
 
-Until the Storybook workbench lands, stories are checked by `typecheck` and `lint` only; the per-theme axe pass (§15.1) runs once they are hosted there.
+Every story is also a browser test in the Storybook workbench, with axe, in every theme and both modes (§15.1).
 
 ---
 
@@ -2151,9 +2151,9 @@ Until the Storybook workbench lands, stories are checked by `typecheck` and `lin
 
 ---
 
-## Appendix A. Decisions during build
+## Appendix A. Design decisions
 
-The body above is the design as planned. These entries record where the build went a different way, each with its reason. Where an entry and the body disagree, the entry wins.
+These entries record the specific decisions that refine the body above or depart from it, each with its reason. Where an entry and the body disagree, the entry wins.
 
 ### A.1 Kit and types (§3)
 
@@ -2161,11 +2161,11 @@ The body above is the design as planned. These entries record where the build we
 - Submit meta `M` defaults to `undefined`, not `never`. With `never` a `KitForm` isn't assignable to `AnyFormApi`, and `formOptions(...)` spreads infer `undefined` anyway.
 - `AnyKitForm` is structural (`{ store; state: { values? } }`) and lives in `kit/types`. A concrete `KitForm<T>`'s generic methods collapse to `never` against `AnyFormApi`, so every public API takes `AnyKitForm` and converts with `toFormApi`. Hooks are generic over `A extends AnyKitForm` for the same reason.
 - `coreApi(form)` and `runtime.core` give the core `FormApi`. TanStack's React form is a spread copy whose `options` goes stale after `update()`.
-- `createFormKit<const K extends KitInput>(registries: K)` takes one const generic, with extras `X = Omit<K, 'fields'>`. The planned `<const R, const X>` over an intersection couldn't infer `X`, which widened every layout key to `string`. `extend` works the same way.
+- `createFormKit<const K extends KitInput>(registries: K)` takes one const generic, with extras `X = Omit<K, 'fields'>`. A `<const R, const X>` signature over an intersection can't infer `X`, which widens every layout key to `string`. `extend` works the same way.
 - `kit.defineFormSchema<T, C = {}>()` drops the `C extends Record<string, Primitive>` constraint, so interfaces (no index signature) work as context types.
 - Typed schemas carry an optional phantom `'~types'` marker. Every typed schema is assignable to `UntypedFormSchema` by design, so without it any schema would fit any form. JSON round trips are unaffected because it's never set.
 - `FieldBindingOptions` also takes `layout`, `labelHidden` and `aria-describedby`, so a field's own props beat presentation. `withForm`'s `props` option is merged under passed props, as TanStack does.
-- `useOptionMapping(options, { emptyOption })` in `hooks/useOptionMapping` was added for the option fields.
+- `useOptionMapping(options, { emptyOption })` in `hooks/useOptionMapping` is the value mapping shared by the option fields (§7.3).
 - `FormRuntime.registry` holds the kit's field registry (set by `useAppForm`). Repeater uses `bindFields(form, registry, prefix)` for item fields instead of a Proxy over `AppField`.
 - `kit.useTypedAppFormContext(options)` returns the form from context as a `KitForm<T, M, R>`, typed by the shared `formOptions` ([ADR 0021](../../../docs/adr/0021-forms-context-in-nested-components.md)). Both providers hold the object `useAppForm` returned, so only the type is restored. `useFormContext` is wrapped so that both hooks throw a kiln-forms error outside a form.
 
@@ -2181,7 +2181,7 @@ The body above is the design as planned. These entries record where the build we
 
 ### A.3 Messages (D15)
 
-`FormMessages` gained `yes`, `no` and `notProvided` (view mode), `actions` (the Repeater table header), `edit` (FormReview), `stepComplete`, `stepError` and `stepCompact(index, count)` (Stepper), and `reset` (the ResetButton's default text, so a schema `{ content: 'reset' }` needs no label).
+`FormMessages` also has `yes`, `no` and `notProvided` (view mode), `actions` (the Repeater table header), `edit` (FormReview), `stepComplete`, `stepError` and `stepCompact(index, count)` (Stepper), and `reset` (the ResetButton's default text, so a schema `{ content: 'reset' }` needs no label).
 
 ### A.4 View mode (§9.11)
 
@@ -2193,7 +2193,7 @@ The body above is the design as planned. These entries record where the build we
 
 ### A.5 kiln-ui components (§8)
 
-- Group fields built on `Fieldset` (checkbox, radio and chip groups, choice cards, date range) don't support `layout="horizontal"`, because `Fieldset` has no layout. Inside `FormRows` or `FormAside` they stack their legend above the options while the other rows are label-left. A test pins this behaviour until `Fieldset` gains a layout.
+- Group fields built on `Fieldset` (checkbox, radio and chip groups, choice cards, date range) support `layout="horizontal"` through `Fieldset`'s own `layout` prop, so inside `FormRows` or `FormAside` their legend sits in the label column like every other row. `test/qa/groupLayout.test.tsx` pins this.
 - `StepperStep.invalid?: boolean` lets a current step also show errors and keep `aria-current="step"`. An invalid step's hidden error suffix replaces "completed", since announcing both reads badly.
 - `SubmitButton` uses `Button asChild`. `Button loading` sets native `disabled`, which breaks "never disabled".
 - `ErrorSummary`'s heading is a `<span role="heading" aria-level>` inside the `Alert` title, which is a `<p>`.
@@ -2204,20 +2204,20 @@ The body above is the design as planned. These entries record where the build we
 - The catalogue has 28 kinds, as §7.2 lists.
 - The `chips`, `checkboxGroup` and `multiChoiceCards` kinds bind `string | number` options only, matching §7.2. Only `radio` takes booleans among the choice groups.
 - `FormMultiSelectField` has no `creatable` prop, so "creatable is single only" is a type rule. The combobox and multi-select fields have no `emptyOption`, because ui `Combobox` has `clearable`.
-- `runFieldConformance` gained `leaveControl`, `describedByTarget`, `focusTarget` and `isDisabled` options. Compound controls configure the check instead of skipping it. The defaults are unchanged.
+- `runFieldConformance` takes `leaveControl`, `describedByTarget`, `focusTarget` and `isDisabled` options, so compound controls configure a check instead of skipping it.
 
 ### A.7 Layouts (§6.6, §9)
 
 - `scopeNames` is accepted by exactly `FormTab`, `FormAccordionItem`, `FormStep`, `FormSentence` and `When`. The other layouts have no scope, so the prop would do nothing there.
 - `When` takes `is` or `condition`, both optional (`is` wins; with neither, the content shows), plus an internal `context` for schema `context` conditions. It imports `evaluateCondition` from `#schema/core/conditions`.
-- `Repeater` has a `validators` prop for array-level rules (`minItems`, `unique`), because component mode had no other way to attach them.
+- `Repeater` has a `validators` prop for array-level rules (`minItems`, `unique`), because component mode has no other way to attach them.
 - Repeater item actions sit after the item's fields. A button inside `<legend>` becomes part of the group's accessible name, and positioning it beside the legend would need CSS.
 - The Repeater table's actions column has a visually hidden "Actions" header. The buttons label themselves, so a visible header only adds noise.
 - A Repeater's array error treats a structural change (`isTouched`) as its blur. An array has no focus of its own, so under the `blur` policy its error would otherwise wait for submit.
 - Next on a step makes that step's errors visible whatever `errorVisibility` says. It never blocks on an error the user can't see. `useScopeErrors` counts revealed errors, so badges and step status agree.
 - Enter in a text input on a non-final step means Next. Implicit submission would otherwise submit a half-filled wizard.
-- `FormSteps` gained `headingLevel` (default 3) and an opt-in `compactBelow?: 'sm' | 'md'`, so existing wizards don't change on narrow screens.
-- `FormReview` gained `headingLevel` and `step`. Its Edit button appears whenever there's an action, with text from `editLabel` or `messages.edit`, and it's described by the step title.
+- `FormSteps` also takes `headingLevel` (default 3) and an opt-in `compactBelow?: 'sm' | 'md'`; without it, a wizard shows the full stepper on narrow screens too.
+- `FormReview` also takes `headingLevel` and `step`. Its Edit button appears whenever there's an action, with text from `editLabel` or `messages.edit`, and it's described by the step title.
 - `FormSentence` renders `Text as="div"`, because bound fields render block elements and a `div` inside a `p` is invalid DOM.
 - `FormSection` requires `title` (§9.2); there is no untitled bare `<fieldset>`.
 - A tab or accordion trigger's error count is a visually hidden " 2 errors" after the label, and the `Badge` is `aria-hidden`.
@@ -2236,7 +2236,7 @@ The body above is the design as planned. These entries record where the build we
   - `truthy` treats `[]` as false.
 - `parseFormSchema` accepts the default layouts plus `registry.layouts`, gives a `review` subtree its own name scope, rejects stray keys on custom nodes, and checks only required text props on layouts.
 - `toStandardSchema` takes optional `validators` and an `empties` map (default `{ checkbox: false, switch: false }`), so an unticked "I agree" fails `required` on the server. Its success output is the active fields only (A.11).
-- `RepeaterNode` gained `rules`, `whenHidden`, `description`, `empty` and `columns`. `itemLabel` (a function) isn't available in schema mode. `columns[].width` is `'fill' | 'min'`, a literal union kept equal to ui `TableColumnWidth` by a type test, so schema core stays free of ui imports.
+- `RepeaterNode` also has `rules`, `whenHidden`, `description`, `empty` and `columns`. `itemLabel` (a function) isn't available in schema mode. `columns[].width` is `'fill' | 'min'`, a literal union kept equal to ui `TableColumnWidth` by a type test, so schema core stays free of ui imports.
 - `analyseSchema(...).names(node, prefix)` returns scope-relative names. A repeater contributes only its array name, since item names aren't known statically.
 
 ### A.9 Schema rendering (§10.6, §10.7)
@@ -2251,11 +2251,11 @@ The body above is the design as planned. These entries record where the build we
 
 ### A.10 Tooling and verification
 
-- The first submit re-renders every field once (§12.2's `submitted` flip changes each field's error-visibility input). A second submit re-renders none (asserted). This amends the original acceptance sentence "submit re-renders only fields whose error visibility changed" (§12.9).
+- The first submit re-renders every field once (§12.2's `submitted` flip changes each field's error-visibility input). A second submit re-renders none (asserted). §12.9 is worded to match, rather than "submit re-renders only fields whose error visibility changed".
 - After a successful submit with `afterSubmit: 'rebaseline'`, a visible `excluded` field's input is reset to its default, because the baseline is the pruned payload (§5.5 step 4). It contradicts §5.4's "user input survives" for that one case; accepted for v1.
 - Type a file field's path as `FileValue[]`. `FormFileField` binds exact `readonly FileValue[]`, so `defaultValues` typed `StoredFile[]` makes `name` resolve to `never`.
 - `@storybook/react-vite` is a devDependency of kiln-forms, because its stories can't typecheck without it.
-- Two checks sit outside the jsdom suite: axe over every `Forms/*` story in every theme and both modes, and a real-browser keyboard walkthrough of Combobox and FileDrop, which jsdom can't verify.
+- Two checks sit outside the jsdom suite: axe over every `Forms/*` story in every theme and both modes (the Storybook workbench, §15.1), and a real-browser keyboard walkthrough of Combobox and FileDrop, which jsdom can't verify.
 
 ### A.11 Untrusted schemas and payload semantics
 

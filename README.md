@@ -4,11 +4,11 @@
 
 Kiln is a themeable React design system and form library, published to npm under the `@mitcsutt` scope, along with the shared ESLint, Prettier and TypeScript configs it's built with.
 
-> **Status: release-ready, unreleased.** Every package builds and passes CI, and the release pipeline is configured, but nothing is published to npm yet and neither site is deployed. Each of those is a separate, deliberate step ([`docs/releasing.md`](docs/releasing.md)). The end state is described in [`docs/target-state.md`](docs/target-state.md), and the reasoning behind each decision is in [`docs/adr/`](docs/adr/).
+> **Status: pre-1.0.** Every package is published to npm at `0.x`, so a minor release can still carry breaking changes. The docs site and Storybook aren't deployed yet, but both run locally (see [Apps](#apps)). Releases follow [`docs/releasing.md`](docs/releasing.md), and the reasoning behind each decision is in [`docs/adr/`](docs/adr/).
 
 ## What Kiln is for
 
-I kept rebuilding the same components, form plumbing and lint configs in every project. Kiln pulls them into one place, so any new project can install them, theme them and get going.
+I kept rebuilding the same components, form plumbing and lint configs across projects. Kiln collects them in one place, so a new project can install them, pick a theme and start building.
 
 ## Packages
 
@@ -19,8 +19,6 @@ I kept rebuilding the same components, form plumbing and lint configs in every p
 | [`@mitcsutt/kiln-eslint-config`](packages/eslint-config)     | A shared, type-aware flat ESLint config                                                                                              | [![npm](https://img.shields.io/npm/v/@mitcsutt/kiln-eslint-config?label=)](https://www.npmjs.com/package/@mitcsutt/kiln-eslint-config)     |
 | [`@mitcsutt/kiln-prettier-config`](packages/prettier-config) | A shared Prettier config                                                                                                             | [![npm](https://img.shields.io/npm/v/@mitcsutt/kiln-prettier-config?label=)](https://www.npmjs.com/package/@mitcsutt/kiln-prettier-config) |
 | [`@mitcsutt/kiln-tsconfig`](packages/tsconfig)               | Shared TypeScript presets                                                                                                            | [![npm](https://img.shields.io/npm/v/@mitcsutt/kiln-tsconfig?label=)](https://www.npmjs.com/package/@mitcsutt/kiln-tsconfig)               |
-
-The npm badges read "not found" until the first release.
 
 More general utilities will follow as `@mitcsutt/kiln-*` packages.
 
@@ -33,7 +31,7 @@ More general utilities will follow as `@mitcsutt/kiln-*` packages.
 
 ## Quick start
 
-Once the packages are published, install the UI and, if you need forms, the form library:
+Install the UI and, if you need forms, the form library:
 
 ```sh
 pnpm add @mitcsutt/kiln-ui @mitcsutt/kiln-forms

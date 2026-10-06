@@ -1,6 +1,6 @@
 # 0008. Changesets, independent versions, start at 0.1.0
 
-- **Status:** Accepted
+- **Status:** Accepted, amended by [0017](0017-kiln-forms-port.md) and [0032](0032-public-before-1-0.md)
 - **Date:** 2026-10-04
 
 ## Context
@@ -13,7 +13,7 @@ Kiln publishes several packages that change at different rates. A config package
 - Every PR that touches a published package carries a changeset, and CI enforces it.
 - Releases go through a GitHub Actions workflow: a "Version packages" PR, then publishing to npm **with provenance**.
 - Every package starts at **`0.1.0`**. `1.0.0` comes once the docs site is live and the token contract is frozen, and that is also when the repo goes public.
-- The first body of work ends **release-ready, not released**. The pipeline is complete and dry-run verified, but the first publish is a separate, deliberate step.
+- The pipeline is built and dry-run verified before anything is published. The first publish is a separate, deliberate step.
 
 ## Consequences
 

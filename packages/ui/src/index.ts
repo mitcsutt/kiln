@@ -69,6 +69,7 @@ export type {
   AppShellSidebarProps,
   AppShellFooterProps,
   AppShellBottomBarProps,
+  AppShellNavBreakpoint,
 } from './components/layout/AppShell'
 export { VisuallyHidden } from './components/layout/VisuallyHidden'
 export type { VisuallyHiddenProps } from './components/layout/VisuallyHidden'
@@ -87,6 +88,7 @@ export type {
   HeadingSize,
   HeadingTone,
   HeadingElement,
+  HeadingMeasure,
 } from './components/typography/Heading'
 export { Text } from './components/typography/Text'
 export type {
@@ -96,6 +98,7 @@ export type {
   TextWeight,
   TextAlign,
   TextElement,
+  TextMeasure,
 } from './components/typography/Text'
 export { Link } from './components/typography/Link'
 export type { LinkProps, LinkTone, LinkUnderline } from './components/typography/Link'
@@ -180,7 +183,7 @@ export type { RadioGroupProps, RadioGroupItemProps } from './components/inputs/R
 export { Switch } from './components/inputs/Switch'
 export type { SwitchProps } from './components/inputs/Switch'
 export { Fieldset } from './components/inputs/Fieldset'
-export type { FieldsetProps } from './components/inputs/Fieldset'
+export type { FieldsetProps, FieldsetVariant } from './components/inputs/Fieldset'
 export { TextField } from './components/inputs/TextField'
 export type { TextFieldProps } from './components/inputs/TextField'
 export { TextareaField } from './components/inputs/TextareaField'
@@ -311,7 +314,10 @@ export type {
   StatDelta,
   StatDeltaDirection,
   StatDeltaTone,
+  StatTone,
 } from './components/display/Stat'
+export { Delta } from './components/display/Delta'
+export type { DeltaProps, DeltaDirection, DeltaTone } from './components/display/Delta'
 export { DataList } from './components/display/DataList'
 export type {
   DataListProps,
@@ -330,6 +336,7 @@ export type {
   TableRowProps,
   TableHeaderCellProps,
   TableCellProps,
+  TableColumnWidth,
 } from './components/display/Table'
 export { Media } from './components/display/Media'
 export type { MediaProps, MediaRatio, MediaFit, MediaRadius } from './components/display/Media'
@@ -343,7 +350,7 @@ export type {
 export { CodeBlock } from './components/display/CodeBlock'
 export type { CodeBlockProps } from './components/display/CodeBlock'
 export { Stamp } from './components/display/Stamp'
-export type { StampProps } from './components/display/Stamp'
+export type { StampProps, StampPlacement } from './components/display/Stamp'
 export { Progress } from './components/display/Progress'
 export type { ProgressProps } from './components/display/Progress'
 export { Meter, meterTone } from './components/display/Meter'
@@ -374,6 +381,7 @@ export type {
   NavLinksProps,
   NavLinksItemProps,
   NavLinksOrientation,
+  NavLinksSize,
 } from './components/navigation/NavLinks'
 export { BottomNav } from './components/navigation/BottomNav'
 export type { BottomNavProps, BottomNavItemProps } from './components/navigation/BottomNav'
@@ -428,6 +436,7 @@ export type {
   SheetTitleProps,
   SheetDescriptionProps,
   SheetCloseProps,
+  SheetResponsiveSide,
 } from './components/overlays/Sheet'
 export { Popover } from './components/overlays/Popover'
 export type {
@@ -461,18 +470,3 @@ export type {
   TooltipSide,
   TooltipAlign,
 } from './components/overlays/Tooltip'
-
-// Fix round (layout/nav/forms/overlays)
-export type { NavLinksSize } from './components/navigation/NavLinks'
-export type { AppShellNavBreakpoint } from './components/layout/AppShell'
-export type { SheetResponsiveSide } from './components/overlays/Sheet'
-export type { FieldsetVariant } from './components/inputs/Fieldset'
-
-// Fix round (display/typography)
-export { Delta } from './components/display/Delta'
-export type { DeltaProps, DeltaDirection, DeltaTone } from './components/display/Delta'
-export type { StatTone } from './components/display/Stat'
-export type { TableColumnWidth } from './components/display/Table'
-export type { StampPlacement } from './components/display/Stamp'
-export type { HeadingMeasure } from './components/typography/Heading'
-export type { TextMeasure } from './components/typography/Text'

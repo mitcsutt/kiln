@@ -5,7 +5,7 @@
 
 ## Context
 
-[0002](0002-port-by-copy.md), [0004](0004-react-18-and-19.md), [0005](0005-library-build.md) and [0012](0012-design-standards.md) set the shape of the `forms` port, and [0015](0015-kiln-ui-port.md) recorded how `ui` was done. The target state leaves one decision open: the source exports names that `ui` also exports, and a consumer who imports both packages mustn't be able to auto-import the wrong one. Porting also raised questions those records don't answer:
+[0002](0002-port-by-copy.md), [0004](0004-react-18-and-19.md), [0005](0005-library-build.md) and [0012](0012-design-standards.md) set the shape of the `forms` port, and [0015](0015-kiln-ui-port.md) recorded how `ui` was done. One decision was still open: the source exports names that `ui` also exports, and a consumer who imports both packages mustn't be able to auto-import the wrong one. Porting also raised questions those records don't answer:
 
 - how the React-free `./schema` entry is built and proven React-free
 - where the source's design spec goes, since its section numbers are cited throughout the code
@@ -15,7 +15,7 @@
 
 **Name collisions**
 
-- The overlap was wider than the eight names the target state lists. 19 of the 28 bound fields shared a name with a `ui` export (`TextField`, `TextareaField`, `SelectField`, `CheckboxField`, `PasswordField`, `NumberField`, `AmountField`, `OneTimeCodeField`, `ColorField`, `SwitchField`, `DateRangeField`, `SegmentedField`, `ChoiceCardsField`, `CheckboxGroupField`, `SliderField`, `RatingField`, `ComboboxField`, `TagsField`, `FileField`), each with its `…Props` type, and so did the `FieldLayout` type.
+- The overlap was wider than the eight names first identified. 19 of the 28 bound fields shared a name with a `ui` export (`TextField`, `TextareaField`, `SelectField`, `CheckboxField`, `PasswordField`, `NumberField`, `AmountField`, `OneTimeCodeField`, `ColorField`, `SwitchField`, `DateRangeField`, `SegmentedField`, `ChoiceCardsField`, `CheckboxGroupField`, `SliderField`, `RatingField`, `ComboboxField`, `TagsField`, `FileField`), each with its `…Props` type, and so did the `FieldLayout` type.
 - **Every bound field is exported with a `Form` prefix**: `FormTextField`, `FormAmountField`, … `FormHiddenField`, with `FormTextFieldProps` and so on. That's all 28, not only the 19 that collide, so there's one rule: kiln-ui's `TextField` is the unbound control, kiln-forms' `FormTextField` is the bound field. It matches the layouts, which already read `FormGrid`, `FormSection`, `FormSteps`. The field folders and files carry the same names (`fields/FormTextField/FormTextField.tsx`), as `ui`'s do.
 - **Inside a kit, names don't change.** The shorthand is derived from the field's kind, so it stays `form.TextField`, `field.TextField` and schema `{ kind: 'text' }`, with a display name of `Bound(TextField)`. A name on a form object can't be auto-imported, so it can't collide. Field stories use the shorthand as their title (`Forms/Fields/TextField`).
 - **`FieldLayout` is kiln-ui's.** The two declarations were identical, so `forms` imports `ui`'s type and no longer exports its own.
@@ -40,11 +40,11 @@
 
 **Content**
 
-- The recipes that mirrored the source apps (new transaction, sweepstake entry, contact) weren't ported. The remaining recipes live under `Forms/Getting started`. The schema fixtures and every story were rewritten with invented, generic content. Internal QA and review labels were replaced with descriptions of the behaviour they guard.
+- The recipes that mirrored the source apps weren't ported. The remaining recipes live under `Forms/Getting started`. The schema fixtures and every story were rewritten with invented, generic content. Internal QA and review labels were replaced with descriptions of the behaviour they guard.
 - Story titles follow 0010: `Forms/Fields/<Name>Field`, `Forms/Layouts/<ExportName>`, `Forms/Schema/…`. The form components (`Form`, `SubmitButton`, `ResetButton`, `ErrorSummary`, `FormStatus`) sit under `Forms/Layouts`, beside the layouts that hold them. Schema mode treats them as content nodes beside layout nodes.
 
 ## Consequences
 
-- A consumer who imports both packages gets one candidate for every name. Code moving from the source's `@repo/forms` renames its field imports (`TextField` → `FormTextField`). Code that only uses the kit shorthand doesn't change.
+- A consumer who imports both packages gets one candidate for every name. Code moving from the source's forms package renames its field imports (`TextField` → `FormTextField`). Code that only uses the kit shorthand doesn't change.
 - A new bound field must be named `Form<Name>`, and a new kiln-ui export that matches a kiln-forms name fails the forms test suite. That's how the collision rule stays enforced as both packages grow.
 - The `./schema` guarantee is checked twice: from source on every test run, and from the built tarball by `check:package` in CI.

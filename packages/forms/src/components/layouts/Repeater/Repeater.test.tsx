@@ -117,7 +117,7 @@ describe('Repeater', () => {
       expect(Object.keys(guests[0] ?? {})).toEqual(['name'])
     })
 
-    it('a form schema with `diet: z.string()` accepts the pruned row (the reviewer’s repro)', async () => {
+    it('a form schema with `diet: z.string()` accepts the pruned row (diet falls back to newItem)', async () => {
       const schema = z.object({
         hasDiet: z.boolean(),
         guests: z.array(z.object({ name: z.string(), diet: z.string() })),

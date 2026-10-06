@@ -5,16 +5,16 @@
 
 ## Context
 
-The same ESLint, Prettier and TypeScript configs get copied, with drift, into every repo (`mitchell-sutton`, `world-cup-draw`, `markr`, …). A survey of those repos found:
+The same ESLint, Prettier and TypeScript configs get copied, with drift, from project to project. A survey of several of those projects found:
 
 - **Consistent:**
   - flat config, `@eslint/js` + typescript-eslint
   - react-hooks and react-refresh for React code
   - TS `strict`, `noUncheckedIndexedAccess`, Bundler resolution, ES2022
-  - lint rules that enforce import boundaries in the newer repos
+  - lint rules that enforce import boundaries in the newer projects
 - **Inconsistent:**
   - quotes, semicolons and print width
-  - strictness (`recommended` in some repos, `strict` in others; hook problems as warnings in some, errors in others)
+  - strictness (`recommended` in some projects, `strict` in others; hook problems as warnings in some, errors in others)
 
 Kiln is the natural home for a single canonical version.
 
@@ -38,5 +38,5 @@ A shared Vitest preset is deferred, because test setup varies too much between p
 
 ## Consequences
 
-- Other repos can replace their copied configs with one dependency each, which is a separate migration.
+- Other projects can replace their copied configs with one dependency each, as a separate migration.
 - Rule changes are semver changes to the config packages: a new error-level rule is a minor or major bump, never a patch.
