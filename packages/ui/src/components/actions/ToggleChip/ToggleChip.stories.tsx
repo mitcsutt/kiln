@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { CheckIcon, Inline, ToggleChip } from '@mitcsutt/kiln-ui'
+import { Avatar, AvatarGroup, CheckIcon, Inline, ToggleChip, Tooltip } from '@mitcsutt/kiln-ui'
+import { expect } from 'storybook/test'
+import { must } from '#test/must'
 import { useState } from 'react'
 import { Stack } from '#components/layout/Stack'
 
@@ -108,5 +110,40 @@ export const States: Story = {
         </ToggleChip>
       </Inline>
     )
+  },
+}
+
+/**
+ * `trailing` sets content after the label, spaced from it: here, who else reacted. A chip in a
+ * `Tooltip` keeps its pressed look, because pressed is read from `aria-pressed`.
+ */
+export const Reactions: Story = {
+  tags: ['docs'],
+  render: function Reactions() {
+    return (
+      <Inline gap={2}>
+        <Tooltip content="Noor, Kofi and you">
+          <ToggleChip
+            defaultPressed
+            aria-label="Applause, 3, including you"
+            trailing={
+              <AvatarGroup size="xs" aria-label="Noor, Kofi and you">
+                <Avatar name="Noor Haddad" />
+                <Avatar name="Kofi Mensah" />
+              </AvatarGroup>
+            }
+          >
+            Applause
+          </ToggleChip>
+        </Tooltip>
+        <ToggleChip aria-label="Thanks, 1">Thanks</ToggleChip>
+      </Inline>
+    )
+  },
+  play: async ({ canvasElement }) => {
+    const [pressed, resting] = [...canvasElement.querySelectorAll('button')]
+    const bg = (el?: Element) => getComputedStyle(must(el, 'a chip')).backgroundColor
+    await expect(pressed).toHaveAttribute('aria-pressed', 'true')
+    await expect(bg(pressed)).not.toBe(bg(resting))
   },
 }

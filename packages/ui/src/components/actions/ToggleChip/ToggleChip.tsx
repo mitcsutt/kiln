@@ -11,6 +11,11 @@ export interface ToggleChipProps extends ComponentPropsWithoutRef<typeof Toggle.
   icon?: ReactNode
   /** How many items the filter matches. Rendered in tabular figures after the label. */
   count?: number
+  /**
+   * Content after the label, spaced from it: an `AvatarGroup` of who reacted, a small figure.
+   * Keep it phrasing content, since the chip is a button.
+   */
+  trailing?: ReactNode
 }
 
 /**
@@ -31,7 +36,7 @@ export interface ToggleChipProps extends ComponentPropsWithoutRef<typeof Toggle.
  * (Fiesta), resting chips stand proud and pressed chips sit flat — literally pushed in.
  */
 export const ToggleChip = forwardRef<HTMLButtonElement, ToggleChipProps>(function ToggleChip(
-  { size = 'md', icon, count, className, children, type, ...rest },
+  { size = 'md', icon, count, trailing, className, children, type, ...rest },
   ref,
 ) {
   return (
@@ -48,6 +53,7 @@ export const ToggleChip = forwardRef<HTMLButtonElement, ToggleChipProps>(functio
         </span>
       ) : null}
       <span className={styles.label}>{children}</span>
+      {trailing !== undefined ? <span className={styles.trailing}>{trailing}</span> : null}
       {count !== undefined ? <span className={styles.count}>{count}</span> : null}
     </Toggle.Root>
   )
