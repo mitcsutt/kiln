@@ -36,6 +36,10 @@ The rules removed the defaults but couldn't supply a direction. The fix the rese
 - The base stylesheet no longer carries Schibsted Grotesk, Newsreader or Martian Mono. A consumer theme that relied on those families arriving with `styles.css` has to load them itself, or import the Monograph preset.
 - Kiln ships six themes, so the Storybook test matrix in CI grows from eight jobs to twelve.
 - `docs/target-state.md` lists the added presets next to the ported ones.
-- B612 ships only a Latin subset, so Flightdeck falls back to system faces for Latin Extended text.
+- Known limits of the chosen faces and tokens:
+  - B612 ships only a Latin subset, so Flightdeck falls back to system faces for Latin Extended text.
+  - Shantell Sans has no tabular figures, so Riso's numerals don't align in columns.
+  - Golos Text ships no italic, so Paper's italics are synthesised.
+  - Ledger has no red rule down a money column. It would need a new optional token, so it is left for a later change.
 - Monograph and Fiesta are kept for compatibility and are not the model for new themes. If they are ever redesigned, they lose their exemption in `tells.test.ts`.
 - The banned list will go stale as model defaults move. Revisit it when the research is refreshed, and change the list and DESIGN.md together.

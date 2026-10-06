@@ -58,9 +58,15 @@ Models that are told to avoid the tells above converge on a second set instead (
 - A **serif display with one italic accent word**.
 - A font from the banned list below.
 
-`packages/ui/src/themes/tells.test.ts` enforces the checkable part for Paper, Ledger, Flightdeck and Riso: no banned font family in any theme or font stylesheet, no warm-cream light canvas, and no ember, terracotta or indigo accent. The rest is review.
+`packages/ui/src/themes/tells.test.ts` enforces the checkable part for Paper, Ledger, Flightdeck and Riso, reading the light half of each `light-dark()` pair:
 
-**Legacy exemption.** Monograph and Fiesta are listed as `LEGACY` in that test and are exempt, because they ship unchanged from before these rules ([ADR 0030](https://github.com/mitcsutt/kiln/blob/main/docs/adr/0030-theme-family-without-ai-tells.md)). Monograph still has its ember accent and serif display, and Fiesta its apricot canvas and halftone. Do not treat them as precedent: a new theme gets no exemption, and a redesigned Monograph or Fiesta loses its own.
+- no banned font family in their stylesheets or in any font stylesheet under `tokens/` except the legacy ones;
+- no warm-cream canvas: `--color-canvas` fails when its lightness is above 0.85, its chroma above 0.008 and its hue 40 to 100;
+- no ember, terracotta or indigo accent: `--color-accent` fails when its chroma is above 0.08 and its hue is 25 to 60 (ember) or above 262 up to 300 (indigo).
+
+The rest is review.
+
+**Legacy exemption.** Monograph and Fiesta are listed as `LEGACY` in that test and are exempt, along with the font stylesheets only they use (`fonts-monograph.css`, `fonts-fiesta.css` and `fonts-martian-mono.css`), because they ship unchanged from before these rules ([ADR 0030](https://github.com/mitcsutt/kiln/blob/main/docs/adr/0030-theme-family-without-ai-tells.md)). Monograph still has its ember accent and serif display, and Fiesta its apricot canvas and halftone. Do not treat them as precedent: a new theme gets no exemption, and a redesigned Monograph or Fiesta loses its own.
 
 The banned font families, from the research: the first-order defaults plus the faces models now reach for as "distinctive" escapes (several are on Anthropic's own recommended list): Inter, Roboto, Open Sans, Poppins, Montserrat, Space Grotesk, Space Mono, Geist, DM Sans, DM Serif, Manrope, Plus Jakarta Sans, Outfit, Sora, Syne, Satoshi, Cabinet Grotesk, Clash Display, General Sans, Instrument Sans, Instrument Serif, Fraunces, Playfair Display, Cormorant, Lora, EB Garamond, Newsreader, Bricolage Grotesque, IBM Plex, JetBrains Mono and Fira Code. The list goes stale as model defaults move: change the list in the test and here together.
 

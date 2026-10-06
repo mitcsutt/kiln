@@ -8,6 +8,8 @@ Source: https://kiln.mitchellsutton.com/docs/ui/themes/monograph
 
 _A scholarly monograph read under a desk lamp at night._ Modern nostalgia: blue slate rather than black, a single ember accent that behaves like phosphor, and a serif display set big and tight over a newsroom grotesk.
 
+Monograph predates Kiln's [second-order design rules](https://kiln.mitchellsutton.com/docs/ui/foundations/design-rules#second-order-tells) and ships unchanged for compatibility, so it isn't the model for a new theme.
+
 
 ## Use it
 

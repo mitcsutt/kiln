@@ -39,7 +39,7 @@ export function App() {
 ## Themes
 
 - **`paper`** is the default: neutral, blue-black ink on grey recycled stock, set in Golos Text. It's in `styles.css` and applies when no theme is set.
-- **`monograph`**, **`ledger`**, **`fiesta`**, **`flightdeck`** (a dark-first glass-cockpit display) and **`riso`** (a two-drum risograph zine) are presets. Monograph and Fiesta are the original presets, kept unchanged. Import the ones you use, and select one on the root or on any subtree:
+- **`monograph`**, **`ledger`**, **`fiesta`**, **`flightdeck`** (a dark-first glass-cockpit display) and **`riso`** (a two-drum risograph zine) are presets. Monograph and Fiesta predate the current design rules and are kept unchanged for compatibility. Import the ones you use, and select one on the root or on any subtree:
 
   ```tsx
   import '@mitcsutt/kiln-ui/themes/riso.css'
