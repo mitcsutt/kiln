@@ -74,4 +74,17 @@ describe('RelativeTime', () => {
     })
     expect(screen.getByText('now')).toBeInTheDocument()
   })
+
+  it('says "just now" within the threshold, and Intl\'s wording outside it', () => {
+    const { rerender } = render(<RelativeTime date={NOW.getTime() - 20_000} justNowWithin={60} />)
+    expect(screen.getByText('just now')).toBeInTheDocument()
+    rerender(<RelativeTime date={NOW.getTime() - 3 * 60_000} justNowWithin={60} />)
+    expect(screen.getByText('3 mins ago')).toBeInTheDocument()
+    rerender(<RelativeTime date={NOW.getTime() - 20_000} />)
+    expect(screen.getByText('now')).toBeInTheDocument()
+    rerender(
+      <RelativeTime date={NOW.getTime() - 20_000} justNowWithin={60} justNowLabel="moments ago" />,
+    )
+    expect(screen.getByText('moments ago')).toBeInTheDocument()
+  })
 })

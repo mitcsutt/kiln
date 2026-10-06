@@ -16,6 +16,8 @@ export interface IconProps extends Omit<SVGProps<SVGSVGElement>, 'ref'> {
  * (`--icon-stroke`), so Fiesta icons are chunky and Flightdeck icons are fine-lined.
  * Consumers may pass any SVG/icon node where a component accepts `icon` props.
  */
+// Marked side-effect free so a bundler drops every icon an app doesn't import.
+/* @__NO_SIDE_EFFECTS__ */
 export function createIcon(displayName: string, paths: React.ReactNode) {
   const Component = forwardRef<SVGSVGElement, IconProps>(function Icon(
     { size = 'inherit', label, className, ...rest },

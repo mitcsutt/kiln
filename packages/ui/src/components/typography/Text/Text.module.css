@@ -91,6 +91,15 @@
 .text[data-tone='inverse'] {
   --_ink: var(--color-ink-inverse);
 }
+/* Highlight: on the highlight fill, like a marker pen. Its ink is the fill's own. */
+.text[data-tone='highlight'] {
+  --_ink: var(--color-highlight-ink);
+
+  padding-inline: 0.2em;
+  border-radius: var(--radius-chip);
+  background: var(--color-highlight);
+  box-decoration-break: clone;
+}
 
 /* Weights */
 .text[data-weight='regular'] {

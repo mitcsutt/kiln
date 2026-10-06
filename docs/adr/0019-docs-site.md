@@ -1,6 +1,6 @@
 # 0019. How the docs site is built
 
-- **Status:** Accepted, amended by [0025](0025-colocated-examples.md) and [0029](0029-generated-reference-pages.md)
+- **Status:** Accepted, amended by [0025](0025-colocated-examples.md), [0029](0029-generated-reference-pages.md) and [0033](0033-docs-sections.md)
 - **Date:** 2026-10-04
 
 ## Context

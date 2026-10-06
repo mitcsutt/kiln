@@ -38,6 +38,15 @@ writeFixture(
   JSON.stringify({ name: 'fixture', private: true, devDependencies: { vitest: '*' } }),
 )
 writeFixture('options.ts', 'export interface Options {\n  verbose: boolean\n}\n')
+// A stand-in for TanStack Router's types, for the `only-throw-error` allowance.
+writeFixture(
+  'node_modules/@tanstack/router-core/package.json',
+  JSON.stringify({ name: '@tanstack/router-core', version: '1.0.0', types: 'index.d.ts' }),
+)
+writeFixture(
+  'node_modules/@tanstack/router-core/index.d.ts',
+  'export interface Redirect {\n  to: string\n}\nexport interface NotFoundError {\n  global?: boolean\n}\nexport declare function redirect(options: { to: string }): Redirect\nexport declare function notFound(): NotFoundError\n',
+)
 
 afterAll(() => {
   fs.rmSync(fixtures, { recursive: true, force: true })
@@ -118,6 +127,41 @@ describe('base', () => {
         'import-x/no-extraneous-dependencies',
       )
     }
+  })
+
+  it('lets test support files import dev dependencies', async () => {
+    const code = "import { describe } from 'vitest'\n\nexport const suite = describe\n"
+    for (const file of [
+      'src/testing/renderWithRouter.tsx',
+      'src/test/setup.ts',
+      'src/testing/msw/handlers.ts',
+      'src/__mocks__/api.ts',
+      'vitest.setup.ts',
+      'vitest.workspace.ts',
+    ]) {
+      expect(await ruleIds(linter, file, code), file).not.toContain(
+        'import-x/no-extraneous-dependencies',
+      )
+    }
+  })
+
+  it('gives one answer on non-null assertions, so --fix never trades one error for another', async () => {
+    const code =
+      'export function pick(a: string | null, b: string | null) {\n  return (a ?? b) as string\n}\n'
+    const ids = await ruleIds(linter, 'assertion.ts', code)
+    expect(ids).not.toContain('@typescript-eslint/non-nullable-type-assertion-style')
+    expect(
+      await ruleIds(linter, 'bang.ts', code.replace('(a ?? b) as string', '(a ?? b)!')),
+    ).toContain('@typescript-eslint/no-non-null-assertion')
+  })
+
+  it("allows throwing TanStack Router's redirect and notFound, and nothing else that isn't an Error", async () => {
+    const rule = '@typescript-eslint/only-throw-error'
+    const routes =
+      "import { notFound, redirect } from '@tanstack/router-core'\n\nexport function beforeLoad(signedIn: boolean) {\n  if (!signedIn) throw redirect({ to: '/sign-in' })\n  throw notFound()\n}\n"
+    expect(await ruleIds(linter, 'routes.ts', routes)).not.toContain(rule)
+    const plain = "export function fail() {\n  throw { to: '/sign-in' }\n}\n"
+    expect(await ruleIds(linter, 'plain.ts', plain)).toContain(rule)
   })
 
   it('allows numbers in template literals, but not nullish values or booleans', async () => {

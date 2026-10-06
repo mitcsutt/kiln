@@ -3,12 +3,14 @@
  *   --list-inset         default var(--space-2) — row padding-inline (room for fills)
  *   --list-row-radius    default var(--radius-field) — hover/selected/highlighted fill
  *   --list-trailing-size default: the row's text size (same as the title)
+ *   --list-rail-width    default var(--space-1) — the categorical rail of a `color` row
  *   --highlight-tone-{positive,caution,critical,info}-text, --highlight-accent-text
  *                        tone text inside a highlighted row (shared with Table)
  *
  * Structure: li.item > .row (a div, or the asChild link/button) > slots. The row carries
- * padding, hover and focus so a linked row is one target edge to edge. Slots are spans,
- * valid inside <a> and <button>.
+ * padding, hover and focus so a linked row is one target edge to edge. Slots are divs, so
+ * block components (Stat, Stack, a sized Media) fit in them, and spans inside an asChild row,
+ * the only content a button may hold.
  */
 .list {
   display: flex;
@@ -118,6 +120,51 @@
 .item[data-interactive] > .row {
   cursor: pointer;
 }
+
+/* Muted: out of play. The title drops to the muted step, which still clears AA. */
+.item[data-muted] > .row {
+  --color-ink: var(--color-ink-muted);
+
+  color: var(--color-ink-muted);
+}
+
+/* A categorical rail in the row's start inset: whose row it is, in their Tag's colour. */
+.item[data-color]::before {
+  content: '';
+  position: absolute;
+  inset-block: var(--space-1);
+  inset-inline-start: 0;
+  inline-size: var(--list-rail-width, var(--space-1));
+  border-radius: var(--radius-chip);
+  background: var(--_cat);
+}
+.item[data-color='1'] {
+  --_cat: var(--color-cat-1);
+}
+.item[data-color='2'] {
+  --_cat: var(--color-cat-2);
+}
+.item[data-color='3'] {
+  --_cat: var(--color-cat-3);
+}
+.item[data-color='4'] {
+  --_cat: var(--color-cat-4);
+}
+.item[data-color='5'] {
+  --_cat: var(--color-cat-5);
+}
+.item[data-color='6'] {
+  --_cat: var(--color-cat-6);
+}
+.item[data-color='7'] {
+  --_cat: var(--color-cat-7);
+}
+.item[data-color='8'] {
+  --_cat: var(--color-cat-8);
+}
+.item[data-color] > .row {
+  padding-inline-start: calc(var(--list-inset, var(--space-2)) + var(--space-2));
+}
 @media (hover: hover) {
   .item[data-interactive]:not([data-highlighted], [data-selected]) > .row:hover {
     background: var(--color-surface-sunken);
@@ -159,7 +206,8 @@
   font-size: var(--text-md);
   font-weight: var(--label-weight);
   line-height: var(--leading-snug);
-  overflow-wrap: anywhere;
+  /* Wrap between words; break inside one only when a single word can't fit the column. */
+  overflow-wrap: break-word;
 }
 
 .description {
@@ -169,6 +217,9 @@
 }
 
 .trailing {
+  --stat-align: end;
+  --stat-container-type: normal;
+
   display: inline-flex;
   flex: none;
   align-items: center;

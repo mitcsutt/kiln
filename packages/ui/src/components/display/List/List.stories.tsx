@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Amount, Avatar, ChevronRightIcon, List, Text } from '@mitcsutt/kiln-ui'
+import { Amount, Avatar, ChevronRightIcon, List, Media, Stat, Tag, Text } from '@mitcsutt/kiln-ui'
+import { expect } from 'storybook/test'
+import { must } from '#test/must'
 import { Stack } from '#components/layout/Stack'
 import { Badge } from '#components/display/Badge'
-import { Tag } from '#components/display/Tag'
 import { Numeral } from '#components/typography/Numeral'
 import { LiveIndicator } from '#components/feedback/LiveIndicator'
 import { StatusDot } from '#components/feedback/StatusDot'
@@ -276,6 +277,82 @@ export const Interactive: Story = {
             </a>
           </List.Item>
         ))}
+      </List>
+    )
+  },
+}
+
+const flag =
+  'data:image/svg+xml,' +
+  encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="20"><rect width="30" height="20" fill="#2f5d8a"/><rect y="7" width="30" height="6" fill="#f2f0ea"/></svg>',
+  )
+
+/**
+ * Block components in the slots: a sized `Media` at the start and a small `Stat` at the end,
+ * whose label and value line up on the row's end edge.
+ */
+export const BlockContentInSlots: Story = {
+  render: () => (
+    <List>
+      {[
+        { name: 'Kelso Bay', points: 9 },
+        { name: 'North Point', points: 6 },
+      ].map((row) => (
+        <List.Item key={row.name}>
+          <List.Leading>
+            <Media size="sm" ratio="3/2" src={flag} alt="" />
+          </List.Leading>
+          <List.Content>{row.name}</List.Content>
+          <List.Trailing>
+            <Stat size="sm" label="Pts" value={row.points} />
+          </List.Trailing>
+        </List.Item>
+      ))}
+    </List>
+  ),
+  play: async ({ canvas }) => {
+    const label = canvas.getAllByText('Pts')[0]
+    const value = canvas.getByText('9')
+    const end = (el?: HTMLElement) => must(el, 'a Stat part').getBoundingClientRect().right
+    await expect(Math.abs(end(label) - end(value))).toBeLessThan(2)
+    // A trailing Stat is only as wide as "Pts" and "9", so the title keeps its room.
+    const stat = must(label?.parentElement, 'the Stat')
+    await expect(stat.getBoundingClientRect().width).toBeLessThan(60)
+  },
+}
+
+/**
+ * `color` draws a rail in a categorical colour at the start of the row, matching the owner's
+ * `Tag`, and `muted` drops a row that's out of play to the muted ink.
+ */
+export const OwnersAndOutOfPlay: Story = {
+  name: 'Owners and out of play',
+  tags: ['docs'],
+  render: function OwnersAndOutOfPlay() {
+    return (
+      <List>
+        <List.Item color={1}>
+          <List.Content>Kelso Bay Rovers</List.Content>
+          <List.Trailing>
+            <Tag color={1}>Noor</Tag>
+          </List.Trailing>
+        </List.Item>
+        <List.Item color={4}>
+          <List.Content>Harbour Square Athletic</List.Content>
+          <List.Trailing>
+            <Tag color={4}>Kofi</Tag>
+          </List.Trailing>
+        </List.Item>
+        <List.Item color={4} muted>
+          <List.Content>
+            North Point Wanderers
+            <List.Description>Knocked out in the quarter-final</List.Description>
+          </List.Content>
+          <List.Trailing>
+            <Tag color={4}>Kofi</Tag>
+          </List.Trailing>
+        </List.Item>
       </List>
     )
   },

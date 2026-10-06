@@ -83,8 +83,24 @@
   opacity: 0.45;
 }
 
+/* The label fills the trigger, so its content can spread to the chevron or `trailing`. */
 .triggerLabel {
+  flex: 1 1 auto;
   min-inline-size: 0;
+}
+.trigger[data-size='sm'] .triggerLabel {
+  flex: 0 1 auto;
+}
+/* With a trailing figure, even a small trigger's label fills, so the figures in a list line up. */
+.trigger[data-size='sm'][data-trailing] .triggerLabel {
+  flex: 1 1 auto;
+}
+.triggerTrailing {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-2);
+  font-variant-numeric: tabular-nums lining-nums;
 }
 
 .chevron {

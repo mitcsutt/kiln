@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Badge, Button, Card, Grid, Inline, Media, Text } from '@mitcsutt/kiln-ui'
+import { expect } from 'storybook/test'
+import { must } from '#test/must'
 import { ArrowUpRightIcon } from '#icons'
 import { Stack } from '#components/layout/Stack'
 import { Tag, TagList } from '#components/display/Tag'
@@ -242,5 +244,46 @@ export const Linked: Story = {
         </a>
       </Card>
     )
+  },
+}
+
+/**
+ * `live` gives a card a heavier accent edge for something happening now, and `placeholder`
+ * marks out a slot that isn't decided yet with crop marks at its corners. `color` adds a
+ * keyline in a categorical colour, matching the owner's `Tag`.
+ */
+export const LiveAndPlaceholder: Story = {
+  name: 'Live, placeholder and owner',
+  tags: ['docs'],
+  render: function LiveAndPlaceholder() {
+    return (
+      <Grid columns={{ base: 1, sm: 3 }} gap={4}>
+        <Card variant="live">
+          <Card.Header>
+            <Card.Title>Kelso Bay v North Point</Card.Title>
+            <Card.Meta>Second half</Card.Meta>
+          </Card.Header>
+        </Card>
+        <Card variant="placeholder">
+          <Card.Header>
+            <Card.Title>Winner of semi-final 2</Card.Title>
+            <Card.Meta>Final, Saturday</Card.Meta>
+          </Card.Header>
+        </Card>
+        <Card color={3}>
+          <Card.Header>
+            <Card.Title>Harbour Square</Card.Title>
+            <Card.Meta>Drawn by Ada</Card.Meta>
+          </Card.Header>
+        </Card>
+      </Grid>
+    )
+  },
+  play: async ({ canvasElement }) => {
+    // The owner keyline is the top border of a box the card's shape, so it follows its corners.
+    const card = must(canvasElement.querySelector('[data-color]'), 'the owner card')
+    const keyline = getComputedStyle(card, '::before')
+    await expect(keyline.borderTopLeftRadius).toBe(getComputedStyle(card).borderTopLeftRadius)
+    await expect(keyline.borderTopStyle).toBe('solid')
   },
 }

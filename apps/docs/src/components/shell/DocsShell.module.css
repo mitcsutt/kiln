@@ -7,3 +7,10 @@
   border-inline-end: var(--border-width) solid var(--color-line);
   background: var(--color-surface-sunken);
 }
+
+/* The phone sheet has no topbar, so it opens with the section switcher, ruled off the tree. */
+.sheetSections {
+  padding-block-end: var(--space-3);
+  padding-inline: var(--space-5) var(--space-4);
+  border-block-end: var(--border-width) solid var(--color-line);
+}

@@ -96,4 +96,20 @@ describe('Accordion', () => {
     expect(screen.getByRole('heading', { level: 4 })).toBeInTheDocument()
     expect(screen.getByText(/still unpaid/)).toBeVisible()
   })
+
+  it('puts trailing content inside the trigger, before the chevron', () => {
+    render(
+      <Accordion type="single" collapsible>
+        <Accordion.Item value="semifinal">
+          <Accordion.Trigger trailing="+4.5">Beat North Point</Accordion.Trigger>
+          <Accordion.Content>Two goals and a clean sheet.</Accordion.Content>
+        </Accordion.Item>
+      </Accordion>,
+    )
+    const trigger = screen.getByRole('button', { name: /Beat North Point/ })
+    expect(trigger).toHaveTextContent('Beat North Point+4.5')
+    const trailing = screen.getByText('+4.5')
+    expect(trailing.tagName).toBe('SPAN')
+    expect(trailing.nextElementSibling?.tagName.toLowerCase()).toBe('svg')
+  })
 })

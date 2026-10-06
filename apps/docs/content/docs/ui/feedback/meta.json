@@ -1,4 +1,4 @@
 {
   "title": "Feedback",
-  "pages": ["alert", "spinner", "live-indicator", "status-dot", "relative-time"]
+  "pages": ["alert", "spinner", "live-indicator", "status-dot", "relative-time", "flash"]
 }

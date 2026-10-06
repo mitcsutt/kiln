@@ -7,6 +7,10 @@
  *   --app-shell-bar-rule        rule under the header / above the bottom bar
  *                               (default var(--color-line-strong): these are the frame's edges)
  *
+ * Set by the component, not a theme:
+ *   --app-shell-header-size     the sticky header's measured height, on the shell; the sticky
+ *                               offset reads it before --app-shell-header-height
+ *
  * The bottom bar is `position: sticky` as the grid's last row rather than `fixed`, so
  * nothing needs a magic padding to stop it covering the end of Main.
  */
@@ -27,8 +31,8 @@
 
 .shell:has(> .header[data-sticky]) {
   --app-shell-sticky-offset: var(
-    --app-shell-header-height,
-    calc(var(--control-lg) + var(--space-4))
+    --app-shell-header-size,
+    var(--app-shell-header-height, calc(var(--control-lg) + var(--space-4)))
   );
 }
 

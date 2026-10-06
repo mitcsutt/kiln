@@ -73,4 +73,25 @@ describe('Numeral parts', () => {
     expect(data.lastElementChild).toHaveAttribute('data-affix', 'suffix')
     expect(data).toHaveAttribute('value', '47')
   })
+
+  it('sets an annotation after the figure, inside the same <data>', () => {
+    const { container } = render(<Numeral value={1} annotation="(4)" />)
+    const data = container.querySelector('data')
+    expect(data).toHaveTextContent('1 (4)')
+    expect(data).toHaveAttribute('value', '1')
+  })
+
+  it('takes a highlight tone', () => {
+    const { container } = render(<Numeral value={1} tone="highlight" />)
+    expect(container.querySelector('data')).toHaveAttribute('data-tone', 'highlight')
+  })
+
+  it('is found by the queries its docs recommend, not by getByText on the figure', () => {
+    const { container } = render(<Numeral value={90.5} signDisplay="always" />)
+    expect(screen.queryByText('+90.5')).toBeNull()
+    expect(
+      screen.getByText((_, el) => el?.tagName === 'DATA' && el.textContent === '+90.5'),
+    ).toBeInTheDocument()
+    expect(container.querySelector('data[value="90.5"]')).not.toBeNull()
+  })
 })

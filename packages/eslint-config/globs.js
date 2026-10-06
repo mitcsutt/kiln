@@ -10,6 +10,16 @@ export const TEST_FILES = [
   '**/__tests__/**/*.{js,jsx,mjs,cjs,ts,tsx,mts,cts}',
 ]
 
+/**
+ * Test support that isn't a test itself: setup files, render helpers, mock handlers and
+ * Vitest workspace files, which import test-only dependencies such as `msw` and Testing Library.
+ */
+export const TEST_SUPPORT_FILES = [
+  '**/{test,tests,testing,__mocks__}/**/*.{js,jsx,mjs,cjs,ts,tsx,mts,cts}',
+  '**/*.setup.{js,jsx,mjs,cjs,ts,tsx,mts,cts}',
+  '**/{vitest,vite}.{workspace,setup}.{js,mjs,cjs,ts,mts,cts}',
+]
+
 /** Storybook stories. */
 export const STORY_FILES = ['**/*.{stories,story}.{js,jsx,mjs,cjs,ts,tsx,mts,cts}']
 

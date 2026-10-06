@@ -14,6 +14,9 @@ export type Tone = 'neutral' | 'accent' | 'positive' | 'caution' | 'critical' | 
 /** Control sizes shared by Button, inputs, Tag, etc. */
 export type Size = 'sm' | 'md' | 'lg'
 
+/** A categorical colour slot → `--color-cat-N`: a person, team or topic, matching its `Tag` and `Avatar`. */
+export type CategoryColor = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8
+
 /** Content widths for Container and prose measure. */
 export type Width = 'narrow' | 'text' | 'content' | 'wide' | 'full'
 

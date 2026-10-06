@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import {
+  Button,
   CopyIcon,
   IconButton,
   Inline,
@@ -8,9 +9,8 @@ import {
   Tooltip,
   TooltipProvider,
 } from '@mitcsutt/kiln-ui'
-import { expect, screen, userEvent, waitFor, within } from 'storybook/test'
+import { expect, fireEvent, fn, screen, userEvent, waitFor, within } from 'storybook/test'
 import { storyRoot } from '#components/_story/storyRoot'
-import { Button } from '#components/actions/Button'
 import { Stack } from '#components/layout/Stack'
 import { MoonIcon } from '#icons'
 import { Clip, Muted, Spacer } from '#components/overlays/_story/StoryKit'
@@ -142,5 +142,87 @@ export const Usage: Story = {
         </Inline>
       </TooltipProvider>
     )
+  },
+}
+
+/**
+ * `touch="longpress"` opens a tooltip when the trigger is held on a touch screen, and swallows
+ * the tap that ends the press. A disabled trigger stays focusable (`aria-disabled`, with its
+ * clicks blocked), so its tooltip still opens on hover, focus and long press, and can say why
+ * it's disabled.
+ */
+export const TouchAndDisabled: Story = {
+  name: 'Touch and disabled triggers',
+  tags: ['docs'],
+  render: function TouchAndDisabled() {
+    return (
+      <Inline gap={3}>
+        <Tooltip content="Noor, Kofi and Ada" touch="longpress">
+          <Button variant="outline" tone="neutral">
+            3 reactions
+          </Button>
+        </Tooltip>
+        <Tooltip content="You've used all three reactions" touch="longpress">
+          <Button variant="outline" tone="neutral" disabled>
+            React
+          </Button>
+        </Tooltip>
+      </Inline>
+    )
+  },
+}
+
+const onReactionsClick = fn()
+
+/**
+ * A held touch opens the tooltip and swallows the tap; a quick tap still presses the button, and
+ * so does a key press after a long press.
+ */
+export const LongPress: Story = {
+  args: {
+    content: 'Noor, Kofi and Ada',
+    touch: 'longpress',
+    children: (
+      <Button variant="outline" tone="neutral" onClick={onReactionsClick}>
+        3 reactions
+      </Button>
+    ),
+  },
+  play: async ({ canvasElement }) => {
+    onReactionsClick.mockClear()
+    const trigger = within(storyRoot(canvasElement)).getByRole('button', { name: '3 reactions' })
+    await userEvent.pointer({ keys: '[TouchA]', target: trigger })
+    await expect(onReactionsClick).toHaveBeenCalledOnce()
+    await expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
+
+    const longPress = async (whileHeld?: () => Promise<unknown>) => {
+      await userEvent.pointer({ keys: '[TouchA>]', target: trigger })
+      await expect(await screen.findByRole('tooltip', {}, { timeout: 2000 })).toHaveTextContent(
+        'Noor, Kofi and Ada',
+      )
+      await whileHeld?.()
+      await fireEvent.pointerUp(trigger, { pointerType: 'touch' })
+    }
+    const pressEnter = async (times: number) => {
+      await userEvent.keyboard('{Escape}')
+      await waitFor(() => expect(screen.queryByRole('tooltip')).not.toBeInTheDocument())
+      trigger.focus()
+      await userEvent.keyboard('{Enter}')
+      await expect(onReactionsClick).toHaveBeenCalledTimes(times)
+      await userEvent.keyboard('{Escape}')
+      trigger.blur()
+    }
+
+    // The tap that ends the press arrives after the finger lifts, and is swallowed.
+    await longPress()
+    await new Promise((resolve) => setTimeout(resolve, 100))
+    await fireEvent.click(trigger)
+    await expect(onReactionsClick).toHaveBeenCalledOnce()
+    await pressEnter(2)
+
+    // A phone opens its context menu during the hold and sends no tap; a later key press works.
+    await longPress(async () => expect(await fireEvent.contextMenu(trigger)).toBe(false))
+    await new Promise((resolve) => setTimeout(resolve, 1100))
+    await pressEnter(3)
   },
 }

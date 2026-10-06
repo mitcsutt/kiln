@@ -39,9 +39,30 @@ export function Usage() {
 }
 ```
 
+## Categorical band
+
+`surface="cat-1"` to `"cat-8"` paints a band in a categorical colour, one person's or team's colour, matching their `Tag`. Ink and lines flip to stay legible on it.
+
+```tsx
+import { Container, Heading, Section, Stack, Text } from '@mitcsutt/kiln-ui'
+
+export function CategoricalBand() {
+  return (
+    <Section surface="cat-2" space={6}>
+      <Container>
+        <Stack gap={2}>
+          <Heading level={2}>Ada's crew</Heading>
+          <Text tone="muted">Three boats, eleven crossings this week.</Text>
+        </Stack>
+      </Container>
+    </Section>
+  )
+}
+```
+
 ## Surfaces and bands
 
-`surface` is `canvas`, `surface`, `sunken`, `inverse` or `accent`. On `inverse` and `accent`, the colour roles flip for everything inside, so text, links, focus rings and buttons stay legible with no extra props. `divider` adds a rule at the `top`, `bottom` or `both`.
+`surface` is `canvas`, `surface`, `sunken`, `inverse`, `accent`, or a categorical `cat-1` to `cat-8` (a band in one person's or team's colour, matching their `Tag`). On `inverse`, `accent` and the categorical bands, the colour roles flip for everything inside, so text, links, focus rings and buttons stay legible with no extra props. `divider` adds a rule at the `top`, `bottom` or `both`.
 
 ## API
 
@@ -50,7 +71,7 @@ export function Usage() {
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `space` | `Responsive<Space>` | `8` | Block padding (top and bottom), as a step on the space scale. Responsive. Vary it: adjacent sections should not share the same step. Default `8`. |
-| `surface` | `'accent' \| 'surface' \| 'canvas' \| 'sunken' \| 'inverse'` |  | Full-bleed band colour. Omit to stay transparent on the canvas. `inverse` and `accent` re-point the ink, line and focus colours so children stay legible. |
+| `surface` | `'accent' \| 'surface' \| 'canvas' \| 'sunken' \| 'inverse' \| 'cat-6' \| 'cat-3' \| 'cat-5' \| 'cat-1' \| 'cat-2' \| 'cat-4' \| 'cat-7' \| 'cat-8'` |  | Full-bleed band colour. Omit to stay transparent on the canvas. `inverse`, `accent` and the categorical `cat-1` to `cat-8` re-point the ink, line and focus colours so children stay legible. |
 | `divider` | `'top' \| 'bottom' \| 'both'` |  | A hairline across the full bleed at the top, bottom or both edges. |
 | `as` | `'div' \| 'section' \| 'article' \| 'aside' \| 'header' \| 'footer'` | `section` |  |
 | `hideBelow` | `'sm' \| 'md' \| 'lg' \| 'xl'` |  | Hide below this breakpoint (e.g. `md` → hidden on phones, shown from 48em). |

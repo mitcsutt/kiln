@@ -13,6 +13,7 @@ import {
   SystemIcon,
   Text,
 } from '@mitcsutt/kiln-ui'
+import { expect, waitFor } from 'storybook/test'
 import { Section } from '#components/layout/Section'
 import { Split } from '#components/layout/Split'
 import { Grid } from '#components/layout/Grid'
@@ -374,5 +375,62 @@ export const Usage: Story = {
         </AppShell.BottomBar>
       </AppShell>
     )
+  },
+}
+
+const sailings = Array.from(
+  { length: 24 },
+  (_, i) => `Sailing ${String(i + 1)}: Kelso Bay to North Point, calling at Harbour Square`,
+)
+
+/**
+ * A header taller than the token's height (a title row and a notice row). An in-page jump lands
+ * just below it, because the shell pads the document scroller by the header's measured height.
+ */
+export const AnchorBelowStickyHeader: Story = {
+  render: (args) => (
+    <AppShell {...args}>
+      <AppShell.Header>
+        <Container width="full">
+          <Stack gap={2}>
+            <Inline justify="between" gap={4}>
+              <Wordmark>Harbour Lines</Wordmark>
+              <a href="#timetable">Timetable</a>
+            </Inline>
+            <Text size="sm" tone="muted">
+              Winter timetable from 3 November: the 07:40 from Kelso Bay leaves at 07:35.
+            </Text>
+          </Stack>
+        </Container>
+      </AppShell.Header>
+      <AppShell.Main>
+        <Container width="full">
+          <Stack gap={6}>
+            <Text>Routes, fares and the harbour map come first on this page.</Text>
+            {sailings.map((sailing) => (
+              <Text key={sailing}>{sailing}</Text>
+            ))}
+            <Heading level={2} id="timetable">
+              Timetable
+            </Heading>
+            <Text>The first boat leaves Kelso Bay at 07:35.</Text>
+            {sailings.map((sailing) => (
+              <Text key={sailing}>{sailing}</Text>
+            ))}
+          </Stack>
+        </Container>
+      </AppShell.Main>
+    </AppShell>
+  ),
+  play: async ({ canvas }) => {
+    const header = canvas.getByRole('banner')
+    const target = canvas.getByRole('heading', { name: 'Timetable' })
+    target.scrollIntoView({ block: 'start' })
+    await waitFor(() =>
+      expect(target.getBoundingClientRect().top).toBeGreaterThanOrEqual(
+        header.getBoundingClientRect().bottom - 1,
+      ),
+    )
+    window.scrollTo(0, 0)
   },
 }

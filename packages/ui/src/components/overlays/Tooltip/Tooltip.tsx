@@ -1,10 +1,18 @@
 import {
+  cloneElement,
   createContext,
   forwardRef,
+  isValidElement,
   useContext,
+  useEffect,
+  useRef,
+  useState,
   type ComponentPropsWithoutRef,
+  type KeyboardEvent,
+  type PointerEvent,
   type ReactElement,
   type ReactNode,
+  type SyntheticEvent,
 } from 'react'
 import { Tooltip as TooltipPrimitive } from 'radix-ui'
 import { cx } from '#utils/cx'
@@ -41,6 +49,14 @@ export function TooltipProvider({
 }
 
 export type TooltipSide = 'top' | 'right' | 'bottom' | 'left'
+export type TooltipTouch = 'none' | 'longpress'
+
+/** How long a touch must be held before a `touch="longpress"` tooltip opens, in ms. */
+const LONG_PRESS = 500
+/** How far a touch may drift, in px, and still count as a press rather than a scroll. */
+const PRESS_SLOP = 10
+/** How long after a long press ends its click or context menu is still swallowed, in ms. */
+const RELEASE_WINDOW = 1000
 export type TooltipAlign = 'start' | 'center' | 'end'
 
 export interface TooltipProps extends Omit<
@@ -58,6 +74,12 @@ export interface TooltipProps extends Omit<
   align?: TooltipAlign
   /** Hover delay before opening, in ms. Keyboard focus opens immediately. */
   delay?: number
+  /**
+   * What a touch does. Hover and focus don't exist on a phone, so by default (`none`) a touch
+   * never opens a tooltip. `longpress` opens it when the trigger is held for half a second, and
+   * swallows the tap that follows, so the press doesn't also act. A tap elsewhere closes it.
+   */
+  touch?: TooltipTouch
   open?: boolean
   defaultOpen?: boolean
   onOpenChange?: (open: boolean) => void
@@ -92,6 +114,22 @@ const ContentInner = forwardRef<
  * so an `overflow: hidden` parent never clips it. Keep it to a few words, and never put anything
  * interactive in it: use a {@link Popover | Popover} for that.
  *
+ * ## On touch screens
+ *
+ * A phone has no hover, so a tooltip never opens on a tap. With `touch="longpress"` it opens
+ * when the trigger is held for half a second, and the tap that ends the press is swallowed, so
+ * holding a button to see who reacted doesn't also press it. Don't hide anything essential in a
+ * tooltip: a long press is easy to miss.
+ *
+ * ## On disabled triggers
+ *
+ * A disabled button gets no pointer or focus events, so a tooltip on it could never open. When
+ * the trigger is `disabled`, `Tooltip` marks it `aria-disabled` instead and blocks its clicks
+ * and key presses, so it still looks and announces as disabled, but hover, focus and long press
+ * reach it and the reason it's disabled ("You've used all three reactions") reaches every
+ * reader. It's the same element either way, so a trigger that's disabled while a request is
+ * pending keeps keyboard focus.
+ *
  * @privateRemarks
  * A small label that appears on hover and on keyboard focus. Portalled, so it's never
  * clipped by an `overflow: hidden` card. Not for anything interactive — use `Popover`.
@@ -105,6 +143,7 @@ export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip
     side = 'top',
     align = 'center',
     delay,
+    touch = 'none',
     open,
     defaultOpen,
     onOpenChange,
@@ -116,16 +155,44 @@ export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip
 ) {
   const hasProvider = useContext(HasProvider)
   const anchor = usePortalAnchorRef()
+  const [uncontrolled, setUncontrolled] = useState(defaultOpen ?? false)
+  const isOpen = open ?? uncontrolled
+  const setOpen = (next: boolean) => {
+    if (open === undefined) setUncontrolled(next)
+    onOpenChange?.(next)
+  }
+  const press = useLongPress(touch === 'longpress', () => {
+    setOpen(true)
+  })
+  const disabled =
+    isValidElement<{ disabled?: unknown }>(children) && children.props.disabled === true
+  // Disabled stays focusable (aria-disabled) and on the same element, so focus survives a
+  // disabled toggle and the hint still opens; activation is blocked here instead.
+  const trigger = disabled
+    ? cloneElement(children as ReactElement<Record<string, unknown>>, {
+        disabled: false,
+        'aria-disabled': true,
+      })
+    : children
+  const block = disabled
+    ? {
+        onClickCapture: (event: SyntheticEvent) => {
+          event.preventDefault()
+          event.stopPropagation()
+        },
+        onKeyDownCapture: (event: KeyboardEvent) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault()
+            event.stopPropagation()
+          }
+        },
+      }
+    : {}
   const tooltip = (
     <PortalAnchorContext.Provider value={anchor}>
-      <TooltipPrimitive.Root
-        delayDuration={delay}
-        open={open}
-        defaultOpen={defaultOpen}
-        onOpenChange={onOpenChange}
-      >
-        <TooltipPrimitive.Trigger asChild ref={composeRefs(anchor)}>
-          {children}
+      <TooltipPrimitive.Root delayDuration={delay} open={isOpen} onOpenChange={setOpen}>
+        <TooltipPrimitive.Trigger asChild ref={composeRefs(anchor)} {...press} {...block}>
+          {trigger}
         </TooltipPrimitive.Trigger>
         <TooltipPrimitive.Portal container={container}>
           <ContentInner
@@ -144,3 +211,56 @@ export const Tooltip = forwardRef<HTMLDivElement, TooltipProps>(function Tooltip
   )
   return hasProvider ? tooltip : <TooltipProvider>{tooltip}</TooltipProvider>
 })
+
+/**
+ * Long-press handlers for a trigger: a touch held still for LONG_PRESS opens the tooltip, and
+ * the click that ends that press (and the phone's context menu) is swallowed.
+ */
+function useLongPress(enabled: boolean, onLongPress: () => void) {
+  const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+  const start = useRef<{ x: number; y: number } | null>(null)
+  const fired = useRef(false)
+  const releasedAt = useRef<number | undefined>(undefined)
+  const cancel = () => {
+    clearTimeout(timer.current)
+    start.current = null
+  }
+  useEffect(() => cancel, [])
+  if (!enabled) return {}
+  const release = (event: PointerEvent) => {
+    cancel()
+    if (fired.current) releasedAt.current = event.timeStamp
+  }
+  const swallow = (event: SyntheticEvent) => {
+    if (!fired.current) return
+    const released = releasedAt.current
+    if (released !== undefined) {
+      fired.current = false
+      if (event.timeStamp - released > RELEASE_WINDOW) return
+    }
+    event.preventDefault()
+    event.stopPropagation()
+  }
+  return {
+    onPointerDown: (event: PointerEvent) => {
+      fired.current = false
+      releasedAt.current = undefined
+      if (event.pointerType !== 'touch') return
+      start.current = { x: event.clientX, y: event.clientY }
+      clearTimeout(timer.current)
+      timer.current = setTimeout(() => {
+        fired.current = true
+        start.current = null
+        onLongPress()
+      }, LONG_PRESS)
+    },
+    onPointerMove: (event: PointerEvent) => {
+      const from = start.current
+      if (from && Math.hypot(event.clientX - from.x, event.clientY - from.y) > PRESS_SLOP) cancel()
+    },
+    onPointerUp: release,
+    onPointerCancel: release,
+    onClickCapture: swallow,
+    onContextMenu: swallow,
+  }
+}

@@ -79,7 +79,34 @@
   --section-fill: var(--color-accent);
   --section-on: var(--color-accent-ink);
 }
-.section:is([data-surface='inverse'], [data-surface='accent']) {
+.section[data-surface='cat-1'] {
+  --section-fill: var(--color-cat-1);
+}
+.section[data-surface='cat-2'] {
+  --section-fill: var(--color-cat-2);
+}
+.section[data-surface='cat-3'] {
+  --section-fill: var(--color-cat-3);
+}
+.section[data-surface='cat-4'] {
+  --section-fill: var(--color-cat-4);
+}
+.section[data-surface='cat-5'] {
+  --section-fill: var(--color-cat-5);
+}
+.section[data-surface='cat-6'] {
+  --section-fill: var(--color-cat-6);
+}
+.section[data-surface='cat-7'] {
+  --section-fill: var(--color-cat-7);
+}
+.section[data-surface='cat-8'] {
+  --section-fill: var(--color-cat-8);
+}
+.section[data-surface^='cat-'] {
+  --section-on: var(--color-cat-ink);
+}
+.section:is([data-surface='inverse'], [data-surface='accent'], [data-surface^='cat-']) {
   --color-ink: var(--section-on);
   --color-ink-muted: color-mix(in oklab, var(--section-on) 76%, var(--section-fill));
   --color-ink-subtle: color-mix(in oklab, var(--section-on) 60%, var(--section-fill));
@@ -96,10 +123,10 @@
   background-color: var(--section-fill);
   color: var(--section-on);
 }
-/* An accent fill only clears AA against its own ink (~4.5-5:1), so there is no headroom
+/* An accent or categorical fill only clears AA against its own ink, so there is no headroom
    for muted/subtle steps there: secondary text uses the full band ink, and nested
    surfaces stay the band fill (edges come from the line tokens) so text on them keeps AA. */
-.section[data-surface='accent'] {
+.section:is([data-surface='accent'], [data-surface^='cat-']) {
   --color-ink-muted: var(--section-on);
   --color-ink-subtle: var(--section-on);
   --color-surface: var(--section-fill);

@@ -59,4 +59,47 @@ describe('Tooltip', () => {
     expect(tip.closest('[data-theme]')).toHaveAttribute('data-theme', 'fiesta')
     expect(tip.closest('[data-theme]')).not.toBe(document.documentElement)
   })
+
+  it('keeps a disabled trigger focusable and blocks its activation', async () => {
+    const onClick = vi.fn()
+    render(
+      <Tooltip content="You've used all three reactions">
+        <button type="button" disabled onClick={onClick}>
+          React
+        </button>
+      </Tooltip>,
+    )
+    await userEvent.tab()
+    const trigger = screen.getByRole('button', { name: 'React' })
+    expect(trigger).toHaveFocus()
+    expect(trigger).toHaveAttribute('aria-disabled', 'true')
+    expect(await screen.findByRole('tooltip')).toHaveTextContent("You've used all three reactions")
+    await userEvent.click(trigger)
+    await userEvent.keyboard('{Enter}')
+    await userEvent.keyboard(' ')
+    expect(onClick).not.toHaveBeenCalled()
+  })
+
+  it('keeps the same trigger, and focus, when disabled changes', async () => {
+    function Chip({ pending }: { pending: boolean }) {
+      return (
+        <Tooltip content="Noor and Kofi reacted">
+          <button type="button" disabled={pending}>
+            React
+          </button>
+        </Tooltip>
+      )
+    }
+    const { rerender } = render(<Chip pending={false} />)
+    await userEvent.tab()
+    const trigger = screen.getByRole('button', { name: 'React' })
+    expect(trigger).toHaveFocus()
+    rerender(<Chip pending />)
+    expect(screen.getByRole('button', { name: 'React' })).toBe(trigger)
+    expect(trigger).toHaveFocus()
+    rerender(<Chip pending={false} />)
+    expect(screen.getByRole('button', { name: 'React' })).toBe(trigger)
+    expect(trigger).not.toHaveAttribute('aria-disabled')
+    expect(trigger).toHaveFocus()
+  })
 })

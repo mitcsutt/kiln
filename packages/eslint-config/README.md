@@ -47,7 +47,7 @@ Type-aware rules need every linted file to belong to a `tsconfig.json`, includin
 | `node`         | Node.js globals, for scripts and tool config files                                                                                                                                                                          |
 | `docs-stories` | `kiln/docs-story`: a story tagged `docs` is a docs example, so it needs a JSDoc caption, a `render` that takes no args, package imports only and no `style`. For docs sites that render stories as copyable examples        |
 
-Unused `eslint-disable` comments are errors. Test files, stories, tool config files (`*.config.*`, `.storybook/`) and scripts (`scripts/`) may import dev dependencies, and nothing else can. Template literals take strings and numbers; anything else (`undefined`, `null`, booleans, objects) has to be converted on purpose.
+Unused `eslint-disable` comments are errors. Test files, test support (`test/`, `testing/`, `__mocks__/`, `*.setup.*`, `vitest.workspace.*`), stories, tool config files (`*.config.*`, `.storybook/`) and scripts (`scripts/`) may import dev dependencies, and nothing else can. Non-null assertions (`x!`) are errors, and nothing rewrites `as` casts into them. Only errors may be thrown, except TanStack Router's `redirect()` and `notFound()`. Template literals take strings and numbers; anything else (`undefined`, `null`, booleans, objects) has to be converted on purpose.
 
 ## Docs
 

@@ -22,7 +22,7 @@ Each record captures one decision: the context, what was decided, and what follo
 | [0016](0016-trusted-publishing.md)                      | Trusted publishing, off until switched on                    | Accepted, amended by 0032                |
 | [0017](0017-kiln-forms-port.md)                         | How `kiln-forms` was ported: names, entries, checks          | Accepted, amended by 0024                |
 | [0018](0018-storybook-workbench.md)                     | How the Storybook workbench is built and tested              | Accepted, amended by 0026, 0027 and 0031 |
-| [0019](0019-docs-site.md)                               | How the docs site is built: Fumadocs core, Kiln chrome       | Accepted, amended by 0025 and 0029       |
+| [0019](0019-docs-site.md)                               | How the docs site is built: Fumadocs core, Kiln chrome       | Accepted, amended by 0025, 0029 and 0033 |
 | [0020](0020-agent-skills.md)                            | How the agent skills are built from the docs                 | Accepted                                 |
 | [0021](0021-forms-context-in-nested-components.md)      | Typed form context for nested components in `kiln-forms`     | Accepted                                 |
 | [0022](0022-linked-consumers.md)                        | Linked consumers resolve built output through `kiln-dist`    | Accepted                                 |
@@ -36,5 +36,6 @@ Each record captures one decision: the context, what was decided, and what follo
 | [0030](0030-theme-family-without-ai-tells.md)           | New themes without the second-order AI tells                 | Accepted                                 |
 | [0031](0031-storybook-theme-matrix-on-theme-changes.md) | Story tests run every theme only when themes change          | Accepted                                 |
 | [0032](0032-public-before-1-0.md)                       | The repository goes public before `1.0.0`                    | Accepted                                 |
+| [0033](0033-docs-sections.md)                           | The docs sidebar shows one package at a time                 | Accepted                                 |
 
 New records use the next number and the same headings: Status, Context, Decision, Consequences.

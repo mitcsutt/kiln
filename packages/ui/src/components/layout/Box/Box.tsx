@@ -1,13 +1,14 @@
 import { forwardRef, type HTMLAttributes } from 'react'
 import { cx } from '#utils/cx'
 import { mergeStyles, responsiveVars, type Responsive } from '#utils/responsive'
-import { space, type Space } from '#utils/tokens'
+import { space, type Space, type CategoryColor } from '#utils/tokens'
 import styles from './Box.module.css'
 import { visibilityClass, type VisibilityProps } from '#utils/visibility'
 
 export type BoxElement =
   'div' | 'span' | 'section' | 'article' | 'aside' | 'header' | 'footer' | 'li'
-export type BoxSurface = 'none' | 'canvas' | 'surface' | 'sunken' | 'raised' | 'inverse'
+export type BoxSurface =
+  'none' | 'canvas' | 'surface' | 'sunken' | 'raised' | 'inverse' | `cat-${CategoryColor}`
 export type BoxRadius = 'none' | 'field' | 'surface' | 'media'
 
 export interface BoxProps extends HTMLAttributes<HTMLElement>, VisibilityProps {
@@ -17,7 +18,10 @@ export interface BoxProps extends HTMLAttributes<HTMLElement>, VisibilityProps {
   paddingX?: Responsive<Space>
   /** Block (top/bottom) padding; overrides `padding` on that axis. Responsive. */
   paddingY?: Responsive<Space>
-  /** Background fill. `inverse` also re-points ink and line colours for its children. */
+  /**
+   * Background fill. `inverse` and the categorical `cat-1` to `cat-8` (one person's or team's
+   * colour, matching their `Tag`) also re-point ink and line colours for its children.
+   */
   surface?: BoxSurface
   /** Hairline border in `--color-line`. One edge treatment per element — a border *or* a fill. */
   border?: boolean

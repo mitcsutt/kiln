@@ -69,4 +69,9 @@ describe('Text', () => {
     render(<Text measure="text">Every billable hour has a client before the month ends.</Text>)
     expect(screen.getByText(/Every billable hour/)).toHaveAttribute('data-measure', 'text')
   })
+
+  it('takes a highlight tone', () => {
+    render(<Text tone="highlight">First place</Text>)
+    expect(screen.getByText('First place')).toHaveAttribute('data-tone', 'highlight')
+  })
 })

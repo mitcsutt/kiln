@@ -63,10 +63,39 @@
   background-color: var(--color-surface-raised);
   color: var(--color-ink);
 }
-/* Inverse re-points the colour roles for descendants — same approach as Section. */
+/* Inverse and categorical fills re-point the colour roles for descendants — same approach as Section. */
 .box[data-surface='inverse'] {
   --box-fill: var(--color-surface-inverse);
   --box-on: var(--color-ink-inverse);
+}
+.box[data-surface='cat-1'] {
+  --box-fill: var(--color-cat-1);
+}
+.box[data-surface='cat-2'] {
+  --box-fill: var(--color-cat-2);
+}
+.box[data-surface='cat-3'] {
+  --box-fill: var(--color-cat-3);
+}
+.box[data-surface='cat-4'] {
+  --box-fill: var(--color-cat-4);
+}
+.box[data-surface='cat-5'] {
+  --box-fill: var(--color-cat-5);
+}
+.box[data-surface='cat-6'] {
+  --box-fill: var(--color-cat-6);
+}
+.box[data-surface='cat-7'] {
+  --box-fill: var(--color-cat-7);
+}
+.box[data-surface='cat-8'] {
+  --box-fill: var(--color-cat-8);
+}
+.box[data-surface^='cat-'] {
+  --box-on: var(--color-cat-ink);
+}
+.box:is([data-surface='inverse'], [data-surface^='cat-']) {
   --color-ink: var(--box-on);
   --color-ink-muted: color-mix(in oklab, var(--box-on) 76%, var(--box-fill));
   --color-ink-subtle: color-mix(in oklab, var(--box-on) 60%, var(--box-fill));
@@ -83,7 +112,15 @@
   background-color: var(--box-fill);
   color: var(--box-on);
 }
-.box[data-surface='inverse'] > * {
+/* A categorical fill only clears AA against its own ink: no headroom for muted steps. */
+.box[data-surface^='cat-'] {
+  --color-ink-muted: var(--box-on);
+  --color-ink-subtle: var(--box-on);
+  --color-surface: var(--box-fill);
+  --color-surface-sunken: var(--box-fill);
+  --color-surface-raised: var(--box-fill);
+}
+.box:is([data-surface='inverse'], [data-surface^='cat-']) > * {
   --color-surface-inverse: var(--box-on);
   --color-ink-inverse: var(--box-fill);
 }

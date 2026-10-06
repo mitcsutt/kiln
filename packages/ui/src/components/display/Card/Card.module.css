@@ -3,6 +3,7 @@
  *   --card-radius        default var(--radius-surface)
  *   --card-bg            default var(--color-surface)
  *   --card-shadow        default var(--shadow-surface) for `raised`
+ *   --card-keyline-width default var(--space-1) — the categorical keyline of a `color` card
  *
  * The root is `position: relative`, so absolutely placed children (a corner <Stamp>)
  * anchor to the card.
@@ -75,13 +76,82 @@
   --_shadow: var(--card-shadow, var(--shadow-surface));
 }
 
+/* Live: something happening now. The accent owns live state, so the edge is a heavier accent keyline. */
+.card[data-variant='live'] {
+  --_border: var(--color-accent);
+  --_border-hover: var(--color-accent);
+  --_shadow: inset 0 0 0 calc(var(--border-width-strong) - var(--border-width)) var(--color-accent);
+}
+
+/*
+ * Placeholder: a slot not yet decided. No fill, and printer's crop marks at the corners
+ * instead of a dashed box (DESIGN.md: space marked out for what will go there). The marks
+ * are solid-colour background images, eight short bars, not a gradient.
+ */
+.card[data-variant='placeholder'] {
+  --_bg: transparent;
+  --_bg-hover: var(--color-surface-sunken);
+  --_border: transparent;
+  --_border-hover: transparent;
+  --_m: var(--space-4);
+  --_w: var(--border-width-strong);
+  --_c: var(--color-line-strong);
+
+  background:
+    linear-gradient(var(--_c) 0 0) top left / var(--_m) var(--_w) no-repeat,
+    linear-gradient(var(--_c) 0 0) top left / var(--_w) var(--_m) no-repeat,
+    linear-gradient(var(--_c) 0 0) top right / var(--_m) var(--_w) no-repeat,
+    linear-gradient(var(--_c) 0 0) top right / var(--_w) var(--_m) no-repeat,
+    linear-gradient(var(--_c) 0 0) bottom left / var(--_m) var(--_w) no-repeat,
+    linear-gradient(var(--_c) 0 0) bottom left / var(--_w) var(--_m) no-repeat,
+    linear-gradient(var(--_c) 0 0) bottom right / var(--_m) var(--_w) no-repeat,
+    linear-gradient(var(--_c) 0 0) bottom right / var(--_w) var(--_m) no-repeat,
+    var(--_bg);
+  color: var(--color-ink-muted);
+}
+
+/* A categorical keyline along the top: whose card it is, in their Tag's colour. The top border
+   of a box the card's own shape, so it follows rounded corners down into the sides. */
+.card[data-color]::before {
+  content: '';
+  position: absolute;
+  inset: calc(var(--border-width) * -1);
+  border-block-start: var(--card-keyline-width, var(--space-1)) solid var(--_cat);
+  border-radius: var(--card-radius, var(--radius-surface));
+  pointer-events: none;
+}
+.card[data-color='1'] {
+  --_cat: var(--color-cat-1);
+}
+.card[data-color='2'] {
+  --_cat: var(--color-cat-2);
+}
+.card[data-color='3'] {
+  --_cat: var(--color-cat-3);
+}
+.card[data-color='4'] {
+  --_cat: var(--color-cat-4);
+}
+.card[data-color='5'] {
+  --_cat: var(--color-cat-5);
+}
+.card[data-color='6'] {
+  --_cat: var(--color-cat-6);
+}
+.card[data-color='7'] {
+  --_cat: var(--color-cat-7);
+}
+.card[data-color='8'] {
+  --_cat: var(--color-cat-8);
+}
+
 /* Interactive: an edge/fill change, never a scale. Raised cards press toward their shadow. */
 .card[data-interactive] {
   cursor: pointer;
 }
 @media (hover: hover) {
   .card[data-interactive]:hover {
-    background: var(--_bg-hover);
+    background-color: var(--_bg-hover);
     border-color: var(--_border-hover);
   }
 }

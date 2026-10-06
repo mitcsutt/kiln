@@ -39,7 +39,7 @@ export function Usage() {
 | `padding` | `Responsive<Space>` |  | Padding on every side. Responsive. |
 | `paddingX` | `Responsive<Space>` |  | Inline (left/right) padding; overrides `padding` on that axis. Responsive. |
 | `paddingY` | `Responsive<Space>` |  | Block (top/bottom) padding; overrides `padding` on that axis. Responsive. |
-| `surface` | `'none' \| 'surface' \| 'canvas' \| 'sunken' \| 'raised' \| 'inverse'` | `none` | Background fill. `inverse` also re-points ink and line colours for its children. |
+| `surface` | `'none' \| 'surface' \| 'canvas' \| 'sunken' \| 'raised' \| 'inverse' \| 'cat-6' \| 'cat-3' \| 'cat-5' \| 'cat-1' \| 'cat-2' \| 'cat-4' \| 'cat-7' \| 'cat-8'` | `none` | Background fill. `inverse` and the categorical `cat-1` to `cat-8` (one person's or team's colour, matching their `Tag`) also re-point ink and line colours for its children. |
 | `border` | `boolean` | `false` | Hairline border in `--color-line`. One edge treatment per element — a border *or* a fill. |
 | `radius` | `'none' \| 'surface' \| 'field' \| 'media'` | `none` | Corner radius, by role. |
 | `as` | `'div' \| 'section' \| 'article' \| 'aside' \| 'header' \| 'footer' \| 'li' \| 'span'` | `div` |  |

@@ -50,4 +50,17 @@ describe('ToggleChip', () => {
     const chip = screen.getByRole('button', { name: 'Overdue only 12' })
     expect(chip).toHaveAttribute('data-size', 'sm')
   })
+
+  it('sets trailing content after the label, inside the button', () => {
+    render(
+      <ToggleChip trailing={<span>Noor, Kofi</span>} defaultPressed>
+        Fire
+      </ToggleChip>,
+    )
+    const chip = screen.getByRole('button', { name: /Fire/ })
+    expect(chip).toHaveTextContent('FireNoor, Kofi')
+    expect(screen.getByText('Noor, Kofi').parentElement?.previousElementSibling).toHaveTextContent(
+      'Fire',
+    )
+  })
 })

@@ -109,3 +109,30 @@ export const Usage: Story = {
     )
   },
 }
+
+/**
+ * A label can be a block: a few lines set into the rule, like a verdict and a time between two
+ * halves of a timetable. It's read in place as ordinary content.
+ */
+export const BlockLabel: Story = {
+  name: 'Block label',
+  tags: ['docs'],
+  render: function BlockLabel() {
+    return (
+      <Divider
+        labelPosition="center"
+        spacing={4}
+        label={
+          <Stack gap={1} align="center">
+            <Text size="sm" weight="strong">
+              Change at Harbour Square
+            </Text>
+            <Text size="sm" tone="muted">
+              Connection 6 minutes
+            </Text>
+          </Stack>
+        }
+      />
+    )
+  },
+}

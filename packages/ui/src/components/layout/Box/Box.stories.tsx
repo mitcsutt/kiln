@@ -89,3 +89,16 @@ export const Usage: Story = {
     )
   },
 }
+
+/** Categorical surfaces: one person's or team's colour, with ink that stays legible on it. */
+export const CategoricalSurfaces: Story = {
+  render: () => (
+    <Inline gap={3}>
+      {([1, 2, 3, 4, 5, 6, 7, 8] as const).map((n) => (
+        <Box key={n} surface={`cat-${String(n)}` as `cat-${typeof n}`} padding={4} radius="field">
+          <Text>Crew {n}</Text>
+        </Box>
+      ))}
+    </Inline>
+  ),
+}

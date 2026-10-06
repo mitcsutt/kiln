@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Tabs, Text } from '@mitcsutt/kiln-ui'
 import { expect, userEvent, within } from 'storybook/test'
+import { fontSize, resolvedSize } from '#components/_story/fontSize'
 import { storyRoot } from '#components/_story/storyRoot'
 import { Stack } from '#components/layout/Stack'
 
@@ -130,6 +131,12 @@ export const Usage: Story = {
         </Tabs.Content>
       </Tabs>
     )
+  },
+  play: async ({ canvasElement }) => {
+    // Navigation text stays off the caption steps (DESIGN.md §2 Type).
+    const tab = within(storyRoot(canvasElement)).getByRole('tab', { name: 'Saturday' })
+    await expect(fontSize(tab)).toBeGreaterThanOrEqual(resolvedSize(tab, 'var(--text-sm)'))
+    await expect(fontSize(tab)).toBeGreaterThan(resolvedSize(tab, 'var(--text-xs)'))
   },
 }
 

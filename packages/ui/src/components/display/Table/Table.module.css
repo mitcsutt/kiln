@@ -7,6 +7,7 @@
  *   --table-head-transform     default var(--heading-transform)
  *   --table-head-bg            default var(--color-canvas) — only painted when stickyHeader
  *   --table-max-height         default 70vh — scroll height when stickyHeader
+ *   --table-rail-width         default var(--space-1) — the categorical rail of a `color` row
  *   --table-foot-rule          the rule over totals, default var(--border-width-strong) solid
  *                              var(--color-line-strong) — Ledger draws the accountant's double rule
  *   --highlight-tone-{positive,caution,critical,info}-text, --highlight-accent-text
@@ -198,6 +199,52 @@
 
 .row[data-interactive] {
   cursor: pointer;
+}
+
+/* Muted: out of play. Every ink drops to the muted step, which still clears AA. */
+.row[data-muted] > .cell {
+  --color-ink: var(--color-ink-muted);
+
+  color: var(--color-ink-muted);
+}
+
+/* A categorical rail at the row's start: whose row it is, in their Tag's colour. */
+.row[data-color] > .cell:first-child {
+  position: relative;
+  padding-inline-start: calc(var(--space-2) + var(--space-2));
+}
+.row[data-color] > .cell:first-child::before {
+  content: '';
+  position: absolute;
+  inset-block: var(--space-1);
+  inset-inline-start: 0;
+  inline-size: var(--table-rail-width, var(--space-1));
+  border-radius: var(--radius-chip);
+  background: var(--_cat);
+}
+.row[data-color='1'] {
+  --_cat: var(--color-cat-1);
+}
+.row[data-color='2'] {
+  --_cat: var(--color-cat-2);
+}
+.row[data-color='3'] {
+  --_cat: var(--color-cat-3);
+}
+.row[data-color='4'] {
+  --_cat: var(--color-cat-4);
+}
+.row[data-color='5'] {
+  --_cat: var(--color-cat-5);
+}
+.row[data-color='6'] {
+  --_cat: var(--color-cat-6);
+}
+.row[data-color='7'] {
+  --_cat: var(--color-cat-7);
+}
+.row[data-color='8'] {
+  --_cat: var(--color-cat-8);
 }
 .row > .cell {
   transition: background-color var(--dur-1) var(--ease-out);

@@ -5,7 +5,7 @@ import ts from 'typescript'
 import { describe, expect, it } from 'vitest'
 
 const packageDir = path.join(import.meta.dirname, '..')
-const presets = ['base', 'react', 'library', 'app', 'node'] as const
+const presets = ['base', 'react', 'library', 'app', 'react-app', 'node'] as const
 
 function load(preset: (typeof presets)[number]) {
   const file = path.join(packageDir, `${preset}.json`)
@@ -80,6 +80,31 @@ describe('library', () => {
 describe('app', () => {
   it('type-checks without emitting', () => {
     expect(load('app').options).toMatchObject({ noEmit: true, strict: true })
+  })
+})
+
+describe('react-app', () => {
+  it('is react plus app, in one chain', () => {
+    expect(load('react-app').options).toMatchObject({
+      jsx: ts.JsxEmit.ReactJSX,
+      noEmit: true,
+      allowJs: true,
+      strict: true,
+    })
+    expect(load('react-app').options.lib).toEqual(expect.arrayContaining(['lib.dom.d.ts']))
+  })
+
+  // esbuild (under Vite and Vitest) warns that "./base.json" forms a cycle when one tsconfig
+  // extends two presets that both extend base, so the combined preset extends exactly one.
+  it('reaches base along a single path', () => {
+    const extendsOf = (preset: string) =>
+      (
+        JSON.parse(fs.readFileSync(path.join(packageDir, `${preset}.json`), 'utf8')) as {
+          extends?: string
+        }
+      ).extends
+    expect(extendsOf('react-app')).toBe('./react.json')
+    expect(extendsOf('react')).toBe('./base.json')
   })
 })
 

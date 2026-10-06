@@ -30,7 +30,7 @@ export type {
 // Utilities & token types
 export { cx } from './utils/cx'
 export type { Responsive, Breakpoint } from './utils/responsive'
-export type { Space, Tone, Size, Width, Align, Justify } from './utils/tokens'
+export type { Space, Tone, Size, Width, Align, Justify, CategoryColor } from './utils/tokens'
 export type { VisibilityProps, VisibilityBreakpoint } from './utils/visibility'
 
 // Icons
@@ -302,7 +302,7 @@ export type {
 export { Badge } from './components/display/Badge'
 export type { BadgeProps, BadgeVariant, BadgeSize } from './components/display/Badge'
 export { Tag, TagList } from './components/display/Tag'
-export type { TagProps, TagColor, TagListProps } from './components/display/Tag'
+export type { TagProps, TagColor, TagSize, TagListProps } from './components/display/Tag'
 export { Avatar, getInitials, avatarColor } from './components/display/Avatar'
 export type { AvatarProps, AvatarSize, AvatarColor } from './components/display/Avatar'
 export { AvatarGroup } from './components/display/AvatarGroup'
@@ -339,7 +339,13 @@ export type {
   TableColumnWidth,
 } from './components/display/Table'
 export { Media } from './components/display/Media'
-export type { MediaProps, MediaRatio, MediaFit, MediaRadius } from './components/display/Media'
+export type {
+  MediaProps,
+  MediaRatio,
+  MediaFit,
+  MediaRadius,
+  MediaSize,
+} from './components/display/Media'
 export { Marquee } from './components/display/Marquee'
 export type {
   MarqueeProps,
@@ -404,6 +410,8 @@ export { Alert } from './components/feedback/Alert'
 export type { AlertProps, AlertTone, AlertVariant } from './components/feedback/Alert'
 export { LiveIndicator } from './components/feedback/LiveIndicator'
 export type { LiveIndicatorProps, LiveIndicatorVariant } from './components/feedback/LiveIndicator'
+export { Flash } from './components/feedback/Flash'
+export type { FlashProps } from './components/feedback/Flash'
 export { StatusDot } from './components/feedback/StatusDot'
 export type { StatusDotProps } from './components/feedback/StatusDot'
 export {

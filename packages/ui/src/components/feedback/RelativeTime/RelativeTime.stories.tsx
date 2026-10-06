@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { useState } from 'react'
 import {
   formatAbsoluteTime,
   formatRelativeTime,
@@ -77,6 +78,23 @@ export const Format: Story = {
         <Text>{formatRelativeTime(SAILING, NOW, 'en-GB')}</Text>
         <Text>{formatAbsoluteTime(SAILING, 'en-GB')}</Text>
       </Stack>
+    )
+  },
+}
+
+/**
+ * `justNowWithin` reads anything that many seconds either side of now as "just now", instead of
+ * `Intl`'s "now" and "in 30 sec". `justNowLabel` changes the words.
+ */
+export const JustNow: Story = {
+  name: 'Just now',
+  tags: ['docs'],
+  render: function JustNow() {
+    const [loadedAt] = useState(() => Date.now() - 20_000)
+    return (
+      <Text size="sm" tone="muted">
+        <RelativeTime date={loadedAt} justNowWithin={60} prefix="Departures updated" />
+      </Text>
     )
   },
 }

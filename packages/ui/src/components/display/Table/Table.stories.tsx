@@ -451,3 +451,31 @@ export const Sorting: Story = {
     )
   },
 }
+
+/** Owner rails and an eliminated row, muted. */
+export const OwnersAndOutOfPlay: Story = {
+  render: () => (
+    <Table aria-label="Group A">
+      <Table.Head>
+        <Table.Row>
+          <Table.HeaderCell>Team</Table.HeaderCell>
+          <Table.HeaderCell numeric>Pts</Table.HeaderCell>
+        </Table.Row>
+      </Table.Head>
+      <Table.Body>
+        <Table.Row color={1}>
+          <Table.Cell>Kelso Bay Rovers</Table.Cell>
+          <Table.Cell numeric>9</Table.Cell>
+        </Table.Row>
+        <Table.Row color={6}>
+          <Table.Cell>Harbour Square Athletic</Table.Cell>
+          <Table.Cell numeric>6</Table.Cell>
+        </Table.Row>
+        <Table.Row color={6} muted>
+          <Table.Cell>North Point Wanderers</Table.Cell>
+          <Table.Cell numeric>1</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  ),
+}

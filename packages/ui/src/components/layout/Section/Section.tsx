@@ -1,12 +1,13 @@
 import { forwardRef, type HTMLAttributes } from 'react'
 import { cx } from '#utils/cx'
 import { mergeStyles, responsiveVars, type Responsive } from '#utils/responsive'
-import { space, type Space } from '#utils/tokens'
+import { space, type Space, type CategoryColor } from '#utils/tokens'
 import styles from './Section.module.css'
 import { visibilityClass, type VisibilityProps } from '#utils/visibility'
 
 export type SectionElement = 'section' | 'div' | 'article' | 'aside' | 'header' | 'footer'
-export type SectionSurface = 'canvas' | 'surface' | 'sunken' | 'inverse' | 'accent'
+export type SectionSurface =
+  'canvas' | 'surface' | 'sunken' | 'inverse' | 'accent' | `cat-${CategoryColor}`
 export type SectionDivider = 'top' | 'bottom' | 'both'
 
 export interface SectionProps extends HTMLAttributes<HTMLElement>, VisibilityProps {
@@ -16,8 +17,9 @@ export interface SectionProps extends HTMLAttributes<HTMLElement>, VisibilityPro
    */
   space?: Responsive<Space>
   /**
-   * Full-bleed band colour. Omit to stay transparent on the canvas. `inverse` and
-   * `accent` re-point the ink, line and focus colours so children stay legible.
+   * Full-bleed band colour. Omit to stay transparent on the canvas. `inverse`, `accent` and
+   * the categorical `cat-1` to `cat-8` re-point the ink, line and focus colours so children
+   * stay legible.
    */
   surface?: SectionSurface
   /** A hairline across the full bleed at the top, bottom or both edges. */
@@ -36,8 +38,9 @@ export interface SectionProps extends HTMLAttributes<HTMLElement>, VisibilityPro
  *
  * ## Surfaces and bands
  *
- * `surface` is `canvas`, `surface`, `sunken`, `inverse` or `accent`. On `inverse` and `accent`,
- * the colour roles flip for everything inside, so text, links, focus rings and buttons stay
+ * `surface` is `canvas`, `surface`, `sunken`, `inverse`, `accent`, or a categorical `cat-1` to
+ * `cat-8` (a band in one person's or team's colour, matching their `Tag`). On `inverse`, `accent`
+ * and the categorical bands, the colour roles flip for everything inside, so text, links, focus rings and buttons stay
  * legible with no extra props. `divider` adds a rule at the `top`, `bottom` or `both`.
  *
  * @privateRemarks

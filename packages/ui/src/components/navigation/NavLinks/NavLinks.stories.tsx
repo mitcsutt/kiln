@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { NavLinks, Stack } from '@mitcsutt/kiln-ui'
+import { expect, within } from 'storybook/test'
+import { fontSize, resolvedSize } from '#components/_story/fontSize'
+import { storyRoot } from '#components/_story/storyRoot'
 import { Inline } from '#components/layout/Inline'
 import { BottomNav } from '#components/navigation/BottomNav'
 import { createIcon, SearchIcon } from '#icons'
@@ -149,5 +152,15 @@ export const Usage: Story = {
         </NavLinks>
       </Stack>
     )
+  },
+  play: async ({ canvasElement }) => {
+    // Navigation text stays off the caption steps (DESIGN.md §2 Type).
+    const root = storyRoot(canvasElement)
+    const canvas = within(root)
+    const md = canvas.getByRole('link', { name: 'Routes' })
+    const sm = canvas.getByRole('link', { name: 'Passes' })
+    await expect(fontSize(md)).toBe(resolvedSize(md, 'var(--text-md)'))
+    await expect(fontSize(sm)).toBe(resolvedSize(sm, 'var(--text-sm)'))
+    await expect(fontSize(sm)).toBeGreaterThan(resolvedSize(sm, 'var(--text-xs)'))
   },
 }

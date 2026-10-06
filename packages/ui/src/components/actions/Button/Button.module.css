@@ -114,7 +114,7 @@
   translate: var(--active-shift) var(--active-shift);
   box-shadow: var(--shadow-active);
 }
-.button[data-variant='ghost']:active:not(:disabled) {
+.button[data-variant='ghost']:active:not(:disabled, [aria-disabled='true']) {
   translate: none;
   box-shadow: none;
 }

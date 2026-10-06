@@ -56,4 +56,18 @@ describe('Card', () => {
     expect(media).toHaveAttribute('data-ratio', '16/9')
     expect(media).toHaveAttribute('data-inset')
   })
+
+  it('takes live and placeholder variants and a categorical colour', () => {
+    const { container } = render(
+      <>
+        <Card variant="live">Kelso Bay v North Point</Card>
+        <Card variant="placeholder">Winner of the semi-final</Card>
+        <Card color={5}>Harbour Square</Card>
+      </>,
+    )
+    const [live, placeholder, owned] = container.children
+    expect(live).toHaveAttribute('data-variant', 'live')
+    expect(placeholder).toHaveAttribute('data-variant', 'placeholder')
+    expect(owned).toHaveAttribute('data-color', '5')
+  })
 })

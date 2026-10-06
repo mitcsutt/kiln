@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { must } from '#test/must'
 import { AppShell } from './AppShell'
 
 function Frame(props: { mainId?: string; sticky?: boolean }) {
@@ -64,5 +65,29 @@ describe('AppShell', () => {
       </AppShell>,
     )
     expect(container.firstElementChild).toHaveAttribute('data-nav-breakpoint', 'md')
+  })
+
+  it('pads the document scroller by the sticky header, and undoes it when it stops sticking', () => {
+    const root = document.documentElement
+    root.style.scrollPaddingBlockStart = '1rem'
+    const height = vi
+      .spyOn(HTMLElement.prototype, 'getBoundingClientRect')
+      .mockReturnValue({ height: 72 } as DOMRect)
+    const { container, rerender, unmount } = render(<Frame />)
+    const shell = must(container.firstElementChild as HTMLElement | null, 'the shell')
+    expect(root.style.scrollPaddingBlockStart).toBe('72px')
+    expect(shell.style.getPropertyValue('--app-shell-header-size')).toBe('72px')
+
+    rerender(<Frame sticky={false} />)
+    expect(root.style.scrollPaddingBlockStart).toBe('1rem')
+    expect(shell.style.getPropertyValue('--app-shell-header-size')).toBe('')
+
+    rerender(<Frame />)
+    expect(root.style.scrollPaddingBlockStart).toBe('72px')
+    unmount()
+    expect(root.style.scrollPaddingBlockStart).toBe('1rem')
+
+    height.mockRestore()
+    root.style.scrollPaddingBlockStart = ''
   })
 })

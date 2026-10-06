@@ -161,3 +161,25 @@ export const Usage: Story = {
     )
   },
 }
+
+/**
+ * `surface="cat-1"` to `"cat-8"` paints a band in a categorical colour, one person's or team's
+ * colour, matching their `Tag`. Ink and lines flip to stay legible on it.
+ */
+export const CategoricalBand: Story = {
+  name: 'Categorical band',
+  tags: ['docs'],
+  parameters: { layout: 'fullscreen' },
+  render: function CategoricalBand() {
+    return (
+      <Section surface="cat-2" space={6}>
+        <Container>
+          <Stack gap={2}>
+            <Heading level={2}>Ada's crew</Heading>
+            <Text tone="muted">Three boats, eleven crossings this week.</Text>
+          </Stack>
+        </Container>
+      </Section>
+    )
+  },
+}

@@ -17,10 +17,22 @@ describe('Divider', () => {
     expect(screen.getByRole('separator')).toHaveAttribute('aria-orientation', 'vertical')
   })
 
-  it('is named by its label', () => {
-    render(<Divider label="Earlier this week" labelPosition="center" />)
-    const sep = screen.getByRole('separator', { name: 'Earlier this week' })
-    expect(sep).toHaveAttribute('data-label-position', 'center')
+  it('keeps a label as real content, block content included, between decorative rules', () => {
+    const { container } = render(
+      <Divider
+        labelPosition="center"
+        label={
+          <div>
+            <p>Full time</p>
+            <p>Kick-off 05:00</p>
+          </div>
+        }
+      />,
+    )
+    expect(screen.queryByRole('separator')).not.toBeInTheDocument()
+    expect(screen.getByText('Full time')).toBeVisible()
+    expect(screen.getByText('Kick-off 05:00')).toBeInTheDocument()
+    expect(container.firstElementChild).toHaveAttribute('data-label-position', 'center')
   })
 
   it('ignores a label on a vertical rule', () => {

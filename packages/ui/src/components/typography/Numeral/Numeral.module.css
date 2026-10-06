@@ -43,6 +43,24 @@
 .numeral[data-tone='critical'] {
   --_ink: var(--tone-critical-text);
 }
+/* Highlight: the figure on the highlight fill, like a marker pen. Its ink is the fill's own. */
+.numeral[data-tone='highlight'] {
+  --_ink: var(--color-highlight-ink);
+
+  padding-inline: 0.2em;
+  border-radius: var(--radius-chip);
+  background: var(--color-highlight);
+  box-decoration-break: clone;
+}
+
+/* A small figure after the main one, part of the same reading ("1 (4)"). */
+.annotation {
+  color: var(--color-ink-muted);
+  font-size: 0.72em;
+}
+.numeral[data-tone='highlight'] .annotation {
+  color: inherit;
+}
 
 .numeral[data-size] {
   font-size: var(--_fs);

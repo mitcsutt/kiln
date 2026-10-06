@@ -6,6 +6,7 @@ import {
   type ThHTMLAttributes,
 } from 'react'
 import { cx } from '#utils/cx'
+import type { CategoryColor } from '#utils/tokens'
 import { visibilityClass, type VisibilityProps } from '#utils/visibility'
 import { ChevronDownIcon, ChevronUpIcon } from '#icons'
 import styles from './Table.module.css'
@@ -109,15 +110,19 @@ const TableFoot = forwardRef<HTMLTableSectionElement, HTMLAttributes<HTMLTableSe
   },
 )
 
-export interface TableRowProps extends HTMLAttributes<HTMLTableRowElement> {
+export interface TableRowProps extends Omit<HTMLAttributes<HTMLTableRowElement>, 'color'> {
   /** `--color-highlight` fill — "you", your project, the circled line. */
   highlighted?: boolean
   /** Hover fill for rows that respond to clicks (put the real link in a cell). */
   interactive?: boolean
+  /** Out of play (eliminated, archived, past): every ink drops to the muted step, which still reads. */
+  muted?: boolean
+  /** A categorical colour drawn as a rail at the row's start: whose row it is, matching their `Tag`. */
+  color?: CategoryColor
 }
 
 const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(function TableRow(
-  { highlighted = false, interactive = false, className, ...rest },
+  { highlighted = false, interactive = false, muted = false, color, className, ...rest },
   ref,
 ) {
   return (
@@ -126,6 +131,8 @@ const TableRow = forwardRef<HTMLTableRowElement, TableRowProps>(function TableRo
       className={cx(styles.row, className)}
       data-highlighted={highlighted || undefined}
       data-interactive={interactive || undefined}
+      data-muted={muted || undefined}
+      data-color={color}
       {...rest}
     />
   )
