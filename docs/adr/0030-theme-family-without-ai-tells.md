@@ -35,7 +35,6 @@ The rules removed the defaults but couldn't supply a direction. The fix the rese
 - **Not breaking.** Every preset name and stylesheet that existed still exists. `paper` and `ledger` change appearance and fonts, so this ships as a minor bump with a note to check screens that depend on their old look.
 - The base stylesheet no longer carries Schibsted Grotesk, Newsreader or Martian Mono. A consumer theme that relied on those families arriving with `styles.css` has to load them itself, or import the Monograph preset.
 - Kiln ships six themes, so the Storybook test matrix in CI grows from eight jobs to twelve.
-- `docs/target-state.md` lists the added presets next to the ported ones.
 - Known limits of the chosen faces and tokens:
   - B612 ships only a Latin subset, so Flightdeck falls back to system faces for Latin Extended text.
   - Shantell Sans has no tabular figures, so Riso's numerals don't align in columns.

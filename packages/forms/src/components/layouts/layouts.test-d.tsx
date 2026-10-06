@@ -1,5 +1,5 @@
 /**
- * Type tests for Repeater and When (typelab-reference/kit.tsx §6, spec §6.6–6.7). Checked by
+ * Type tests for Repeater and When (§6.6–6.7). Checked by
  * `tsc --noEmit`; never executed. Every `@ts-expect-error` must be used.
  */
 import type { ReactNode } from 'react'

@@ -5,7 +5,7 @@
 
 ## Context
 
-In the source Storybook, top-level groups were component categories (Actions, Display, Forms…). The hierarchy felt flat, and you couldn't tell which package a story belonged to. "Forms" was also ambiguous: it meant both the input controls in `ui` and the form library.
+In the source Storybook, top-level groups were component categories (Actions, Display, Forms…). The hierarchy was flat, and you couldn't tell which package a story belonged to. "Forms" was also ambiguous: it meant both the input controls in `ui` and the form library.
 
 ## Decision
 

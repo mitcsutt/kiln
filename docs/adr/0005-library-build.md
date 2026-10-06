@@ -21,4 +21,4 @@
 ## Consequences
 
 - Development needs no prebuild, and builds exist only for publish and CI checks.
-- The implementer is free to improve on the source build (for example faster declaration generation, or per-component CSS if measurements justify it) as long as the criteria in `target-state.md` hold.
+- The build can improve on the source build (for example faster declaration generation, or per-component CSS if measurements justify it), as long as the guarantees above still hold.

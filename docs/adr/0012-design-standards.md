@@ -17,7 +17,7 @@ The source has a strong, explicit standard. `DESIGN.md` sets the principles, the
 
 - Port all three as **binding standards**, updated for Kiln naming and the new theme names (`paper`, `monograph`, `ledger`, `fiesta`).
 - Every rule the source enforces with a lint rule or test is enforced the same way in Kiln.
-- Where a standard references an app (budget, portfolio, sweepstake), rewrite the example generically.
+- Where a standard uses an example from one of the source apps, rewrite the example generically.
 
 ## Consequences
 

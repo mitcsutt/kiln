@@ -7,6 +7,8 @@ body:
     attributes:
       label: Package
       options:
+        - '@mitcsutt/kiln-ui'
+        - '@mitcsutt/kiln-forms'
         - '@mitcsutt/kiln-eslint-config'
         - '@mitcsutt/kiln-prettier-config'
         - '@mitcsutt/kiln-tsconfig'

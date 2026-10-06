@@ -1,4 +1,4 @@
-// Public API (§2.5 lists the core; Appendix A records the additions). Keep the spec in step when this changes.
+// Public API (§2.5 lists the core; Appendix A records the additions). Keep docs/design.md in step when this changes.
 
 // Kit (default instance + factory)
 export { createFormKit } from '#kit/createFormKit'

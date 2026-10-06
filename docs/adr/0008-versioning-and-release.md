@@ -12,8 +12,8 @@ Kiln publishes several packages that change at different rates. A config package
 - Changesets, with **independent** versions per package.
 - Every PR that touches a published package carries a changeset, and CI enforces it.
 - Releases go through a GitHub Actions workflow: a "Version packages" PR, then publishing to npm **with provenance**.
-- Every package starts at **`0.1.0`**. `1.0.0` comes once the docs site is live and the token contract is frozen, and that is also when the repo goes public.
-- The first body of work ends **release-ready, not released**. The pipeline is complete and dry-run verified, but the first publish is a separate, deliberate step.
+- Every package starts at **`0.1.0`**. `1.0.0` comes once the docs site is live and the token contract is frozen. Repository visibility is covered by [0013](0013-licence-and-visibility.md).
+- The pipeline is built and dry-run verified before anything is published. The first publish is a separate, deliberate step.
 
 ## Consequences
 

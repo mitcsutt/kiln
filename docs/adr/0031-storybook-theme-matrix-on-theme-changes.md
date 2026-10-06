@@ -5,7 +5,7 @@
 
 ## Context
 
-[0018](0018-storybook-workbench.md) runs the story tests on every pull request as a matrix of every built-in theme in light and dark. With six themes that is twelve jobs, about 79 billed Actions minutes per CI run, and this private repo has a limited allowance of minutes.
+[0018](0018-storybook-workbench.md) runs the story tests on every pull request as a matrix of every built-in theme in light and dark. With six themes that is twelve jobs, about 79 billed Actions minutes per CI run, against the limited allowance of minutes a private repository gets.
 
 Most of that is repeated work. A story renders and its `play` function passes the same way in every theme, since a theme is only CSS tokens. The one result that depends on the theme is axe's colour contrast check, and that changes when a theme, a token or the Storybook setup changes, not when a component's markup or behaviour does.
 

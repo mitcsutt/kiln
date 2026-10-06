@@ -5,7 +5,7 @@
 
 ## Context
 
-[0009](0009-docs-and-storybook.md) makes Storybook the developer workbench in `apps/storybook`, and [0010](0010-information-architecture.md) gives it the same tree as the docs site. The target state asks for a theme and mode toolbar with every theme side by side, interaction tests through the Vitest addon, no a11y violations on any story, generic patterns instead of the source's app screens, and a static build that can be served at `/storybook`. Building it raised questions those records don't answer:
+[0009](0009-docs-and-storybook.md) makes Storybook the developer workbench in `apps/storybook`, and [0010](0010-information-architecture.md) gives it the same tree as the docs site. The workbench needs a theme and mode toolbar with every theme side by side, interaction tests through the Vitest addon, no a11y violations on any story, generic patterns instead of the source's app screens, and a static build that can be served at `/storybook`. Building it raised questions those records don't answer:
 
 - which theme and mode the a11y check runs in
 - where the story tests run, given they need a real browser
@@ -39,12 +39,12 @@ Two kinds of story turn off axe rules, scoped to those stories, with the reason 
 **Content**
 
 - Foundations follow the 0010 nodes: Tokens (the contract read from Paper's own rule, plus shape and depth), Colour, Type, Spacing, Motion and Theming. Theming includes a small consumer-defined theme, to show a custom name working and a partial theme falling back to Paper.
-- `UI/Themes` has a specimen per built-in theme. `UI/Patterns` has generic Dashboard, Settings and Checkout screens built only from library components. They replace the source's Budget, PortfolioHome and Sweepstake patterns, which were never ported (0015).
+- `UI/Themes` has a specimen per built-in theme. `UI/Patterns` has generic Dashboard, Settings and Checkout screens built only from library components. They replace the source's app-specific patterns, which were never ported (0015).
 - `Forms/Hooks` has a story per exported hook.
 
 **Static build**
 
-- Storybook's build uses relative URLs, and the preview's Vite `base` is `./`, so the output works under any path. `check:static` serves the build at `/storybook/` only and loads a story in Chromium. Any 4xx/5xx, failed request or page error fails it. CI runs it after building Storybook on its own. Nothing is deployed (target state, out of scope).
+- Storybook's build uses relative URLs, and the preview's Vite `base` is `./`, so the output works under any path. `check:static` serves the build at `/storybook/` only and loads a story in Chromium. Any 4xx/5xx, failed request or page error fails it. CI runs it after building Storybook on its own. Deploying the build is a separate step.
 
 ## Consequences
 

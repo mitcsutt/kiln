@@ -1,6 +1,6 @@
 # Architecture decision records
 
-Each record captures one decision: the context, what was decided, and what follows from it. Records are numbered and never rewritten. To change a decision, add a new record that supersedes the old one, and mark the old one `Superseded by NNNN`.
+Each record captures one decision: the context, what was decided, and what follows from it. Records are numbered, and a decision is never changed by editing its record. To change a decision, add a new record that supersedes the old one, and mark the old one `Superseded by NNNN`.
 
 | #                                                       | Decision                                                     | Status                                   |
 | ------------------------------------------------------- | ------------------------------------------------------------ | ---------------------------------------- |
@@ -16,10 +16,10 @@ Each record captures one decision: the context, what was decided, and what follo
 | [0010](0010-information-architecture.md)                | One nested tree for docs and Storybook                       | Accepted                                 |
 | [0011](0011-ai-tooling.md)                              | Agent skills via TanStack Intent, plus llms.txt              | Accepted                                 |
 | [0012](0012-design-standards.md)                        | Carry over the design and authoring standards                | Accepted, amended by 0030                |
-| [0013](0013-licence-and-visibility.md)                  | MIT, private repo written as public                          | Accepted                                 |
+| [0013](0013-licence-and-visibility.md)                  | MIT licence, written as public from the start                | Accepted                                 |
 | [0014](0014-config-package-shape.md)                    | Shape of the shared config packages                          | Accepted                                 |
 | [0015](0015-kiln-ui-port.md)                            | How `kiln-ui` was ported: theming, build, tests              | Accepted                                 |
-| [0016](0016-trusted-publishing.md)                      | Trusted publishing, switched on by the owner                 | Accepted                                 |
+| [0016](0016-trusted-publishing.md)                      | Trusted publishing, off until switched on                    | Accepted                                 |
 | [0017](0017-kiln-forms-port.md)                         | How `kiln-forms` was ported: names, entries, checks          | Accepted, amended by 0024                |
 | [0018](0018-storybook-workbench.md)                     | How the Storybook workbench is built and tested              | Accepted, amended by 0026, 0027 and 0031 |
 | [0019](0019-docs-site.md)                               | How the docs site is built: Fumadocs core, Kiln chrome       | Accepted, amended by 0025 and 0029       |

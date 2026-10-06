@@ -5,7 +5,7 @@
 
 ## Context
 
-Coding agents in consumer projects use libraries better when the library tells them how. TanStack's approach ships versioned skills inside the npm package, and the `@tanstack/intent` CLI wires them into the consumer's agent setup. The source monorepo already loads skills this way.
+Coding agents in consumer projects use libraries better when the library tells them how. TanStack's approach ships versioned skills inside the npm package, and the `@tanstack/intent` CLI wires them into the consumer's agent setup. The monorepo Kiln was extracted from already loaded skills this way.
 
 ## Decision
 

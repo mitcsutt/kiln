@@ -85,7 +85,7 @@ export type Specialise<C, P, D> =
 export type FieldComponentName<K extends string> = `${Capitalize<K>}Field`
 
 /**
- * kind → field component. The spec's `FieldDef<Contract, never>` fails for `ComponentType`'s class
+ * kind → field component. `FieldDef<Contract, never>` would fail for `ComponentType`'s class
  * branch (`defaultProps: Partial<P>` is not assignable to `undefined`), so this is the one
  * documented `any` (§3.2): props stay fully typed at every use through `PropsOf<F>`.
  */

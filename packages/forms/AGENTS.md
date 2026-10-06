@@ -2,7 +2,7 @@
 
 Form state on TanStack Form 1.33, rendered only through `@mitcsutt/kiln-ui`. Two authoring modes share one registry and one set of layouts. In component mode you write `form.TextField name="email"`, and in schema mode you write `{ kind: 'text', name: 'email' }`.
 
-The design is in [`docs/design.md`](docs/design.md), cited as `§n` in code comments. Where the build departed from the plan, its Appendix A "Decisions during build" has the ruling: read it before changing core behaviour. How the package was ported, and how its names avoid `kiln-ui`'s, is [ADR 0017](../../docs/adr/0017-kiln-forms-port.md). This file and the rules below are binding standards ([ADR 0012](../../docs/adr/0012-design-standards.md)): change a rule only together with the lint rule or test that enforces it.
+The design is in [`docs/design.md`](docs/design.md), cited as `§n` in code comments. Its Appendix A "Design decisions" records where the implementation refines or departs from the body, and wins where they disagree: read it before changing core behaviour. How the package's export names avoid `kiln-ui`'s is [ADR 0017](../../docs/adr/0017-kiln-forms-port.md). This file and the rules below are binding standards ([ADR 0012](../../docs/adr/0012-design-standards.md)): change a rule only together with the lint rule or test that enforces it.
 
 ## Rules
 

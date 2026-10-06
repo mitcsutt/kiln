@@ -30,8 +30,8 @@ packages/
 docs/
   adr/               architecture decision records
   tree.json          the information architecture the docs and Storybook share
-  releasing.md       how releases work, and what the first publish needs
-  target-state.md    what the repo looks like when the first body of work is done
+  releasing.md       how releases work, and what a new package's first publish needs
+  research/          background research behind design decisions
 .changeset/          pending changesets and the Changesets config
 .claude/skills/      project skills for adding a component, a theme preset or a forms field
 DESIGN.md            the design system's principles, anti-slop rules and token contract
@@ -39,7 +39,7 @@ vite.library.ts      the library build every runtime package shares
 size-report.ts       size budgets and tree-shaking checks for built packages
 ```
 
-Directories use the short name (`packages/tsconfig`), and the package name carries the brand (`@mitcsutt/kiln-tsconfig`).
+Directories use the short name (`packages/tsconfig`), and the package name carries the brand (`@mitcsutt/kiln-tsconfig`). A new package follows the same pattern: `packages/<name>` publishes as `@mitcsutt/kiln-<name>`. Every published package has a `README.md` with its install line, a minimal usage example and a link to the docs site, and its `package.json` declares `license`, `repository` (with `directory`), `homepage`, `bugs`, `keywords`, `engines`, `files` and `publishConfig.access: public`.
 
 ## Commands
 
