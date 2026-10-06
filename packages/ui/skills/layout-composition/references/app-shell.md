@@ -92,7 +92,7 @@ export function Usage() {
 
 `AppShell.Header`, `AppShell.Sidebar`, `AppShell.Main`, `AppShell.Footer` and `AppShell.BottomBar` place themselves, so their order in JSX doesn't affect the layout. Keep it the same as the reading order anyway: header, sidebar, main, footer, bottom bar.
 
-- **Header** is sticky by default (`sticky={false}` to scroll it away). Put a `Container` and an `Inline` inside.
+- **Header** is sticky by default (`sticky={false}` to scroll it away). While it sticks, in-page links and `scrollIntoView` land just below it, whatever its height. Put a `Container` and an `Inline` inside.
 - **Sidebar** appears from `navBreakpoint` up. It sits at the start of the main region (`side="end"` for the other side), scrolls on its own, and stays below the header.
 - **Main** is the `<main>` landmark and the skip link's target.
 - **BottomBar** is pinned to the bottom of the viewport below `navBreakpoint`, and pads for the phone's home indicator.
@@ -117,7 +117,7 @@ Also accepts every prop of `HTMLAttributes<HTMLDivElement>`.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `sticky` | `boolean` | `true` | Stick to the top of the viewport while scrolling. Default `true`. |
+| `sticky` | `boolean` | `true` | Stick to the top of the viewport while scrolling. Default `true`. While it sticks, in-page links and `scrollIntoView` land below it, however tall it grows. |
 
 Also accepts every prop of `HTMLAttributes<HTMLElement>`.
 

@@ -1,5 +1,14 @@
-import { createContext, forwardRef, useContext, useId, type HTMLAttributes } from 'react'
+import {
+  createContext,
+  forwardRef,
+  useContext,
+  useEffect,
+  useId,
+  useRef,
+  type HTMLAttributes,
+} from 'react'
 import { cx } from '#utils/cx'
+import { useMergedRefs } from '#components/inputs/internal/refs'
 import { VisuallyHidden } from '#components/layout/VisuallyHidden'
 import styles from './AppShell.module.css'
 
@@ -36,7 +45,8 @@ export interface AppShellProps extends HTMLAttributes<HTMLDivElement> {
  * `AppShell.BottomBar` place themselves, so their order in JSX doesn't affect the layout. Keep it
  * the same as the reading order anyway: header, sidebar, main, footer, bottom bar.
  *
- * - **Header** is sticky by default (`sticky={false}` to scroll it away). Put a `Container` and an
+ * - **Header** is sticky by default (`sticky={false}` to scroll it away). While it sticks, in-page
+ *   links and `scrollIntoView` land just below it, whatever its height. Put a `Container` and an
  *   `Inline` inside.
  * - **Sidebar** appears from `navBreakpoint` up. It sits at the start of the main region
  *   (`side="end"` for the other side), scrolls on its own, and stays below the header.
@@ -86,7 +96,10 @@ const AppShellRoot = forwardRef<HTMLDivElement, AppShellProps>(function AppShell
 })
 
 export interface AppShellHeaderProps extends HTMLAttributes<HTMLElement> {
-  /** Stick to the top of the viewport while scrolling. Default `true`. */
+  /**
+   * Stick to the top of the viewport while scrolling. Default `true`. While it sticks, in-page
+   * links and `scrollIntoView` land below it, however tall it grows.
+   */
   sticky?: boolean
 }
 
@@ -95,9 +108,33 @@ const Header = forwardRef<HTMLElement, AppShellHeaderProps>(function AppShellHea
   { sticky = true, className, ...rest },
   ref,
 ) {
+  const header = useRef<HTMLElement>(null)
+  // While it sticks, keep two things in step with its height: the document's
+  // scroll-padding-block-start, so anchor jumps land below it, and the shell's
+  // --app-shell-header-size, which the sticky offset reads. Both are undone when it stops.
+  useEffect(() => {
+    const el = header.current
+    const shell = el?.parentElement
+    if (!sticky || !el || !shell) return
+    const root = el.ownerDocument.documentElement
+    const previous = root.style.scrollPaddingBlockStart
+    const measure = () => {
+      const size = `${String(el.getBoundingClientRect().height)}px`
+      shell.style.setProperty('--app-shell-header-size', size)
+      root.style.scrollPaddingBlockStart = size
+    }
+    measure()
+    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(measure)
+    observer?.observe(el)
+    return () => {
+      observer?.disconnect()
+      shell.style.removeProperty('--app-shell-header-size')
+      root.style.scrollPaddingBlockStart = previous
+    }
+  }, [sticky])
   return (
     <header
-      ref={ref}
+      ref={useMergedRefs(ref, header)}
       className={cx(styles.header, className)}
       data-sticky={sticky || undefined}
       {...rest}
