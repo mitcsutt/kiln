@@ -128,11 +128,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 The reader's mode is stored in `localStorage` under `kiln-color-mode`. Every app on one origin shares that key, so a choice made in one carries into the next. Give each app its own key with `storageKey`, or keep a key the app already used so returning readers keep their choice. Pass the same key to `themeScript`:
 
 ```tsx
-;<ThemeProvider theme="ledger" defaultMode="light" storageKey="budget:color-mode">
+;<ThemeProvider theme="ledger" defaultMode="light" storageKey="my-app:color-mode">
   …
 </ThemeProvider>
 
-themeScript('ledger', 'light', { storageKey: 'budget:color-mode' })
+themeScript('ledger', 'light', { storageKey: 'my-app:color-mode' })
 ```
 
 ### Without server rendering
@@ -152,7 +152,7 @@ export default defineConfig({
       transformIndexHtml: () => [
         {
           tag: 'script',
-          children: themeScript('ledger', 'light', { storageKey: 'budget:color-mode' }),
+          children: themeScript('ledger', 'light', { storageKey: 'my-app:color-mode' }),
           injectTo: 'head-prepend',
         },
       ],

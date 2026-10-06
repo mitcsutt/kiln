@@ -10,7 +10,7 @@ Decisions and their reasoning live in [`adr/`](adr/). When this document and an 
 
 ## 1. Source material
 
-The UI and forms code comes from the `mitchell-sutton` monorepo (`github.com/mitcsutt/mitchell-sutton`), pinned at **`origin/main` @ `0fc4294`**. It is a plain copy with no git history ([ADR 0002](adr/0002-port-by-copy.md)).
+The UI and forms code comes from the `mitchell-sutton` monorepo, pinned at **`origin/main` @ `0fc4294`**. It is a plain copy with no git history ([ADR 0002](adr/0002-port-by-copy.md)).
 
 | Source path @ `0fc4294`                                | Becomes                                                                                                    |
 | ------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------- |

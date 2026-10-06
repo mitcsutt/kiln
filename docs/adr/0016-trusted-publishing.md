@@ -1,4 +1,4 @@
-# 0016. Trusted publishing, switched on by the owner
+# 0016. Trusted publishing via npm OIDC
 
 - **Status:** Accepted
 - **Date:** 2026-10-04

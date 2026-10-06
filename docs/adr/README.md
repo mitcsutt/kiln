@@ -19,7 +19,7 @@ Each record captures one decision: the context, what was decided, and what follo
 | [0013](0013-licence-and-visibility.md)             | MIT, private repo written as public                          | Accepted                           |
 | [0014](0014-config-package-shape.md)               | Shape of the shared config packages                          | Accepted                           |
 | [0015](0015-kiln-ui-port.md)                       | How `kiln-ui` was ported: theming, build, tests              | Accepted                           |
-| [0016](0016-trusted-publishing.md)                 | Trusted publishing, switched on by the owner                 | Accepted                           |
+| [0016](0016-trusted-publishing.md)                 | Trusted publishing via npm OIDC                              | Accepted                           |
 | [0017](0017-kiln-forms-port.md)                    | How `kiln-forms` was ported: names, entries, checks          | Accepted, amended by 0024          |
 | [0018](0018-storybook-workbench.md)                | How the Storybook workbench is built and tested              | Accepted, amended by 0026 and 0027 |
 | [0019](0019-docs-site.md)                          | How the docs site is built: Fumadocs core, Kiln chrome       | Accepted, amended by 0025 and 0029 |
