@@ -1,6 +1,7 @@
 import { readFileSync, readdirSync } from 'node:fs'
 import { resolve } from 'node:path'
 import { must } from '#test/must'
+import { THEMES as REGISTERED } from '../theme/themes'
 
 /*
  * DESIGN.md §2: the second-order AI tells, enforced. Models that are told to avoid Inter and
@@ -11,11 +12,11 @@ import { must } from '#test/must'
 const read = (path: string) =>
   readFileSync(resolve(__dirname, path), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '')
 
-const THEMES = ['paper', 'ledger', 'flightdeck', 'riso'] as const
-
 // Kept exactly as before for compatibility (ADR 0030); they predate the second-order rules and
 // are exempt. Their stylesheets, and the font files only they use, are not checked.
-const LEGACY = ['monograph', 'fiesta'] as const
+const LEGACY: readonly string[] = ['monograph', 'fiesta']
+
+const THEMES = REGISTERED.filter((theme) => !LEGACY.includes(theme))
 const LEGACY_FONT_FILES = ['fonts-monograph.css', 'fonts-fiesta.css', 'fonts-martian-mono.css']
 
 const BANNED_FONTS = [
@@ -92,6 +93,6 @@ describe('no second-order AI tells in the new-design built-in themes', () => {
   })
 })
 
-it('the exempt legacy themes are exactly the ones kept for compatibility', () => {
-  expect(LEGACY).toEqual(['monograph', 'fiesta'])
+it('every exempt legacy theme is a registered built-in theme', () => {
+  expect(REGISTERED).toEqual(expect.arrayContaining([...LEGACY]))
 })

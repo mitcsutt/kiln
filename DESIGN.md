@@ -274,7 +274,7 @@ Set optional tokens (§3.3) and component tokens (§3.5) only where your idea ne
 ### 4.8 Adding a built-in preset (contributors)
 
 1. Copy `packages/ui/src/themes/paper.css` to `<name>.css`; change the selector to `[data-theme='<name>']` (drop the `:where(:root)` default) and every value. Keep every token (§3.2).
-2. Export it from `packages/ui/package.json` (both `exports` and `publishConfig.exports`), add it to `stylesheets` in `packages/ui/vite.config.ts` and to `size.config.json`, and add the name to `THEMES` and `THEME_META` in `src/theme/themes.ts` and to the `THEMES` lists in `src/themes/themes.test.ts` and `src/themes/tells.test.ts`. A new preset is never added to `LEGACY`.
+2. Export it from `packages/ui/package.json` (both `exports` and `publishConfig.exports`), add it to `stylesheets` in `packages/ui/vite.config.ts` and to `size.config.json`, and add the name to `THEMES` and `THEME_META` in `src/theme/themes.ts` and to the `THEMES` list in `src/themes/themes.test.ts` (`src/themes/tells.test.ts` checks every registered theme not in its `LEGACY` list). A new preset is never added to `LEGACY`.
 3. Add any new font files to `src/assets/fonts` with their licence (OFL only) and an `@font-face` file the preset imports, so the base stylesheet doesn't grow.
 4. Check every story in every theme, light and dark. No component file should change.
 
