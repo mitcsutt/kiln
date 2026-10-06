@@ -1,6 +1,6 @@
 # 0013. MIT licence, written as public from the start
 
-- **Status:** Accepted
+- **Status:** Accepted, amended by [0032](0032-public-before-1-0.md)
 - **Date:** 2026-10-04
 
 ## Context
@@ -10,8 +10,8 @@ Kiln's packages are published publicly on npm and meant for anyone to use. The r
 ## Decision
 
 - MIT licence for every package and for the repo.
-- Everything in the repository is written as if it were already public: no secrets, no internal URLs, no app business logic or private project details, and complete community files (README, contributing guide, code of conduct, security policy, issue and pull request templates).
-- The repository goes public once it meets that bar, without waiting for `1.0.0`. Until then, releases publish without npm provenance ([0016](0016-trusted-publishing.md)).
+- The repository stays private for now. Everything in it is written as if it were already public: no secrets, no internal URLs, no app business logic or private project details, and complete community files (README, contributing guide, code of conduct, security policy, issue and pull request templates).
+- The repository goes public alongside `1.0.0` (see [0008](0008-versioning-and-release.md)).
 - Bundled fonts ship with their own licences (OFL), which MIT doesn't override.
 
 ## Consequences

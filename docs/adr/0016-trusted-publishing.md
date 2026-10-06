@@ -1,6 +1,6 @@
 # 0016. Trusted publishing, off until switched on
 
-- **Status:** Accepted
+- **Status:** Accepted, amended by [0032](0032-public-before-1-0.md)
 - **Date:** 2026-10-04
 
 ## Context
@@ -19,5 +19,5 @@ Changesets 3 publishes with `pnpm publish` and a fixed set of flags, so it can't
 ## Consequences
 
 - The first version of each new package is published by hand (without provenance), because trusted publishing can only be set up once the package exists. [`docs/releasing.md`](../releasing.md) lists the steps.
-- Provenance needs a public repository, so releases published while the repository is private carry none ([0013](0013-licence-and-visibility.md)).
+- Provenance needs a public repository, but [0013](0013-licence-and-visibility.md) keeps the repository private until `1.0.0`. Publishing `0.x` with provenance means making the repository public first.
 - If Changesets later forwards publish flags, or pnpm reads provenance from config, a token-based fallback becomes possible and would need a new record.
