@@ -206,7 +206,8 @@
   font-size: var(--text-md);
   font-weight: var(--label-weight);
   line-height: var(--leading-snug);
-  overflow-wrap: anywhere;
+  /* Wrap between words; break inside one only when a single word can't fit the column. */
+  overflow-wrap: break-word;
 }
 
 .description {
@@ -217,6 +218,7 @@
 
 .trailing {
   --stat-align: end;
+  --stat-container-type: normal;
 
   display: inline-flex;
   flex: none;

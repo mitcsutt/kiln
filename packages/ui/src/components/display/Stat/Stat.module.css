@@ -2,6 +2,9 @@
  * Component tokens (themes may set any of these on [data-theme]):
  *   --stat-align          `start` (default) or `end`: the label, value and hint line up on
  *                         that edge (List.Trailing sets `end`)
+ *   --stat-container-type default inline-size, which fits the figure to a narrow cell (see
+ *                         below). `normal` makes the Stat only as wide as its content
+ *                         (List.Trailing sets it: a row's figure shouldn't claim the title's room)
  *   --stat-value-font     default var(--font-numeric)
  *   --stat-value-weight   default var(--heading-weight)
  *   --stat-fit            how many value-ems of width a figure is assumed to need, default 6.5
@@ -25,7 +28,7 @@
   --_value-leading: 1;
   --_fit: var(--stat-fit, 6.5);
 
-  container-type: inline-size;
+  container-type: var(--stat-container-type, inline-size);
   contain-intrinsic-inline-size: auto calc(var(--_value-size) * var(--_fit));
 
   display: flex;

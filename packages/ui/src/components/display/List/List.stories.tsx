@@ -316,6 +316,9 @@ export const BlockContentInSlots: Story = {
     const value = canvas.getByText('9')
     const end = (el?: HTMLElement) => must(el, 'a Stat part').getBoundingClientRect().right
     await expect(Math.abs(end(label) - end(value))).toBeLessThan(2)
+    // A trailing Stat is only as wide as "Pts" and "9", so the title keeps its room.
+    const stat = must(label?.parentElement, 'the Stat')
+    await expect(stat.getBoundingClientRect().width).toBeLessThan(60)
   },
 }
 
