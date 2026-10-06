@@ -1,5 +1,11 @@
 # @mitcsutt/kiln-forms
 
+## 0.1.5
+
+### Patch Changes
+
+- ad8ad08: Tidy doc comments and the shipped agent skills: the `setup-and-theming` skill's storage key example uses a generic app name, and comments no longer refer to internal planning documents.
+
 ## 0.1.4
 
 ### Patch Changes

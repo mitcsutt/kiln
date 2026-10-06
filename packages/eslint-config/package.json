@@ -1,6 +1,6 @@
 {
   "name": "@mitcsutt/kiln-eslint-config",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Shared flat ESLint config for Kiln and the projects that use it",
   "keywords": [
     "kiln",

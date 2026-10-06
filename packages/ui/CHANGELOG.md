@@ -1,5 +1,42 @@
 # @mitcsutt/kiln-ui
 
+## 0.4.0
+
+### Minor Changes
+
+- b1ea52d: `Accordion.Trigger` takes `trailing`, a figure or badge set at the end of the trigger just before the chevron, and its label now fills the trigger, so content inside it can spread to the far edge. With `trailing`, a small trigger's label fills too, so a list of small rows lines its figures up on the end edge; a small trigger without one still hugs its text.
+- b1ea52d: Add twelve icons for app navigation and page furniture, drawn on the same 20px grid with the theme's stroke: `TrophyIcon`, `CalendarIcon`, `UsersIcon`, `SwordsIcon`, `HelpIcon`, `ClockIcon`, `ZapIcon`, `MessageIcon`, `RadioIcon`, `ShieldIcon`, `TargetIcon` and `TrendingUpIcon`. A bottom nav or a stat tile no longer needs a second icon set beside Kiln's.
+
+  `createIcon` is marked free of side effects, so a bundler drops every icon an app doesn't import. An app that imports one component which uses an icon no longer pulls in the whole set.
+
+- b1ea52d: `Card` has two new variants: `live`, a heavier accent keyline for something happening now, and `placeholder`, no fill with printer's crop marks at its corners, for a slot that isn't decided yet.
+- b1ea52d: Carry a person's or team's categorical colour beyond `Tag` and `Avatar`. `List.Item` and `Table.Row` take `color` (1 to 8) and draw a thin rail at the row's start, `Card` takes `color` and draws a keyline along its top, and `Box` and `Section` take `surface="cat-1"` to `"cat-8"`, a fill whose ink, lines and nested surfaces re-point to stay legible. The shared `CategoryColor` type is exported. Component tokens: `--list-rail-width`, `--table-rail-width`, `--card-keyline-width`.
+- b1ea52d: A labelled `Divider` is now a band rather than a `separator`: its `label` is real content that screen readers read in place, and it may be a block (a `Stack` of lines). The rules either side stay decorative. Before, the label was only the separator's accessible name, and a separator's children are presentational. An unlabelled `Divider` is still a `separator`.
+- b1ea52d: Small additions for figures, times and tags:
+
+  - `Numeral` takes `annotation`, a small muted figure after the main one in the same `<data>` element ("1 (4)").
+  - `Numeral` and `Text` take `tone="highlight"`, which sets the figure or text on the theme's highlight, like a marker pen.
+  - `RelativeTime` takes `justNowWithin` (seconds) and `justNowLabel` (default "just now"), for moments `Intl` would call "now" or "in 30 sec".
+  - `Tag` takes `size="sm"` for dense lists. `TagSize` is exported.
+  - The `Numeral` docs explain how to query a figure in tests: its sign and decimal mark are separate spans, so match the `<data>` element.
+
+- b1ea52d: Add `Flash`, which draws brief attention to an element that just changed or that a link just opened on. It wraps any single element, adds no element of its own, and gives it an outline in the accent that fades: each time its `value` changes after the first render; once on mount with `appear`, for an element that's new because of a change (never during the page's first render); whenever the element is the URL's `#target`, including `#hash` links and back and forward; and when `target` turns true, for client-side routers that don't update `:target`. Under reduced motion the outline holds and goes instead of fading. Tokens: `--flash-color`, `--flash-duration`.
+- b1ea52d: `Media` takes a `size` (`xs`, `sm`, `md`, `lg` or `xl`, about 16, 20, 24, 32 and 96px tall) for a small image that sits inline beside text, like a flag by a name. The width follows `ratio`, or the image's own ratio, and `radius` and `fallback` work as before, with the corner radius capped at a fifth of the height so a small thumbnail never rounds into a pill. Without `size`, `Media` still fills its container.
+- b1ea52d: Show what's out of play: `List.Item` and `Table.Row` take `muted`, which drops every ink in the row to the muted step (still AA), and `Media` takes `dimmed`, which fades the image toward a neutral grey while keeping it recognisable (`--media-dim-filter`, default `saturate(0.3) contrast(0.7)`).
+- b1ea52d: `NavLinks` labels move one step up the type scale, so navigation reads like the text around it instead of at caption size. `md` (the default) is now `--text-md`, body size, and `sm` is `--text-sm`, where it was the 11px `--text-xs`. Row heights are unchanged. DESIGN.md §2 gains the rule that navigation text never uses `--text-xs` or `--text-2xs`, enforced by a test over `NavLinks`, `Tabs` and `BottomNav`.
+- b1ea52d: `ToggleChip` takes `trailing`, content set after the label with the chip's gap, such as an `AvatarGroup` of who reacted.
+- b1ea52d: `Tooltip` works on touch screens and on disabled triggers. `touch="longpress"` opens the tooltip when the trigger is held for half a second on a touch screen, and swallows the tap that ends the press (and the phone's context menu), so holding a button to read its hint doesn't also press it. A `disabled` trigger is marked `aria-disabled` instead, with its clicks and key presses blocked, so it still looks and announces as disabled but hover, focus and long press reach it and its tooltip can say why. It stays the same element, so a trigger that's disabled while a request is pending keeps keyboard focus.
+
+### Patch Changes
+
+- b1ea52d: `AppShell.Header` no longer covers in-page link and `scrollIntoView` targets. While it's sticky, it measures its own height and sets the document's `scroll-padding-block-start` to match, and the sidebar's sticky offset follows the same measurement, so a header taller than `--app-shell-header-height` is accounted for. Both are removed on unmount or with `sticky={false}`.
+- b1ea52d: `AvatarGroup` renders a `<span role="group">` instead of a `<div>`, like `Avatar`, so a group can sit inside a button (a reaction chip) or a line of text. Its ref is typed `HTMLElement`.
+- b1ea52d: `ToggleChip` and `ChipGroup` chips read their pressed state from `aria-pressed` and `aria-checked` instead of `data-state`, so a chip wrapped in a `Tooltip` or another `asChild` trigger, which writes its own `data-state`, still looks pressed. Chips also take the disabled look from `aria-disabled="true"`.
+- b1ea52d: Fiesta's status and categorical inks no longer collide. The gold is only the highlight ("you"): `caution` is now marigold and `--color-cat-2` lilac, so a caution badge, a highlighted row and the second categorical colour are three different colours. `critical` is a deep brick, darker and warmer than the coral accent, so "out" never reads as an accent figure, and `--color-cat-4` moves to tangerine to stay clear of the new caution. Every Fiesta story still passes axe in light and dark.
+- b1ea52d: `List.Leading`, `List.Content`, `List.Description` and `List.Trailing` render `<div>`s, so block components such as `Stat`, `Stack` and a sized `Media` fit in them as valid HTML. Inside an `asChild` row (a link or button) they stay `<span>`s, the only content a button may hold. A `Stat` in `List.Trailing` lines its label and value up on the row's end edge, through a new `--stat-align` token (`start` or `end`), and is only as wide as its content, through `--stat-container-type`, so it never squeezes the title. A row's title wraps between words and breaks inside one only when a single word can't fit.
+- b1ea52d: A sized `Media` renders `<span>`s, so it's phrasing content and can sit inside a button, an `Accordion.Trigger` or a line of text. `MediaSize` is exported from the package with the other `Media` types.
+- ad8ad08: Tidy doc comments and the shipped agent skills: the `setup-and-theming` skill's storage key example uses a generic app name, and comments no longer refer to internal planning documents.
+
 ## 0.3.0
 
 ### Minor Changes
