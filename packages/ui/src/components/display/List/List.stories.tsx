@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Amount, Avatar, ChevronRightIcon, List, Text } from '@mitcsutt/kiln-ui'
+import { Amount, Avatar, ChevronRightIcon, List, Media, Stat, Text } from '@mitcsutt/kiln-ui'
+import { expect } from 'storybook/test'
+import { must } from '#test/must'
 import { Stack } from '#components/layout/Stack'
 import { Badge } from '#components/display/Badge'
 import { Tag } from '#components/display/Tag'
@@ -278,5 +280,42 @@ export const Interactive: Story = {
         ))}
       </List>
     )
+  },
+}
+
+const flag =
+  'data:image/svg+xml,' +
+  encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="20"><rect width="30" height="20" fill="#2f5d8a"/><rect y="7" width="30" height="6" fill="#f2f0ea"/></svg>',
+  )
+
+/**
+ * Block components in the slots: a sized `Media` at the start and a small `Stat` at the end,
+ * whose label and value line up on the row's end edge.
+ */
+export const BlockContentInSlots: Story = {
+  render: () => (
+    <List>
+      {[
+        { name: 'Kelso Bay', points: 9 },
+        { name: 'North Point', points: 6 },
+      ].map((row) => (
+        <List.Item key={row.name}>
+          <List.Leading>
+            <Media size="sm" ratio="3/2" src={flag} alt="" />
+          </List.Leading>
+          <List.Content>{row.name}</List.Content>
+          <List.Trailing>
+            <Stat size="sm" label="Pts" value={row.points} />
+          </List.Trailing>
+        </List.Item>
+      ))}
+    </List>
+  ),
+  play: async ({ canvas }) => {
+    const label = canvas.getAllByText('Pts')[0]
+    const value = canvas.getByText('9')
+    const end = (el?: HTMLElement) => must(el, 'a Stat part').getBoundingClientRect().right
+    await expect(Math.abs(end(label) - end(value))).toBeLessThan(2)
   },
 }

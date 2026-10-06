@@ -7,8 +7,9 @@
  *                        tone text inside a highlighted row (shared with Table)
  *
  * Structure: li.item > .row (a div, or the asChild link/button) > slots. The row carries
- * padding, hover and focus so a linked row is one target edge to edge. Slots are spans,
- * valid inside <a> and <button>.
+ * padding, hover and focus so a linked row is one target edge to edge. Slots are divs, so
+ * block components (Stat, Stack, a sized Media) fit in them, and spans inside an asChild row,
+ * the only content a button may hold.
  */
 .list {
   display: flex;
@@ -169,6 +170,8 @@
 }
 
 .trailing {
+  --stat-align: end;
+
   display: inline-flex;
   flex: none;
   align-items: center;

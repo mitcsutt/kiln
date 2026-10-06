@@ -1,4 +1,11 @@
-import { forwardRef, type HTMLAttributes, type LiHTMLAttributes, type ReactNode } from 'react'
+import {
+  createContext,
+  forwardRef,
+  useContext,
+  type HTMLAttributes,
+  type LiHTMLAttributes,
+  type ReactNode,
+} from 'react'
 import { Slot } from 'radix-ui'
 import { cx } from '#utils/cx'
 import styles from './List.module.css'
@@ -48,6 +55,12 @@ const ListRoot = forwardRef<HTMLUListElement, ListProps>(function List(
   )
 })
 
+/**
+ * Whether the row is the asChild link or button. Its slots are then spans, the only content a
+ * button may hold; elsewhere they're divs, so block components (Stat, Stack) fit in them.
+ */
+const RowIsControl = createContext(false)
+
 export interface ListItemProps extends LiHTMLAttributes<HTMLLIElement> {
   /** Hover affordance. Implied by `asChild`. */
   interactive?: boolean
@@ -86,37 +99,50 @@ const ListItem = forwardRef<HTMLLIElement, ListItemProps>(function ListItem(
       data-highlighted={highlighted || undefined}
       {...rest}
     >
-      <Row className={styles.row}>{children}</Row>
+      <RowIsControl.Provider value={asChild}>
+        <Row className={styles.row}>{children}</Row>
+      </RowIsControl.Provider>
     </li>
   )
 })
 
 /** Rank, avatar or icon at the start of the row. Numbers are tabular and right-aligned. */
-const ListLeading = forwardRef<HTMLSpanElement, HTMLAttributes<HTMLSpanElement>>(
-  function ListLeading({ className, ...rest }, ref) {
-    return <span ref={ref} className={cx(styles.leading, className)} {...rest} />
-  },
-)
+const ListLeading = forwardRef<HTMLElement, HTMLAttributes<HTMLElement>>(function ListLeading(
+  { className, ...rest },
+  ref,
+) {
+  const Comp = useContext(RowIsControl) ? 'span' : 'div'
+  // @ts-expect-error — polymorphic ref across span/div is safe here
+  return <Comp ref={ref} className={cx(styles.leading, className)} {...rest} />
+})
 
 /** Title (the direct text) and an optional `List.Description` below it. */
-const ListContent = forwardRef<HTMLSpanElement, HTMLAttributes<HTMLSpanElement>>(
-  function ListContent({ className, ...rest }, ref) {
-    return <span ref={ref} className={cx(styles.content, className)} {...rest} />
-  },
-)
+const ListContent = forwardRef<HTMLElement, HTMLAttributes<HTMLElement>>(function ListContent(
+  { className, ...rest },
+  ref,
+) {
+  const Comp = useContext(RowIsControl) ? 'span' : 'div'
+  // @ts-expect-error — polymorphic ref across span/div is safe here
+  return <Comp ref={ref} className={cx(styles.content, className)} {...rest} />
+})
 
-const ListDescription = forwardRef<HTMLSpanElement, HTMLAttributes<HTMLSpanElement>>(
+const ListDescription = forwardRef<HTMLElement, HTMLAttributes<HTMLElement>>(
   function ListDescription({ className, ...rest }, ref) {
-    return <span ref={ref} className={cx(styles.description, className)} {...rest} />
+    const Comp = useContext(RowIsControl) ? 'span' : 'div'
+    // @ts-expect-error — polymorphic ref across span/div is safe here
+    return <Comp ref={ref} className={cx(styles.description, className)} {...rest} />
   },
 )
 
 /** Value, meta or actions at the end of the row. Numbers are tabular. */
-const ListTrailing = forwardRef<HTMLSpanElement, HTMLAttributes<HTMLSpanElement>>(
-  function ListTrailing({ className, ...rest }, ref) {
-    return <span ref={ref} className={cx(styles.trailing, className)} {...rest} />
-  },
-)
+const ListTrailing = forwardRef<HTMLElement, HTMLAttributes<HTMLElement>>(function ListTrailing(
+  { className, ...rest },
+  ref,
+) {
+  const Comp = useContext(RowIsControl) ? 'span' : 'div'
+  // @ts-expect-error — polymorphic ref across span/div is safe here
+  return <Comp ref={ref} className={cx(styles.trailing, className)} {...rest} />
+})
 
 export const List = Object.assign(ListRoot, {
   Item: ListItem,

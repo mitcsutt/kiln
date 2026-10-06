@@ -82,4 +82,27 @@ describe('List', () => {
     expect(item).toHaveAttribute('data-selected')
     expect(screen.getByRole('list')).not.toHaveAttribute('data-divided')
   })
+
+  it('renders slots as divs, so block content fits, and as spans inside a link or button row', () => {
+    render(
+      <List>
+        <List.Item>
+          <List.Leading>1</List.Leading>
+          <List.Content>
+            Kelso Bay<List.Description>Ferry terminal</List.Description>
+          </List.Content>
+          <List.Trailing>9</List.Trailing>
+        </List.Item>
+        <List.Item asChild>
+          <button type="button">
+            <List.Content>North Point</List.Content>
+            <List.Trailing>6</List.Trailing>
+          </button>
+        </List.Item>
+      </List>,
+    )
+    const tags = (text: string) => screen.getByText(text).tagName
+    expect([tags('1'), tags('Ferry terminal'), tags('9')]).toEqual(['DIV', 'DIV', 'DIV'])
+    expect([tags('North Point'), tags('6')]).toEqual(['SPAN', 'SPAN'])
+  })
 })
