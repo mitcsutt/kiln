@@ -1,6 +1,8 @@
 /*
  * The chip look, shared by ToggleChip (Radix Toggle) and ChipGroup's items (Radix
- * ToggleGroup items) — both expose `data-state="on|off"`, so one module styles both.
+ * ToggleGroup items). Pressed is read from ARIA (aria-pressed, or aria-checked on a
+ * single-choice group's radios), not data-state: an asChild trigger wrapped round a chip
+ * (Tooltip, Popover) writes its own data-state over the Toggle's.
  * Internal: import it only from those two components.
  *
  * Component tokens:
@@ -64,13 +66,13 @@
 }
 
 @media (hover: hover) {
-  .chip:hover:not(:disabled) {
+  .chip:hover:not(:disabled, [aria-disabled='true']) {
     --_ink: var(--color-ink);
     --_line: var(--color-ink-subtle);
   }
 }
 
-.chip[data-state='on'] {
+.chip:is([aria-pressed='true'], [aria-checked='true']) {
   --_bg: var(--chip-pressed-bg, var(--color-accent-soft));
   --_ink: var(--chip-pressed-ink, var(--color-accent-text));
   --_line: var(--chip-pressed-line, var(--color-accent));
@@ -79,14 +81,17 @@
   translate: var(--active-shift) var(--active-shift);
 }
 @media (hover: hover) {
-  .chip[data-state='on']:hover:not(:disabled) {
+  .chip:is([aria-pressed='true'], [aria-checked='true']):hover:not(
+      :disabled,
+      [aria-disabled='true']
+    ) {
     --_ink: var(--chip-pressed-ink, var(--color-accent-text));
     --_line: var(--chip-pressed-line, var(--color-accent));
   }
 }
 
 /* In an invalid ChipGroup the resting chips take the critical edge; pressed ones keep theirs. */
-.chip[data-invalid]:not([data-state='on']) {
+.chip[data-invalid]:not([aria-pressed='true'], [aria-checked='true']) {
   --_line: var(--tone-critical);
 }
 
@@ -95,7 +100,7 @@
   outline-offset: 2px;
 }
 
-.chip:disabled {
+.chip:is(:disabled, [aria-disabled='true']) {
   cursor: not-allowed;
   opacity: 0.45;
   box-shadow: none;
@@ -105,6 +110,11 @@
   display: inline-flex;
   font-size: 1.15em;
   margin-inline-start: -0.15em;
+}
+
+.trailing {
+  display: inline-flex;
+  align-items: center;
 }
 
 .count {
@@ -127,7 +137,7 @@
     background-color var(--dur-1) var(--ease-out),
     color var(--dur-1) var(--ease-out);
 }
-.chip[data-state='on'] .count {
+.chip:is([aria-pressed='true'], [aria-checked='true']) .count {
   background: var(--chip-pressed-line, var(--color-accent));
   color: var(--color-accent-ink);
 }
