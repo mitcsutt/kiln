@@ -1,7 +1,7 @@
 /*
  * Component tokens (themes may set any of these on [data-theme]):
  *   --media-bg   default var(--color-surface-sunken) — the frame while loading / on failure
- *   --media-dim  default 45% — how far a `dimmed` image recedes toward the canvas
+ *   --media-dim-filter  default saturate(0.3) contrast(0.7) — how a `dimmed` image recedes
  */
 .media {
   --_radius: var(--radius-media);
@@ -133,12 +133,10 @@
   font-size: calc(var(--_size) * 0.6);
 }
 
-/* Dimmed: grey, with the canvas laid over it, so it recedes in every theme and mode. */
+/* Dimmed: faded toward a neutral grey, never the canvas's hue, so a flag stays recognisable
+   on Fiesta's apricot or Riso's pink and still reads as out of play. */
 .media[data-dimmed] .image {
-  filter: grayscale(1);
-}
-.media[data-dimmed] .frame::after {
-  background: color-mix(in oklch, var(--color-canvas) var(--media-dim, 45%), transparent);
+  filter: var(--media-dim-filter, saturate(0.3) contrast(0.7));
 }
 
 .caption {

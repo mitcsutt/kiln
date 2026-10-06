@@ -33,7 +33,7 @@ export interface MediaProps extends Omit<HTMLAttributes<HTMLElement>, 'children'
    */
   size?: MediaSize
   /**
-   * Out of play: the image turns grey and recedes toward the canvas, like a knocked-out
+   * Out of play: the image fades toward grey but stays recognisable, like a knocked-out
    * team's flag or a past event's photo. Pair it with a muted `List.Item` or `Table.Row`.
    */
   dimmed?: boolean

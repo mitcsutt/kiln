@@ -113,7 +113,7 @@ export const Sizes: Story = {
 }
 
 /**
- * `dimmed` turns an image grey and lets it recede toward the canvas, for something out of play.
+ * `dimmed` fades an image toward grey, still recognisable, for something out of play.
  * Pair it with a muted `List.Item` or `Table.Row`.
  */
 export const Dimmed: Story = {
