@@ -78,7 +78,8 @@ Beyond the checks, a theme has a subject, and each colour, face, radius and easi
 - **One edge treatment per element**: a border _or_ a shadow _or_ a fill change. Static structure uses hairlines; soft shadows are only for things that float (popover, menu, dialog). Hard-offset shadows never go on static surfaces in a new theme. Fiesta keeps its hard offset as a legacy preset: it is the print misregistration, and it _is_ the edge. Riso's misregistered offset (the second ink drum slightly off) is floating-only.
 - **Icons**: the library ships ~40 glyphs on a 20px grid with a themed stroke: the ones its components need, plus common navigation and page-furniture glyphs so apps don't mix in a second set. At most one icon per row; never an icon in a tinted chip; never emoji as UI.
 - **No left-border-accent callouts.** Alerts are a neutral hairline frame; the tone lives only in the glyph and a short tab on the top edge (`variant="soft"` for a tinted box when it must shout).
-- **Empty states** mark their frame with printer's crop marks, not a dashed box.
+- **Categorical colour marks who, never how.** A row or card with `color` draws a thin rail or a top keyline in `--color-cat-N`, matching that person's or team's `Tag` and `Avatar`. It's identity, not status or emphasis, so it's not the accent callout above; tones stay in badges and figures.
+- **Empty states** mark their frame with printer's crop marks, not a dashed box. So does a placeholder `Card`, a slot not yet decided.
 - **Focus is neutral** (`--color-focus` = ink) and always visible on `:focus-visible`. Focus must never look like validation; only error/warning/success tint a field.
 
 ### Motion

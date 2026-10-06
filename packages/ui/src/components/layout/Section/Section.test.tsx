@@ -28,4 +28,9 @@ describe('Section', () => {
     expect(el).toHaveAttribute('data-surface', 'inverse')
     expect(el).toHaveAttribute('data-divider', 'both')
   })
+
+  it('paints a categorical band', () => {
+    const { container } = render(<Section surface="cat-4">Kelso Bay supporters</Section>)
+    expect(container.firstElementChild).toHaveAttribute('data-surface', 'cat-4')
+  })
 })

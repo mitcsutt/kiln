@@ -30,7 +30,7 @@ export type {
 // Utilities & token types
 export { cx } from './utils/cx'
 export type { Responsive, Breakpoint } from './utils/responsive'
-export type { Space, Tone, Size, Width, Align, Justify } from './utils/tokens'
+export type { Space, Tone, Size, Width, Align, Justify, CategoryColor } from './utils/tokens'
 export type { VisibilityProps, VisibilityBreakpoint } from './utils/visibility'
 
 // Icons

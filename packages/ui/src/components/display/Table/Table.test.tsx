@@ -120,4 +120,22 @@ describe('Table', () => {
     )
     expect(container.firstElementChild).toHaveAttribute('data-kiln-component')
   })
+
+  it('marks muted rows and draws a categorical rail', () => {
+    render(
+      <Table aria-label="Standings">
+        <Table.Body>
+          <Table.Row color={2}>
+            <Table.Cell>Kelso Bay</Table.Cell>
+          </Table.Row>
+          <Table.Row muted>
+            <Table.Cell>North Point</Table.Cell>
+          </Table.Row>
+        </Table.Body>
+      </Table>,
+    )
+    const [owned, out] = screen.getAllByRole('row')
+    expect(owned).toHaveAttribute('data-color', '2')
+    expect(out).toHaveAttribute('data-muted')
+  })
 })

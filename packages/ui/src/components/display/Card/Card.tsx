@@ -2,21 +2,24 @@ import { forwardRef, type HTMLAttributes } from 'react'
 import { Slot } from 'radix-ui'
 import { cx } from '#utils/cx'
 import { mergeStyles, responsiveVars, type Responsive } from '#utils/responsive'
-import { space, type Space } from '#utils/tokens'
+import { space, type CategoryColor, type Space } from '#utils/tokens'
 import styles from './Card.module.css'
 import { headingTag } from '#utils/heading'
 
-export type CardVariant = 'plain' | 'outline' | 'raised'
+export type CardVariant = 'plain' | 'outline' | 'raised' | 'live' | 'placeholder'
 export type CardTitleLevel = 2 | 3 | 4 | 5 | 6
 export type CardMediaRatio = '1/1' | '4/3' | '3/2' | '16/9' | '21/9'
 
-export interface CardProps extends HTMLAttributes<HTMLDivElement> {
+export interface CardProps extends Omit<HTMLAttributes<HTMLDivElement>, 'color'> {
   /**
    * Edge treatment. `outline` (default) is a hairline; `plain` is a fill with no edge;
    * `raised` stands on `--shadow-surface` (nothing extra in Monograph/Ledger, the print
-   * offset in Fiesta).
+   * offset in Fiesta). `live` is a heavier keyline in the accent, for something happening now;
+   * `placeholder` has no fill and crop marks at its corners, for a slot not yet decided.
    */
   variant?: CardVariant
+  /** A categorical colour drawn as a keyline along the top: whose card it is, matching their `Tag`. */
+  color?: CategoryColor
   /** Inner padding as a space step. Responsive. Default `5`. */
   padding?: Responsive<Space>
   /** Hover/press affordance for cards that *are* the action. Implied by `asChild`. */
@@ -52,7 +55,16 @@ export interface CardProps extends HTMLAttributes<HTMLDivElement> {
  * <Card><Card.Header><Card.Title>Atlas</Card.Title><Card.Meta>2026</Card.Meta></Card.Header>…</Card>
  */
 const CardRoot = forwardRef<HTMLDivElement, CardProps>(function Card(
-  { variant = 'outline', padding, interactive = false, asChild = false, className, style, ...rest },
+  {
+    variant = 'outline',
+    padding,
+    interactive = false,
+    asChild = false,
+    color,
+    className,
+    style,
+    ...rest
+  },
   ref,
 ) {
   const Comp = asChild ? Slot.Root : 'div'
@@ -62,6 +74,7 @@ const CardRoot = forwardRef<HTMLDivElement, CardProps>(function Card(
       className={cx(styles.card, className)}
       data-kiln-component=""
       data-variant={variant}
+      data-color={color}
       data-interactive={interactive || asChild || undefined}
       style={mergeStyles(responsiveVars('card-padding', padding, space), style)}
       {...rest}

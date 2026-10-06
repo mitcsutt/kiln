@@ -1,6 +1,7 @@
 /*
  * Component tokens (themes may set any of these on [data-theme]):
  *   --media-bg   default var(--color-surface-sunken) — the frame while loading / on failure
+ *   --media-dim  default 45% — how far a `dimmed` image recedes toward the canvas
  */
 .media {
   --_radius: var(--radius-media);
@@ -130,6 +131,14 @@
   min-block-size: 0;
   padding: 0;
   font-size: calc(var(--_size) * 0.6);
+}
+
+/* Dimmed: grey, with the canvas laid over it, so it recedes in every theme and mode. */
+.media[data-dimmed] .image {
+  filter: grayscale(1);
+}
+.media[data-dimmed] .frame::after {
+  background: color-mix(in oklch, var(--color-canvas) var(--media-dim, 45%), transparent);
 }
 
 .caption {

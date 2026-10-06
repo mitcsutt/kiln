@@ -8,6 +8,7 @@ import {
 } from 'react'
 import { Slot } from 'radix-ui'
 import { cx } from '#utils/cx'
+import type { CategoryColor } from '#utils/tokens'
 import styles from './List.module.css'
 
 export type ListDensity = 'compact' | 'regular'
@@ -61,7 +62,7 @@ const ListRoot = forwardRef<HTMLUListElement, ListProps>(function List(
  */
 const RowIsControl = createContext(false)
 
-export interface ListItemProps extends LiHTMLAttributes<HTMLLIElement> {
+export interface ListItemProps extends Omit<LiHTMLAttributes<HTMLLIElement>, 'color'> {
   /** Hover affordance. Implied by `asChild`. */
   interactive?: boolean
   /**
@@ -74,6 +75,10 @@ export interface ListItemProps extends LiHTMLAttributes<HTMLLIElement> {
   selected?: boolean
   /** Draw attention to a row with `--color-highlight` — typically "you". */
   highlighted?: boolean
+  /** Out of play (eliminated, archived, past): every ink drops to the muted step, which still reads. */
+  muted?: boolean
+  /** A categorical colour drawn as a rail at the row's start: whose row it is, matching their `Tag`. */
+  color?: CategoryColor
   children?: ReactNode
 }
 
@@ -83,6 +88,8 @@ const ListItem = forwardRef<HTMLLIElement, ListItemProps>(function ListItem(
     asChild = false,
     selected = false,
     highlighted = false,
+    muted = false,
+    color,
     className,
     children,
     ...rest
@@ -97,6 +104,8 @@ const ListItem = forwardRef<HTMLLIElement, ListItemProps>(function ListItem(
       data-interactive={interactive || asChild || undefined}
       data-selected={selected || undefined}
       data-highlighted={highlighted || undefined}
+      data-muted={muted || undefined}
+      data-color={color}
       {...rest}
     >
       <RowIsControl.Provider value={asChild}>

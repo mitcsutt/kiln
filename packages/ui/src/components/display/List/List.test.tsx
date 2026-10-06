@@ -105,4 +105,22 @@ describe('List', () => {
     expect([tags('1'), tags('Ferry terminal'), tags('9')]).toEqual(['DIV', 'DIV', 'DIV'])
     expect([tags('North Point'), tags('6')]).toEqual(['SPAN', 'SPAN'])
   })
+
+  it('marks muted rows and draws a categorical rail', () => {
+    render(
+      <List>
+        <List.Item color={3}>
+          <List.Content>Kelso Bay</List.Content>
+        </List.Item>
+        <List.Item muted>
+          <List.Content>North Point</List.Content>
+        </List.Item>
+      </List>,
+    )
+    const [owned, out] = screen.getAllByRole('listitem')
+    expect(owned).toHaveAttribute('data-color', '3')
+    expect(owned).not.toHaveAttribute('data-muted')
+    expect(out).toHaveAttribute('data-muted')
+    expect(out).not.toHaveAttribute('data-color')
+  })
 })

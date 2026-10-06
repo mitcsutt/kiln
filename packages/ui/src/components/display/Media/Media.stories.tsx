@@ -112,6 +112,28 @@ export const Sizes: Story = {
   },
 }
 
+/**
+ * `dimmed` turns an image grey and lets it recede toward the canvas, for something out of play.
+ * Pair it with a muted `List.Item` or `Table.Row`.
+ */
+export const Dimmed: Story = {
+  tags: ['docs'],
+  render: function Dimmed() {
+    return (
+      <Inline gap={4} align="center">
+        <Inline gap={2} align="center">
+          <Media size="md" ratio="3/2" src="/images/flag-kelso-bay.svg" alt="" />
+          <Text>Kelso Bay</Text>
+        </Inline>
+        <Inline gap={2} align="center">
+          <Media size="md" ratio="3/2" src="/images/flag-north-point.svg" alt="" dimmed />
+          <Text tone="muted">North Point</Text>
+        </Inline>
+      </Inline>
+    )
+  },
+}
+
 const flagSvg =
   'data:image/svg+xml,' +
   encodeURIComponent(

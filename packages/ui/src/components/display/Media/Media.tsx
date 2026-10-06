@@ -32,6 +32,11 @@ export interface MediaProps extends Omit<HTMLAttributes<HTMLElement>, 'children'
    * Default: none, so the frame fills its container.
    */
   size?: MediaSize
+  /**
+   * Out of play: the image turns grey and recedes toward the canvas, like a knocked-out
+   * team's flag or a past event's photo. Pair it with a muted `List.Item` or `Table.Row`.
+   */
+  dimmed?: boolean
   /** Renders a `<figure>` with this as its `<figcaption>`. */
   caption?: ReactNode
   /** Shown inside the frame if the image fails to load. Default: an empty sunken frame. */
@@ -63,6 +68,7 @@ export const Media = forwardRef<HTMLElement, MediaProps>(function Media(
     fit = 'cover',
     radius = 'media',
     size,
+    dimmed = false,
     caption,
     fallback,
     loading = 'lazy',
@@ -100,6 +106,7 @@ export const Media = forwardRef<HTMLElement, MediaProps>(function Media(
       data-fit={fit}
       data-radius={radius}
       data-size={size}
+      data-dimmed={dimmed || undefined}
       data-failed={failed || undefined}
       {...rest}
     >

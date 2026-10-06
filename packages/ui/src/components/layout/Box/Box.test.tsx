@@ -35,4 +35,9 @@ describe('Box', () => {
     expect(container.firstElementChild?.tagName).toBe('ASIDE')
     expect(ref.current).toBe(container.firstElementChild)
   })
+
+  it('paints a categorical surface', () => {
+    const { container } = render(<Box surface="cat-7">Kelso Bay</Box>)
+    expect(container.firstElementChild).toHaveAttribute('data-surface', 'cat-7')
+  })
 })

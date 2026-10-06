@@ -72,4 +72,9 @@ describe('Media', () => {
     expect(button.querySelectorAll('div')).toHaveLength(0)
     expect(screen.getByRole('img', { name: 'Kelso Bay flag' }).parentElement?.tagName).toBe('SPAN')
   })
+
+  it('dims an image that is out of play', () => {
+    const { container } = render(<Media src="/images/flag.svg" alt="" size="sm" dimmed />)
+    expect(container.firstElementChild).toHaveAttribute('data-dimmed')
+  })
 })
