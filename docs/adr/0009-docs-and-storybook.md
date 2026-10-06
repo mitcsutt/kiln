@@ -16,7 +16,7 @@ The source documents everything in Storybook. That works for development, but it
 
 - **Public docs:** Fumadocs on Next.js in `apps/docs`, built with `kiln-ui` itself. Every component page shows a live preview, a props table generated from the types, and copyable code.
 - **Developer workbench:** Storybook in `apps/storybook`, for isolated states, interaction tests and a11y checks. It carries no long-form prose.
-- **Hosting (later):** Vercel, at `kiln.mitchellsutton.com`, with Storybook at `/storybook`. Both build as deployable artefacts in this work, and deploying them is a separate step.
+- **Hosting (later):** Vercel, at `kiln.mitchellsutton.com`, with Storybook at `/storybook`. Both build as deployable artefacts, and deploying them is a separate step.
 
 ## Consequences
 

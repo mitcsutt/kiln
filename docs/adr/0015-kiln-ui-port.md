@@ -50,7 +50,7 @@
 
 **Content**
 
-- Stories, tests and doc comments that described the source apps (their names, people, data and internals) were rewritten with invented, generic content. A personal photo used by the Avatar, Card and Media stories was replaced with an illustrated SVG. The source's app-mirroring Patterns stories weren't ported.
+- Stories, tests and doc comments that described the source apps (their names, people, data and internals) were rewritten with invented, generic content. The photograph used by the Avatar, Card and Media stories was replaced with an illustrated SVG. The source's app-mirroring Patterns stories weren't ported.
 
 ## Consequences
 

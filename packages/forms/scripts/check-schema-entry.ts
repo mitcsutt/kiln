@@ -1,6 +1,6 @@
 /**
- * Proves `@mitcsutt/kiln-forms/schema` loads in plain Node with no React installed
- * (target-state §3), using the packed tarball a consumer would install.
+ * Proves `@mitcsutt/kiln-forms/schema` loads in plain Node with no React installed, so server
+ * code can use it, using the packed tarball a consumer would install.
  *
  *   node scripts/check-schema-entry.ts <package.tgz>
  *
