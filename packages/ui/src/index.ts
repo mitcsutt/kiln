@@ -339,7 +339,13 @@ export type {
   TableColumnWidth,
 } from './components/display/Table'
 export { Media } from './components/display/Media'
-export type { MediaProps, MediaRatio, MediaFit, MediaRadius } from './components/display/Media'
+export type {
+  MediaProps,
+  MediaRatio,
+  MediaFit,
+  MediaRadius,
+  MediaSize,
+} from './components/display/Media'
 export { Marquee } from './components/display/Marquee'
 export type {
   MarqueeProps,

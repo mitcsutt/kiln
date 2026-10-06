@@ -88,7 +88,9 @@ export const Media = forwardRef<HTMLElement, MediaProps>(function Media(
     )
   }, [src])
 
-  const Root = caption !== undefined ? 'figure' : 'div'
+  // A sized thumbnail is phrasing content (spans), so it can sit in a button or a line of text.
+  const Root = caption !== undefined ? 'figure' : size ? 'span' : 'div'
+  const Box = size ? 'span' : 'div'
   return (
     <Root
       // @ts-expect-error — polymorphic ref across figure/div is safe here
@@ -101,15 +103,15 @@ export const Media = forwardRef<HTMLElement, MediaProps>(function Media(
       data-failed={failed || undefined}
       {...rest}
     >
-      <div className={styles.frame}>
+      <Box className={styles.frame}>
         {failed ? (
-          <div
+          <Box
             className={styles.fallback}
             role={alt ? 'img' : undefined}
             aria-label={alt || undefined}
           >
             {fallback}
-          </div>
+          </Box>
         ) : (
           <img
             ref={imgRef}
@@ -124,7 +126,7 @@ export const Media = forwardRef<HTMLElement, MediaProps>(function Media(
             {...imgProps}
           />
         )}
-      </div>
+      </Box>
       {caption !== undefined ? <figcaption className={styles.caption}>{caption}</figcaption> : null}
     </Root>
   )

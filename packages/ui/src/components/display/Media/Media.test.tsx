@@ -60,4 +60,16 @@ describe('Media', () => {
     expect(container.querySelector('img')).toBeNull()
     expect(root).toHaveAttribute('data-failed')
   })
+
+  it('is phrasing content when sized, so it can sit inside a button', () => {
+    render(
+      <button type="button">
+        <Media size="xs" ratio="3/2" src="/images/flag.svg" alt="Kelso Bay flag" />
+        Kelso Bay
+      </button>,
+    )
+    const button = screen.getByRole('button')
+    expect(button.querySelectorAll('div')).toHaveLength(0)
+    expect(screen.getByRole('img', { name: 'Kelso Bay flag' }).parentElement?.tagName).toBe('SPAN')
+  })
 })
