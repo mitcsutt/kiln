@@ -11,12 +11,12 @@ export function ThemeSwitcher() {
     <Inline gap={2} wrap={false}>
       <Select
         aria-label="Theme"
-        size="sm"
+        size="md"
         options={options}
         value={theme}
         onValueChange={setTheme}
       />
-      <ModeToggle size="sm" />
+      <ModeToggle size="md" />
     </Inline>
   )
 }

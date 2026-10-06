@@ -62,7 +62,7 @@ export function Search() {
         <Button
           variant="outline"
           tone="neutral"
-          size="sm"
+          size="md"
           leadingIcon={<SearchIcon />}
           trailingIcon={<Kbd size="sm">⌘K</Kbd>}
         >
