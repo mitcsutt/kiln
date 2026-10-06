@@ -9,6 +9,9 @@ import {
   StarIcon,
   UsersIcon,
 } from '@mitcsutt/kiln-ui'
+import { expect, within } from 'storybook/test'
+import { fontSize, resolvedSize } from '#components/_story/fontSize'
+import { storyRoot } from '#components/_story/storyRoot'
 import { createIcon } from '#icons'
 
 /* Story-only glyph on the library's 20px grid; the rest ship with Kiln. */
@@ -78,5 +81,11 @@ export const Usage: Story = {
         <BottomNav.Item href="#tickets" icon={<CircleCheckIcon />} label="Tickets" badge />
       </BottomNav>
     )
+  },
+  play: async ({ canvasElement }) => {
+    // A compact nav label floors at 0.75rem, whatever the theme's caption steps (DESIGN.md §2).
+    const label = within(storyRoot(canvasElement)).getByText('Departures')
+    await expect(fontSize(label)).toBeGreaterThanOrEqual(resolvedSize(label, '0.75rem'))
+    await expect(fontSize(label)).toBeGreaterThanOrEqual(resolvedSize(label, 'var(--text-xs)'))
   },
 }

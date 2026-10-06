@@ -9,7 +9,7 @@ import {
   Tooltip,
   TooltipProvider,
 } from '@mitcsutt/kiln-ui'
-import { expect, fn, screen, userEvent, waitFor, within } from 'storybook/test'
+import { expect, fireEvent, fn, screen, userEvent, waitFor, within } from 'storybook/test'
 import { storyRoot } from '#components/_story/storyRoot'
 import { Stack } from '#components/layout/Stack'
 import { MoonIcon } from '#icons'
@@ -174,7 +174,10 @@ export const TouchAndDisabled: Story = {
 
 const onReactionsClick = fn()
 
-/** A held touch opens the tooltip and swallows the tap; a quick tap still presses the button. */
+/**
+ * A held touch opens the tooltip and swallows the tap; a quick tap still presses the button, and
+ * so does a key press after a long press.
+ */
 export const LongPress: Story = {
   args: {
     content: 'Noor, Kofi and Ada',
@@ -197,8 +200,16 @@ export const LongPress: Story = {
       'Noor, Kofi and Ada',
     )
     await userEvent.pointer({ keys: '[/TouchA]', target: trigger })
+    await fireEvent.pointerUp(trigger, { pointerType: 'touch' })
+    await fireEvent.click(trigger)
     await expect(onReactionsClick).toHaveBeenCalledOnce()
     await userEvent.keyboard('{Escape}')
     await waitFor(() => expect(screen.queryByRole('tooltip')).not.toBeInTheDocument())
+
+    trigger.focus()
+    await userEvent.keyboard('{Enter}')
+    await expect(onReactionsClick).toHaveBeenCalledTimes(2)
+    await userEvent.keyboard('{Escape}')
+    trigger.blur()
   },
 }

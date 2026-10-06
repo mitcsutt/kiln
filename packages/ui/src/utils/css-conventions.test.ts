@@ -42,30 +42,4 @@ describe('component CSS conventions', () => {
     })
     expect(offenders).toEqual([])
   })
-
-  it('keeps navigation text off the caption steps (DESIGN.md §2 Type)', () => {
-    // Nav labels are read and scanned like body copy. `--text-xs` and `--text-2xs` floor at
-    // 11px and are for captions, badges and metadata; a compact label may floor at 0.75rem.
-    const navText: Record<string, string> = {
-      'navigation/NavLinks/NavLinks.module.css': 'link',
-      'navigation/Tabs/Tabs.module.css': 'trigger',
-      'navigation/BottomNav/BottomNav.module.css': 'link',
-    }
-    const offenders = Object.entries(navText).flatMap(([file, className]) => {
-      const css = readFileSync(join(COMPONENTS, file), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '')
-      const subject = new RegExp(`\\.${className}(?![\\w-])`)
-      return [...css.matchAll(/([^{}]+)\{([^{}]*)\}/g)].flatMap(([, selector = '', body = '']) => {
-        if (!subject.test(selector)) return []
-        return [...body.matchAll(/font-size\s*:\s*([^;]+)/g)]
-          .map(([, value = '']) => value.trim())
-          .filter((value) => {
-            if (!/var\(--text-2?xs\)/.test(value)) return false
-            const floor = /^max\(var\(--text-xs\),\s*([\d.]+)rem\)$/.exec(value)
-            return !floor || Number(floor[1]) < 0.75
-          })
-          .map((value) => `${file}: ${selector.trim()} { font-size: ${value} }`)
-      })
-    })
-    expect(offenders).toEqual([])
-  })
 })

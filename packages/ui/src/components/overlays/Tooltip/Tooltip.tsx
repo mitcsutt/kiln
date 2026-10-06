@@ -224,6 +224,13 @@ function useLongPress(enabled: boolean, onLongPress: () => void) {
   }
   useEffect(() => cancel, [])
   if (!enabled) return {}
+  const release = () => {
+    cancel()
+    if (fired.current)
+      timer.current = setTimeout(() => {
+        fired.current = false
+      })
+  }
   const swallow = (event: SyntheticEvent) => {
     if (!fired.current) return
     event.preventDefault()
@@ -245,8 +252,8 @@ function useLongPress(enabled: boolean, onLongPress: () => void) {
       const from = start.current
       if (from && Math.hypot(event.clientX - from.x, event.clientY - from.y) > PRESS_SLOP) cancel()
     },
-    onPointerUp: cancel,
-    onPointerCancel: cancel,
+    onPointerUp: release,
+    onPointerCancel: release,
     onClickCapture: swallow,
     onContextMenu: swallow,
   }

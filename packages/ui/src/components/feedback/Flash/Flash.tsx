@@ -1,6 +1,7 @@
 import {
   forwardRef,
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
   type HTMLAttributes,
@@ -16,6 +17,8 @@ import styles from './Flash.module.css'
  * and its hydration included) never flash on `appear`, so a page doesn't light up as it loads.
  */
 let pageRendered = false
+
+const useIsomorphicLayoutEffect = typeof document === 'undefined' ? useEffect : useLayoutEffect
 
 export interface FlashProps extends HTMLAttributes<HTMLElement> {
   /**
@@ -68,12 +71,16 @@ export const Flash = forwardRef<HTMLElement, FlashProps>(function Flash(
   ref,
 ) {
   const element = useRef<HTMLElement>(null)
-  const [count, setCount] = useState(() => ((appear && pageRendered) || target ? 1 : 0))
+  const [count, setCount] = useState(target ? 1 : 0)
   const [seen, setSeen] = useState({ value, target })
   if (!Object.is(seen.value, value) || seen.target !== target) {
     setSeen({ value, target })
     if (!Object.is(seen.value, value) || (target && !seen.target)) setCount(count + 1)
   }
+
+  useIsomorphicLayoutEffect(() => {
+    if (appear && pageRendered) setCount((n) => n + 1)
+  }, [])
 
   useEffect(() => {
     pageRendered = true
