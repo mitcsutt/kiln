@@ -40,4 +40,18 @@ describe('AvatarGroup', () => {
     )
     expect(screen.queryByText(/^\+/)).not.toBeInTheDocument()
   })
+
+  it('is phrasing content, so it can sit inside a button', () => {
+    render(
+      <button type="button">
+        3 reactions
+        <AvatarGroup aria-label="Reacted: Noor, Kofi">
+          <Avatar name="Noor Haddad" />
+          <Avatar name="Kofi Mensah" />
+        </AvatarGroup>
+      </button>,
+    )
+    expect(screen.getByRole('group', { name: 'Reacted: Noor, Kofi' }).tagName).toBe('SPAN')
+    expect(screen.getByRole('button').querySelectorAll('div')).toHaveLength(0)
+  })
 })

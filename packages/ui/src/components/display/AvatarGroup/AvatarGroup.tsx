@@ -3,7 +3,7 @@ import { cx } from '#utils/cx'
 import { AvatarSizeContext, type AvatarSize } from '#components/display/Avatar'
 import styles from './AvatarGroup.module.css'
 
-export interface AvatarGroupProps extends HTMLAttributes<HTMLDivElement> {
+export interface AvatarGroupProps extends HTMLAttributes<HTMLElement> {
   /** Show at most this many avatars; the rest collapse into a "+N" count. */
   max?: number
   /** Size for every avatar in the stack. Default `sm`. */
@@ -24,7 +24,7 @@ export interface AvatarGroupProps extends HTMLAttributes<HTMLDivElement> {
  *
  * <AvatarGroup max={4} aria-label="Members"><Avatar name="Noor" />…</AvatarGroup>
  */
-export const AvatarGroup = forwardRef<HTMLDivElement, AvatarGroupProps>(function AvatarGroup(
+export const AvatarGroup = forwardRef<HTMLElement, AvatarGroupProps>(function AvatarGroup(
   { max, size = 'sm', className, children, ...rest },
   ref,
 ) {
@@ -33,7 +33,8 @@ export const AvatarGroup = forwardRef<HTMLDivElement, AvatarGroupProps>(function
   const overflow = items.length - limit
   return (
     <AvatarSizeContext.Provider value={size}>
-      <div
+      {/* A span, like Avatar, so a group can sit inside a button or a line of text. */}
+      <span
         ref={ref}
         role="group"
         className={cx(styles.group, className)}
@@ -51,7 +52,7 @@ export const AvatarGroup = forwardRef<HTMLDivElement, AvatarGroupProps>(function
             <span aria-hidden="true">+{overflow}</span>
           </span>
         ) : null}
-      </div>
+      </span>
     </AvatarSizeContext.Provider>
   )
 })
