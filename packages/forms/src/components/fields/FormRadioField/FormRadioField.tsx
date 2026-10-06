@@ -18,6 +18,34 @@ export interface FormRadioFieldProps
 }
 
 /**
+ * One choice from a short list, as radios under a legend.
+ *
+ * @remarks
+ * It renders kiln-ui's {@link RadioGroupField | RadioGroupField}.
+ *
+ * @example In a schema
+ * ```json
+ * {
+ *   "kind": "radio",
+ *   "name": "deck",
+ *   "label": "Deck",
+ *   "options": [
+ *     {
+ *       "value": "upper",
+ *       "label": "Upper deck"
+ *     },
+ *     {
+ *       "value": "lower",
+ *       "label": "Lower deck"
+ *     }
+ *   ]
+ * }
+ * ```
+ *
+ * @value the options' value type, or `null`
+ * @empty `null`
+ *
+ * @privateRemarks
  * One choice from a short list, as radios (§7.2 `radio`). Option values keep their primitive
  * type (numbers and booleans round-trip through the string-only ui control, §7.3); empty is `null`.
  */

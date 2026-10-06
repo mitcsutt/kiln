@@ -1,10 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Inline } from '#components/layout/Inline'
+import { Card, Inline, Stamp, Text } from '@mitcsutt/kiln-ui'
 import { Stack } from '#components/layout/Stack'
-import { Text } from '#components/typography/Text'
-import { Card } from '#components/display/Card'
 import { Grid } from '#components/layout/Grid'
-import { Stamp } from './Stamp'
 
 const meta = {
   title: 'UI/Display/Stamp',
@@ -119,4 +116,37 @@ export const OnACard: Story = {
       </Card>
     </Grid>
   ),
+}
+
+/**
+ * It reads as its text. When the word needs more context, pass an `aria-label` ("Ticket 0417
+ * refunded"). `placement="corner"` pins it to the corner of its positioned parent, and `rotate`
+ * sets the angle in degrees.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Inline gap={6} align="start">
+        <Stamp>Cancelled</Stamp>
+        <Stamp tone="positive" rotate={-4}>
+          Paid
+        </Stamp>
+        <Stamp tone="neutral" size="sm">
+          Void
+        </Stamp>
+        <Card>
+          <Card.Header>
+            <Card.Title>Ticket 0417</Card.Title>
+          </Card.Header>
+          <Card.Body>
+            <Text tone="muted">Harbour Square to Kelso Bay, 14 October</Text>
+          </Card.Body>
+          <Stamp placement="corner" tone="caution" aria-label="Ticket 0417 refunded">
+            Refunded
+          </Stamp>
+        </Card>
+      </Inline>
+    )
+  },
 }

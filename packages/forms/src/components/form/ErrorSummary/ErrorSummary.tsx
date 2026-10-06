@@ -30,6 +30,20 @@ interface Entry {
 }
 
 /**
+ * After a failed submit, every error in one alert, each a link to its field. The GOV.UK pattern.
+ *
+ * @remarks
+ * `ErrorSummary` renders nothing until a submit attempt fails. Then it shows a critical alert
+ * listing every error in document order, each a link that focuses its field (revealing the tab,
+ * accordion item or step it's in). Form-level errors are listed first. It's announced on every
+ * failed submit, and with the default `focusOnInvalid`, focus moves to it.
+ *
+ * @example In a schema
+ * ```json
+ * { "content": "errorSummary" }
+ * ```
+ *
+ * @privateRemarks
  * The GOV.UK error summary (§6.4): after a submit attempt with errors, a critical `Alert`
  * (announced once per attempt) listing form errors, then a link per invalid field in DOM order.
  * Links move focus to the control (revealing its tab/step first).

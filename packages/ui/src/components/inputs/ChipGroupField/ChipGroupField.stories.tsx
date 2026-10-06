@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { ChipGroupField } from './ChipGroupField'
+import { ChipGroupField } from '@mitcsutt/kiln-ui'
 
 const alerts = [
   { value: 'failed-build', label: 'Failed builds' },
@@ -36,5 +36,27 @@ export const Single: Story = {
     label: 'Most important',
     defaultValue: 'latency',
     description: undefined,
+  },
+}
+
+/**
+ * Chips suit short labels. For choices that need a sentence each, use a
+ * [CheckboxGroupField](/docs/ui/inputs/checkbox-group-field).
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <ChipGroupField
+        label="Days you travel"
+        description="We'll tailor alerts to these days"
+        type="multiple"
+        defaultValue={['mon', 'wed']}
+        options={['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day) => ({
+          value: day.toLowerCase(),
+          label: day,
+        }))}
+      />
+    )
   },
 }

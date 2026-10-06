@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Form, useAppForm, useFieldValue } from '@mitcsutt/kiln-forms'
+import { Code, Stack, Text } from '@mitcsutt/kiln-ui'
 import { FieldDemo, NEVER_SETTLES, StatesGrid, StoryForm } from '#stories/_kit'
 import { FormComboboxField } from './FormComboboxField'
 
@@ -179,4 +181,52 @@ export const ViewMode: Story = {
       {(form) => <form.ComboboxField name="value" label="Country" options={countries} />}
     </FieldDemo>
   ),
+}
+
+const STOPS = ['Harbour Square', 'Kelso Bay Pier', 'Marram Point', 'Northpoint Library', 'Old Quay']
+
+// Called with the query, the form's values and an abort signal. Usually a fetch.
+async function searchStops({ query, signal }: { query: string; signal: AbortSignal }) {
+  await new Promise((resolve, reject) => {
+    const timer = setTimeout(resolve, 300)
+    signal.addEventListener('abort', () => {
+      clearTimeout(timer)
+      reject(new Error('Superseded'))
+    })
+  })
+  return STOPS.filter((stop) => stop.toLowerCase().includes(query.toLowerCase())).map((stop) => ({
+    value: stop,
+    label: stop,
+  }))
+}
+
+/**
+ * `loadOptions` is called with the query, the form's values and an abort signal. Requests are
+ * debounced, a superseded request is aborted, and results are cached per query. `reloadOn` lists
+ * fields that should reload the options when they change (a region after a country). `creatable`
+ * lets the reader keep text that matches no option. In schema mode, functions can't live in JSON,
+ * so a loader is registered by key and referenced with `optionsFrom`.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const form = useAppForm({ defaultValues: { stop: null as string | null } })
+    const value = useFieldValue(form, 'stop')
+    return (
+      <Form form={form} aria-label="ComboboxField example">
+        <Stack gap={4}>
+          <form.ComboboxField
+            name="stop"
+            label="Stop"
+            placeholder="Type a stop"
+            loadOptions={searchStops}
+            minQueryLength={1}
+          />
+          <Text size="sm" tone="muted">
+            Value: <Code>{JSON.stringify(value)}</Code>
+          </Text>
+        </Stack>
+      </Form>
+    )
+  },
 }

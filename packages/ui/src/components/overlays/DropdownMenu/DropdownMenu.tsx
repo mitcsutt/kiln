@@ -14,6 +14,14 @@ import styles from './DropdownMenu.module.css'
 export type DropdownMenuProps = ComponentPropsWithoutRef<typeof MenuPrimitive.Root>
 
 /**
+ * A list of commands behind a button, with checkboxes, radio groups, submenus and full keyboard
+ * support.
+ *
+ * @remarks
+ * `DropdownMenu` holds the actions you don't need to see all the time: a row's options, a sort
+ * order. It's Radix Menu underneath, so arrow keys, typeahead, Home, End and Escape all work.
+ *
+ * @privateRemarks
  * A list of commands behind a button: row actions, a member's options, sort order.
  * Full keyboard support (arrows, typeahead, Home/End, Escape) from Radix.
  *

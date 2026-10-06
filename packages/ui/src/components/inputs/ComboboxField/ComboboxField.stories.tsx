@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { ComboboxField } from '@mitcsutt/kiln-ui'
 import { Stack } from '#components/layout/Stack'
 import { projectLabels, countries } from '#components/inputs/Combobox/storyData'
-import { ComboboxField } from './ComboboxField'
 
 const meta = {
   title: 'UI/Inputs/ComboboxField',
@@ -54,4 +54,24 @@ export const Labels: Story = {
       />
     </Stack>
   ),
+}
+
+/**
+ * With `creatable`, the reader can add a value that isn't in the list.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <ComboboxField
+        label="Destination"
+        description="Any stop on the network"
+        placeholder="Type a stop"
+        options={['Harbour Square', 'Kelso Bay Pier', 'Marram Point', 'Old Quay', 'Ferry Lane'].map(
+          (stop) => ({ value: stop, label: stop }),
+        )}
+        creatable
+      />
+    )
+  },
 }

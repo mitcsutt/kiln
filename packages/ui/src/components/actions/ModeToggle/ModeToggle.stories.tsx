@@ -1,7 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Inline } from '#components/layout/Inline'
-import { Stack } from '#components/layout/Stack'
-import { ModeToggle } from './ModeToggle'
+import { Inline, ModeToggle, Stack } from '@mitcsutt/kiln-ui'
 
 /**
  * Needs a ThemeProvider (Storybook's decorator supplies one). In the story frame the
@@ -37,4 +35,27 @@ export const Segmented: Story = {
       <ModeToggle variant="segmented" iconOnly size="sm" />
     </Stack>
   ),
+}
+
+/**
+ * The toggles above change these docs' real mode. `variant="icon"` (the default) is one quiet
+ * button that cycles light, dark and system; its icon shows the current mode, and its accessible
+ * name says what a press switches to. `variant="segmented"` shows all three at once, for a
+ * settings page or a footer.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Stack gap={5} align="start">
+        <Inline gap={3}>
+          <ModeToggle size="sm" />
+          <ModeToggle />
+          <ModeToggle buttonVariant="outline" />
+        </Inline>
+        <ModeToggle variant="segmented" />
+        <ModeToggle variant="segmented" iconOnly size="sm" />
+      </Stack>
+    )
+  },
 }

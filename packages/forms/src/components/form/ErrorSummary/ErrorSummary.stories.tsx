@@ -1,9 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { ErrorSummary, Form, SubmitButton, useAppForm } from '@mitcsutt/kiln-forms'
+import { Stack } from '@mitcsutt/kiln-ui'
 import { RevealErrors } from '#stories/_kit'
-import { Form } from '#components/form/Form'
-import { SubmitButton } from '#components/form/SubmitButton'
 import { kit } from '#kit/defaultKit'
-import { ErrorSummary } from './ErrorSummary'
 
 const meta = {
   title: 'Forms/Layouts/ErrorSummary',
@@ -77,4 +76,39 @@ function CustomTitle() {
 export const CustomTitleStory: Story = {
   name: 'Custom title',
   render: () => <CustomTitle />,
+}
+
+const required = (message: string) => ({
+  onDynamic: ({ value }: { value: string }) => (value.trim() ? undefined : message),
+})
+
+/**
+ * Press the button with the fields empty, then follow a link. Put the summary at the top of the
+ * form, where a reader returning to it starts. Fields inside still show their own errors.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const form = useAppForm({ defaultValues: { name: '', email: '', reference: '' } })
+    return (
+      <Form form={form} aria-label="Claim a refund">
+        <Stack gap={5}>
+          <ErrorSummary title="Check these before you claim" />
+          <form.TextField name="name" label="Full name" validators={required('Enter your name')} />
+          <form.TextField
+            name="email"
+            label="Email"
+            type="email"
+            validators={required('Enter your email')}
+          />
+          <form.TextField
+            name="reference"
+            label="Booking reference"
+            validators={required('Enter the booking reference')}
+          />
+          <SubmitButton>Claim refund</SubmitButton>
+        </Stack>
+      </Form>
+    )
+  },
 }

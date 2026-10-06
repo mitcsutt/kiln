@@ -21,6 +21,14 @@ export interface StampProps extends HTMLAttributes<HTMLSpanElement> {
 }
 
 /**
+ * A rubber-stamp verdict like Paid, Void or Cancelled. A double rule in the display face, knocked
+ * off square.
+ *
+ * @remarks
+ * `Stamp` is a verdict, stamped on the thing it judges: a refunded ticket, a void invoice. It's
+ * decorative but deliberate, so use one per object.
+ *
+ * @privateRemarks
  * A rubber-stamp verdict: "Rejected", "Paid", "Void". A double rule in the display
  * face, knocked slightly off square. Decorative but deliberate — use one per object,
  * on the thing it judges.

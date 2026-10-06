@@ -13,6 +13,26 @@ export interface FormNumberFieldProps
   extends Omit<UiNumberFieldProps, ControlledKeys>, CommonFieldProps<number | null> {}
 
 /**
+ * A number field bound to a `number` path. Clearing it writes `null`, never `NaN` or `''`.
+ *
+ * @remarks
+ * It renders kiln-ui's {@link NumberField | NumberField}.
+ *
+ * @example In a schema
+ * ```json
+ * {
+ *   "kind": "number",
+ *   "name": "passengers",
+ *   "label": "Passengers",
+ *   "min": 1,
+ *   "max": 9
+ * }
+ * ```
+ *
+ * @value `number | null`
+ * @empty `null`
+ *
+ * @privateRemarks
  * A number field bound to a `number` path (§7.2 `number`) — the path may additionally be
  * `null`/`undefined`: clearing the input always emits `null`. View mode formats the value with
  * `Numeral` using the field's own `formatOptions`/`locale`.

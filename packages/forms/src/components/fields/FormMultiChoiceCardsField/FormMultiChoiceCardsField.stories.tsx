@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Form, useAppForm, useFieldValue } from '@mitcsutt/kiln-forms'
+import { Code, Stack, Text } from '@mitcsutt/kiln-ui'
 import { FieldDemo, NEVER_SETTLES, StatesGrid, StoryForm } from '#stories/_kit'
 import { FormMultiChoiceCardsField } from './FormMultiChoiceCardsField'
 
@@ -189,4 +191,33 @@ export const ViewMode: Story = {
       {(form) => <form.MultiChoiceCardsField name="value" label="Add-ons" options={addOns} />}
     </FieldDemo>
   ),
+}
+
+/**
+ * The same cards as the choice cards field, as a set of checkboxes.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const form = useAppForm({ defaultValues: { extras: [] as string[] } })
+    const value = useFieldValue(form, 'extras')
+    return (
+      <Form form={form} aria-label="MultiChoiceCardsField example">
+        <Stack gap={4}>
+          <form.MultiChoiceCardsField
+            name="extras"
+            label="Add-ons"
+            columns={{ base: 1, sm: 2 }}
+            options={[
+              { value: 'bike', label: 'Bike space', description: 'Reserved on every crossing' },
+              { value: 'lounge', label: 'Lounge', description: 'Quiet seats and a hot drink' },
+            ]}
+          />
+          <Text size="sm" tone="muted">
+            Value: <Code>{JSON.stringify(value)}</Code>
+          </Text>
+        </Stack>
+      </Form>
+    )
+  },
 }

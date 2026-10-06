@@ -17,6 +17,13 @@ export interface VisuallyHiddenProps extends HTMLAttributes<HTMLElement> {
 }
 
 /**
+ * Content that screen readers announce and sighted readers don't need to see.
+ *
+ * @remarks
+ * `VisuallyHidden` keeps text in the accessibility tree while hiding it from view: the rest of a
+ * sentence a glyph implies, a heading the layout already makes obvious, a table caption.
+ *
+ * @privateRemarks
  * Content for screen readers only: a label for an icon-only control, a table caption,
  * a heading that the visual layout already implies.
  *

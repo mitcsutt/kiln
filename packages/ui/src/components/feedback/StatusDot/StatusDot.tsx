@@ -13,7 +13,16 @@ export interface StatusDotProps extends HTMLAttributes<HTMLSpanElement> {
   size?: 'sm' | 'md'
 }
 
-/** A small static dot plus a label. For states that sit still; for "happening now" use LiveIndicator. */
+/**
+ * A small static dot and a label, for states that sit still.
+ *
+ * @remarks
+ * `StatusDot` pairs a tone with a word, so status never depends on colour alone. For "happening
+ * now", use a {@link LiveIndicator | LiveIndicator}.
+ *
+ * @privateRemarks
+ * A small static dot plus a label. For states that sit still; for "happening now" use LiveIndicator.
+ */
 export const StatusDot = forwardRef<HTMLSpanElement, StatusDotProps>(function StatusDot(
   { tone = 'neutral', label, labelHidden = false, size = 'md', className, ...rest },
   ref,

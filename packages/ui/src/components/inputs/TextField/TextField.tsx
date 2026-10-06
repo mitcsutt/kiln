@@ -15,6 +15,14 @@ export interface TextFieldProps extends FieldLabelProps, Omit<InputProps, 'inval
 }
 
 /**
+ * A labelled text input with description, error, warning and an optional character count.
+ *
+ * @remarks
+ * `TextField` is a {@link Field | Field} around an {@link Input | Input}: the label, description,
+ * error and warning wired to the control in one component. Input props (`value`, `type`,
+ * `autoComplete`, `leading`, `numeric`) and the ref go to the `<input>`.
+ *
+ * @privateRemarks
  * Label + Input + description + error in one. Input props (`value`, `type`, `leading`,
  * `numeric`…) and the ref go to the input; `className`/`style` go to the field wrapper.
  *

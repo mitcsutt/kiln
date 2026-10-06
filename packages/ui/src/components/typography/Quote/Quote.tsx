@@ -17,6 +17,13 @@ export interface QuoteProps extends HTMLAttributes<HTMLElement> {
 }
 
 /**
+ * A pull quote or testimonial, with a hanging opening mark and an attribution.
+ *
+ * @remarks
+ * `Quote` sets the opening mark in its own column in the display face, the way a typographer hangs
+ * punctuation, rather than drawing a coloured bar down the side.
+ *
+ * @privateRemarks
  * A pull quote or testimonial. The opening mark hangs in its own column in the display
  * face — the typographer's treatment, not a coloured bar down the side.
  *

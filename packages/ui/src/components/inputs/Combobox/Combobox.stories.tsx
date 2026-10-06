@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Combobox, Stack } from '@mitcsutt/kiln-ui'
 import { expect, screen, userEvent, within } from 'storybook/test'
 import { storyRoot } from '#components/_story/storyRoot'
 import { useEffect, useState } from 'react'
-import { Stack } from '#components/layout/Stack'
 import { filterOptions } from '#components/inputs/internal/filterOptions'
-import { Combobox, type ComboboxOption } from './Combobox'
+import type { ComboboxOption } from './Combobox'
 import { projectLabels, clients, countries } from './storyData'
 
 const meta = {
@@ -162,4 +162,42 @@ function AsyncClient() {
 /** Async-ready: `filter="none"`, `loading`, and the loader's results as `options`. */
 export const Client: Story = {
   render: () => <AsyncClient />,
+}
+
+const STOPS = [
+  'Harbour Square',
+  'Kelso Bay Pier',
+  'Marram Point',
+  'Northpoint Library',
+  'Old Quay',
+  'Ferry Lane',
+  'Lifeboat Station',
+].map((stop) => ({ value: stop.toLowerCase().replace(/ /g, '-'), label: stop }))
+
+/**
+ * For options from a server, pass `filter="none"`, set `loading` while you fetch, and pass the
+ * results as `options`. Control the typed text with `inputValue` and `onInputValueChange`.
+ * `maxSelected` caps a multiple selection, and `emptyMessage` and `loadingMessage` set what the
+ * list says when there's nothing to show.
+ *
+ * kiln-forms' [ComboboxField](/docs/forms/fields/combobox-field) handles the loading for you with
+ * a `loadOptions` function.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Stack gap={4}>
+        <Combobox aria-label="From" options={STOPS} placeholder="Type a stop" clearable />
+        <Combobox
+          aria-label="Favourite stops"
+          options={STOPS}
+          multiple
+          defaultValue={['old-quay']}
+          maxSelected={3}
+          placeholder="Add up to three"
+        />
+      </Stack>
+    )
+  },
 }

@@ -2,22 +2,18 @@ import { basename } from 'node:path'
 
 import type { StorybookConfig } from '@storybook/react-vite'
 
-import { examplesIndexer, examplesPlugin } from './examples.ts'
-
 /**
  * The workbench loads the stories co-located with each package's source
- * (`<Name>.stories.tsx`), the docs examples beside them (`<Owner>.examples.tsx`, see
- * examples.ts), plus this app's own short MDX pages. Titles follow the ADR 0010 tree
- * (`UI/...`, `Forms/...`, `Tooling/...`), which `tree.test.ts` checks.
+ * (`<Name>.stories.tsx`), docs examples included (stories tagged `docs`, ADR 0028), plus
+ * this app's own short MDX pages. Titles follow the ADR 0010 tree (`UI/...`, `Forms/...`,
+ * `Tooling/...`), which `tree.test.ts` checks.
  */
 const config: StorybookConfig = {
   stories: [
     '../docs/**/*.mdx',
     '../../../packages/ui/src/**/*.stories.@(ts|tsx)',
     '../../../packages/forms/src/**/*.stories.@(ts|tsx)',
-    '../../../packages/*/src/**/*.examples.tsx',
   ],
-  experimental_indexers: (indexers = []) => [examplesIndexer, ...indexers],
   addons: ['@storybook/addon-docs', '@storybook/addon-a11y', '@storybook/addon-vitest'],
   framework: { name: '@storybook/react-vite', options: {} },
   core: { disableTelemetry: true },
@@ -28,7 +24,6 @@ const config: StorybookConfig = {
     // relative URLs, so the static build works under any path; this keeps the
     // preview's asset URLs (fonts, chunks) under the same base.
     base: './',
-    plugins: [examplesPlugin(), ...(viteConfig.plugins ?? [])],
     css: {
       ...viteConfig.css,
       modules: {

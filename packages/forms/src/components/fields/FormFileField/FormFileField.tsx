@@ -16,11 +16,36 @@ export interface FormFileFieldProps
   extends
     Omit<UiFileFieldProps, ControlledKeys | 'onReject'>,
     CommonFieldProps<readonly FileValue[]> {
-  /** Files that weren't added, and why — forwarded after the field's own error is set (§7.3). */
+  /**
+   * Files that weren't added, and why — forwarded after the field's own error is set.
+   *
+   * @privateRemarks Design reference §7.3.
+   */
   onReject?: (rejections: readonly FileRejection[]) => void
 }
 
-/** File picking bound to a `FileValue[]` path (§7.2 `file`). Empty is `[]`; files aren't uploaded. */
+/**
+ * File picking bound to an array of files. Files are held in the form, not uploaded.
+ *
+ * @remarks
+ * It renders kiln-ui's {@link FileField | FileField}.
+ *
+ * @example In a schema
+ * ```json
+ * {
+ *   "kind": "file",
+ *   "name": "photo",
+ *   "label": "Photo for your pass",
+ *   "accept": "image/jpeg,image/png"
+ * }
+ * ```
+ *
+ * @value `ReadonlyArray<File | StoredFile>`
+ * @empty `[]`
+ *
+ * @privateRemarks
+ * File picking bound to a `FileValue[]` path (§7.2 `file`). Empty is `[]`; files aren't uploaded.
+ */
 export const FormFileField = defineField<readonly FileValue[]>()(function FormFileField({
   warn,
   excluded,

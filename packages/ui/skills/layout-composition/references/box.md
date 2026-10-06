@@ -8,6 +8,8 @@ Source: https://kiln.mitchellsutton.com/docs/ui/layout/box
 
 `Box` adds padding, a background surface, a border and a radius to its content. Reach for `Stack`, `Inline` or `Grid` to arrange things, and for `Card` when something is a self-contained object. `Box` is for the wells and frames left over.
 
+`surface="inverse"` flips the colour roles inside, like an inverse `Section`.
+
 ```tsx
 import { Box, Stack, Text } from '@mitcsutt/kiln-ui'
 
@@ -28,8 +30,6 @@ export function Usage() {
 }
 ```
 
-`surface="inverse"` flips the colour roles inside, like an inverse `Section`.
-
 ## API
 
 `BoxProps`:
@@ -39,10 +39,10 @@ export function Usage() {
 | `padding` | `Responsive<Space>` |  | Padding on every side. Responsive. |
 | `paddingX` | `Responsive<Space>` |  | Inline (left/right) padding; overrides `padding` on that axis. Responsive. |
 | `paddingY` | `Responsive<Space>` |  | Block (top/bottom) padding; overrides `padding` on that axis. Responsive. |
-| `surface` | `'none' \| 'surface' \| 'canvas' \| 'sunken' \| 'raised' \| 'inverse'` |  | Background fill. `inverse` also re-points ink and line colours for its children. |
-| `border` | `boolean` |  | Hairline border in `--color-line`. One edge treatment per element — a border *or* a fill. |
-| `radius` | `'none' \| 'surface' \| 'field' \| 'media'` |  | Corner radius, by role. |
-| `as` | `'div' \| 'section' \| 'article' \| 'aside' \| 'header' \| 'footer' \| 'li' \| 'span'` |  |  |
+| `surface` | `'none' \| 'surface' \| 'canvas' \| 'sunken' \| 'raised' \| 'inverse'` | `none` | Background fill. `inverse` also re-points ink and line colours for its children. |
+| `border` | `boolean` | `false` | Hairline border in `--color-line`. One edge treatment per element — a border *or* a fill. |
+| `radius` | `'none' \| 'surface' \| 'field' \| 'media'` | `none` | Corner radius, by role. |
+| `as` | `'div' \| 'section' \| 'article' \| 'aside' \| 'header' \| 'footer' \| 'li' \| 'span'` | `div` |  |
 | `hideBelow` | `'sm' \| 'md' \| 'lg' \| 'xl'` |  | Hide below this breakpoint (e.g. `md` → hidden on phones, shown from 48em). |
 | `hideAbove` | `'sm' \| 'md' \| 'lg' \| 'xl'` |  | Hide from this breakpoint up (e.g. `md` → shown on phones only). |
 

@@ -17,6 +17,13 @@ export type ComboboxFieldMultipleProps = FieldLabelProps & OwnProps<ComboboxMult
 export type ComboboxFieldProps = ComboboxFieldSingleProps | ComboboxFieldMultipleProps
 
 /**
+ * A labelled combobox with description, warning and error.
+ *
+ * @remarks
+ * `ComboboxField` is a {@link Field | Field} around a {@link Combobox | Combobox}. Combobox props
+ * (`options`, `multiple`, `creatable`, `loading`) go to the combobox.
+ *
+ * @privateRemarks
  * Label + Combobox + description + warning + error. Combobox props (`options`, `value`,
  * `multiple`, `creatable`…) and the ref go to the text input; `className`/`style` go to
  * the field wrapper. `onBlur` fires once focus leaves the whole control.

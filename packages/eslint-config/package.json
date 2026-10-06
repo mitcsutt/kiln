@@ -1,6 +1,6 @@
 {
   "name": "@mitcsutt/kiln-eslint-config",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Shared flat ESLint config for Kiln and the projects that use it",
   "keywords": [
     "kiln",
@@ -35,6 +35,10 @@
     "./node": {
       "types": "./types/node.d.ts",
       "default": "./node.js"
+    },
+    "./docs-stories": {
+      "types": "./types/docs-stories.d.ts",
+      "default": "./docs-stories.js"
     },
     "./package.json": "./package.json"
   },

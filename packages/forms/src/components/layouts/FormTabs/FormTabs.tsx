@@ -146,6 +146,23 @@ export function FormTab({ value, label, scopeNames, children }: FormTabProps) {
   )
 }
 
+/**
+ * Fields split across tabs, with an error count on each tab and every field kept mounted.
+ *
+ * @remarks
+ * `FormTabs` splits a form across tabs. Each tab's trigger shows how many errors are inside it,
+ * and hidden panels stay mounted, so their fields still validate on submit and keep their values.
+ * On an invalid submit, focus goes to the first error, switching to its tab.
+ *
+ * @example In a schema
+ * ```json
+ * {
+ *   "layout": "tabs",
+ *   "label": "Member details",
+ *   "children": [{ "layout": "tab", "value": "person", "label": "Person", "children": [] }]
+ * }
+ * ```
+ */
 function FormTabsRoot(props: FormTabsProps) {
   return (
     <FieldViewListBoundary>

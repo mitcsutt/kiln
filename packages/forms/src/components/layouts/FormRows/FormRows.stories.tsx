@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Form, FormRows, useAppForm } from '@mitcsutt/kiln-forms'
 import { rowsFixture, rowsSchema } from '#stories/fixtures/structure'
 import { parityStory } from '#stories/parity'
 import { StoryForm } from '#stories/_kit'
-import { FormRows } from './FormRows'
 
 const meta = {
   title: 'Forms/Layouts/FormRows',
@@ -38,3 +38,36 @@ export const Playground: Story = {
 }
 
 export const ComponentAndSchema: Story = parityStory(rowsFixture, rowsSchema, ['FormRows'])
+
+/**
+ * Group fields built on a fieldset (checkbox groups, radios, chips) keep their stacked layout for
+ * now.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const form = useAppForm({
+      defaultValues: {
+        name: 'Coastal line',
+        colour: '#1f6f8b',
+        frequency: 20,
+        night: false,
+      },
+    })
+    return (
+      <Form form={form} aria-label="Line settings">
+        <FormRows>
+          <form.TextField name="name" label="Line name" />
+          <form.ColorField name="colour" label="Colour" description="Used on the map" />
+          <form.NumberField
+            name="frequency"
+            label="Every"
+            description="Minutes between sailings"
+            min={5}
+          />
+          <form.SwitchField name="night" label="Runs at night" />
+        </FormRows>
+      </Form>
+    )
+  },
+}

@@ -23,7 +23,11 @@ export interface FormMultiSelectFieldProps
     >,
     CommonFieldProps<readonly MultiSelectValue[]> {
   options?: readonly FieldOption<MultiSelectValue>[]
-  /** Async search (§7.4). Pairs with `reloadOn`/`minQueryLength`; implies `filter="none"`. */
+  /**
+   * Async search. Pairs with `reloadOn`/`minQueryLength`; implies `filter="none"`.
+   *
+   * @privateRemarks Design reference §7.4.
+   */
   loadOptions?: OptionsLoader<MultiSelectValue>
   /** Sibling field paths whose values reload (and re-key the cache of) `loadOptions`. */
   reloadOn?: readonly string[]
@@ -31,6 +35,31 @@ export interface FormMultiSelectFieldProps
 }
 
 /**
+ * A searchable multiple choice, a combobox whose chosen values become removable chips.
+ *
+ * @remarks
+ * It renders kiln-ui's {@link ComboboxField | ComboboxField} with `multiple`.
+ *
+ * @example In a schema
+ * ```json
+ * {
+ *   "kind": "multiSelect",
+ *   "name": "stops",
+ *   "label": "Favourite stops",
+ *   "maxSelected": 3,
+ *   "options": [
+ *     {
+ *       "value": "harbour",
+ *       "label": "Harbour Square"
+ *     }
+ *   ]
+ * }
+ * ```
+ *
+ * @value an array of the options' value type
+ * @empty `[]`
+ *
+ * @privateRemarks
  * A searchable multiple choice (§7.2 `multiSelect`): the ui combobox in `multiple` mode, chosen
  * values shown as removable chips. Static `options` or async `loadOptions` (`useOptions`); not
  * `creatable` (free text is single-choice only). Empty is `[]`.

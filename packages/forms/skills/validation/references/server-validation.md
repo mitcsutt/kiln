@@ -94,14 +94,14 @@ Custom validators run if you pass them: `toStandardSchema(schema, { validators: 
 declare function toStandardSchema(schema: UntypedFormSchema, opts?: ToStandardSchemaOptions): StandardSchemaV1<unknown, unknown>
 ```
 
-The schema's rules as a Standard Schema (§10.9), React-free: use it on the server
+The schema's rules as a Standard Schema, React-free: use it on the server
 (`createServerValidate`, an API handler) so client and server enforce the same rules.
 
 Applies `rules` (+ `required` / `requiredWhen`) of **visible, active** fields only, using the same
 `fieldFlags` as the renderer: nodes whose `when` is false are skipped with their subtree, as are
 fields that are excluded, disabled or read-only — by their own static prop, a `*When` condition,
 `compute`, or an ancestor `section`'s `disabled` / `readOnly` (`layoutFlags`). Those are the
-fields the client doesn't validate (§5.4). A repeater under such a section is skipped whole, and
+fields the client doesn't validate. A repeater under such a section is skipped whole, and
 so is every `review` subtree (view mode never validates; the field's own node counts).
 Repeater rules apply to the array and item rules to each item. `warnRules` never fail. Returns a
 promise only when async custom validators run.
@@ -119,7 +119,7 @@ repeater keeps one object per input item with that item's active fields.
 declare function schemaDefaultValues(schema: UntypedFormSchema, empties?: Readonly<Record<string, unknown>>): Record<string, unknown>
 ```
 
-Initial values for a schema of unknown shape (server-driven forms, §10.8): each root-scope field
+Initial values for a schema of unknown shape (server-driven forms): each root-scope field
 gets its `defaultValue`, else `empties[kind]` when given; each repeater gets `[]`.
 
 ## Typed schemas for your own kit
@@ -132,5 +132,5 @@ declare function defineSchemaFor<R, X = EmptyObject>(): <T, C = EmptyObject>() =
 
 `defineSchemaFor<R, X>()` → a `defineFormSchema` bound to a kit's registries (the kit
 exposes it as `kit.defineFormSchema`). Curried and non-generic in the schema parameter so object
-literals get excess-property checks (§10.1): `define<Entry, Ctx>()({ version: 1, root: … })`.
+literals get excess-property checks: `define<Entry, Ctx>()({ version: 1, root: … })`.
 Identity at runtime.

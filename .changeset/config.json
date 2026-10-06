@@ -8,13 +8,7 @@
   "linked": [],
   "ignore": [],
   "updateInternalDependencies": "patch",
-  "changedFilePatterns": [
-    "**",
-    "!**/test/**",
-    "!**/*.test.*",
-    "!**/*.stories.*",
-    "!**/*.examples.*"
-  ],
+  "changedFilePatterns": ["**", "!**/test/**", "!**/*.test.*", "!**/*.stories.*"],
   "___experimentalUnsafeOptions_WILL_CHANGE_IN_PATCH": {
     "onlyUpdatePeerDependentsWhenOutOfRange": true
   }

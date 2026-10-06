@@ -10,6 +10,12 @@ export interface KbdProps extends HTMLAttributes<HTMLElement> {
 }
 
 /**
+ * A keyboard key, for shortcuts and instructions.
+ *
+ * @remarks
+ * `Kbd` renders one key. Write a combination as siblings, so each key is read separately.
+ *
+ * @privateRemarks
  * A keyboard key. One key per <Kbd>; write combos as siblings so each key reads
  * separately: <Kbd>⌘</Kbd> <Kbd>K</Kbd>.
  */

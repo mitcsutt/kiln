@@ -34,6 +34,15 @@ export interface CodeBlockProps extends Omit<HTMLAttributes<HTMLElement>, 'title
 type CopyState = 'idle' | 'copied' | 'failed'
 
 /**
+ * A block of source with an optional filename bar, line numbers, highlighted lines and a copy
+ * button.
+ *
+ * @remarks
+ * `CodeBlock` shows code: a snippet in an article, a command, a config example. It's a plain
+ * surface with an optional title bar, never fake window chrome, and it has no syntax highlighting:
+ * the code is the design. Every code sample in these docs is a `CodeBlock`.
+ *
+ * @privateRemarks
  * A block of source: a snippet in a blog post, a command in a README, a config example.
  * A plain surface with an optional filename bar — no fake window chrome.
  *

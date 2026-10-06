@@ -1,17 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Field, Input, Stack, Text, TextField, useFieldControl } from '@mitcsutt/kiln-ui'
 import { Button } from '#components/actions/Button'
 import { Inline } from '#components/layout/Inline'
-import { Stack } from '#components/layout/Stack'
 import { CheckboxField } from '#components/inputs/CheckboxField'
 import { Fieldset } from '#components/inputs/Fieldset'
-import { Input } from '#components/inputs/Input'
 import { RadioGroup } from '#components/inputs/RadioGroup'
 import { SelectField } from '#components/inputs/SelectField'
 import { Switch } from '#components/inputs/Switch'
 import { TextareaField } from '#components/inputs/TextareaField'
-import { TextField } from '#components/inputs/TextField'
 import { taskCategories, countryGroups } from '#components/inputs/internal/storyData'
-import { Field } from './Field'
 
 const meta = {
   title: 'UI/Inputs/Field',
@@ -278,4 +275,89 @@ export const RenderFunction: Story = {
       </Field>
     </Stack>
   ),
+}
+
+/**
+ * The label is wired to the control (`htmlFor`), the description and messages to
+ * `aria-describedby`, and an error sets `aria-invalid` on the control. Kiln's controls read this
+ * wiring from the `Field` around them, so you never pass ids by hand.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Stack gap={5}>
+        <Field label="Fare" description="Before any railcard discount">
+          <Input numeric leading="£" placeholder="0.00" />
+        </Field>
+        <Field label="Booking reference" error="That reference doesn't match a booking" required>
+          <Input defaultValue="BAY-40Q" />
+        </Field>
+        <Field label="Username" warning="Usernames are case-sensitive">
+          <Input defaultValue="InesV" />
+        </Field>
+      </Stack>
+    )
+  },
+}
+
+/**
+ * `layout="stack"` (the default) puts the label above the control. `horizontal` gives the label
+ * and the control their own columns, stacking below `sm`. `inline` hides the label visually so the
+ * control can sit in a sentence. The group fields (checkbox and radio groups, chips, choice cards,
+ * date range) take the same `layout`.
+ */
+export const Layouts: Story = {
+  name: 'Layout',
+  tags: ['docs'],
+  render: function Layouts() {
+    return (
+      <Stack gap={6}>
+        <TextField label="Stack (default)" description="Label above the control" />
+        <TextField
+          layout="horizontal"
+          label="Horizontal"
+          description="Label and control in columns"
+        />
+        <Text>
+          Leave at{' '}
+          <TextField layout="inline" label="Departure time" defaultValue="07:10" htmlSize={6} />{' '}
+          from Harbour Square.
+        </Text>
+      </Stack>
+    )
+  },
+}
+
+function SeatPicker() {
+  // The surrounding Field's id, description ids and state, for your own control.
+  const field = useFieldControl()
+  return (
+    <select
+      id={field?.id}
+      aria-describedby={field?.describedBy}
+      aria-invalid={field?.invalid ? true : undefined}
+      disabled={field?.disabled}
+    >
+      <option>Window</option>
+      <option>Aisle</option>
+    </select>
+  )
+}
+
+/**
+ * `useFieldControl()` returns the surrounding `Field`'s wiring (`id`, `describedBy`, `invalid`,
+ * `disabled`, and so on), or `null` outside one. Kiln's controls call it themselves; call it from
+ * your own control to make it Field-aware.
+ */
+export const CustomControl: Story = {
+  name: 'Your own control',
+  tags: ['docs'],
+  render: function CustomControl() {
+    return (
+      <Field label="Seat" description="Your own control, wired by the Field">
+        <SeatPicker />
+      </Field>
+    )
+  },
 }

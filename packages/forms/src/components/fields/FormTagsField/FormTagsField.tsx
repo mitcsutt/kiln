@@ -13,7 +13,28 @@ import { defineField } from '#kit/contracts'
 export interface FormTagsFieldProps
   extends Omit<UiTagsFieldProps, ControlledKeys>, CommonFieldProps<readonly string[]> {}
 
-/** Free-form tags bound to a `string[]` path (§7.2 `tags`). Empty is `[]`. */
+/**
+ * Free-form tags bound to a `string[]` path.
+ *
+ * @remarks
+ * It renders kiln-ui's {@link TagsField | TagsField}.
+ *
+ * @example In a schema
+ * ```json
+ * {
+ *   "kind": "tags",
+ *   "name": "labels",
+ *   "label": "Labels",
+ *   "maxTags": 5
+ * }
+ * ```
+ *
+ * @value `string[]`
+ * @empty `[]`
+ *
+ * @privateRemarks
+ * Free-form tags bound to a `string[]` path (§7.2 `tags`). Empty is `[]`.
+ */
 export const FormTagsField = defineField<readonly string[]>()(function FormTagsField({
   warn,
   excluded,

@@ -7,6 +7,13 @@ export interface RatingFieldProps
   extends FieldLabelProps, Omit<RatingProps, 'invalid' | keyof FieldLabelProps> {}
 
 /**
+ * A labelled star rating.
+ *
+ * @remarks
+ * `RatingField` is a {@link Field | Field} around a {@link Rating | Rating}. The stars' radio
+ * group is labelled by the field's label and described by its help.
+ *
+ * @privateRemarks
  * A labelled `Rating`. The stars' radiogroup is labelled by the Field's label and described
  * by its help, warning and error. `className`/`style` go to the Field; `ref`, `id`, `name`
  * and the rest go to the radiogroup.

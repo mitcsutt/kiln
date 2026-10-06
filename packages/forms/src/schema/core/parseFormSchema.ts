@@ -582,7 +582,7 @@ function checkNode(ctx: Ctx, node: unknown, path: string, scope: Set<string>, de
 }
 
 /**
- * Validates untrusted JSON as a form schema (§10.8) against the kit's registered keys: node shapes,
+ * Validates untrusted JSON as a form schema against the kit's registered keys: node shapes,
  * field kinds / layouts / loaders / validators / computers / custom nodes, rule names and argument
  * types, condition shapes, duplicate ids and field names, repeater `newItem`, JSON-only props.
  * Untrusted input: rejects DOM-sink props (`dangerouslySetInnerHTML`, `on*`, `style`,
@@ -590,6 +590,8 @@ function checkNode(ctx: Ctx, node: unknown, path: string, scope: Set<string>, de
  * rules unless `options.allowPatterns` (then slow-looking patterns are still rejected).
  * Never throws on hostile JSON: every problem is an issue with its path.
  * Hand-written (no zod at runtime). On success returns the same object, typed `UntypedFormSchema`.
+ *
+ * @privateRemarks Design reference §10.8.
  */
 export function parseFormSchema(
   json: unknown,

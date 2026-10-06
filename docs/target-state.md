@@ -68,7 +68,7 @@ Package directories are short (`packages/ui`), and package names carry the brand
 - **Themes** ([ADR 0003](adr/0003-theming-model.md)):
   - `paper` is the new neutral default. It's applied when no theme is set.
   - `monograph` is ported from source `studio`, `ledger` from source `ledger`, and `fiesta` from source `fiesta`. `monograph` and `fiesta` are kept unchanged for compatibility.
-  - `flightdeck` and `riso` are added presets, and `paper` and `ledger` are reworked, per [ADR 0028](adr/0028-theme-family-without-ai-tells.md), to avoid the second-order AI tells. Six themes ship in all.
+  - `flightdeck` and `riso` are added presets, and `paper` and `ledger` are reworked, per [ADR 0030](adr/0030-theme-family-without-ai-tells.md), to avoid the second-order AI tells. Six themes ship in all.
   - Each preset is an opt-in stylesheet import (for example `@mitcsutt/kiln-ui/themes/fiesta.css`). The default stylesheet contains no preset.
   - The theme registry, `ThemeProvider`, `ThemeScope`, `useTheme` and `themeScript` know about `paper` and the presets. They also accept a consumer-defined theme name without a type error or runtime failure.
   - The token contract is documented well enough for a consumer to write a complete theme from scratch without reading Kiln's source.

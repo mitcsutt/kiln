@@ -27,6 +27,19 @@ export interface FormProps extends Omit<
 }
 
 /**
+ * The form element, wired to the kit. Submitting runs validation and your onSubmit; disabled,
+ * readOnly and view mode cascade to every field.
+ *
+ * @remarks
+ * `Form` renders a `<form noValidate>` and connects it to a form from `useAppForm`. Pressing Enter
+ * or a submit button validates and calls your `onSubmit`; a submit while one is already in flight
+ * is ignored; a reset button resets the form. It forwards its ref to the `<form>`.
+ *
+ * @example In a schema
+ * A schema renders inside a `Form`: `<Form form={form}><SchemaForm form={form} schema={schema}
+ * /></Form>`.
+ *
+ * @privateRemarks
  * `<form noValidate>` wired to the kit: submit runs the pipeline (§5.5) and is ignored while a
  * submit is in flight or the form is locked; reset returns to the baseline. Provides the form
  * to `useFormContext()` and cascades `mode` / `disabled` / `readOnly` to fields.

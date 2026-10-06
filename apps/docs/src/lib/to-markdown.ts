@@ -1,6 +1,6 @@
 import tokens from '../../.generated/tokens.json'
 import { getApi, type ApiEntry } from './api'
-import { exampleId, getExampleSource } from './examples'
+import { exampleId, examplesMarkdown, getExampleSource } from './examples'
 
 function attribute(tag: string, name: string): string | undefined {
   return new RegExp(`${name}="([^"]*)"`).exec(tag)?.[1]
@@ -47,8 +47,13 @@ export function apiMarkdown(entry: ApiEntry): string {
  * and each API table becomes a Markdown table, read from the same data the page renders.
  */
 export function toMarkdown(processed: string): string {
+  // `<Examples of>` first: it stands for headings, captions and `<Example>` tags. The site's
+  // processed Markdown has it expanded already; a page read from disk (the skills) doesn't.
+  const listed = outsideCode(processed, (text) =>
+    text.replace(/<Examples\b[^>]*\/>/g, (tag) => examplesMarkdown(attribute(tag, 'of') ?? '')),
+  )
   // Code is left as written: a JSX comment or self-closing element in an example is code.
-  const expanded = outsideCode(processed, (text) =>
+  const expanded = outsideCode(listed, (text) =>
     text
       .replace(/<Example\b[^>]*\/>/g, (tag) => {
         const id = exampleId({ of: attribute(tag, 'of'), name: attribute(tag, 'name') })

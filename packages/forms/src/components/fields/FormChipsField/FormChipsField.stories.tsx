@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Form, useAppForm, useFieldValue } from '@mitcsutt/kiln-forms'
+import { Code, Stack, Text } from '@mitcsutt/kiln-ui'
 import { FieldDemo, NEVER_SETTLES, StatesGrid, StoryForm } from '#stories/_kit'
 import { FormChipsField } from './FormChipsField'
 
@@ -172,4 +174,32 @@ export const ViewMode: Story = {
       {(form) => <form.ChipsField name="value" label="Workshops" options={workshops} />}
     </FieldDemo>
   ),
+}
+
+/**
+ * Exported as `FormChipsField`, named after its kind.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const form = useAppForm({ defaultValues: { days: ['mon', 'wed'] as string[] } })
+    const value = useFieldValue(form, 'days')
+    return (
+      <Form form={form} aria-label="ChipsField example">
+        <Stack gap={4}>
+          <form.ChipsField
+            name="days"
+            label="Days you travel"
+            options={['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].map((day) => ({
+              value: day.toLowerCase(),
+              label: day,
+            }))}
+          />
+          <Text size="sm" tone="muted">
+            Value: <Code>{JSON.stringify(value)}</Code>
+          </Text>
+        </Stack>
+      </Form>
+    )
+  },
 }

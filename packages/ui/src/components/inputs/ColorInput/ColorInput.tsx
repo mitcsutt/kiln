@@ -43,6 +43,14 @@ export interface ColorInputProps extends Omit<
 }
 
 /**
+ * A colour as a hex code, with the native picker as its swatch and optional named presets.
+ *
+ * @remarks
+ * `ColorInput` holds a colour as a `#rrggbb` hex code: the native colour picker is its leading
+ * swatch, the hex text follows (normalised on blur, so `#ABC` becomes `#aabbcc`), and `swatches`
+ * adds named presets as a radio group. With `swatchesOnly`, only the presets can be chosen.
+ *
+ * @privateRemarks
  * A colour as a hex code: a native colour picker as the leading swatch, the `#rrggbb`
  * text after it (normalised on blur — `#ABC` becomes `#aabbcc`), and optional named
  * preset swatches as a radio group. The ref goes to the hex input (or, with

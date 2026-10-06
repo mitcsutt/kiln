@@ -56,7 +56,11 @@ async function revealAndFocus(entry: FieldRegistration): Promise<boolean> {
   return target.ownerDocument.activeElement === target
 }
 
-/** Reveals the field's tab/accordion/step chain, then focuses its control (§5.6). */
+/**
+ * Reveals the field's tab/accordion/step chain, then focuses its control.
+ *
+ * @privateRemarks Design reference §5.6.
+ */
 export async function focusField(form: AnyKitForm, name: string): Promise<boolean> {
   const entry = getFormRuntime(form).fields.get(name)
   if (!entry) return false

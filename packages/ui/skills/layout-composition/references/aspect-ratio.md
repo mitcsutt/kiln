@@ -8,6 +8,8 @@ Source: https://kiln.mitchellsutton.com/docs/ui/layout/aspect-ratio
 
 `AspectRatio` holds a ratio as its width changes. Its child (an image, a video, an iframe, an SVG) fills it and is cropped with `object-fit: cover`. It has no edge or radius of its own: wrap it in `Media` or a `Card` for those.
 
+The same chart framed at 16/9, 4/3 and 1/1.
+
 ```tsx
 import { AspectRatio, Grid } from '@mitcsutt/kiln-ui'
 

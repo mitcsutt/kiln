@@ -340,6 +340,14 @@ const CheckboxGroupRoot = forwardRef<HTMLDivElement, CheckboxGroupProps>(functio
   )
 })
 
+/**
+ * Several choices from a set, as checkboxes, with an optional select-all.
+ *
+ * @remarks
+ * `CheckboxGroup` lays out a set of checkboxes from `options` (or `CheckboxGroup.Item` children)
+ * and holds their values as one array. `selectAllLabel` adds a parent checkbox that goes
+ * indeterminate when only some are chosen. `columns` lays a long set out in a responsive grid.
+ */
 export const CheckboxGroup = markFieldAware(
   Object.assign(CheckboxGroupRoot, { Item: CheckboxGroupItem }),
 )

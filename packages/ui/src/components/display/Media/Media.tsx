@@ -35,6 +35,13 @@ export interface MediaProps extends Omit<HTMLAttributes<HTMLElement>, 'children'
 }
 
 /**
+ * A framed image with a fixed ratio, lazy loading, a caption, and a calm failure state.
+ *
+ * @remarks
+ * `Media` frames an image: it holds a ratio while loading, fits the image, loads lazily, and when
+ * the image fails it keeps its shape and shows a quiet fallback instead of a broken-image icon.
+ *
+ * @privateRemarks
  * A framed image: fixed ratio, fitted, lazy by default, with a caption and a graceful
  * failure state. Screenshots, company logos, scanned documents.
  *

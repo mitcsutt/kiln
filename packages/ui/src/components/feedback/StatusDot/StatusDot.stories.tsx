@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Inline, StatusDot } from '@mitcsutt/kiln-ui'
 import { Stack } from '#components/layout/Stack'
-import { StatusDot } from './StatusDot'
 
 const meta = {
   title: 'UI/Feedback/StatusDot',
@@ -34,4 +34,23 @@ export const ProjectStatus: Story = {
       <StatusDot tone="critical" label="Blocked" />
     </Stack>
   ),
+}
+
+/**
+ * `labelHidden` keeps the label for screen readers only, for dense tables where a column header
+ * already explains the dots.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Inline gap={5}>
+        <StatusDot tone="positive" label="Good service" />
+        <StatusDot tone="caution" label="Minor delays" />
+        <StatusDot tone="critical" label="Suspended" />
+        <StatusDot tone="neutral" label="Not running today" />
+        <StatusDot tone="info" label="Planned works" labelHidden size="sm" />
+      </Inline>
+    )
+  },
 }

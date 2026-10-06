@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Stack } from '#components/layout/Stack'
-import { CheckboxField } from './CheckboxField'
+import { CheckboxField, Stack } from '@mitcsutt/kiln-ui'
 
 const meta = {
   title: 'UI/Inputs/CheckboxField',
@@ -34,5 +33,26 @@ export const Checked: Story = {
     description: undefined,
     required: false,
     defaultChecked: true,
+  },
+}
+
+/**
+ * For several related checkboxes, use a
+ * [CheckboxGroupField](/docs/ui/inputs/checkbox-group-field), which gives the set one legend.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Stack gap={4}>
+        <CheckboxField label="Email me my receipts" defaultChecked />
+        <CheckboxField
+          label="I've read the terms of carriage"
+          description="Including the rules for bikes and dogs."
+          required
+          error="Accept the terms to book"
+        />
+      </Stack>
+    )
   },
 }

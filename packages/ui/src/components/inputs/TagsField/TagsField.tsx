@@ -7,6 +7,12 @@ export interface TagsFieldProps
   extends FieldLabelProps, Omit<TagsInputProps, 'invalid' | keyof FieldLabelProps> {}
 
 /**
+ * A labelled tags input with description, warning and error.
+ *
+ * @remarks
+ * `TagsField` is a {@link Field | Field} around a {@link TagsInput | TagsInput}.
+ *
+ * @privateRemarks
  * Label + TagsInput + description + warning + error. TagsInput props (`value`,
  * `delimiters`, `maxTags`…) and the ref go to the text input; `className`/`style` go to
  * the field wrapper. `onBlur` fires once focus leaves the whole control.

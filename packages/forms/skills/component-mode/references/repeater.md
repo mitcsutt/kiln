@@ -8,6 +8,11 @@ Source: https://kiln.mitchellsutton.com/docs/forms/layouts/repeater
 
 `Repeater` edits an array of objects: passengers, legs of a journey, line items. Each item gets typed shorthand fields relative to itself (`item.fields.TextField name="name"`), and the repeater handles adding, removing and moving items, focus after each change, and announcing it.
 
+- `newItem` is the value a new item starts with (or a function returning one).
+- `min` and `max` bound the count: at `max`, Add is `aria-disabled` with a reason; at `min`, Remove is hidden.
+- `itemLabel` names each item, and `addLabel` names the add button.
+- `empty` replaces the default empty state.
+
 ```tsx
 import { Form, Repeater, SubmitButton, useAppForm } from '@mitcsutt/kiln-forms'
 import { Stack } from '@mitcsutt/kiln-ui'
@@ -50,14 +55,11 @@ export function Usage() {
 }
 ```
 
-- `newItem` is the value a new item starts with (or a function returning one).
-- `min` and `max` bound the count: at `max`, Add is `aria-disabled` with a reason; at `min`, Remove is hidden.
-- `itemLabel` names each item, and `addLabel` names the add button.
-- `empty` replaces the default empty state.
-
 ## As a table
 
 `variant="table"` renders each item as a row and each field as a cell, with `columns` giving the headers. Labels stay for assistive technology but aren't shown, and errors render in the cell. `reorderable` adds move up and move down buttons: keyboard first, no dragging.
+
+`variant="cards"` puts each item in a card.
 
 ```tsx
 import { Form, Repeater, useAppForm } from '@mitcsutt/kiln-forms'
@@ -101,8 +103,6 @@ export function Table() {
   )
 }
 ```
-
-`variant="cards"` puts each item in a card.
 
 ## In a schema
 

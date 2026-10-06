@@ -20,6 +20,14 @@ export interface CheckboxProps extends Omit<
 }
 
 /**
+ * A bare checkbox, including the indeterminate state for "some of these".
+ *
+ * @remarks
+ * `Checkbox` is Radix Checkbox with Kiln's look. `checked` can be `true`, `false` or
+ * `'indeterminate'`, for a parent that controls a set where only some are on. It needs a label:
+ * use {@link CheckboxField | CheckboxField}, a `Field`, or an `aria-label`.
+ *
+ * @privateRemarks
  * A bare checkbox (Radix). `checked` may be `'indeterminate'` for a "some selected"
  * parent. Needs a label — use `CheckboxField`, a `<Field>`, or `aria-label`.
  *

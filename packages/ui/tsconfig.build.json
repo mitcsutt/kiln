@@ -14,7 +14,6 @@
     "src/**/*.test.ts",
     "src/**/*.test.tsx",
     "src/**/*.stories.tsx",
-    "src/**/*.examples.tsx",
     "src/**/_story",
     "src/test",
     "src/docs"

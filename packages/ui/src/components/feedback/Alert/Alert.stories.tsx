@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Button } from '#components/actions/Button'
-import { Stack } from '#components/layout/Stack'
-import { Alert } from './Alert'
+import { Alert, Button, Stack } from '@mitcsutt/kiln-ui'
+import { useState } from 'react'
 
 const meta = {
   title: 'UI/Feedback/Alert',
@@ -81,4 +80,51 @@ export const Dismissible: Story = {
 /** Body only — for one-line notices under a table. */
 export const WithoutTitle: Story = {
   args: { title: undefined, tone: 'neutral', children: 'Prices include GST.' },
+}
+
+/**
+ * - `tone` is `neutral`, `info`, `positive`, `caution` or `critical`, and sets the glyph and its
+ *   colour. Critical and caution alerts interrupt (`role="alert"`); the others are announced
+ *   politely (`role="status"`).
+ * - `variant="soft"` tints the box, for the rare alert that must shout.
+ * - `action` puts one button beside the message, like "Try again".
+ * - `onDismiss` adds a dismiss button (named with `dismissLabel`). You remove the alert.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const [shown, setShown] = useState(true)
+    return (
+      <Stack gap={4}>
+        <Alert
+          tone="critical"
+          title="Couldn't load live departures"
+          action={
+            <Button size="sm" variant="outline" tone="neutral">
+              Try again
+            </Button>
+          }
+        >
+          The departures board didn't answer. Times below are from the printed timetable.
+        </Alert>
+        <Alert tone="caution" title="Kelso Bay Pier works">
+          Boarding moves to berth 3 until Friday 17 October.
+        </Alert>
+        {shown ? (
+          <Alert
+            tone="info"
+            variant="soft"
+            onDismiss={() => {
+              setShown(false)
+            }}
+          >
+            Annual passes now include the night buses.
+          </Alert>
+        ) : null}
+        <Alert tone="positive" title="Seat booked">
+          Ferry to Kelso Bay, 07:10 tomorrow, seat 14C.
+        </Alert>
+      </Stack>
+    )
+  },
 }

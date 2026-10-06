@@ -32,6 +32,15 @@ export interface MeterProps
 }
 
 /**
+ * A measurement against a known range, whose tone follows thresholds you set, so the app never
+ * picks colours.
+ *
+ * @remarks
+ * `Meter` shows where a value sits in a range: seats taken, storage used, API requests against a
+ * monthly quota. Give it `low`, `high` and `optimum` thresholds and the tone follows the value, so
+ * 60% of capacity is calm, 90% is a warning, and over the limit is critical.
+ *
+ * @privateRemarks
  * A measurement against a known range: usage vs quota, storage used, revenue vs target.
  * Tone follows the thresholds, so 40% of the storage quota is calm, 85% is a warning
  * and 110% is critical without the app deciding colours.

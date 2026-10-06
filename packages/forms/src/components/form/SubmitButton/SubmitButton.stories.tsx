@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Inline, Text } from '@mitcsutt/kiln-ui'
-import { Form } from '#components/form/Form'
+import { Form, SubmitButton, useAppForm } from '@mitcsutt/kiln-forms'
+import { Stack, Inline, Text } from '@mitcsutt/kiln-ui'
 import { kit } from '#kit/defaultKit'
-import { SubmitButton } from './SubmitButton'
 
 const meta = {
   title: 'Forms/Layouts/SubmitButton',
@@ -73,4 +72,28 @@ function Locked() {
 export const LockedStory: Story = {
   name: 'Locked',
   render: () => <Locked />,
+}
+
+/**
+ * Outside the `<form>` element (in a dialog footer, a sticky header), pass `formId` to submit a
+ * form by its id, and `form` to read its state. `submitMeta` passes a value through to `onSubmit`
+ * as `meta`, for a form with two submit buttons ("Save draft" and "Publish").
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const form = useAppForm({
+      defaultValues: { nickname: 'Morning commute' },
+      onSubmit: () => new Promise((resolve) => setTimeout(resolve, 1200)),
+    })
+    return (
+      <Form form={form} aria-label="Route nickname">
+        <Stack gap={5}>
+          <form.TextField name="nickname" label="Nickname" />
+          {/* Change the name to enable it. It stays focusable while it waits. */}
+          <SubmitButton requireChanges>Save nickname</SubmitButton>
+        </Stack>
+      </Form>
+    )
+  },
 }

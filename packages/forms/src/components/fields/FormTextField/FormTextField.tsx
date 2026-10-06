@@ -14,7 +14,27 @@ export interface FormTextFieldProps
   type?: 'text' | 'email' | 'tel' | 'url' | 'search'
 }
 
-/** A single-line text field bound to a `string` path (§7.2 `text`). */
+/**
+ * A single-line text field bound to a `string` path.
+ *
+ * @remarks
+ * It renders kiln-ui's {@link TextField | TextField}.
+ *
+ * @example In a schema
+ * ```json
+ * {
+ *   "kind": "text",
+ *   "name": "destination",
+ *   "label": "Destination"
+ * }
+ * ```
+ *
+ * @value `string`
+ * @empty `''`
+ *
+ * @privateRemarks
+ * A single-line text field bound to a `string` path (§7.2 `text`).
+ */
 export const FormTextField = defineField<string>()(function FormTextField({
   warn,
   excluded,

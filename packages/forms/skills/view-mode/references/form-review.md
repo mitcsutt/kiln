@@ -8,6 +8,8 @@ Source: https://kiln.mitchellsutton.com/docs/forms/layouts/form-review
 
 `FormReview` renders the fields inside it in view mode: a description list of labels and formatted values. Reuse the JSX (or schema subtree) of earlier steps to build a "check your answers" step.
 
+`onEdit` with `step` adds an Edit button that takes the reader back to that step. No field instances are created in view mode, so a review never interferes with the fields it repeats.
+
 ```tsx
 import { Form, FormReview, useAppForm } from '@mitcsutt/kiln-forms'
 
@@ -41,8 +43,6 @@ export function Usage() {
   )
 }
 ```
-
-`onEdit` with `step` adds an Edit button that takes the reader back to that step. No field instances are created in view mode, so a review never interferes with the fields it repeats.
 
 ## In a schema
 

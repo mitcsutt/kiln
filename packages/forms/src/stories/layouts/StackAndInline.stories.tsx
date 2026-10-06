@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { defineFormSchema, Form, SchemaForm, useAppForm } from '@mitcsutt/kiln-forms'
 import { inlineFixture, inlineSchema, stackFixture, stackSchema } from '#stories/fixtures/structure'
 import { parityStory } from '#stories/parity'
 
@@ -18,3 +19,39 @@ export const Inline: Story = parityStory(
   ['Inline', 'SubmitButton'],
   'Inline',
 )
+
+interface Search {
+  query: string
+  date: string
+}
+
+const schema = defineFormSchema<Search>()({
+  version: 1,
+  root: {
+    layout: 'inline',
+    gap: 3,
+    align: 'end',
+    children: [
+      { kind: 'text', name: 'query', label: 'Stop or route', type: 'search' },
+      { kind: 'date', name: 'date', label: 'Date' },
+      { content: 'submit', label: 'Search' },
+    ],
+  },
+})
+
+/**
+ * ```json
+ * { "layout": "stack", "gap": 5, "children": [] }
+ * ```
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const form = useAppForm<Search>({ defaultValues: { query: '', date: '' } })
+    return (
+      <Form form={form} aria-label="Search sailings">
+        <SchemaForm form={form} schema={schema} />
+      </Form>
+    )
+  },
+}

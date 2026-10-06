@@ -8,6 +8,8 @@ Source: https://kiln.mitchellsutton.com/docs/forms/layouts/form-tabs
 
 `FormTabs` splits a form across tabs. Each tab's trigger shows how many errors are inside it, and hidden panels stay mounted, so their fields still validate on submit and keep their values. On an invalid submit, focus goes to the first error, switching to its tab.
 
+Submit with everything empty: both tabs show a count, and the summary links switch tabs. `label` names the tab list.
+
 ```tsx
 import {
   ErrorSummary,
@@ -49,8 +51,6 @@ export function Usage() {
   )
 }
 ```
-
-Submit with everything empty: both tabs show a count, and the summary links switch tabs. `label` names the tab list.
 
 ## In a schema
 

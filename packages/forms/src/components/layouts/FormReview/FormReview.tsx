@@ -86,6 +86,19 @@ function FormReviewInner({
   )
 }
 
+/**
+ * The same fields, rendered as a list of answers to check. For the last step of a wizard.
+ *
+ * @remarks
+ * `FormReview` renders the fields inside it in view mode: a description list of labels and
+ * formatted values. Reuse the JSX (or schema subtree) of earlier steps to build a "check your
+ * answers" step.
+ *
+ * @example In a schema
+ * ```json
+ * { "layout": "review", "title": "Your booking", "children": [] }
+ * ```
+ */
 export function FormReview(props: FormReviewProps) {
   return (
     <FieldViewListBoundary>

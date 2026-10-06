@@ -8,6 +8,8 @@ Source: https://kiln.mitchellsutton.com/docs/forms/hooks/use-unsaved-changes
 
 `useUnsavedChanges(form)` adds a `beforeunload` prompt while the form differs from its baseline, so closing or reloading the tab asks first. It returns whether the form is dirty, so your router's own navigation blocker can use the same answer.
 
+Pass `when: false` to switch the guard off, for example while a save is in flight.
+
 ```tsx
 import { Form, SubmitButton, useAppForm, useUnsavedChanges } from '@mitcsutt/kiln-forms'
 import { Stack, Text } from '@mitcsutt/kiln-ui'
@@ -33,13 +35,10 @@ export function Usage() {
 }
 ```
 
-Pass `when: false` to switch the guard off, for example while a save is in flight.
-
 ## API
 
 ```ts
 declare function useUnsavedChanges(form: AnyKitForm, opts?: { when?: boolean | undefined; }): boolean
 ```
 
-Guards against leaving with unsaved changes: a `beforeunload` prompt while the form differs
-from its baseline. Returns `isDirty` so router blockers can use it too.
+Ask before the reader leaves a form with unsaved changes, and tell your router the same.

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Badge, DataList } from '@mitcsutt/kiln-ui'
 import { Stack } from '#components/layout/Stack'
-import { DataList } from './DataList'
 
 const meta = {
   title: 'UI/Display/DataList',
@@ -49,4 +49,40 @@ export const MetaStrip: Story = {
       <DataList.Item label="Card">Visa ··4821</DataList.Item>
     </DataList>
   ),
+}
+
+/**
+ * A sailing's details as label and value pairs, divided by rules.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <DataList divided>
+        <DataList.Item label="Departs">Harbour Square, berth 3</DataList.Item>
+        <DataList.Item label="Arrives">Kelso Bay Pier, 07:52</DataList.Item>
+        <DataList.Item label="Vessel">MV Marram</DataList.Item>
+        <DataList.Item label="Status">
+          <Badge tone="positive">On time</Badge>
+        </DataList.Item>
+      </DataList>
+    )
+  },
+}
+
+/**
+ * With `orientation="vertical"`, each label sits above its value, for narrow spaces.
+ */
+export const Vertical: Story = {
+  name: 'Stacked',
+  tags: ['docs'],
+  render: function Vertical() {
+    return (
+      <DataList orientation="vertical">
+        <DataList.Item label="Pass">Annual, all zones</DataList.Item>
+        <DataList.Item label="Valid until">31 October 2027</DataList.Item>
+        <DataList.Item label="Holder">Ines Varga</DataList.Item>
+      </DataList>
+    )
+  },
 }

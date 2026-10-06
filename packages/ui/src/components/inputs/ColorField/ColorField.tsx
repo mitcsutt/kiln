@@ -7,6 +7,12 @@ export interface ColorFieldProps
   extends FieldLabelProps, Omit<ColorInputProps, 'invalid' | keyof FieldLabelProps> {}
 
 /**
+ * A labelled colour input with a picker, a hex code and named presets.
+ *
+ * @remarks
+ * `ColorField` is a {@link Field | Field} around a {@link ColorInput | ColorInput}.
+ *
+ * @privateRemarks
  * Label + ColorInput + description + error. Input props (`value`, `swatches`,
  * `swatchesOnly`…) and the ref go to the hex input (or the swatch group with
  * `swatchesOnly`); `className`/`style` go to the wrapper.

@@ -1,12 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import {
+  CopyIcon,
+  IconButton,
+  Inline,
+  SearchIcon,
+  StarIcon,
+  Tooltip,
+  TooltipProvider,
+} from '@mitcsutt/kiln-ui'
 import { expect, screen, userEvent, waitFor, within } from 'storybook/test'
 import { storyRoot } from '#components/_story/storyRoot'
 import { Button } from '#components/actions/Button'
-import { Inline } from '#components/layout/Inline'
 import { Stack } from '#components/layout/Stack'
-import { CopyIcon, MoonIcon, SearchIcon } from '#icons'
+import { MoonIcon } from '#icons'
 import { Clip, Muted, Spacer } from '#components/overlays/_story/StoryKit'
-import { Tooltip, TooltipProvider } from './Tooltip'
 
 const meta = {
   title: 'UI/Overlays/Tooltip',
@@ -108,4 +115,32 @@ export const EscapesClipping: Story = {
       </Stack>
     </Clip>
   ),
+}
+
+/**
+ * A tooltip supplements a name; it isn't one. An `IconButton` already has its `label` as its
+ * accessible name, and the tooltip shows that same label to pointer users.
+ *
+ * `TooltipProvider` shares delays between tooltips, so moving along a toolbar shows each one
+ * instantly after the first. Put one near the app root. Tooltips work without it.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <TooltipProvider>
+        <Inline gap={2}>
+          <Tooltip content="Search stops">
+            <IconButton label="Search stops" icon={<SearchIcon />} />
+          </Tooltip>
+          <Tooltip content="Copy share link">
+            <IconButton label="Copy share link" icon={<CopyIcon />} />
+          </Tooltip>
+          <Tooltip content="Save route" side="bottom">
+            <IconButton label="Save route" icon={<StarIcon />} />
+          </Tooltip>
+        </Inline>
+      </TooltipProvider>
+    )
+  },
 }

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Grid, Stat } from '@mitcsutt/kiln-ui'
 import { Inline } from '#components/layout/Inline'
 import { Stack } from '#components/layout/Stack'
-import { Stat } from './Stat'
 
 const meta = {
   title: 'UI/Display/Stat',
@@ -127,4 +127,50 @@ export const Sizes: Story = {
       ))}
     </Stack>
   ),
+}
+
+/**
+ * `delta` takes a `value`, a `direction` and a `tone`. Choose the tone by whether the change is
+ * good news, not by its direction: fewer delays is `down` and `positive`. `hint` adds context such
+ * as a target, and `rule` draws a hairline above.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Grid columns={{ base: 1, sm: 3 }} gap={6}>
+        <Stat
+          label="Passengers"
+          value="18,432"
+          delta={{ value: '6%', direction: 'up', tone: 'positive' }}
+        />
+        <Stat
+          label="On time"
+          value="94.1%"
+          delta={{ value: '1.2 pts', direction: 'down', tone: 'critical' }}
+          hint="Target 95%"
+        />
+        <Stat label="Sailings" value="1,206" delta={{ value: '0', direction: 'flat' }} />
+      </Grid>
+    )
+  },
+}
+
+/**
+ * `size="hero"` is for the one number a page is about.
+ */
+export const Hero: Story = {
+  name: 'The hero figure',
+  tags: ['docs'],
+  render: function Hero() {
+    return (
+      <Stat
+        size="hero"
+        label="Fares collected this month"
+        value="£214,880"
+        delta={{ value: '£12,400', direction: 'up', tone: 'positive' }}
+        rule
+      />
+    )
+  },
 }

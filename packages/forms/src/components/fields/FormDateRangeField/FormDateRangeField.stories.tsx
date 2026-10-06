@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Form, useAppForm, useFieldValue } from '@mitcsutt/kiln-forms'
+import { Code, Stack, Text } from '@mitcsutt/kiln-ui'
 import type { DateRangeValue } from '@mitcsutt/kiln-ui'
 import { FieldDemo, NEVER_SETTLES, StatesGrid, StoryForm } from '#stories/_kit'
 import { FormDateRangeField } from './FormDateRangeField'
@@ -144,4 +146,31 @@ export const ViewMode: Story = {
       {(form) => <form.DateRangeField name="value" label="Report period" />}
     </FieldDemo>
   ),
+}
+
+/**
+ * Natively submitted, it sends `name.start` and `name.end`. View mode joins the two formatted
+ * dates with an en dash.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const form = useAppForm({ defaultValues: { trip: { start: '', end: '' } } })
+    const value = useFieldValue(form, 'trip')
+    return (
+      <Form form={form} aria-label="DateRangeField example">
+        <Stack gap={4}>
+          <form.DateRangeField
+            name="trip"
+            label="Travel dates"
+            startLabel="First day"
+            endLabel="Last day"
+          />
+          <Text size="sm" tone="muted">
+            Value: <Code>{JSON.stringify(value)}</Code>
+          </Text>
+        </Stack>
+      </Form>
+    )
+  },
 }

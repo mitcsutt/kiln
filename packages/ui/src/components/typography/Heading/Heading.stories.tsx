@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Stack } from '#components/layout/Stack'
+import { Heading, Stack } from '@mitcsutt/kiln-ui'
 import { Text } from '#components/typography/Text'
-import { Heading, type HeadingSize } from './Heading'
+import type { HeadingSize } from './Heading'
 
 const meta = {
   title: 'UI/Typography/Heading',
@@ -120,4 +120,58 @@ export const Measure: Story = {
       </Heading>
     </Stack>
   ),
+}
+
+/**
+ * With no `size`, each level has a default look (`DEFAULT_HEADING_SIZE`). Headings use the theme's
+ * heading role (face, weight, tracking, transform) and display sizes use its display role.
+ * `balance` (on by default) evens out line lengths. `tone="muted"` steps a heading back;
+ * `tone="accent"` is rarely right.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Stack gap={4}>
+        <Heading level={2} size="display-sm">
+          Summer timetable
+        </Heading>
+        <Heading level={3}>Coastal line</Heading>
+        <Heading level={4} tone="muted">
+          Weekend services
+        </Heading>
+      </Stack>
+    )
+  },
+}
+
+const SIZES = [
+  'display-lg',
+  'display-md',
+  'display-sm',
+  '3xl',
+  '2xl',
+  'xl',
+  'lg',
+  'md',
+  'sm',
+] as const
+
+/**
+ * `size` is a display step (`display-lg`, `display-md`, `display-sm`) or a text step (`3xl` down
+ * to `sm`), and takes responsive values: `size={{ base: '2xl', md: 'display-sm' }}`.
+ */
+export const Sizes: Story = {
+  tags: ['docs'],
+  render: function Sizes() {
+    return (
+      <Stack gap={3}>
+        {SIZES.map((size) => (
+          <Heading key={size} level={3} size={size}>
+            {size}: High water 06:42
+          </Heading>
+        ))}
+      </Stack>
+    )
+  },
 }

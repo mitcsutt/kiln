@@ -25,6 +25,15 @@ export interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
 }
 
 /**
+ * An inline text link. Hover thickens the underline instead of changing colour, so it reads in
+ * every theme.
+ *
+ * @remarks
+ * `Link` is for links inside text. It's always underlined by default, because colour alone doesn't
+ * tell people what's a link (and in Paper, links are ink). Hovering thickens the underline rather
+ * than changing the colour.
+ *
+ * @privateRemarks
  * Inline text link. Hover thickens the underline instead of changing colour, so the
  * link stays legible in every theme.
  *

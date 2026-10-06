@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { DateRangeField } from '@mitcsutt/kiln-ui'
 import { Stack } from '#components/layout/Stack'
-import { DateRangeField } from './DateRangeField'
 
 const meta = {
   title: 'UI/Inputs/DateRangeField',
@@ -51,4 +51,24 @@ export const Narrow: Story = {
       <DateRangeField {...args} />
     </Stack>
   ),
+}
+
+/**
+ * `value` is `{ start, end }` as ISO date strings (`2026-10-14`). `min` and `max` bound both
+ * inputs, and the end can't be before the start. `startLabel` and `endLabel` name the two inputs.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <DateRangeField
+        label="Travel dates"
+        description="Up to 14 days"
+        startLabel="First day"
+        endLabel="Last day"
+        min="2026-10-01"
+        defaultValue={{ start: '2026-10-14', end: '2026-10-18' }}
+      />
+    )
+  },
 }

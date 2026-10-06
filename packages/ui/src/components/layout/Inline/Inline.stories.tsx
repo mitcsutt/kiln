@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Button } from '#components/actions/Button'
+import { Badge, Button, Inline, Text } from '@mitcsutt/kiln-ui'
 import { Stack } from '#components/layout/Stack'
 import { Body, Cell, Figure, Label, Title } from '#components/layout/_story/StoryKit'
-import { Inline } from './Inline'
 
 const meta = {
   title: 'UI/Layout/Inline',
@@ -60,4 +59,30 @@ export const Responsive: Story = {
       </Inline>
     </Stack>
   ),
+}
+
+/**
+ * `justify` spreads the row (`between` pushes the groups to either end) and takes responsive
+ * values, so a header can stack its groups on a phone and spread them from `md` up. `wrap={false}`
+ * keeps everything on one line; children then shrink instead. `rowGap` sets the space between
+ * wrapped lines when it should differ from `gap`.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Inline gap={3} justify={{ base: 'start', md: 'between' }}>
+        <Inline gap={2}>
+          <Text weight="strong">Route 7</Text>
+          <Badge tone="caution">Diverted</Badge>
+        </Inline>
+        <Inline gap={2}>
+          <Button size="sm" variant="outline" tone="neutral">
+            Share
+          </Button>
+          <Button size="sm">Track live</Button>
+        </Inline>
+      </Inline>
+    )
+  },
 }

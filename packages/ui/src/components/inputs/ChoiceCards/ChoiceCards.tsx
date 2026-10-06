@@ -115,6 +115,15 @@ function cardAria(option: ChoiceCardOption, ids: CardIds) {
 }
 
 /**
+ * Choices as cards, for a handful of options that each need a sentence or a price to choose
+ * between.
+ *
+ * @remarks
+ * `ChoiceCards` is for a few options that need more than a label: a pass with a price, a plan with
+ * a sentence. The whole card is the target, and the selected card takes the accent edge and
+ * nothing else. `type="single"` is a radio group; `type="multiple"` is a set of checkboxes.
+ *
+ * @privateRemarks
  * Choices as cards — for a handful of options that each need a sentence or a figure to
  * choose between ("Plan": £5 / £10 / £20). The whole card is the hit target; the
  * selected card takes the accent edge and nothing else.

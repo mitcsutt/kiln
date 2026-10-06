@@ -34,6 +34,14 @@ export interface TextProps extends HTMLAttributes<HTMLElement> {
 }
 
 /**
+ * Body text in the theme's text face, with a size, tone and weight from the scale.
+ *
+ * @remarks
+ * `Text` is a paragraph by default and any inline element with `as` (`span`, `strong`, `em`,
+ * `small`, `label`, `time`). Size, tone, weight and measure are props, so text never needs a
+ * class.
+ *
+ * @privateRemarks
  * Body text. Paragraphs by default; any inline role via `as`.
  *
  * <Text size="sm" tone="muted">Updated 3 minutes ago</Text>

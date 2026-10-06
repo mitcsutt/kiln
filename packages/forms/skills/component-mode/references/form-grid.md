@@ -8,6 +8,8 @@ Source: https://kiln.mitchellsutton.com/docs/forms/layouts/form-grid
 
 `FormGrid` lays fields out in columns: two from `md` up by default, one below. `FormGridItem` spans columns or starts at one, both responsive. Spacers are `start` offsets; there's no string matrix of field names.
 
+Keep related fields together and in reading order: a grid row is read left to right, then down.
+
 ```tsx
 import { Form, FormGrid, FormGridItem, useAppForm } from '@mitcsutt/kiln-forms'
 
@@ -38,8 +40,6 @@ export function Usage() {
   )
 }
 ```
-
-Keep related fields together and in reading order: a grid row is read left to right, then down.
 
 ## In a schema
 

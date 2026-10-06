@@ -16,6 +16,16 @@ export interface ListProps extends HTMLAttributes<HTMLUListElement> {
 }
 
 /**
+ * The workhorse row list. Leading, content and trailing slots, divided by hairlines, never boxed
+ * in cards.
+ *
+ * @remarks
+ * `List` is for rows of similar things: trips, people, invoices, recent activity. Each row has up
+ * to three slots: `List.Leading` (an avatar, an icon, a rank), `List.Content` (a title and
+ * `List.Description`), and `List.Trailing` (an amount, a time, an action). Rows are divided by
+ * hairlines.
+ *
+ * @privateRemarks
  * The workhorse row list: leaderboards, team members, invoices, recent work. Rows are
  * `Leading · Content · Trailing`, divided by hairlines, never boxed in cards.
  *

@@ -92,6 +92,15 @@ const BottomNavItem = forwardRef<HTMLAnchorElement, BottomNavItemProps>(function
 })
 
 /**
+ * A phone's tab bar. Three to five destinations, icon over label, pinned to the bottom of the
+ * screen.
+ *
+ * @remarks
+ * `BottomNav` is the bar of destinations at the bottom of a phone screen. It's fixed to the bottom
+ * with room for the home indicator, and hidden from `md` up by default, where header `NavLinks`
+ * take over.
+ *
+ * @privateRemarks
  * Mobile tab bar: 3–5 destinations, icon over label, pinned to the bottom with the
  * safe-area inset. Hidden from `md` up by default, where `NavLinks` takes over.
  * Pair the breakpoints: `<BottomNav hideAbove="md">` with `<NavLinks hideBelow="md">`.

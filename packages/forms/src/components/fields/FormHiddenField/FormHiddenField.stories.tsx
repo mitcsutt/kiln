@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Text } from '@mitcsutt/kiln-ui'
+import { Form, useAppForm, useFieldValue } from '@mitcsutt/kiln-forms'
+import { Code, Stack, Text } from '@mitcsutt/kiln-ui'
 import { FieldDemo, StoryForm } from '#stories/_kit'
 import { FormHiddenField } from './FormHiddenField'
 
@@ -75,4 +76,27 @@ export const ViewMode: Story = {
       )}
     </FieldDemo>
   ),
+}
+
+/**
+ * It's the only markup kiln-forms renders itself, and it renders nothing in view mode. You rarely
+ * need it: values that aren't typed by the reader can simply be form values. Use it when a native
+ * form submission must include the value.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const form = useAppForm({ defaultValues: { source: 'timetable-page' } })
+    const value = useFieldValue(form, 'source')
+    return (
+      <Form form={form} aria-label="HiddenField example">
+        <Stack gap={4}>
+          <form.HiddenField name="source" />
+          <Text size="sm" tone="muted">
+            Value: <Code>{JSON.stringify(value)}</Code>
+          </Text>
+        </Stack>
+      </Form>
+    )
+  },
 }

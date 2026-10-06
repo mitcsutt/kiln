@@ -13,7 +13,7 @@ const read = (path: string) =>
 
 const THEMES = ['paper', 'ledger', 'flightdeck', 'riso'] as const
 
-// Kept exactly as before for compatibility (ADR 0028); they predate the second-order rules and
+// Kept exactly as before for compatibility (ADR 0030); they predate the second-order rules and
 // are exempt. Their stylesheets, and the font files only they use, are not checked.
 const LEGACY = ['monograph', 'fiesta'] as const
 const LEGACY_FONT_FILES = ['fonts-monograph.css', 'fonts-fiesta.css', 'fonts-martian-mono.css']

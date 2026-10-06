@@ -1,10 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Amount, Button, DataList, Sheet, Stack } from '@mitcsutt/kiln-ui'
 import { expect, screen, userEvent, waitFor, within } from 'storybook/test'
 import { storyRoot } from '#components/_story/storyRoot'
-import { Button } from '#components/actions/Button'
-import { Stack } from '#components/layout/Stack'
 import { Muted, Row, Stage, Strong } from '#components/overlays/_story/StoryKit'
-import { Sheet, type SheetContentProps } from './Sheet'
+import type { SheetContentProps } from './Sheet'
 
 const meta = {
   title: 'UI/Overlays/Sheet',
@@ -146,4 +145,44 @@ export const Side: Story = {
       )}
     </Stage>
   ),
+}
+
+/**
+ * `side` is `right` (the default), `left` or `bottom`, and takes a responsive value: `{ base:
+ * 'bottom', md: 'right' }` is a bottom sheet on phones and a drawer from 48em. A bottom sheet
+ * shows a grab handle. `size` sets the width of a side sheet or the maximum height of a bottom
+ * one. The mobile navigation in these docs is a `Sheet`.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Sheet>
+        <Sheet.Trigger asChild>
+          <Button variant="outline" tone="neutral">
+            Your basket
+          </Button>
+        </Sheet.Trigger>
+        <Sheet.Content
+          side={{ base: 'bottom', md: 'right' }}
+          title="Your basket"
+          description="Two items"
+        >
+          <Stack gap={5}>
+            <DataList>
+              <DataList.Item label="Annual pass">
+                <Amount value={96} currency="GBP" locale="en-GB" />
+              </DataList.Item>
+              <DataList.Item label="Helmet, medium">
+                <Amount value={24.5} currency="GBP" locale="en-GB" />
+              </DataList.Item>
+            </DataList>
+            <Sheet.Footer>
+              <Button fullWidth>Check out</Button>
+            </Sheet.Footer>
+          </Stack>
+        </Sheet.Content>
+      </Sheet>
+    )
+  },
 }

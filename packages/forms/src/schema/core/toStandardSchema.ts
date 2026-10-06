@@ -47,14 +47,14 @@ interface Job {
 }
 
 /**
- * The schema's rules as a Standard Schema (§10.9), React-free: use it on the server
+ * The schema's rules as a Standard Schema, React-free: use it on the server
  * (`createServerValidate`, an API handler) so client and server enforce the same rules.
  *
  * Applies `rules` (+ `required` / `requiredWhen`) of **visible, active** fields only, using the same
  * `fieldFlags` as the renderer: nodes whose `when` is false are skipped with their subtree, as are
  * fields that are excluded, disabled or read-only — by their own static prop, a `*When` condition,
  * `compute`, or an ancestor `section`'s `disabled` / `readOnly` (`layoutFlags`). Those are the
- * fields the client doesn't validate (§5.4). A repeater under such a section is skipped whole, and
+ * fields the client doesn't validate. A repeater under such a section is skipped whole, and
  * so is every `review` subtree (view mode never validates; the field's own node counts).
  * Repeater rules apply to the array and item rules to each item. `warnRules` never fail. Returns a
  * promise only when async custom validators run.
@@ -63,6 +63,8 @@ interface Job {
  * values of hidden, excluded, disabled, read-only and computed fields are dropped, never passed
  * through — the server must not trust them (recompute a computed value if it needs one). A
  * repeater keeps one object per input item with that item's active fields.
+ *
+ * @privateRemarks Design reference §10.9, §5.4.
  */
 export function toStandardSchema(
   schema: UntypedFormSchema,

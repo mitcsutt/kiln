@@ -31,6 +31,15 @@ const DEFAULT_TONE: Record<DeltaDirection, DeltaTone> = {
 }
 
 /**
+ * A change marker, coloured by whether the change is good, and spoken in words so it never depends
+ * on the glyph.
+ *
+ * @remarks
+ * `Delta` shows a change: a small triangle (or a dot for no change) and the amount. Screen readers
+ * hear the direction in words ("Up 12%"), so it never relies on colour or the glyph alone. `Stat`
+ * uses it for its change.
+ *
+ * @privateRemarks
  * A change marker: a small triangle (or a dot for no change) and the amount, coloured by
  * whether the change is good. The direction is spoken in words, so it never relies on
  * colour or the glyph: screen readers hear "Up 1".

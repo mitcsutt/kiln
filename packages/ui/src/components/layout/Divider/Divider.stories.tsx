@@ -1,8 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Stack } from '#components/layout/Stack'
-import { Inline } from '#components/layout/Inline'
+import { Divider, Inline, Stack, Text } from '@mitcsutt/kiln-ui'
 import { Body, Figure, Label } from '#components/layout/_story/StoryKit'
-import { Divider } from './Divider'
 
 const meta = {
   title: 'UI/Layout/Divider',
@@ -84,4 +82,30 @@ export const Vertical: Story = {
       <Label>Ships 13:00</Label>
     </Inline>
   ),
+}
+
+/**
+ * A labelled divider names the group that follows. `spacing` adds space above and below from the
+ * space scale, `strong` uses the stronger line colour, and `decorative` hides the rule from
+ * assistive technology when it carries no meaning (it's a `separator` otherwise).
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Stack gap={4}>
+        <Text>Morning departures</Text>
+        <Divider />
+        <Divider label="Afternoon" spacing={4} />
+        <Divider label="Evening" labelPosition="center" strong />
+        <Inline gap={3}>
+          <Text size="sm">Timetable</Text>
+          <Divider orientation="vertical" />
+          <Text size="sm">Fares</Text>
+          <Divider orientation="vertical" />
+          <Text size="sm">Accessibility</Text>
+        </Inline>
+      </Stack>
+    )
+  },
 }

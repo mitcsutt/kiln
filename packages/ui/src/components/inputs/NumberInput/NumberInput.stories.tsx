@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { NumberInput, Stack } from '@mitcsutt/kiln-ui'
 import { expect, userEvent, within } from 'storybook/test'
 import { storyRoot } from '#components/_story/storyRoot'
-import { Stack } from '#components/layout/Stack'
-import { NumberInput } from './NumberInput'
 
 const meta = {
   title: 'UI/Inputs/NumberInput',
@@ -77,4 +76,27 @@ export const German: Story = {
 
 export const WithoutStepper: Story = {
   args: { stepper: false },
+}
+
+/**
+ * The arrow keys step by `step`, Page Up and Page Down by `largeStep`, Home and End jump to `min`
+ * and `max`, and Enter commits. `stepper` adds minus and plus buttons. `name` submits a plain
+ * number. The value is `number | null`.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Stack gap={4}>
+        <NumberInput aria-label="Passengers" defaultValue={2} min={1} max={9} stepper />
+        <NumberInput
+          aria-label="Distance"
+          defaultValue={1450.5}
+          step={0.5}
+          trailing="km"
+          formatOptions={{ maximumFractionDigits: 1 }}
+        />
+      </Stack>
+    )
+  },
 }

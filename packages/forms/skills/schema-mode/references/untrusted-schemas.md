@@ -78,7 +78,7 @@ The renderer strips the same unsafe props again, as a second line of defence for
 declare function parseFormSchema(json: unknown, registry: SchemaRegistryNames, options?: ParseFormSchemaOptions): ParseFormSchemaResult
 ```
 
-Validates untrusted JSON as a form schema (§10.8) against the kit's registered keys: node shapes,
+Validates untrusted JSON as a form schema against the kit's registered keys: node shapes,
 field kinds / layouts / loaders / validators / computers / custom nodes, rule names and argument
 types, condition shapes, duplicate ids and field names, repeater `newItem`, JSON-only props.
 Untrusted input: rejects DOM-sink props (`dangerouslySetInnerHTML`, `on*`, `style`,

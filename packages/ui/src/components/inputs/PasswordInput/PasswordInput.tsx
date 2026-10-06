@@ -29,6 +29,16 @@ export interface PasswordInputProps extends Omit<InputProps, 'type' | 'trailing'
 }
 
 /**
+ * A password input with a show and hide toggle that says what pressing it does.
+ *
+ * @remarks
+ * `PasswordInput` adds a toggle to the end of the box that shows or hides the password. The toggle
+ * is an `IconButton` whose name says what pressing it will do ("Show password"), and submitting or
+ * resetting the form hides the password again. `autoComplete` is required (`current-password` or
+ * `new-password`), so password managers do the right thing. `onBlur` fires only when focus leaves
+ * both the input and its toggle.
+ *
+ * @privateRemarks
  * A password input with a show/hide toggle at the end of the box (Radix
  * PasswordToggleField). The toggle is an IconButton whose name says what pressing it
  * does; submitting or resetting the form hides the password again. The ref goes to the

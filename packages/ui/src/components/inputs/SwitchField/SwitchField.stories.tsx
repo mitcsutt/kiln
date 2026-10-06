@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Stack } from '#components/layout/Stack'
-import { SwitchField } from './SwitchField'
+import { Stack, SwitchField } from '@mitcsutt/kiln-ui'
 
 const meta = {
   title: 'UI/Inputs/SwitchField',
@@ -59,4 +58,24 @@ export const WithError: Story = {
 
 export const Disabled: Story = {
   args: { disabled: true },
+}
+
+/**
+ * Switches take effect at once. For a choice that waits for a form to be submitted, use a
+ * [CheckboxField](/docs/ui/inputs/checkbox-field).
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Stack gap={4}>
+        <SwitchField
+          label="Delay alerts"
+          description="A notification when a saved route runs late."
+          defaultChecked
+        />
+        <SwitchField label="Weekly summary" />
+      </Stack>
+    )
+  },
 }

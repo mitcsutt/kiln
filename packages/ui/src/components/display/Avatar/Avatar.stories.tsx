@@ -1,7 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Inline } from '#components/layout/Inline'
-import { Stack } from '#components/layout/Stack'
-import { Avatar } from './Avatar'
+import { Avatar, avatarColor, getInitials, Inline, Stack, Text } from '@mitcsutt/kiln-ui'
 
 const portrait = new URL('./portrait.story.svg', import.meta.url).href
 
@@ -89,4 +87,39 @@ export const CompanyCodes: Story = {
       </Inline>
     </Stack>
   ),
+}
+
+/**
+ * `name` is required: it's the accessible name and the source of the initials and colour. `ring`
+ * adds a canvas-coloured ring, for avatars that overlap or sit on images.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Inline gap={4}>
+        <Avatar name="Ines Varga" size="xl" src="/images/portrait.svg" alt="Ines Varga" />
+        <Avatar name="Ines Varga" size="lg" />
+        <Avatar name="Tomasz Okoro" />
+        <Avatar name="Priya Halvorsen" size="sm" ring />
+        <Avatar name="Bayline Ferries" initials="BF" size="xs" />
+      </Inline>
+    )
+  },
+}
+
+/**
+ * `getInitials` and `avatarColor` are the functions Avatar uses, for when you need the same
+ * initials or colour elsewhere, like a chart legend.
+ */
+export const Helpers: Story = {
+  tags: ['docs'],
+  render: function Helpers() {
+    return (
+      <Stack gap={2}>
+        <Text>getInitials(&apos;Priya Halvorsen&apos;) is {getInitials('Priya Halvorsen')}</Text>
+        <Text>avatarColor(&apos;Priya Halvorsen&apos;) is {avatarColor('Priya Halvorsen')}</Text>
+      </Stack>
+    )
+  },
 }

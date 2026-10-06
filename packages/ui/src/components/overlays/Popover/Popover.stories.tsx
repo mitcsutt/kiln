@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Button, DataList, Popover } from '@mitcsutt/kiln-ui'
 import { expect, screen, userEvent, waitFor, within } from 'storybook/test'
 import { storyRoot } from '#components/_story/storyRoot'
-import { Button } from '#components/actions/Button'
 import { Inline } from '#components/layout/Inline'
 import { Stack } from '#components/layout/Stack'
 import { Muted, Row, Spacer, Strong } from '#components/overlays/_story/StoryKit'
-import { Popover, type PopoverContentProps } from './Popover'
+import type { PopoverContentProps } from './Popover'
 
 const meta = {
   title: 'UI/Overlays/Popover',
@@ -102,4 +102,31 @@ export const WithArrow: Story = {
       <Spacer />
     </Stack>
   ),
+}
+
+/**
+ * Give `Popover.Content` an `aria-label` (or a heading inside it). `arrow` draws a pointer to the
+ * trigger. For a hint on hover, use a [Tooltip](/docs/ui/overlays/tooltip); for a list of
+ * commands, a [DropdownMenu](/docs/ui/overlays/dropdown-menu).
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Popover>
+        <Popover.Trigger asChild>
+          <Button variant="outline" tone="neutral">
+            Sailing details
+          </Button>
+        </Popover.Trigger>
+        <Popover.Content aria-label="Sailing details" arrow>
+          <DataList>
+            <DataList.Item label="Vessel">MV Marram</DataList.Item>
+            <DataList.Item label="Berth">3</DataList.Item>
+            <DataList.Item label="Crossing">42 minutes</DataList.Item>
+          </DataList>
+        </Popover.Content>
+      </Popover>
+    )
+  },
 }

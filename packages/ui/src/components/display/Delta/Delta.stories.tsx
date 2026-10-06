@@ -1,9 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Inline } from '#components/layout/Inline'
+import { Delta, Inline } from '@mitcsutt/kiln-ui'
 import { Stack } from '#components/layout/Stack'
 import { List } from '#components/display/List'
 import { Text } from '#components/typography/Text'
-import { Delta } from './Delta'
 
 const meta = {
   title: 'UI/Display/Delta',
@@ -61,4 +60,27 @@ export const InARow: Story = {
       </Text>
     </Stack>
   ),
+}
+
+/**
+ * Changes up and down, with tones that say whether each one is good news, and no change.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Inline gap={5}>
+        <Delta direction="up" tone="positive">
+          12%
+        </Delta>
+        <Delta direction="down" tone="critical">
+          3 sailings
+        </Delta>
+        <Delta direction="down" tone="positive">
+          4 min delay
+        </Delta>
+        <Delta direction="flat">No change</Delta>
+      </Inline>
+    )
+  },
 }

@@ -85,6 +85,14 @@ const ContentInner = forwardRef<
 })
 
 /**
+ * A short label that appears on hover and keyboard focus. Never for anything interactive.
+ *
+ * @remarks
+ * `Tooltip` shows a short label beside its trigger on hover and on keyboard focus. It's portalled,
+ * so an `overflow: hidden` parent never clips it. Keep it to a few words, and never put anything
+ * interactive in it: use a {@link Popover | Popover} for that.
+ *
+ * @privateRemarks
  * A small label that appears on hover and on keyboard focus. Portalled, so it's never
  * clipped by an `overflow: hidden` card. Not for anything interactive — use `Popover`.
  *

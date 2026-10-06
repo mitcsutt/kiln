@@ -7,6 +7,13 @@ export interface SliderFieldProps
   extends FieldLabelProps, Omit<SliderProps, 'invalid' | keyof FieldLabelProps> {}
 
 /**
+ * A labelled slider, its thumb named by the label and described by the help text.
+ *
+ * @remarks
+ * `SliderField` is a {@link Field | Field} around a {@link Slider | Slider}. The thumb is labelled
+ * by the field's label and described by its description and error.
+ *
+ * @privateRemarks
  * A labelled `Slider`. The thumb is labelled by the Field's label and described by its
  * help, warning and error. `className`/`style` go to the Field; `ref`, `id`, `name` and the
  * rest go to the slider (the ref to its thumb).

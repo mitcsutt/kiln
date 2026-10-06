@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Form, useAppForm, useFieldValue } from '@mitcsutt/kiln-forms'
+import { Code, Stack, Text } from '@mitcsutt/kiln-ui'
 import { FieldDemo, NEVER_SETTLES, StatesGrid, StoryForm } from '#stories/_kit'
 import { FormTimeField } from './FormTimeField'
 
@@ -140,4 +142,26 @@ export const ViewMode: Story = {
       {(form) => <form.TimeField name="value" label="Reminder time" />}
     </FieldDemo>
   ),
+}
+
+/**
+ * It renders kiln-ui's [TextField](/docs/ui/inputs/text-field) with `type="time"`. `step` is in
+ * seconds.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    const form = useAppForm({ defaultValues: { departs: '07:10' } })
+    const value = useFieldValue(form, 'departs')
+    return (
+      <Form form={form} aria-label="TimeField example">
+        <Stack gap={4}>
+          <form.TimeField name="departs" label="Departs" step={300} />
+          <Text size="sm" tone="muted">
+            Value: <Code>{JSON.stringify(value)}</Code>
+          </Text>
+        </Stack>
+      </Form>
+    )
+  },
 }

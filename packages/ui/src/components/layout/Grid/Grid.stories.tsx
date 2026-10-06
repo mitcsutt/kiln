@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Box, Grid, Text } from '@mitcsutt/kiln-ui'
 import { Stack } from '#components/layout/Stack'
 import { Inline } from '#components/layout/Inline'
 import { AspectRatio } from '#components/layout/AspectRatio'
 import { Body, Cell, Figure, Label, Title, Bar, Artwork } from '#components/layout/_story/StoryKit'
-import { Grid } from './Grid'
 
 const meta = {
   title: 'UI/Layout/Grid',
@@ -65,7 +65,7 @@ const projects = [
  * `minItemWidth` fits as many columns as there's room for — no breakpoints. Resize the
  * canvas: four across on a wide screen, one on a phone.
  */
-export const AutoFill: Story = {
+export const AutoFillCards: Story = {
   args: { minItemWidth: 'xs', columns: undefined, gap: 5, rowGap: 6 },
   render: (args) => (
     <Grid {...args}>
@@ -186,4 +186,73 @@ export const Dashboard: Story = {
       </Grid.Item>
     </Grid>
   ),
+}
+
+const LINES = ['Red', 'Harbour', 'Coastal', 'Night', 'Airport', 'Orbital', 'Market', 'University']
+
+/**
+ * One column on a phone, two from `sm` and four from `lg`.
+ */
+export const Columns: Story = {
+  tags: ['docs'],
+  render: function Columns() {
+    return (
+      <Grid columns={{ base: 1, sm: 2, lg: 4 }} gap={4}>
+        {LINES.map((line) => (
+          <Box key={line} padding={4} border radius="surface">
+            <Text weight="medium">{line} line</Text>
+          </Box>
+        ))}
+      </Grid>
+    )
+  },
+}
+
+const PIERS = ['North pier', 'South pier', 'Ferry terminal', 'Lifeboat station', 'Fish market']
+
+/**
+ * `minItemWidth` takes `xs` (12rem), `sm` (16rem), `md` (20rem) or `lg` (24rem).
+ */
+export const AutoFill: Story = {
+  name: 'Auto-fill',
+  tags: ['docs'],
+  render: function AutoFill() {
+    return (
+      <Grid minItemWidth="xs" gap={4}>
+        {PIERS.map((pier) => (
+          <Box key={pier} padding={4} surface="sunken" radius="surface">
+            <Text>{pier}</Text>
+          </Box>
+        ))}
+      </Grid>
+    )
+  },
+}
+
+/**
+ * `Grid.Item` spans columns (`span`) or starts at one (`start`), both responsive. Use it in
+ * `columns` mode.
+ */
+export const Items: Story = {
+  name: 'Spanning columns',
+  tags: ['docs'],
+  render: function Items() {
+    return (
+      <Grid columns={{ base: 1, md: 3 }} gap={4}>
+        <Grid.Item span={{ base: 1, md: 2 }}>
+          <Box padding={5} border radius="surface">
+            <Text weight="medium">Live map</Text>
+          </Box>
+        </Grid.Item>
+        <Box padding={5} border radius="surface">
+          <Text weight="medium">Next departures</Text>
+        </Box>
+        <Grid.Item span={{ base: 1, md: 3 }}>
+          <Box padding={5} surface="sunken" radius="surface">
+            <Text tone="muted">Service updates</Text>
+          </Box>
+        </Grid.Item>
+      </Grid>
+    )
+  },
 }

@@ -42,6 +42,36 @@ function toUiLists(options: readonly UiOption[]): { flat: SelectOption[]; groups
 }
 
 /**
+ * One choice from a dropdown. Option values keep their type, numbers and booleans come back as
+ * numbers and booleans.
+ *
+ * @remarks
+ * It renders kiln-ui's {@link SelectField | SelectField}.
+ *
+ * @example In a schema
+ * ```json
+ * {
+ *   "kind": "select",
+ *   "name": "pass",
+ *   "label": "Pass",
+ *   "placeholder": "Choose a pass",
+ *   "options": [
+ *     {
+ *       "value": "week",
+ *       "label": "Week"
+ *     },
+ *     {
+ *       "value": "month",
+ *       "label": "Month"
+ *     }
+ *   ]
+ * }
+ * ```
+ *
+ * @value the options' value type, or `null`
+ * @empty `null`
+ *
+ * @privateRemarks
  * A single-choice dropdown (§7.2 `select`). Option values keep their primitive type (numbers and
  * booleans round-trip through the string-only ui control, §7.3); empty is `null`.
  */

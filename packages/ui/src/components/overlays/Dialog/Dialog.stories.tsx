@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Button, Dialog, Stack, TextField } from '@mitcsutt/kiln-ui'
+import { useState } from 'react'
 import { expect, screen, userEvent, waitFor, within } from 'storybook/test'
 import { storyRoot } from '#components/_story/storyRoot'
-import { Button } from '#components/actions/Button'
-import { Stack } from '#components/layout/Stack'
 import { Body, Row, Stage } from '#components/overlays/_story/StoryKit'
-import { Dialog, type DialogContentProps } from './Dialog'
+import type { DialogContentProps } from './Dialog'
 
 const meta = {
   title: 'UI/Overlays/Dialog',
@@ -150,4 +150,82 @@ export const Reading: Story = {
       )}
     </Stage>
   ),
+}
+
+/**
+ * `Dialog.Content` takes the `title` (the dialog's accessible name) and a `description`. Every
+ * dialog needs a name, so if you leave `title` out, render a `Dialog.Title` yourself. Name the
+ * buttons for what they do: "Keep booking" and "Cancel booking", never "OK" and "Cancel".
+ *
+ * `size` is `sm` for confirmations, `md` (the default) for short forms and `lg` for reading.
+ * `hideClose` removes the corner close button when a `Dialog.Close` in the footer covers it.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  parameters: { layout: 'centered' },
+  render: function Usage() {
+    return (
+      <Dialog>
+        <Dialog.Trigger asChild>
+          <Button variant="outline" tone="critical">
+            Cancel booking
+          </Button>
+        </Dialog.Trigger>
+        <Dialog.Content
+          size="sm"
+          title="Cancel your booking?"
+          description="Ferry to Kelso Bay, 07:10 tomorrow. You'll be refunded £4.20 to your card."
+        >
+          <Dialog.Footer>
+            <Dialog.Close asChild>
+              <Button variant="ghost" tone="neutral">
+                Keep booking
+              </Button>
+            </Dialog.Close>
+            <Dialog.Close asChild>
+              <Button tone="critical">Cancel booking</Button>
+            </Dialog.Close>
+          </Dialog.Footer>
+        </Dialog.Content>
+      </Dialog>
+    )
+  },
+}
+
+/**
+ * Control `open` to close the dialog when the form submits.
+ */
+export const Form: Story = {
+  name: 'With a form',
+  tags: ['docs'],
+  render: function Form() {
+    const [open, setOpen] = useState(false)
+    return (
+      <Dialog open={open} onOpenChange={setOpen}>
+        <Dialog.Trigger asChild>
+          <Button>Rename route</Button>
+        </Dialog.Trigger>
+        <Dialog.Content title="Rename route">
+          <form
+            onSubmit={(event) => {
+              event.preventDefault()
+              setOpen(false)
+            }}
+          >
+            <Stack gap={5}>
+              <TextField label="Route name" defaultValue="Morning commute" />
+              <Dialog.Footer>
+                <Dialog.Close asChild>
+                  <Button variant="ghost" tone="neutral">
+                    Cancel
+                  </Button>
+                </Dialog.Close>
+                <Button type="submit">Save name</Button>
+              </Dialog.Footer>
+            </Stack>
+          </form>
+        </Dialog.Content>
+      </Dialog>
+    )
+  },
 }

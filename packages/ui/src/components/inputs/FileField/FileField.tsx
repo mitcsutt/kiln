@@ -7,6 +7,13 @@ export interface FileFieldProps
   extends FieldLabelProps, Omit<FileDropProps, 'invalid' | keyof FieldLabelProps> {}
 
 /**
+ * A labelled file picker with drag and drop, constraints and a preview.
+ *
+ * @remarks
+ * `FileField` is a {@link Field | Field} around a {@link FileDrop | FileDrop}. The label names the
+ * native file input.
+ *
+ * @privateRemarks
  * Label + FileDrop + description + warning + error. The label names the native file
  * input (the ref goes there too); `className`/`style` go to the field wrapper.
  * `onReject` reports files that weren't added — turn them into the field's error.

@@ -27,6 +27,13 @@ export interface DividerProps
 }
 
 /**
+ * A hairline rule between groups of content, optionally labelled, horizontal or vertical.
+ *
+ * @remarks
+ * `Divider` separates groups. For a rule between every item of a list, use `Stack dividers`
+ * instead, which spaces the rules for you.
+ *
+ * @privateRemarks
  * A hairline rule between groups of content. Prefer `Stack dividers` for rules
  * between every item of a list.
  *

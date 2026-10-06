@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { CodeBlock } from './CodeBlock'
+import { CodeBlock, Stack } from '@mitcsutt/kiln-ui'
 
 const invalidate = `import type { QueryClient } from '@tanstack/react-query'
 import { keys } from './keys'
@@ -59,5 +59,36 @@ export const Wrapped: Story = {
     showLineNumbers: false,
     highlightLines: undefined,
     wrap: true,
+  },
+}
+
+const SOURCE = `import '@mitcsutt/kiln-ui/styles.css'
+import { ThemeProvider } from '@mitcsutt/kiln-ui'
+
+export function App({ children }) {
+  return <ThemeProvider theme="paper">{children}</ThemeProvider>
+}`
+
+/**
+ * `copyable` (on by default) adds a copy button that announces whether it worked.
+ * `showLineNumbers` adds a gutter that isn't copied with a selection, `highlightLines` marks lines
+ * with the theme's highlight, and `wrap` wraps long lines instead of scrolling. A scrolling block
+ * is focusable, so keyboard users can scroll it.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Stack gap={4}>
+        <CodeBlock
+          title="src/App.tsx"
+          language="TSX"
+          code={SOURCE}
+          highlightLines={[5]}
+          showLineNumbers
+        />
+        <CodeBlock language="Shell" code="pnpm add @mitcsutt/kiln-ui" />
+      </Stack>
+    )
   },
 }

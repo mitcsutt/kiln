@@ -284,7 +284,7 @@ Dropped from the ranking: v0, Lovable and Bolt (page generators with high slop r
 
 ## How Kiln applies this
 
-The first Kiln themes matched the second-order tells above, so [ADR 0028](../adr/0028-theme-family-without-ai-tells.md) reworked two of them and added two. The fix this research supports is a specific real-world subject for each theme, applied consistently, with a one-line reason for every choice written next to the value in the stylesheet.
+The first Kiln themes matched the second-order tells above, so [ADR 0030](../adr/0030-theme-family-without-ai-tells.md) reworked two of them and added two. The fix this research supports is a specific real-world subject for each theme, applied consistently, with a one-line reason for every choice written next to the value in the stylesheet.
 
 | Theme        | Old tell matched                                                            | New subject                                                          | Fonts                                                      | Colour source                                                                                                                  |
 | ------------ | --------------------------------------------------------------------------- | -------------------------------------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |

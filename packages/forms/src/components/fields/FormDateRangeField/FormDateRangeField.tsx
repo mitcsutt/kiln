@@ -16,6 +16,26 @@ export interface FormDateRangeFieldProps
 const EMPTY: DateRangeValue = { start: '', end: '' }
 
 /**
+ * Two ISO dates bound to a `{ start, end }` path.
+ *
+ * @remarks
+ * It renders kiln-ui's {@link DateRangeField | DateRangeField}.
+ *
+ * @example In a schema
+ * ```json
+ * {
+ *   "kind": "dateRange",
+ *   "name": "trip",
+ *   "label": "Travel dates",
+ *   "startLabel": "First day",
+ *   "endLabel": "Last day"
+ * }
+ * ```
+ *
+ * @value `{ start: string; end: string }`
+ * @empty `{ start: '', end: '' }`
+ *
+ * @privateRemarks
  * Two ISO dates bound to a `{ start, end }` path (§7.2 `dateRange`). Empty is `{ start: '', end:
  * '' }`. View mode formats each side with `formatDate` and joins them with an en dash.
  */

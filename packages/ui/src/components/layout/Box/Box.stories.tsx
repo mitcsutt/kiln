@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Stack } from '#components/layout/Stack'
+import { Box, Stack, Text } from '@mitcsutt/kiln-ui'
 import { Inline } from '#components/layout/Inline'
 import { Body, Figure, Label, Title } from '#components/layout/_story/StoryKit'
-import { Box } from './Box'
 
 const meta = {
   title: 'UI/Layout/Box',
@@ -67,4 +66,26 @@ export const AxisPadding: Story = {
       <Body size="sm">Next invoice due: Thursday 2 October · $3,725.00</Body>
     </Box>
   ),
+}
+
+/**
+ * `surface="inverse"` flips the colour roles inside, like an inverse `Section`.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Stack gap={4}>
+        <Box padding={{ base: 4, md: 5 }} surface="sunken" radius="surface">
+          <Text>Sunken: a well for secondary content.</Text>
+        </Box>
+        <Box padding={5} border radius="surface">
+          <Text>Bordered: a hairline frame.</Text>
+        </Box>
+        <Box padding={5} surface="inverse" radius="surface">
+          <Text>Inverse: colour roles flip inside.</Text>
+        </Box>
+      </Stack>
+    )
+  },
 }

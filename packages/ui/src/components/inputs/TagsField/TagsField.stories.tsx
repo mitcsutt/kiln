@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { TagsField } from '@mitcsutt/kiln-ui'
 import { Stack } from '#components/layout/Stack'
-import { TagsField } from './TagsField'
 
 const meta = {
   title: 'UI/Inputs/TagsField',
@@ -34,4 +34,22 @@ export const WithError: Story = {
 
 export const Horizontal: Story = {
   args: { layout: 'horizontal' },
+}
+
+/**
+ * Say how to add a tag in the description: not everyone knows Enter or a comma works.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <TagsField
+        label="Labels"
+        description="Press Enter or a comma to add one"
+        defaultValue={['commute']}
+        maxTags={5}
+        normalise="lowercase"
+      />
+    )
+  },
 }

@@ -113,7 +113,7 @@ Call `useFieldBinding` with the field's props, a runtime guard (`accepts.string`
 declare function useFieldBinding<V>(options: FieldBindingOptions<V>): FieldBinding<V>
 ```
 
-THE binding hook (§4): ids, error visibility + normalisation, warnings, disabled/readOnly/excluded
+THE binding hook: ids, error visibility + normalisation, warnings, disabled/readOnly/excluded
 semantics, focus registration and view mode, for the field in context.
 
 Option fields map their values through `useOptionMapping`, so numbers and booleans survive the string-only controls underneath.

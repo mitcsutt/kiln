@@ -8,6 +8,18 @@ Source: https://kiln.mitchellsutton.com/docs/ui/layout/container
 
 `Container` sets a maximum width and centres its content. The gutter sits _outside_ the width, so `width="text"` is a true reading measure at any screen size.
 
+| `width`   | Max width | For                                 |
+| --------- | --------- | ----------------------------------- |
+| `narrow`  | 32rem     | sign-in, short forms, confirmations |
+| `text`    | 42rem     | articles and long reading           |
+| `content` | 68rem     | most pages (the default)            |
+| `wide`    | 84rem     | dashboards and wide tables          |
+| `full`    | 100%      | edge to edge, inside the gutter     |
+
+Pass `gutter={false}` when the parent already pads its content.
+
+The `narrow`, `text` and `content` widths, one above the other.
+
 ```tsx
 import { Container, Stack, Text } from '@mitcsutt/kiln-ui'
 
@@ -26,25 +38,15 @@ export function Usage() {
 }
 ```
 
-| `width`   | Max width | For                                 |
-| --------- | --------- | ----------------------------------- |
-| `narrow`  | 32rem     | sign-in, short forms, confirmations |
-| `text`    | 42rem     | articles and long reading           |
-| `content` | 68rem     | most pages (the default)            |
-| `wide`    | 84rem     | dashboards and wide tables          |
-| `full`    | 100%      | edge to edge, inside the gutter     |
-
-Pass `gutter={false}` when the parent already pads its content.
-
 ## API
 
 `ContainerProps`:
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `width` | `'content' \| 'narrow' \| 'text' \| 'wide' \| 'full'` |  | Maximum content width: `narrow` 32rem · `text` 42rem (prose measure) · `content` 68rem (default) · `wide` 84rem · `full` (no maximum). |
+| `width` | `'content' \| 'narrow' \| 'text' \| 'wide' \| 'full'` | `content` | Maximum content width: `narrow` 32rem · `text` 42rem (prose measure) · `content` 68rem (default) · `wide` 84rem · `full` (no maximum). |
 | `gutter` | `boolean` | `true` | Keep the fluid page gutter on either side. Default `true`. |
-| `as` | `'div' \| 'section' \| 'article' \| 'header' \| 'footer' \| 'main' \| 'nav'` |  |  |
+| `as` | `'div' \| 'section' \| 'article' \| 'header' \| 'footer' \| 'main' \| 'nav'` | `div` |  |
 | `hideBelow` | `'sm' \| 'md' \| 'lg' \| 'xl'` |  | Hide below this breakpoint (e.g. `md` → hidden on phones, shown from 48em). |
 | `hideAbove` | `'sm' \| 'md' \| 'lg' \| 'xl'` |  | Hide from this breakpoint up (e.g. `md` → shown on phones only). |
 

@@ -25,6 +25,20 @@ function FormRowsInner({ dividers = true, gap = 4, children }: FormRowsProps) {
   )
 }
 
+/**
+ * Label-left rows. Every field inside lays its label and control out in columns, with no per-field
+ * setting.
+ *
+ * @remarks
+ * `FormRows` turns every field inside into a row: label and description in a fixed column, the
+ * control beside them, and a rule between rows. Below `sm` each row stacks. It's the editor-panel
+ * settings row.
+ *
+ * @example In a schema
+ * ```json
+ * { "layout": "rows", "children": [{ "kind": "text", "name": "name", "label": "Line name" }] }
+ * ```
+ */
 export function FormRows(props: FormRowsProps) {
   return (
     <FieldViewListBoundary>

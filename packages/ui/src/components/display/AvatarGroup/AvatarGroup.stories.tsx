@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Avatar } from '#components/display/Avatar'
+import { Avatar, AvatarGroup, Inline, Text } from '@mitcsutt/kiln-ui'
 import { Stack } from '#components/layout/Stack'
-import { AvatarGroup } from './AvatarGroup'
 
 const portrait = new URL('../Avatar/portrait.story.svg', import.meta.url).href
 const MEMBERS = [
@@ -46,4 +45,34 @@ export const Sizes: Story = {
       ))}
     </Stack>
   ),
+}
+
+const CREW = [
+  'Ines Varga',
+  'Tomasz Okoro',
+  'Priya Halvorsen',
+  'Joon Park',
+  'Amara Lindqvist',
+  'Felix Duarte',
+]
+
+/**
+ * Six crew members past a `max` of four: the rest become a count.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <Inline gap={3}>
+        <AvatarGroup max={4} aria-label="Crew on the 07:10 sailing">
+          {CREW.map((name) => (
+            <Avatar key={name} name={name} />
+          ))}
+        </AvatarGroup>
+        <Text size="sm" tone="muted">
+          6 crew on the 07:10 sailing
+        </Text>
+      </Inline>
+    )
+  },
 }

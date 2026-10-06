@@ -8,7 +8,16 @@ export interface SpinnerProps extends HTMLAttributes<HTMLSpanElement> {
   label?: string | null
 }
 
-/** Indeterminate progress. Three bars that fill in turn — not the stock rotating ring. */
+/**
+ * Indeterminate progress. Three bars that fill in turn, not the stock spinning ring.
+ *
+ * @remarks
+ * `Spinner` says something is happening without saying how long it'll take. It's three bars that
+ * fill in turn, and it holds still under reduced motion.
+ *
+ * @privateRemarks
+ * Indeterminate progress. Three bars that fill in turn — not the stock rotating ring.
+ */
 export const Spinner = forwardRef<HTMLSpanElement, SpinnerProps>(function Spinner(
   { size = 'inherit', label = 'Loading', className, ...rest },
   ref,

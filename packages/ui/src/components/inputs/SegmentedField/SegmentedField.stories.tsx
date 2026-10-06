@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { SegmentedField } from './SegmentedField'
+import { SegmentedField } from '@mitcsutt/kiln-ui'
 
 const periods = [
   { value: 'month', label: 'Month' },
@@ -31,3 +31,24 @@ export const Horizontal: Story = { args: { layout: 'horizontal' } }
 export const WithError: Story = { args: { error: 'Pick a period to compare against' } }
 
 export const ReadOnly: Story = { args: { readOnly: true, defaultValue: 'quarter' } }
+
+/**
+ * `name` adds a hidden input for native form submission. `fullWidth` stretches the segments across
+ * the field.
+ */
+export const Usage: Story = {
+  tags: ['docs'],
+  render: function Usage() {
+    return (
+      <SegmentedField
+        label="Journey"
+        defaultValue="return"
+        options={[
+          { value: 'single', label: 'Single' },
+          { value: 'return', label: 'Return' },
+          { value: 'open', label: 'Open return' },
+        ]}
+      />
+    )
+  },
+}

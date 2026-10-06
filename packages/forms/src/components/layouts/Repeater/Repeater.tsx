@@ -564,6 +564,25 @@ function RepeaterEdit({ props }: { props: LooseProps }) {
 }
 
 /**
+ * A list of repeated groups of fields, as a list, cards or a table, with add, remove and reorder.
+ *
+ * @remarks
+ * `Repeater` edits an array of objects: passengers, legs of a journey, line items. Each item gets
+ * typed shorthand fields relative to itself (`item.fields.TextField name="name"`), and the
+ * repeater handles adding, removing and moving items, focus after each change, and announcing it.
+ *
+ * @example In a schema
+ * ```json
+ * {
+ *   "layout": "repeater",
+ *   "name": "passengers",
+ *   "label": "Passengers",
+ *   "newItem": { "name": "", "age": null },
+ *   "item": [{ "kind": "text", "name": "name", "label": "Name" }]
+ * }
+ * ```
+ *
+ * @privateRemarks
  * A list of repeated items (§9.9): `list` (fieldsets), `cards` or `table`. The container is
  * the form's array field (`mode="array"`, re-renders only on structural change); items are
  * keyed by index. Add / Remove / Move move focus deterministically and are announced politely;

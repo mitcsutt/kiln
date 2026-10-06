@@ -30,6 +30,22 @@ export interface CardProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 /**
+ * A self-contained object, like a route, a ticket or a project. Use it sparingly; most content
+ * reads better without a box.
+ *
+ * @remarks
+ * A `Card` frames one object you could pick up, open or drag. Before reaching for one, try a
+ * `List`, a `Table` or a plain section: three identical cards in a row is the most generic layout
+ * there is, and most content is better as a document than as a set of boxes.
+ *
+ * ## Slots
+ *
+ * `Card.Media`, `Card.Header` (with `Card.Title` and `Card.Meta`), `Card.Description`, `Card.Body`
+ * and `Card.Footer`. Use only the ones the object needs. `variant` is `outline` (the default, a
+ * hairline), `raised` (the theme's surface shadow) or `plain` (a fill and no edge). `padding`
+ * takes a space step.
+ *
+ * @privateRemarks
  * A self-contained object: a project, a release, a plan summary. Use sparingly —
  * most content reads better as a List, Table or plain section (DESIGN §2).
  *

@@ -2,7 +2,7 @@
 '@mitcsutt/kiln-ui': minor
 ---
 
-Add two theme presets, rework two others, and enforce the second-order AI design tells with a test. Each new or reworked theme takes its subject from a real object or standard, and every colour, face, radius and easing has a one-line reason in its stylesheet. See [ADR 0028](https://github.com/mitcsutt/kiln/blob/main/docs/adr/0028-theme-family-without-ai-tells.md).
+Add two theme presets, rework two others, and enforce the second-order AI design tells with a test. Each new or reworked theme takes its subject from a real object or standard, and every colour, face, radius and easing has a one-line reason in its stylesheet. See [ADR 0030](https://github.com/mitcsutt/kiln/blob/main/docs/adr/0030-theme-family-without-ai-tells.md).
 
 - New preset `flightdeck`: a glass-cockpit display in B612 and B612 Mono, dark-first. Cyan marks what the pilot sets and acts on, the selected line is a neutral reverse-video box, and green, amber and red are status. Import `@mitcsutt/kiln-ui/themes/flightdeck.css`.
 - New preset `riso`: a two-drum risograph zine in fluorescent pink and blue, with screen tints instead of borders, Shantell Sans, and a hard offset only on floating layers. Import `@mitcsutt/kiln-ui/themes/riso.css`.

@@ -417,6 +417,25 @@ export function FormStep({ scopeNames, ...props }: FormStepProps) {
   )
 }
 
+/**
+ * A form split into steps, validated one step at a time, with focus and announcements handled.
+ *
+ * @remarks
+ * `FormSteps` shows a {@link Stepper | Stepper} and one step at a time, with Back and Next.
+ * **Next** validates the current step's fields; if any are invalid it stays, shows their errors
+ * and focuses the first. Otherwise it moves on, focuses the new step's heading and announces "Step
+ * 2 of 3". On the last step, Next submits the form. The final submit validates every step, and an
+ * error in an earlier step takes you back to it.
+ *
+ * @example In a schema
+ * ```json
+ * {
+ *   "layout": "steps",
+ *   "label": "Booking",
+ *   "children": [{ "layout": "step", "value": "route", "title": "Route", "children": [] }]
+ * }
+ * ```
+ */
 function FormStepsRoot(props: FormStepsProps) {
   return (
     <FieldViewListBoundary>

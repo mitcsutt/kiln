@@ -28,6 +28,21 @@ function joinIds(...ids: (string | false | undefined)[]): string | undefined {
 }
 
 /**
+ * Submits the form. Never disabled, so everyone can reach it and hear why it's waiting.
+ *
+ * @remarks
+ * `SubmitButton` is a `Button` with `type="submit"` that knows the form's state. It shows a
+ * spinner while submitting. It's **never `disabled`**: when it can't act (while submitting, after
+ * a locking submit, or with `requireChanges` before anything has changed) it's `aria-disabled`,
+ * ignores presses, and carries a visually hidden reason. A disabled button can't be focused, so
+ * keyboard and screen reader users would never find out why they can't go on.
+ *
+ * @example In a schema
+ * ```json
+ * { "content": "submit", "label": "Book ticket" }
+ * ```
+ *
+ * @privateRemarks
  * The submit button. **Never `disabled`** (§11.6): while submitting, locked, or blocked by
  * `requireChanges` it is `aria-disabled` and ignores clicks; an invalid form still submits so
  * errors show and focus moves.
