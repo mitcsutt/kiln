@@ -25,7 +25,10 @@ export interface NavLinksProps extends HTMLAttributes<HTMLElement>, VisibilityPr
    * vertical (vertical items are already a full control tall).
    */
   gap?: Space
-  /** `md` (default) for page headers; `sm` for dense toolbars, footers and sub-navs. */
+  /**
+   * `md` (default), body-size labels for page headers; `sm`, one step smaller, for sidebars,
+   * dense toolbars, footers and sub-navs. Neither drops to the caption steps.
+   */
   size?: NavLinksSize
 }
 
