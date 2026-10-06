@@ -57,6 +57,23 @@ describe('one tree for the docs and Storybook', () => {
     expect(sidebar).toEqual(tree)
   })
 
+  // ADR 0031: each package is a Fumadocs root, so the sidebar and the pager stay inside it.
+  it('makes each top-level folder a section root', () => {
+    const top = (
+      JSON.parse(readFileSync(join(contentDir, 'meta.json'), 'utf8')) as { pages: string[] }
+    ).pages.filter((slug) => existsSync(join(contentDir, slug, 'meta.json')))
+    const roots = top.filter(
+      (slug) =>
+        (
+          JSON.parse(readFileSync(join(contentDir, slug, 'meta.json'), 'utf8')) as {
+            root?: boolean
+          }
+        ).root === true,
+    )
+    expect(top).toEqual(['ui', 'forms', 'tooling'])
+    expect(roots).toEqual(top)
+  })
+
   it('nests every docs page under UI, Forms or Tooling', () => {
     const stray = pages
       .map((page) => page.path)

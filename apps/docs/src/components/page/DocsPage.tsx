@@ -1,8 +1,7 @@
-import { getBreadcrumbItems } from 'fumadocs-core/breadcrumb'
 import type * as PageTree from 'fumadocs-core/page-tree'
-import { findNeighbour } from 'fumadocs-core/page-tree'
 import type { ReactNode } from 'react'
 import { nodeText } from '@/lib/nodeText'
+import { crumbsOf, neighboursOf } from '@/lib/pageTree'
 import type { DocsPageType } from '@/lib/source'
 import { PageFrame } from './PageFrame'
 
@@ -16,10 +15,8 @@ export function DocsPage({
   tree: PageTree.Root
   children: ReactNode
 }) {
-  const crumbs = getBreadcrumbItems(page.url, tree, { includeRoot: false })
-    .map((item) => nodeText(item.name))
-    .filter(Boolean)
-  const { previous, next } = findNeighbour(tree, page.url)
+  const crumbs = crumbsOf(tree, page.url)
+  const { previous, next } = neighboursOf(tree, page.url)
   const toc = page.data.toc
     .filter((item) => item.depth <= 3)
     .map((item) => ({ url: item.url, depth: item.depth, title: item.title }))

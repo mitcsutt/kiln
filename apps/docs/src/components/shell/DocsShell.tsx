@@ -28,6 +28,20 @@ const SECTIONS = [
 
 const GITHUB = 'https://github.com/mitcsutt/kiln'
 
+/** The section switcher: in the topbar from `md`, and at the top of the phone sheet. */
+function SectionLinks({ hideBelow }: { hideBelow?: 'md' }) {
+  const pathname = usePathname()
+  return (
+    <NavLinks label="Sections" size="sm" hideBelow={hideBelow}>
+      {SECTIONS.map((section) => (
+        <NavLinks.Item key={section.href} asChild active={pathname.startsWith(section.href)}>
+          <NextLink href={section.href}>{section.label}</NextLink>
+        </NavLinks.Item>
+      ))}
+    </NavLinks>
+  )
+}
+
 function MobileNav({ tree }: { tree: PageTree.Root }) {
   const [open, setOpen] = useState(false)
   const pathname = usePathname()
@@ -43,6 +57,9 @@ function MobileNav({ tree }: { tree: PageTree.Root }) {
         <IconButton label="Open navigation" icon={<MenuIcon />} variant="ghost" hideAbove="lg" />
       </Sheet.Trigger>
       <Sheet.Content side="left" title="Kiln docs" size="sm">
+        <div className={styles.sheetSections}>
+          <SectionLinks />
+        </div>
         <SidebarNav tree={tree} />
       </Sheet.Content>
     </Sheet>
@@ -50,7 +67,6 @@ function MobileNav({ tree }: { tree: PageTree.Root }) {
 }
 
 export function DocsShell({ tree, children }: { tree?: PageTree.Root; children: ReactNode }) {
-  const pathname = usePathname()
   return (
     <AppShell navBreakpoint="lg" className={styles.shell}>
       <AppShell.Header>
@@ -59,17 +75,7 @@ export function DocsShell({ tree, children }: { tree?: PageTree.Root; children: 
             <Inline gap={5} wrap={false}>
               {tree ? <MobileNav tree={tree} /> : null}
               <Wordmark />
-              <NavLinks label="Sections" size="sm" hideBelow="md">
-                {SECTIONS.map((section) => (
-                  <NavLinks.Item
-                    key={section.href}
-                    asChild
-                    active={pathname.startsWith(section.href)}
-                  >
-                    <NextLink href={section.href}>{section.label}</NextLink>
-                  </NavLinks.Item>
-                ))}
-              </NavLinks>
+              <SectionLinks hideBelow="md" />
             </Inline>
             <Inline gap={3} wrap={false}>
               <Search />

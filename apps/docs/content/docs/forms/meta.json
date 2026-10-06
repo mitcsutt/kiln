@@ -1,4 +1,6 @@
 {
   "title": "Forms",
+  "description": "Typed forms on TanStack Form, as components or JSON.",
+  "root": true,
   "pages": ["index", "getting-started", "fields", "layouts", "hooks", "schema"]
 }

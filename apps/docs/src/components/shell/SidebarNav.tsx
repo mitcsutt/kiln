@@ -1,24 +1,17 @@
 'use client'
 
-import { Accordion, NavLinks, Stack, Text } from '@mitcsutt/kiln-ui'
+import { Accordion, Link, NavLinks, Stack, Text } from '@mitcsutt/kiln-ui'
 import type * as PageTree from 'fumadocs-core/page-tree'
 import NextLink from 'next/link'
 import { usePathname } from 'next/navigation'
 import { nodeText } from '@/lib/nodeText'
+import { containsUrl, sectionOf, sections } from '@/lib/pageTree'
 import styles from './SidebarNav.module.css'
 
 function nodeKey(node: PageTree.Node): string {
   if (node.type === 'page') return node.url
   if (node.type === 'folder') return node.$id ?? nodeText(node.name)
   return node.$id ?? 'separator'
-}
-
-function containsUrl(node: PageTree.Node, url: string): boolean {
-  if (node.type === 'page') return node.url === url
-  if (node.type === 'folder') {
-    return node.index?.url === url || node.children.some((child) => containsUrl(child, url))
-  }
-  return false
 }
 
 interface PageLinksProps {
@@ -86,7 +79,7 @@ function Group({
   )
 }
 
-/** A top-level folder (UI, Forms, Tooling): a label, its own pages, then its groups. */
+/** A section (UI, Forms, Tooling): its own pages, then its groups. The topbar names it. */
 function Section({ folder, pathname }: { folder: PageTree.Folder; pathname: string }) {
   const pages: PageTree.Node[] = [
     ...(folder.index ? [folder.index] : []),
@@ -98,9 +91,6 @@ function Section({ folder, pathname }: { folder: PageTree.Folder; pathname: stri
   const open = groups.filter((group) => containsUrl(group, pathname)).map(nodeKey)
   return (
     <Stack gap={2}>
-      <Text as="p" size="sm" weight="strong" className={styles.sectionLabel}>
-        {folder.name}
-      </Text>
       {pages.length ? (
         <PageLinks nodes={pages} pathname={pathname} label={nodeText(folder.name)} />
       ) : null}
@@ -121,18 +111,47 @@ function Section({ folder, pathname }: { folder: PageTree.Folder; pathname: stri
   )
 }
 
+/** Outside a section (the Introduction): the top-level pages, then each section with its meta.json description. */
+function Overview({ tree, pathname }: { tree: PageTree.Root; pathname: string }) {
+  const topPages = tree.children.filter((node) => node.type === 'page')
+  return (
+    <Stack gap={6}>
+      {topPages.length ? <PageLinks nodes={topPages} pathname={pathname} label="Kiln" /> : null}
+      <nav aria-label="Packages">
+        <Stack as="ul" gap={4} role="list" className={styles.sectionList}>
+          {sections(tree).map((section) => (
+            <li key={nodeKey(section)}>
+              <Stack gap={1}>
+                <Text as="p" size="md" weight="strong" className={styles.sectionLabel}>
+                  <Link asChild underline="hover">
+                    <NextLink href={section.index?.url ?? '/docs'}>{section.name}</NextLink>
+                  </Link>
+                </Text>
+                {section.description ? (
+                  <Text as="p" size="sm" tone="muted">
+                    {section.description}
+                  </Text>
+                ) : null}
+              </Stack>
+            </li>
+          ))}
+        </Stack>
+      </nav>
+    </Stack>
+  )
+}
+
+/** The sidebar shows one section at a time: the one holding the current page (ADR 0031). */
 export function SidebarNav({ tree }: { tree: PageTree.Root }) {
   const pathname = usePathname()
-  const topPages = tree.children.filter((node) => node.type === 'page')
-  const sections = tree.children.filter((node): node is PageTree.Folder => node.type === 'folder')
+  const section = sectionOf(tree, pathname)
   return (
     <div className={styles.nav}>
-      <Stack gap={6}>
-        {topPages.length ? <PageLinks nodes={topPages} pathname={pathname} label="Kiln" /> : null}
-        {sections.map((section) => (
-          <Section key={nodeKey(section)} folder={section} pathname={pathname} />
-        ))}
-      </Stack>
+      {section ? (
+        <Section folder={section} pathname={pathname} />
+      ) : (
+        <Overview tree={tree} pathname={pathname} />
+      )}
     </div>
   )
 }

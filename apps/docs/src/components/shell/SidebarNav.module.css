@@ -10,6 +10,12 @@
   text-transform: var(--heading-transform);
 }
 
+.sectionList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
 .groups {
   margin-inline-start: calc(var(--space-1) * -1);
 }

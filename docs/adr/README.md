@@ -34,5 +34,6 @@ Each record captures one decision: the context, what was decided, and what follo
 | [0028](0028-docs-stories.md)                       | Docs examples are stories tagged `docs`, opted in one by one | Accepted                           |
 | [0029](0029-generated-reference-pages.md)          | Reference pages are generated from TSDoc and stories         | Accepted                           |
 | [0030](0030-theme-family-without-ai-tells.md)      | New themes without the second-order AI tells                 | Accepted                           |
+| [0031](0031-docs-sections.md)                      | The docs sidebar shows one package at a time                 | Accepted                           |
 
 New records use the next number and the same headings: Status, Context, Decision, Consequences.

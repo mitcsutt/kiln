@@ -1,5 +1,7 @@
 {
   "title": "UI",
+  "description": "Components, layout and themes: one look, set by a theme.",
+  "root": true,
   "pages": [
     "index",
     "foundations",

@@ -1,4 +1,6 @@
 {
   "title": "Tooling",
+  "description": "The ESLint, Prettier and TypeScript configs.",
+  "root": true,
   "pages": ["index", "eslint-config", "prettier-config", "tsconfig"]
 }
