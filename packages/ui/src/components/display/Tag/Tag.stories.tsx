@@ -140,3 +140,26 @@ export const Usage: Story = {
     )
   },
 }
+
+/** `size="sm"` for a dense list of many tags, like every candidate for an open slot. */
+export const Small: Story = {
+  tags: ['docs'],
+  render: function Small() {
+    return (
+      <TagList>
+        {[
+          'Kelso Bay',
+          'North Point',
+          'Harbour Square',
+          'Mill Lane',
+          'Station Road',
+          'The Quay',
+        ].map((stop) => (
+          <Tag key={stop} size="sm">
+            {stop}
+          </Tag>
+        ))}
+      </TagList>
+    )
+  },
+}

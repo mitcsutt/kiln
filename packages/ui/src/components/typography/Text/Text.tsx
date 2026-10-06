@@ -5,7 +5,15 @@ import styles from './Text.module.css'
 
 export type TextSize = '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 export type TextTone =
-  'default' | 'muted' | 'subtle' | 'accent' | 'positive' | 'caution' | 'critical' | 'inverse'
+  | 'default'
+  | 'muted'
+  | 'subtle'
+  | 'accent'
+  | 'positive'
+  | 'caution'
+  | 'critical'
+  | 'inverse'
+  | 'highlight'
 export type TextWeight = 'regular' | 'medium' | 'strong'
 export type TextAlign = 'start' | 'center' | 'end'
 /** Line-length cap from the width tokens: `narrow` 32rem · `text` 42rem · `content` 68rem. */
@@ -15,7 +23,10 @@ export type TextElement = 'p' | 'span' | 'div' | 'label' | 'strong' | 'em' | 'sm
 export interface TextProps extends HTMLAttributes<HTMLElement> {
   /** Step on the type scale. Omit to inherit the surrounding size. Responsive. */
   size?: Responsive<TextSize>
-  /** Colour role. Omit to inherit. Status tones use the AA-safe `-text` variants. */
+  /**
+   * Colour role. Omit to inherit. Status tones use the AA-safe `-text` variants. `highlight`
+   * sets the text on the theme's highlight, like a marker pen.
+   */
   tone?: TextTone
   /** Omit to inherit (so `as="strong"` stays bold). */
   weight?: TextWeight

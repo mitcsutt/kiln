@@ -53,4 +53,9 @@ describe('TagList', () => {
     expect(screen.getByRole('list', { name: 'Stack' })).toBeInTheDocument()
     expect(screen.getAllByRole('listitem')).toHaveLength(2)
   })
+
+  it('takes a small size for dense lists', () => {
+    render(<Tag size="sm">Kelso Bay</Tag>)
+    expect(screen.getByText('Kelso Bay')).toHaveAttribute('data-size', 'sm')
+  })
 })

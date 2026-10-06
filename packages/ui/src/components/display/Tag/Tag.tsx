@@ -6,10 +6,13 @@ import styles from './Tag.module.css'
 
 /** Categorical colour slot → `--color-cat-N`. */
 export type TagColor = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8
+export type TagSize = 'sm' | 'md'
 
 export interface TagProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'color'> {
   /** A categorical colour (category, person, topic). Omit for a neutral tag. */
   color?: TagColor
+  /** `md` (default), or `sm` for dense lists of many tags. */
+  size?: TagSize
   /** Renders a remove button after the label. Not rendered when `asChild`. */
   onRemove?: (event: MouseEvent<HTMLButtonElement>) => void
   /** Accessible name for the remove button. Default `Remove <label>` for text labels. */
@@ -30,7 +33,7 @@ export interface TagProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'color'>
  * for status. Group several in a `TagList`.
  */
 export const Tag = forwardRef<HTMLSpanElement, TagProps>(function Tag(
-  { color, onRemove, removeLabel, asChild = false, className, children, ...rest },
+  { color, size = 'md', onRemove, removeLabel, asChild = false, className, children, ...rest },
   ref,
 ) {
   const Comp = asChild ? Slot.Root : 'span'
@@ -41,6 +44,7 @@ export const Tag = forwardRef<HTMLSpanElement, TagProps>(function Tag(
       ref={ref}
       className={cx(styles.tag, className)}
       data-color={color}
+      data-size={size}
       data-removable={canRemove || undefined}
       {...rest}
     >

@@ -302,7 +302,7 @@ export type {
 export { Badge } from './components/display/Badge'
 export type { BadgeProps, BadgeVariant, BadgeSize } from './components/display/Badge'
 export { Tag, TagList } from './components/display/Tag'
-export type { TagProps, TagColor, TagListProps } from './components/display/Tag'
+export type { TagProps, TagColor, TagSize, TagListProps } from './components/display/Tag'
 export { Avatar, getInitials, avatarColor } from './components/display/Avatar'
 export type { AvatarProps, AvatarSize, AvatarColor } from './components/display/Avatar'
 export { AvatarGroup } from './components/display/AvatarGroup'

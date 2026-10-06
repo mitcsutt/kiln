@@ -143,3 +143,26 @@ export const Format: Story = {
     )
   },
 }
+
+/**
+ * `annotation` sets a small figure after the main one, part of the same reading: a shootout
+ * after a drawn score, games played beside a total. `tone="highlight"` sets one figure on the
+ * theme's highlight, like a marker pen, for the figure that's "you" or first.
+ */
+export const AnnotationAndHighlight: Story = {
+  name: 'Annotation and highlight',
+  tags: ['docs'],
+  render: function AnnotationAndHighlight() {
+    return (
+      <Stack gap={3}>
+        <Text>
+          Kelso Bay <Numeral value={1} annotation="(4)" /> – <Numeral value={1} annotation="(3)" />{' '}
+          North Point
+        </Text>
+        <Text>
+          Top of the table: <Numeral value={42} tone="highlight" suffix=" pts" />
+        </Text>
+      </Stack>
+    )
+  },
+}

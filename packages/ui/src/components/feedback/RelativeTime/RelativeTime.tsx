@@ -16,6 +16,13 @@ export interface RelativeTimeProps extends Omit<
   updateInterval?: number
   /** Text before the time, e.g. "Updated". A space is added for you. */
   prefix?: ReactNode
+  /**
+   * Seconds either side of now that read as `justNowLabel` instead of `Intl`'s "now" or
+   * "in 30 sec". Default `0`, which leaves the wording to `Intl`.
+   */
+  justNowWithin?: number
+  /** What a moment within `justNowWithin` reads as. Default "just now". */
+  justNowLabel?: string
 }
 
 /**
@@ -42,6 +49,8 @@ export const RelativeTime = forwardRef<HTMLTimeElement, RelativeTimeProps>(funct
     format = 'short',
     updateInterval = 30_000,
     prefix,
+    justNowWithin = 0,
+    justNowLabel = 'just now',
     title,
     className,
     ...rest
@@ -64,7 +73,13 @@ export const RelativeTime = forwardRef<HTMLTimeElement, RelativeTimeProps>(funct
   const d = toDate(date)
   const valid = !Number.isNaN(d.getTime())
   const absolute = valid ? formatAbsoluteTime(d, locale) : ''
-  const text = !valid ? '' : now === null ? absolute : formatRelativeTime(d, now, locale, format)
+  const text = !valid
+    ? ''
+    : now === null
+      ? absolute
+      : Math.abs(d.getTime() - now) < justNowWithin * 1000
+        ? justNowLabel
+        : formatRelativeTime(d, now, locale, format)
 
   return (
     <time
