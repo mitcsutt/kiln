@@ -57,7 +57,7 @@ Strong themes take one idea from their subject and apply it everywhere, with eve
 
 If a choice can't be justified by the idea, leave it at the default. Write the one-line reason for each choice next to its value, and if you can't, change the choice. Pick at most two families and one accent.
 
-Generated UI also converges on a second set of looks: a cream canvas with a terracotta accent, near-black with one acid accent, a mint canvas with forest green, hard-offset shadows on every card, and a short list of "distinctive" fonts. Kiln's newer themes (Paper, Ledger, Flightdeck and Riso) avoid all of them. Monograph and Fiesta predate these rules and are kept unchanged for compatibility, so don't take them as a model. Kiln's [DESIGN.md](https://github.com/mitcsutt/kiln/blob/main/DESIGN.md) lists them in full.
+Generated UI also converges on a second set of looks: a cream canvas with a terracotta accent, near-black with one acid accent, a mint canvas with forest green, hard-offset shadows on every card, and a short list of "distinctive" fonts. Kiln's newer themes (Paper, Ledger, Flightdeck and Riso) avoid all of them. Monograph and Fiesta predate these rules and keep their original design for compatibility, so don't take them as a model. Kiln's [DESIGN.md](https://github.com/mitcsutt/kiln/blob/main/DESIGN.md) lists them in full.
 
 ## 2. Copy the starter file
 

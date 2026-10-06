@@ -9,7 +9,7 @@ This document is the contract, and it is **binding** ([ADR 0012](docs/adr/0012-d
 ## 1. Principles
 
 1. **Themes are data, components are structure.** A component never knows which theme it is in. Everything visual is a token; a new theme is one CSS file and zero component changes.
-2. **One idea per theme, drawn from its subject.** Paper is an office that prints for everyone, on grey recycled stock in blue-black ink. Monograph is a scholar's monograph read under a desk lamp. Ledger is an accountant's columnar pad. Fiesta is a screen-printed festival poster. Flightdeck is a glass-cockpit display. Riso is a two-drum risograph zine. Monograph and Fiesta predate the second-order rules in §2 and are kept unchanged for compatibility. Every choice in a theme designed since has a one-line reason traced to its subject, written in the stylesheet next to the value. If you can't write the reason, the choice is wrong and it doesn't ship.
+2. **One idea per theme, drawn from its subject.** Paper is an office that prints for everyone, on grey recycled stock in blue-black ink. Monograph is a scholar's monograph read under a desk lamp. Ledger is an accountant's columnar pad. Fiesta is a screen-printed festival poster. Flightdeck is a glass-cockpit display. Riso is a two-drum risograph zine. Monograph and Fiesta predate the second-order rules in §2 and keep their original design for compatibility (Fiesta's status and categorical inks have since been tuned apart for real use). Every choice in a theme designed since has a one-line reason traced to its subject, written in the stylesheet next to the value. If you can't write the reason, the choice is wrong and it doesn't ship.
 3. **Props, not styles.** Consumers compose layout and intent through typed props (`gap={5}`, `tone="critical"`, `width="text"`). No utility classes, no inline style soup, no raw px/hex/ms at call sites. `className` exists as an escape hatch, not a workflow.
 4. **Durable by default.** Every component forwards refs, spreads native props, works with React 18 and 19, is keyboard- and screen-reader-complete, respects `prefers-reduced-motion`, and renders on the server.
 5. **Specific beats safe.** The median choice is the wrong choice (see §2).
@@ -58,7 +58,7 @@ Models that are told to avoid the tells above converge on a second set instead (
 
 The rest is review.
 
-**Legacy exemption.** Monograph and Fiesta are listed as `LEGACY` in that test and are exempt, along with the font stylesheets only they use (`fonts-monograph.css`, `fonts-fiesta.css` and `fonts-martian-mono.css`), because they ship unchanged from before these rules ([ADR 0030](https://github.com/mitcsutt/kiln/blob/main/docs/adr/0030-theme-family-without-ai-tells.md)). Monograph still has its ember accent and serif display, and Fiesta its apricot canvas and halftone. Do not treat them as precedent: a new theme gets no exemption, and a redesigned Monograph or Fiesta loses its own.
+**Legacy exemption.** Monograph and Fiesta are listed as `LEGACY` in that test and are exempt, along with the font stylesheets only they use (`fonts-monograph.css`, `fonts-fiesta.css` and `fonts-martian-mono.css`), because they keep their design from before these rules ([ADR 0030](https://github.com/mitcsutt/kiln/blob/main/docs/adr/0030-theme-family-without-ai-tells.md)). Monograph still has its ember accent and serif display, and Fiesta its apricot canvas and halftone. Do not treat them as precedent: a new theme gets no exemption, and a redesigned Monograph or Fiesta loses its own.
 
 The banned font families, from the research: the first-order defaults plus the faces models now reach for as "distinctive" escapes (several are on Anthropic's own recommended list): Inter, Roboto, Open Sans, Poppins, Montserrat, Space Grotesk, Space Mono, Geist, DM Sans, DM Serif, Manrope, Plus Jakarta Sans, Outfit, Sora, Syne, Satoshi, Cabinet Grotesk, Clash Display, General Sans, Instrument Sans, Instrument Serif, Fraunces, Playfair Display, Cormorant, Lora, EB Garamond, Newsreader, Bricolage Grotesque, IBM Plex, JetBrains Mono and Fira Code. The list goes stale as model defaults move: change the list in the test and here together.
 
@@ -219,9 +219,9 @@ _An accountant's columnar pad._ `import '@mitcsutt/kiln-ui/themes/ledger.css'`
 
 _A screen-printed festival poster and sticker album._ `import '@mitcsutt/kiln-ui/themes/fiesta.css'`
 
-Kept unchanged for compatibility. It predates the second-order rules in §2 and is exempt from them.
+Kept to its original design for compatibility. It predates the second-order rules in §2 and is exempt from them.
 
-- **Colour**: flat spot inks (**coral** accent, **gold** highlight, **teal** positive) on apricot poster stock, all keylined in **aubergine ink**. Night mode is a floodlit aubergine. A 6% halftone dot screen on the canvas; no gradients (screen printing can't do them).
+- **Colour**: flat spot inks (**coral** accent, **gold** highlight, **teal** positive) on apricot poster stock, all keylined in **aubergine ink**. The gold is only ever the highlight: caution is **marigold**, critical a deep **brick** that never reads as the coral accent, and no categorical ink repeats either. Night mode is a floodlit aubergine. A 6% halftone dot screen on the canvas; no gradients (screen printing can't do them).
 - **Type**: **Big Shoulders** (condensed signage face; headings in caps, figures, numerals) + **Bricolage Grotesque** (ink-trapped, mischievous text). 1.28 ratio. The preset stylesheet carries these two faces (`tokens/fonts-fiesta.css`), and **Martian Mono** for code comes from `tokens/fonts-martian-mono.css`, so they cost nothing unless you import it.
 - **Shape**: 2px ink borders, pills for actions and chips, 18px surfaces, round avatars.
 - **Depth**: the misregistered **hard offset** (`4px 4px 0 ink`), which presses flat (`--active-shift: 2px`) on `:active`.

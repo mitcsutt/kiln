@@ -8,7 +8,7 @@ Source: https://kiln.mitchellsutton.com/docs/ui/themes/fiesta
 
 _A screen-printed festival poster and sticker album._ Screen printing can't do gradients, so neither does Fiesta: flat spot inks on apricot poster stock, everything keylined in aubergine, and a hard misregistered offset where other themes have a soft shadow.
 
-Fiesta predates Kiln's [second-order design rules](https://kiln.mitchellsutton.com/docs/ui/foundations/design-rules#second-order-tells) and ships unchanged for compatibility, so it isn't the model for a new theme.
+Fiesta predates Kiln's [second-order design rules](https://kiln.mitchellsutton.com/docs/ui/foundations/design-rules#second-order-tells) and keeps its original design for compatibility, so it isn't the model for a new theme. Its status inks are kept apart for real use: the gold is only the highlight ("you"), caution is marigold, and critical is a deep brick that never reads as the coral accent.
 
 
 ## Use it
