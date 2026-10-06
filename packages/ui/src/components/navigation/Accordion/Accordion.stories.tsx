@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Accordion, Numeral, Text } from '@mitcsutt/kiln-ui'
 import { expect, userEvent, within } from 'storybook/test'
 import { storyRoot } from '#components/_story/storyRoot'
+import { must } from '#test/must'
 
 const meta = {
   title: 'UI/Navigation/Accordion',
@@ -182,5 +183,34 @@ export const Trailing: Story = {
         ))}
       </Accordion>
     )
+  },
+}
+
+/** Small rows with trailing figures: the figures and chevrons line up on the end edge. */
+export const SmallWithTrailing: Story = {
+  render: () => (
+    <Accordion type="multiple" size="sm">
+      {[
+        { match: 'Beat Mill Lane', points: 4.5 },
+        { match: 'Drew with Harbour Square Athletic', points: 1 },
+      ].map((row) => (
+        <Accordion.Item key={row.match} value={row.match}>
+          <Accordion.Trigger trailing={<Numeral value={row.points} signDisplay="always" />}>
+            {row.match}
+          </Accordion.Trigger>
+          <Accordion.Content>
+            <Text size="sm">Two goals and a clean sheet.</Text>
+          </Accordion.Content>
+        </Accordion.Item>
+      ))}
+    </Accordion>
+  ),
+  play: async ({ canvasElement }) => {
+    const [first, second] = [...canvasElement.querySelectorAll('data')].map(
+      (figure) => figure.getBoundingClientRect().right,
+    )
+    const trigger = must(canvasElement.querySelector('button'), 'a trigger').getBoundingClientRect()
+    await expect(Math.abs((first ?? 0) - (second ?? 0))).toBeLessThan(1)
+    await expect(first).toBeGreaterThan(trigger.left + trigger.width / 2)
   },
 }

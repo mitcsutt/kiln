@@ -78,6 +78,7 @@ const AccordionTrigger = forwardRef<HTMLButtonElement, AccordionTriggerProps>(
             ref={ref}
             className={cx(styles.trigger, className)}
             data-size={size}
+            data-trailing={trailing !== undefined || undefined}
             {...rest}
           >
             <span className={styles.triggerLabel}>{children}</span>
