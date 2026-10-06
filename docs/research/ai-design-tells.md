@@ -1,6 +1,6 @@
 # What makes an interface look AI-generated
 
-This note summarises published research and commentary, gathered in October 2026, on why generated interfaces look alike and what makes a design read as intentional instead. It is the evidence behind the "Second-order tells" rules in [DESIGN.md](../DESIGN.md) §2 and the theme family in [ADR 0030](../adr/0030-theme-family-without-ai-tells.md).
+This note summarises published research and commentary, gathered in October 2026, on why generated interfaces look alike and what makes a design read as intentional instead. It is the evidence behind the "Second-order tells" rules in [DESIGN.md](../../DESIGN.md) §2 and the theme family in [ADR 0030](../adr/0030-theme-family-without-ai-tells.md).
 
 Most of the evidence is qualitative: practitioner write-ups, vendor documentation and press. Only one source measures anything directly, and its sample is small. Read the findings as patterns that several independent sources agree on, not as measured facts.
 
