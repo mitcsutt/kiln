@@ -21,7 +21,7 @@ A preset is one CSS file, plus a name in each list that Storybook, the docs and 
 4. **Registry.** Add the name to `THEMES` and `THEME_META` in `src/theme/themes.ts`, and to the `THEMES` list in `src/themes/themes.test.ts` (`src/themes/tells.test.ts` checks every registered theme not in its `LEGACY` list).
 5. **Storybook.** Import the stylesheet in `apps/storybook/.storybook/preview.tsx`, and add a story for it in `packages/ui/src/docs/themes/Themes.stories.tsx`.
 6. **Docs.** Import the stylesheet in `apps/docs/src/app/layout.tsx`. Add `apps/docs/content/docs/ui/themes/<name>.mdx` (copy `ledger.mdx`) and list it in that folder's `meta.json`. `ui/index.mdx` and `themes/paper.mdx` say "all six", and the docs home (`content/docs/index.mdx`) says "five presets": update the counts. Add the new page to the `setup-and-theming` skill's `references` in `apps/docs/src/skills/manifest.ts`, which ships every theme page, then run `pnpm generate:skills`.
-7. **CI.** Add the name to the `theme` matrix of the `storybook-test` job in `.github/workflows/ci.yml`.
+7. **CI.** Nothing to add: the `storybook-test` job reads the theme list from `THEMES`, and a pull request that adds a stylesheet under `src/themes/` runs every theme ([ADR 0031](../../../docs/adr/0031-storybook-theme-matrix-on-theme-changes.md)).
 8. **Docs that list the themes:** DESIGN.md §4, `packages/ui/README.md` and the root `README.md`.
 9. **Changeset:** `pnpm changeset`, a `minor` bump for `@mitcsutt/kiln-ui`.
 
