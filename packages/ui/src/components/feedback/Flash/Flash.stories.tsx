@@ -67,8 +67,55 @@ export const Usage: Story = {
 }
 
 /**
+ * `appear` flashes an element once when it mounts, for a row that's new because of a change. It
+ * never flashes during the page's first render, so pass it only to rows that are new.
+ */
+export const NewRows: Story = {
+  name: 'New rows',
+  tags: ['docs'],
+  render: function NewRows() {
+    const [scorers, setScorers] = useState(['Ines Moreau 12′'])
+    return (
+      <Stack gap={4} align="start">
+        <List density="compact">
+          {scorers.map((scorer, index) => (
+            <Flash key={scorer} appear={index > 0}>
+              <List.Item>
+                <List.Content>{scorer}</List.Content>
+              </List.Item>
+            </Flash>
+          ))}
+        </List>
+        <Button
+          variant="outline"
+          tone="neutral"
+          onClick={() => {
+            setScorers((list) => [...list, `Theo Brandt ${String(30 + list.length * 7)}′`])
+          }}
+        >
+          Add a goal
+        </Button>
+      </Stack>
+    )
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(storyRoot(canvasElement))
+    await expect(canvas.getByText('Ines Moreau 12′').closest('li')).not.toHaveAttribute(
+      'data-flash',
+    )
+    await userEvent.click(canvas.getByRole('button', { name: 'Add a goal' }))
+    await expect(canvas.getByText('Theo Brandt 37′').closest('li')).toHaveAttribute(
+      'data-flash',
+      'odd',
+    )
+  },
+}
+
+/**
  * A link to an element's `id` flashes it when it opens, with no `value` needed: the element is
- * the URL's `#target`. Give the element an `id` and link to it.
+ * the URL's `#target`. Give the element an `id` and link to it. A client-side router changes the
+ * URL without updating `:target`, so there pass `target`, true when the route's hash is this
+ * element's: `target={hash === 'sailing-0735'}`.
  */
 export const LinkedTarget: Story = {
   name: 'Linked target',
