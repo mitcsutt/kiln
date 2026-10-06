@@ -25,31 +25,31 @@ jobs:
   select-mode:
     name: Select mode
     if: github.repository == 'mitcsutt/kiln'
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
     permissions:
       contents: read
     outputs:
       mode: ${{ steps.select-mode.outputs.mode }}
       publish-plan-artifact-id: ${{ steps.select-mode.outputs.publish-plan-artifact-id }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
       - uses: ./.github/actions/setup
       - name: Select Changesets mode
         id: select-mode
-        uses: changesets/action/select-mode@v2
+        uses: changesets/action/select-mode@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2
 
   version:
     name: Version packages
     needs: select-mode
     if: needs.select-mode.outputs.mode == 'version'
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
     permissions:
       contents: write # commit the version bump
       pull-requests: write # open the "Version packages" pull request
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
           # The changelog looks up the commit that added each changeset. In a shallow clone
@@ -57,14 +57,14 @@ jobs:
           # persisted credentials, so check out the full history instead.
           fetch-depth: 0
       # No dependency cache in jobs that can write, to rule out cache poisoning.
-      - uses: pnpm/action-setup@v6
-      - uses: actions/setup-node@v7
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version-file: .nvmrc
           package-manager-cache: false
       - run: pnpm install --frozen-lockfile
       - name: Open or update the pull request
-        uses: changesets/action/version@v2
+        uses: changesets/action/version@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2
         with:
           commit-message: 'chore(release): version packages'
           pr-title: 'chore(release): version packages'
@@ -73,17 +73,17 @@ jobs:
     name: Build and pack
     needs: select-mode
     if: needs.select-mode.outputs.mode == 'publish' && vars.NPM_PUBLISH_ENABLED == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
     permissions:
       contents: read
     outputs:
       pack-dir-artifact-id: ${{ steps.pack.outputs.pack-dir-artifact-id }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
-      - uses: pnpm/action-setup@v6
-      - uses: actions/setup-node@v7
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version-file: .nvmrc
           package-manager-cache: false
@@ -92,13 +92,15 @@ jobs:
         run: pnpm build
       - name: Pack publishable packages
         id: pack
-        uses: changesets/action/pack@v2
+        uses: changesets/action/pack@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2
         with:
           publish-plan-artifact-id: ${{ needs.select-mode.outputs.publish-plan-artifact-id }}
 
   publish:
     name: Publish to npm
     needs: pack
+    # Always GitHub-hosted: npm trusted publishing (OIDC) does not support self-hosted
+    # runners (docs.npmjs.com/trusted-publishers, 2026-09). Move it when npm adds support.
     runs-on: ubuntu-latest
     # Add required reviewers to this environment to approve each publish.
     environment: npm
@@ -106,16 +108,16 @@ jobs:
       contents: write # push release tags and create GitHub releases
       id-token: write # npm trusted publishing and provenance
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           persist-credentials: false
-      - uses: pnpm/action-setup@v6
-      - uses: actions/setup-node@v7
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version-file: .nvmrc
           package-manager-cache: false
       - run: pnpm install --frozen-lockfile
       - name: Publish
-        uses: changesets/action/publish@v2
+        uses: changesets/action/publish@ae32849d5ba541f9ae29e40e22a623bc13562f51 # v2
         with:
           pack-dir-artifact-id: ${{ needs.pack.outputs.pack-dir-artifact-id }}

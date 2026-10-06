@@ -15,48 +15,49 @@ env:
 
 # One job per quality gate, each through Turborepo. Add new gates as new jobs
 # that reuse the setup action.
+# runs-on: set repo variable CI_RUNNER=homeserver-ci to run on the home server; unset = GitHub-hosted.
 jobs:
   lint:
     name: Lint
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/actions/setup
       - name: ESLint and Prettier
         run: pnpm lint
 
   typecheck:
     name: Typecheck
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/actions/setup
       - name: Typecheck
         run: pnpm typecheck
 
   test:
     name: Test
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/actions/setup
       - name: Test
         run: pnpm test
 
   build:
     name: Build
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/actions/setup
       - name: Build
         run: pnpm build
 
   test-react18:
     name: Test (React 18)
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/actions/setup
       - name: Test on React 18.3
         run: pnpm test:react18
@@ -68,15 +69,15 @@ jobs:
   # packages/ui/src/theme/themes.ts.
   storybook-matrix:
     name: Storybook test matrix
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
     outputs:
       themes: ${{ steps.pick.outputs.themes }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           # The merge commit and its first parent, the base branch, to diff against.
           fetch-depth: 2
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version-file: .nvmrc
       - name: Pick the themes
@@ -102,14 +103,14 @@ jobs:
   storybook-test:
     name: Storybook tests (${{ matrix.theme }}, ${{ matrix.mode }})
     needs: storybook-matrix
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
     strategy:
       fail-fast: false
       matrix:
         theme: ${{ fromJSON(needs.storybook-matrix.outputs.themes) }}
         mode: [light, dark]
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/actions/setup
       - name: Install Chromium
         run: pnpm --filter @mitcsutt/kiln-storybook exec playwright install --with-deps --only-shell chromium
@@ -121,9 +122,9 @@ jobs:
 
   storybook-build:
     name: Storybook build
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/actions/setup
       - name: Build the static Storybook
         run: pnpm turbo run build --filter=@mitcsutt/kiln-storybook
@@ -136,9 +137,9 @@ jobs:
   # internal link and anchor in it resolves (ADR 0019).
   docs:
     name: Docs build and links
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/actions/setup
       - name: Build the docs site and check its links
         run: pnpm check:links
@@ -147,30 +148,30 @@ jobs:
   # frontmatter and size, and every code block compiles against the package (ADR 0020).
   skills:
     name: Agent skills
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/actions/setup
       - name: intent validate
         run: pnpm check:skills
 
   package:
     name: Package checks
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/actions/setup
       - name: publint and arethetypeswrong
         run: pnpm check:package
 
   size:
     name: Size
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
     permissions:
       contents: read
       pull-requests: write
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/actions/setup
       - name: Size report against budgets
         id: size
@@ -180,7 +181,7 @@ jobs:
       # On a pull request, measure the base branch too and comment the difference.
       - name: Check out the base branch
         if: github.event_name == 'pull_request'
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           ref: ${{ github.event.pull_request.base.sha }}
           path: .base
@@ -203,7 +204,7 @@ jobs:
       - name: Comment on the pull request
         # A pull request from a fork gets a read-only token, so it can't comment.
         if: always() && github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
-        uses: marocchino/sticky-pull-request-comment@v3
+        uses: marocchino/sticky-pull-request-comment@5770ad5eb8f42dd2c4f34da00c94c5381e49af88 # v3
         with:
           header: size-report
           path: ${{ runner.temp }}/size-comment.md
@@ -219,9 +220,9 @@ jobs:
   changeset:
     name: Changeset
     if: github.event_name == 'pull_request' && !startsWith(github.head_ref, 'changeset-release/')
-    runs-on: ubuntu-latest
+    runs-on: ${{ vars.CI_RUNNER || 'ubuntu-latest' }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 0
       - uses: ./.github/actions/setup
