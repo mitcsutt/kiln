@@ -6,6 +6,14 @@
  *   --tooltip-surface   default var(--color-surface-inverse)
  *   --tooltip-ink       default var(--color-ink-inverse)
  */
+/* Stands in for a disabled trigger, which gets no events of its own. */
+.disabledTrigger {
+  display: inline-flex;
+}
+.disabledTrigger > :disabled {
+  pointer-events: none;
+}
+
 .content {
   --_surface: var(--tooltip-surface, var(--color-surface-inverse));
 

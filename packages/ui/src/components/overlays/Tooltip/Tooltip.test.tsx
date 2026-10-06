@@ -59,4 +59,19 @@ describe('Tooltip', () => {
     expect(tip.closest('[data-theme]')).toHaveAttribute('data-theme', 'fiesta')
     expect(tip.closest('[data-theme]')).not.toBe(document.documentElement)
   })
+
+  it('reaches a disabled trigger through a focusable wrapper', async () => {
+    render(
+      <Tooltip content="You've used all three reactions">
+        <button type="button" disabled>
+          React
+        </button>
+      </Tooltip>,
+    )
+    await userEvent.tab()
+    const wrapper = screen.getByRole('button', { name: 'React' }).parentElement
+    expect(wrapper?.tagName).toBe('SPAN')
+    expect(wrapper).toHaveFocus()
+    expect(await screen.findByRole('tooltip')).toHaveTextContent("You've used all three reactions")
+  })
 })
