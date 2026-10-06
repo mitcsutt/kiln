@@ -52,8 +52,12 @@ export interface NumeralProps extends Omit<
  * `getByText` matches an element's own text only, so `getByText('90.5')` won't find a `Numeral`
  * showing 90.5. Match the `<data>` element's whole text, or its raw `value`:
  *
- * ```ts
- * screen.getByText((_, el) => el?.tagName === 'DATA' && el.textContent === '+90.5')
+ * ```tsx
+ * import { render } from '@testing-library/react'
+ * import { Numeral } from '@mitcsutt/kiln-ui'
+ *
+ * const { container, getByText } = render(<Numeral value={90.5} signDisplay="always" />)
+ * getByText((_, el) => el?.tagName === 'DATA' && el.textContent === '+90.5')
  * container.querySelector('data[value="90.5"]')
  * ```
  *
