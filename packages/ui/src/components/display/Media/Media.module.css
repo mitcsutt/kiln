@@ -18,6 +18,28 @@
   --_radius: var(--radius-surface);
 }
 
+/* Sized: an inline thumbnail of fixed height, as wide as its ratio makes it. */
+.media[data-size] {
+  --_size: var(--space-4);
+
+  display: inline-flex;
+  flex: none;
+  align-items: flex-start;
+  vertical-align: middle;
+}
+.media[data-size='sm'] {
+  --_size: calc(var(--space-4) + var(--space-1));
+}
+.media[data-size='md'] {
+  --_size: var(--space-5);
+}
+.media[data-size='lg'] {
+  --_size: var(--space-6);
+}
+.media[data-size='xl'] {
+  --_size: var(--space-9);
+}
+
 .frame {
   position: relative;
   overflow: hidden;
@@ -61,6 +83,15 @@
   inline-size: 100%;
   block-size: auto;
 }
+.media[data-size] .frame {
+  block-size: var(--_size);
+  /* A theme's media radius would round a small thumbnail into a pill: cap it to its height. */
+  border-radius: min(var(--_radius), calc(var(--_size) / 5));
+}
+.media[data-size] .image {
+  inline-size: auto;
+  block-size: 100%;
+}
 .media:not([data-ratio='auto']) .image {
   position: absolute;
   inset: 0;
@@ -87,6 +118,18 @@
   position: absolute;
   inset: 0;
   min-block-size: 0;
+}
+
+.media[data-size][data-ratio='auto'][data-failed] .frame {
+  aspect-ratio: 1;
+}
+/* No room for words in a thumbnail: the fallback is an empty frame, or a glyph if one is given. */
+.media[data-size] .fallback {
+  position: absolute;
+  inset: 0;
+  min-block-size: 0;
+  padding: 0;
+  font-size: calc(var(--_size) * 0.6);
 }
 
 .caption {

@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react'
+import { must } from '#test/must'
 import { Media } from './Media'
 
 describe('Media', () => {
@@ -41,5 +42,22 @@ describe('Media', () => {
       screen.getByRole('img', { name: 'Signed contract for Northwind Studio' }),
     ).toHaveTextContent('Image unavailable')
     expect(container.firstElementChild).toHaveAttribute('data-failed')
+  })
+
+  it('has no size by default, so it fills its container', () => {
+    const { container } = render(<Media src="/images/harbour.png" alt="Harbour" />)
+    expect(container.firstElementChild).not.toHaveAttribute('data-size')
+  })
+
+  it('takes a fixed size for an inline thumbnail, keeping its ratio and fallback', () => {
+    const { container } = render(
+      <Media size="sm" ratio="3/2" src="/missing/flag.svg" alt="Kelso Bay flag" />,
+    )
+    const root = must(container.firstElementChild, 'the media root')
+    expect(root).toHaveAttribute('data-size', 'sm')
+    expect(root).toHaveAttribute('data-ratio', '3/2')
+    fireEvent.error(screen.getByRole('img'))
+    expect(container.querySelector('img')).toBeNull()
+    expect(root).toHaveAttribute('data-failed')
   })
 })

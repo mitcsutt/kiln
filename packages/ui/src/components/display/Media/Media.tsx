@@ -13,6 +13,8 @@ import styles from './Media.module.css'
 export type MediaRatio = '1/1' | '4/3' | '3/2' | '16/9' | '21/9' | '3/4' | '2/3' | 'auto'
 export type MediaFit = 'cover' | 'contain'
 export type MediaRadius = 'none' | 'media' | 'surface'
+/** Fixed heights for inline thumbnails: about 16, 20, 24, 32 and 96px. */
+export type MediaSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 
 export interface MediaProps extends Omit<HTMLAttributes<HTMLElement>, 'children'> {
   src: string
@@ -24,6 +26,12 @@ export interface MediaProps extends Omit<HTMLAttributes<HTMLElement>, 'children'
   fit?: MediaFit
   /** Corner role. Default `media`. */
   radius?: MediaRadius
+  /**
+   * A fixed height, for a small image that sits inline beside text (a flag by a name, a logo
+   * in a row). The width follows `ratio`, or the image's own ratio when `ratio` is `auto`.
+   * Default: none, so the frame fills its container.
+   */
+  size?: MediaSize
   /** Renders a `<figure>` with this as its `<figcaption>`. */
   caption?: ReactNode
   /** Shown inside the frame if the image fails to load. Default: an empty sunken frame. */
@@ -54,6 +62,7 @@ export const Media = forwardRef<HTMLElement, MediaProps>(function Media(
     ratio = 'auto',
     fit = 'cover',
     radius = 'media',
+    size,
     caption,
     fallback,
     loading = 'lazy',
@@ -88,6 +97,7 @@ export const Media = forwardRef<HTMLElement, MediaProps>(function Media(
       data-ratio={ratio}
       data-fit={fit}
       data-radius={radius}
+      data-size={size}
       data-failed={failed || undefined}
       {...rest}
     >
