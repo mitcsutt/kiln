@@ -5,7 +5,7 @@ description: Use when adding a new component to @mitcsutt/kiln-ui in this reposi
 
 # Add a kiln-ui component
 
-A component is done when it's exported, tested on React 18 and 19, has stories that pass in every theme and mode, and has a docs page. CI fails on each of those if it's missing.
+A component is done when it's exported, tested on React 18 and 19, has stories that pass in every theme and mode, and has a docs page. CI fails on each of those if it's missing, though on a component-only pull request it runs the story tests in Paper only ([ADR 0031](../../../docs/adr/0031-storybook-theme-matrix-on-theme-changes.md)), so run the other themes yourself.
 
 ## Read first
 
