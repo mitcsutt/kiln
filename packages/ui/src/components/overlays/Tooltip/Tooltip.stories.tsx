@@ -195,21 +195,35 @@ export const LongPress: Story = {
     await expect(onReactionsClick).toHaveBeenCalledOnce()
     await expect(screen.queryByRole('tooltip')).not.toBeInTheDocument()
 
-    await userEvent.pointer({ keys: '[TouchA>]', target: trigger })
-    await expect(await screen.findByRole('tooltip', {}, { timeout: 2000 })).toHaveTextContent(
-      'Noor, Kofi and Ada',
-    )
-    await userEvent.pointer({ keys: '[/TouchA]', target: trigger })
-    await fireEvent.pointerUp(trigger, { pointerType: 'touch' })
+    const longPress = async (whileHeld?: () => Promise<unknown>) => {
+      await userEvent.pointer({ keys: '[TouchA>]', target: trigger })
+      await expect(await screen.findByRole('tooltip', {}, { timeout: 2000 })).toHaveTextContent(
+        'Noor, Kofi and Ada',
+      )
+      await whileHeld?.()
+      await userEvent.pointer({ keys: '[/TouchA]', target: trigger })
+      await fireEvent.pointerUp(trigger, { pointerType: 'touch' })
+    }
+    const pressEnter = async (times: number) => {
+      await userEvent.keyboard('{Escape}')
+      await waitFor(() => expect(screen.queryByRole('tooltip')).not.toBeInTheDocument())
+      trigger.focus()
+      await userEvent.keyboard('{Enter}')
+      await expect(onReactionsClick).toHaveBeenCalledTimes(times)
+      await userEvent.keyboard('{Escape}')
+      trigger.blur()
+    }
+
+    // The tap that ends the press arrives after the finger lifts, and is swallowed.
+    await longPress()
+    await new Promise((resolve) => setTimeout(resolve, 100))
     await fireEvent.click(trigger)
     await expect(onReactionsClick).toHaveBeenCalledOnce()
-    await userEvent.keyboard('{Escape}')
-    await waitFor(() => expect(screen.queryByRole('tooltip')).not.toBeInTheDocument())
+    await pressEnter(2)
 
-    trigger.focus()
-    await userEvent.keyboard('{Enter}')
-    await expect(onReactionsClick).toHaveBeenCalledTimes(2)
-    await userEvent.keyboard('{Escape}')
-    trigger.blur()
+    // A phone opens its context menu during the hold and sends no tap; a later key press works.
+    await longPress(async () => expect(await fireEvent.contextMenu(trigger)).toBe(false))
+    await new Promise((resolve) => setTimeout(resolve, 1100))
+    await pressEnter(3)
   },
 }

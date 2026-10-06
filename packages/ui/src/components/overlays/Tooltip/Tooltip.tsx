@@ -55,6 +55,8 @@ export type TooltipTouch = 'none' | 'longpress'
 const LONG_PRESS = 500
 /** How far a touch may drift, in px, and still count as a press rather than a scroll. */
 const PRESS_SLOP = 10
+/** How long after a long press ends its click or context menu is still swallowed, in ms. */
+const RELEASE_WINDOW = 1000
 export type TooltipAlign = 'start' | 'center' | 'end'
 
 export interface TooltipProps extends Omit<
@@ -218,27 +220,31 @@ function useLongPress(enabled: boolean, onLongPress: () => void) {
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const start = useRef<{ x: number; y: number } | null>(null)
   const fired = useRef(false)
+  const releasedAt = useRef<number | undefined>(undefined)
   const cancel = () => {
     clearTimeout(timer.current)
     start.current = null
   }
   useEffect(() => cancel, [])
   if (!enabled) return {}
-  const release = () => {
+  const release = (event: PointerEvent) => {
     cancel()
-    if (fired.current)
-      timer.current = setTimeout(() => {
-        fired.current = false
-      })
+    if (fired.current) releasedAt.current = event.timeStamp
   }
   const swallow = (event: SyntheticEvent) => {
     if (!fired.current) return
+    const released = releasedAt.current
+    if (released !== undefined) {
+      fired.current = false
+      if (event.timeStamp - released > RELEASE_WINDOW) return
+    }
     event.preventDefault()
     event.stopPropagation()
   }
   return {
     onPointerDown: (event: PointerEvent) => {
       fired.current = false
+      releasedAt.current = undefined
       if (event.pointerType !== 'touch') return
       start.current = { x: event.clientX, y: event.clientY }
       clearTimeout(timer.current)

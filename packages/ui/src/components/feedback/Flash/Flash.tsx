@@ -1,9 +1,9 @@
 import {
   forwardRef,
   useEffect,
-  useLayoutEffect,
   useRef,
   useState,
+  useSyncExternalStore,
   type HTMLAttributes,
   type ReactElement,
 } from 'react'
@@ -18,7 +18,8 @@ import styles from './Flash.module.css'
  */
 let pageRendered = false
 
-const useIsomorphicLayoutEffect = typeof document === 'undefined' ? useEffect : useLayoutEffect
+/** Nothing to subscribe to: the snapshot only tells hydration (`false`) from a later mount. */
+const subscribe = () => () => undefined
 
 export interface FlashProps extends HTMLAttributes<HTMLElement> {
   /**
@@ -71,16 +72,17 @@ export const Flash = forwardRef<HTMLElement, FlashProps>(function Flash(
   ref,
 ) {
   const element = useRef<HTMLElement>(null)
-  const [count, setCount] = useState(target ? 1 : 0)
+  const pageWasRendered = useSyncExternalStore(
+    subscribe,
+    () => pageRendered,
+    () => false,
+  )
+  const [count, setCount] = useState((appear && pageWasRendered) || target ? 1 : 0)
   const [seen, setSeen] = useState({ value, target })
   if (!Object.is(seen.value, value) || seen.target !== target) {
     setSeen({ value, target })
     if (!Object.is(seen.value, value) || (target && !seen.target)) setCount(count + 1)
   }
-
-  useIsomorphicLayoutEffect(() => {
-    if (appear && pageRendered) setCount((n) => n + 1)
-  }, [])
 
   useEffect(() => {
     pageRendered = true
