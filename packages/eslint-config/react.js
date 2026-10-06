@@ -5,7 +5,7 @@ import { reactRefresh } from 'eslint-plugin-react-refresh'
 import testingLibrary from 'eslint-plugin-testing-library'
 import globals from 'globals'
 
-import { JSX_FILES, SOURCE_FILES, STORY_FILES, TEST_FILES } from './globs.js'
+import { JSX_FILES, SOURCE_FILES, STORY_FILES, TEST_FILES, TEST_SUPPORT_FILES } from './globs.js'
 import { asErrors } from './severity.js'
 
 /**
@@ -31,7 +31,7 @@ export default defineConfig(
   {
     name: 'kiln/react/refresh',
     files: JSX_FILES,
-    ignores: [...TEST_FILES, ...STORY_FILES],
+    ignores: [...TEST_FILES, ...TEST_SUPPORT_FILES, ...STORY_FILES],
     extends: [reactRefresh.configs.vite()],
   },
   {

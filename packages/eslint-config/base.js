@@ -6,7 +6,14 @@ import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescrip
 import { importX } from 'eslint-plugin-import-x'
 import tseslint from 'typescript-eslint'
 
-import { CONFIG_FILES, SCRIPT_FILES, SOURCE_FILES, STORY_FILES, TEST_FILES } from './globs.js'
+import {
+  CONFIG_FILES,
+  SCRIPT_FILES,
+  SOURCE_FILES,
+  STORY_FILES,
+  TEST_FILES,
+  TEST_SUPPORT_FILES,
+} from './globs.js'
 import { asErrors } from './severity.js'
 
 /**
@@ -49,6 +56,24 @@ export default defineConfig(
       ],
       '@typescript-eslint/consistent-type-exports': 'error',
       '@typescript-eslint/no-import-type-side-effects': 'error',
+      // `stylisticTypeChecked` would rewrite `x as T` to `x!`, which `strictTypeChecked`'s
+      // `no-non-null-assertion` then reports, so `--fix` trades one error for the other.
+      // typescript-eslint documents the conflict; the strict rule wins.
+      '@typescript-eslint/non-nullable-type-assertion-style': 'off',
+      // TanStack Router's control flow throws `redirect()` and `notFound()`, which return plain
+      // objects by design. Every other non-Error throw is still reported.
+      '@typescript-eslint/only-throw-error': [
+        'error',
+        {
+          allow: [
+            {
+              from: 'package',
+              package: '@tanstack/router-core',
+              name: ['Redirect', 'NotFoundError'],
+            },
+          ],
+        },
+      ],
       // `strictTypeChecked`'s options, except numbers. A number always prints as digits, so
       // `${count} items` is the intended output, not the object, `undefined` or `null` the
       // rule exists to catch. Every option is listed because options replace, not merge.
@@ -80,7 +105,13 @@ export default defineConfig(
       'import-x/no-extraneous-dependencies': [
         'error',
         {
-          devDependencies: [...TEST_FILES, ...STORY_FILES, ...CONFIG_FILES, ...SCRIPT_FILES],
+          devDependencies: [
+            ...TEST_FILES,
+            ...TEST_SUPPORT_FILES,
+            ...STORY_FILES,
+            ...CONFIG_FILES,
+            ...SCRIPT_FILES,
+          ],
           peerDependencies: true,
           optionalDependencies: false,
         },
