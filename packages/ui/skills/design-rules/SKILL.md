@@ -94,6 +94,7 @@ Beyond the checks, a theme has a subject, and each colour, face, radius and easi
 ### Motion
 
 - Motion answers an action or shows a state change (count updated, row expanded, panel opened). **No fade-up-on-scroll, no hover-scale on static cards, no parallax.**
+- To point at something that just changed or that a link just opened on, wrap it in `Flash`: one primitive for any element, not a flash prop on each component. It's an outline that fades, so it never moves layout, and under reduced motion it holds and goes instead of fading.
 - Durations and easings are tokens (`--dur-1/2/3`, `--ease-out`, `--ease-spring`) and collapse to ~0 under `prefers-reduced-motion`.
 
 ### Copy (for stories, docs and examples)

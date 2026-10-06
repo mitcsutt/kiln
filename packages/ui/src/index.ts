@@ -410,6 +410,8 @@ export { Alert } from './components/feedback/Alert'
 export type { AlertProps, AlertTone, AlertVariant } from './components/feedback/Alert'
 export { LiveIndicator } from './components/feedback/LiveIndicator'
 export type { LiveIndicatorProps, LiveIndicatorVariant } from './components/feedback/LiveIndicator'
+export { Flash } from './components/feedback/Flash'
+export type { FlashProps } from './components/feedback/Flash'
 export { StatusDot } from './components/feedback/StatusDot'
 export type { StatusDotProps } from './components/feedback/StatusDot'
 export {

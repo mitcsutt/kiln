@@ -1,0 +1,50 @@
+/*
+ * Component tokens (themes may set any of these on [data-theme]):
+ *   --flash-color      default var(--color-accent) — live state is the accent's job
+ *   --flash-duration   default 1.6s — how long the mark stays. Not a motion token: those
+ *                      collapse under reduced motion, and the mark must still be seen there.
+ *
+ * An outline, so it never moves layout and shows over any fill. Two keyframe names alternate
+ * (data-flash odd/even) so a second change restarts the animation.
+ */
+.flash {
+  --_c: var(--flash-color, var(--color-accent));
+  --_d: var(--flash-duration, 1.6s);
+}
+
+.flash:target,
+.flash[data-flash='odd'] {
+  animation: flash-odd var(--_d) var(--ease-out);
+}
+.flash[data-flash='even'] {
+  animation: flash-even var(--_d) var(--ease-out);
+}
+
+@keyframes flash-odd {
+  from {
+    outline: 3px solid var(--_c);
+    outline-offset: 2px;
+  }
+  to {
+    outline: 3px solid transparent;
+    outline-offset: 2px;
+  }
+}
+@keyframes flash-even {
+  from {
+    outline: 3px solid var(--_c);
+    outline-offset: 2px;
+  }
+  to {
+    outline: 3px solid transparent;
+    outline-offset: 2px;
+  }
+}
+
+/* Reduced motion: no fade. The mark shows, holds for the same time, and goes. */
+@media (prefers-reduced-motion: reduce) {
+  .flash:target,
+  .flash[data-flash] {
+    animation-timing-function: steps(1, end);
+  }
+}
