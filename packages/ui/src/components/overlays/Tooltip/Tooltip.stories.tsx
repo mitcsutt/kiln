@@ -201,7 +201,6 @@ export const LongPress: Story = {
         'Noor, Kofi and Ada',
       )
       await whileHeld?.()
-      await userEvent.pointer({ keys: '[/TouchA]', target: trigger })
       await fireEvent.pointerUp(trigger, { pointerType: 'touch' })
     }
     const pressEnter = async (times: number) => {
