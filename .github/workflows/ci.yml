@@ -229,3 +229,37 @@ jobs:
         env:
           BASE_REF: ${{ github.base_ref }}
         run: pnpm changeset status --since="origin/$BASE_REF"
+
+  # The one check branch protection requires. Every new job must be added to
+  # its needs list, or the gate passes without waiting for it. Skipped jobs
+  # (the per-theme Storybook runs, the changeset check) count as passing.
+  ci-passed:
+    name: CI passed
+    if: always()
+    needs:
+      - lint
+      - typecheck
+      - test
+      - build
+      - test-react18
+      - storybook-matrix
+      - storybook-test
+      - storybook-build
+      - docs
+      - skills
+      - package
+      - size
+      - changeset
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail if any needed job failed or was cancelled
+        env:
+          RESULTS: ${{ join(needs.*.result, ' ') }}
+        run: |
+          echo "Results: $RESULTS"
+          for result in $RESULTS; do
+            case "$result" in
+              success | skipped) ;;
+              *) exit 1 ;;
+            esac
+          done

@@ -69,7 +69,7 @@ The agent skills that `kiln-ui` and `kiln-forms` ship are built from docs pages,
 
 To open the Storybook workbench, run `pnpm --filter @mitcsutt/kiln-storybook dev`. The story tests need Chromium from Playwright the first time: `pnpm --filter @mitcsutt/kiln-storybook exec playwright install chromium`. They start in Paper, light; set `STORYBOOK_THEME` and `STORYBOOK_MODE` to run them in another theme or mode. CI runs them in Paper, light and dark, on every pull request, and in every built-in theme when the pull request touches theme CSS, tokens, the theme registry, `apps/storybook` or the CI workflow ([ADR 0031](docs/adr/0031-storybook-theme-matrix-on-theme-changes.md)). If your change could look different in another theme, run that theme locally.
 
-CI runs all of these except `format` and `generate:skills` on every pull request (not on pushes to `main`, which the pull request already checked), plus a changeset check on pull requests, and they must all pass. On a pull request it also comments the size report, compared with the base branch.
+CI runs all of these except `format` and `generate:skills` on every pull request (not on pushes to `main`, which the pull request already checked), plus a changeset check on pull requests, and they must all pass. Branch protection requires only the `CI passed` job, which waits for every other job and fails if any of them failed or was cancelled, so when you add a job to `.github/workflows/ci.yml`, add it to that job's `needs` list too. On a pull request it also comments the size report, compared with the base branch.
 
 ## Developing against a local Kiln
 
