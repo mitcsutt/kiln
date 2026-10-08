@@ -1,10 +1,13 @@
 // The docs site on Cloudflare Workers: static assets only, no Worker script (ADR 0034).
 // The custom domain is attached outside this repository, so no routes are declared here.
+// workers.dev and Preview URLs are off, so a deploy needs no workers.dev subdomain and the
+// custom domain is the only public address.
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "kiln-docs",
   "compatibility_date": "2026-10-01",
-  "workers_dev": true,
+  "workers_dev": false,
+  "preview_urls": false,
   "assets": {
     // `next build` with `output: 'export'`, plus the Markdown files scripts/markdown-files.ts moves.
     "directory": "./out",
