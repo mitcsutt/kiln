@@ -12,11 +12,37 @@ import { Button } from '#components/actions/Button'
 import { cx } from '#utils/cx'
 import styles from './CodeBlock.module.css'
 
+/**
+ * What a piece of highlighted source is. Each kind is coloured from the theme's own tokens, so
+ * highlighted code follows the theme and the colour mode.
+ */
+export type CodeTokenType =
+  | 'keyword'
+  | 'string'
+  | 'comment'
+  | 'constant'
+  | 'function'
+  | 'type'
+  | 'tag'
+  | 'attribute'
+  | 'punctuation'
+
+/** A run of source text and its kind. A token with no `type` is plain text. */
+export interface CodeToken {
+  content: string
+  type?: CodeTokenType
+}
+
 export interface CodeBlockProps extends Omit<HTMLAttributes<HTMLElement>, 'title'> {
   /** The source, verbatim. Trailing newlines are trimmed. */
   code: string
-  /** Shown as a label ("TypeScript", "bash"). No syntax highlighting — the code is the design. */
+  /** Shown as a label ("TypeScript", "bash"). It doesn't turn on highlighting: `tokens` does. */
   language?: string
+  /**
+   * Syntax highlighting for `code`: one array of tokens per line, as `highlight` from
+   * `@mitcsutt/kiln-ui/highlight` returns them. Without it the code is plain.
+   */
+  tokens?: CodeToken[][]
   /** Filename or caption shown in the header: `src/queries/keys.ts`. */
   title?: ReactNode
   /** Number the lines in a gutter (not copied with a selection). */
@@ -39,8 +65,33 @@ type CopyState = 'idle' | 'copied' | 'failed'
  *
  * @remarks
  * `CodeBlock` shows code: a snippet in an article, a command, a config example. It's a plain
- * surface with an optional title bar, never fake window chrome, and it has no syntax highlighting:
- * the code is the design. Every code sample in these docs is a `CodeBlock`.
+ * surface with an optional title bar, never fake window chrome. It's plain unless you pass
+ * `tokens`: `highlight` from `@mitcsutt/kiln-ui/highlight` turns JavaScript, JSX, TypeScript and
+ * TSX into tokens, coloured from the theme. Every code sample in these docs is a `CodeBlock`.
+ *
+ * ## Highlighting
+ *
+ * `highlight(code, language)` resolves to the tokens for `code`, or to `undefined` for a language
+ * other than `js`, `jsx`, `ts` or `tsx` (or `javascript` and `typescript`), which `CodeBlock`
+ * shows as plain code. It runs [Shiki](https://shiki.style), an optional peer dependency, so
+ * install `shiki` to use it. The main `@mitcsutt/kiln-ui` entry never loads it.
+ *
+ * Keywords and tags take the accent, strings, constants, functions and types take the theme's
+ * tones, and comments and punctuation are muted. A custom theme needs no code palette of its own.
+ *
+ * The tokens are plain data, so highlight wherever the code is ready. In a server component or
+ * at build time, `await` it and pass the tokens to the client component that renders the
+ * `CodeBlock`, and the browser downloads no highlighter. In the browser, call it in an effect, as
+ * in the example above: Shiki and the grammar load on the first call.
+ *
+ * ```tsx
+ * import { highlight } from '@mitcsutt/kiln-ui/highlight'
+ *
+ * export async function Snippet({ source }: { source: string }) {
+ *   const tokens = await highlight(source, 'tsx')
+ *   return <SnippetBlock code={source} tokens={tokens} />
+ * }
+ * ```
  *
  * @privateRemarks
  * A block of source: a snippet in a blog post, a command in a README, a config example.
@@ -52,6 +103,7 @@ export const CodeBlock = forwardRef<HTMLElement, CodeBlockProps>(function CodeBl
   {
     code,
     language,
+    tokens,
     title,
     showLineNumbers = false,
     highlightLines,
@@ -137,7 +189,17 @@ export const CodeBlock = forwardRef<HTMLElement, CodeBlockProps>(function CodeBl
               data-line={showLineNumbers ? i + 1 : undefined}
               data-highlighted={highlighted.has(i + 1) || undefined}
             >
-              {line}
+              {tokens?.[i]
+                ? tokens[i].map((token, j) =>
+                    token.type ? (
+                      <span key={j} className={styles.token} data-token={token.type}>
+                        {token.content}
+                      </span>
+                    ) : (
+                      token.content
+                    ),
+                  )
+                : line}
               {i < lines.length - 1 ? '\n' : null}
             </span>
           ))}

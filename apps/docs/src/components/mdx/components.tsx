@@ -1,4 +1,5 @@
 import { isValidElement, type ComponentProps, type ReactNode } from 'react'
+import { highlight } from '@mitcsutt/kiln-ui/highlight'
 import NextLink from 'next/link'
 import { examples } from '../../../.generated/examples'
 import { getApi } from '@/lib/api'
@@ -15,13 +16,24 @@ function textOf(node: ReactNode): string {
   return ''
 }
 
-/** Fenced code: ```tsx title="app/layout.tsx". Kiln's CodeBlock is unhighlighted on purpose. */
-export function Pre({ children }: ComponentProps<'pre'>) {
+/**
+ * Fenced code: ```tsx title="app/layout.tsx". JavaScript and TypeScript are highlighted here, on
+ * the server, so the browser downloads no highlighter.
+ */
+export async function Pre({ children }: ComponentProps<'pre'>) {
   const code = isValidElement<{ className?: string; 'data-title'?: string }>(children)
     ? children
     : undefined
   const language = code?.props.className?.replace(/^language-/, '')
-  return <Code code={textOf(children)} language={language} title={code?.props['data-title']} />
+  const source = textOf(children)
+  return (
+    <Code
+      code={source}
+      language={language}
+      title={code?.props['data-title']}
+      tokens={language ? await highlight(source, language) : undefined}
+    />
+  )
 }
 
 /** A file such as `/llms.txt` or `/docs/ui.md`: the static export has no page payload to prefetch. */
@@ -46,7 +58,7 @@ export function Anchor({ href = '', children, ...rest }: ComponentProps<'a'>) {
  * A live example with its source underneath: `<Example of="Button" name="Hierarchy" />`
  * (`exampleId`).
  */
-export function Example({
+export async function Example({
   of,
   name,
   layout,
@@ -58,8 +70,9 @@ export function Example({
   const id = exampleId({ of, name })
   const Component = examples[id]
   if (!Component) throw new Error(`No example ${id}`)
+  const code = getExampleSource(id)
   return (
-    <Preview code={getExampleSource(id)} layout={layout}>
+    <Preview code={code} tokens={await highlight(code, 'tsx')} layout={layout}>
       <Component />
     </Preview>
   )
@@ -87,7 +100,10 @@ export function ApiTable({ of }: { of: string }) {
 }
 
 /** A function's or hook's signature, as TypeScript prints it. */
-export function ApiSignature({ of }: { of: string }) {
+export async function ApiSignature({ of }: { of: string }) {
   const entry = getApi(of)
-  return <Signature code={entry.signature ?? entry.name} description={entry.description} />
+  const code = entry.signature ?? entry.name
+  return (
+    <Signature code={code} tokens={await highlight(code, 'ts')} description={entry.description} />
+  )
 }

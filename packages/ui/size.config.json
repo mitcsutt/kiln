@@ -66,6 +66,13 @@
       "budget": 600
     },
     {
+      "name": "import { highlight } from highlight",
+      "import": "{ highlight }",
+      "from": "dist/highlight/index.js",
+      "isolatedTo": "dist/highlight/index.js",
+      "budget": 2000
+    },
+    {
       "name": "Everything (import *)",
       "import": "* as kiln",
       "from": "dist/index.js",

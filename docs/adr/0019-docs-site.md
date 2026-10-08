@@ -1,6 +1,6 @@
 # 0019. How the docs site is built
 
-- **Status:** Accepted, amended by [0025](0025-colocated-examples.md), [0029](0029-generated-reference-pages.md), [0033](0033-docs-sections.md) and [0034](0034-docs-on-cloudflare-workers.md)
+- **Status:** Accepted, amended by [0025](0025-colocated-examples.md), [0029](0029-generated-reference-pages.md), [0033](0033-docs-sections.md), [0034](0034-docs-on-cloudflare-workers.md) and [0035](0035-code-highlighting.md)
 - **Date:** 2026-10-04
 
 ## Context

@@ -364,7 +364,7 @@ export type {
   MarqueeSurface,
 } from './components/display/Marquee'
 export { CodeBlock } from './components/display/CodeBlock'
-export type { CodeBlockProps } from './components/display/CodeBlock'
+export type { CodeBlockProps, CodeToken, CodeTokenType } from './components/display/CodeBlock'
 export { Stamp } from './components/display/Stamp'
 export type { StampProps, StampPlacement } from './components/display/Stamp'
 export { Progress } from './components/display/Progress'
