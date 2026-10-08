@@ -61,6 +61,23 @@ describe('Media', () => {
     expect(root).toHaveAttribute('data-failed')
   })
 
+  it('gives a sized image width and height hints from its size and ratio', () => {
+    const { rerender } = render(<Media src="/flag.svg" alt="" size="sm" ratio="3/2" />)
+    const img = () => must(document.querySelector('img'), 'the image')
+    expect(img()).toHaveAttribute('width', '30')
+    expect(img()).toHaveAttribute('height', '20')
+    rerender(<Media src="/flag.svg" alt="" size="xl" ratio="16/9" />)
+    expect(img()).toHaveAttribute('width', '171')
+    expect(img()).toHaveAttribute('height', '96')
+    // The image's own ratio isn't known, so an auto frame leaves them to imgProps.
+    rerender(<Media src="/flag.svg" alt="" size="sm" imgProps={{ width: 40, height: 20 }} />)
+    expect(img()).toHaveAttribute('width', '40')
+    rerender(<Media src="/flag.svg" alt="" size="sm" />)
+    expect(img()).not.toHaveAttribute('width')
+    rerender(<Media src="/flag.svg" alt="" ratio="3/2" />)
+    expect(img()).not.toHaveAttribute('height')
+  })
+
   it('is phrasing content when sized, so it can sit inside a button', () => {
     render(
       <button type="button">

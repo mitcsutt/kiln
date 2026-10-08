@@ -16,6 +16,21 @@ export type MediaRadius = 'none' | 'media' | 'surface'
 /** Fixed heights for inline thumbnails: about 16, 20, 24, 32 and 96px. */
 export type MediaSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 
+/** Nominal heights in px, for the image's width/height hints; the CSS sets the real size. */
+const SIZE_PX: Record<MediaSize, number> = { xs: 16, sm: 20, md: 24, lg: 32, xl: 96 }
+
+/**
+ * The width and height attributes a sized image carries, so the browser knows its box before it
+ * loads (and audits don't flag it). Only known with a fixed ratio: an `auto` frame takes the
+ * image's own ratio, so pass `imgProps.width`/`height` there.
+ */
+function sizeHints(size: MediaSize | undefined, ratio: MediaRatio) {
+  if (size === undefined || ratio === 'auto') return {}
+  const [w, h] = ratio.split('/').map(Number) as [number, number]
+  const height = SIZE_PX[size]
+  return { width: Math.round((height * w) / h), height }
+}
+
 export interface MediaProps extends Omit<HTMLAttributes<HTMLElement>, 'children'> {
   src: string
   /** Required. Describe the image; pass `""` only when it's purely decorative. */
@@ -29,6 +44,8 @@ export interface MediaProps extends Omit<HTMLAttributes<HTMLElement>, 'children'
   /**
    * A fixed height, for a small image that sits inline beside text (a flag by a name, a logo
    * in a row). The width follows `ratio`, or the image's own ratio when `ratio` is `auto`.
+   * With a fixed `ratio`, the image also gets `width` and `height` attributes, so its box is
+   * known before it loads; with `auto`, pass them in `imgProps`.
    * Default: none, so the frame fills its container.
    */
   size?: MediaSize
@@ -130,6 +147,7 @@ export const Media = forwardRef<HTMLElement, MediaProps>(function Media(
             onError={() => {
               setFailed(true)
             }}
+            {...sizeHints(size, ratio)}
             {...imgProps}
           />
         )}
