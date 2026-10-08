@@ -1,5 +1,21 @@
 # @mitcsutt/kiln-ui
 
+## 0.5.0
+
+### Minor Changes
+
+- 76670c1: `Box` takes `surface="accent"`, a panel in the accent colour that re-points ink, lines and the accent for its children, like `Section`'s accent band.
+
+  `Box` and `Section` take `adaptTones`, which re-points status tones on an `inverse`, `accent` or categorical `cat-1` to `cat-8` fill, so a `Stat`, `Numeral`, `Delta`, `Text` or soft `Badge` in a status tone stays AA there. On `accent` and categorical fills tone text takes the fill's own ink and soft tone fills are the fill itself, so the status shows through the sign, glyph or label; on `inverse` each tone keeps its hue, mixed toward the band's ink. It's off by default, so existing bands look as before.
+
+- 76670c1: `List` and `Table` take `surface` (`none`, `surface` or `raised`) to set their rows on one sheet, with Card's edges, so they read as rows on a textured or coloured canvas. Rows run edge to edge and the sheet clips them to its corners: highlighted, selected and hovered fills are bands across the sheet, a categorical rail is the row's edge (flush with the sheet, full height, following the corners on the first and last rows), and a table on a sheet gets a little more air, compact included. A table caption lines up with the first column and a sticky header takes the sheet's fill. New component tokens: `--list-surface-bg`, `--list-surface-radius`, `--table-surface-bg` and `--table-surface-radius`.
+- 76670c1: Add `ScrollArea`, a scroll container for content wider or taller than the page, such as a bracket or a timeline. With a `label` (or `aria-labelledby`) it's a named region in the tab order, so keyboard users can focus and scroll it; `axis` picks `x` (default), `y` or `both`, and the scrollbar takes the theme's line colour (`--scroll-area-thumb`).
+- 76670c1: `Table` takes `valign` for rows whose cells differ in height (a flag and a tag beside plain figures): `middle` centres body and footer cells, so figures sit level with the name; `top` pins them to the top. The default, `baseline`, is unchanged. Header cells still sit on the header rule.
+
+### Patch Changes
+
+- 76670c1: A sized `Media` with a fixed `ratio` gives its image `width` and `height` attributes from its size and ratio, so the browser knows the image's box before it loads and audits no longer flag it as unsized. Its CSS still sets the rendered size, so layout doesn't change, and `imgProps.width`/`height` still win. With `ratio="auto"` the image's own ratio isn't known, so pass them in `imgProps`.
+
 ## 0.4.0
 
 ### Minor Changes
