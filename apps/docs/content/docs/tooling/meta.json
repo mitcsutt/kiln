@@ -1,6 +1,6 @@
 {
   "title": "Tooling",
-  "description": "The ESLint, Prettier and TypeScript configs.",
+  "description": "The ESLint, Prettier and TypeScript configs, and the AI tooling.",
   "root": true,
-  "pages": ["index", "eslint-config", "prettier-config", "tsconfig"]
+  "pages": ["index", "eslint-config", "prettier-config", "tsconfig", "ai"]
 }
