@@ -134,14 +134,14 @@ const FILLS: BoxSurface[] = [
 ]
 
 /**
- * Status tones on every fill that re-points ink: tone figures, a Stat's delta and soft and solid
- * badges. Axe checks each one's contrast in every theme and mode.
+ * Status tones on every fill that re-points ink, with `adaptTones`: tone figures, a Stat's delta
+ * and soft and solid badges. Axe checks each one's contrast in every theme and mode.
  */
 export const StatusOnFills: Story = {
   render: () => (
     <Grid minItemWidth="sm" gap={3}>
       {FILLS.map((surface) => (
-        <Box key={surface} surface={surface} padding={4} radius="surface">
+        <Box key={surface} surface={surface} adaptTones padding={4} radius="surface">
           <Stack gap={3}>
             <Stat
               size="sm"

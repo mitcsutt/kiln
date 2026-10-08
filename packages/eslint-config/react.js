@@ -38,14 +38,6 @@ export default defineConfig(
     name: 'kiln/react/a11y',
     files: SOURCE_FILES,
     extends: [asErrors(jsxA11y.flatConfigs.recommended)],
-    rules: {
-      // A named scroll region must be focusable so keyboard users can scroll it (axe's
-      // scrollable-region-focusable), so `region` joins the plugin's default `tabpanel`.
-      'jsx-a11y/no-noninteractive-tabindex': [
-        'error',
-        { tags: [], roles: ['tabpanel', 'region'], allowExpressionValues: true },
-      ],
-    },
   },
   {
     name: 'kiln/react/tests',

@@ -86,7 +86,6 @@ The type-checked rules need type information for each file they lint, JavaScript
 - **Non-null assertions are reported, and nothing asks for one.** `no-non-null-assertion` is on and `non-nullable-type-assertion-style` is off, because the second rewrites `x as T` into `x!`, which the first then reports.
 - **Only errors are thrown**, except TanStack Router's `redirect()` and `notFound()`, whose plain objects are the router's documented control flow.
 - **Template literals take strings and numbers.** `${count} items` is fine; `undefined`, `null`, booleans and objects are errors, because they print something no reader should see. Convert them on purpose (`String(done)`, `user.name`).
-- **A named scroll region can take focus.** `jsx-a11y` keeps `tabIndex` off non-interactive elements, except `role="region"`: a labelled scroll container has to be reachable so keyboard users can scroll it, as `ScrollArea` and `Table` do.
 - **Formatting is Prettier's.** `eslint-config-prettier` is the last object in `base`, so no rule fights the formatter. Use it with the [Prettier config](/docs/tooling/prettier-config).
 
 ## Adding your own rules

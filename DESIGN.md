@@ -173,7 +173,7 @@ Each component module lists the tokens a theme may set at the top of its CSS, al
 
 ### 3.6 Inverted bands
 
-`Section surface="inverse|accent"` and `Box surface="inverse|accent"`, and both components' categorical `cat-1` to `cat-8` fills, re-point the colour roles for everything inside them (ink, muted, lines, focus, accent-text and the status-tone texts and soft fills), so any component placed on a dark or coloured band stays legible with no extra props. An accent or categorical fill clears AA only against its own ink, so tone text there is that ink and the status rides on the sign, glyph or label. A pair like ink ↔ ink-inverse can't be swapped on one element (that's a `var()` cycle), so the band exposes `--section-fill`/`--section-on` (`--box-fill`/`--box-on`) and its children perform the swap.
+`Section surface="inverse|accent"` and `Box surface="inverse|accent"`, and both components' categorical `cat-1` to `cat-8` fills, re-point the colour roles for everything inside them (ink, muted, lines, focus, accent-text), so any component placed on a dark or coloured band stays legible with no extra props. Status tones keep the page's colours unless the band opts in with `adaptTones`, which re-points the status-tone texts and soft fills too: an accent or categorical fill clears AA only against its own ink, so tone text there is that ink and the status rides on the sign, glyph or label, while an inverse band keeps each tone's hue, mixed toward its ink. A pair like ink ↔ ink-inverse can't be swapped on one element (that's a `var()` cycle), so the band exposes `--section-fill`/`--section-on` (`--box-fill`/`--box-on`) and its children perform the swap.
 
 ### 3.7 Cascade layers
 

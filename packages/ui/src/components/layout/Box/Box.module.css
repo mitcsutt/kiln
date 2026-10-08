@@ -137,14 +137,14 @@
 }
 
 /*
- * Status tones follow the band, like the accent text does. An accent or categorical fill only
- * clears AA against its own ink, so tone text there is that ink (the sign, glyph or label
- * carries the status) and soft tone fills are the fill itself, like the nested surfaces. An
- * inverse band has headroom, so each tone keeps its hue, mixed toward the band's ink until it
- * reads on the fill.
+ * Opt-in (`adaptTones`, so existing bands keep the page's tones): status tones follow the band,
+ * like the accent text does. An accent or categorical fill only clears AA against its own ink,
+ * so tone text there is that ink (the sign, glyph or label carries the status) and soft tone
+ * fills are the fill itself, like the nested surfaces. An inverse band has headroom, so each
+ * tone keeps its hue, mixed toward the band's ink until it reads on the fill.
  * Solid tone fills keep their own ink and need no change.
  */
-.box:is([data-surface='accent'], [data-surface^='cat-']) {
+.box[data-adapt-tones]:is([data-surface='accent'], [data-surface^='cat-']) {
   --tone-positive-text: var(--box-on);
   --tone-caution-text: var(--box-on);
   --tone-critical-text: var(--box-on);
@@ -154,7 +154,7 @@
   --tone-critical-soft: var(--box-fill);
   --tone-info-soft: var(--box-fill);
 }
-.box[data-surface='inverse'] {
+.box[data-adapt-tones][data-surface='inverse'] {
   --tone-positive-text: color-mix(in oklab, var(--tone-positive) 40%, var(--box-on));
   --tone-caution-text: color-mix(in oklab, var(--tone-caution) 40%, var(--box-on));
   --tone-critical-text: color-mix(in oklab, var(--tone-critical) 40%, var(--box-on));

@@ -32,5 +32,11 @@ describe('Section', () => {
   it('paints a categorical band', () => {
     const { container } = render(<Section surface="cat-4">Kelso Bay supporters</Section>)
     expect(container.firstElementChild).toHaveAttribute('data-surface', 'cat-4')
+    expect(container.firstElementChild).not.toHaveAttribute('data-adapt-tones')
+  })
+
+  it('re-points status tones only when asked', () => {
+    const { container } = render(<Section surface="accent" adaptTones />)
+    expect(container.firstElementChild).toHaveAttribute('data-adapt-tones')
   })
 })
