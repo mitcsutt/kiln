@@ -33,7 +33,8 @@ export interface ScrollAreaProps extends HTMLAttributes<HTMLDivElement>, Visibil
  * @privateRemarks
  * The labelled, focusable scroll wrapper Table already has, for anything that isn't a table
  * (axe's scrollable-region-focusable). Focusable only when named, so an unnamed one never adds
- * an anonymous tab stop. The eslint config allows tabIndex on role="region" for the same reason.
+ * an anonymous tab stop. `role` is an expression, which jsx-a11y's no-noninteractive-tabindex
+ * exempts (allowExpressionValues), so the tabIndex stays lint-clean.
  *
  * <ScrollArea label="Knockout bracket"><Bracket /></ScrollArea>
  */
