@@ -62,7 +62,7 @@ export function CategoricalBand() {
 
 ## Surfaces and bands
 
-`surface` is `canvas`, `surface`, `sunken`, `inverse`, `accent`, or a categorical `cat-1` to `cat-8` (a band in one person's or team's colour, matching their `Tag`). On `inverse`, `accent` and the categorical bands, the colour roles flip for everything inside, so text, links, focus rings and buttons stay legible with no extra props. `divider` adds a rule at the `top`, `bottom` or `both`.
+`surface` is `canvas`, `surface`, `sunken`, `inverse`, `accent`, or a categorical `cat-1` to `cat-8` (a band in one person's or team's colour, matching their `Tag`). On `inverse`, `accent` and the categorical bands, the colour roles flip for everything inside, so text, links, status tones, focus rings and buttons stay legible with no extra props. `divider` adds a rule at the `top`, `bottom` or `both`.
 
 ## API
 

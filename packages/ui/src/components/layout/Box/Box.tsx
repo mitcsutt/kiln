@@ -8,7 +8,14 @@ import { visibilityClass, type VisibilityProps } from '#utils/visibility'
 export type BoxElement =
   'div' | 'span' | 'section' | 'article' | 'aside' | 'header' | 'footer' | 'li'
 export type BoxSurface =
-  'none' | 'canvas' | 'surface' | 'sunken' | 'raised' | 'inverse' | `cat-${CategoryColor}`
+  | 'none'
+  | 'canvas'
+  | 'surface'
+  | 'sunken'
+  | 'raised'
+  | 'inverse'
+  | 'accent'
+  | `cat-${CategoryColor}`
 export type BoxRadius = 'none' | 'field' | 'surface' | 'media'
 
 export interface BoxProps extends HTMLAttributes<HTMLElement>, VisibilityProps {
@@ -19,8 +26,9 @@ export interface BoxProps extends HTMLAttributes<HTMLElement>, VisibilityProps {
   /** Block (top/bottom) padding; overrides `padding` on that axis. Responsive. */
   paddingY?: Responsive<Space>
   /**
-   * Background fill. `inverse` and the categorical `cat-1` to `cat-8` (one person's or team's
-   * colour, matching their `Tag`) also re-point ink and line colours for its children.
+   * Background fill. `inverse`, `accent` and the categorical `cat-1` to `cat-8` (one person's or
+   * team's colour, matching their `Tag`) also re-point ink, line, accent and status-tone colours
+   * for its children, so they stay legible on the fill.
    */
   surface?: BoxSurface
   /** Hairline border in `--color-line`. One edge treatment per element — a border *or* a fill. */
