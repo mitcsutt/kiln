@@ -132,8 +132,8 @@ jobs:
       - name: Serve it under /storybook and load a story
         run: pnpm --filter @mitcsutt/kiln-storybook check:static
 
-  # The docs site builds as a deployable artefact (nothing is deployed), and every
-  # internal link and anchor in it resolves (ADR 0019).
+  # The docs site builds as a static export, and every internal link and anchor in it
+  # resolves when Wrangler serves it (ADR 0019, 0034). docs-deploy.yml deploys it from main.
   docs:
     name: Docs build and links
     runs-on: ubuntu-latest

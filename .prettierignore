@@ -1,10 +1,11 @@
 # Generated files
 pnpm-lock.yaml
 
-# Written by the docs app's generators, Fumadocs MDX and Next.js
+# Written by the docs app's generators, Fumadocs MDX, Next.js and Wrangler
 apps/docs/.generated/
 apps/docs/.source/
 apps/docs/.next/
+apps/docs/.wrangler/
 apps/docs/next-env.d.ts
 
 # Reference pages, written from TSDoc and stories by apps/docs/scripts/generate-pages.ts and

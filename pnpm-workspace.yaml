@@ -58,6 +58,7 @@ allowBuilds:
   esbuild: true
   lefthook: true
   unrs-resolver: true
+  workerd: true
 
 peerDependencyRules:
   # eslint-plugin-jsx-a11y has not declared ESLint 10 support yet. The

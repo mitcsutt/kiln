@@ -4,7 +4,7 @@
 
 Kiln is a themeable React design system and form library, published to npm under the `@mitcsutt` scope, along with the shared ESLint, Prettier and TypeScript configs it's built with.
 
-> **Status: pre-1.0.** Every package is published to npm at `0.x`, so a minor release can still carry breaking changes. The docs site and Storybook aren't deployed yet, but both run locally (see [Apps](#apps)). Releases follow [`docs/releasing.md`](docs/releasing.md), and the reasoning behind each decision is in [`docs/adr/`](docs/adr/).
+> **Status: pre-1.0.** Every package is published to npm at `0.x`, so a minor release can still carry breaking changes. The docs site deploys from `main` to [kiln.mitchellsutton.com](https://kiln.mitchellsutton.com). Storybook isn't deployed yet, but it runs locally (see [Apps](#apps)). Releases follow [`docs/releasing.md`](docs/releasing.md), and the reasoning behind each decision is in [`docs/adr/`](docs/adr/).
 
 ## What Kiln is for
 
@@ -78,7 +78,7 @@ Each package's README shows how to wire it up, and the docs site has a getting-s
 
 ## Links
 
-- Docs site: [kiln.mitchellsutton.com](https://kiln.mitchellsutton.com) (not live yet; run it locally with `pnpm --filter @mitcsutt/kiln-docs dev`). For agents: [`/llms.txt`](https://kiln.mitchellsutton.com/llms.txt), and any page as Markdown by adding `.md` to its URL
+- Docs site: [kiln.mitchellsutton.com](https://kiln.mitchellsutton.com) (run it locally with `pnpm --filter @mitcsutt/kiln-docs dev`). For agents: [`/llms.txt`](https://kiln.mitchellsutton.com/llms.txt), and any page as Markdown by adding `.md` to its URL
 - Storybook: [kiln.mitchellsutton.com/storybook](https://kiln.mitchellsutton.com/storybook) (not live yet)
 - [Contributing](CONTRIBUTING.md), [Security policy](SECURITY.md), [Code of Conduct](CODE_OF_CONDUCT.md)
 
