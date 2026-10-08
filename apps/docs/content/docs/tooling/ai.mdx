@@ -1,0 +1,66 @@
+---
+title: AI tooling
+description: The agent skills kiln-ui and kiln-forms ship, how to load them into your coding agent, and the Markdown versions of these docs.
+---
+
+Kiln ships guidance for coding agents alongside its code. `@mitcsutt/kiln-ui` and `@mitcsutt/kiln-forms` each include agent skills in their npm package, and every page of these docs is also available as Markdown. Both are built from the same pages you're reading, so an agent learns what the docs say, for the version you have installed.
+
+## Agent skills
+
+A skill is a `SKILL.md` file, with optional reference pages, that tells an agent when and how to use part of a library. Kiln's skills sit in each package's `skills/` folder, in the layout [TanStack Intent](https://tanstack.com/intent) discovers. They're generated from these docs pages and published with every release, so installing or updating a package also installs or updates its skills.
+
+`@mitcsutt/kiln-ui` ships four:
+
+| Skill                | Use it when                                                                                                        |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `setup-and-theming`  | Installing kiln-ui: the stylesheet, `ThemeProvider`, a built-in theme and colour mode, and `themeScript` under SSR |
+| `layout-composition` | Laying out a screen with `Stack`, `Inline`, `Grid`, `Split`, `Section` and `Container` instead of custom CSS       |
+| `custom-theme`       | Writing or changing a theme: the token contract, the starter theme, fonts, light and dark values, and contrast     |
+| `design-rules`       | Designing or reviewing a screen, theme or copy against the [design rules](/docs/ui/foundations/design-rules)       |
+
+`@mitcsutt/kiln-forms` ships five:
+
+| Skill            | Use it when                                                                                             |
+| ---------------- | ------------------------------------------------------------------------------------------------------- |
+| `component-mode` | Building a form in JSX: `useAppForm`, typed fields, layouts, conditional fields and submit buttons      |
+| `schema-mode`    | Describing a form as JSON and rendering it with `SchemaForm`, including validating it again on a server |
+| `validation`     | Field rules, a whole-form schema, warnings, async checks and errors returned by a server                |
+| `view-mode`      | Showing a form's values as read-only text, on a detail page or a wizard's review step                   |
+| `custom-fields`  | Adding a field kiln-forms doesn't ship, and registering it so forms and schemas can use it              |
+
+### Load them into your agent
+
+Install the packages, then run Intent once in your project, in an interactive terminal:
+
+```sh
+npx @tanstack/intent@latest install
+```
+
+It asks which installed packages' skills your agent may use, and records the answer as an `intent.skills` list in `package.json`. Then it writes a short block into your agent's instructions file (`AGENTS.md`, `CLAUDE.md`, `.cursorrules` and the like) that tells the agent to find and load the skill that matches its task. There's nothing to set up per package, and nothing to redo when you update Kiln.
+
+If `package.json` already has an `intent.skills` list, Intent loads only the packages it names, so add `@mitcsutt/kiln-ui` and `@mitcsutt/kiln-forms` to it.
+
+To see what's installed, or to read a skill yourself:
+
+```sh
+npx @tanstack/intent@latest list
+npx @tanstack/intent@latest load @mitcsutt/kiln-ui#setup-and-theming
+```
+
+`list` prints every intent-enabled package in the project, with each skill's description and the command that loads it. `load` prints one skill's `SKILL.md`, with its links rewritten to point at the files in `node_modules`.
+
+## Docs as Markdown
+
+For an agent that reads the web, or a reader who wants the source:
+
+- **Any page as Markdown:** add `.md` to its URL (`/docs/ui.md`, `/docs/forms/fields/text-field.md`), or use the **View as Markdown** link under the page title. Examples appear as their source code and API tables as Markdown tables.
+- **[`/llms.txt`](/llms.txt):** a list of every page with its description, in the [llms.txt](https://llmstxt.org) format.
+- **[`/llms-full.txt`](/llms-full.txt):** the whole site in one file.
+
+## Contributing to Kiln
+
+The [Kiln repository](https://github.com/mitcsutt/kiln) has its own instructions for agents that work on Kiln itself:
+
+- `AGENTS.md` at the root (`CLAUDE.md` links to it) orients an agent in the monorepo, and each package has an `AGENTS.md` with its authoring rules.
+- `.claude/skills/` holds step-by-step procedures for the three most common changes: `add-component`, `add-theme-preset` and `add-forms-field`. Each lists every file the change touches, across the package, Storybook, the docs and CI.
+- The package skills are generated from the docs pages, so a skill changes by editing its page and running `pnpm generate:skills`, never by editing `SKILL.md`. The docs tests fail when the two drift apart.

@@ -27,7 +27,8 @@ export default defineConfig({
     // `<Examples of>` expands first, so its headings get ids, reach the table of contents and
     // the search index, and land in the processed Markdown.
     remarkPlugins: (plugins) => [remarkExamples, ...plugins, remarkCodeTitle],
-    // Code renders through kiln-ui's CodeBlock, which is unhighlighted by design.
+    // Code renders through kiln-ui's CodeBlock, highlighted with `@mitcsutt/kiln-ui/highlight`
+    // in the `pre` component, so Fumadocs' own Shiki pass stays off (ADR 0035).
     rehypeCodeOptions: false,
   },
 })

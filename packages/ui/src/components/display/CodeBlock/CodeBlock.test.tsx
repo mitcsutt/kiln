@@ -27,6 +27,65 @@ describe('CodeBlock', () => {
     expect(lines[0]).not.toHaveAttribute('data-highlighted')
   })
 
+  it('colours tokens by type and leaves plain text bare', () => {
+    const { container } = render(
+      <CodeBlock
+        code={'const a = 1\n\nlet b'}
+        tokens={[
+          [
+            { content: 'const', type: 'keyword' },
+            { content: ' a = ' },
+            { content: '1', type: 'constant' },
+          ],
+          [],
+          [{ content: 'let', type: 'keyword' }, { content: ' b' }],
+        ]}
+        copyable={false}
+      />,
+    )
+    const code = must(container.querySelector('code'))
+    expect(code.textContent).toBe('const a = 1\n\nlet b')
+    const tokens = [...code.querySelectorAll('[data-token]')]
+    expect(tokens.map((token) => [token.textContent, token.getAttribute('data-token')])).toEqual([
+      ['const', 'keyword'],
+      ['1', 'constant'],
+      ['let', 'keyword'],
+    ])
+  })
+
+  it('shows the code plain when the tokens are missing a line', () => {
+    const { container } = render(
+      <CodeBlock
+        code={'one\ntwo'}
+        tokens={[[{ content: 'one', type: 'string' }]]}
+        copyable={false}
+      />,
+    )
+    const code = must(container.querySelector('code'))
+    expect(code.textContent).toBe('one\ntwo')
+    expect(code.querySelector('[data-token]')).toBeNull()
+  })
+
+  it('shows the new code plain while the tokens are still for the old code', () => {
+    const { container } = render(
+      <CodeBlock
+        code={'let total = 2\nreturn total\n'}
+        tokens={[
+          [
+            { content: 'const', type: 'keyword' },
+            { content: ' a = ' },
+            { content: '1', type: 'constant' },
+          ],
+          [{ content: 'a', type: 'constant' }],
+        ]}
+        copyable={false}
+      />,
+    )
+    const code = must(container.querySelector('code'))
+    expect(code.textContent).toBe('let total = 2\nreturn total')
+    expect(code.querySelector('[data-token]')).toBeNull()
+  })
+
   it('copies the code and announces it', async () => {
     const user = userEvent.setup()
     const writeText = vi.fn().mockResolvedValue(undefined)

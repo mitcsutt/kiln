@@ -109,11 +109,38 @@
   user-select: none;
 }
 
+/*
+ * Highlighted tokens (the `tokens` prop) take the theme's own text colours, so a theme needs no
+ * code palette of its own: keywords in the accent, strings, constants and names in the tones.
+ */
+.token[data-token='keyword'],
+.token[data-token='tag'] {
+  color: var(--color-accent-text);
+}
+.token[data-token='string'] {
+  color: var(--tone-positive-text);
+}
+.token[data-token='constant'] {
+  color: var(--tone-caution-text);
+}
+.token[data-token='function'],
+.token[data-token='type'] {
+  color: var(--tone-info-text);
+}
+.token[data-token='attribute'],
+.token[data-token='punctuation'] {
+  color: var(--color-ink-muted);
+}
+.token[data-token='comment'] {
+  color: var(--color-ink-subtle);
+}
+
 .line[data-highlighted] {
   background: var(--codeblock-highlight, var(--color-highlight));
   color: var(--color-highlight-ink);
 }
-.line[data-highlighted]::before {
+.line[data-highlighted]::before,
+.line[data-highlighted] .token {
   color: inherit;
 }
 

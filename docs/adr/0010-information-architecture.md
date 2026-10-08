@@ -1,6 +1,6 @@
 # 0010. One nested tree for docs and Storybook
 
-- **Status:** Accepted
+- **Status:** Accepted, amended by [0036](0036-ai-tooling-page.md)
 - **Date:** 2026-10-04
 
 ## Context

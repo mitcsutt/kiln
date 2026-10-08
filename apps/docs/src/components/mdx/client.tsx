@@ -1,6 +1,6 @@
 'use client'
 
-import { Alert, CodeBlock, Stack, Text } from '@mitcsutt/kiln-ui'
+import { Alert, CodeBlock, Stack, Text, type CodeToken } from '@mitcsutt/kiln-ui'
 import type { ReactNode } from 'react'
 import { inlineCode } from '@/lib/inlineCode'
 
@@ -21,10 +21,18 @@ export function Callout({
   )
 }
 
-export function Signature({ code, description }: { code: string; description: string }) {
+export function Signature({
+  code,
+  tokens,
+  description,
+}: {
+  code: string
+  tokens?: CodeToken[][]
+  description: string
+}) {
   return (
     <Stack gap={3} data-kiln-component="signature">
-      <CodeBlock code={code} language="TypeScript" />
+      <CodeBlock code={code} language="TypeScript" tokens={tokens} />
       {description ? <Text as="p">{inlineCode(description)}</Text> : null}
     </Stack>
   )

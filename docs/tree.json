@@ -13,5 +13,5 @@
     "Patterns"
   ],
   "Forms": ["Getting started", "Fields", "Layouts", "Hooks", "Schema"],
-  "Tooling": ["ESLint config", "Prettier config", "TSConfig"]
+  "Tooling": ["ESLint config", "Prettier config", "TSConfig", "AI tooling"]
 }

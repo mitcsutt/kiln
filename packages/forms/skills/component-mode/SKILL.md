@@ -120,6 +120,7 @@ Bound fields are exported with a `Form` prefix (`FormTextField`, `FormAmountFiel
 - [Fields](https://kiln.mitchellsutton.com/docs/forms/fields/text-field): all 28, with the value each one holds.
 - [Layouts](references/form.md): sections, tabs, steps, repeaters and more.
 - [Validation](https://kiln.mitchellsutton.com/docs/forms/getting-started/validation): schemas, field rules, warnings and server errors.
+- [AI tooling](https://kiln.mitchellsutton.com/docs/tooling/ai): the agent skills that ship with kiln-forms, and how to load them into your coding agent.
 
 ## Component mode
 

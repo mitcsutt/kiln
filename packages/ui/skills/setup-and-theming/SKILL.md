@@ -226,6 +226,7 @@ Merges class names, filtering falsy values.
 - [Tokens](https://kiln.mitchellsutton.com/docs/ui/foundations/tokens): the contract every theme fills in.
 - [Theming](https://kiln.mitchellsutton.com/docs/ui/foundations/theming): write a theme of your own.
 - [Button](https://kiln.mitchellsutton.com/docs/ui/actions/button): the reference component.
+- [AI tooling](https://kiln.mitchellsutton.com/docs/tooling/ai): the agent skills that ship with kiln-ui, and how to load them into your coding agent.
 
 ## References
 

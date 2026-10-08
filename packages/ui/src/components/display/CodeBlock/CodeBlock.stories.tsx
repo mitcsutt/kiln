@@ -1,5 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { CodeBlock, Stack } from '@mitcsutt/kiln-ui'
+import { useEffect, useState } from 'react'
+import { expect, waitFor } from 'storybook/test'
+import { CodeBlock, Stack, type CodeToken } from '@mitcsutt/kiln-ui'
+import { highlight } from '@mitcsutt/kiln-ui/highlight'
 
 const invalidate = `import type { QueryClient } from '@tanstack/react-query'
 import { keys } from './keys'
@@ -89,6 +92,36 @@ export const Usage: Story = {
         />
         <CodeBlock language="Shell" code="pnpm add @mitcsutt/kiln-ui" />
       </Stack>
+    )
+  },
+}
+
+/**
+ * `tokens` highlights the code. `highlight` from `@mitcsutt/kiln-ui/highlight` turns JavaScript,
+ * JSX, TypeScript or TSX into tokens, and each kind of token takes a colour from the theme, so
+ * highlighted code follows the theme and the colour mode. Here it runs in the browser, which loads
+ * Shiki and the TSX grammar on the first call.
+ */
+export const Highlighted: Story = {
+  tags: ['docs'],
+  render: function Highlighted() {
+    const [tokens, setTokens] = useState<CodeToken[][]>()
+    useEffect(() => {
+      let current = true
+      void highlight(SOURCE, 'tsx').then((result) => {
+        if (current) setTokens(result)
+      })
+      return () => {
+        current = false
+      }
+    }, [])
+    return (
+      <CodeBlock title="src/App.tsx" language="TSX" code={SOURCE} tokens={tokens} showLineNumbers />
+    )
+  },
+  play: async ({ canvasElement }) => {
+    await waitFor(() =>
+      expect(canvasElement.querySelector('[data-token="keyword"]')).not.toBeNull(),
     )
   },
 }

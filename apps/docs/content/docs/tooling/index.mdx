@@ -23,6 +23,10 @@ Then wire each one up:
 - [Prettier config](/docs/tooling/prettier-config): one line in `package.json`.
 - [TSConfig](/docs/tooling/tsconfig): a `tsconfig.json` that extends a preset.
 
+## For coding agents
+
+Kiln's packages also ship agent skills, and every docs page is available as Markdown. [AI tooling](/docs/tooling/ai) covers both.
+
 ## What they agree on
 
 The three are designed together. ESLint leaves formatting to Prettier (`eslint-config-prettier` comes last), the type-aware rules read the same `tsconfig.json` the compiler uses, and `consistent-type-imports` matches the `verbatimModuleSyntax` the TS presets turn on.

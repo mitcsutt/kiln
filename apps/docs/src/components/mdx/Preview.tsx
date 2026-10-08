@@ -1,6 +1,6 @@
 'use client'
 
-import { CodeBlock } from '@mitcsutt/kiln-ui'
+import { CodeBlock, type CodeToken } from '@mitcsutt/kiln-ui'
 import type { ReactNode } from 'react'
 import styles from './Preview.module.css'
 
@@ -17,10 +17,12 @@ export type PreviewLayout = 'padded' | 'centered' | 'bleed' | 'frame'
  */
 export function Preview({
   code,
+  tokens,
   layout = 'padded',
   children,
 }: {
   code: string
+  tokens?: CodeToken[][]
   layout?: PreviewLayout
   children: ReactNode
 }) {
@@ -29,7 +31,7 @@ export function Preview({
       <div className={styles.stage} data-layout={layout} data-example-stage="">
         {children}
       </div>
-      <CodeBlock code={code} language="TSX" className={styles.code} />
+      <CodeBlock code={code} language="TSX" tokens={tokens} className={styles.code} />
     </figure>
   )
 }

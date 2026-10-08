@@ -54,6 +54,13 @@
       },
       "default": "./src/theme/script.ts"
     },
+    "./highlight": {
+      "kiln-dist": {
+        "types": "./dist/highlight/index.d.ts",
+        "default": "./dist/highlight/index.js"
+      },
+      "default": "./src/highlight/index.ts"
+    },
     "./styles.css": {
       "kiln-dist": "./dist/styles.css",
       "default": "./src/styles/index.css"
@@ -90,6 +97,10 @@
       "./theme-script": {
         "types": "./dist/theme/script.d.ts",
         "default": "./dist/theme/script.js"
+      },
+      "./highlight": {
+        "types": "./dist/highlight/index.d.ts",
+        "default": "./dist/highlight/index.js"
       },
       "./styles.css": "./dist/styles.css",
       "./themes/monograph.css": "./dist/themes/monograph.css",
@@ -137,6 +148,7 @@
     "publint": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
+    "shiki": "catalog:",
     "storybook": "catalog:",
     "typescript": "catalog:",
     "vite": "catalog:",
@@ -144,7 +156,13 @@
   },
   "peerDependencies": {
     "react": "^18.3.0 || ^19.0.0",
-    "react-dom": "^18.3.0 || ^19.0.0"
+    "react-dom": "^18.3.0 || ^19.0.0",
+    "shiki": "^4.0.0"
+  },
+  "peerDependenciesMeta": {
+    "shiki": {
+      "optional": true
+    }
   },
   "engines": {
     "node": ">=22.12.0"
