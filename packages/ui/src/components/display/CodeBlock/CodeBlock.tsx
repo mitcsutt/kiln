@@ -40,7 +40,8 @@ export interface CodeBlockProps extends Omit<HTMLAttributes<HTMLElement>, 'title
   language?: string
   /**
    * Syntax highlighting for `code`: one array of tokens per line, as `highlight` from
-   * `@mitcsutt/kiln-ui/highlight` returns them. Without it the code is plain.
+   * `@mitcsutt/kiln-ui/highlight` returns them. Without it, or when the tokens don't spell out
+   * `code` line for line (say, tokens from a previous `code`), the code is plain.
    */
   tokens?: CodeToken[][]
   /** Filename or caption shown in the header: `src/queries/keys.ts`. */
@@ -120,6 +121,11 @@ export const CodeBlock = forwardRef<HTMLElement, CodeBlockProps>(function CodeBl
   const captionId = useId()
   const source = code.replace(/\n+$/, '')
   const lines = source.split('\n')
+  const lineTokens =
+    tokens?.length === lines.length &&
+    tokens.every((line, i) => line.map((token) => token.content).join('') === lines[i])
+      ? tokens
+      : undefined
   const highlighted = new Set(highlightLines)
   const hasHeader = Boolean(title) || Boolean(language) || copyable
 
@@ -189,8 +195,8 @@ export const CodeBlock = forwardRef<HTMLElement, CodeBlockProps>(function CodeBl
               data-line={showLineNumbers ? i + 1 : undefined}
               data-highlighted={highlighted.has(i + 1) || undefined}
             >
-              {tokens?.[i]
-                ? tokens[i].map((token, j) =>
+              {lineTokens?.[i]
+                ? lineTokens[i].map((token, j) =>
                     token.type ? (
                       <span key={j} className={styles.token} data-token={token.type}>
                         {token.content}

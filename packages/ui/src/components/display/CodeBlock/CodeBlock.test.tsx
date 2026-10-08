@@ -53,7 +53,7 @@ describe('CodeBlock', () => {
     ])
   })
 
-  it('shows a line without tokens as plain text', () => {
+  it('shows the code plain when the tokens are missing a line', () => {
     const { container } = render(
       <CodeBlock
         code={'one\ntwo'}
@@ -61,7 +61,29 @@ describe('CodeBlock', () => {
         copyable={false}
       />,
     )
-    expect(must(container.querySelector('code')).textContent).toBe('one\ntwo')
+    const code = must(container.querySelector('code'))
+    expect(code.textContent).toBe('one\ntwo')
+    expect(code.querySelector('[data-token]')).toBeNull()
+  })
+
+  it('shows the new code plain while the tokens are still for the old code', () => {
+    const { container } = render(
+      <CodeBlock
+        code={'let total = 2\nreturn total\n'}
+        tokens={[
+          [
+            { content: 'const', type: 'keyword' },
+            { content: ' a = ' },
+            { content: '1', type: 'constant' },
+          ],
+          [{ content: 'a', type: 'constant' }],
+        ]}
+        copyable={false}
+      />,
+    )
+    const code = must(container.querySelector('code'))
+    expect(code.textContent).toBe('let total = 2\nreturn total')
+    expect(code.querySelector('[data-token]')).toBeNull()
   })
 
   it('copies the code and announces it', async () => {
