@@ -26,6 +26,13 @@ function Projects({ sort, onSort }: { sort: TableSort; onSort: () => void }) {
 }
 
 describe('Table', () => {
+  it('aligns cells on the baseline by default, with valign to centre them', () => {
+    const { rerender } = render(<Table aria-label="Group B" />)
+    expect(screen.getByRole('table')).toHaveAttribute('data-valign', 'baseline')
+    rerender(<Table aria-label="Group B" valign="middle" />)
+    expect(screen.getByRole('table')).toHaveAttribute('data-valign', 'middle')
+  })
+
   it('sets the table and its scroll wrapper on a surface only when asked', () => {
     const body = (
       <Table.Body>

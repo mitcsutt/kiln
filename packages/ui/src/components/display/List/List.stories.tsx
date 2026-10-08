@@ -378,8 +378,8 @@ const STANDINGS = [
 
 /**
  * `surface="surface"` sets the whole list on one sheet, so the rows read as rows on a busy page or
- * a textured canvas. Highlighted rows, rails, muted rows and dividers all sit inside it, and
- * `surface="raised"` stands the sheet on the theme's surface shadow.
+ * a textured canvas. Rows run edge to edge: a highlighted row is a band across the sheet and a
+ * rail is the row's edge. `surface="raised"` stands the sheet on the theme's surface shadow.
  */
 export const OnASurface: Story = {
   name: 'On a surface',
@@ -411,8 +411,8 @@ const SURFACES: ListSurface[] = ['surface', 'raised']
 
 /**
  * Every row state on both sheets: selected and highlighted fills, hover on linked rows, rails,
- * a muted row and compact density. The play test checks each sheet has a fill and that a filled
- * row stays inside the sheet's edge.
+ * a muted row and compact density. The play test checks each sheet has a fill, clips its rows to
+ * its corners, and that a railed row meets the sheet's inner edge on both sides.
  */
 export const SurfaceStates: Story = {
   render: () => (
@@ -463,11 +463,12 @@ export const SurfaceStates: Story = {
     for (const surface of SURFACES) {
       const list = canvas.getByRole('list', { name: `Group A standings on ${surface}` })
       await expect(getComputedStyle(list).backgroundColor).not.toBe('rgba(0, 0, 0, 0)')
-      const highlighted = must(list.querySelector('[data-highlighted] > *'), 'the highlighted row')
+      await expect(getComputedStyle(list).overflow).toBe('hidden')
+      const item = must(list.querySelector('[data-highlighted]'), 'the highlighted row')
       const sheet = list.getBoundingClientRect()
-      const row = highlighted.getBoundingClientRect()
-      await expect(row.left).toBeGreaterThan(sheet.left)
-      await expect(row.right).toBeLessThan(sheet.right)
+      const row = item.getBoundingClientRect()
+      await expect(Math.abs(row.left - (sheet.left + list.clientLeft))).toBeLessThan(1)
+      await expect(Math.abs(row.right - (sheet.right - list.clientLeft))).toBeLessThan(1)
     }
   },
 }

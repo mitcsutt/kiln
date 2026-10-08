@@ -5,6 +5,7 @@ export type {
   TableVariant,
   TableSurface,
   TableAlign,
+  TableVerticalAlign,
   TableSort,
   TableColumnWidth,
   TableRowProps,

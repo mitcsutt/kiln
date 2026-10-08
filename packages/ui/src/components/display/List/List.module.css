@@ -1,7 +1,7 @@
 /*
  * Component tokens (themes may set any of these on [data-theme]):
- *   --list-inset         default var(--space-2) — row padding-inline (room for fills)
- *   --list-row-radius    default var(--radius-field) — hover/selected/highlighted fill
+ *   --list-inset         default var(--space-2), var(--space-4) on a surface — row padding-inline
+ *   --list-row-radius    default var(--radius-field), square on a surface — row fills
  *   --list-trailing-size default: the row's text size (same as the title)
  *   --list-rail-width    default var(--space-1) — the categorical rail of a `color` row
  *   --list-surface-bg    default var(--color-surface), var(--color-surface-raised) when `raised`
@@ -15,8 +15,8 @@
  * the only content a button may hold.
  */
 .list {
-  --_inset: var(--list-inset, var(--space-2));
-  --_row-radius: var(--list-row-radius, var(--radius-field));
+  --_inset: var(--space-2);
+  --_row-radius: var(--radius-field);
 
   display: flex;
   flex-direction: column;
@@ -29,22 +29,18 @@
 
 /*
  * On a surface: the whole list on one sheet, with Card's edges (`outline` for surface,
- * `raised` for raised), so rows read as rows on a textured or busy canvas. The sheet pads
- * by --space-1, so a filled row sits inside its edge with the nested radius (outer minus
- * padding and edge), and rows take a wider inset so text clears the edge.
+ * `raised` for raised), so rows read as rows on a textured or busy canvas. Rows run edge to
+ * edge and the sheet clips them to its radius, so a fill is a band across the sheet, and a
+ * categorical rail sits flush with the sheet's inner edge and follows its corners on the
+ * first and last rows. Rows take a wider inset so text clears the edge.
  */
 .list[data-surface] {
-  --_sheet-pad: var(--space-1);
-  --_sheet-radius: var(--list-surface-radius, var(--radius-surface));
-  --_inset: var(--list-inset, var(--space-3));
-  --_row-radius: var(
-    --list-row-radius,
-    max(0px, calc(var(--_sheet-radius) - var(--_sheet-pad) - var(--border-width)))
-  );
+  --_inset: var(--space-4);
+  --_row-radius: 0px;
 
-  padding: var(--_sheet-pad);
+  overflow: hidden;
   border: var(--border-width) solid var(--color-line);
-  border-radius: var(--_sheet-radius);
+  border-radius: var(--list-surface-radius, var(--radius-surface));
   background: var(--list-surface-bg, var(--color-surface));
 }
 .list[data-surface='raised'] {
@@ -82,9 +78,9 @@
   min-inline-size: 0;
   margin: 0;
   padding-block: var(--_py);
-  padding-inline: var(--_inset);
+  padding-inline: var(--list-inset, var(--_inset));
   border: 0;
-  border-radius: var(--_row-radius);
+  border-radius: var(--list-row-radius, var(--_row-radius));
   background: var(--_fill);
   color: var(--_fill-ink);
   font: inherit;
@@ -169,6 +165,14 @@
   border-radius: var(--radius-chip);
   background: var(--_cat);
 }
+/* On a sheet the rail is an edge of the row: full height, square, and over the rule above it. */
+.list[data-surface] > .item[data-color]::before {
+  inset-block: 0;
+  border-radius: 0;
+}
+.list[data-surface][data-divided] > .item + .item[data-color]::before {
+  inset-block-start: calc(var(--border-width) * -1);
+}
 .item[data-color='1'] {
   --_cat: var(--color-cat-1);
 }
@@ -194,7 +198,7 @@
   --_cat: var(--color-cat-8);
 }
 .item[data-color] > .row {
-  padding-inline-start: calc(var(--_inset) + var(--space-2));
+  padding-inline-start: calc(var(--list-inset, var(--_inset)) + var(--space-2));
 }
 @media (hover: hover) {
   .item[data-interactive]:not([data-highlighted], [data-selected]) > .row:hover {

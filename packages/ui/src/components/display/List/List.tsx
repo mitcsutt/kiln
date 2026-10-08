@@ -25,8 +25,8 @@ export interface ListProps extends HTMLAttributes<HTMLUListElement> {
   as?: ListElement
   /**
    * Set the rows on a sheet so they read as rows, not text on the page: `surface` is the
-   * surface fill inside a hairline edge, `raised` stands on the theme's surface shadow. Row
-   * fills, rails and dividers sit inside it. Default `none`.
+   * surface fill inside a hairline edge, `raised` stands on the theme's surface shadow. Rows run
+   * edge to edge, clipped to the sheet's corners. Default `none`.
    */
   surface?: ListSurface
 }
@@ -45,8 +45,8 @@ export interface ListProps extends HTMLAttributes<HTMLUListElement> {
  *
  * On a busy page, or a theme whose canvas has a texture, `surface="surface"` sets the whole list
  * on one sheet, and `surface="raised"` stands it on the theme's surface shadow. The rows stay rows
- * inside it: a highlighted, selected or hovered row fills inside the sheet's edge, and rails and
- * dividers keep their place.
+ * on it and run edge to edge: a highlighted, selected or hovered row is a band across the sheet,
+ * and a categorical rail is the row's edge, following the sheet's corners at either end.
  *
  * @privateRemarks
  * The workhorse row list: leaderboards, team members, invoices, recent work. Rows are

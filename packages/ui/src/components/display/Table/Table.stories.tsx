@@ -1,11 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Amount, Badge, Table, type TableSort, type TableSurface } from '@mitcsutt/kiln-ui'
+import {
+  Amount,
+  Badge,
+  Inline,
+  Media,
+  Stack,
+  Table,
+  Tag,
+  type TableSort,
+  type TagColor,
+  type TableSurface,
+} from '@mitcsutt/kiln-ui'
 import { useState, useMemo } from 'react'
 import { expect } from 'storybook/test'
 import { must } from '#test/must'
 import { Grid } from '#components/layout/Grid'
-import { Stack } from '#components/layout/Stack'
-import { Tag, type TagColor } from '#components/display/Tag'
 import { Numeral } from '#components/typography/Numeral'
 import { Text } from '#components/typography/Text'
 import { LiveIndicator } from '#components/feedback/LiveIndicator'
@@ -501,8 +510,8 @@ const GROUP_A = [
 
 /**
  * `surface="surface"` sets the table on one sheet, so its rows read as rows on a busy page or a
- * textured canvas. Rules, rails and highlighted rows stay inside the sheet's edge, and
- * `surface="raised"` stands it on the theme's surface shadow.
+ * textured canvas. Rows run edge to edge: a highlighted row is a band across the sheet and a rail
+ * is the row's edge. `surface="raised"` stands it on the theme's surface shadow.
  */
 export const OnASurface: Story = {
   name: 'On a surface',
@@ -538,7 +547,7 @@ const SURFACES: TableSurface[] = ['surface', 'raised']
 /**
  * Both sheets with every row treatment: rules, rails, a highlighted row with tone figures, a
  * muted row, hover on interactive rows, stripes and a totals footer. The play test checks each
- * sheet has a fill and that the highlighted row stays inside its edge.
+ * sheet has a fill and that a railed row meets the sheet's inner edge on both sides.
  */
 export const SurfaceStates: Story = {
   render: () => (
@@ -611,8 +620,68 @@ export const SurfaceStates: Story = {
       const row = must(sheet.querySelector('[data-highlighted]'), 'the highlighted row')
       const edge = sheet.getBoundingClientRect()
       const fill = row.getBoundingClientRect()
-      await expect(fill.left).toBeGreaterThan(edge.left)
-      await expect(fill.right).toBeLessThan(edge.right)
+      await expect(Math.abs(fill.left - (edge.left + sheet.clientLeft))).toBeLessThan(1)
+      await expect(Math.abs(fill.right - (edge.right - sheet.clientLeft))).toBeLessThan(1)
+    }
+  },
+}
+
+const pennant =
+  'data:image/svg+xml,' +
+  encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="20"><rect width="30" height="20" fill="#2f5d8a"/><rect y="7" width="30" height="6" fill="#f2f0ea"/></svg>',
+  )
+
+/**
+ * When cells differ in height, such as a crest beside the team name or an owner's `Tag` under it,
+ * `valign="middle"` centres every cell in the row, so the figures sit level with the name. The
+ * default, `baseline`, lines up the first line of text, and `valign="top"` pins cells to the top.
+ */
+export const CellsOfDifferentHeights: Story = {
+  name: 'Cells of different heights',
+  tags: ['docs'],
+  render: function CellsOfDifferentHeights() {
+    return (
+      <Table density="compact" valign="middle" aria-label="Coastal league, group B">
+        <Table.Head>
+          <Table.Row>
+            <Table.HeaderCell width="fill">Team</Table.HeaderCell>
+            <Table.HeaderCell numeric>GD</Table.HeaderCell>
+            <Table.HeaderCell numeric>Pts</Table.HeaderCell>
+          </Table.Row>
+        </Table.Head>
+        <Table.Body>
+          {GROUP_A.map((row) => (
+            <Table.Row key={row.team} color={row.color}>
+              <Table.Cell rowHeader>
+                <Inline gap={2} align="center">
+                  <Media size="sm" ratio="3/2" src={pennant} alt="" />
+                  <Stack gap={1} align="start">
+                    {row.team}
+                    <Tag color={row.color} size="sm">
+                      {row.owner}
+                    </Tag>
+                  </Stack>
+                </Inline>
+              </Table.Cell>
+              <Table.Cell numeric>{row.gd > 0 ? `+${String(row.gd)}` : row.gd}</Table.Cell>
+              <Table.Cell numeric>{row.points}</Table.Cell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
+    )
+  },
+  play: async ({ canvas }) => {
+    for (const row of canvas.getAllByRole('row').slice(1)) {
+      const cells = row.querySelectorAll('td')
+      const points = must(cells[cells.length - 1], 'the points cell')
+      const text = document.createRange()
+      text.selectNodeContents(points)
+      const figure = text.getBoundingClientRect()
+      const box = row.getBoundingClientRect()
+      const middle = (rect: DOMRect) => rect.top + rect.height / 2
+      await expect(Math.abs(middle(figure) - middle(box))).toBeLessThan(2)
     }
   },
 }
