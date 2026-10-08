@@ -10,6 +10,7 @@
     "box",
     "divider",
     "aspect-ratio",
+    "scroll-area",
     "app-shell",
     "action-bar",
     "visually-hidden"

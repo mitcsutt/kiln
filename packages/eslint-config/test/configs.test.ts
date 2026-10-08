@@ -215,6 +215,15 @@ describe('react', () => {
     expect(await ruleIds(linter, 'Logo.tsx', code)).toContain('jsx-a11y/alt-text')
   })
 
+  it('lets a named scroll region take focus, and nothing else non-interactive', async () => {
+    const rule = 'jsx-a11y/no-noninteractive-tabindex'
+    const region =
+      'export function Bracket() {\n  return <div role="region" aria-label="Bracket" tabIndex={0} />\n}\n'
+    expect(await ruleIds(linter, 'Bracket.tsx', region)).not.toContain(rule)
+    const article = region.replace('role="region"', 'role="article"')
+    expect(await ruleIds(linter, 'Article.tsx', article)).toContain(rule)
+  })
+
   it('keeps component files Fast Refresh friendly', async () => {
     const code =
       'export const helper = () => 1\n\nexport function Button() {\n  return <button type="button" />\n}\n'
