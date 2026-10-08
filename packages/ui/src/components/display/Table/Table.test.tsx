@@ -26,6 +26,26 @@ function Projects({ sort, onSort }: { sort: TableSort; onSort: () => void }) {
 }
 
 describe('Table', () => {
+  it('sets the table and its scroll wrapper on a surface only when asked', () => {
+    const body = (
+      <Table.Body>
+        <Table.Row>
+          <Table.Cell>Northwind Studio</Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    )
+    const { rerender } = render(<Table label="Invoices">{body}</Table>)
+    expect(screen.getByRole('table')).not.toHaveAttribute('data-surface')
+    expect(screen.getByRole('region')).not.toHaveAttribute('data-surface')
+    rerender(
+      <Table label="Invoices" surface="surface">
+        {body}
+      </Table>,
+    )
+    expect(screen.getByRole('table')).toHaveAttribute('data-surface', 'surface')
+    expect(screen.getByRole('region')).toHaveAttribute('data-surface', 'surface')
+  })
+
   it('forwards the ref to the table and labels the scroll region', () => {
     const ref = createRef<HTMLTableElement>()
     render(

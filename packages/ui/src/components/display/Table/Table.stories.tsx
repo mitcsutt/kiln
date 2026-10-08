@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Amount, Badge, Table, type TableSort } from '@mitcsutt/kiln-ui'
+import { Amount, Badge, Table, type TableSort, type TableSurface } from '@mitcsutt/kiln-ui'
 import { useState, useMemo } from 'react'
+import { expect } from 'storybook/test'
+import { must } from '#test/must'
+import { Grid } from '#components/layout/Grid'
 import { Stack } from '#components/layout/Stack'
 import { Tag, type TagColor } from '#components/display/Tag'
 import { Numeral } from '#components/typography/Numeral'
@@ -11,13 +14,22 @@ import { StatusDot } from '#components/feedback/StatusDot'
 const meta = {
   title: 'UI/Display/Table',
   component: Table,
-  args: { density: 'regular', variant: 'rules', striped: false, stickyHeader: false },
+  args: {
+    density: 'regular',
+    variant: 'rules',
+    striped: false,
+    surface: 'none',
+    stickyHeader: false,
+  },
 } satisfies Meta<typeof Table>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-/** A small timetable. Try `variant`, `density`, `striped` and `stickyHeader` in the controls. */
+/**
+ * A small timetable. Try `variant`, `density`, `striped`, `surface` and `stickyHeader` in the
+ * controls.
+ */
 export const Playground: Story = {
   render: (args) => (
     <Stack style={{ maxWidth: '32rem' }}>
@@ -478,4 +490,129 @@ export const OwnersAndOutOfPlay: Story = {
       </Table.Body>
     </Table>
   ),
+}
+
+const GROUP_A = [
+  { team: 'Kelso Bay Rovers', owner: 'Noor', color: 1, played: 3, gd: 6, points: 9 },
+  { team: 'Harbour Square Athletic', owner: 'Kofi', color: 4, played: 3, gd: 2, points: 7 },
+  { team: 'Old Quay United', owner: 'Ines', color: 6, played: 3, gd: -3, points: 4 },
+  { team: 'North Point Wanderers', owner: 'Kofi', color: 4, played: 3, gd: -5, points: 1 },
+] as const
+
+/**
+ * `surface="surface"` sets the table on one sheet, so its rows read as rows on a busy page or a
+ * textured canvas. Rules, rails and highlighted rows stay inside the sheet's edge, and
+ * `surface="raised"` stands it on the theme's surface shadow.
+ */
+export const OnASurface: Story = {
+  name: 'On a surface',
+  tags: ['docs'],
+  render: function OnASurface() {
+    return (
+      <Table surface="surface" density="compact" aria-label="Coastal league, group A">
+        <Table.Head>
+          <Table.Row>
+            <Table.HeaderCell width="fill">Team</Table.HeaderCell>
+            <Table.HeaderCell numeric>P</Table.HeaderCell>
+            <Table.HeaderCell numeric>GD</Table.HeaderCell>
+            <Table.HeaderCell numeric>Pts</Table.HeaderCell>
+          </Table.Row>
+        </Table.Head>
+        <Table.Body>
+          {GROUP_A.map((row, i) => (
+            <Table.Row key={row.team} color={row.color} highlighted={i === 1} muted={i === 3}>
+              <Table.Cell rowHeader>{row.team}</Table.Cell>
+              <Table.Cell numeric>{row.played}</Table.Cell>
+              <Table.Cell numeric>{row.gd > 0 ? `+${String(row.gd)}` : row.gd}</Table.Cell>
+              <Table.Cell numeric>{row.points}</Table.Cell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
+    )
+  },
+}
+
+const SURFACES: TableSurface[] = ['surface', 'raised']
+
+/**
+ * Both sheets with every row treatment: rules, rails, a highlighted row with tone figures, a
+ * muted row, hover on interactive rows, stripes and a totals footer. The play test checks each
+ * sheet has a fill and that the highlighted row stays inside its edge.
+ */
+export const SurfaceStates: Story = {
+  render: () => (
+    <Grid minItemWidth="md" gap={6}>
+      {SURFACES.map((surface) => (
+        <Stack key={surface} gap={5}>
+          <Table surface={surface} label={`Group A on ${surface}`}>
+            <Table.Head>
+              <Table.Row>
+                <Table.HeaderCell>Team</Table.HeaderCell>
+                <Table.HeaderCell>Owner</Table.HeaderCell>
+                <Table.HeaderCell numeric>GD</Table.HeaderCell>
+                <Table.HeaderCell numeric>Pts</Table.HeaderCell>
+              </Table.Row>
+            </Table.Head>
+            <Table.Body>
+              {GROUP_A.map((row, i) => (
+                <Table.Row
+                  key={row.team}
+                  color={row.color}
+                  highlighted={i === 1}
+                  muted={i === 3}
+                  interactive
+                >
+                  <Table.Cell rowHeader>{row.team}</Table.Cell>
+                  <Table.Cell>
+                    <Tag color={row.color}>{row.owner}</Tag>
+                  </Table.Cell>
+                  <Table.Cell numeric>
+                    <Numeral value={row.gd} signDisplay="exceptZero" tone="auto" />
+                  </Table.Cell>
+                  <Table.Cell numeric>{row.points}</Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table>
+          <Table surface={surface} variant="plain" striped density="compact">
+            <Table.Caption>Fares collected, week 14</Table.Caption>
+            <Table.Head>
+              <Table.Row>
+                <Table.HeaderCell>Route</Table.HeaderCell>
+                <Table.HeaderCell numeric>Fares</Table.HeaderCell>
+              </Table.Row>
+            </Table.Head>
+            <Table.Body>
+              {STOPS.map((stop) => (
+                <Table.Row key={stop.name}>
+                  <Table.Cell rowHeader>{stop.name}</Table.Cell>
+                  <Table.Cell numeric>{stop.boardings}</Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+            <Table.Foot>
+              <Table.Row>
+                <Table.Cell>Total</Table.Cell>
+                <Table.Cell numeric>
+                  {STOPS.reduce((sum, stop) => sum + stop.boardings, 0)}
+                </Table.Cell>
+              </Table.Row>
+            </Table.Foot>
+          </Table>
+        </Stack>
+      ))}
+    </Grid>
+  ),
+  play: async ({ canvas }) => {
+    for (const surface of SURFACES) {
+      const sheet = canvas.getByRole('region', { name: `Group A on ${surface}` })
+      await expect(getComputedStyle(sheet).backgroundColor).not.toBe('rgba(0, 0, 0, 0)')
+      const row = must(sheet.querySelector('[data-highlighted]'), 'the highlighted row')
+      const edge = sheet.getBoundingClientRect()
+      const fill = row.getBoundingClientRect()
+      await expect(fill.left).toBeGreaterThan(edge.left)
+      await expect(fill.right).toBeLessThan(edge.right)
+    }
+  },
 }

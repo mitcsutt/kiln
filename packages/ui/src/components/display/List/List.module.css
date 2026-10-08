@@ -4,6 +4,8 @@
  *   --list-row-radius    default var(--radius-field) — hover/selected/highlighted fill
  *   --list-trailing-size default: the row's text size (same as the title)
  *   --list-rail-width    default var(--space-1) — the categorical rail of a `color` row
+ *   --list-surface-bg    default var(--color-surface), var(--color-surface-raised) when `raised`
+ *   --list-surface-radius default var(--radius-surface) — the sheet of a `surface` list
  *   --highlight-tone-{positive,caution,critical,info}-text, --highlight-accent-text
  *                        tone text inside a highlighted row (shared with Table)
  *
@@ -13,6 +15,9 @@
  * the only content a button may hold.
  */
 .list {
+  --_inset: var(--list-inset, var(--space-2));
+  --_row-radius: var(--list-row-radius, var(--radius-field));
+
   display: flex;
   flex-direction: column;
   margin: 0;
@@ -20,6 +25,32 @@
   list-style: none;
   font-family: var(--font-text);
   color: var(--color-ink);
+}
+
+/*
+ * On a surface: the whole list on one sheet, with Card's edges (`outline` for surface,
+ * `raised` for raised), so rows read as rows on a textured or busy canvas. The sheet pads
+ * by --space-1, so a filled row sits inside its edge with the nested radius (outer minus
+ * padding and edge), and rows take a wider inset so text clears the edge.
+ */
+.list[data-surface] {
+  --_sheet-pad: var(--space-1);
+  --_sheet-radius: var(--list-surface-radius, var(--radius-surface));
+  --_inset: var(--list-inset, var(--space-3));
+  --_row-radius: var(
+    --list-row-radius,
+    max(0px, calc(var(--_sheet-radius) - var(--_sheet-pad) - var(--border-width)))
+  );
+
+  padding: var(--_sheet-pad);
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--_sheet-radius);
+  background: var(--list-surface-bg, var(--color-surface));
+}
+.list[data-surface='raised'] {
+  border-color: var(--color-line-strong);
+  background: var(--list-surface-bg, var(--color-surface-raised));
+  box-shadow: var(--shadow-surface);
 }
 
 .item {
@@ -51,9 +82,9 @@
   min-inline-size: 0;
   margin: 0;
   padding-block: var(--_py);
-  padding-inline: var(--list-inset, var(--space-2));
+  padding-inline: var(--_inset);
   border: 0;
-  border-radius: var(--list-row-radius, var(--radius-field));
+  border-radius: var(--_row-radius);
   background: var(--_fill);
   color: var(--_fill-ink);
   font: inherit;
@@ -163,7 +194,7 @@
   --_cat: var(--color-cat-8);
 }
 .item[data-color] > .row {
-  padding-inline-start: calc(var(--list-inset, var(--space-2)) + var(--space-2));
+  padding-inline-start: calc(var(--_inset) + var(--space-2));
 }
 @media (hover: hover) {
   .item[data-interactive]:not([data-highlighted], [data-selected]) > .row:hover {

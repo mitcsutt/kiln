@@ -13,6 +13,8 @@ import styles from './Table.module.css'
 
 export type TableDensity = 'compact' | 'regular'
 export type TableVariant = 'rules' | 'plain'
+/** `surface` and `raised` set the table on one sheet, like `Card`'s `outline` and `raised`. */
+export type TableSurface = 'none' | 'surface' | 'raised'
 export type TableAlign = 'start' | 'center' | 'end'
 export type TableSort = 'asc' | 'desc' | 'none'
 /** `fill` takes the spare width (the name column); `min` shrinks to its content. */
@@ -25,6 +27,12 @@ export interface TableProps extends TableHTMLAttributes<HTMLTableElement> {
   variant?: TableVariant
   /** Alternate row fills. Off by default — rules usually read better. */
   striped?: boolean
+  /**
+   * Set the table on a sheet so its rows read as rows, not text on the page: `surface` is the
+   * surface fill inside a hairline edge, `raised` stands on the theme's surface shadow. Rules,
+   * fills and rails sit inside it. Default `none`.
+   */
+  surface?: TableSurface
   /**
    * Keep the header visible while rows scroll. The wrapper becomes the scroll container
    * (capped by `--table-max-height`, default 70vh), since a horizontally scrolling wrapper
@@ -51,6 +59,12 @@ export interface TableProps extends TableHTMLAttributes<HTMLTableElement> {
  * `density="compact"` for dense data, `striped` for alternating fills (rules usually read better),
  * and `stickyHeader` to keep the header in view while the rows scroll inside the table.
  *
+ * ## On a surface
+ *
+ * On a busy page, or a theme whose canvas has a texture, `surface="surface"` sets the table on one
+ * sheet, and `surface="raised"` stands it on the theme's surface shadow. Highlighted rows, rails
+ * and rules stay inside the sheet's edge, and the sheet scrolls sideways with the table.
+ *
  * @privateRemarks
  * A semantic, styled data table: project boards, ledgers, audit logs. The wrapper scrolls
  * horizontally on narrow screens; `ref` and native props go to the `<table>`.
@@ -62,6 +76,7 @@ const TableRoot = forwardRef<HTMLTableElement, TableProps>(function Table(
     density = 'regular',
     variant = 'rules',
     striped = false,
+    surface = 'none',
     stickyHeader = false,
     label,
     className,
@@ -73,6 +88,7 @@ const TableRoot = forwardRef<HTMLTableElement, TableProps>(function Table(
     <div
       className={styles.scroll}
       data-kiln-component=""
+      data-surface={surface === 'none' ? undefined : surface}
       data-sticky-header={stickyHeader || undefined}
       role={label ? 'region' : undefined}
       aria-label={label}
@@ -84,6 +100,7 @@ const TableRoot = forwardRef<HTMLTableElement, TableProps>(function Table(
         data-density={density}
         data-variant={variant}
         data-striped={striped || undefined}
+        data-surface={surface === 'none' ? undefined : surface}
         data-sticky-header={stickyHeader || undefined}
         {...rest}
       />

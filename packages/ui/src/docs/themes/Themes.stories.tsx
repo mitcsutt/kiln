@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Button } from '#components/actions/Button'
 import { Badge } from '#components/display/Badge'
 import { Card } from '#components/display/Card'
+import { List } from '#components/display/List'
 import { Stat } from '#components/display/Stat'
 import { Tag } from '#components/display/Tag'
 import { Alert } from '#components/feedback/Alert'
@@ -15,6 +16,7 @@ import { Heading } from '#components/typography/Heading'
 import { Prose } from '#components/typography/Prose'
 import { Text } from '#components/typography/Text'
 import { THEME_META, ThemeScope, type BuiltInThemeName } from '#theme'
+import type { CategoryColor } from '#utils/tokens'
 
 /*
  * UI/Themes: one specimen per built-in theme, rendered in its own ThemeScope so the
@@ -29,6 +31,19 @@ const meta = {
 
 export default meta
 type Story = StoryObj<typeof meta>
+
+const CROSSINGS: {
+  time: string
+  route: string
+  seats: number
+  color?: CategoryColor
+  you?: boolean
+}[] = [
+  { time: '07:15', route: 'Harbour Square to Kelso Bay', seats: 41, color: 4 },
+  { time: '09:40', route: 'Kelso Bay to Marram Point', seats: 23, you: true },
+  { time: '11:05', route: 'Marram Point to Old Quay', seats: 0, color: 3 },
+  { time: '12:30', route: 'Old Quay to Harbour Square', seats: 58, color: 1 },
+]
 
 function Specimen({ theme }: { theme: BuiltInThemeName }) {
   const { label, description, stylesheet } = THEME_META[theme]
@@ -90,6 +105,27 @@ function Specimen({ theme }: { theme: BuiltInThemeName }) {
               <Alert tone="info" title="Timetable change">
                 From 1 November the first crossing leaves at 07:15.
               </Alert>
+            </Stack>
+            <Stack>
+              <List as="ol" surface="surface" density="compact" aria-label="Crossings today">
+                {CROSSINGS.map((crossing) => (
+                  <List.Item
+                    key={crossing.time}
+                    color={crossing.color}
+                    highlighted={crossing.you}
+                    muted={crossing.seats === 0}
+                  >
+                    <List.Leading>{crossing.time}</List.Leading>
+                    <List.Content>
+                      {crossing.route}
+                      {crossing.you ? <List.Description>Your booking</List.Description> : null}
+                    </List.Content>
+                    <List.Trailing>
+                      {crossing.seats === 0 ? 'Full' : `${String(crossing.seats)} seats`}
+                    </List.Trailing>
+                  </List.Item>
+                ))}
+              </List>
             </Stack>
           </Grid>
 

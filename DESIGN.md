@@ -70,6 +70,7 @@ Beyond the checks, a theme has a subject, and each colour, face, radius and easi
 - **Asymmetric splits** (`<Split ratio="5/7">`), a hang column for labels, at least one element per page that breaks the column.
 - **Vary section rhythm.** The space scale is non-linear (4 8 12 16 24 32 48 64 96 144…) and adjacent `<Section>`s should not use the same `space`.
 - **Not everything is a card.** Prefer lists, tables, rules and whitespace. A card needs a reason: it's interactive, draggable, or a self-contained object.
+- **A list on a busy canvas gets one sheet, not a card per row.** Where rows would float on a textured or coloured canvas, `List` and `Table` take `surface` (`surface` or `raised`): the whole list sits on one sheet and its rows, fills, rails and rules stay rows inside it.
 - The hero is the subject's most characteristic thing: the open invoices, the release board, today's orders. Not a stat row with a gradient.
 
 ### Components & depth

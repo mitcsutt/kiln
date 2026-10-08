@@ -325,12 +325,19 @@ export type {
   DataListOrientation,
 } from './components/display/DataList'
 export { List } from './components/display/List'
-export type { ListProps, ListItemProps, ListDensity, ListElement } from './components/display/List'
+export type {
+  ListProps,
+  ListItemProps,
+  ListDensity,
+  ListElement,
+  ListSurface,
+} from './components/display/List'
 export { Table } from './components/display/Table'
 export type {
   TableProps,
   TableDensity,
   TableVariant,
+  TableSurface,
   TableAlign,
   TableSort,
   TableRowProps,
