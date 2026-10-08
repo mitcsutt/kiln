@@ -30,6 +30,25 @@ export function Usage() {
 }
 ```
 
+## Accent panel
+
+`surface="accent"` is a rounded panel in the accent colour, for the one thing on a page that should shout. Text, links and buttons inside it take the accent's own ink.
+
+```tsx
+import { Box, Stack, Text } from '@mitcsutt/kiln-ui'
+
+export function AccentPanel() {
+  return (
+    <Box surface="accent" padding={5} radius="surface">
+      <Stack gap={2}>
+        <Text weight="medium">Ferry tickets go on sale Monday at 09:00</Text>
+        <Text size="sm">Weekend crossings sell out within the hour, so set a reminder.</Text>
+      </Stack>
+    </Box>
+  )
+}
+```
+
 ## API
 
 `BoxProps`:
@@ -39,7 +58,8 @@ export function Usage() {
 | `padding` | `Responsive<Space>` |  | Padding on every side. Responsive. |
 | `paddingX` | `Responsive<Space>` |  | Inline (left/right) padding; overrides `padding` on that axis. Responsive. |
 | `paddingY` | `Responsive<Space>` |  | Block (top/bottom) padding; overrides `padding` on that axis. Responsive. |
-| `surface` | `'none' \| 'surface' \| 'canvas' \| 'sunken' \| 'raised' \| 'inverse' \| 'cat-6' \| 'cat-3' \| 'cat-5' \| 'cat-1' \| 'cat-2' \| 'cat-4' \| 'cat-7' \| 'cat-8'` | `none` | Background fill. `inverse` and the categorical `cat-1` to `cat-8` (one person's or team's colour, matching their `Tag`) also re-point ink and line colours for its children. |
+| `surface` | `'none' \| 'accent' \| 'surface' \| 'canvas' \| 'sunken' \| 'raised' \| 'inverse' \| 'cat-6' \| 'cat-3' \| 'cat-5' \| 'cat-1' \| 'cat-2' \| 'cat-4' \| 'cat-7' \| 'cat-8'` | `none` | Background fill. `inverse`, `accent` and the categorical `cat-1` to `cat-8` (one person's or team's colour, matching their `Tag`) also re-point ink, line and accent colours for its children, so they stay legible on the fill. |
+| `adaptTones` | `boolean` | `false` | On an `inverse`, `accent` or categorical fill, re-point the status tones too, so tone text and soft tone fills (a `Stat` delta, a toned `Numeral` or `Text`, a soft `Badge`) stay AA on the fill. On `accent` and categorical fills tone text becomes the fill's ink, so the sign, glyph or label carries the status; on `inverse` each tone keeps its hue. Off by default, so tones keep the page's colours. No effect on other surfaces. |
 | `border` | `boolean` | `false` | Hairline border in `--color-line`. One edge treatment per element — a border *or* a fill. |
 | `radius` | `'none' \| 'surface' \| 'field' \| 'media'` | `none` | Corner radius, by role. |
 | `as` | `'div' \| 'section' \| 'article' \| 'aside' \| 'header' \| 'footer' \| 'li' \| 'span'` | `div` |  |

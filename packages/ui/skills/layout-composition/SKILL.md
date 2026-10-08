@@ -18,6 +18,7 @@ sources:
   - mitcsutt/kiln:packages/ui/src/components/layout/ActionBar/ActionBar.tsx
   - mitcsutt/kiln:packages/ui/src/components/layout/Divider/Divider.tsx
   - mitcsutt/kiln:packages/ui/src/components/layout/AspectRatio/AspectRatio.tsx
+  - mitcsutt/kiln:packages/ui/src/components/layout/ScrollArea/ScrollArea.tsx
   - mitcsutt/kiln:packages/ui/src/components/layout/VisuallyHidden/VisuallyHidden.tsx
   - mitcsutt/kiln:apps/docs/content/docs/ui/patterns/dashboard.mdx
   - mitcsutt/kiln:apps/docs/content/docs/ui/patterns/settings.mdx
@@ -431,6 +432,7 @@ Read a reference when its description matches the task:
 - [ActionBar](references/action-bar.md): The row of actions at the end of a form or dialog. Cancel, save, continue.
 - [Divider](references/divider.md): A hairline rule between groups of content, optionally labelled, horizontal or vertical.
 - [AspectRatio](references/aspect-ratio.md): A frame that keeps its proportions, for images, video, maps and charts.
+- [ScrollArea](references/scroll-area.md): A scroll container for content wider or taller than the page, such as a bracket, a timeline or a wide board, that keyboard users can reach and scroll.
 - [VisuallyHidden](references/visually-hidden.md): Content that screen readers announce and sighted readers don't need to see.
 - [Dashboard](references/dashboard.md): A week of operations at a glance, built from stats, a table and a list. No tiles, no gradients, no cards that don't need to be cards.
 - [Settings](references/settings.md): A settings page with section navigation, labelled fields, grouped switches and a guarded destructive action.

@@ -1,8 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Amount, Badge, Table, type TableSort } from '@mitcsutt/kiln-ui'
+import {
+  Amount,
+  Badge,
+  Inline,
+  Media,
+  Stack,
+  Table,
+  Tag,
+  type TableSort,
+  type TagColor,
+  type TableSurface,
+} from '@mitcsutt/kiln-ui'
 import { useState, useMemo } from 'react'
-import { Stack } from '#components/layout/Stack'
-import { Tag, type TagColor } from '#components/display/Tag'
+import { expect } from 'storybook/test'
+import { must } from '#test/must'
+import { Grid } from '#components/layout/Grid'
 import { Numeral } from '#components/typography/Numeral'
 import { Text } from '#components/typography/Text'
 import { LiveIndicator } from '#components/feedback/LiveIndicator'
@@ -11,13 +23,22 @@ import { StatusDot } from '#components/feedback/StatusDot'
 const meta = {
   title: 'UI/Display/Table',
   component: Table,
-  args: { density: 'regular', variant: 'rules', striped: false, stickyHeader: false },
+  args: {
+    density: 'regular',
+    variant: 'rules',
+    striped: false,
+    surface: 'none',
+    stickyHeader: false,
+  },
 } satisfies Meta<typeof Table>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-/** A small timetable. Try `variant`, `density`, `striped` and `stickyHeader` in the controls. */
+/**
+ * A small timetable. Try `variant`, `density`, `striped`, `surface` and `stickyHeader` in the
+ * controls.
+ */
 export const Playground: Story = {
   render: (args) => (
     <Stack style={{ maxWidth: '32rem' }}>
@@ -478,4 +499,189 @@ export const OwnersAndOutOfPlay: Story = {
       </Table.Body>
     </Table>
   ),
+}
+
+const GROUP_A = [
+  { team: 'Kelso Bay Rovers', owner: 'Noor', color: 1, played: 3, gd: 6, points: 9 },
+  { team: 'Harbour Square Athletic', owner: 'Kofi', color: 4, played: 3, gd: 2, points: 7 },
+  { team: 'Old Quay United', owner: 'Ines', color: 6, played: 3, gd: -3, points: 4 },
+  { team: 'North Point Wanderers', owner: 'Kofi', color: 4, played: 3, gd: -5, points: 1 },
+] as const
+
+/**
+ * `surface="surface"` sets the table on one sheet, so its rows read as rows on a busy page or a
+ * textured canvas. Rows run edge to edge: a highlighted row is a band across the sheet and a rail
+ * is the row's edge. `surface="raised"` stands it on the theme's surface shadow.
+ */
+export const OnASurface: Story = {
+  name: 'On a surface',
+  tags: ['docs'],
+  render: function OnASurface() {
+    return (
+      <Table surface="surface" density="compact" aria-label="Coastal league, group A">
+        <Table.Head>
+          <Table.Row>
+            <Table.HeaderCell width="fill">Team</Table.HeaderCell>
+            <Table.HeaderCell numeric>P</Table.HeaderCell>
+            <Table.HeaderCell numeric>GD</Table.HeaderCell>
+            <Table.HeaderCell numeric>Pts</Table.HeaderCell>
+          </Table.Row>
+        </Table.Head>
+        <Table.Body>
+          {GROUP_A.map((row, i) => (
+            <Table.Row key={row.team} color={row.color} highlighted={i === 1} muted={i === 3}>
+              <Table.Cell rowHeader>{row.team}</Table.Cell>
+              <Table.Cell numeric>{row.played}</Table.Cell>
+              <Table.Cell numeric>{row.gd > 0 ? `+${String(row.gd)}` : row.gd}</Table.Cell>
+              <Table.Cell numeric>{row.points}</Table.Cell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
+    )
+  },
+}
+
+const SURFACES: TableSurface[] = ['surface', 'raised']
+
+/**
+ * Both sheets with every row treatment: rules, rails, a highlighted row with tone figures, a
+ * muted row, hover on interactive rows, stripes and a totals footer. The play test checks each
+ * sheet has a fill and that a railed row meets the sheet's inner edge on both sides.
+ */
+export const SurfaceStates: Story = {
+  render: () => (
+    <Grid minItemWidth="md" gap={6}>
+      {SURFACES.map((surface) => (
+        <Stack key={surface} gap={5}>
+          <Table surface={surface} label={`Group A on ${surface}`}>
+            <Table.Head>
+              <Table.Row>
+                <Table.HeaderCell>Team</Table.HeaderCell>
+                <Table.HeaderCell>Owner</Table.HeaderCell>
+                <Table.HeaderCell numeric>GD</Table.HeaderCell>
+                <Table.HeaderCell numeric>Pts</Table.HeaderCell>
+              </Table.Row>
+            </Table.Head>
+            <Table.Body>
+              {GROUP_A.map((row, i) => (
+                <Table.Row
+                  key={row.team}
+                  color={row.color}
+                  highlighted={i === 1}
+                  muted={i === 3}
+                  interactive
+                >
+                  <Table.Cell rowHeader>{row.team}</Table.Cell>
+                  <Table.Cell>
+                    <Tag color={row.color}>{row.owner}</Tag>
+                  </Table.Cell>
+                  <Table.Cell numeric>
+                    <Numeral value={row.gd} signDisplay="exceptZero" tone="auto" />
+                  </Table.Cell>
+                  <Table.Cell numeric>{row.points}</Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table>
+          <Table surface={surface} variant="plain" striped density="compact">
+            <Table.Caption>Fares collected, week 14</Table.Caption>
+            <Table.Head>
+              <Table.Row>
+                <Table.HeaderCell>Route</Table.HeaderCell>
+                <Table.HeaderCell numeric>Fares</Table.HeaderCell>
+              </Table.Row>
+            </Table.Head>
+            <Table.Body>
+              {STOPS.map((stop) => (
+                <Table.Row key={stop.name}>
+                  <Table.Cell rowHeader>{stop.name}</Table.Cell>
+                  <Table.Cell numeric>{stop.boardings}</Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+            <Table.Foot>
+              <Table.Row>
+                <Table.Cell>Total</Table.Cell>
+                <Table.Cell numeric>
+                  {STOPS.reduce((sum, stop) => sum + stop.boardings, 0)}
+                </Table.Cell>
+              </Table.Row>
+            </Table.Foot>
+          </Table>
+        </Stack>
+      ))}
+    </Grid>
+  ),
+  play: async ({ canvas }) => {
+    for (const surface of SURFACES) {
+      const sheet = canvas.getByRole('region', { name: `Group A on ${surface}` })
+      await expect(getComputedStyle(sheet).backgroundColor).not.toBe('rgba(0, 0, 0, 0)')
+      const row = must(sheet.querySelector('[data-highlighted]'), 'the highlighted row')
+      const edge = sheet.getBoundingClientRect()
+      const fill = row.getBoundingClientRect()
+      await expect(Math.abs(fill.left - (edge.left + sheet.clientLeft))).toBeLessThan(1)
+      await expect(Math.abs(fill.right - (edge.right - sheet.clientLeft))).toBeLessThan(1)
+    }
+  },
+}
+
+const pennant =
+  'data:image/svg+xml,' +
+  encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="30" height="20"><rect width="30" height="20" fill="#2f5d8a"/><rect y="7" width="30" height="6" fill="#f2f0ea"/></svg>',
+  )
+
+/**
+ * When cells differ in height, such as a crest beside the team name or an owner's `Tag` under it,
+ * `valign="middle"` centres every cell in the row, so the figures sit level with the name. The
+ * default, `baseline`, lines up the first line of text, and `valign="top"` pins cells to the top.
+ */
+export const CellsOfDifferentHeights: Story = {
+  name: 'Cells of different heights',
+  tags: ['docs'],
+  render: function CellsOfDifferentHeights() {
+    return (
+      <Table density="compact" valign="middle" aria-label="Coastal league, group B">
+        <Table.Head>
+          <Table.Row>
+            <Table.HeaderCell width="fill">Team</Table.HeaderCell>
+            <Table.HeaderCell numeric>GD</Table.HeaderCell>
+            <Table.HeaderCell numeric>Pts</Table.HeaderCell>
+          </Table.Row>
+        </Table.Head>
+        <Table.Body>
+          {GROUP_A.map((row) => (
+            <Table.Row key={row.team} color={row.color}>
+              <Table.Cell rowHeader>
+                <Inline gap={2} align="center">
+                  <Media size="sm" ratio="3/2" src={pennant} alt="" />
+                  <Stack gap={1} align="start">
+                    {row.team}
+                    <Tag color={row.color} size="sm">
+                      {row.owner}
+                    </Tag>
+                  </Stack>
+                </Inline>
+              </Table.Cell>
+              <Table.Cell numeric>{row.gd > 0 ? `+${String(row.gd)}` : row.gd}</Table.Cell>
+              <Table.Cell numeric>{row.points}</Table.Cell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
+    )
+  },
+  play: async ({ canvas }) => {
+    for (const row of canvas.getAllByRole('row').slice(1)) {
+      const cells = row.querySelectorAll('td')
+      const points = must(cells[cells.length - 1], 'the points cell')
+      const text = document.createRange()
+      text.selectNodeContents(points)
+      const figure = text.getBoundingClientRect()
+      const box = row.getBoundingClientRect()
+      const middle = (rect: DOMRect) => rect.top + rect.height / 2
+      await expect(Math.abs(middle(figure) - middle(box))).toBeLessThan(2)
+    }
+  },
 }

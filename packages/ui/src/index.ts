@@ -73,6 +73,8 @@ export type {
 } from './components/layout/AppShell'
 export { VisuallyHidden } from './components/layout/VisuallyHidden'
 export type { VisuallyHiddenProps } from './components/layout/VisuallyHidden'
+export { ScrollArea } from './components/layout/ScrollArea'
+export type { ScrollAreaProps, ScrollAreaAxis } from './components/layout/ScrollArea'
 export { ActionBar } from './components/layout/ActionBar'
 export type {
   ActionBarProps,
@@ -325,13 +327,21 @@ export type {
   DataListOrientation,
 } from './components/display/DataList'
 export { List } from './components/display/List'
-export type { ListProps, ListItemProps, ListDensity, ListElement } from './components/display/List'
+export type {
+  ListProps,
+  ListItemProps,
+  ListDensity,
+  ListElement,
+  ListSurface,
+} from './components/display/List'
 export { Table } from './components/display/Table'
 export type {
   TableProps,
   TableDensity,
   TableVariant,
+  TableSurface,
   TableAlign,
+  TableVerticalAlign,
   TableSort,
   TableRowProps,
   TableHeaderCellProps,

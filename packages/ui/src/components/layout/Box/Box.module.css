@@ -2,7 +2,7 @@
  * Responsive pattern: see layout/Stack/Stack.module.css. Axis padding (--box-px/-py)
  * falls back to the all-sides value (--box-p) per breakpoint.
  *
- * --box-fill / --box-on (read-only): the fill and ink of an `inverse` Box.
+ * --box-fill / --box-on (read-only): the fill and ink of an `inverse`, `accent` or categorical Box.
  */
 .box {
   --_p: var(--box-p-base, 0px);
@@ -63,10 +63,14 @@
   background-color: var(--color-surface-raised);
   color: var(--color-ink);
 }
-/* Inverse and categorical fills re-point the colour roles for descendants — same approach as Section. */
+/* Inverse, accent and categorical fills re-point the colour roles for descendants — same approach as Section. */
 .box[data-surface='inverse'] {
   --box-fill: var(--color-surface-inverse);
   --box-on: var(--color-ink-inverse);
+}
+.box[data-surface='accent'] {
+  --box-fill: var(--color-accent);
+  --box-on: var(--color-accent-ink);
 }
 .box[data-surface='cat-1'] {
   --box-fill: var(--color-cat-1);
@@ -95,7 +99,7 @@
 .box[data-surface^='cat-'] {
   --box-on: var(--color-cat-ink);
 }
-.box:is([data-surface='inverse'], [data-surface^='cat-']) {
+.box:is([data-surface='inverse'], [data-surface='accent'], [data-surface^='cat-']) {
   --color-ink: var(--box-on);
   --color-ink-muted: color-mix(in oklab, var(--box-on) 76%, var(--box-fill));
   --color-ink-subtle: color-mix(in oklab, var(--box-on) 60%, var(--box-fill));
@@ -112,8 +116,8 @@
   background-color: var(--box-fill);
   color: var(--box-on);
 }
-/* A categorical fill only clears AA against its own ink: no headroom for muted steps. */
-.box[data-surface^='cat-'] {
+/* An accent or categorical fill only clears AA against its own ink: no headroom for muted steps. */
+.box:is([data-surface='accent'], [data-surface^='cat-']) {
   --color-ink-muted: var(--box-on);
   --color-ink-subtle: var(--box-on);
   --color-surface: var(--box-fill);
@@ -123,6 +127,42 @@
 .box:is([data-surface='inverse'], [data-surface^='cat-']) > * {
   --color-surface-inverse: var(--box-on);
   --color-ink-inverse: var(--box-fill);
+}
+/* On an accent fill the accent itself becomes the fill's ink, so a primary action still stands out. */
+.box[data-surface='accent'] > * {
+  --color-accent: var(--box-on);
+  --color-accent-hover: color-mix(in oklab, var(--box-on) 82%, var(--box-fill));
+  --color-accent-ink: var(--box-fill);
+  --color-accent-soft: color-mix(in oklab, var(--box-on) 12%, var(--box-fill));
+}
+
+/*
+ * Opt-in (`adaptTones`, so existing bands keep the page's tones): status tones follow the band,
+ * like the accent text does. An accent or categorical fill only clears AA against its own ink,
+ * so tone text there is that ink (the sign, glyph or label carries the status) and soft tone
+ * fills are the fill itself, like the nested surfaces. An inverse band has headroom, so each
+ * tone keeps its hue, mixed toward the band's ink until it reads on the fill.
+ * Solid tone fills keep their own ink and need no change.
+ */
+.box[data-adapt-tones]:is([data-surface='accent'], [data-surface^='cat-']) {
+  --tone-positive-text: var(--box-on);
+  --tone-caution-text: var(--box-on);
+  --tone-critical-text: var(--box-on);
+  --tone-info-text: var(--box-on);
+  --tone-positive-soft: var(--box-fill);
+  --tone-caution-soft: var(--box-fill);
+  --tone-critical-soft: var(--box-fill);
+  --tone-info-soft: var(--box-fill);
+}
+.box[data-adapt-tones][data-surface='inverse'] {
+  --tone-positive-text: color-mix(in oklab, var(--tone-positive) 40%, var(--box-on));
+  --tone-caution-text: color-mix(in oklab, var(--tone-caution) 40%, var(--box-on));
+  --tone-critical-text: color-mix(in oklab, var(--tone-critical) 40%, var(--box-on));
+  --tone-info-text: color-mix(in oklab, var(--tone-info) 40%, var(--box-on));
+  --tone-positive-soft: color-mix(in oklab, var(--tone-positive) 18%, var(--box-fill));
+  --tone-caution-soft: color-mix(in oklab, var(--tone-caution) 18%, var(--box-fill));
+  --tone-critical-soft: color-mix(in oklab, var(--tone-critical) 18%, var(--box-fill));
+  --tone-info-soft: color-mix(in oklab, var(--tone-info) 18%, var(--box-fill));
 }
 
 .box[data-border] {

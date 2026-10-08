@@ -5,9 +5,12 @@
  *   --table-head-size          default var(--text-sm)
  *   --table-head-weight        default var(--label-weight)
  *   --table-head-transform     default var(--heading-transform)
- *   --table-head-bg            default var(--color-canvas) — only painted when stickyHeader
+ *   --table-head-bg            default var(--color-canvas), the sheet's fill on a `surface`
+ *                              table — only painted when stickyHeader
  *   --table-max-height         default 70vh — scroll height when stickyHeader
  *   --table-rail-width         default var(--space-1) — the categorical rail of a `color` row
+ *   --table-surface-bg         default var(--color-surface), var(--color-surface-raised) when `raised`
+ *   --table-surface-radius     default var(--radius-surface) — the sheet of a `surface` table
  *   --table-foot-rule          the rule over totals, default var(--border-width-strong) solid
  *                              var(--color-line-strong) — Ledger draws the accountant's double rule
  *   --highlight-tone-{positive,caution,critical,info}-text, --highlight-accent-text
@@ -27,6 +30,26 @@
   overflow: auto;
   max-block-size: var(--table-max-height, 70vh);
 }
+/*
+ * On a surface: the wrapper is the sheet, with Card's edges (`outline` for surface, `raised`
+ * for raised), so it scrolls sideways with the table and rows read as rows on a textured or
+ * busy canvas. Rows run edge to edge and the scroll container clips them to its radius, so a
+ * highlighted row is a band across the sheet and a categorical rail sits flush with the
+ * sheet's inner edge, following its corners on the first and last rows.
+ */
+.scroll[data-surface] {
+  --_sheet-bg: var(--table-surface-bg, var(--color-surface));
+
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--table-surface-radius, var(--radius-surface));
+  background: var(--_sheet-bg);
+}
+.scroll[data-surface='raised'] {
+  --_sheet-bg: var(--table-surface-bg, var(--color-surface-raised));
+
+  border-color: var(--color-line-strong);
+  box-shadow: var(--shadow-surface);
+}
 .scroll:focus-visible {
   outline: 2px solid var(--color-focus);
   outline-offset: 2px;
@@ -35,6 +58,9 @@
 .table {
   --_py: var(--space-2);
   --_px: var(--space-3);
+  --_edge: var(--space-2);
+  --_row-radius: var(--radius-field);
+  --_valign: baseline;
 
   inline-size: 100%;
   border-collapse: separate;
@@ -44,9 +70,24 @@
   line-height: var(--leading-snug);
   color: var(--color-ink);
 }
+.table[data-valign='middle'] {
+  --_valign: middle;
+}
+.table[data-valign='top'] {
+  --_valign: top;
+}
 .table[data-density='compact'] {
   --_py: var(--space-1);
   --_px: var(--space-2);
+}
+/* On a sheet rows get more air, and the end cells a wider inset so text clears the edge. */
+.table[data-surface] {
+  --_py: var(--space-3);
+  --_edge: var(--space-4);
+  --_row-radius: 0px;
+}
+.table[data-surface][data-density='compact'] {
+  --_py: var(--space-2);
 }
 
 .caption {
@@ -56,6 +97,11 @@
   font-size: var(--text-sm);
   text-align: start;
 }
+/* On a sheet the caption lines up with the first column instead of the sheet's edge. */
+.table[data-surface] > .caption {
+  padding-block-start: var(--space-3);
+  padding-inline: var(--_edge);
+}
 
 /* ── Cells ─────────────────────────────────────────────────────────────── */
 
@@ -63,15 +109,15 @@
 .cell {
   padding: var(--_py) var(--_px);
   text-align: start;
-  vertical-align: baseline;
+  vertical-align: var(--_valign);
 }
 .headerCell:first-child,
 .cell:first-child {
-  padding-inline-start: var(--space-2);
+  padding-inline-start: var(--_edge);
 }
 .headerCell:last-child,
 .cell:last-child {
-  padding-inline-end: var(--space-2);
+  padding-inline-end: var(--_edge);
 }
 /* Figure columns are narrow; tighter gutters keep a 10-column figures table on a phone. */
 :is(.headerCell, .cell)[data-numeric] {
@@ -129,6 +175,10 @@
 }
 .table[data-variant='rules'] .body > .row:last-child > .cell {
   border-block-end-color: var(--color-line-strong);
+}
+/* On a sheet, its edge closes the table: no closing rule just inside it. */
+.table[data-surface][data-variant='rules'] .body:last-child > .row:last-child > .cell {
+  border-block-end-color: transparent;
 }
 
 .table[data-striped] .body > .row:nth-child(even) > .cell {
@@ -189,12 +239,12 @@
 }
 /* Round the ends of a highlighted row so the fill reads as a marker, not a stripe. */
 .row[data-highlighted] > .cell:first-child {
-  border-start-start-radius: var(--radius-field);
-  border-end-start-radius: var(--radius-field);
+  border-start-start-radius: var(--_row-radius);
+  border-end-start-radius: var(--_row-radius);
 }
 .row[data-highlighted] > .cell:last-child {
-  border-start-end-radius: var(--radius-field);
-  border-end-end-radius: var(--radius-field);
+  border-start-end-radius: var(--_row-radius);
+  border-end-end-radius: var(--_row-radius);
 }
 
 .row[data-interactive] {
@@ -211,7 +261,7 @@
 /* A categorical rail at the row's start: whose row it is, in their Tag's colour. */
 .row[data-color] > .cell:first-child {
   position: relative;
-  padding-inline-start: calc(var(--space-2) + var(--space-2));
+  padding-inline-start: calc(var(--_edge) + var(--space-2));
 }
 .row[data-color] > .cell:first-child::before {
   content: '';
@@ -221,6 +271,14 @@
   inline-size: var(--table-rail-width, var(--space-1));
   border-radius: var(--radius-chip);
   background: var(--_cat);
+}
+/* On a sheet the rail is an edge of the row: full height, square, and over the rule below it. */
+.table[data-surface] .row[data-color] > .cell:first-child::before {
+  inset-block: 0;
+  border-radius: 0;
+}
+.table[data-surface][data-variant='rules'] .body .row[data-color] > .cell:first-child::before {
+  inset-block-end: calc(var(--border-width) * -1);
 }
 .row[data-color='1'] {
   --_cat: var(--color-cat-1);
@@ -276,6 +334,9 @@
   inset-block-start: 0;
   z-index: 1;
   background: var(--table-head-bg, var(--color-canvas));
+}
+.table[data-surface][data-sticky-header] .head .headerCell {
+  background: var(--table-head-bg, var(--_sheet-bg));
 }
 
 /* ── Sort button ───────────────────────────────────────────────────────── */

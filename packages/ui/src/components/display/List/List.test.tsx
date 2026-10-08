@@ -23,6 +23,15 @@ describe('List', () => {
     expect(within(list).getAllByRole('listitem')).toHaveLength(2)
   })
 
+  it('sets the list on a surface only when asked', () => {
+    const { rerender } = render(<List aria-label="Standings" />)
+    expect(screen.getByRole('list')).not.toHaveAttribute('data-surface')
+    rerender(<List aria-label="Standings" surface="raised" />)
+    expect(screen.getByRole('list')).toHaveAttribute('data-surface', 'raised')
+    rerender(<List aria-label="Standings" surface="none" />)
+    expect(screen.getByRole('list')).not.toHaveAttribute('data-surface')
+  })
+
   it('renders an ordered list when as="ol"', () => {
     const { container } = render(<List as="ol" />)
     expect(container.querySelector('ol')).toHaveAttribute('role', 'list')

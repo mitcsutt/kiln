@@ -65,6 +65,7 @@ export const skills: SkillSpec[] = [
       'ui/layout/action-bar',
       'ui/layout/divider',
       'ui/layout/aspect-ratio',
+      'ui/layout/scroll-area',
       'ui/layout/visually-hidden',
       'ui/patterns/dashboard',
       'ui/patterns/settings',

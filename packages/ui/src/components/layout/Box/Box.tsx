@@ -8,7 +8,14 @@ import { visibilityClass, type VisibilityProps } from '#utils/visibility'
 export type BoxElement =
   'div' | 'span' | 'section' | 'article' | 'aside' | 'header' | 'footer' | 'li'
 export type BoxSurface =
-  'none' | 'canvas' | 'surface' | 'sunken' | 'raised' | 'inverse' | `cat-${CategoryColor}`
+  | 'none'
+  | 'canvas'
+  | 'surface'
+  | 'sunken'
+  | 'raised'
+  | 'inverse'
+  | 'accent'
+  | `cat-${CategoryColor}`
 export type BoxRadius = 'none' | 'field' | 'surface' | 'media'
 
 export interface BoxProps extends HTMLAttributes<HTMLElement>, VisibilityProps {
@@ -19,10 +26,19 @@ export interface BoxProps extends HTMLAttributes<HTMLElement>, VisibilityProps {
   /** Block (top/bottom) padding; overrides `padding` on that axis. Responsive. */
   paddingY?: Responsive<Space>
   /**
-   * Background fill. `inverse` and the categorical `cat-1` to `cat-8` (one person's or team's
-   * colour, matching their `Tag`) also re-point ink and line colours for its children.
+   * Background fill. `inverse`, `accent` and the categorical `cat-1` to `cat-8` (one person's or
+   * team's colour, matching their `Tag`) also re-point ink, line and accent colours for its
+   * children, so they stay legible on the fill.
    */
   surface?: BoxSurface
+  /**
+   * On an `inverse`, `accent` or categorical fill, re-point the status tones too, so tone text
+   * and soft tone fills (a `Stat` delta, a toned `Numeral` or `Text`, a soft `Badge`) stay AA on
+   * the fill. On `accent` and categorical fills tone text becomes the fill's ink, so the sign,
+   * glyph or label carries the status; on `inverse` each tone keeps its hue. Off by default, so
+   * tones keep the page's colours. No effect on other surfaces.
+   */
+  adaptTones?: boolean
   /** Hairline border in `--color-line`. One edge treatment per element — a border *or* a fill. */
   border?: boolean
   /** Corner radius, by role. */
@@ -50,6 +66,7 @@ export const Box = forwardRef<HTMLElement, BoxProps>(function Box(
     paddingX,
     paddingY,
     surface = 'none',
+    adaptTones = false,
     border = false,
     radius = 'none',
     as: Comp = 'div',
@@ -67,6 +84,7 @@ export const Box = forwardRef<HTMLElement, BoxProps>(function Box(
       ref={ref}
       className={cx(styles.box, visibilityClass({ hideBelow, hideAbove }), className)}
       data-surface={surface === 'none' ? undefined : surface}
+      data-adapt-tones={adaptTones || undefined}
       data-border={border || undefined}
       data-radius={radius === 'none' ? undefined : radius}
       style={mergeStyles(

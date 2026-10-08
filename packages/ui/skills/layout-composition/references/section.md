@@ -62,7 +62,7 @@ export function CategoricalBand() {
 
 ## Surfaces and bands
 
-`surface` is `canvas`, `surface`, `sunken`, `inverse`, `accent`, or a categorical `cat-1` to `cat-8` (a band in one person's or team's colour, matching their `Tag`). On `inverse`, `accent` and the categorical bands, the colour roles flip for everything inside, so text, links, focus rings and buttons stay legible with no extra props. `divider` adds a rule at the `top`, `bottom` or `both`.
+`surface` is `canvas`, `surface`, `sunken`, `inverse`, `accent`, or a categorical `cat-1` to `cat-8` (a band in one person's or team's colour, matching their `Tag`). On `inverse`, `accent` and the categorical bands, the colour roles flip for everything inside, so text, links, focus rings and buttons stay legible with no extra props. Add `adaptTones` to flip the status tones too. `divider` adds a rule at the `top`, `bottom` or `both`.
 
 ## API
 
@@ -72,6 +72,7 @@ export function CategoricalBand() {
 | --- | --- | --- | --- |
 | `space` | `Responsive<Space>` | `8` | Block padding (top and bottom), as a step on the space scale. Responsive. Vary it: adjacent sections should not share the same step. Default `8`. |
 | `surface` | `'accent' \| 'surface' \| 'canvas' \| 'sunken' \| 'inverse' \| 'cat-6' \| 'cat-3' \| 'cat-5' \| 'cat-1' \| 'cat-2' \| 'cat-4' \| 'cat-7' \| 'cat-8'` |  | Full-bleed band colour. Omit to stay transparent on the canvas. `inverse`, `accent` and the categorical `cat-1` to `cat-8` re-point the ink, line and focus colours so children stay legible. |
+| `adaptTones` | `boolean` | `false` | On an `inverse`, `accent` or categorical band, re-point the status tones too, so tone text and soft tone fills (a `Stat` delta, a toned `Numeral` or `Text`, a soft `Badge`) stay AA on the band. On `accent` and categorical bands tone text becomes the band's ink, so the sign, glyph or label carries the status; on `inverse` each tone keeps its hue. Off by default, so tones keep the page's colours. No effect on other surfaces. |
 | `divider` | `'top' \| 'bottom' \| 'both'` |  | A hairline across the full bleed at the top, bottom or both edges. |
 | `as` | `'div' \| 'section' \| 'article' \| 'aside' \| 'header' \| 'footer'` | `section` |  |
 | `hideBelow` | `'sm' \| 'md' \| 'lg' \| 'xl'` |  | Hide below this breakpoint (e.g. `md` → hidden on phones, shown from 48em). |

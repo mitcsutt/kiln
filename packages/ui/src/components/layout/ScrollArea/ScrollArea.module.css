@@ -1,0 +1,43 @@
+/*
+ * Component tokens (themes may set any of these on [data-theme]):
+ *   --scroll-area-thumb  default var(--color-line-strong) — the scrollbar's thumb
+ *
+ * Scrolling stays inside the area on its own axis (overscroll-behavior), so reaching the end
+ * of a wide bracket doesn't swipe the browser back a page.
+ */
+.scrollArea {
+  display: block;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--scroll-area-thumb, var(--color-line-strong)) transparent;
+}
+.scrollArea[data-axis='y'] {
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-x: auto;
+  overscroll-behavior-y: contain;
+}
+.scrollArea[data-axis='both'] {
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+/*
+ * Sideways, the content keeps at least its natural width instead of squeezing to fit, so a row
+ * of cards scrolls rather than shrinking; content narrower than the area still fills it.
+ */
+.scrollArea:not([data-axis='y']) > * {
+  min-inline-size: max-content;
+}
+.scrollArea:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+/* `hidden` wins over the display above (author CSS otherwise beats the UA [hidden] rule). */
+.scrollArea[hidden] {
+  display: none;
+}

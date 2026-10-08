@@ -27,6 +27,12 @@ describe('Box', () => {
     expect(el).not.toHaveAttribute('data-surface')
     expect(el).not.toHaveAttribute('data-radius')
     expect(el).not.toHaveAttribute('data-border')
+    expect(el).not.toHaveAttribute('data-adapt-tones')
+  })
+
+  it('re-points status tones only when asked', () => {
+    const { container } = render(<Box surface="cat-2" adaptTones />)
+    expect(container.firstElementChild).toHaveAttribute('data-adapt-tones')
   })
 
   it('renders the requested element and forwards refs', () => {

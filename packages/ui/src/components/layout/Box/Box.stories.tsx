@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Box, Stack, Text } from '@mitcsutt/kiln-ui'
+import { Badge, Box, Grid, Numeral, Stack, Stat, Text, type BoxSurface } from '@mitcsutt/kiln-ui'
 import { Inline } from '#components/layout/Inline'
 import { Body, Figure, Label, Title } from '#components/layout/_story/StoryKit'
 
@@ -34,7 +34,7 @@ export const Playground: Story = {
 export const Surfaces: Story = {
   render: () => (
     <Stack gap={3}>
-      {(['canvas', 'surface', 'sunken', 'raised', 'inverse'] as const).map((surface) => (
+      {(['canvas', 'surface', 'sunken', 'raised', 'inverse', 'accent'] as const).map((surface) => (
         <Box
           key={surface}
           surface={surface}
@@ -100,5 +100,73 @@ export const CategoricalSurfaces: Story = {
         </Box>
       ))}
     </Inline>
+  ),
+}
+
+/**
+ * `surface="accent"` is a rounded panel in the accent colour, for the one thing on a page that
+ * should shout. Text, links and buttons inside it take the accent's own ink.
+ */
+export const AccentPanel: Story = {
+  name: 'Accent panel',
+  tags: ['docs'],
+  render: () => (
+    <Box surface="accent" padding={5} radius="surface">
+      <Stack gap={2}>
+        <Text weight="medium">Ferry tickets go on sale Monday at 09:00</Text>
+        <Text size="sm">Weekend crossings sell out within the hour, so set a reminder.</Text>
+      </Stack>
+    </Box>
+  ),
+}
+
+const FILLS: BoxSurface[] = [
+  'inverse',
+  'accent',
+  'cat-1',
+  'cat-2',
+  'cat-3',
+  'cat-4',
+  'cat-5',
+  'cat-6',
+  'cat-7',
+  'cat-8',
+]
+
+/**
+ * Status tones on every fill that re-points ink, with `adaptTones`: tone figures, a Stat's delta
+ * and soft and solid badges. Axe checks each one's contrast in every theme and mode.
+ */
+export const StatusOnFills: Story = {
+  render: () => (
+    <Grid minItemWidth="sm" gap={3}>
+      {FILLS.map((surface) => (
+        <Box key={surface} surface={surface} adaptTones padding={4} radius="surface">
+          <Stack gap={3}>
+            <Stat
+              size="sm"
+              label={`Seats on ${surface}`}
+              value="23"
+              delta={{ value: '8 since yesterday', direction: 'down', tone: 'critical' }}
+            />
+            <Inline gap={3}>
+              <Numeral value={12} signDisplay="exceptZero" tone="positive" />
+              <Numeral value={4} tone="caution" />
+              <Numeral value={-6} signDisplay="exceptZero" tone="critical" />
+              <Text tone="positive">On time</Text>
+            </Inline>
+            <Inline gap={2}>
+              <Badge tone="positive">On time</Badge>
+              <Badge tone="caution">Busy</Badge>
+              <Badge tone="critical">Cancelled</Badge>
+              <Badge tone="info">New route</Badge>
+              <Badge tone="positive" variant="solid">
+                Boarding
+              </Badge>
+            </Inline>
+          </Stack>
+        </Box>
+      ))}
+    </Grid>
   ),
 }

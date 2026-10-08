@@ -1,5 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Amount, Avatar, ChevronRightIcon, List, Media, Stat, Tag, Text } from '@mitcsutt/kiln-ui'
+import {
+  Amount,
+  Avatar,
+  ChevronRightIcon,
+  Grid,
+  List,
+  Media,
+  Stat,
+  Tag,
+  Text,
+  type ListSurface,
+} from '@mitcsutt/kiln-ui'
 import { expect } from 'storybook/test'
 import { must } from '#test/must'
 import { Stack } from '#components/layout/Stack'
@@ -13,13 +24,13 @@ const portrait = new URL('../Avatar/portrait.story.svg', import.meta.url).href
 const meta = {
   title: 'UI/Display/List',
   component: List,
-  args: { divided: true, density: 'regular' },
+  args: { divided: true, density: 'regular', surface: 'none' },
 } satisfies Meta<typeof List>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-/** A short reading list. Try `divided`, `density` and `as` in the controls. */
+/** A short reading list. Try `divided`, `density`, `surface` and `as` in the controls. */
 export const Playground: Story = {
   render: (args) => (
     <Stack style={{ maxWidth: '28rem' }}>
@@ -355,5 +366,109 @@ export const OwnersAndOutOfPlay: Story = {
         </List.Item>
       </List>
     )
+  },
+}
+
+const STANDINGS = [
+  { team: 'Kelso Bay Rovers', owner: 'Noor', color: 1, points: 9 },
+  { team: 'Harbour Square Athletic', owner: 'Kofi', color: 4, points: 7, you: true },
+  { team: 'Old Quay United', owner: 'Ines', color: 6, points: 4 },
+  { team: 'North Point Wanderers', owner: 'Kofi', color: 4, points: 1, out: true },
+] as const
+
+/**
+ * `surface="surface"` sets the whole list on one sheet, so the rows read as rows on a busy page or
+ * a textured canvas. Rows run edge to edge: a highlighted row is a band across the sheet and a
+ * rail is the row's edge. `surface="raised"` stands the sheet on the theme's surface shadow.
+ */
+export const OnASurface: Story = {
+  name: 'On a surface',
+  tags: ['docs'],
+  render: function OnASurface() {
+    return (
+      <List as="ol" surface="surface" aria-label="Coastal league, group A">
+        {STANDINGS.map((row, i) => (
+          <List.Item
+            key={row.team}
+            color={row.color}
+            highlighted={'you' in row}
+            muted={'out' in row}
+          >
+            <List.Leading>{i + 1}</List.Leading>
+            <List.Content>
+              {row.team}
+              <List.Description>{'out' in row ? 'Knocked out' : row.owner}</List.Description>
+            </List.Content>
+            <List.Trailing>{row.points} pts</List.Trailing>
+          </List.Item>
+        ))}
+      </List>
+    )
+  },
+}
+
+const SURFACES: ListSurface[] = ['surface', 'raised']
+
+/**
+ * Every row state on both sheets: selected and highlighted fills, hover on linked rows, rails,
+ * a muted row and compact density. The play test checks each sheet has a fill, clips its rows to
+ * its corners, and that a railed row meets the sheet's inner edge on both sides.
+ */
+export const SurfaceStates: Story = {
+  render: () => (
+    <Grid minItemWidth="sm" gap={6}>
+      {SURFACES.map((surface) => (
+        <Stack key={surface} gap={5}>
+          <List surface={surface} aria-label={`Projects on ${surface}`}>
+            {['Atlas redesign', 'Billing migration', 'Mobile app'].map((name, i) => (
+              <List.Item key={name} asChild selected={i === 1}>
+                <a href={`#${surface}-${String(i)}`} aria-current={i === 1 ? 'page' : undefined}>
+                  <List.Content>{name}</List.Content>
+                  <List.Trailing>
+                    <ChevronRightIcon />
+                  </List.Trailing>
+                </a>
+              </List.Item>
+            ))}
+          </List>
+          <List
+            as="ol"
+            density="compact"
+            surface={surface}
+            aria-label={`Group A standings on ${surface}`}
+          >
+            {STANDINGS.map((row, i) => (
+              <List.Item
+                key={row.team}
+                color={row.color}
+                highlighted={'you' in row}
+                muted={'out' in row}
+              >
+                <List.Leading>{i + 1}</List.Leading>
+                <List.Content>{row.team}</List.Content>
+                <List.Trailing>
+                  <Badge tone={i < 2 ? 'positive' : 'critical'} variant="soft">
+                    {i < 2 ? 'Through' : 'Out'}
+                  </Badge>
+                  {row.points}
+                </List.Trailing>
+              </List.Item>
+            ))}
+          </List>
+        </Stack>
+      ))}
+    </Grid>
+  ),
+  play: async ({ canvas }) => {
+    for (const surface of SURFACES) {
+      const list = canvas.getByRole('list', { name: `Group A standings on ${surface}` })
+      await expect(getComputedStyle(list).backgroundColor).not.toBe('rgba(0, 0, 0, 0)')
+      await expect(getComputedStyle(list).overflow).toBe('hidden')
+      const item = must(list.querySelector('[data-highlighted]'), 'the highlighted row')
+      const sheet = list.getBoundingClientRect()
+      const row = item.getBoundingClientRect()
+      await expect(Math.abs(row.left - (sheet.left + list.clientLeft))).toBeLessThan(1)
+      await expect(Math.abs(row.right - (sheet.right - list.clientLeft))).toBeLessThan(1)
+    }
   },
 }

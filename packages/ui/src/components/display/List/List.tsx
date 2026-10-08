@@ -13,6 +13,8 @@ import styles from './List.module.css'
 
 export type ListDensity = 'compact' | 'regular'
 export type ListElement = 'ul' | 'ol'
+/** `surface` and `raised` set the list on one sheet, like `Card`'s `outline` and `raised`. */
+export type ListSurface = 'none' | 'surface' | 'raised'
 
 export interface ListProps extends HTMLAttributes<HTMLUListElement> {
   /** Hairline rules between rows. Default `true`. */
@@ -21,6 +23,12 @@ export interface ListProps extends HTMLAttributes<HTMLUListElement> {
   density?: ListDensity
   /** `ol` when order is the content (a leaderboard). Default `ul`. */
   as?: ListElement
+  /**
+   * Set the rows on a sheet so they read as rows, not text on the page: `surface` is the
+   * surface fill inside a hairline edge, `raised` stands on the theme's surface shadow. Rows run
+   * edge to edge, clipped to the sheet's corners. Default `none`.
+   */
+  surface?: ListSurface
 }
 
 /**
@@ -33,6 +41,13 @@ export interface ListProps extends HTMLAttributes<HTMLUListElement> {
  * `List.Description`), and `List.Trailing` (an amount, a time, an action). Rows are divided by
  * hairlines.
  *
+ * ## On a surface
+ *
+ * On a busy page, or a theme whose canvas has a texture, `surface="surface"` sets the whole list
+ * on one sheet, and `surface="raised"` stands it on the theme's surface shadow. The rows stay rows
+ * on it and run edge to edge: a highlighted, selected or hovered row is a band across the sheet,
+ * and a categorical rail is the row's edge, following the sheet's corners at either end.
+ *
  * @privateRemarks
  * The workhorse row list: leaderboards, team members, invoices, recent work. Rows are
  * `Leading · Content · Trailing`, divided by hairlines, never boxed in cards.
@@ -40,7 +55,7 @@ export interface ListProps extends HTMLAttributes<HTMLUListElement> {
  * <List><List.Item><List.Leading>1</List.Leading><List.Content>…</List.Content></List.Item></List>
  */
 const ListRoot = forwardRef<HTMLUListElement, ListProps>(function List(
-  { divided = true, density = 'regular', as: Comp = 'ul', className, ...rest },
+  { divided = true, density = 'regular', as: Comp = 'ul', surface = 'none', className, ...rest },
   ref,
 ) {
   return (
@@ -51,6 +66,7 @@ const ListRoot = forwardRef<HTMLUListElement, ListProps>(function List(
       className={cx(styles.list, className)}
       data-divided={divided || undefined}
       data-density={density}
+      data-surface={surface === 'none' ? undefined : surface}
       {...rest}
     />
   )

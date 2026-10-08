@@ -22,6 +22,14 @@ export interface SectionProps extends HTMLAttributes<HTMLElement>, VisibilityPro
    * stay legible.
    */
   surface?: SectionSurface
+  /**
+   * On an `inverse`, `accent` or categorical band, re-point the status tones too, so tone text
+   * and soft tone fills (a `Stat` delta, a toned `Numeral` or `Text`, a soft `Badge`) stay AA on
+   * the band. On `accent` and categorical bands tone text becomes the band's ink, so the sign,
+   * glyph or label carries the status; on `inverse` each tone keeps its hue. Off by default, so
+   * tones keep the page's colours. No effect on other surfaces.
+   */
+  adaptTones?: boolean
   /** A hairline across the full bleed at the top, bottom or both edges. */
   divider?: SectionDivider
   as?: SectionElement
@@ -40,8 +48,9 @@ export interface SectionProps extends HTMLAttributes<HTMLElement>, VisibilityPro
  *
  * `surface` is `canvas`, `surface`, `sunken`, `inverse`, `accent`, or a categorical `cat-1` to
  * `cat-8` (a band in one person's or team's colour, matching their `Tag`). On `inverse`, `accent`
- * and the categorical bands, the colour roles flip for everything inside, so text, links, focus rings and buttons stay
- * legible with no extra props. `divider` adds a rule at the `top`, `bottom` or `both`.
+ * and the categorical bands, the colour roles flip for everything inside, so text, links, focus
+ * rings and buttons stay legible with no extra props. Add `adaptTones` to flip the status tones
+ * too. `divider` adds a rule at the `top`, `bottom` or `both`.
  *
  * @privateRemarks
  * A full-bleed band of vertical rhythm. Put a `Container` inside for width.
@@ -54,6 +63,7 @@ export const Section = forwardRef<HTMLElement, SectionProps>(function Section(
   {
     space: spaceProp,
     surface,
+    adaptTones = false,
     divider,
     as: Comp = 'section',
     hideBelow,
@@ -70,6 +80,7 @@ export const Section = forwardRef<HTMLElement, SectionProps>(function Section(
       ref={ref}
       className={cx(styles.section, visibilityClass({ hideBelow, hideAbove }), className)}
       data-surface={surface}
+      data-adapt-tones={adaptTones || undefined}
       data-divider={divider}
       style={mergeStyles(responsiveVars('section-space', spaceProp, space), style)}
       {...rest}
