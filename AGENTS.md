@@ -18,7 +18,7 @@ Kiln is a monorepo of published `@mitcsutt/kiln-*` packages: a themeable React d
 - **One idea per PR.** Use Conventional Commit titles, and add a changeset whenever a published package changes.
 - **Write as if public.** No secrets, no internal URLs, and no private project details in code, docs or commit messages.
 - **Standards are binding.** `DESIGN.md` and the per-package authoring guides are binding standards. Follow them, and change them only together with the lint rules or tests that enforce them.
-- **Never publish or deploy.** Releases go through the release workflow ([`docs/releasing.md`](docs/releasing.md)). Publishing a new package for the first time and deploying a site are separate, maintainer-triggered steps.
+- **Never publish or deploy.** Releases go through the release workflow ([`docs/releasing.md`](docs/releasing.md)). Publishing a new package for the first time is a separate, maintainer-triggered step, and the docs site deploys from `main` through its own workflow ([ADR 0034](docs/adr/0034-docs-on-cloudflare-workers.md)).
 
 <!-- BEGIN:turborepo-agent-rules -->
 

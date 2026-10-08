@@ -5,13 +5,14 @@
  *
  *   node scripts/check-links.ts
  *
- * It checks the site as a reader gets it, rewrites and route handlers included, so
- * `/docs/<page>.md`, `llms.txt` and the search index are crawled like any other page.
+ * It checks the site as a reader gets it: `wrangler dev` serves `out/` with the deployed
+ * Worker's config and `_headers` (ADR 0034), so `/docs/<page>.md`, `llms.txt` and the search
+ * index are crawled like any other page.
  */
 import { spawn } from 'node:child_process'
 import { createRequire } from 'node:module'
 import { createServer } from 'node:net'
-import { resolve } from 'node:path'
+import { dirname, resolve } from 'node:path'
 import { parse } from 'node-html-parser'
 
 const app = resolve(import.meta.dirname, '..')
@@ -38,19 +39,27 @@ function freePort(): Promise<number> {
 
 const port = await freePort()
 const origin = `http://127.0.0.1:${String(port)}`
-// Next's own binary, not `pnpm exec`, in its own process group: killing a wrapper would
+// Wrangler's own binary, not `pnpm exec`, in its own process group: killing a wrapper would
 // leave the server running and holding this process open.
-const nextBin = createRequire(resolve(app, 'package.json')).resolve('next/dist/bin/next')
-const next = spawn(process.execPath, [nextBin, 'start', '-p', String(port), '-H', '127.0.0.1'], {
-  cwd: app,
-  stdio: ['ignore', 'ignore', 'inherit'],
-  detached: true,
-})
+const wranglerBin = resolve(
+  dirname(createRequire(resolve(app, 'package.json')).resolve('wrangler/package.json')),
+  'bin/wrangler.js',
+)
+const server = spawn(
+  process.execPath,
+  [wranglerBin, 'dev', '--port', String(port), '--ip', '127.0.0.1', '--log-level', 'warn'],
+  {
+    cwd: app,
+    env: { ...process.env, WRANGLER_SEND_METRICS: 'false' },
+    stdio: ['ignore', 'ignore', 'inherit'],
+    detached: true,
+  },
+)
 
 function stopServer(): void {
-  if (next.pid === undefined || next.exitCode !== null) return
+  if (server.pid === undefined || server.exitCode !== null) return
   try {
-    process.kill(-next.pid, 'SIGTERM')
+    process.kill(-server.pid, 'SIGTERM')
   } catch {
     // already gone
   }

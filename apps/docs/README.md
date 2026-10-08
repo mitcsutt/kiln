@@ -1,11 +1,12 @@
 # Kiln docs
 
-The public docs site for Kiln: Fumadocs on Next.js, built with `@mitcsutt/kiln-ui` itself ([ADR 0009](../../docs/adr/0009-docs-and-storybook.md), [ADR 0019](../../docs/adr/0019-docs-site.md)). It's a private app: never published, and not deployed by this repository. Its intended home is `kiln.mitchellsutton.com`.
+The public docs site for Kiln: Fumadocs on Next.js, built with `@mitcsutt/kiln-ui` itself ([ADR 0009](../../docs/adr/0009-docs-and-storybook.md), [ADR 0019](../../docs/adr/0019-docs-site.md)). It's a private app, never published to npm. `next build` exports it as a static site, and every push to `main` that changes it deploys it to `kiln.mitchellsutton.com` on Cloudflare Workers ([ADR 0034](../../docs/adr/0034-docs-on-cloudflare-workers.md)).
 
 ```sh
 pnpm --filter @mitcsutt/kiln-docs dev      # http://localhost:3000
-pnpm --filter @mitcsutt/kiln-docs build    # the deployable Next.js build
-pnpm check:links                           # build, serve, and fail on any broken internal link
+pnpm --filter @mitcsutt/kiln-docs build    # the static site, in out/
+pnpm --filter @mitcsutt/kiln-docs exec wrangler dev   # serve out/ as the Worker does, on :8787
+pnpm check:links                           # build, serve with Wrangler, and fail on any broken internal link
 ```
 
 ## Where things live

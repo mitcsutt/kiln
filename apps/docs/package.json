@@ -9,7 +9,7 @@
     "generate": "node scripts/generate-api.ts && node scripts/generate-tokens.ts && node scripts/generate-design-rules.ts && node scripts/generate-examples.ts && node scripts/generate-pages.ts && fumadocs-mdx",
     "generate:skills": "pnpm generate && vitest run src/skills --update",
     "dev": "pnpm generate && next dev",
-    "build": "pnpm generate && next build",
+    "build": "pnpm generate && next build && node scripts/markdown-files.ts",
     "start": "next start",
     "check:links": "node scripts/check-links.ts",
     "lint": "pnpm generate && eslint --max-warnings=0 .",
@@ -39,6 +39,7 @@
     "typescript": "catalog:",
     "unist-util-visit": "^5.1.0",
     "vitest": "catalog:",
+    "wrangler": "^4.148.0",
     "yaml": "^2.9.1"
   },
   "engines": {

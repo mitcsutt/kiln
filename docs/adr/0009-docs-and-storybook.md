@@ -1,6 +1,6 @@
 # 0009. Fumadocs for public docs, Storybook as workbench
 
-- **Status:** Accepted
+- **Status:** Accepted, hosting superseded by [0034](0034-docs-on-cloudflare-workers.md)
 - **Date:** 2026-10-04
 
 ## Context

@@ -1,0 +1,16 @@
+// The docs site on Cloudflare Workers: static assets only, no Worker script (ADR 0034).
+// The custom domain is attached outside this repository, so no routes are declared here.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "kiln-docs",
+  "compatibility_date": "2026-10-01",
+  "workers_dev": true,
+  "assets": {
+    // `next build` with `output: 'export'`, plus the Markdown files scripts/markdown-files.ts moves.
+    "directory": "./out",
+    // `/docs/ui` serves `docs/ui.html`, as the export writes it.
+    "html_handling": "auto-trailing-slash",
+    // Any other path gets the export's 404 page with a 404 status.
+    "not_found_handling": "404-page",
+  },
+}

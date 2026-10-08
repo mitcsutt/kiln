@@ -37,8 +37,13 @@ const FORMS_SYNTAX = [
 // own directory and picks this file up, so lint stays cached per package.
 export default defineConfig(
   base,
-  // Written by the docs app's generators, Fumadocs MDX and Next.js.
-  globalIgnores(['apps/docs/.source/', 'apps/docs/.generated/', 'apps/docs/next-env.d.ts']),
+  // Written by the docs app's generators, Fumadocs MDX, Next.js and Wrangler.
+  globalIgnores([
+    'apps/docs/.source/',
+    'apps/docs/.generated/',
+    'apps/docs/.wrangler/',
+    'apps/docs/next-env.d.ts',
+  ]),
   {
     name: 'kiln/workspace/type-aware',
     languageOptions: {

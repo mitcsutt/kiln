@@ -1,4 +1,6 @@
 .next/
+out/
+.wrangler/
 .source/
 next-env.d.ts
 .generated/

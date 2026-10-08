@@ -24,8 +24,11 @@ export function Pre({ children }: ComponentProps<'pre'>) {
   return <Code code={textOf(children)} language={language} title={code?.props['data-title']} />
 }
 
+/** A file such as `/llms.txt` or `/docs/ui.md`: the static export has no page payload to prefetch. */
+const FILE_PATH = /\.[a-z]+(?:[?#]|$)/
+
 export function Anchor({ href = '', children, ...rest }: ComponentProps<'a'>) {
-  if (href.startsWith('/') || href.startsWith('#')) {
+  if ((href.startsWith('/') && !FILE_PATH.test(href)) || href.startsWith('#')) {
     return (
       <NextLink href={href} {...rest}>
         {children}
