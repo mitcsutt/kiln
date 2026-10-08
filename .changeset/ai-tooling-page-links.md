@@ -1,5 +1,6 @@
 ---
+'@mitcsutt/kiln-ui': patch
 '@mitcsutt/kiln-forms': patch
 ---
 
-The `component-mode` skill links to the new AI tooling page on the docs site.
+The `setup-and-theming` and `component-mode` skills link to the new AI tooling page on the docs site.
