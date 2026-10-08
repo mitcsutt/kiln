@@ -10,6 +10,7 @@ import {
 import { CheckIcon, CopyIcon } from '#icons'
 import { Button } from '#components/actions/Button'
 import { cx } from '#utils/cx'
+import { trimTrailingNewlines } from '#utils/newlines'
 import styles from './CodeBlock.module.css'
 
 /**
@@ -119,7 +120,7 @@ export const CodeBlock = forwardRef<HTMLElement, CodeBlockProps>(function CodeBl
   const [copy, setCopy] = useState<CopyState>('idle')
   const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
   const captionId = useId()
-  const source = code.replace(/\n+$/, '')
+  const source = trimTrailingNewlines(code)
   const lines = source.split('\n')
   const lineTokens =
     tokens?.length === lines.length &&

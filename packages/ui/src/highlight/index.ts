@@ -4,6 +4,7 @@
  * and each grammar only when the first block in that language is highlighted.
  */
 import type { CodeToken, CodeTokenType } from '#components/display/CodeBlock'
+import { trimTrailingNewlines } from '#utils/newlines'
 import type { HighlighterCore, LanguageRegistration, ThemeRegistration } from 'shiki/core'
 
 /** The languages `highlight` understands, with their usual aliases. */
@@ -132,7 +133,7 @@ export async function highlight(
   if (!isHighlightLanguage(id)) return undefined
   const grammar = GRAMMARS[id]
   const core = await load(grammar)
-  const lines = core.codeToTokensBase(code.replace(/\n+$/, ''), { lang: grammar, theme: 'kiln' })
+  const lines = core.codeToTokensBase(trimTrailingNewlines(code), { lang: grammar, theme: 'kiln' })
   return lines.map((line) => {
     const tokens: CodeToken[] = []
     for (const { content, color } of line) {
