@@ -4,6 +4,7 @@ import { Accordion, Link, NavLinks, Stack, Text } from '@mitcsutt/kiln-ui'
 import type * as PageTree from 'fumadocs-core/page-tree'
 import NextLink from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useEffect, useRef, useState } from 'react'
 import { nodeText } from '@/lib/nodeText'
 import { containsUrl, sectionOf, sections } from '@/lib/pageTree'
 import styles from './SidebarNav.module.css'
@@ -79,6 +80,18 @@ function Group({
   )
 }
 
+function openGroups(groups: PageTree.Folder[], pathname: string): string[] {
+  return groups.filter((group) => containsUrl(group, pathname)).map(nodeKey)
+}
+
+/** The nearest ancestor that scrolls vertically: the sidebar, or the phone sheet. */
+function scrollParent(element: HTMLElement): HTMLElement | null {
+  for (let node = element.parentElement; node; node = node.parentElement) {
+    if (/auto|scroll/.test(getComputedStyle(node).overflowY)) return node
+  }
+  return null
+}
+
 /** A section (UI, Forms, Tooling): its own pages, then its groups. The topbar names it. */
 function Section({ folder, pathname }: { folder: PageTree.Folder; pathname: string }) {
   const pages: PageTree.Node[] = [
@@ -88,15 +101,22 @@ function Section({ folder, pathname }: { folder: PageTree.Folder; pathname: stri
   const groups = folder.children.filter(
     (child): child is PageTree.Folder => child.type === 'folder',
   )
-  const open = groups.filter((group) => containsUrl(group, pathname)).map(nodeKey)
+  // The groups the reader has open. Moving to a page opens its group and leaves the others as
+  // they were, so the sidebar keeps its height and scroll position across navigations.
+  const [open, setOpen] = useState(() => openGroups(groups, pathname))
+  const [openedFor, setOpenedFor] = useState(pathname)
+  if (pathname !== openedFor) {
+    setOpenedFor(pathname)
+    const current = openGroups(groups, pathname).filter((key) => !open.includes(key))
+    if (current.length) setOpen([...open, ...current])
+  }
   return (
     <Stack gap={2}>
       {pages.length ? (
         <PageLinks nodes={pages} pathname={pathname} label={nodeText(folder.name)} />
       ) : null}
       {groups.length ? (
-        // Keyed by the current page so moving to another group opens it.
-        <Accordion key={pathname} type="multiple" defaultValue={open} className={styles.groups}>
+        <Accordion type="multiple" value={open} onValueChange={setOpen} className={styles.groups}>
           {groups.map((group) => (
             <Group
               key={nodeKey(group)}
@@ -145,10 +165,23 @@ function Overview({ tree, pathname }: { tree: PageTree.Root; pathname: string })
 export function SidebarNav({ tree }: { tree: PageTree.Root }) {
   const pathname = usePathname()
   const section = sectionOf(tree, pathname)
+  const ref = useRef<HTMLDivElement>(null)
+  // Bring the current page's link into view when it's out of sight: on a fresh load of a page
+  // far down the tree, or after a search result or in-page link opens another group.
+  useEffect(() => {
+    const link = ref.current?.querySelector<HTMLElement>('[aria-current="page"]')
+    const scroller = link && scrollParent(link)
+    if (!link || !scroller) return
+    const box = scroller.getBoundingClientRect()
+    const { top, bottom, height } = link.getBoundingClientRect()
+    if (top >= box.top && bottom <= box.bottom) return
+    scroller.scrollTop += top - box.top - (box.height - height) / 2
+  }, [pathname])
   return (
-    <div className={styles.nav}>
+    <div ref={ref} className={styles.nav}>
       {section ? (
-        <Section folder={section} pathname={pathname} />
+        // Keyed by section, so moving to another package starts from that package's groups.
+        <Section key={nodeKey(section)} folder={section} pathname={pathname} />
       ) : (
         <Overview tree={tree} pathname={pathname} />
       )}
