@@ -40,7 +40,7 @@ export function boundariesConfigs(options) {
   const routes = ROUTES[router]
   const { generated, namingExempt, routeFiles } = sourceGlobs(options)
   const indexIgnores = [...namingExempt, ...routeFiles]
-  const allKinds = [...kinds, 'pages', 'data', testKind, 'config']
+  const allKinds = [...kinds, 'pages', 'data', testKind, 'config', 'lib']
 
   /** @type {Record<string, unknown>[]} */
   const elements = [

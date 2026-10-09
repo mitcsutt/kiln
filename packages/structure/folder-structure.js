@@ -71,7 +71,8 @@ export function folderStructureConfigs(options) {
   const featureNames = Object.keys(features)
   /** @type {Rule[]} */
   const structure = [
-    ...kindFolders([...kinds, 'data', testKind, 'config']),
+    // Root-only folders: shared data, the test kind, runtime config and configured clients.
+    ...kindFolders([...kinds, 'data', testKind, 'config', 'lib']),
     // Only declared features. (An empty `children` would allow anything, so no declared features
     // means no `features/` folder.)
     ...(featureNames.length

@@ -230,7 +230,7 @@ describe('options', () => {
   it('accepts a declared extra kind', async () => {
     const { messages } = await lintApp(
       'tanstack-app',
-      { ...APP_OPTIONS, kinds: ['lib'] },
+      { ...APP_OPTIONS, kinds: ['mappers'] },
       'extra-kind',
     )
     expect(messages).toEqual([])
