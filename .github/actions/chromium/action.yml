@@ -1,0 +1,24 @@
+name: Chromium
+description: Install Playwright's headless Chromium for the Storybook app, cached per Playwright version.
+
+# No `--with-deps`: the Ubuntu runner image already has every library Chromium needs, so it
+# only added fonts, and its `apt-get update` once hung for over ten minutes on the runner's
+# package mirror. Run after the setup action.
+runs:
+  using: composite
+  steps:
+    - name: Read the Playwright version
+      id: version
+      shell: bash
+      run: echo "playwright=$(pnpm --filter @mitcsutt/kiln-storybook exec playwright --version | awk '{print $2}')" >> "$GITHUB_OUTPUT"
+
+    - name: Restore the browser cache
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+      with:
+        path: ~/.cache/ms-playwright
+        key: playwright-${{ runner.os }}-${{ steps.version.outputs.playwright }}-chromium-headless-shell
+
+    # A no-op when the cache restored the browser.
+    - name: Install Chromium
+      shell: bash
+      run: pnpm --filter @mitcsutt/kiln-storybook exec playwright install --only-shell chromium

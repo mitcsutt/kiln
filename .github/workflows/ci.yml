@@ -14,11 +14,13 @@ env:
   TURBO_TELEMETRY_DISABLED: 1
 
 # One job per quality gate, each through Turborepo. Add new gates as new jobs
-# that reuse the setup action.
+# that reuse the setup action and set a timeout, so a hung step fails in minutes
+# rather than at the six-hour default.
 jobs:
   lint:
     name: Lint
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/actions/setup
@@ -28,6 +30,7 @@ jobs:
   typecheck:
     name: Typecheck
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/actions/setup
@@ -37,6 +40,7 @@ jobs:
   test:
     name: Test
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/actions/setup
@@ -46,6 +50,7 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/actions/setup
@@ -55,6 +60,7 @@ jobs:
   test-react18:
     name: Test (React 18)
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/actions/setup
@@ -69,6 +75,7 @@ jobs:
   storybook-matrix:
     name: Storybook test matrix
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     outputs:
       themes: ${{ steps.pick.outputs.themes }}
     steps:
@@ -103,6 +110,7 @@ jobs:
     name: Storybook tests (${{ matrix.theme }}, ${{ matrix.mode }})
     needs: storybook-matrix
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
@@ -111,8 +119,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/actions/setup
-      - name: Install Chromium
-        run: pnpm --filter @mitcsutt/kiln-storybook exec playwright install --with-deps --only-shell chromium
+      - uses: ./.github/actions/chromium
       - name: Story, interaction and a11y tests
         env:
           STORYBOOK_THEME: ${{ matrix.theme }}
@@ -122,13 +129,13 @@ jobs:
   storybook-build:
     name: Storybook build
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/actions/setup
       - name: Build the static Storybook
         run: pnpm turbo run build --filter=@mitcsutt/kiln-storybook
-      - name: Install Chromium
-        run: pnpm --filter @mitcsutt/kiln-storybook exec playwright install --with-deps --only-shell chromium
+      - uses: ./.github/actions/chromium
       - name: Serve it under /storybook and load a story
         run: pnpm --filter @mitcsutt/kiln-storybook check:static
 
@@ -137,6 +144,7 @@ jobs:
   docs:
     name: Docs build and links
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/actions/setup
@@ -148,6 +156,7 @@ jobs:
   skills:
     name: Agent skills
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/actions/setup
@@ -157,6 +166,7 @@ jobs:
   package:
     name: Package checks
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/actions/setup
@@ -166,6 +176,7 @@ jobs:
   size:
     name: Size
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     permissions:
       contents: read
       pull-requests: write
@@ -220,6 +231,7 @@ jobs:
     name: Changeset
     if: github.event_name == 'pull_request' && !startsWith(github.head_ref, 'changeset-release/')
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -251,6 +263,7 @@ jobs:
       - size
       - changeset
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Fail if any needed job failed or was cancelled
         env:
