@@ -40,7 +40,7 @@ Each record captures one decision: the context, what was decided, and what follo
 | [0034](0034-docs-on-cloudflare-workers.md)              | The docs site is a static export on Cloudflare Workers       | Accepted                                             |
 | [0035](0035-code-highlighting.md)                       | CodeBlock highlights code through an opt-in Shiki entry      | Accepted                                             |
 | [0036](0036-ai-tooling-page.md)                         | AI tooling gets a docs page under Tooling                    | Accepted                                             |
-| [0037](0037-app-structure.md)                           | Kiln recommends a structure for React web apps               | Proposed                                             |
+| [0037](0037-app-structure.md)                           | Kiln recommends a structure for React web apps               | Accepted                                             |
 | [0038](0038-variant-blocks.md)                          | Stack-specific docs content goes in variant blocks           | Accepted                                             |
 
 New records use the next number and the same headings: Status, Context, Decision, Consequences.
