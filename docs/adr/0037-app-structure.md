@@ -1,6 +1,6 @@
 # 0037. Kiln recommends a structure for React web apps
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-10-09
 
 ## Context
