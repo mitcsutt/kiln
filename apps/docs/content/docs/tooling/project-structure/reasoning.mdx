@@ -1,0 +1,460 @@
+---
+title: Why it's shaped this way
+description: Each decision behind the project structure, shown as the two layouts that were compared and the reason one won.
+---
+
+The [structure rules](/docs/tooling/project-structure) were settled the way an optician settles a prescription: the same code laid out two ways, side by side, and one question each time. Which is clearer, 1 or 2? The layouts were then checked against real apps, and reviewed by people who were given the rules alone, and then the rules with this reasoning.
+
+They started from apps that had all begun as [bulletproof-react](https://github.com/alan2207/bulletproof-react) and drifted apart. The same problems kept coming back: an `index.ts` in every folder, a page and its sections and its building blocks all as siblings, feature isolation that was banned and then quietly un-banned, and one idea spelled three ways (`atoms/`, `store/`, `*.atom.ts`). None of it was enforced, so every new app started the argument again.
+
+Each section below is one of those comparisons, with the option that was chosen marked. [ADR 0037](https://github.com/mitcsutt/kiln/blob/main/docs/adr/0037-app-structure.md) has the full record.
+
+## Tools win
+
+A tool's own conventions can collide with any naming rule: TanStack Router's `$contactId.tsx`, a generated `routeTree.gen.ts`, Vitest's `__snapshots__`.
+
+<DecisionPair>
+<Choice title="A principle: the tool's convention wins" chosen={true}>
+
+```txt
+Where a tool the project uses gives a file or
+folder name meaning, follow the tool.
+
+The ESLint preset ships the known conventions,
+and takes extra ignore globs for the rest.
+```
+
+</Choice>
+<Choice title="A list of exempt file names">
+
+```txt
+Exempt: main.tsx, routeTree.gen.ts,
+__root.tsx, __mocks__/, __snapshots__/,
+vite-env.d.ts, globals.css, …
+```
+
+</Choice>
+</DecisionPair>
+
+**Why:** a list is out of date the first time a tool adds a pattern nobody planned for, and then the rules are wrong. The principle stays true, and the closed list lives in the preset, where it can grow.
+
+## Owners, not role folders
+
+A contacts feature has two pages. One page has sections, and the sections share a building block.
+
+<DecisionPair>
+<Choice title="The closest common owner" chosen={true}>
+
+```txt
+features/contacts/
+├─ components/ContactAvatar/   both pages
+└─ pages/
+   ├─ Contact/
+   │  └─ components/
+   │     ├─ ContactHeader/
+   │     └─ sections/ContactOverview/
+   └─ Contacts/
+      └─ components/ContactsTable/
+```
+
+</Choice>
+<Choice title="Fixed role folders">
+
+```txt
+features/contacts/
+├─ components/
+│  ├─ ContactAvatar/
+│  ├─ ContactHeader/
+│  └─ ContactsTable/
+└─ sections/
+   └─ ContactOverview/
+```
+
+</Choice>
+</DecisionPair>
+
+**Why:** role folders pour every page's pieces into one folder, and only the names say which page owns what. With owners, a file sits in the smallest folder that contains everything that uses it, at any depth, and deleting a page deletes everything only it used. A depth cap was the third option, and it was dropped as a number someone would always argue with.
+
+## Groups, declared once
+
+The owner rule leaves a shared building block sitting beside the sections that use it, looking like one of them.
+
+<DecisionPair>
+<Choice title="A declared group inside components/" chosen={true}>
+
+```txt
+pages/Contact/components/
+├─ ContactBand/        used by the sections
+└─ sections/
+   ├─ ContactOverview/
+   └─ ContactHistory/
+```
+
+</Choice>
+<Choice title="A naming suffix">
+
+```txt
+pages/Contact/components/
+├─ ContactBand/
+├─ ContactHistorySection/
+└─ ContactOverviewSection/
+```
+
+</Choice>
+</DecisionPair>
+
+**Why:** the group says "these are the page's sections" without renaming anything, and it sits in `components/` because a section is a component. It's declared once for the whole repo, so one feature can't say `sections` while another says `segments`.
+
+## Pages are a kind
+
+<DecisionPair>
+<Choice title="A pages/ kind at the feature root" chosen={true}>
+
+```txt
+features/contacts/
+├─ components/
+├─ data/
+└─ pages/
+   ├─ Contact/
+   └─ Contacts/
+```
+
+</Choice>
+<Choice title="Pages mixed in, named by suffix">
+
+```txt
+features/contacts/
+├─ components/
+│  ├─ ContactPage/
+│  ├─ ContactsPage/
+│  └─ ContactAvatar/
+└─ data/
+```
+
+</Choice>
+</DecisionPair>
+
+**Why:** every folder at a feature root is then a kind, with no special case. "Routes import a feature's `pages/`" is one lint pattern, and page names stay free.
+
+## Every module is a folder
+
+A feature with a handful of hooks, each with a test and a story, and one that has grown helpers of its own.
+
+<DecisionPair>
+<Choice title="A folder per module" chosen={true}>
+
+```txt
+hooks/
+├─ useContactsFilters/
+│  ├─ index.ts
+│  ├─ useContactsFilters.ts
+│  ├─ useContactsFilters.test.ts
+│  └─ utils/parseFilter/
+└─ useSelection/
+   ├─ index.ts
+   ├─ useSelection.ts
+   └─ useSelection.test.ts
+```
+
+</Choice>
+<Choice title="Flat files in the kind folder">
+
+```txt
+hooks/
+├─ parseFilter.ts            whose is this?
+├─ useContactsFilters.ts
+├─ useContactsFilters.test.ts
+├─ useSelection.ts
+└─ useSelection.test.ts
+```
+
+</Choice>
+</DecisionPair>
+
+**Why:** ten hooks with their tests and stories make thirty loose files, and a hook that grows helpers has nowhere to put them. Flat files felt lighter for two or three hooks, but one shape everywhere won over a shape that changes with size.
+
+## A narrow index.ts, and why barrels came back
+
+This started firmly against `index.ts`: barrels cluttered the file finder, and raised fair worries about tree-shaking.
+
+<DecisionPair>
+<Choice title="A narrow index.ts per module" chosen={true}>
+
+```ts
+// ContactForm/index.ts
+export { ContactForm } from './ContactForm'
+export type { ContactFormProps } from './ContactForm'
+```
+
+</Choice>
+<Choice title="No index.ts, deep imports">
+
+```ts
+import { ContactForm } from '#features/contacts/components/ContactForm/ContactForm'
+```
+
+</Choice>
+</DecisionPair>
+
+**Why:** three things turned it around. Imports stop repeating the name (`ContactForm/ContactForm`). The import map gets one target, `./src/*/index.ts`: Vite reads only the first entry of an `imports` array, and TypeScript doesn't resolve an extensionless target, so a mix of `.ts` and `.tsx` main files has no single target without a fixed file in every folder. And the barrel worries are about wide barrels: `export *` chains, aggregator folders, a barrel per feature. One that names a few files from its own folder has none of those costs, and nobody searches the file finder for `index.ts`.
+
+## Downward relative imports
+
+A page imports its own child modules.
+
+<DecisionPair>
+<Choice title="./ for siblings and one level down" chosen={true}>
+
+```ts
+// pages/Contact/Contact.tsx
+import { ContactHeader } from './components/ContactHeader'
+import { ContactOverview } from './components/sections/ContactOverview'
+```
+
+</Choice>
+<Choice title="# everywhere">
+
+```ts
+// pages/Contact/Contact.tsx
+import { ContactHeader } from '#features/contacts/pages/Contact/components/ContactHeader'
+import { ContactOverview } from '#features/contacts/pages/Contact/components/sections/ContactOverview'
+```
+
+</Choice>
+</DecisionPair>
+
+**Why:** reviewers found `#`-only imports passing a hundred characters for a module's own children, and moving a folder rewrote every import inside it. Going down is safe to keep relative, because the subtree moves with its owner. `../` stays banned, so anything outside your own folder is still reached by its `#` path.
+
+`#` imports are subpath imports from `package.json`, not TypeScript `paths`: Node, TypeScript and bundlers all read them, while `paths` has to be taught again to each bundler and test runner.
+
+## One-way features, declared
+
+The hardest one. A dashboard shows widgets that belong to contacts and campaigns, so features must import each other, and a larger codebase showed where that goes unchecked: hundreds of imports between features, and many pairs importing each other both ways.
+
+<DecisionPair>
+<Choice title="Declare the graph in the lint config" chosen={true}>
+
+```js
+kilnStructure({
+  features: {
+    dashboard: ['contacts', 'campaigns'],
+    campaigns: ['contacts'],
+    contacts: [],
+  },
+})
+```
+
+</Choice>
+<Choice title="Declare nothing, detect cycles in CI">
+
+```txt
+$ depcruise src --collapse '^src/features/[^/]+'
+✕ feature cycle: contacts → campaigns → contacts
+```
+
+</Choice>
+</DecisionPair>
+
+**Why:** the declared graph errors in the editor the moment you import the wrong way, and it doubles as a one-screen map of how the domains depend on each other. The CI check finds out at push, and whichever import landed first silently sets the direction. Two other options lost earlier: a total ban, which one app tried and relaxed because its exceptions grew faster than the isolation helped, and `import-x/no-cycle`, which checks files, so two features that depend on each other through different files pass it.
+
+## Types and constants are public
+
+<DecisionPair>
+<Choice title="Types and constants in the public surface" chosen={true}>
+
+```txt
+features/contacts/
+├─ components/   public
+├─ hooks/        public
+├─ data/         public
+├─ types/        public
+└─ constants/    public
+```
+
+</Choice>
+<Choice title="Only what renders or fetches">
+
+```txt
+features/contacts/
+├─ components/   public
+├─ hooks/        public
+├─ data/         public
+├─ types/        private
+└─ constants/    private
+```
+
+</Choice>
+</DecisionPair>
+
+**Why:** if another feature can't import a type, it copies it, and copied types drift apart quietly. That's the worst kind of drift.
+
+## data/: one module per resource
+
+Server code needed a home, a name, and a shape inside.
+
+<DecisionPair>
+<Choice title="One file per resource" chosen={true}>
+
+```txt
+data/
+├─ contacts/
+│  ├─ index.ts
+│  └─ contacts.ts      keys, queries, mutations, hooks
+└─ contactImport/      a sub-resource, keys built on contacts
+```
+
+</Choice>
+<Choice title="Files by role">
+
+```txt
+data/
+└─ contacts/
+   ├─ index.ts
+   ├─ contactKeys.ts
+   ├─ contactQueries.ts
+   └─ contactMutations.ts
+```
+
+</Choice>
+</DecisionPair>
+
+**Why:** keys belong next to the queries and mutations that use them, which is what the cache needs. Role files would make data the one place a module has several main files, `contacts/keys.ts` gives every resource a `keys.ts` that means nothing on its own, and `keys/contacts.ts` spreads one resource over three folders. A module that grows splits by sub-resource, never by role.
+
+The folder is `data/`, not `queries/`, because mutations live there too, and not `api/`, which means server routes in Next.js. It exists only in `src/` and at a feature root, because queries nested inside pages are hard to find and easy to duplicate, and duplicated query keys corrupt the cache.
+
+## Stores hold contexts too
+
+<DecisionPair>
+<Choice title="A context is a store" chosen={true}>
+
+```txt
+stores/
+├─ importWizard/        Zustand
+└─ builderDocument/     context: provider + hook
+```
+
+</Choice>
+<Choice title="A contexts/ kind of its own">
+
+```txt
+stores/
+└─ importWizard/
+contexts/
+└─ BuilderDocument/
+```
+
+</Choice>
+</DecisionPair>
+
+**Why:** one home for client state, whatever holds it. Swapping a context for Jotai then moves no files and rewrites no imports. Two homes for state is the `atoms/` versus `store/` drift again, with new names.
+
+## Test support lives with its feature
+
+<DecisionPair>
+<Choice title="A test kind in each feature" chosen={true}>
+
+```txt
+features/contacts/
+└─ testing/
+   ├─ contactFixtures/
+   └─ contactHandlers/
+testing/                  outside src/
+├─ renderWithProviders/
+└─ mockServer/            combines every handler
+```
+
+</Choice>
+<Choice title="Everything in one root folder">
+
+```txt
+testing/
+├─ renderWithProviders/
+├─ mockServer/
+├─ fixtures/contactFixtures/
+└─ handlers/contactHandlers/
+```
+
+</Choice>
+</DecisionPair>
+
+**Why:** it's the owner rule again, and it matches MSW's advice to split handlers by domain. Deleting a feature deletes its test data. The well-known structures keep everything in one root folder, so this is Kiln's own convention. The folder's name is the one core name a repo may choose (`testing`, `tests`, `specs`), because some names clash with folders end-to-end tools already own.
+
+## Assets stay central
+
+<DecisionPair>
+<Choice title="One src/assets/" chosen={true}>
+
+```txt
+src/assets/
+├─ logo.svg
+└─ illustrations/upload.svg
+```
+
+</Choice>
+<Choice title="Assets beside the module that uses them">
+
+```txt
+pages/ContactImport/components/UploadStep/
+├─ index.ts
+├─ UploadStep.tsx
+└─ upload.svg
+```
+
+</Choice>
+</DecisionPair>
+
+**Why:** the owner rule applied to images was consistent, and more than anyone needed. A central folder is what most apps already do and what most people look for, so assets are the one exemption from the owner rule.
+
+## A separate, optional package
+
+<DecisionPair>
+<Choice title="Its own package: @mitcsutt/kiln-structure" chosen={true}>
+
+```txt
+packages/structure/
+├─ eslint.js     kilnStructure(options)
+├─ skills/       app-structure + add-ons
+└─ test/fixtures/
+```
+
+</Choice>
+<Choice title="A preset in kiln-eslint-config">
+
+```txt
+packages/eslint-config/
+├─ base.js  react.js  storybook.js
+└─ app-structure.js
+```
+
+</Choice>
+</DecisionPair>
+
+**Why:** every part has to be optional, and some projects that want the rules and the skills won't use ESLint at all. ESLint is an optional peer of the package, while the lint config assumes it. Its versions also move with the structure rules, not with lint style.
+
+## A rule that was dropped: page and type names
+
+A `Contact` page and a `Contact` type collide in one file.
+
+<DecisionPair>
+<Choice title="Rename one when it happens" chosen={true}>
+
+```ts
+import type { Contact } from '#features/contacts/types/Contact'
+import { ContactDetails } from '#features/contacts/pages/ContactDetails'
+```
+
+</Choice>
+<Choice title="A naming rule: suffix every page">
+
+```txt
+pages/
+├─ ContactPage/
+└─ ContactsPage/
+types/
+└─ Contact/
+```
+
+</Choice>
+</DecisionPair>
+
+**Why:** the clash is rare, and the type checker flags it the moment it happens. A rule for it would rename every page in every app to prevent a problem a few files have, and the folder already says `pages/`.

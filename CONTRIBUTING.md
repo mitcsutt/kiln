@@ -26,6 +26,7 @@ packages/
   eslint-config/     @mitcsutt/kiln-eslint-config
   prettier-config/   @mitcsutt/kiln-prettier-config
   tsconfig/          @mitcsutt/kiln-tsconfig
+  structure/         @mitcsutt/kiln-structure (the app structure's ESLint preset)
   testing-react18/   private test fixture for the React 18 test pass (never published)
 docs/
   adr/               architecture decision records

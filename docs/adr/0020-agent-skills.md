@@ -1,6 +1,6 @@
 # 0020. How the agent skills are built
 
-- **Status:** Accepted
+- **Status:** Accepted, amended by [0038](0038-variant-blocks.md)
 - **Date:** 2026-10-05
 
 ## Context

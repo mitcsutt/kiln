@@ -1,0 +1,9 @@
+{
+  "name": "next-app",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#assets/*": "./src/assets/*",
+    "#*": "./src/*/index.ts"
+  }
+}

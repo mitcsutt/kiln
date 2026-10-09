@@ -1,6 +1,7 @@
 import tokens from '../../.generated/tokens.json'
 import { getApi, type ApiEntry } from './api'
 import { exampleId, examplesMarkdown, getExampleSource } from './examples'
+import { dedent, resolveVariants, type VariantSelection } from './variants'
 
 function attribute(tag: string, name: string): string | undefined {
   return new RegExp(`${name}="([^"]*)"`).exec(tag)?.[1]
@@ -42,14 +43,64 @@ export function apiMarkdown(entry: ApiEntry): string {
   return lines.join('\n')
 }
 
+const FENCE = /^\s{0,3}(`{3,}|~{3,})/
+
+/**
+ * `<DecisionPair>` and its two `<Choice title chosen={true}>` blocks, as numbered options: the chosen
+ * one says so. The processed Markdown indents the blocks' children, so each is dedented, and it
+ * writes `chosen={true}` as `chosen="true"` and drops a bare `chosen`, so pages write `chosen={true}`.
+ */
+export function decisionsMarkdown(markdown: string): string {
+  const out: string[] = []
+  let choice: { title: string; chosen: boolean; lines: string[] } | undefined
+  let number = 0
+  let fence: string | undefined
+  for (const line of markdown.split('\n')) {
+    const marker = FENCE.exec(line)?.[1]
+    if (fence ?? marker) {
+      if (fence && marker?.startsWith(fence.charAt(0)) && marker.length >= fence.length) {
+        fence = undefined
+      } else {
+        fence ??= marker
+      }
+      ;(choice ? choice.lines : out).push(line)
+      continue
+    }
+    if (/^\s*<DecisionPair>\s*$/.test(line)) {
+      number = 0
+      continue
+    }
+    if (/^\s*<\/DecisionPair>\s*$/.test(line)) continue
+    const opening = /^\s*<Choice\s+title="([^"]*)"(\s+chosen(?:=\{true\}|="true")?)?\s*>\s*$/.exec(
+      line,
+    )
+    if (opening) {
+      choice = { title: opening[1] ?? '', chosen: Boolean(opening[2]), lines: [] }
+      continue
+    }
+    if (choice && /^\s*<\/Choice>\s*$/.test(line)) {
+      number++
+      const mark = choice.chosen ? ' (chosen)' : ''
+      out.push(`**${String(number)}. ${choice.title}**${mark}`, '', dedent(choice.lines), '')
+      choice = undefined
+      continue
+    }
+    ;(choice ? choice.lines : out).push(line)
+  }
+  return out.join('\n')
+}
+
 /**
  * The page's MDX, made plain Markdown for agents: each live example becomes its source
  * and each API table becomes a Markdown table, read from the same data the page renders.
+ * `variants` picks which `<Variant>` blocks stay (ADR 0038): every one, labelled, by default.
  */
-export function toMarkdown(processed: string): string {
-  // `<Examples of>` first: it stands for headings, captions and `<Example>` tags. The site's
+export function toMarkdown(processed: string, variants: VariantSelection = 'all'): string {
+  // Variant blocks first: they hold fenced code, which the edits below split the text around.
+  const resolved = decisionsMarkdown(resolveVariants(processed, variants))
+  // `<Examples of>` next: it stands for headings, captions and `<Example>` tags. The site's
   // processed Markdown has it expanded already; a page read from disk (the skills) doesn't.
-  const listed = outsideCode(processed, (text) =>
+  const listed = outsideCode(resolved, (text) =>
     text.replace(/<Examples\b[^>]*\/>/g, (tag) => examplesMarkdown(attribute(tag, 'of') ?? '')),
   )
   // Code is left as written: a JSX comment or self-closing element in an example is code.

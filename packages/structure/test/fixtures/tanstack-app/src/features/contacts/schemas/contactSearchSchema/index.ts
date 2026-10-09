@@ -1,0 +1,1 @@
+export { contactSearchSchema } from './contactSearchSchema'

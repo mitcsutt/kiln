@@ -12,6 +12,8 @@ out
 .eslintcache
 coverage
 *.tsbuildinfo
+# eslint-plugin-project-structure's error cache
+projectStructure.cache.json
 
 # Environment
 .env

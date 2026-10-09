@@ -1,0 +1,1 @@
+export { ContactsTableRow } from './ContactsTableRow'

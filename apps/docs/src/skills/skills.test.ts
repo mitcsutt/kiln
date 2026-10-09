@@ -1,8 +1,10 @@
 import { globSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { parse } from 'yaml'
-import { repoDir } from '@/test/content'
+import { splitVariants } from '@/lib/variants'
+import { contentPages, repoDir } from '@/test/content'
 import { buildSkills } from './build'
+import { skills } from './manifest'
 
 // ADR 0011: the skills kiln-ui and kiln-forms ship are built from the docs pages, so the two
 // can't drift. A failure here means a page changed: run `pnpm generate:skills` and commit.
@@ -44,17 +46,70 @@ describe.each([...files].filter(([path]) => path.endsWith('/SKILL.md')))('%s', (
       expect(typeof value).toBe('string')
   })
 
-  it('stays under 500 lines', () => {
-    expect(content.split('\n').length).toBeLessThanOrEqual(500)
+  const spec = skills.find((skill) => skill.name === frontmatter.name)
+
+  it(`stays within its line budget (${String(spec?.maxLines ?? 500)})`, () => {
+    expect(content.split('\n').length).toBeLessThanOrEqual(Math.min(spec?.maxLines ?? 500, 500))
+  })
+
+  it('leaves out the links to rationale', () => {
+    expect(content).not.toMatch(/\[Why\]\(/)
   })
 })
 
-describe('every shipped skill is readable by Intent', () => {
-  it.each(['ui', 'forms'])('kiln-%s ships its skills directory', (name) => {
-    const manifest = JSON.parse(
-      readFileSync(join(repoDir, 'packages', name, 'package.json'), 'utf8'),
-    ) as { files?: string[]; keywords?: string[] }
-    expect(manifest.files).toContain('skills')
-    expect(manifest.keywords).toContain('tanstack-intent')
+// ADR 0038: a page with variant blocks gives a core skill and add-ons, each loaded beside the
+// others, so each has a tight budget of its own.
+describe('skills split by variant', () => {
+  const variantPages = new Set(
+    contentPages()
+      .filter((page) => splitVariants(page.body).some((segment) => segment.variant))
+      .map((page) => page.path.replace(/\/index$/, '')),
+  )
+  const split = skills.filter(
+    (spec) =>
+      spec.addOn ?? spec.pages.some((page) => variantPages.has(page.replace(/\/index$/, ''))),
+  )
+
+  it('names a core skill of its own package for every add-on', () => {
+    for (const spec of skills.filter((skill) => skill.addOn)) {
+      const core = skills.find((skill) => skill.name === spec.addOn?.extends)
+      expect(core?.package, spec.name).toBe(spec.package)
+      expect(core?.addOn, spec.name).toBeUndefined()
+    }
   })
+
+  it.each(split.map((spec) => [spec.name, spec] as const))(
+    '%s declares a budget',
+    (_name, spec) => {
+      expect(spec.maxLines).toBeDefined()
+    },
+  )
+
+  it.each(split.filter((spec) => spec.addOn).map((spec) => [spec.name, spec] as const))(
+    '%s has blocks of its variant on its pages',
+    (_name, spec) => {
+      const blocks = contentPages()
+        .filter((page) => spec.pages.includes(page.path.replace(/\/index$/, '')))
+        .flatMap((page) => splitVariants(page.body))
+        .filter(
+          ({ variant }) =>
+            variant?.axis === spec.addOn?.variant.axis &&
+            variant?.value === spec.addOn?.variant.value,
+        )
+      expect(blocks.length).toBeGreaterThan(0)
+    },
+  )
+})
+
+describe('every shipped skill is readable by Intent', () => {
+  it.each([...new Set(skills.map((spec) => spec.package))])(
+    'kiln-%s ships its skills directory',
+    (name) => {
+      const manifest = JSON.parse(
+        readFileSync(join(repoDir, 'packages', name, 'package.json'), 'utf8'),
+      ) as { files?: string[]; keywords?: string[] }
+      expect(manifest.files).toContain('skills')
+      expect(manifest.keywords).toContain('tanstack-intent')
+    },
+  )
 })

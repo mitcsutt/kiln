@@ -1,0 +1,10 @@
+{
+  "name": "tanstack-app",
+  "private": true,
+  "type": "module",
+  "imports": {
+    "#assets/*": "./src/assets/*",
+    "#routeTree": "./src/routeTree.gen.ts",
+    "#*": "./src/*/index.ts"
+  }
+}
