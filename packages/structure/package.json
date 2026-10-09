@@ -10,7 +10,8 @@
     "flat-config",
     "project-structure",
     "architecture",
-    "react"
+    "react",
+    "tanstack-intent"
   ],
   "homepage": "https://kiln.mitchellsutton.com",
   "bugs": "https://github.com/mitcsutt/kiln/issues",
@@ -30,10 +31,12 @@
   },
   "files": [
     "*.js",
+    "skills",
     "types"
   ],
   "scripts": {
     "check:package": "pnpm pack --out node_modules/.cache/kiln-pack/package.tgz > /dev/null && publint --pack pnpm --strict && attw node_modules/.cache/kiln-pack/package.tgz --profile esm-only",
+    "check:skills": "intent validate",
     "lint": "eslint --max-warnings=0 .",
     "test": "vitest run",
     "typecheck": "tsc --noEmit"
@@ -49,6 +52,7 @@
     "@arethetypeswrong/cli": "catalog:",
     "@mitcsutt/kiln-eslint-config": "workspace:*",
     "@mitcsutt/kiln-tsconfig": "workspace:*",
+    "@tanstack/intent": "catalog:",
     "@types/node": "catalog:",
     "eslint": "catalog:",
     "publint": "catalog:",

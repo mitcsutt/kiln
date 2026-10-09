@@ -1,9 +1,9 @@
 ---
 title: AI tooling
-description: The agent skills kiln-ui and kiln-forms ship, how to load them into your coding agent, and the Markdown versions of these docs.
+description: The agent skills Kiln's packages ship, how to load them into your coding agent, and the Markdown versions of these docs.
 ---
 
-Kiln ships guidance for coding agents alongside its code. `@mitcsutt/kiln-ui` and `@mitcsutt/kiln-forms` each include agent skills in their npm package, and every page of these docs is also available as Markdown. Both are built from the same pages you're reading, so an agent learns what the docs say, for the version you have installed.
+Kiln ships guidance for coding agents alongside its code. `@mitcsutt/kiln-ui`, `@mitcsutt/kiln-forms` and `@mitcsutt/kiln-structure` each include agent skills in their npm package, and every page of these docs is also available as Markdown. Both are built from the same pages you're reading, so an agent learns what the docs say, for the version you have installed.
 
 ## Agent skills
 
@@ -28,7 +28,17 @@ A skill is a `SKILL.md` file, with optional reference pages, that tells an agent
 | `view-mode`      | Showing a form's values as read-only text, on a detail page or a wizard's review step                   |
 | `custom-fields`  | Adding a field kiln-forms doesn't ship, and registering it so forms and schemas can use it              |
 
-For the layout of the app itself, see [Project structure](/docs/tooling/project-structure).
+`@mitcsutt/kiln-structure` ships the [Project structure](/docs/tooling/project-structure) rules as a core skill plus one add-on per stack. Load the core skill, and the add-on for each stack your project depends on:
+
+| Skill                           | Use it when                                                                                     |
+| ------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `app-structure`                 | Creating, moving or reviewing files in a React web app, its imports, and the ESLint preset      |
+| `app-structure-tanstack-router` | The project uses TanStack Router: file routes, `#routeTree` and the shell in `src/app/`         |
+| `app-structure-nextjs`          | The project uses the Next.js App Router: route files in `src/app/`, the shell in `app/_shell/`  |
+| `app-structure-tanstack-query`  | The data layer is TanStack Query: keys, `queryOptions` and mutations in one module per resource |
+| `app-structure-graphql`         | The data layer is GraphQL: the client and codegen output in `src/lib/`, typed documents         |
+| `app-structure-rest`            | The data layer is a REST API: a `fetch` wrapper in `src/lib/`, request functions and mappers    |
+| `app-structure-websockets`      | The app subscribes to live updates: the socket in `src/lib/`, message types and hooks           |
 
 ### Load them into your agent
 
@@ -40,7 +50,7 @@ npx @tanstack/intent@latest install
 
 It asks which installed packages' skills your agent may use, and records the answer as an `intent.skills` list in `package.json`. Then it writes a short block into your agent's instructions file (`AGENTS.md`, `CLAUDE.md`, `.cursorrules` and the like) that tells the agent to find and load the skill that matches its task. There's nothing to set up per package, and nothing to redo when you update Kiln.
 
-If `package.json` already has an `intent.skills` list, Intent loads only the packages it names, so add `@mitcsutt/kiln-ui` and `@mitcsutt/kiln-forms` to it.
+If `package.json` already has an `intent.skills` list, Intent loads only the packages it names, so add the Kiln packages you use to it.
 
 To see what's installed, or to read a skill yourself:
 

@@ -4,7 +4,7 @@ import { parse, stringify } from 'yaml'
 import { getApi } from '@/lib/api'
 import { SITE_URL } from '@/lib/site'
 import { outsideCode, toMarkdown } from '@/lib/to-markdown'
-import { VARIANT_AXES, variantLabel, type VariantSelection } from '@/lib/variants'
+import { variantLabel, type VariantSelection } from '@/lib/variants'
 import { skills, type SkillSpec } from './manifest'
 
 const appDir = join(import.meta.dirname, '../..')
@@ -145,19 +145,10 @@ function buildSkill(spec: SkillSpec): Map<string, string> {
   ]
   const addOns = skills.filter((other) => other.addOn?.extends === spec.name)
   if (addOns.length) {
-    lines.push(
-      '',
-      '## Add-ons',
-      '',
-      'Load the add-on for each stack the project depends on:',
-      '',
-      ...addOns.map(({ name, addOn }) => {
-        const variant = addOn?.variant
-        return variant
-          ? `- \`${name}\`: ${VARIANT_AXES[variant.axis].label}: ${variantLabel(variant)}`
-          : `- \`${name}\``
-      }),
+    const list = addOns.map(({ name, addOn }) =>
+      addOn ? `\`${name}\` (${variantLabel(addOn.variant)})` : `\`${name}\``,
     )
+    lines.push('', `Add-on skills, one per stack the project depends on: ${list.join(', ')}.`)
   }
   if (references.length) {
     lines.push(
