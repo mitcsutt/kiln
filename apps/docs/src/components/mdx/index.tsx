@@ -1,5 +1,6 @@
 import type { MDXComponents } from 'mdx/types'
 import { Callout } from './client'
+import { Variant } from './Variant'
 import {
   ColourSwatches,
   DepthRoles,
@@ -26,6 +27,7 @@ export function getMDXComponents(): MDXComponents {
     ApiTable,
     ApiSignature,
     Callout,
+    Variant,
     ColourSwatches,
     TypeScale,
     SpaceScale,

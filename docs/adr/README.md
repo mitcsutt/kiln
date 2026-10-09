@@ -23,7 +23,7 @@ Each record captures one decision: the context, what was decided, and what follo
 | [0017](0017-kiln-forms-port.md)                         | How `kiln-forms` was ported: names, entries, checks          | Accepted, amended by 0024                            |
 | [0018](0018-storybook-workbench.md)                     | How the Storybook workbench is built and tested              | Accepted, amended by 0026, 0027 and 0031             |
 | [0019](0019-docs-site.md)                               | How the docs site is built: Fumadocs core, Kiln chrome       | Accepted, amended by 0025, 0029, 0033, 0034 and 0035 |
-| [0020](0020-agent-skills.md)                            | How the agent skills are built from the docs                 | Accepted                                             |
+| [0020](0020-agent-skills.md)                            | How the agent skills are built from the docs                 | Accepted, amended by 0038                            |
 | [0021](0021-forms-context-in-nested-components.md)      | Typed form context for nested components in `kiln-forms`     | Accepted                                             |
 | [0022](0022-linked-consumers.md)                        | Linked consumers resolve built output through `kiln-dist`    | Accepted                                             |
 | [0023](0023-theme-script-entry.md)                      | A React-free `theme-script` entry that plain Node loads      | Accepted                                             |
@@ -41,5 +41,6 @@ Each record captures one decision: the context, what was decided, and what follo
 | [0035](0035-code-highlighting.md)                       | CodeBlock highlights code through an opt-in Shiki entry      | Accepted                                             |
 | [0036](0036-ai-tooling-page.md)                         | AI tooling gets a docs page under Tooling                    | Accepted                                             |
 | [0037](0037-app-structure.md)                           | Kiln recommends a structure for React web apps               | Proposed                                             |
+| [0038](0038-variant-blocks.md)                          | Stack-specific docs content goes in variant blocks           | Accepted                                             |
 
 New records use the next number and the same headings: Status, Context, Decision, Consequences.
