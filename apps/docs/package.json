@@ -28,6 +28,7 @@
     "zod": "catalog:"
   },
   "devDependencies": {
+    "@mitcsutt/kiln-structure": "workspace:*",
     "@mitcsutt/kiln-tsconfig": "workspace:*",
     "@types/mdast": "^4.0.4",
     "@types/mdx": "^2.0.14",
