@@ -1,0 +1,1 @@
+export { toContact } from './toContact'

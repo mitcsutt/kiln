@@ -35,7 +35,34 @@ A maintainer with admin access to the repository and the npm scope does these on
 6. **Add a trusted publisher to each package.** On npmjs.com, open each package's _Settings > Trusted publishing_ and add a GitHub Actions publisher: owner `mitcsutt`, repository `kiln`, workflow `release.yml`, environment `npm`. Under _Allowed actions_, `npm stage publish` is always allowed. Also allow publishing directly, because the release workflow publishes directly and a staged publish would need promoting by hand. Leave dist-tag management off. Then, under _Settings > Publishing access_, choose _Require two-factor authentication and disallow bypass 2fa tokens (recommended)_. npm notes that every publishing-access option works with trusted publishers, so the workflow keeps publishing.
 7. **Switch publishing on.** Under _Settings > Secrets and variables > Actions > Variables_, add a repository variable `NPM_PUBLISH_ENABLED` set to `true`. Until it exists, the workflow still opens version pull requests but skips the pack and publish jobs.
 
-Steps 5 and 6 also apply later, whenever a new package joins the repo.
+Steps 5 and 6 also apply later, whenever a new package joins the repo. [Adding a new package](#adding-a-new-package) does both with a placeholder version, so the first real version still comes from the workflow, with provenance.
+
+## Adding a new package
+
+A new package can't get a trusted publisher until it exists on npm, and a version published by hand has no provenance. So the first publish is a placeholder, `0.0.0`, and the first real version (`0.1.0`) publishes from the workflow like any other. `@mitcsutt/kiln-structure` was the first package added this way.
+
+1. **The package's pull request leaves it at `0.0.0`.** Its `package.json` says `"version": "0.0.0"`, and its changeset is a `minor`, so the "Version packages" pull request bumps it to `0.1.0`. Merge the package's pull request, but don't merge that version pull request until step 4.
+2. **A maintainer publishes `0.0.0` by hand.** From a clean checkout of `main`:
+
+   ```sh
+   pnpm install --frozen-lockfile
+   npm login
+   cd packages/<name>
+   pnpm publish --access public --no-git-checks   # prompts for a one-time password
+   ```
+
+   `pnpm publish` swaps `workspace:` and `catalog:` ranges for real versions, as the workflow does. Don't tag or push anything: the placeholder isn't a release. A newly published scoped package can take a few minutes to appear, so wait until `npm view @mitcsutt/kiln-<name>` finds it.
+
+3. **Add the trusted publisher and lock publishing down.** With npm 11.10 or later, the publisher can be added from the command line:
+
+   ```sh
+   npm trust github @mitcsutt/kiln-<name> --repo mitcsutt/kiln --file release.yml --env npm
+   npm trust list @mitcsutt/kiln-<name>   # check it
+   ```
+
+   This is the same publisher as [step 6](#prerequisites) above, so check the package's _Settings > Trusted publishing_ page allows publishing directly. Then, under _Settings > Publishing access_, choose _Require two-factor authentication and disallow bypass 2fa tokens (recommended)_. Optionally, mark the placeholder so nobody installs it: `npm deprecate @mitcsutt/kiln-<name>@0.0.0 "Placeholder. Use 0.1.0 or later."`.
+
+4. **Merge the version pull request.** The workflow publishes `0.1.0` through trusted publishing, with provenance, tags it and creates its GitHub release. Check for `dist.attestations` as in [Provenance details](#provenance-details).
 
 ## Checking the pipeline without publishing
 

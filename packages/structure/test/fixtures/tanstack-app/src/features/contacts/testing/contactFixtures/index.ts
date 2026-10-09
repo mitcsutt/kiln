@@ -1,0 +1,1 @@
+export { contactFixtures } from './contactFixtures'

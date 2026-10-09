@@ -24,5 +24,8 @@ apps/docs/content/docs/forms/layouts/*.mdx
 !apps/docs/content/docs/forms/layouts/custom-layouts.mdx
 !apps/docs/content/docs/forms/layouts/stack-and-inline.mdx
 
+# Lint input for the kiln-structure tests, including files that are wrong on purpose
+packages/structure/test/fixtures/
+
 # Built from the docs by apps/docs/src/skills; the drift test compares them byte for byte
 packages/*/skills/

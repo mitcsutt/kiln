@@ -19,6 +19,7 @@ I kept rebuilding the same components, form plumbing and lint configs across pro
 | [`@mitcsutt/kiln-eslint-config`](packages/eslint-config)     | A shared, type-aware flat ESLint config                                                                                              | [![npm](https://img.shields.io/npm/v/@mitcsutt/kiln-eslint-config?label=)](https://www.npmjs.com/package/@mitcsutt/kiln-eslint-config)     |
 | [`@mitcsutt/kiln-prettier-config`](packages/prettier-config) | A shared Prettier config                                                                                                             | [![npm](https://img.shields.io/npm/v/@mitcsutt/kiln-prettier-config?label=)](https://www.npmjs.com/package/@mitcsutt/kiln-prettier-config) |
 | [`@mitcsutt/kiln-tsconfig`](packages/tsconfig)               | Shared TypeScript presets                                                                                                            | [![npm](https://img.shields.io/npm/v/@mitcsutt/kiln-tsconfig?label=)](https://www.npmjs.com/package/@mitcsutt/kiln-tsconfig)               |
+| [`@mitcsutt/kiln-structure`](packages/structure)             | A recommended structure for React web apps, with an ESLint preset that enforces it                                                   | [![npm](https://img.shields.io/npm/v/@mitcsutt/kiln-structure?label=)](https://www.npmjs.com/package/@mitcsutt/kiln-structure)             |
 
 More general utilities will follow as `@mitcsutt/kiln-*` packages.
 

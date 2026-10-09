@@ -29,8 +29,11 @@ catalog:
   eslint: ^10.12.0
   eslint-config-prettier: ^10.1.8
   eslint-import-resolver-typescript: ^4.4.5
+  eslint-plugin-boundaries: ^7.2.0
   eslint-plugin-import-x: ^4.17.1
   eslint-plugin-jsx-a11y: ^6.10.2
+  # Pinned exactly: it has a single maintainer (ADR 0037).
+  eslint-plugin-project-structure: 3.14.5
   eslint-plugin-react-hooks: ^7.1.1
   eslint-plugin-react-refresh: ^0.5.7
   eslint-plugin-storybook: ^10.6.1

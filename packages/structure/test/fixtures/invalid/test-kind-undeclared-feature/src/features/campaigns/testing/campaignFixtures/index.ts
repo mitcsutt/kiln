@@ -1,0 +1,1 @@
+export { campaignFixtures } from './campaignFixtures'

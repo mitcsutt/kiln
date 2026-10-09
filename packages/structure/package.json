@@ -1,0 +1,77 @@
+{
+  "name": "@mitcsutt/kiln-structure",
+  "version": "0.0.0",
+  "description": "Kiln's recommended structure for React web apps, with an ESLint preset that enforces it",
+  "keywords": [
+    "kiln",
+    "eslint",
+    "eslintconfig",
+    "eslint-config",
+    "flat-config",
+    "project-structure",
+    "architecture",
+    "react"
+  ],
+  "homepage": "https://kiln.mitchellsutton.com",
+  "bugs": "https://github.com/mitcsutt/kiln/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mitcsutt/kiln.git",
+    "directory": "packages/structure"
+  },
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    "./eslint": {
+      "types": "./types/eslint.d.ts",
+      "default": "./eslint.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "*.js",
+    "types"
+  ],
+  "scripts": {
+    "check:package": "pnpm pack --out node_modules/.cache/kiln-pack/package.tgz > /dev/null && publint --pack pnpm --strict && attw node_modules/.cache/kiln-pack/package.tgz --profile esm-only",
+    "lint": "eslint --max-warnings=0 .",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "eslint-import-resolver-typescript": "catalog:",
+    "eslint-plugin-boundaries": "catalog:",
+    "eslint-plugin-project-structure": "catalog:",
+    "eslint-plugin-react-refresh": "catalog:",
+    "typescript-eslint": "catalog:"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "catalog:",
+    "@mitcsutt/kiln-eslint-config": "workspace:*",
+    "@mitcsutt/kiln-tsconfig": "workspace:*",
+    "@types/node": "catalog:",
+    "eslint": "catalog:",
+    "publint": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:"
+  },
+  "peerDependencies": {
+    "eslint": "^10.0.0",
+    "typescript": ">=4.8.4 <6.1.0"
+  },
+  "peerDependenciesMeta": {
+    "eslint": {
+      "optional": true
+    },
+    "typescript": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
