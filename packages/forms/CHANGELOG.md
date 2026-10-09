@@ -1,5 +1,11 @@
 # @mitcsutt/kiln-forms
 
+## 0.1.6
+
+### Patch Changes
+
+- 4c53011: The `setup-and-theming` and `component-mode` skills link to the new AI tooling page on the docs site.
+
 ## 0.1.5
 
 ### Patch Changes
