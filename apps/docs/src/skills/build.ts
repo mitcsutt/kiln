@@ -76,6 +76,13 @@ function rewriteLinks(markdown: string, target: (path: string) => string | undef
   )
 }
 
+/**
+ * Drops the `[Why](…)` links the docs put after a rule. They point at a rationale page, and a skill
+ * gives an agent the instructions without the argument behind them.
+ */
+const dropWhyLinks = (markdown: string) =>
+  outsideCode(markdown, (text) => text.replace(/ ?\[Why\]\([^)\s]*\)/g, ''))
+
 const demote = (markdown: string) => outsideCode(markdown, (text) => text.replace(/^#/gm, '##'))
 
 const GENERATED_NOTE =
@@ -122,7 +129,7 @@ function buildSkill(spec: SkillSpec): Map<string, string> {
 
   const single = pages.length === 1
   const sections = pages.map((page) => {
-    const body = rewriteLinks(page.body, fromSkill)
+    const body = rewriteLinks(dropWhyLinks(page.body), fromSkill)
     if (single) return body
     const lead = page.description ? `\n\n${page.description}` : ''
     return `## ${page.title}${lead}\n\n${demote(body)}`

@@ -51,6 +51,10 @@ describe.each([...files].filter(([path]) => path.endsWith('/SKILL.md')))('%s', (
   it(`stays within its line budget (${String(spec?.maxLines ?? 500)})`, () => {
     expect(content.split('\n').length).toBeLessThanOrEqual(Math.min(spec?.maxLines ?? 500, 500))
   })
+
+  it('leaves out the links to rationale', () => {
+    expect(content).not.toMatch(/\[Why\]\(/)
+  })
 })
 
 // ADR 0038: a page with variant blocks gives a core skill and add-ons, each loaded beside the
