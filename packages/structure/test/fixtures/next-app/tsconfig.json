@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "module": "Preserve",
+    "moduleResolution": "Bundler",
+    "jsx": "preserve",
+    "noEmit": true
+  },
+  "include": [
+    "src"
+  ]
+}

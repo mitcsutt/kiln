@@ -1,0 +1,1 @@
+export { userFixtures } from './userFixtures'

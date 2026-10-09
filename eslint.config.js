@@ -43,6 +43,8 @@ export default defineConfig(
     'apps/docs/.generated/',
     'apps/docs/.wrangler/',
     'apps/docs/next-env.d.ts',
+    // Lint input for the kiln-structure tests: apps laid out right and wrong on purpose.
+    'packages/structure/test/fixtures/',
   ]),
   {
     name: 'kiln/workspace/type-aware',
@@ -58,6 +60,7 @@ export default defineConfig(
       '*.{js,ts}',
       'packages/eslint-config/**',
       'packages/prettier-config/**',
+      'packages/structure/**',
       'packages/tsconfig/**',
       'packages/*/*.config.ts',
       'packages/*/scripts/**',

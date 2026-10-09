@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "module": "Preserve",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "noEmit": true
+  },
+  "include": [
+    "src",
+    "testing"
+  ]
+}
