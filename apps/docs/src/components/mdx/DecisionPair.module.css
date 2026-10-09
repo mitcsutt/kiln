@@ -1,0 +1,55 @@
+/*
+ * A decision as an eye test: two numbered options, side by side. The number is the option's name
+ * in the comparison, set in the display face. The chosen side gets the accent keyline (the
+ * accent marks the current item), the other a hairline, and each says which it is in a badge.
+ */
+.pair {
+  counter-reset: choice;
+}
+
+.choice {
+  counter-increment: choice;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: var(--space-4);
+  margin: 0;
+  min-inline-size: 0;
+}
+
+.caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-3);
+  padding-block-start: var(--space-3);
+  border-block-start: var(--border-width) solid var(--color-line-strong);
+}
+.choice[data-chosen] .caption {
+  border-block-start: 2px solid var(--color-accent);
+}
+
+.number::before {
+  content: counter(choice);
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--color-ink-muted);
+}
+.choice[data-chosen] .number::before {
+  color: var(--color-ink);
+}
+
+.title {
+  flex: 1 1 12rem;
+}
+
+.body {
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
+  min-inline-size: 0;
+}
+.body > * {
+  margin-block: 0;
+}

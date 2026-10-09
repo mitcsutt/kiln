@@ -1,5 +1,6 @@
 import type { MDXComponents } from 'mdx/types'
 import { Callout } from './client'
+import { Choice, DecisionPair } from './DecisionPair'
 import { Variant } from './Variant'
 import {
   ColourSwatches,
@@ -28,6 +29,8 @@ export function getMDXComponents(): MDXComponents {
     ApiSignature,
     Callout,
     Variant,
+    DecisionPair,
+    Choice,
     ColourSwatches,
     TypeScale,
     SpaceScale,

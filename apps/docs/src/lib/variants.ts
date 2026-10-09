@@ -72,7 +72,7 @@ const CLOSING = /^\s*<\/Variant>\s*$/
 const FENCE = /^\s{0,3}(`{3,}|~{3,})/
 
 /** Removes the indentation every non-blank line shares (the processed Markdown indents JSX children). */
-function dedent(lines: string[]): string {
+export function dedent(lines: string[]): string {
   const indents = lines
     .filter((line) => line.trim())
     .map((line) => /^ */.exec(line)?.[0].length ?? 0)
