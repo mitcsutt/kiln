@@ -202,4 +202,39 @@ export const skills: SkillSpec[] = [
     pages: ['forms/getting-started/view-mode'],
     references: ['forms/layouts/form-review'],
   },
+  {
+    package: 'structure',
+    name: 'app-structure',
+    title: 'Lay out a React web app',
+    description:
+      'Use when creating, moving or reviewing files in a React web app (routes, pages, features), or setting up its imports and lint: where a file goes by its closest common owner, kind folders (components, hooks, stores, utils, constants, types, schemas, pages, data), module folders with a narrow index.ts, # subpath imports and the import map, feature boundaries and the declared feature graph, and the @mitcsutt/kiln-structure ESLint preset. Not for component libraries or npm packages.',
+    purpose:
+      "Place every file of a React web app by Kiln's structure rules, and configure the ESLint preset that enforces them.",
+    type: 'core',
+    pages: ['tooling/project-structure'],
+    maxLines: 160,
+  },
+  ...(
+    [
+      ['tanstack-router', 'TanStack Router', { axis: 'router', value: 'tanstack' }, 40],
+      ['nextjs', 'the Next.js App Router', { axis: 'router', value: 'next' }, 40],
+      ['tanstack-query', 'TanStack Query', { axis: 'data', value: 'tanstack-query' }, 55],
+      ['graphql', 'GraphQL', { axis: 'data', value: 'graphql' }, 40],
+      ['rest', 'a REST API', { axis: 'data', value: 'rest' }, 45],
+      ['websockets', 'WebSockets or server-sent events', { axis: 'data', value: 'websockets' }, 40],
+    ] as const
+  ).map(([suffix, stack, variant, maxLines]): SkillSpec => ({
+    package: 'structure',
+    name: `app-structure-${suffix}`,
+    title: `App structure with ${stack}`,
+    description:
+      variant.axis === 'router'
+        ? `Use when the project depends on ${stack} and you add or move routes, the app shell or router setup in a React web app laid out by Kiln's structure rules.`
+        : `Use when the project depends on ${stack} and you add or change the data layer of a React web app laid out by Kiln's structure rules: the client in src/lib and one data module per resource.`,
+    purpose: `Where ${stack} code goes in Kiln's app structure.`,
+    type: variant.axis === 'router' ? 'framework' : 'composition',
+    pages: ['tooling/project-structure'],
+    addOn: { extends: 'app-structure', variant },
+    maxLines,
+  })),
 ]

@@ -1,11 +1,23 @@
 ---
-title: Project structure
-description: Where every file goes in a React web app, as rules to follow, with an optional ESLint preset that enforces them.
+name: app-structure
+description: "Use when creating, moving or reviewing files in a React web app (routes, pages, features), or setting up its imports and lint: where a file goes by its closest common owner, kind folders (components, hooks, stores, utils, constants, types, schemas, pages, data), module folders with a narrow index.ts, # subpath imports and the import map, feature boundaries and the declared feature graph, and the @mitcsutt/kiln-structure ESLint preset. Not for component libraries or npm packages."
+metadata:
+  purpose: Place every file of a React web app by Kiln's structure rules, and configure the ESLint preset that enforces them.
+  type: core
+  library: "@mitcsutt/kiln-structure"
+sources:
+  - mitcsutt/kiln:apps/docs/content/docs/tooling/project-structure/index.mdx
 ---
+
+<!-- Generated from the Kiln docs by apps/docs/src/skills. Edit the docs pages, then run `pnpm generate:skills`. -->
+
+# Lay out a React web app
+
+Place every file of a React web app by Kiln's structure rules, and configure the ESLint preset that enforces them.
 
 `@mitcsutt/kiln-structure` is Kiln's recommended layout for **React web apps**: projects with routes, pages and features. It isn't for component libraries or npm packages, which keep a barrel per entry point and an `exports` map.
 
-**A file lives with its closest common owner, the children of any owner are grouped by kind, and every module is a folder with a narrow `index.ts`.** Every part is optional: these rules, the [agent skills](/docs/tooling/ai) and the [ESLint preset](#eslint-preset).
+**A file lives with its closest common owner, the children of any owner are grouped by kind, and every module is a folder with a narrow `index.ts`.** Every part is optional: these rules, the [agent skills](https://kiln.mitchellsutton.com/docs/tooling/ai) and the [ESLint preset](#eslint-preset).
 
 ## Rules
 
@@ -92,147 +104,6 @@ Take the first answer that fits:
 7. Anything else: list everything that uses it, and put it in the smallest owner that contains them all. Then pick its kind folder and make it a module folder.
 8. Another feature needs it: it must sit in the owning feature's public surface, and the dependency must be in the `features` graph.
 
-## Routes
-
-<Variant router="tanstack">
-
-- File routes live in `src/routes/`, named as TanStack Router requires. Import the generated tree as `#routeTree`.
-- The shell, providers and router setup live in `src/app/`. Set `router: 'tanstack'` in the preset, the default.
-- A route file holds the route's config and renders a page:
-
-```tsx title="src/routes/contacts/$contactId.tsx"
-import { createFileRoute } from '@tanstack/react-router'
-import { contactQuery } from '#features/contacts/data/contacts'
-import { Contact } from '#features/contacts/pages/Contact'
-
-export const Route = createFileRoute('/contacts/$contactId')({
-  loader: ({ context, params }) =>
-    context.queryClient.ensureQueryData(contactQuery(params.contactId)),
-  component: Contact,
-})
-```
-
-</Variant>
-
-<Variant router="next">
-
-- The App Router owns `src/app/`: route files there follow Next.js and export a default. Set `router: 'next'` in the preset.
-- The shell, providers and their stores go in `src/app/_shell/`, a private folder the router ignores. Import it as `#app/_shell/components/AppShell`.
-- A `page.tsx` reads params, then renders a page module:
-
-```tsx title="src/app/contacts/[contactId]/page.tsx"
-import { Contact } from '#features/contacts/pages/Contact'
-
-export default async function ContactPage({ params }: { params: Promise<{ contactId: string }> }) {
-  const { contactId } = await params
-  return <Contact contactId={contactId} />
-}
-```
-
-</Variant>
-
-## Data recipes
-
-<Variant data="tanstack-query">
-
-- `src/lib/queryClient/` holds the `QueryClient`.
-- `data/<resource>/<resource>.ts` holds the query keys, `queryOptions`, mutations and the hooks that wrap them. Child resources build their keys on the parent's.
-
-```ts title="src/features/contacts/data/contacts/contacts.ts"
-import { queryOptions, useMutation, useQueryClient } from '@tanstack/react-query'
-import { http } from '#lib/http'
-import type { Contact } from '#features/contacts/types/Contact'
-
-export const contactKeys = {
-  all: ['contacts'] as const,
-  detail: (id: string) => [...contactKeys.all, id] as const,
-}
-
-export const contactQuery = (id: string) =>
-  queryOptions({
-    queryKey: contactKeys.detail(id),
-    queryFn: () => http.get<Contact>(`/contacts/${id}`),
-  })
-
-export function useRenameContact() {
-  const queryClient = useQueryClient()
-  return useMutation({
-    mutationFn: ({ id, name }: { id: string; name: string }) =>
-      http.patch(`/contacts/${id}`, { name }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: contactKeys.all }),
-  })
-}
-```
-
-</Variant>
-
-<Variant data="graphql">
-
-- `src/lib/graphql/` holds the client. Codegen writes to one output folder inside it, which the preset leaves alone (`__generated__/`).
-- `data/<resource>/<resource>.ts` holds typed `graphql()` documents and the hooks that run them. No `.graphql` files, and no `.graphql.ts` suffix.
-
-```ts title="src/features/contacts/data/contacts/contacts.ts"
-import { graphql } from '#lib/graphql/__generated__'
-
-export const contactDocument = graphql(`
-  query Contact($id: ID!) {
-    contact(id: $id) {
-      id
-      name
-    }
-  }
-`)
-```
-
-</Variant>
-
-<Variant data="rest">
-
-- `src/lib/http/` holds the configured `fetch` wrapper: base URL from `src/config/`, headers, error handling.
-- `data/<resource>/<resource>.ts` holds the request functions, and the mappers between the API's shapes and the app's types.
-
-```ts title="src/features/contacts/data/contacts/contacts.ts"
-import { http } from '#lib/http'
-import type { Contact } from '#features/contacts/types/Contact'
-
-interface ContactResponse {
-  id: string
-  full_name: string
-}
-
-const toContact = (response: ContactResponse): Contact => ({
-  id: response.id,
-  name: response.full_name,
-})
-
-export async function getContact(id: string): Promise<Contact> {
-  return toContact(await http.get<ContactResponse>(`/contacts/${id}`))
-}
-```
-
-</Variant>
-
-<Variant data="websockets">
-
-- `src/lib/socket/` holds the connection: one socket for the app, opened by the shell.
-- `data/<resource>/<resource>.ts` holds the message types and the subscription hook. Live updates write into the same cache keys as the resource's queries.
-
-```ts title="src/features/contacts/data/contactActivity/contactActivity.ts"
-import { useEffect } from 'react'
-import { socket } from '#lib/socket'
-
-export interface ContactActivityMessage {
-  contactId: string
-  kind: 'opened' | 'replied'
-}
-
-export function useContactActivity(onMessage: (message: ContactActivityMessage) => void) {
-  useEffect(() => socket.subscribe('contact-activity', onMessage), [onMessage])
-}
-```
-
-</Variant>
-
 ## ESLint preset
 
 ```sh
@@ -279,3 +150,5 @@ It's configuration over `eslint-plugin-boundaries`, `eslint-plugin-project-struc
 - Module folder casing isn't checked per kind, and all-caps names like `API` don't match their main file.
 - `import('../x')` isn't caught by the relative-import rule. A deep `#` import (`#components/Button/Button`) isn't a lint error, but it doesn't resolve.
 - Route folders are free-form. Placement between features, and a module placed higher than it needs to be, are left to review.
+
+Add-on skills, one per stack the project depends on: `app-structure-tanstack-router` (TanStack Router), `app-structure-nextjs` (Next.js), `app-structure-tanstack-query` (TanStack Query), `app-structure-graphql` (GraphQL), `app-structure-rest` (REST), `app-structure-websockets` (WebSockets).
