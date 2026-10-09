@@ -1,0 +1,28 @@
+/*
+ * A variant block sits in the page's Prose, whose flow spacing reaches its direct children only,
+ * so the block repeats that rhythm for its own: --space-4 between paragraphs and lists, --space-6
+ * around code and tables.
+ */
+.variant {
+  display: grid;
+  gap: var(--space-4);
+  justify-items: start;
+}
+.variant[hidden] {
+  display: none;
+}
+
+.body {
+  justify-self: stretch;
+  min-inline-size: 0;
+}
+.body > * {
+  margin-block: 0;
+}
+.body > * + * {
+  margin-block-start: var(--space-4);
+}
+.body > * + :where(figure, pre, table, [data-kiln-component]),
+.body > :where(figure, pre, table, [data-kiln-component]) + * {
+  margin-block-start: var(--space-6);
+}

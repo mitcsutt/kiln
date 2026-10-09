@@ -4,6 +4,7 @@ import { parse, stringify } from 'yaml'
 import { getApi } from '@/lib/api'
 import { SITE_URL } from '@/lib/site'
 import { outsideCode, toMarkdown } from '@/lib/to-markdown'
+import { VARIANT_AXES, variantLabel, type VariantSelection } from '@/lib/variants'
 import { skills, type SkillSpec } from './manifest'
 
 const appDir = join(import.meta.dirname, '../..')
@@ -31,7 +32,7 @@ interface Page {
   body: string
 }
 
-function readPage(path: string): Page {
+function readPage(path: string, variants: VariantSelection): Page {
   const file = [`${path}.mdx`, `${path}/index.mdx`].find((candidate) =>
     existsSync(join(contentDir, candidate)),
   )
@@ -45,7 +46,7 @@ function readPage(path: string): Page {
     file: generatedFrom[path] ?? ownerFile(raw) ?? `apps/docs/content/docs/${file}`,
     title: frontmatter.title,
     description: frontmatter.description,
-    body: toMarkdown(match[2] ?? '').trim(),
+    body: toMarkdown(match[2] ?? '', variants).trim(),
   }
 }
 
@@ -89,6 +90,7 @@ function frontmatter(spec: SkillSpec, pages: Page[]): string {
       type: spec.type,
       library: `@mitcsutt/kiln-${spec.package}`,
     },
+    ...(spec.addOn ? { requires: [spec.addOn.extends] } : {}),
     sources: [...new Set(pages.map((page) => `${REPO}:${page.file}`))],
   }
   return `---\n${stringify(fields, { lineWidth: 0 })}---\n`
@@ -97,9 +99,11 @@ function frontmatter(spec: SkillSpec, pages: Page[]): string {
 /** Every file of one skill, keyed by its path from the repository root. */
 function buildSkill(spec: SkillSpec): Map<string, string> {
   const dir = `packages/${spec.package}/skills/${spec.name}`
-  const pages = spec.pages.map(readPage)
+  // A core skill drops every variant block, an add-on keeps one value's (ADR 0038). References
+  // are read on demand, so they keep every block, labelled, as the `.md` routes do.
+  const pages = spec.pages.map((path) => readPage(path, spec.addOn?.variant ?? 'none'))
   const references = (spec.references ?? []).map((path) => ({
-    ...readPage(path),
+    ...readPage(path, 'all'),
     fileName: `${slug(path)}.md`,
   }))
   const referenceFile = new Map(references.map((page) => [page.path, page.fileName]))
@@ -131,8 +135,30 @@ function buildSkill(spec: SkillSpec): Map<string, string> {
     '',
     spec.purpose,
     '',
+    ...(spec.addOn
+      ? [
+          `Adds to the \`${spec.addOn.extends}\` skill, which holds the rules for every stack: load it first.`,
+          '',
+        ]
+      : []),
     sections.join('\n\n'),
   ]
+  const addOns = skills.filter((other) => other.addOn?.extends === spec.name)
+  if (addOns.length) {
+    lines.push(
+      '',
+      '## Add-ons',
+      '',
+      'Load the add-on for each stack the project depends on:',
+      '',
+      ...addOns.map(({ name, addOn }) => {
+        const variant = addOn?.variant
+        return variant
+          ? `- \`${name}\`: ${VARIANT_AXES[variant.axis].label}: ${variantLabel(variant)}`
+          : `- \`${name}\``
+      }),
+    )
+  }
   if (references.length) {
     lines.push(
       '',
@@ -160,10 +186,17 @@ function buildSkill(spec: SkillSpec): Map<string, string> {
   return files
 }
 
-/** Every skill file both packages ship, keyed by its path from the repository root. */
+/** Every skill file the packages ship, keyed by its path from the repository root. */
 export function buildSkills(): Map<string, string> {
   const names = skills.map((spec) => spec.name)
   const duplicate = names.find((name, index) => names.indexOf(name) !== index)
   if (duplicate) throw new Error(`Two skills are named ${duplicate}`)
+  for (const spec of skills) {
+    if (!spec.addOn) continue
+    const core = skills.find((other) => other.name === spec.addOn?.extends)
+    if (core?.package !== spec.package || core.addOn) {
+      throw new Error(`${spec.name} adds to ${spec.addOn.extends}, not a core skill of its package`)
+    }
+  }
   return new Map(skills.flatMap((spec) => [...buildSkill(spec)]))
 }

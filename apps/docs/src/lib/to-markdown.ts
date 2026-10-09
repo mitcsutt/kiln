@@ -1,6 +1,7 @@
 import tokens from '../../.generated/tokens.json'
 import { getApi, type ApiEntry } from './api'
 import { exampleId, examplesMarkdown, getExampleSource } from './examples'
+import { resolveVariants, type VariantSelection } from './variants'
 
 function attribute(tag: string, name: string): string | undefined {
   return new RegExp(`${name}="([^"]*)"`).exec(tag)?.[1]
@@ -45,11 +46,14 @@ export function apiMarkdown(entry: ApiEntry): string {
 /**
  * The page's MDX, made plain Markdown for agents: each live example becomes its source
  * and each API table becomes a Markdown table, read from the same data the page renders.
+ * `variants` picks which `<Variant>` blocks stay (ADR 0038): every one, labelled, by default.
  */
-export function toMarkdown(processed: string): string {
-  // `<Examples of>` first: it stands for headings, captions and `<Example>` tags. The site's
+export function toMarkdown(processed: string, variants: VariantSelection = 'all'): string {
+  // Variant blocks first: they hold fenced code, which the edits below split the text around.
+  const resolved = resolveVariants(processed, variants)
+  // `<Examples of>` next: it stands for headings, captions and `<Example>` tags. The site's
   // processed Markdown has it expanded already; a page read from disk (the skills) doesn't.
-  const listed = outsideCode(processed, (text) =>
+  const listed = outsideCode(resolved, (text) =>
     text.replace(/<Examples\b[^>]*\/>/g, (tag) => examplesMarkdown(attribute(tag, 'of') ?? '')),
   )
   // Code is left as written: a JSX comment or self-closing element in an example is code.

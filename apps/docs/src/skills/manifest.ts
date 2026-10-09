@@ -1,12 +1,17 @@
+import type { VariantKey } from '@/lib/variants'
+
 /**
- * The agent skills kiln-ui and kiln-forms ship (ADR 0011). Each one names the docs pages
+ * The agent skills Kiln's packages ship (ADR 0011). Each one names the docs pages
  * it's built from: `pages` become SKILL.md, `references` are copied beside it. The text
  * is the docs' own, so the only prose here is when to use each skill.
+ *
+ * A page with `<Variant>` blocks (ADR 0038) gives several skills: a core skill without any of
+ * them, and an add-on per variant value with only that value's blocks.
  */
 export interface SkillSpec {
   /** The package directory that ships the skill: `packages/<package>/skills/<name>`. */
-  package: 'ui' | 'forms'
-  /** Lowercase and hyphenated, unique across both packages. */
+  package: 'ui' | 'forms' | 'structure'
+  /** Lowercase and hyphenated, unique across the packages. */
   name: string
   /** SKILL.md's heading. */
   title: string
@@ -14,11 +19,20 @@ export interface SkillSpec {
   description: string
   /** What it's for, in a sentence. */
   purpose: string
-  type: 'core' | 'lifecycle'
+  /** Intent's skill type. An add-on for a framework or a library is `framework` or `composition`. */
+  type: 'core' | 'lifecycle' | 'framework' | 'composition'
   /** Docs pages (paths under content/docs) whose Markdown is SKILL.md, in order. */
   pages: string[]
   /** Docs pages shipped as `references/<slug>.md`, read when their description applies. */
   references?: string[]
+  /**
+   * Makes this an add-on: SKILL.md holds only the pages' blocks for `variant`, and points to the
+   * core skill it `extends`, which Intent's `requires` names too. Without it, a skill drops every
+   * variant block.
+   */
+  addOn?: { extends: string; variant: VariantKey }
+  /** The most lines SKILL.md may have. `skills.test.ts` holds every skill to it, or to 500. */
+  maxLines?: number
 }
 
 export const skills: SkillSpec[] = [
