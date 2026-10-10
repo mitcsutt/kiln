@@ -42,5 +42,6 @@ Each record captures one decision: the context, what was decided, and what follo
 | [0036](0036-ai-tooling-page.md)                         | AI tooling gets a docs page under Tooling                    | Accepted                                             |
 | [0037](0037-app-structure.md)                           | Kiln recommends a structure for React web apps               | Accepted                                             |
 | [0038](0038-variant-blocks.md)                          | Stack-specific docs content goes in variant blocks           | Accepted                                             |
+| [0039](0039-subpath-or-package.md)                      | A small add-on is a subpath entry; a family is a package     | Accepted                                             |
 
 New records use the next number and the same headings: Status, Context, Decision, Consequences.
