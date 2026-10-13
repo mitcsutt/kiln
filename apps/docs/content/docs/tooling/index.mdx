@@ -3,7 +3,7 @@ title: Overview
 description: The ESLint, Prettier and TypeScript configs Kiln is built with, published so any project can use the same ones.
 ---
 
-Kiln lints, formats and type-checks itself with three config packages, and publishes them so another project can pick up the same setup with one dependency each, instead of copying config files around and watching them drift.
+Kiln lints, formats and type-checks itself with its own config packages, and publishes them so another project can pick up the same setup with one dependency each, instead of copying config files around and watching them drift.
 
 | Package                          | What it is                                                     |
 | -------------------------------- | -------------------------------------------------------------- |
@@ -11,7 +11,7 @@ Kiln lints, formats and type-checks itself with three config packages, and publi
 | `@mitcsutt/kiln-prettier-config` | Single quotes, no semicolons, trailing commas, 100 columns     |
 | `@mitcsutt/kiln-tsconfig`        | Strict TypeScript presets for libraries, apps and Node tooling |
 
-## Install all three
+## Install them together
 
 ```sh
 pnpm add -D @mitcsutt/kiln-eslint-config @mitcsutt/kiln-prettier-config @mitcsutt/kiln-tsconfig eslint prettier typescript

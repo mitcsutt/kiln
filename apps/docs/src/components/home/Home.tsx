@@ -108,7 +108,7 @@ export function Home() {
             </Stack>
             <Text size="sm" tone="muted">
               Switch the theme in the header and every page of these docs, chrome included, renders
-              in it. The four below stay put, so you can compare them.
+              in it. The themes below stay put, so you can compare them.
             </Text>
           </Split>
         </Container>
@@ -127,7 +127,7 @@ export function Home() {
           <Split ratio="5/7" gap={8}>
             <Stack gap={3}>
               <Heading level={2} size="2xl">
-                Five packages
+                The packages
               </Heading>
               <Text tone="muted">
                 Published under <Code>@mitcsutt</Code>, each versioned on its own. None is on npm
