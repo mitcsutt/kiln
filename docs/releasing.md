@@ -2,7 +2,7 @@
 
 Kiln releases with [Changesets](https://changesets.dev). Each package has its own version ([ADR 0008](adr/0008-versioning-and-release.md)), and npm publishing goes through trusted publishing with provenance ([ADR 0016](adr/0016-trusted-publishing.md)).
 
-All five packages are on npm. Their first versions (`0.1.0`) were published by hand on 2026-10-05, so they have no provenance. The [prerequisites](#prerequisites) below are done, and later versions publish from the release workflow.
+Every package is on npm. Their first versions (`0.1.0`) were published by hand on 2026-10-05, so they have no provenance. The [prerequisites](#prerequisites) below are done, and later versions publish from the release workflow.
 
 ## How a release happens
 

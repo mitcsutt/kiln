@@ -63,7 +63,7 @@ import '@mitcsutt/kiln-ui/themes/flightdeck.css'
 </ThemeProvider>
 ```
 
-Presets are separate files, so an app pays only for the ones it imports. [Themes](references/paper.md) shows all six, and [Theming](https://kiln.mitchellsutton.com/docs/ui/foundations/theming) shows how to write your own.
+Presets are separate files, so an app pays only for the ones it imports. [Themes](references/paper.md) shows every built-in theme, and [Theming](https://kiln.mitchellsutton.com/docs/ui/foundations/theming) shows how to write your own.
 
 ## Compose a screen
 
