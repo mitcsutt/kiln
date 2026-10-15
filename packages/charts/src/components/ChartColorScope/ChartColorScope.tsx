@@ -60,7 +60,8 @@ export function useSeriesColors(
   // Assignment is idempotent, so doing it during render is safe under StrictMode and on the
   // server, and the first-seen order is the render order. A series' own pin stays local to its
   // chart: in a scope, pin a colour everywhere with the scope's `colors`. An automatic key whose
-  // scope colour a pin here holds takes another slot this chart doesn't use, in this chart only.
+  // scope colour a pin here holds takes another slot this chart doesn't use, in this chart only,
+  // preferring one the scope's own pins don't hold.
   const assigner = scope ?? new ColorAssigner()
   const colors = new Map<string, ChartColor>()
   const used = new Set<ChartColor>()
@@ -79,7 +80,9 @@ export function useSeriesColors(
     colors.set(key, auto)
   }
   for (const key of clashing) {
-    const free = CATEGORIES.find((color) => !used.has(color))
+    const free =
+      CATEGORIES.find((color) => !used.has(color) && !assigner.isReserved(color)) ??
+      CATEGORIES.find((color) => !used.has(color))
     if (free === undefined) continue
     colors.set(key, free)
     used.add(free)

@@ -292,6 +292,28 @@ describe('Chart', () => {
     expect(strokes(1)).toEqual(['var(--color-cat-1-stroke)'])
   })
 
+  it("in a scope, the fallback for a clashing series skips the scope's own pins", () => {
+    const { container } = render(
+      <ChartColorScope colors={{ North: 'cat-2' }}>
+        <Chart
+          data={[
+            { m: 'Mar', revenue: 1, orders: 2 },
+            { m: 'Apr', revenue: 2, orders: 1 },
+          ]}
+          x="m"
+          label="Pinned"
+        >
+          <Chart.Line dataKey="revenue" color="cat-1" />
+          <Chart.Line dataKey="orders" />
+        </Chart>
+      </ChartColorScope>,
+    )
+    const strokes = [...container.querySelectorAll('.recharts-line-curve')].map((line) =>
+      line.getAttribute('stroke'),
+    )
+    expect(strokes).toEqual(['var(--color-cat-1-stroke)', 'var(--color-cat-3-stroke)'])
+  })
+
   it('without a scope, each chart colours its own series from the start', () => {
     const { container } = render(
       <>

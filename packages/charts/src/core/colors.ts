@@ -89,6 +89,12 @@ export class ColorAssigner {
     if (slot !== undefined) this.#reserved.add(slot)
   }
 
+  /** Whether `color` names a categorical slot a pin holds. */
+  isReserved(color: ChartColor): boolean {
+    const slot = categorySlot(color)
+    return slot !== undefined && this.#reserved.has(slot)
+  }
+
   /** The colour for `key`: its pin, its earlier colour, or the next free categorical slot. */
   colorOf(key: string): ChartColor {
     const pinned = this.#pins.get(key)
