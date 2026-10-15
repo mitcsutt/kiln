@@ -201,6 +201,24 @@ describe('CommandPalette', () => {
     })
   })
 
+  it('returns focus to where it was when the shortcut opened it without a trigger', async () => {
+    render(
+      <>
+        <input aria-label="Notes" />
+        <CommandPalette shortcut="mod+k" actions={makeActions()} />
+      </>,
+    )
+    const notes = screen.getByRole('textbox', { name: 'Notes' })
+    notes.focus()
+    await userEvent.keyboard('{Control>}k{/Control}')
+    expect(screen.getByRole('combobox')).toHaveFocus()
+    await userEvent.keyboard('{Escape}')
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    })
+    expect(notes).toHaveFocus()
+  })
+
   it('has no page-wide shortcut unless asked', async () => {
     render(<Palette />)
     await userEvent.keyboard('{Control>}k{/Control}')
@@ -208,12 +226,10 @@ describe('CommandPalette', () => {
   })
 
   it('opens a nested page, and returns with Backspace, Escape or the back button', async () => {
-    const onPageChange = vi.fn()
-    render(<Palette onPageChange={onPageChange} />)
+    render(<Palette />)
     const input = await openPalette()
     await userEvent.type(input, 'switch')
     await userEvent.keyboard('{Enter}')
-    expect(onPageChange).toHaveBeenLastCalledWith('switch')
     expect(input).toHaveValue('')
     expect(input).toHaveAccessibleName('Switch project')
     expect(input).toHaveAttribute('placeholder', 'Search projects')
@@ -225,7 +241,6 @@ describe('CommandPalette', () => {
     expect(input).toHaveAccessibleName('Switch project')
     await userEvent.keyboard('{Backspace}')
     expect(input).toHaveAccessibleName('Command palette')
-    expect(onPageChange).toHaveBeenLastCalledWith(null)
 
     // Escape on a page goes back a level instead of closing.
     await userEvent.click(screen.getByRole('option', { name: 'Switch project' }))
@@ -244,6 +259,32 @@ describe('CommandPalette', () => {
     await userEvent.click(screen.getByRole('option', { name: 'Switch project' }))
     await userEvent.type(input, 'kelso{Enter}')
     expect(go).toHaveBeenCalledWith('kelso')
+  })
+
+  it('lists a nested page from the current actions, so results arriving later show up', async () => {
+    const withProjects = (projects: CommandAction[]): CommandAction[] => [
+      { id: 'invoices', label: 'Invoices' },
+      { id: 'switch', label: 'Switch project', actions: projects },
+    ]
+    const { rerender } = render(<Palette actions={withProjects([])} filter="none" loading />)
+    const input = await openPalette()
+    await userEvent.click(screen.getByRole('option', { name: 'Switch project' }))
+    expect(input).toHaveAccessibleName('Switch project')
+    expect(screen.queryAllByRole('option')).toHaveLength(0)
+
+    rerender(
+      <Palette
+        actions={withProjects([{ id: 'kelso', label: 'Kelso Bay pier', onSelect: goTo('kelso') }])}
+        filter="none"
+      />,
+    )
+    expect(input).toHaveAccessibleName('Switch project')
+    expect(visibleLabels()).toEqual(['Kelso Bay pier'])
+
+    // When the open page's action is gone, the palette falls back to the top level.
+    rerender(<Palette actions={[{ id: 'invoices', label: 'Invoices' }]} filter="none" />)
+    expect(input).toHaveAccessibleName('Command palette')
+    expect(visibleLabels()).toEqual(['Invoices'])
   })
 
   it('closes on Escape at the top level and starts fresh when it opens again', async () => {

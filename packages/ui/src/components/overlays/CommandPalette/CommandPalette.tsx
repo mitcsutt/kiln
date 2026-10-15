@@ -81,8 +81,6 @@ export interface CommandPaletteProps extends Omit<
   query?: string
   defaultQuery?: string
   onQueryChange?: (query: string) => void
-  /** Fires with the id of the action whose page opens, or `null` back at the top. */
-  onPageChange?: (page: string | null) => void
   /**
    * `auto` (default) filters and ranks the actions by the search, like `Combobox`. `none` lists
    * them as given, for results your own search has already chosen.
@@ -112,6 +110,7 @@ export interface CommandPaletteProps extends Omit<
 interface Row {
   key: string
   action: CommandAction
+  index: number
 }
 
 interface Section {
@@ -181,12 +180,13 @@ interface PanelProps extends Omit<
   | 'query'
   | 'defaultQuery'
   | 'onQueryChange'
-  | 'onPageChange'
 > {
   query: string
   setQuery: (query: string) => void
-  path: readonly CommandAction[]
-  setPath: (path: readonly CommandAction[]) => void
+  /** Ids of the open pages, outermost first. */
+  path: readonly string[]
+  setPath: (path: readonly string[]) => void
+  hasTrigger: boolean
   close: () => void
 }
 
@@ -199,6 +199,7 @@ const Panel = forwardRef<HTMLDivElement, PanelProps>(function Panel(
     setQuery,
     path,
     setPath,
+    hasTrigger,
     close,
     filter = 'auto',
     loading = false,
@@ -212,6 +213,7 @@ const Panel = forwardRef<HTMLDivElement, PanelProps>(function Panel(
     container,
     className,
     onOpenAutoFocus,
+    onCloseAutoFocus,
     onEscapeKeyDown,
     ...rest
   },
@@ -222,18 +224,23 @@ const Panel = forwardRef<HTMLDivElement, PanelProps>(function Panel(
   const listboxId = `${baseId}-listbox`
   const inputRef = useRef<HTMLInputElement>(null)
   const apple = useMemo(() => isApplePlatform(), [])
+  const returnFocusRef = useRef<Element | null>(null)
 
-  const page = path[path.length - 1]
+  const pages = path.map((id) => findAction(actions, id))
+  const trail = pages.every((action) => action?.actions) ? path : []
+  const page = trail.length > 0 ? pages[pages.length - 1] : undefined
   const pageActions = page?.actions ?? actions
   const pageLabel = page?.label ?? label
 
   /* ─── Derived view ─── */
   const { sections, rows } = useMemo(() => {
     const result: Section[] = []
+    let index = 0
+    const toRow = (key: string, action: CommandAction): Row => ({ key, action, index: index++ })
     if (query.trim() === '' && !page && recent && recent.length > 0) {
       const recentRows = recent.flatMap((id) => {
         const action = findAction(actions, id)
-        return action ? [{ key: `recent:${id}`, action }] : []
+        return action ? [toRow(`recent:${id}`, action)] : []
       })
       if (recentRows.length > 0)
         result.push({ key: 'recent', label: recentLabel, rows: recentRows })
@@ -244,7 +251,7 @@ const Panel = forwardRef<HTMLDivElement, PanelProps>(function Panel(
       result.push({
         key: section.key,
         label: section.label,
-        rows: section.options.map((action) => ({ key: action.id, action })),
+        rows: section.options.map((action) => toRow(action.id, action)),
       })
     }
     return { sections: result, rows: result.flatMap((section) => section.rows) }
@@ -256,7 +263,7 @@ const Panel = forwardRef<HTMLDivElement, PanelProps>(function Panel(
   const [activeKey, setActiveKey] = useState<string | null>(null)
   // Nothing chosen yet, or the chosen row is gone: the first result, so Enter runs the best match.
   const active = enabled.find((row) => row.key === activeKey) ?? enabled[0]
-  const optionId = (row: Row) => `${baseId}-option-${String(rows.indexOf(row))}`
+  const optionId = (row: Row) => `${baseId}-option-${String(row.index)}`
   const activeId = active ? optionId(active) : undefined
 
   useEffect(() => {
@@ -290,7 +297,7 @@ const Panel = forwardRef<HTMLDivElement, PanelProps>(function Panel(
   }
 
   const goBack = () => {
-    setPath(path.slice(0, -1))
+    setPath(trail.slice(0, -1))
     setQuery('')
     setActiveKey(null)
   }
@@ -298,7 +305,7 @@ const Panel = forwardRef<HTMLDivElement, PanelProps>(function Panel(
   const run = (action: CommandAction) => {
     if (action.disabled) return
     if (action.actions) {
-      setPath([...path, action])
+      setPath([...trail, action.id])
       setQuery('')
       setActiveKey(null)
       return
@@ -429,10 +436,20 @@ const Panel = forwardRef<HTMLDivElement, PanelProps>(function Panel(
       {...theme}
       {...rest}
       onOpenAutoFocus={(event) => {
+        returnFocusRef.current = inputRef.current?.ownerDocument.activeElement ?? null
         onOpenAutoFocus?.(event)
         if (event.defaultPrevented) return
         event.preventDefault()
         focusInput()
+      }}
+      onCloseAutoFocus={(event) => {
+        onCloseAutoFocus?.(event)
+        const returnFocus = returnFocusRef.current
+        returnFocusRef.current = null
+        if (event.defaultPrevented || hasTrigger || !(returnFocus instanceof HTMLElement)) return
+        if (!returnFocus.isConnected) return
+        event.preventDefault()
+        returnFocus.focus()
       }}
       onEscapeKeyDown={(event) => {
         onEscapeKeyDown?.(event)
@@ -599,7 +616,6 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
       query: queryProp,
       defaultQuery = '',
       onQueryChange,
-      onPageChange,
       container,
       ...rest
     },
@@ -609,8 +625,7 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
 
     const [open, setOpenState] = useControllableState(openProp, defaultOpen, onOpenChange)
     const [query, setQueryState] = useControllableState(queryProp, defaultQuery, onQueryChange)
-    const [path, setPathState] = useState<readonly CommandAction[]>([])
-    const onPageChangeRef = useLatest(onPageChange)
+    const [path, setPath] = useState<readonly string[]>([])
 
     const queryRef = useLatest(query)
     const setQuery = useCallback(
@@ -618,13 +633,6 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
         if (next !== queryRef.current) setQueryState(next)
       },
       [queryRef, setQueryState],
-    )
-    const setPath = useCallback(
-      (next: readonly CommandAction[]) => {
-        setPathState(next)
-        onPageChangeRef.current?.(next[next.length - 1]?.id ?? null)
-      },
-      [onPageChangeRef],
     )
 
     const openRef = useLatest(open)
@@ -638,14 +646,13 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
     // Every opening starts fresh: once the palette closes, by any route, clear the search and
     // go back to the top level.
     const wasOpen = useRef(open)
-    const pathRef = useLatest(path)
     useEffect(() => {
       if (wasOpen.current && !open) {
         setQuery('')
-        if (pathRef.current.length > 0) setPath([])
+        setPath((current) => (current.length > 0 ? [] : current))
       }
       wasOpen.current = open
-    }, [open, pathRef, setPath, setQuery])
+    }, [open, setQuery])
 
     /* The page-wide shortcut toggles the palette. */
     const toggleRef = useLatest(() => {
@@ -679,6 +686,7 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
               setQuery={setQuery}
               path={path}
               setPath={setPath}
+              hasTrigger={Boolean(trigger)}
               close={() => {
                 setOpen(false)
               }}
