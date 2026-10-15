@@ -40,6 +40,35 @@ describe('TimeSeries', () => {
     expect(header.map((h) => h.textContent)).toEqual(['Day', 'Team', 'Solo'])
   })
 
+  it('names pivoted series as written in the legend, tooltip and summary', async () => {
+    const long = DAYS.flatMap(({ day, signups, trials }) => [
+      { day, platform: 'iOS', count: signups },
+      { day, platform: 'macOS', count: trials },
+    ])
+    const { container } = render(
+      <TimeSeries
+        data={long}
+        x="day"
+        label="Sign-ups by platform"
+        pivot={{ by: 'platform', value: 'count' }}
+        locale="en-AU"
+      />,
+    )
+    const legend = screen.getByRole('list', { name: 'Legend' })
+    expect(
+      within(legend)
+        .getAllByRole('button')
+        .map((b) => b.textContent),
+    ).toEqual(['iOS', 'macOS'])
+    expect(screen.getByRole('figure')).toHaveAccessibleDescription(/iOS.*macOS/)
+    expect(screen.getByRole('figure')).not.toHaveAccessibleDescription(/I OS|Mac OS/)
+    act(() => {
+      container.querySelector<SVGSVGElement>('svg.recharts-surface')?.focus()
+    })
+    const title = await screen.findByText('2 Mar', { selector: 'p' })
+    expect(title.closest('[role="status"]')).toHaveTextContent('2 MariOS42macOS18')
+  })
+
   it('formats values and dates in the given locale', () => {
     render(
       <TimeSeries

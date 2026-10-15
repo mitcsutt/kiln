@@ -47,6 +47,33 @@ describe('Share', () => {
     expect(items.at(-1)).toHaveTextContent(/^Other/)
   })
 
+  it('shows pivoted names as written, and humanises only wide keys', () => {
+    const platforms = [
+      { platform: 'iOS', visits: 600 },
+      { platform: 'macOS', visits: 400 },
+    ]
+    render(
+      <Share
+        data={platforms}
+        label="Visits by platform"
+        pivot={{ by: 'platform', value: 'visits' }}
+        locale="en-AU"
+      />,
+    )
+    const legend = screen.getByRole('list', { name: 'Visits by platform: parts' })
+    expect(
+      within(legend)
+        .getAllByRole('listitem')
+        .map((item) => item.textContent),
+    ).toEqual(['iOS60% · 600', 'macOS40% · 400'])
+    expect(screen.getByRole('figure')).toHaveAccessibleDescription(
+      '2 parts of 1,000. iOS: 60% (600). macOS: 40% (400).',
+    )
+    expect(within(screen.getByRole('table')).getAllByRole('row')[1]?.textContent).toBe(
+      'iOS60060%',
+    )
+  })
+
   it('pins colours by key', () => {
     const { container } = render(
       <Share data={CHANNELS} label="Visits" colors={{ email: 'cat-6' }} />,

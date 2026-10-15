@@ -324,7 +324,7 @@ const ChartRoot = forwardRef<HTMLElement, ChartProps>(function Chart(
     const lineVariant = kind === 'line' ? (props as ChartLineProps).variant : undefined
     series.set(props.dataKey, {
       key: props.dataKey,
-      label: props.label ?? humanise(props.dataKey),
+      label: props.label ?? (pivoted ? props.dataKey : humanise(props.dataKey)),
       kind,
       color: colors.get(props.dataKey) ?? 'neutral',
       shape: lineVariant === 'dashed' ? 'dashed' : SHAPES[kind],

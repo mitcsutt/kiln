@@ -9,7 +9,10 @@ export type ChartRow = Readonly<Record<string, unknown>>
  * `{ month: 'Mar', region: 'North', sales: 120 }`.
  */
 export interface PivotOptions {
-  /** The key whose values become the series (`'region'`). */
+  /**
+   * The key whose values become the series (`'region'`). Its values name them as written
+   * (`'iOS'` stays `'iOS'`); only wide keys are made readable.
+   */
   by: string
   /** The key that holds each series' value (`'sales'`). */
   value: string

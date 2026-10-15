@@ -196,6 +196,26 @@ describe('Chart', () => {
     )
   })
 
+  it('names a pivoted series as its value is written', () => {
+    const data = [
+      { month: 'Mar', platform: 'iOS', visits: 6 },
+      { month: 'Mar', platform: 'macOS', visits: 4 },
+    ]
+    render(
+      <Chart data={data} x="month" label="Visits" pivot={{ by: 'platform', value: 'visits' }}>
+        <Chart.Bar dataKey="iOS" />
+        <Chart.Bar dataKey="macOS" />
+        <Chart.Legend />
+      </Chart>,
+    )
+    const legend = screen.getByRole('list', { name: 'Legend' })
+    expect(
+      within(legend)
+        .getAllByRole('button')
+        .map((b) => b.textContent),
+    ).toEqual(['iOS', 'macOS'])
+  })
+
   it('gives a key the same colour in every chart of a scope, and lets pins win', () => {
     const { container } = render(
       <ChartColorScope colors={{ Quay: 'cat-5' }}>

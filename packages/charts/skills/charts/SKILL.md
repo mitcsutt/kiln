@@ -192,6 +192,8 @@ const rows = [
 
 A chart can show eight categorical colours apart, so past eight series `pivot` keeps the seven largest by total and groups the rest as one neutral "Other". Change that with `limit` and `other`, or keep everything with `limit: false`. `Share` and `BarList` take long rows the same way, without an x; `Heatmap` keeps every column.
 
+Series and parts are named for you. A key from wide rows is made readable, so `unitsSold` reads "Units sold". A value from `pivot`'s `by` key is data you wrote, so it's shown exactly as written: `iOS` stays `iOS`. To name either another way, give the series a `label`, or pass `labels` to `Share` and `BarList`.
+
 ```tsx
 import { Chart } from '@mitcsutt/kiln-charts'
 

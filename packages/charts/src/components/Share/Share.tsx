@@ -29,7 +29,10 @@ export interface ShareProps extends Omit<HTMLAttributes<HTMLElement>, 'children'
   format?: ValueFormat
   /** The locale for numbers, passed to `Intl`. */
   locale?: string
-  /** Names for the parts, by key. Defaults to a readable form of each key. */
+  /**
+   * Names for the parts, by key. Defaults to each `pivot` value as written, or a readable form
+   * of each wide key (`unitsSold` reads "Units sold").
+   */
   labels?: Readonly<Record<string, string>>
   /** Colours pinned to some parts, by key. */
   colors?: Readonly<Record<string, ChartColor>>
@@ -91,7 +94,7 @@ export const Share = forwardRef<HTMLElement, ShareProps>(function Share(
   const formatValue = useMemo(() => valueFormatter(format, { locale }), [format, locale])
   const formatShare = useMemo(() => valueFormatter('percent', { locale }), [locale])
   const total = parts.reduce((sum, part) => sum + part.value, 0)
-  const nameOf = (key: string) => labels?.[key] ?? humanise(key)
+  const nameOf = (key: string) => labels?.[key] ?? (pivot ? key : humanise(key))
 
   const description =
     summary ??

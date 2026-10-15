@@ -288,7 +288,7 @@ Also accepts every prop of `HTMLAttributes<HTMLElement>`.
 | --- | --- | --- | --- |
 | `stack` | `string \| boolean` |  | Stack this bar on others with the same stack id (`true` is one shared stack). |
 | `dataKey` (required) | `string` |  | The key of this series' values in each row. |
-| `label` | `string` |  | The series' name in the legend, the tooltip and the data table. Defaults to a readable form of `dataKey`. |
+| `label` | `string` |  | The series' name in the legend, the tooltip and the data table. Defaults to `dataKey` as written when the chart has `pivot`, or a readable form of it otherwise. |
 | `color` | `ChartColor` |  | A theme colour or any CSS colour. Defaults to the next categorical colour. |
 | `format` | `ValueFormat` |  | How to write this series' values, when it differs from the chart's `format`. |
 | `engineProps` | `EngineProps` |  | Props for the engine's own series component. Outside semver. |
@@ -302,7 +302,7 @@ Also accepts every prop of `HTMLAttributes<HTMLElement>`.
 | `weight` | `'regular' \| 'bold' \| 'thin'` | `'regular'` |  |
 | `dots` | `boolean` |  | Mark every point with a dot, not only the active one. |
 | `dataKey` (required) | `string` |  | The key of this series' values in each row. |
-| `label` | `string` |  | The series' name in the legend, the tooltip and the data table. Defaults to a readable form of `dataKey`. |
+| `label` | `string` |  | The series' name in the legend, the tooltip and the data table. Defaults to `dataKey` as written when the chart has `pivot`, or a readable form of it otherwise. |
 | `color` | `ChartColor` |  | A theme colour or any CSS colour. Defaults to the next categorical colour. |
 | `format` | `ValueFormat` |  | How to write this series' values, when it differs from the chart's `format`. |
 | `engineProps` | `EngineProps` |  | Props for the engine's own series component. Outside semver. |
@@ -315,7 +315,7 @@ Also accepts every prop of `HTMLAttributes<HTMLElement>`.
 | `curve` | `'step' \| 'linear' \| 'smooth'` | `'linear'` |  |
 | `weight` | `'regular' \| 'bold' \| 'thin'` | `'regular'` | The weight of the area's top edge. |
 | `dataKey` (required) | `string` |  | The key of this series' values in each row. |
-| `label` | `string` |  | The series' name in the legend, the tooltip and the data table. Defaults to a readable form of `dataKey`. |
+| `label` | `string` |  | The series' name in the legend, the tooltip and the data table. Defaults to `dataKey` as written when the chart has `pivot`, or a readable form of it otherwise. |
 | `color` | `ChartColor` |  | A theme colour or any CSS colour. Defaults to the next categorical colour. |
 | `format` | `ValueFormat` |  | How to write this series' values, when it differs from the chart's `format`. |
 | `engineProps` | `EngineProps` |  | Props for the engine's own series component. Outside semver. |
@@ -385,7 +385,7 @@ Also accepts every prop of `HTMLAttributes<HTMLElement>`.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `by` (required) | `string` |  | The key whose values become the series (`'region'`). |
+| `by` (required) | `string` |  | The key whose values become the series (`'region'`). Its values name them as written (`'iOS'` stays `'iOS'`); only wide keys are made readable. |
 | `value` (required) | `string` |  | The key that holds each series' value (`'sales'`). |
 | `limit` | `number \| false` | `7` | How many series to keep before grouping the rest as one "Other" series. They are ranked by their total. With 8 or fewer there's nothing to group. `false` keeps every series. |
 | `other` | `string` | `'Other'` | The name of the grouped series, which the chart colours neutral. |
