@@ -47,7 +47,10 @@ export interface CommandAction extends Omit<ComboboxOption, 'value'> {
    * Command on a Mac and Control elsewhere). Display only: bind the shortcut yourself.
    */
   shortcut?: string
-  /** Runs when the action is picked. The palette closes first. */
+  /**
+   * Runs when the action is picked, once the palette has closed and given focus back, so the
+   * action can move focus itself (to a field, or another dialog) and keep it there.
+   */
   onSelect?: () => void
   /**
    * Makes this action open a page of its own: picking it lists these instead of running
@@ -186,6 +189,7 @@ interface PanelProps extends Omit<
   /** Ids of the open pages, outermost first. */
   path: readonly string[]
   setPath: (path: readonly string[]) => void
+  open: boolean
   hasTrigger: boolean
   close: () => void
 }
@@ -199,6 +203,7 @@ const Panel = forwardRef<HTMLDivElement, PanelProps>(function Panel(
     setQuery,
     path,
     setPath,
+    open,
     hasTrigger,
     close,
     filter = 'auto',
@@ -225,6 +230,17 @@ const Panel = forwardRef<HTMLDivElement, PanelProps>(function Panel(
   const inputRef = useRef<HTMLInputElement>(null)
   const apple = useMemo(() => isApplePlatform(), [])
   const returnFocusRef = useRef<Element | null>(null)
+  const anchor = usePortalAnchor()
+  // The action picked to run once the palette has closed and let go of focus.
+  const pendingRef = useRef<CommandAction | null>(null)
+  const onActionRef = useLatest(onAction)
+  const flushPending = useCallback(() => {
+    const action = pendingRef.current
+    if (!action) return
+    pendingRef.current = null
+    action.onSelect?.()
+    onActionRef.current?.(action)
+  }, [onActionRef])
 
   const pages = path.map((id) => findAction(actions, id))
   const trail = pages.every((action) => action?.actions) ? path : []
@@ -261,6 +277,28 @@ const Panel = forwardRef<HTMLDivElement, PanelProps>(function Panel(
   const hasIcons = rows.some((row) => row.action.icon !== undefined)
   const enabled = rows.filter((row) => !row.action.disabled)
   const [activeKey, setActiveKey] = useState<string | null>(null)
+  // Every opening highlights the first result again (adjusted during render, not in an effect).
+  const [wasOpen, setWasOpen] = useState(open)
+  if (open !== wasOpen) {
+    setWasOpen(open)
+    if (open) setActiveKey(null)
+  }
+  // An action still waiting from the last close (the palette reopened before it finished
+  // closing) runs now, so it never runs late or twice.
+  useEffect(() => {
+    if (open) flushPending()
+  }, [open, flushPending])
+  // The panel unmounts after every close. Radix's FocusScope restores focus (and calls
+  // onCloseAutoFocus, which runs the action) in a timeout queued during that unmount, after this
+  // cleanup; waiting one more tick runs the action only if onCloseAutoFocus never did.
+  useEffect(
+    () => () => {
+      setTimeout(() => {
+        setTimeout(flushPending)
+      })
+    },
+    [flushPending],
+  )
   // Nothing chosen yet, or the chosen row is gone: the first result, so Enter runs the best match.
   const active = enabled.find((row) => row.key === activeKey) ?? enabled[0]
   const optionId = (row: Row) => `${baseId}-option-${String(row.index)}`
@@ -310,9 +348,10 @@ const Panel = forwardRef<HTMLDivElement, PanelProps>(function Panel(
       setActiveKey(null)
       return
     }
+    // Runs from onCloseAutoFocus, once the focus trap has let go, so focus the action moves
+    // (a field, another dialog) stays where it put it.
+    pendingRef.current = action
     close()
-    action.onSelect?.()
-    onAction?.(action)
   }
 
   const move = (delta: 1 | -1) => {
@@ -446,6 +485,14 @@ const Panel = forwardRef<HTMLDivElement, PanelProps>(function Panel(
         onCloseAutoFocus?.(event)
         const returnFocus = returnFocusRef.current
         returnFocusRef.current = null
+        if (pendingRef.current) {
+          // Put focus back first, then run the action, so whatever it focuses wins.
+          event.preventDefault()
+          const target = hasTrigger ? anchor?.current : returnFocus
+          if (target instanceof HTMLElement && target.isConnected) target.focus()
+          flushPending()
+          return
+        }
         if (event.defaultPrevented || hasTrigger || !(returnFocus instanceof HTMLElement)) return
         if (!returnFocus.isConnected) return
         const current = returnFocus.ownerDocument.activeElement
@@ -690,6 +737,7 @@ export const CommandPalette = forwardRef<HTMLDivElement, CommandPaletteProps>(
               setQuery={setQuery}
               path={path}
               setPath={setPath}
+              open={open}
               hasTrigger={Boolean(trigger)}
               close={() => {
                 setOpen(false)

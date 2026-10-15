@@ -220,9 +220,16 @@ describe('CommandPalette', () => {
   })
 
   it.each([
+    [
+      'synchronously',
+      (focus: () => void) => {
+        focus()
+      },
+    ],
     ['a timer', (focus: () => void) => setTimeout(focus)],
     ['an animation frame', (focus: () => void) => requestAnimationFrame(focus)],
-  ])('leaves focus where an action moved it after %s', async (_, defer) => {
+  ])('leaves focus where an action moved it %s', async (_, defer) => {
+    const onSelect = vi.fn()
     render(
       <>
         <input aria-label="Notes" />
@@ -234,6 +241,7 @@ describe('CommandPalette', () => {
               id: 'comment',
               label: 'Add comment',
               onSelect: () => {
+                onSelect()
                 defer(() => {
                   screen.getByRole('textbox', { name: 'Comment' }).focus()
                 })
@@ -254,6 +262,51 @@ describe('CommandPalette', () => {
     })
     await new Promise((resolve) => setTimeout(resolve, 50))
     expect(screen.getByRole('textbox', { name: 'Comment' })).toHaveFocus()
+    expect(onSelect).toHaveBeenCalledTimes(1)
+  })
+
+  it('runs an action after focus returns to the trigger, so the action can move it', async () => {
+    const onSelect = vi.fn(() => {
+      screen.getByRole('textbox', { name: 'Comment' }).focus()
+    })
+    render(
+      <>
+        <input aria-label="Comment" />
+        <CommandPalette
+          trigger={<button type="button">Search</button>}
+          actions={[{ id: 'comment', label: 'Add comment', onSelect }]}
+        />
+      </>,
+    )
+    await openPalette()
+    await userEvent.keyboard('{Enter}')
+    await waitFor(() => {
+      expect(onSelect).toHaveBeenCalledTimes(1)
+    })
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    await new Promise((resolve) => setTimeout(resolve, 50))
+    expect(screen.getByRole('textbox', { name: 'Comment' })).toHaveFocus()
+    expect(onSelect).toHaveBeenCalledTimes(1)
+  })
+
+  it('highlights the first result again on every opening', async () => {
+    render(<Palette />)
+    await openPalette()
+    await userEvent.keyboard('{ArrowDown}{ArrowDown}')
+    expect(screen.getByRole('option', { name: 'Reports' })).toHaveAttribute('aria-selected', 'true')
+    await userEvent.keyboard('{Escape}')
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    })
+    const input = await openPalette()
+    const first = screen.getByRole('option', { name: 'Invoices' })
+    expect(first).toHaveAttribute('aria-selected', 'true')
+    expect(input).toHaveAttribute('aria-activedescendant', first.id)
+    await userEvent.keyboard('{Enter}')
+    await waitFor(() => {
+      expect(go).toHaveBeenCalledWith('invoices')
+    })
+    expect(go).not.toHaveBeenCalledWith('reports')
   })
 
   it('has no page-wide shortcut unless asked', async () => {
