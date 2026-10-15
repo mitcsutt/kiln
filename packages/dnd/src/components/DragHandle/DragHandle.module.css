@@ -1,0 +1,12 @@
+/*
+ * The grip. Touch can't scroll from it (`touch-action: none`), which is what lets a press
+ * on it become a drag; the rest of the item still scrolls the page.
+ */
+.handle {
+  cursor: grab;
+  touch-action: none;
+}
+
+.handle[aria-disabled='true'] {
+  cursor: default;
+}

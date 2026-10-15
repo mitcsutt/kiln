@@ -103,9 +103,19 @@ describe('the Storybook tree', () => {
     expect(wrong).toEqual([])
   })
 
+  it('titles kiln-dnd components by their folder (Drag and drop/Components/<Name>)', () => {
+    const wrong = TITLES.flatMap(({ file, title }) => {
+      const match = /^packages\/dnd\/src\/components\/([^/]+)\/\1\.stories\.tsx$/.exec(file)
+      if (!match) return []
+      const expected = `Drag and drop/Components/${match[1] ?? ''}`
+      return title === expected ? [] : [`${file}: ${title}, expected ${expected}`]
+    })
+    expect(wrong).toEqual([])
+  })
+
   it('gives every component a Playground story', () => {
     const component =
-      /^packages\/(ui\/src\/components\/[^/]+|forms\/src\/(fields|layouts|components))\/([^/]+)\/\3\.stories\.tsx$/
+      /^packages\/(ui\/src\/components\/[^/]+|forms\/src\/(fields|layouts|components)|dnd\/src\/(components))\/([^/]+)\/\4\.stories\.tsx$/
     const withPlayground = new Set(
       ENTRIES.filter(({ type, name }) => type === 'story' && name === 'Playground').map(
         ({ file }) => file,

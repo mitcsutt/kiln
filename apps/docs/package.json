@@ -17,6 +17,7 @@
     "typecheck": "pnpm generate && next typegen && tsc --noEmit"
   },
   "dependencies": {
+    "@mitcsutt/kiln-dnd": "workspace:*",
     "@mitcsutt/kiln-forms": "workspace:*",
     "@mitcsutt/kiln-ui": "workspace:*",
     "fumadocs-core": "~16.15.18",

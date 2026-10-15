@@ -1,0 +1,9 @@
+/*
+ * @mitcsutt/kiln-dnd's stylesheet. Import it once, after kiln-ui's:
+ *
+ *   import '@mitcsutt/kiln-ui/styles.css'
+ *   import '@mitcsutt/kiln-dnd/styles.css'
+ *
+ * In this workspace each component imports its own CSS Module, so this file is empty; the
+ * published build gathers every module's CSS into it (vite.library.ts).
+ */

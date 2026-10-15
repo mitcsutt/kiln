@@ -1,0 +1,40 @@
+/*
+ * Component tokens (themes may set any of these on [data-theme]):
+ *   --dnd-lift-shadow   default var(--shadow-lift), or --shadow-float before kiln-ui 0.7
+ *   --dnd-lift-radius   default var(--radius-surface)
+ *
+ * A pointer drag lifts the element itself into the top layer (`[data-dnd-dragging]`, set
+ * by the engine) and leaves a faded copy in place (`[data-dnd-placeholder]`). A keyboard
+ * drag lifts it where it stands.
+ */
+.draggable {
+  border-radius: var(--dnd-lift-radius, var(--radius-surface));
+  cursor: grab;
+  touch-action: manipulation;
+}
+
+.draggable[data-handle],
+.draggable[aria-disabled='true'] {
+  cursor: auto;
+}
+
+.draggable:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.draggable[data-dragging='keyboard'],
+.draggable[data-dnd-dragging] {
+  position: relative;
+  z-index: var(--z-raised);
+  box-shadow: var(--dnd-lift-shadow, var(--shadow-lift, var(--shadow-float)));
+}
+
+.draggable[data-dnd-dragging] {
+  cursor: grabbing;
+}
+
+.draggable[data-dnd-placeholder] {
+  opacity: 0.4;
+  box-shadow: none;
+}

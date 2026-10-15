@@ -1,0 +1,6 @@
+{
+  "title": "Drag and drop",
+  "description": "Sortable lists, boards, drop zones and dashboard grids, by pointer, touch or keyboard.",
+  "root": true,
+  "pages": ["index", "getting-started", "components", "hooks"]
+}

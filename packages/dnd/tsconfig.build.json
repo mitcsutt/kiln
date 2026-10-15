@@ -1,0 +1,23 @@
+{
+  "extends": ["@mitcsutt/kiln-tsconfig/library", "@mitcsutt/kiln-tsconfig/react"],
+  "compilerOptions": {
+    "noEmit": false,
+    "emitDeclarationOnly": true,
+    "declarationMap": false,
+    "sourceMap": false,
+    "outDir": "dist",
+    "rootDir": "src",
+    "types": []
+  },
+  "include": ["src"],
+  "exclude": [
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "src/**/*.test-d.ts",
+    "src/**/*.test-d.tsx",
+    "src/**/*.stories.tsx",
+    "src/**/__fixtures__",
+    "src/stories",
+    "src/test"
+  ]
+}

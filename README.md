@@ -16,6 +16,7 @@ I kept rebuilding the same components, form plumbing and lint configs across pro
 | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
 | [`@mitcsutt/kiln-ui`](packages/ui)                           | Themeable components on Radix primitives, with plain CSS, design tokens, and a default theme plus opt-in presets                     | [![npm](https://img.shields.io/npm/v/@mitcsutt/kiln-ui?label=)](https://www.npmjs.com/package/@mitcsutt/kiln-ui)                           |
 | [`@mitcsutt/kiln-forms`](packages/forms)                     | A form library on TanStack Form. Forms can be written as components or described as JSON schemas, and both render through `kiln-ui`. | [![npm](https://img.shields.io/npm/v/@mitcsutt/kiln-forms?label=)](https://www.npmjs.com/package/@mitcsutt/kiln-forms)                     |
+| [`@mitcsutt/kiln-dnd`](packages/dnd)                         | Drag and drop on `kiln-ui`: sortable lists, kanban boards, drop zones and dashboard grids, with one keyboard model and one announcer | [![npm](https://img.shields.io/npm/v/@mitcsutt/kiln-dnd?label=)](https://www.npmjs.com/package/@mitcsutt/kiln-dnd)                         |
 | [`@mitcsutt/kiln-eslint-config`](packages/eslint-config)     | A shared, type-aware flat ESLint config                                                                                              | [![npm](https://img.shields.io/npm/v/@mitcsutt/kiln-eslint-config?label=)](https://www.npmjs.com/package/@mitcsutt/kiln-eslint-config)     |
 | [`@mitcsutt/kiln-prettier-config`](packages/prettier-config) | A shared Prettier config                                                                                                             | [![npm](https://img.shields.io/npm/v/@mitcsutt/kiln-prettier-config?label=)](https://www.npmjs.com/package/@mitcsutt/kiln-prettier-config) |
 | [`@mitcsutt/kiln-tsconfig`](packages/tsconfig)               | Shared TypeScript presets                                                                                                            | [![npm](https://img.shields.io/npm/v/@mitcsutt/kiln-tsconfig?label=)](https://www.npmjs.com/package/@mitcsutt/kiln-tsconfig)               |
@@ -28,7 +29,7 @@ More general utilities will follow as `@mitcsutt/kiln-*` packages.
 | App                                | What it is                                                                                                                                       | Run it locally                               |
 | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------- |
 | [`apps/docs`](apps/docs)           | The public docs site: every component, field, layout and hook with a live example, generated API tables, guides, search, and Markdown for agents | `pnpm --filter @mitcsutt/kiln-docs dev`      |
-| [`apps/storybook`](apps/storybook) | The developer workbench: every ui and forms story, in every theme and mode, each one a render, interaction and a11y test                         | `pnpm --filter @mitcsutt/kiln-storybook dev` |
+| [`apps/storybook`](apps/storybook) | The developer workbench: every ui, forms and drag-and-drop story, in every theme and mode, each one a render, interaction and a11y test          | `pnpm --filter @mitcsutt/kiln-storybook dev` |
 
 ## Quick start
 
@@ -56,7 +57,9 @@ export function App() {
 }
 ```
 
-Then let your coding agent pick up the skills both packages ship:
+For sortable lists, boards and dashboard grids, add `@mitcsutt/kiln-dnd` and its stylesheet (`@mitcsutt/kiln-dnd/styles.css`).
+
+Then let your coding agent pick up the skills the packages ship:
 
 ```sh
 npx @tanstack/intent@latest install
@@ -75,7 +78,7 @@ Each package's README shows how to wire it up, and the docs site has a getting-s
 - **Themes are data, components are structure.** A component never knows which theme it's in. A theme is one CSS file of tokens. Kiln ships a neutral default (`paper`) and presets (`monograph`, `ledger`, `fiesta`, `flightdeck`, `riso`), and anyone can write their own.
 - **Props, not styles.** Layout and intent are typed props (`gap={5}`, `tone="critical"`), not utility classes or inline styles.
 - **Durable by default.** Components forward refs, work on React 18 and 19, render on the server, and are complete for keyboard and screen-reader users.
-- **Docs for people and agents.** A docs site for people, Storybook for development, and agent skills shipped inside `kiln-ui` and `kiln-forms` via [TanStack Intent](https://tanstack.com/intent), built from the docs pages, so coding agents in a consumer's project know how to use Kiln correctly.
+- **Docs for people and agents.** A docs site for people, Storybook for development, and agent skills shipped inside `kiln-ui`, `kiln-forms` and `kiln-dnd` via [TanStack Intent](https://tanstack.com/intent), built from the docs pages, so coding agents in a consumer's project know how to use Kiln correctly.
 
 ## Links
 

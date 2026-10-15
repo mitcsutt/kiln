@@ -1,0 +1,76 @@
+/*
+ * Component tokens (themes may set any of these on [data-theme]):
+ *   --dnd-drop-line     default var(--color-accent): where the item will land
+ *   --dnd-lift-shadow   default var(--shadow-lift), or --shadow-float before kiln-ui 0.7
+ *
+ * Nothing moves while an item is dragged. A line marks where it will land, drawn on the
+ * edge of the item it will land next to, so the list never shifts under the pointer.
+ */
+.entry {
+  /* How far outside the item the drop line sits: half the gap to the next item. */
+  --_line-offset: 0px;
+
+  position: relative;
+  touch-action: manipulation;
+}
+
+.entry:not([data-handle]) {
+  cursor: grab;
+}
+
+.entry:not([data-handle])[aria-disabled='true'] {
+  cursor: auto;
+}
+
+.entry:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.entry[data-drop-edge]::after {
+  content: '';
+  position: absolute;
+  z-index: var(--z-raised);
+  border-radius: var(--border-width-strong);
+  background: var(--dnd-drop-line, var(--color-accent));
+  pointer-events: none;
+}
+
+.entry[data-orientation='vertical'][data-drop-edge]::after {
+  inset-inline: 0;
+  block-size: var(--border-width-strong);
+}
+.entry[data-orientation='vertical'][data-drop-edge='before']::after {
+  inset-block-start: calc(var(--_line-offset) * -1 - var(--border-width-strong) / 2);
+}
+.entry[data-orientation='vertical'][data-drop-edge='after']::after {
+  inset-block-end: calc(var(--_line-offset) * -1 - var(--border-width-strong) / 2);
+}
+
+.entry[data-orientation='horizontal'][data-drop-edge]::after {
+  inset-block: 0;
+  inline-size: var(--border-width-strong);
+}
+.entry[data-orientation='horizontal'][data-drop-edge='before']::after {
+  inset-inline-start: calc(var(--_line-offset) * -1 - var(--border-width-strong) / 2);
+}
+.entry[data-orientation='horizontal'][data-drop-edge='after']::after {
+  inset-inline-end: calc(var(--_line-offset) * -1 - var(--border-width-strong) / 2);
+}
+
+/* Lifted: by keyboard in place, by pointer in the top layer (the engine's attribute). */
+.entry[data-dragging='keyboard'],
+.entry[data-dnd-dragging] {
+  z-index: var(--z-raised);
+  background: var(--color-surface-raised);
+  box-shadow: var(--dnd-lift-shadow, var(--shadow-lift, var(--shadow-float)));
+}
+
+.entry[data-dnd-dragging] {
+  cursor: grabbing;
+}
+
+/* The copy a pointer drag leaves behind. */
+.entry[data-dnd-placeholder] {
+  opacity: 0.4;
+}

@@ -9,6 +9,7 @@ body:
       options:
         - '@mitcsutt/kiln-ui'
         - '@mitcsutt/kiln-forms'
+        - '@mitcsutt/kiln-dnd'
         - '@mitcsutt/kiln-eslint-config'
         - '@mitcsutt/kiln-prettier-config'
         - '@mitcsutt/kiln-tsconfig'

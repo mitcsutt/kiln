@@ -13,5 +13,6 @@
     "Patterns"
   ],
   "Forms": ["Getting started", "Fields", "Layouts", "Hooks", "Schema"],
+  "Drag and drop": ["Getting started", "Components", "Hooks"],
   "Tooling": ["ESLint config", "Prettier config", "TSConfig", "Project structure", "AI tooling"]
 }

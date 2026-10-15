@@ -21,6 +21,8 @@ apps/docs/content/docs/ui/typography/*.mdx
 apps/docs/content/docs/forms/fields/*.mdx
 apps/docs/content/docs/forms/hooks/*.mdx
 apps/docs/content/docs/forms/layouts/*.mdx
+apps/docs/content/docs/drag-and-drop/components/*.mdx
+apps/docs/content/docs/drag-and-drop/hooks/*.mdx
 !apps/docs/content/docs/forms/layouts/custom-layouts.mdx
 !apps/docs/content/docs/forms/layouts/stack-and-inline.mdx
 

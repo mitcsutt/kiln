@@ -13,7 +13,8 @@
  *   would (dependencies and peers external, the package's `sideEffects` honoured) and
  *   measure the result. With `isolatedTo`, they also fail unless every module in the
  *   bundle is reachable from that file: importing one component must not pull in
- *   another.
+ *   another. With `withDependencies`, only peers stay external, and every chunk counts,
+ *   lazily loaded ones included: what an app downloads for the feature, engine and all.
  *
  * Sizes are gzip, in bytes.
  *
@@ -39,6 +40,7 @@ interface ImportCheck {
   from: string
   budget: number
   isolatedTo?: string
+  withDependencies?: boolean
 }
 
 type Check = FileCheck | ImportCheck
@@ -95,7 +97,7 @@ async function bundle(
   root: string,
   check: ImportCheck,
   isExternal: (id: string) => boolean,
-): Promise<Rolldown.OutputChunk> {
+): Promise<Rolldown.OutputChunk[]> {
   const entryId = '\0kiln-size-entry'
   const target = resolve(root, check.from)
   const result = await build({
@@ -120,8 +122,9 @@ async function bundle(
   })
   for (const output of Array.isArray(result) ? result : [result]) {
     if (!('output' in output)) continue
-    const chunk = output.output.find((item) => item.type === 'chunk')
-    if (chunk) return chunk
+    const chunks = output.output.filter((item) => item.type === 'chunk')
+    // The entry chunk first; lazily loaded chunks count only with `withDependencies`.
+    if (chunks.length) return check.withDependencies ? chunks : chunks.slice(0, 1)
   }
   throw new Error(`${check.name}: the bundle produced no chunk`)
 }
@@ -139,6 +142,8 @@ async function measure(root: string): Promise<SizeReport> {
   ]
   const isExternal = (id: string) =>
     externalNames.some((name) => id === name || id.startsWith(`${name}/`))
+  const peerNames = Object.keys(pkg.peerDependencies ?? {})
+  const isPeer = (id: string) => peerNames.some((name) => id === name || id.startsWith(`${name}/`))
 
   const results: SizeResult[] = []
   for (const check of config.checks) {
@@ -147,10 +152,12 @@ async function measure(root: string): Promise<SizeReport> {
       results.push({ name: check.name, bytes, budget: check.budget, problems: [] })
       continue
     }
-    const chunk = await bundle(root, check, isExternal)
-    const modules = Object.entries(chunk.modules)
-      .filter(([id, info]) => !id.startsWith('\0') && info.renderedLength > 0)
-      .map(([id]) => id)
+    const chunks = await bundle(root, check, check.withDependencies ? isPeer : isExternal)
+    const modules = chunks.flatMap((chunk) =>
+      Object.entries(chunk.modules)
+        .filter(([id, info]) => !id.startsWith('\0') && info.renderedLength > 0)
+        .map(([id]) => id),
+    )
     const problems: string[] = []
     if (check.isolatedTo) {
       const allowed = closure(root, check.isolatedTo)
@@ -162,7 +169,7 @@ async function measure(root: string): Promise<SizeReport> {
     }
     results.push({
       name: check.name,
-      bytes: gzip(chunk.code),
+      bytes: chunks.reduce((total, chunk) => total + gzip(chunk.code), 0),
       budget: check.budget,
       modules: modules.map((id) => relative(root, id)),
       problems,

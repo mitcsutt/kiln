@@ -23,6 +23,7 @@ apps/
 packages/
   ui/                @mitcsutt/kiln-ui (skills/: agent skills, built from the docs)
   forms/             @mitcsutt/kiln-forms (skills/: agent skills, built from the docs)
+  dnd/               @mitcsutt/kiln-dnd (skills/: agent skills, built from the docs)
   eslint-config/     @mitcsutt/kiln-eslint-config
   prettier-config/   @mitcsutt/kiln-prettier-config
   tsconfig/          @mitcsutt/kiln-tsconfig
@@ -46,27 +47,27 @@ Directories use the short name (`packages/tsconfig`), and the package name carri
 
 Run these from the repo root. Turborepo runs each one across the workspace and caches the results.
 
-| Command                | What it does                                                          |
-| ---------------------- | --------------------------------------------------------------------- |
-| `pnpm lint`            | ESLint in every package and at the root, plus `prettier --check`      |
-| `pnpm typecheck`       | `tsc --noEmit` in every package and at the root                       |
-| `pnpm test`            | Vitest in every package                                               |
-| `pnpm build`           | Builds every package that has a build step                            |
-| `pnpm build:watch`     | Rebuilds `kiln-ui` and `kiln-forms` on every change, for a linked app |
-| `pnpm test:react18`    | The runtime packages' test suites again, on React 18.3                |
-| `pnpm test:storybook`  | Every story as a browser test: render, `play` function and axe        |
-| `pnpm check:links`     | Builds the docs site, serves it and fails on any broken internal link |
-| `pnpm check:package`   | `publint` and `@arethetypeswrong/cli` on each packed package          |
-| `pnpm check:skills`    | `intent validate` on each package's agent skills, examples included   |
-| `pnpm size`            | Size report against each package's budgets, with tree-shaking checks  |
-| `pnpm format`          | Formats the whole repo with Prettier                                  |
-| `pnpm generate:skills` | Rebuilds the agent skills in `packages/*/skills` from the docs pages  |
+| Command                | What it does                                                                      |
+| ---------------------- | --------------------------------------------------------------------------------- |
+| `pnpm lint`            | ESLint in every package and at the root, plus `prettier --check`                  |
+| `pnpm typecheck`       | `tsc --noEmit` in every package and at the root                                   |
+| `pnpm test`            | Vitest in every package                                                           |
+| `pnpm build`           | Builds every package that has a build step                                        |
+| `pnpm build:watch`     | Rebuilds `kiln-ui`, `kiln-forms` and `kiln-dnd` on every change, for a linked app |
+| `pnpm test:react18`    | The runtime packages' test suites again, on React 18.3                            |
+| `pnpm test:storybook`  | Every story as a browser test: render, `play` function and axe                    |
+| `pnpm check:links`     | Builds the docs site, serves it and fails on any broken internal link             |
+| `pnpm check:package`   | `publint` and `@arethetypeswrong/cli` on each packed package                      |
+| `pnpm check:skills`    | `intent validate` on each package's agent skills, examples included               |
+| `pnpm size`            | Size report against each package's budgets, with tree-shaking checks              |
+| `pnpm format`          | Formats the whole repo with Prettier                                              |
+| `pnpm generate:skills` | Rebuilds the agent skills in `packages/*/skills` from the docs pages              |
 
 To work on one package, filter to it, for example `pnpm turbo run test --filter=@mitcsutt/kiln-eslint-config`.
 
 To run the docs site, run `pnpm --filter @mitcsutt/kiln-docs dev` and open http://localhost:3000. A component, field, layout or hook page is generated from that export's TSDoc and its stories tagged `docs`, and the guides are MDX in `apps/docs/content/docs` that show docs stories with `<Example of="…" />`; API tables come from the package types. [`apps/docs/README.md`](apps/docs/README.md) has the details.
 
-The agent skills that `kiln-ui` and `kiln-forms` ship are built from docs pages, which `apps/docs/src/skills/manifest.ts` lists ([ADR 0011](docs/adr/0011-ai-tooling.md)). After you change one of those pages, run `pnpm generate:skills` and commit the result: the docs tests fail while a skill differs from its pages. Never edit a file in `packages/*/skills` by hand.
+The agent skills that `kiln-ui`, `kiln-forms` and `kiln-dnd` ship are built from docs pages, which `apps/docs/src/skills/manifest.ts` lists ([ADR 0011](docs/adr/0011-ai-tooling.md)). After you change one of those pages, run `pnpm generate:skills` and commit the result: the docs tests fail while a skill differs from its pages. Never edit a file in `packages/*/skills` by hand.
 
 To open the Storybook workbench, run `pnpm --filter @mitcsutt/kiln-storybook dev`. The story tests need Chromium from Playwright the first time: `pnpm --filter @mitcsutt/kiln-storybook exec playwright install chromium`. They start in Paper, light; set `STORYBOOK_THEME` and `STORYBOOK_MODE` to run them in another theme or mode. CI runs them in Paper, light and dark, on every pull request, and in every built-in theme when the pull request touches theme CSS, tokens, the theme registry, `apps/storybook` or the CI workflow ([ADR 0031](docs/adr/0031-storybook-theme-matrix-on-theme-changes.md)). If your change could look different in another theme, run that theme locally.
 
@@ -90,8 +91,11 @@ When an app that uses Kiln turns up a problem, fix it in Kiln and try the fix in
      "dependencies": {
        "@mitcsutt/kiln-ui": "link:../kiln/packages/ui",
        "@mitcsutt/kiln-forms": "link:../kiln/packages/forms",
+       "@mitcsutt/kiln-dnd": "link:../kiln/packages/dnd",
        "radix-ui": "^1.6.7",
-       "@tanstack/react-form": "^1.33.5"
+       "@tanstack/react-form": "^1.33.5",
+       "@dnd-kit/abstract": "0.5.0",
+       "@dnd-kit/dom": "0.5.0"
      }
    }
    ```
@@ -109,7 +113,14 @@ When an app that uses Kiln turns up a problem, fix it in Kiln and try the fix in
    export default defineConfig({
      resolve: {
        conditions: ['kiln-dist', ...defaultClientConditions],
-       dedupe: ['react', 'react-dom', 'radix-ui', '@tanstack/react-form'],
+       dedupe: [
+         'react',
+         'react-dom',
+         'radix-ui',
+         '@tanstack/react-form',
+         '@dnd-kit/abstract',
+         '@dnd-kit/dom',
+       ],
      },
      ssr: { resolve: { conditions: ['kiln-dist', ...defaultServerConditions] } },
      server: {
@@ -178,7 +189,7 @@ When the app work is done, open the Kiln pull request with a changeset for each 
 - **Formatted and linted on commit.** A `pre-commit` hook (Lefthook) runs Prettier and ESLint on staged files and fixes what it can.
 - **One idea per pull request.** Keep unrelated changes in separate pull requests.
 - **No warnings.** Every ESLint rule is either an error or off.
-- **Design standards are binding.** [`DESIGN.md`](DESIGN.md) and [`packages/ui/AGENTS.md`](packages/ui/AGENTS.md) are binding for UI work, and [`packages/forms/AGENTS.md`](packages/forms/AGENTS.md) for forms work. Change a rule only together with the lint rule or test that enforces it.
+- **Design standards are binding.** [`DESIGN.md`](DESIGN.md) and [`packages/ui/AGENTS.md`](packages/ui/AGENTS.md) are binding for UI work, [`packages/forms/AGENTS.md`](packages/forms/AGENTS.md) for forms work, and [`packages/dnd/AGENTS.md`](packages/dnd/AGENTS.md) for drag-and-drop work. Change a rule only together with the lint rule or test that enforces it.
 - **Decisions are recorded.** Significant decisions live in [`docs/adr/`](docs/adr/). To change one, add a new record that supersedes it rather than editing the old one.
 - **Written as if public.** No secrets, internal URLs or private project details in code, docs or commit messages.
 

@@ -1,0 +1,67 @@
+/*
+ * Component tokens (themes may set any of these on [data-theme]):
+ *   --board-column-bg   default var(--color-surface-sunken)
+ *   --board-card-bg     default var(--color-surface)
+ *
+ * Columns are sunken lanes and cards are sheets on them: a card earns its frame here,
+ * because it's a draggable object (DESIGN.md §2). Columns scroll sideways on narrow
+ * screens rather than squeezing.
+ */
+.board {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(min(85%, 18rem), 1fr);
+  gap: var(--space-4);
+  overflow-x: auto;
+  padding-block-end: var(--space-2);
+}
+
+.board[hidden] {
+  display: none;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-inline-size: 0;
+  padding: var(--space-3);
+  border-radius: var(--radius-surface);
+  background: var(--board-column-bg, var(--color-surface-sunken));
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding-inline: var(--space-1);
+}
+
+.cards {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-block-size: var(--control-lg);
+  margin: 0;
+  padding: 0;
+  border: var(--border-width) solid transparent;
+  border-radius: var(--radius-field);
+  list-style: none;
+}
+
+/* An empty column the dragged item would land in. */
+.cards[data-over] {
+  border-color: var(--color-accent);
+  background: var(--color-accent-soft);
+}
+
+.cards > .card {
+  /* The drop line sits in the middle of the gap between cards. */
+  --_line-offset: calc(var(--space-2) / 2);
+
+  padding: var(--space-3);
+  border-radius: var(--radius-surface);
+  background: var(--board-card-bg, var(--color-surface));
+}

@@ -151,7 +151,7 @@ jobs:
       - name: Build the docs site and check its links
         run: pnpm check:links
 
-  # The skills kiln-ui and kiln-forms ship pass TanStack Intent's validator: their
+  # The skills kiln-ui, kiln-forms and kiln-dnd ship pass TanStack Intent's validator: their
   # frontmatter and size, and every code block compiles against the package (ADR 0020).
   skills:
     name: Agent skills

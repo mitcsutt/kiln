@@ -9,6 +9,9 @@ catalog:
   '@changesets/cli': ^3.0.3
   '@commitlint/cli': ^21.2.3
   '@commitlint/config-conventional': ^21.2.3
+  # Pinned exactly: pre-1.0, and kiln-dnd hides it behind its own API (ADR 0040).
+  '@dnd-kit/abstract': 0.5.0
+  '@dnd-kit/dom': 0.5.0
   '@eslint/js': ^10.0.1
   '@storybook/addon-a11y': ^10.6.1
   '@storybook/addon-docs': ^10.6.1

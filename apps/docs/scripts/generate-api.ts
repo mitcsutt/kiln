@@ -24,9 +24,15 @@ const entries = [
     pkg: '@mitcsutt/kiln-forms/schema',
     file: join(root, 'packages/forms/src/schema/core/index.ts'),
   },
+  { pkg: '@mitcsutt/kiln-dnd', file: join(root, 'packages/dnd/src/index.ts') },
+  { pkg: '@mitcsutt/kiln-dnd/testing', file: join(root, 'packages/dnd/src/testing/index.ts') },
 ] as const
 
-const kilnSource = [join(root, 'packages/ui/src') + sep, join(root, 'packages/forms/src') + sep]
+const kilnSource = [
+  join(root, 'packages/ui/src') + sep,
+  join(root, 'packages/forms/src') + sep,
+  join(root, 'packages/dnd/src') + sep,
+]
 
 export interface ApiProp {
   name: string

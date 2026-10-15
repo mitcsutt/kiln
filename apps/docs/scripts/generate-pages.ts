@@ -40,7 +40,7 @@ const tokens = JSON.parse(readFileSync(join(app, '.generated/tokens.json'), 'utf
 
 /** The groups of the ADR 0010 tree whose pages document one export each. */
 const REFERENCE =
-  /^(UI\/(Actions|Inputs|Layout|Display|Navigation|Feedback|Overlays|Typography)|Forms\/(Fields|Layouts|Hooks))\//
+  /^(UI\/(Actions|Inputs|Layout|Display|Navigation|Feedback|Overlays|Typography)|Forms\/(Fields|Layouts|Hooks)|Drag and drop\/(Components|Hooks))\//
 
 /** `text: FormTextField` in the default kit, read from source: export → kind. */
 function fieldKinds(): Map<string, string> {
