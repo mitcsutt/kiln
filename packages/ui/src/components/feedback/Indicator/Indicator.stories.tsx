@@ -11,6 +11,7 @@ import {
 } from '@mitcsutt/kiln-ui'
 import { useState } from 'react'
 import { expect, userEvent } from 'storybook/test'
+import { must } from '#test/must'
 
 const meta = {
   title: 'UI/Feedback/Indicator',
@@ -87,6 +88,22 @@ export const OnAnAvatar: Story = {
         </Indicator>
       </Inline>
     )
+  },
+  play: async ({ canvasElement }) => {
+    const mark = must(canvasElement.querySelector('[data-kind="swatch"]'), 'the swatch mark')
+    const paint = (color: string) => {
+      const probe = document.createElement('span')
+      probe.style.backgroundColor = color
+      mark.append(probe)
+      const painted = getComputedStyle(probe).backgroundColor
+      probe.remove()
+      return painted
+    }
+    const shown = [mark, ...mark.querySelectorAll('*')].map(
+      (el) => getComputedStyle(el).backgroundColor,
+    )
+    await expect(shown).toContain(paint('var(--color-cat-4)'))
+    await expect(shown).not.toContain(paint('var(--color-accent)'))
   },
 }
 

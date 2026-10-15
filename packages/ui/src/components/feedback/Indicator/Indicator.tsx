@@ -119,12 +119,14 @@ export const Indicator = forwardRef<HTMLSpanElement, IndicatorProps>(function In
 
   const mark = shown ? (
     swatch !== undefined ? (
-      <Swatch
-        color={swatch}
+      <span
         className={styles.mark}
         data-kind="swatch"
         data-processing={processing || undefined}
-      />
+        aria-hidden="true"
+      >
+        <Swatch color={swatch} className={styles.fill} />
+      </span>
     ) : (
       <span
         className={styles.mark}

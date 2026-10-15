@@ -94,9 +94,9 @@ describe('Indicator', () => {
     )
     const mark = must(markOf(container))
     expect(mark).toHaveAttribute('data-kind', 'swatch')
-    expect(mark).toHaveAttribute('data-color', '4')
     expect(mark).toHaveAttribute('aria-hidden', 'true')
-    expect(mark).toBeEmptyDOMElement()
+    expect(mark).toHaveTextContent('')
+    expect(mark.querySelector('[data-color]')).toHaveAttribute('data-color', '4')
   })
 
   it('maps position, shape and offset', () => {
