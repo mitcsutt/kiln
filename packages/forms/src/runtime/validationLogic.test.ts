@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import type { AnyFormApi, ValidationLogicFn, ValidationLogicProps } from '@tanstack/react-form'
+import {
+  revalidateLogic,
+  type AnyFormApi,
+  type ValidationLogicFn,
+  type ValidationLogicProps,
+} from '@tanstack/react-form'
 import { getFormRuntime, markInactive, type ValidateOn } from '#runtime/formRuntime'
 import { kitValidationLogic } from '#runtime/validationLogic'
 import { must } from '#test/must'
@@ -214,5 +219,11 @@ describe('kitValidationLogic: a field’s own check (useFieldBinding({ check }))
     const run = dynamicFor({ onDynamic: () => 'field' }, base)
     expect(run({ value: 'bad' })).toBe('checked')
     expect(run({ value: 'good' })).toBe('field')
+  })
+
+  it('runs under an explicit base logic for a field with no validators of its own', () => {
+    const run = dynamicFor({}, revalidateLogic())
+    expect(run({ value: 'bad' })).toBe('checked')
+    expect(run({ value: 'good' })).toBeUndefined()
   })
 })
