@@ -90,6 +90,8 @@ The successful `value` holds only the fields the form itself would validate. Fie
 
 Custom validators run if you pass them: `toStandardSchema(schema, { validators: { bookingReference } })`.
 
+Some kinds check their own value before their rules, as the field does in the browser: a `json` field's text must parse, or it fails with `messages.invalidJson`.
+
 ```ts
 declare function toStandardSchema(schema: UntypedFormSchema, opts?: ToStandardSchemaOptions): StandardSchemaV1<unknown, unknown>
 ```

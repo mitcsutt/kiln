@@ -1,12 +1,11 @@
 import type { FocusEvent, ReactNode } from 'react'
 import {
   ChoiceCardsField as UiChoiceCardsField,
-  Tag,
-  TagList,
   type ChoiceCardOption,
   type ChoiceCardsFieldProps as UiChoiceCardsFieldProps,
 } from '@mitcsutt/kiln-ui'
 import { FieldView } from '#components/fields/FieldView'
+import { optionTags } from '#components/fields/internal/optionSwatches'
 import type { ControlledKeys } from '#components/fields/internal/controlledKeys'
 import { useOptionMapping } from '#hooks/useOptionMapping'
 import { accepts, useFieldBinding, type CommonFieldProps } from '#hooks/useFieldBinding'
@@ -72,18 +71,7 @@ export const FormMultiChoiceCardsField = defineOptionsField<MultiChoiceCardValue
     })
     const mapping = useOptionMapping(options)
     if (binding.mode === 'view') {
-      const labels = binding.value.map((value) => mapping.labelOf(value) ?? String(value))
-      return (
-        <FieldView label={props.label}>
-          {labels.length > 0 ? (
-            <TagList>
-              {labels.map((label) => (
-                <Tag key={label}>{label}</Tag>
-              ))}
-            </TagList>
-          ) : undefined}
-        </FieldView>
-      )
+      return <FieldView label={props.label}>{optionTags(binding.value, mapping)}</FieldView>
     }
     const cardOptions: ChoiceCardOption[] = mapping.uiOptions.map((option) => {
       const card: ChoiceCardOption = { value: option.value, label: option.label }

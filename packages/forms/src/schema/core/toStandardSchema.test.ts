@@ -489,4 +489,37 @@ describe('toStandardSchema', () => {
       ['name', 'Enter a value'],
     ])
   })
+
+  describe('a kind’s own check', () => {
+    const json: UntypedFormSchema = {
+      version: 1,
+      root: {
+        layout: 'stack',
+        children: [
+          {
+            kind: 'json',
+            name: 'payload',
+            rules: [{ rule: 'maxLength', value: 40 }],
+          },
+        ],
+      },
+    }
+
+    it('rejects JSON text that does not parse before the rules run, with messages.invalidJson', async () => {
+      expect(issuesOf(await run(toStandardSchema(json), { payload: '{"a":' }))).toEqual([
+        ['payload', 'Enter valid JSON'],
+      ])
+      expect(
+        issuesOf(
+          await run(toStandardSchema(json, { messages: { invalidJson: () => 'Not JSON' } }), {
+            payload: '[',
+          }),
+        ),
+      ).toEqual([['payload', 'Not JSON']])
+      // Valid JSON reaches the rules.
+      expect(
+        issuesOf(await run(toStandardSchema(json), { payload: JSON.stringify('x'.repeat(50)) })),
+      ).toEqual([['payload', 'Enter 40 characters or fewer']])
+    })
+  })
 })

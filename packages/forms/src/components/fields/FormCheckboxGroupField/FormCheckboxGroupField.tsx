@@ -1,11 +1,10 @@
 import type { FocusEvent } from 'react'
 import {
   CheckboxGroupField as UiCheckboxGroupField,
-  Tag,
-  TagList,
   type CheckboxGroupFieldProps as UiCheckboxGroupFieldProps,
 } from '@mitcsutt/kiln-ui'
 import { FieldView } from '#components/fields/FieldView'
+import { optionTags } from '#components/fields/internal/optionSwatches'
 import type { ControlledKeys } from '#components/fields/internal/controlledKeys'
 import { useOptionMapping } from '#hooks/useOptionMapping'
 import { accepts, useFieldBinding, type CommonFieldProps } from '#hooks/useFieldBinding'
@@ -66,18 +65,7 @@ export const FormCheckboxGroupField = defineOptionsField<CheckboxGroupValue>()(
     })
     const mapping = useOptionMapping(options)
     if (binding.mode === 'view') {
-      const labels = binding.value.map((value) => mapping.labelOf(value) ?? String(value))
-      return (
-        <FieldView label={props.label}>
-          {labels.length > 0 ? (
-            <TagList>
-              {labels.map((label) => (
-                <Tag key={label}>{label}</Tag>
-              ))}
-            </TagList>
-          ) : undefined}
-        </FieldView>
-      )
+      return <FieldView label={props.label}>{optionTags(binding.value, mapping)}</FieldView>
     }
     return (
       <UiCheckboxGroupField

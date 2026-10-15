@@ -33,6 +33,11 @@ export interface FieldRegistration {
   getLabel(): string
   scopes: readonly ScopeHandle[]
   element(): HTMLElement | null
+  /**
+   * The field's own check of its value (`useFieldBinding({ check })`), run with its `onDynamic`
+   * validator by the kit's validation logic. Only set when the field has one.
+   */
+  check?: (value: unknown) => string | undefined
 }
 
 export interface InactiveEntry {

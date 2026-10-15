@@ -203,3 +203,30 @@ export const Usage: Story = {
     )
   },
 }
+
+/**
+ * An option's `swatch` marks what it stands for: a categorical slot `1` to `8`, which follows the
+ * theme in light and dark, or a CSS colour that comes from data. The chips draw it before the
+ * label, and so do the tags the field shows in view mode. Colour marks who or what, never a
+ * status, and the label still says it.
+ */
+export const Swatches: Story = {
+  tags: ['docs'],
+  render: function Swatches() {
+    const form = useAppForm({ defaultValues: { teams: ['platform'] as string[] } })
+    return (
+      <Form form={form} aria-label="ChipsField swatches example">
+        <form.ChipsField
+          name="teams"
+          label="Teams to notify"
+          options={[
+            { value: 'platform', label: 'Platform', swatch: 1 },
+            { value: 'design', label: 'Design', swatch: 3 },
+            { value: 'support', label: 'Support', swatch: 5 },
+            { value: 'finance', label: 'Finance', swatch: 7 },
+          ]}
+        />
+      </Form>
+    )
+  },
+}

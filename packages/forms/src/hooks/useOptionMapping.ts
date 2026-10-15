@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import type { SwatchColor } from '@mitcsutt/kiln-ui'
 import type { FieldOption, Primitive } from '#kit/contracts'
 
 /** Item value used for an `emptyOption` row; maps back to `null`. Never a real option value. */
@@ -26,6 +27,8 @@ export interface OptionMapping<V extends Primitive> {
   fromUi: (value: string) => V | null
   /** The label of a field value, for view mode. */
   labelOf: (value: V | null | undefined) => string | undefined
+  /** The option's `swatch`, by field value or ui value (they share a key). */
+  swatchOf: (value: V | string | null | undefined) => SwatchColor | undefined
 }
 
 /**
@@ -85,6 +88,11 @@ export function createOptionMapping<V extends Primitive>(
       if (value === null || value === undefined) return undefined
       const key = String(value)
       return (byKey.get(key) ?? opts.known?.get(key))?.label
+    },
+    swatchOf: (value) => {
+      if (value === null || value === undefined) return undefined
+      const key = String(value)
+      return (byKey.get(key) ?? opts.known?.get(key))?.swatch
     },
   }
 }

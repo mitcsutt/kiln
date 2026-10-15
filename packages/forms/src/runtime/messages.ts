@@ -39,6 +39,14 @@ export interface FormMessages {
   edit: string
   optionsFailed: string
   fileRejected: { type: string; size: string; count: string }
+  /**
+   * A JSON field whose text isn't valid JSON, or that its `validate` rejects: "Line 3, column 12:
+   * Remove this comma: nothing follows it". Called with no error where there's no detail, as
+   * `toStandardSchema` does on a server.
+   */
+  invalidJson: (error?: { message: string; line?: number; column?: number }) => string
+  /** A JSON field: the name of the button that copies its text. */
+  copyJson: string
   rules: {
     required: string
     minLength: string
@@ -94,6 +102,13 @@ export const defaultMessages: FormMessages = {
   stepCompact: (index, count) => `Step ${String(index)} of ${String(count)}`,
   edit: 'Edit',
   optionsFailed: "Couldn't load options",
+  invalidJson: (error) =>
+    error === undefined
+      ? 'Enter valid JSON'
+      : error.line === undefined
+        ? error.message
+        : `Line ${String(error.line)}, column ${String(error.column ?? 1)}: ${error.message}`,
+  copyJson: 'Copy JSON',
   fileRejected: {
     type: "That file type isn't allowed",
     size: 'That file is too large',

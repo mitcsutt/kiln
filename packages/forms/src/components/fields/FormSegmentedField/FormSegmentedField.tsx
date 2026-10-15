@@ -1,9 +1,10 @@
-import type { FocusEvent } from 'react'
+import { useMemo, type FocusEvent } from 'react'
 import {
   SegmentedField as UiSegmentedField,
   type SegmentedFieldProps as UiSegmentedFieldProps,
 } from '@mitcsutt/kiln-ui'
 import { FieldView } from '#components/fields/FieldView'
+import { withSwatchIcons } from '#components/fields/internal/optionSwatches'
 import type { ControlledKeys } from '#components/fields/internal/controlledKeys'
 import { useOptionMapping } from '#hooks/useOptionMapping'
 import { accepts, useFieldBinding, type CommonFieldProps } from '#hooks/useFieldBinding'
@@ -66,6 +67,7 @@ export const FormSegmentedField = defineOptionField<SegmentedValue>()(function F
     empty: null,
   })
   const mapping = useOptionMapping(options)
+  const uiOptions = useMemo(() => withSwatchIcons(mapping), [mapping])
   if (binding.mode === 'view')
     return <FieldView label={props.label}>{mapping.labelOf(binding.value)}</FieldView>
   return (
@@ -73,7 +75,7 @@ export const FormSegmentedField = defineOptionField<SegmentedValue>()(function F
       {...props}
       {...binding.fieldProps}
       ref={binding.ref}
-      options={mapping.uiOptions}
+      options={uiOptions}
       value={mapping.toUi(binding.value)}
       onValueChange={(next) => {
         binding.setValue(mapping.fromUi(next))

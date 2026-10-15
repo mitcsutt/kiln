@@ -7,6 +7,7 @@ import type {
   UntypedFormSchema,
 } from '#schema/core/types'
 import { unsafePatternReason } from '#schema/core/patterns'
+import { SWATCH_HINT, isSchemaSwatch } from '#schema/core/swatch'
 import { unsafePropReason } from '#schema/core/unsafeProps'
 import { unsafePathSegment } from '#schema/core/values'
 
@@ -369,6 +370,8 @@ function checkOptions(ctx: Ctx, options: unknown, path: string): void {
         `${path}[${String(index)}]`,
         'Option needs a value (string, number or boolean) and a label',
       )
+    else if (isObject(option) && option.swatch !== undefined && !isSchemaSwatch(option.swatch))
+      issue(ctx, `${path}[${String(index)}].swatch`, `Expected ${SWATCH_HINT}`)
   })
 }
 

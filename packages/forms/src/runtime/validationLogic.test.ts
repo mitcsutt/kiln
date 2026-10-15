@@ -1,7 +1,13 @@
 import { describe, expect, it } from 'vitest'
-import type { AnyFormApi, ValidationLogicProps } from '@tanstack/react-form'
+import {
+  revalidateLogic,
+  type AnyFormApi,
+  type ValidationLogicFn,
+  type ValidationLogicProps,
+} from '@tanstack/react-form'
 import { getFormRuntime, markInactive, type ValidateOn } from '#runtime/formRuntime'
 import { kitValidationLogic } from '#runtime/validationLogic'
+import { must } from '#test/must'
 
 type Stage = 'before blur' | 'after blur' | 'after submit'
 type Level = 'field' | 'form'
@@ -159,5 +165,81 @@ describe('kitValidationLogic: form-level onDynamic while its errors are up (§13
   })
   it('does not change the field-level predicate', () => {
     expect(runs('field', routed)).toBe(false)
+  })
+})
+
+describe('kitValidationLogic: a field’s own check (useFieldBinding({ check }))', () => {
+  function dynamicFor(validators: Record<string, unknown>, base?: ValidationLogicFn) {
+    const { form } = makeForm('after blur')
+    getFormRuntime(form).fields.set('name', {
+      id: 'name',
+      focus: () => undefined,
+      getLabel: () => 'Name',
+      scopes: [],
+      element: () => null,
+      check: (value) => (value === 'bad' ? 'checked' : undefined),
+    })
+    let dynamics: (((props: { value: unknown }) => unknown) | undefined)[] = []
+    kitValidationLogic(base ? { base } : {})({
+      form,
+      validators,
+      event: { type: 'blur', fieldName: 'name', async: false },
+      runValidation: ({
+        validators: list,
+      }: {
+        validators: ({ cause: string; fn?: (props: { value: unknown }) => unknown } | undefined)[]
+      }) => {
+        dynamics = list.filter((v) => v?.cause === 'dynamic').map((v) => v?.fn)
+      },
+    } as unknown as ValidationLogicProps)
+    expect(dynamics).toHaveLength(1)
+    return must(dynamics[0])
+  }
+
+  it('runs ahead of the onDynamic validator, which only sees values the check passes', () => {
+    const run = dynamicFor({
+      onDynamic: ({ value }: { value: unknown }) => `field saw ${String(value)}`,
+    })
+    expect(run({ value: 'bad' })).toBe('checked')
+    expect(run({ value: 'good' })).toBe('field saw good')
+  })
+
+  it('runs for a field with no validators of its own', () => {
+    const run = dynamicFor({})
+    expect(run({ value: 'bad' })).toBe('checked')
+    expect(run({ value: 'good' })).toBeUndefined()
+  })
+
+  it('runs in the dynamic slot of an explicit base logic too', () => {
+    const base: ValidationLogicFn = (props) => {
+      props.runValidation({
+        validators: [{ fn: props.validators?.onDynamic as unknown, cause: 'dynamic' }],
+        form: props.form,
+      })
+    }
+    const run = dynamicFor({ onDynamic: () => 'field' }, base)
+    expect(run({ value: 'bad' })).toBe('checked')
+    expect(run({ value: 'good' })).toBe('field')
+  })
+
+  it('runs under an explicit base logic for a field with no validators of its own', () => {
+    const run = dynamicFor({}, revalidateLogic())
+    expect(run({ value: 'bad' })).toBe('checked')
+    expect(run({ value: 'good' })).toBeUndefined()
+  })
+
+  it('runs once when the base logic gives a field with only onChange a dynamic slot', () => {
+    const base: ValidationLogicFn = (props) => {
+      props.runValidation({
+        validators: [
+          { fn: props.validators?.onChange as unknown, cause: 'change' },
+          { fn: props.validators?.onDynamic as unknown, cause: 'dynamic' },
+        ],
+        form: props.form,
+      })
+    }
+    const run = dynamicFor({ onChange: () => 'change' }, base)
+    expect(run({ value: 'bad' })).toBe('checked')
+    expect(run({ value: 'good' })).toBeUndefined()
   })
 })

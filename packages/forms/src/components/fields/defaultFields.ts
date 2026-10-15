@@ -10,6 +10,7 @@ import { FormDateRangeField } from '#components/fields/FormDateRangeField'
 import { FormDateTimeField } from '#components/fields/FormDateTimeField'
 import { FormFileField } from '#components/fields/FormFileField'
 import { FormHiddenField } from '#components/fields/FormHiddenField'
+import { FormJsonField } from '#components/fields/FormJsonField'
 import { FormMultiChoiceCardsField } from '#components/fields/FormMultiChoiceCardsField'
 import { FormMultiSelectField } from '#components/fields/FormMultiSelectField'
 import { FormNumberField } from '#components/fields/FormNumberField'
@@ -58,4 +59,5 @@ export const defaultFields = {
   multiSelect: FormMultiSelectField,
   tags: FormTagsField,
   file: FormFileField,
+  json: FormJsonField,
 }

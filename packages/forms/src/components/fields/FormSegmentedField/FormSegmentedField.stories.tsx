@@ -158,6 +158,24 @@ export const InAForm: Story = {
   ),
 }
 
+export const Swatches: Story = {
+  render: () => (
+    <FieldDemo defaultValues={{ value: 'north' }} label="Region">
+      {(form) => (
+        <form.SegmentedField
+          name="value"
+          label="Region"
+          options={[
+            { value: 'north', label: 'North', swatch: 2 },
+            { value: 'south', label: 'South', swatch: 4 },
+            { value: 'west', label: 'West', swatch: 6 },
+          ]}
+        />
+      )}
+    </FieldDemo>
+  ),
+}
+
 export const ViewMode: Story = {
   name: 'View mode',
   render: () => (
