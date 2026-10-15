@@ -1,0 +1,109 @@
+/*
+ * The field box of DateInput, TimeInput and DateTimeInput (the border and states come from
+ * control.module.css): the segments, then the zone, the clear button and the calendar button.
+ * Also the panel their calendar opens in.
+ */
+.root {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  inline-size: 100%;
+  padding-inline: var(--_px);
+  cursor: text;
+}
+.root:focus-within {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+.root[data-disabled] {
+  cursor: not-allowed;
+}
+
+.trailing {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-1);
+  margin-inline-end: calc(var(--space-1) * -1);
+  color: var(--color-ink-muted);
+}
+.root[data-disabled] .trailing {
+  color: var(--color-ink-subtle);
+}
+
+/* The time zone after a date-time ("AEDT"), as quiet as an adornment. */
+.zone {
+  color: var(--color-ink-subtle);
+  font-size: 0.875em;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.button {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  inline-size: 1.75em;
+  block-size: 1.75em;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-chip);
+  background: transparent;
+  color: inherit;
+  font-size: inherit;
+  cursor: pointer;
+}
+.button > svg {
+  inline-size: 1.15em;
+  block-size: 1.15em;
+}
+@media (hover: hover) {
+  .button:hover:not(:disabled) {
+    background: var(--color-surface-sunken);
+    color: var(--color-ink);
+  }
+}
+.button:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 1px;
+}
+.button:disabled {
+  cursor: not-allowed;
+}
+.button[data-state='open'] {
+  background: var(--color-surface-sunken);
+  color: var(--color-ink);
+}
+
+/* The calendar panel: wide enough for its grid (two months for a range), never off screen. */
+.popover {
+  max-inline-size: min(
+    calc(100vw - 2 * var(--space-4)),
+    var(--radix-popover-content-available-width, 100vw)
+  );
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.timeRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  padding-block-start: var(--space-3);
+  border-block-start: var(--border-width) solid var(--color-line);
+}
+.timeLabel {
+  min-inline-size: 5em;
+  color: var(--color-ink-muted);
+  font-size: var(--text-sm);
+  font-weight: var(--label-weight);
+}
+.timeRow > :last-child {
+  flex: 1 1 10em;
+  inline-size: auto;
+}

@@ -1,0 +1,48 @@
+/*
+ * The parts of a date or time ("15 / 10 / 2026", "2:30 pm") inside a field box. Figures are
+ * tabular in the theme's numeric face, so a part never changes width as it's typed.
+ *
+ * Component tokens:
+ *   --date-segment-focus-bg    default var(--color-selection)
+ *   --date-segment-focus-ink   default var(--color-ink)
+ */
+.segments {
+  display: inline-flex;
+  flex: 1;
+  align-items: center;
+  min-inline-size: 0;
+  overflow: hidden;
+  font-family: var(--font-numeric);
+  font-stretch: var(--numeric-stretch);
+  font-variant-numeric: tabular-nums lining-nums;
+  white-space: nowrap;
+}
+
+.segment {
+  box-sizing: content-box;
+  padding-inline: 0.125em;
+  border-radius: var(--radius-field);
+  caret-color: transparent;
+  text-align: end;
+  outline: none;
+  cursor: text;
+}
+.segment[data-segment='dayPeriod'] {
+  text-align: start;
+}
+.segment[data-placeholder] {
+  color: var(--color-ink-subtle);
+}
+.segment:focus {
+  background-color: var(--date-segment-focus-bg, var(--color-selection));
+  color: var(--date-segment-focus-ink, var(--color-ink));
+}
+.segment[aria-disabled='true'] {
+  cursor: not-allowed;
+}
+
+.literal {
+  color: var(--color-ink-subtle);
+  white-space: pre;
+  user-select: none;
+}
