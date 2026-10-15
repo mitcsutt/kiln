@@ -77,8 +77,9 @@ function Chevron() {
  * @privateRemarks
  * Vertical: a disclosure button and a nested list in a Collapse (the disclosure-navigation
  * pattern, not a tree role, so links stay links). Horizontal: the same button opens a Popover with
- * the links listed vertically inside. Not DropdownMenu: ARIA menus are for commands and drop link
- * semantics such as aria-current.
+ * the links listed vertically inside. While it's closed, the links stay mounted in a `hidden` copy so
+ * items wrapped in your own components still report in and the group can show it holds the current
+ * page. Not DropdownMenu: ARIA menus are for commands and drop link semantics such as aria-current.
  */
 export const NavLinksGroup = forwardRef<HTMLLIElement, NavLinksGroupProps>(function NavLinksGroup(
   {
