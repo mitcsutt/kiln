@@ -1,0 +1,49 @@
+/*
+ * The engine's chrome, drawn in the theme's chart tokens. These rules beat the engine's own
+ * presentation attributes (`fill="#666"`), so the colours change with the theme and mode through
+ * CSS alone. Tick and legend text is always ink, never a series colour.
+ */
+.chart :global(.recharts-cartesian-axis-tick-value),
+.chart :global(.kiln-axis-label),
+.chart :global(.kiln-reference-label) {
+  font-family: var(--font-numeric);
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-stretch: var(--numeric-stretch);
+  fill: var(--chart-label);
+}
+
+.chart :global(.kiln-axis-label),
+.chart :global(.kiln-reference-label) {
+  font-family: var(--font-text);
+}
+
+.chart :global(.recharts-surface) {
+  overflow: visible;
+}
+
+.chart :global(.recharts-surface):focus {
+  outline: none;
+}
+
+.chart :global(.recharts-surface):focus-visible {
+  outline: 2px solid var(--chart-focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-field);
+}
+
+.chart[data-zoom] :global(.recharts-surface) {
+  cursor: crosshair;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  align-items: center;
+  justify-content: space-between;
+}
+
+.reset {
+  margin-inline-start: auto;
+}

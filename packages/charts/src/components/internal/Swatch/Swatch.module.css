@@ -1,0 +1,21 @@
+/* A line series' key: a short stroke in the series' stroke colour, dashed if the line is. */
+.line {
+  --_stroke: currentcolor;
+
+  display: inline-block;
+  flex: none;
+  inline-size: 1em;
+  block-size: 0;
+  border-block-start: 2px solid var(--_stroke);
+  vertical-align: middle;
+}
+
+.line[data-shape='dashed'] {
+  border-block-start-style: dashed;
+}
+
+@media (forced-colors: active) {
+  .line {
+    forced-color-adjust: none;
+  }
+}

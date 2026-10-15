@@ -40,6 +40,11 @@ const PACKAGES = [
     summary: 'Sortable lists, boards, drop zones and dashboard grids, by pointer or keyboard.',
   },
   {
+    name: '@mitcsutt/kiln-charts',
+    href: '/docs/charts',
+    summary: 'Charts in the theme’s colours: presets first, parts to compose your own.',
+  },
+  {
     name: '@mitcsutt/kiln-eslint-config',
     href: '/docs/tooling/eslint-config',
     summary: 'A type-aware flat config with no warning tier.',

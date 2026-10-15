@@ -2,7 +2,7 @@
   "name": "@mitcsutt/kiln-storybook",
   "version": "0.0.0",
   "private": true,
-  "description": "Kiln Storybook: the developer workbench for kiln-ui, kiln-forms and kiln-dnd",
+  "description": "Kiln Storybook: the developer workbench for kiln-ui, kiln-forms, kiln-dnd and kiln-charts",
   "license": "MIT",
   "type": "module",
   "scripts": {
@@ -15,6 +15,7 @@
   },
   "devDependencies": {
     "@mitcsutt/kiln-dnd": "workspace:*",
+    "@mitcsutt/kiln-charts": "workspace:*",
     "@mitcsutt/kiln-forms": "workspace:*",
     "@mitcsutt/kiln-tsconfig": "workspace:*",
     "@mitcsutt/kiln-ui": "workspace:*",

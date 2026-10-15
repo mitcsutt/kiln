@@ -1,0 +1,65 @@
+/* The ring fills the frame's height, square; the legend takes the rest of the row, or wraps below. */
+.layout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-6);
+  align-items: center;
+  block-size: 100%;
+}
+
+.ring {
+  position: relative;
+  flex: none;
+  block-size: 100%;
+  aspect-ratio: 1;
+}
+
+.svg {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+.track {
+  stroke: var(--chart-grid);
+}
+
+.slice {
+  transition: stroke-width var(--dur-1) var(--ease-out);
+}
+
+.slice:hover {
+  stroke-width: 19;
+}
+
+.total {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  margin: 0;
+  line-height: var(--leading-tight);
+  text-align: center;
+  pointer-events: none;
+}
+
+.totalValue {
+  font-family: var(--font-numeric);
+  font-size: var(--text-lg);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-stretch: var(--numeric-stretch);
+  font-weight: var(--label-weight);
+  color: var(--color-ink);
+}
+
+.totalLabel {
+  font-size: var(--text-xs);
+  color: var(--chart-label);
+}
+
+.legend {
+  flex: 1 1 12rem;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  min-inline-size: 0;
+}

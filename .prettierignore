@@ -19,6 +19,9 @@ apps/docs/content/docs/ui/navigation/*.mdx
 apps/docs/content/docs/ui/overlays/*.mdx
 apps/docs/content/docs/ui/typography/*.mdx
 apps/docs/content/docs/forms/fields/*.mdx
+apps/docs/content/docs/charts/presets/*.mdx
+apps/docs/content/docs/charts/primitives/*.mdx
+apps/docs/content/docs/charts/building-blocks/*.mdx
 apps/docs/content/docs/forms/hooks/*.mdx
 apps/docs/content/docs/forms/layouts/*.mdx
 apps/docs/content/docs/drag-and-drop/components/*.mdx

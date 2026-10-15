@@ -1,0 +1,52 @@
+/*
+ * Component tokens a theme may set:
+ *   --chart-tooltip-radius   corner radius (default --radius-field)
+ *   --chart-tooltip-shadow   the float shadow (default --shadow-float)
+ */
+.tooltip {
+  display: grid;
+  gap: var(--space-2);
+  min-inline-size: 10rem;
+  max-inline-size: 18rem;
+  padding: var(--space-2) var(--space-3);
+  font-family: var(--font-text);
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+  color: var(--chart-tooltip-ink);
+  background: var(--chart-tooltip-surface);
+  border: var(--border-width) solid var(--chart-tooltip-border);
+  border-radius: var(--chart-tooltip-radius, var(--radius-field));
+  box-shadow: var(--chart-tooltip-shadow, var(--shadow-float));
+}
+
+.title {
+  margin: 0;
+  font-weight: var(--label-weight);
+}
+
+.items {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-1) var(--space-4);
+  margin: 0;
+}
+
+.item {
+  display: contents;
+}
+
+.label {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+
+.value {
+  margin: 0;
+  font-family: var(--font-numeric);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-stretch: var(--numeric-stretch);
+  text-align: end;
+}

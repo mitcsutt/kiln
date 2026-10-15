@@ -1,0 +1,71 @@
+/*
+ * The frame reserves its height before anything draws, so a chart that draws in the browser
+ * never shifts the page. `data-height='fill'` takes a sized parent's height instead (a grid cell).
+ */
+.frame {
+  --_height: auto;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-inline-size: 0;
+  block-size: var(--_height);
+  margin: 0;
+}
+
+.frame[data-height='fill'] {
+  block-size: 100%;
+  min-block-size: var(--space-9);
+}
+
+.frame[data-height='auto'] {
+  block-size: auto;
+}
+
+.frame[data-height='auto'] .plot {
+  flex: none;
+  min-block-size: var(--space-9);
+}
+
+.legend {
+  flex: none;
+}
+
+.plot {
+  position: relative;
+  flex: 1 1 0;
+  min-block-size: 0;
+}
+
+.loading {
+  position: absolute;
+  inset: 0;
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-surface);
+  animation: pulse calc(var(--dur-3) * 4) var(--ease-in-out) infinite alternate;
+}
+
+.state {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  padding: var(--space-4);
+}
+
+@keyframes pulse {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 0.55;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading {
+    animation: none;
+  }
+}

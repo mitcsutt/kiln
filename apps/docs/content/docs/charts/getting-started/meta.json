@@ -1,0 +1,9 @@
+{
+  "title": "Getting started",
+  "pages": [
+    "choosing-a-chart",
+    "data-and-formatting",
+    "colour",
+    "accessibility-and-server-rendering"
+  ]
+}
