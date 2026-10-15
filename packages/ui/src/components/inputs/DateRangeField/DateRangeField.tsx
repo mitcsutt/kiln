@@ -431,7 +431,7 @@ export const DateRangeField = forwardRef<HTMLFieldSetElement, DateRangeFieldProp
                           className={styles.preset}
                           aria-pressed={current}
                           onClick={() => {
-                            setRange(range)
+                            setRange(presetRange(preset))
                             setOpen(false)
                           }}
                         >

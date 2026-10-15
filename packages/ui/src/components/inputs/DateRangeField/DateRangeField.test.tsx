@@ -197,7 +197,8 @@ describe('DateRangeField with the calendar picker', () => {
   it('offers presets, works out function presets when picked, and marks the current one', async () => {
     const user = userEvent.setup()
     const onValueChange = vi.fn()
-    const thisWeek = vi.fn(() => ({ start: '2026-10-12', end: '2026-10-18' }))
+    let weekEnd = '2026-10-17'
+    const thisWeek = vi.fn(() => ({ start: '2026-10-12', end: weekEnd }))
     render(
       <DateRangeField
         label="Report period"
@@ -216,6 +217,7 @@ describe('DateRangeField with the calendar picker', () => {
       'aria-pressed',
       'true',
     )
+    weekEnd = '2026-10-18'
     await user.click(within(presets).getByRole('button', { name: 'This week' }))
     expect(onValueChange).toHaveBeenLastCalledWith({ start: '2026-10-12', end: '2026-10-18' })
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
