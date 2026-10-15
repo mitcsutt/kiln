@@ -29,6 +29,12 @@ describe('xFormatter', () => {
     expect(xFormatter('date', { locale: 'en-GB' })('2026-03-01')).toBe('1 Mar')
   })
 
+  it('writes calendar days in UTC whatever time zone is given', () => {
+    const options = { locale: 'en-GB', timeZone: 'America/New_York' }
+    expect(xFormatter('date', options)('2026-03-01')).toBe('1 Mar')
+    expect(xFormatter('month', options)('2026-03')).toBe('Mar 2026')
+  })
+
   it('uses the given time zone for instants', () => {
     const format = xFormatter('time', { locale: 'en-GB', timeZone: 'UTC' })
     expect(format(new Date(Date.UTC(2026, 2, 1, 14, 30)))).toBe('14:30')

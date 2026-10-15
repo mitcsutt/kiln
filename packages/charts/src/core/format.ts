@@ -106,7 +106,7 @@ export function xFormatter(
   const intl = dateFormat({ ...options, ...(timeZone ? { timeZone } : {}) }, locale)
   // A date with no time (`2026-03-01`) is a calendar day, not an instant: read it in UTC, as
   // `Date` parses it, so it prints the same day on the server and in every visitor's zone.
-  const calendar = timeZone ? intl : dateFormat({ ...options, timeZone: 'UTC' }, locale)
+  const calendar = dateFormat({ ...options, timeZone: 'UTC' }, locale)
   return (value) => {
     const date = toDate(value)
     if (date) {

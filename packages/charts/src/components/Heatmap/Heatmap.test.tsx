@@ -75,6 +75,19 @@ describe('Heatmap', () => {
     expect(cells[3]).toHaveFocus()
   })
 
+  it('keeps one tab stop when the data shrinks under the focused cell', () => {
+    const { rerender } = render(<Heatmap data={WEEK} x="day" label="Orders" />)
+    const last = must(screen.getAllByRole('gridcell')[8], 'the last cell')
+    act(() => {
+      last.focus()
+    })
+    rerender(<Heatmap data={WEEK.slice(0, 1)} x="day" label="Orders" />)
+    const cells = screen.getAllByRole('gridcell')
+    expect(cells.filter((cell) => cell.tabIndex === 0)).toEqual([cells[2]])
+    fireEvent.keyDown(must(cells[2]), { key: 'ArrowLeft' })
+    expect(cells[1]).toHaveFocus()
+  })
+
   it('shows the columns given, in their order', () => {
     // Keys that look like whole numbers ('12') come before others ('09') in a JavaScript object.
     render(

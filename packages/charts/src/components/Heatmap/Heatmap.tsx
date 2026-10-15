@@ -180,7 +180,11 @@ export const Heatmap = forwardRef<HTMLElement, HeatmapProps>(function Heatmap(
       : 'No data.')
 
   // One cell is the grid's tab stop; the arrow keys move it.
-  const [focus, setFocus] = useState<Cell>({ row: 0, column: 0 })
+  const [focused, setFocus] = useState<Cell>({ row: 0, column: 0 })
+  const focus = {
+    row: Math.max(0, Math.min(rows.length - 1, focused.row)),
+    column: Math.max(0, Math.min(columns.length - 1, focused.column)),
+  }
   const [shown, setShown] = useState<ShownCell | null>(null)
   const tableRef = useRef<HTMLTableElement>(null)
   const move = (to: Cell) => {
