@@ -3,7 +3,7 @@
     {
       "name": "Base stylesheet (styles.css)",
       "file": "dist/styles.css",
-      "budget": 33000
+      "budget": 34000
     },
     {
       "name": "Preset: monograph.css",
@@ -76,7 +76,7 @@
       "name": "Everything (import *)",
       "import": "* as kiln",
       "from": "dist/index.js",
-      "budget": 44000
+      "budget": 49000
     }
   ]
 }

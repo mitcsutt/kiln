@@ -87,16 +87,23 @@ export const WithAnError: Story = {
   },
 }
 
-/** Typing: brackets close themselves, Enter keeps the indent, Tab indents and Format tidies. */
-export const Typing: Story = {
-  args: { defaultValue: '', minRows: 6 },
+/**
+ * The keyboard: Shift+Alt+F formats in place (and Undo takes it back), Tab indents, and Escape
+ * then Tab leaves. The play function only presses keys the editor handles itself, because
+ * Testing Library's simulated typing keeps its own copy of the value and loses track of edits the
+ * browser makes.
+ */
+export const Keyboard: Story = {
+  args: { defaultValue: '{"route": "Ridge loop", "stops": [3]}', minRows: 6 },
   play: async ({ canvas }) => {
-    const area = canvas.getByRole('textbox', { name: 'Route' })
+    const area = canvas.getByRole<HTMLTextAreaElement>('textbox', { name: 'Route' })
     await userEvent.click(area)
-    await userEvent.keyboard('{{{Enter}"route": "Ridge loop", "stops": [[3]')
-    await expect(area).toHaveValue('{\n  "route": "Ridge loop", "stops": [3]\n}')
     await userEvent.keyboard('{Shift>}{Alt>}F{/Alt}{/Shift}')
     await expect(area).toHaveValue('{\n  "route": "Ridge loop",\n  "stops": [\n    3\n  ]\n}')
+    area.setSelectionRange(2, 2)
+    await userEvent.keyboard('{Tab}')
+    await expect(area).toHaveValue('{\n    "route": "Ridge loop",\n  "stops": [\n    3\n  ]\n}')
+    await expect(area).toHaveFocus()
     await userEvent.keyboard('{Escape}{Tab}')
     await expect(area).not.toHaveFocus()
   },

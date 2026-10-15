@@ -161,13 +161,20 @@ const lineStart = (text: string, offset: number) => text.lastIndexOf('\n', offse
  * validator goes, so Kiln doesn't bundle one. With [Ajv](https://ajv.js.org):
  *
  * ```tsx
+ * import Ajv from 'ajv'
+ * import { JsonField } from '@mitcsutt/kiln-ui'
+ *
  * const ajv = new Ajv()
  * const check = ajv.compile(payloadSchema)
  *
- * <JsonField
- *   label="Payload"
- *   validate={(value) => (check(value) ? undefined : ajv.errorsText(check.errors))}
- * />
+ * export function PayloadField() {
+ *   return (
+ *     <JsonField
+ *       label="Payload"
+ *       validate={(value) => (check(value) ? undefined : ajv.errorsText(check.errors))}
+ *     />
+ *   )
+ * }
  * ```
  *
  * @privateRemarks

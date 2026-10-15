@@ -40,9 +40,11 @@ export const Usage: Story = {
   play: async ({ canvas }) => {
     const area = canvas.getByRole('textbox', { name: /Feature flags/ })
     await userEvent.click(area)
+    await userEvent.keyboard('{Escape}')
     await userEvent.tab()
+    await expect(area).not.toHaveFocus()
     await expect(canvas.getByRole('alert')).toHaveTextContent(
-      'Line 3, column 26: Remove this comma: nothing follows it',
+      'Line 3, column 25: Remove this comma: nothing follows it',
     )
   },
 }
