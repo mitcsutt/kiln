@@ -5,3 +5,4 @@ export type {
   NavLinksOrientation,
   NavLinksSize,
 } from './NavLinks'
+export type { NavLinksGroupProps } from './NavLinksGroup'

@@ -1,0 +1,105 @@
+/*
+ * Component tokens:
+ *   --show-more-fade   how tall the fade at the cut is, default var(--space-7)
+ *
+ * The fade is a mask, not a colour laid over the content, so it works on the canvas, a surface,
+ * a raised card or an inverted band without knowing which. While the height animates the clamp
+ * is lifted (the inline block-size from useHeightMotion does the work) and the fade drops.
+ */
+.showMore {
+  --_clamp: none;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-inline-size: 0;
+}
+
+.showMore[hidden] {
+  display: none;
+}
+
+/* Measures the clamp in px, so the component can tell whether the content is longer. */
+.probe {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  inline-size: 0;
+  block-size: var(--_clamp);
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.clip {
+  --_fade: var(--show-more-fade, var(--space-7));
+
+  align-self: stretch;
+  min-inline-size: 0;
+}
+
+.showMore[data-state='collapsed'] .clip {
+  max-block-size: var(--_clamp);
+  overflow: hidden;
+}
+
+.showMore[data-state='collapsed'][data-overflowing]:not([data-mode='items']) .clip {
+  mask-image: linear-gradient(to bottom, black calc(100% - var(--_fade)), transparent);
+}
+
+.clip[data-animating] {
+  overflow: hidden;
+  transition: block-size var(--dur-3) var(--ease-out);
+}
+.showMore .clip[data-animating] {
+  max-block-size: none;
+  mask-image: none;
+}
+
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-block-size: max(2.75rem, var(--control-sm));
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--color-ink);
+  font-family: var(--font-text);
+  font-size: var(--text-sm);
+  font-weight: var(--label-weight);
+  letter-spacing: var(--label-tracking);
+  text-transform: var(--label-transform);
+  line-height: var(--leading-snug);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.toggle:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-field);
+}
+
+.chevron {
+  flex: none;
+  font-size: 1rem;
+  color: var(--color-ink-subtle);
+  transition:
+    rotate var(--dur-2) var(--ease-spring),
+    color var(--dur-1) var(--ease-out);
+}
+@media (hover: hover) {
+  .toggle:hover .chevron {
+    color: var(--color-ink);
+  }
+}
+.toggle[aria-expanded='true'] .chevron {
+  rotate: 180deg;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chevron {
+    transition: none;
+  }
+}

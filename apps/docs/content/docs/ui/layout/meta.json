@@ -11,6 +11,9 @@
     "divider",
     "aspect-ratio",
     "scroll-area",
+    "show-more",
+    "collapse",
+    "transition",
     "app-shell",
     "action-bar",
     "visually-hidden"

@@ -1,1 +1,4 @@
-{ "title": "Navigation", "pages": ["tabs", "nav-links", "bottom-nav", "accordion", "stepper"] }
+{
+  "title": "Navigation",
+  "pages": ["tabs", "nav-links", "bottom-nav", "accordion", "collapsible", "stepper"]
+}

@@ -37,3 +37,12 @@ Use the same tokens, and you get the theme's temperament and the reduced-motion 
     translate var(--dur-3) var(--ease-out);
 }
 ```
+
+## Showing and hiding
+
+Two primitives carry these tokens for you, so nothing that opens or appears needs its own animation:
+
+- [`Collapse`](https://kiln.mitchellsutton.com/docs/ui/layout/collapse) animates content open and closed by height. [`Collapsible`](https://kiln.mitchellsutton.com/docs/ui/navigation/collapsible), [`ShowMore`](https://kiln.mitchellsutton.com/docs/ui/layout/show-more) and `NavLinks` groups are built on it.
+- [`Transition`](https://kiln.mitchellsutton.com/docs/ui/layout/transition) mounts an element with an enter animation and unmounts it after an exit, with presets for fading, sliding a short way, scaling and popping.
+
+Both follow the theme's durations and easings, and both change instantly under reduced motion.
