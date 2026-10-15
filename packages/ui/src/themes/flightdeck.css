@@ -158,6 +158,47 @@
     --color-cat-8: light-dark(oklch(0.8 0.015 235), oklch(0.7 0.02 235)); /* grey */
     --color-cat-ink: oklch(0.2 0.02 235);
 
+    /* ── Data ───────────────────────────────────────────────────────────── */
+    /* Ramps say how much; categorical colours say who. Sequential: the steel blue of the
+       display's info layer, clear of the cyan the pilot sets; brighter means more at night. */
+    --color-seq-1: light-dark(oklch(0.93 0.025 250), oklch(0.33 0.04 245));
+    --color-seq-2: light-dark(oklch(0.85 0.045 250), oklch(0.42 0.06 248));
+    --color-seq-3: light-dark(oklch(0.76 0.065 251), oklch(0.51 0.075 250));
+    --color-seq-4: light-dark(oklch(0.66 0.08 252), oklch(0.6 0.085 251));
+    --color-seq-5: light-dark(oklch(0.56 0.09 254), oklch(0.69 0.085 252));
+    --color-seq-6: light-dark(oklch(0.46 0.09 256), oklch(0.78 0.075 253));
+    --color-seq-7: light-dark(oklch(0.36 0.08 258), oklch(0.87 0.055 254));
+
+    /* Diverging: magenta guidance against blue, two display hues with no alert meaning,
+       about the grey of the glass. */
+    --color-div-neg-3: light-dark(oklch(0.5 0.17 335), oklch(0.78 0.14 335));
+    --color-div-neg-2: light-dark(oklch(0.64 0.13 335), oklch(0.64 0.14 335));
+    --color-div-neg-1: light-dark(oklch(0.79 0.07 335), oklch(0.5 0.1 335));
+    --color-div-mid: light-dark(oklch(0.93 0.006 235), oklch(0.36 0.015 235));
+    --color-div-pos-1: light-dark(oklch(0.79 0.06 240), oklch(0.5 0.07 240));
+    --color-div-pos-2: light-dark(oklch(0.64 0.1 242), oklch(0.64 0.1 242));
+    --color-div-pos-3: light-dark(oklch(0.5 0.12 245), oklch(0.78 0.1 242));
+
+    /* Strokes: each cockpit hue as a trace line, dark on the day screen, bright at night. */
+    --color-cat-1-stroke: light-dark(oklch(0.5 0.13 300), oklch(0.82 0.1 300));
+    --color-cat-2-stroke: light-dark(oklch(0.5 0.09 215), oklch(0.82 0.09 210));
+    --color-cat-3-stroke: light-dark(oklch(0.5 0.12 145), oklch(0.82 0.13 145));
+    --color-cat-4-stroke: light-dark(oklch(0.52 0.1 75), oklch(0.86 0.11 85));
+    --color-cat-5-stroke: light-dark(oklch(0.5 0.15 27), oklch(0.8 0.1 27));
+    --color-cat-6-stroke: light-dark(oklch(0.5 0.1 250), oklch(0.82 0.08 250));
+    --color-cat-7-stroke: light-dark(oklch(0.5 0.1 115), oklch(0.85 0.1 115));
+    --color-cat-8-stroke: light-dark(oklch(0.5 0.02 235), oklch(0.8 0.02 235));
+
+    /* Chart chrome: the display's scale. A dim graticule, a bright scale line, white labels
+       dimmed one step, and a readout box that is one more bezel. */
+    --chart-grid: light-dark(oklch(0.87 0.012 235), oklch(0.33 0.022 235));
+    --chart-axis: light-dark(oklch(0.56 0.02 235), oklch(0.64 0.02 235));
+    --chart-label: var(--color-ink-muted);
+    --chart-tooltip-surface: var(--color-surface-raised);
+    --chart-tooltip-border: var(--color-line-strong);
+    --chart-tooltip-ink: var(--color-ink);
+    --chart-focus: var(--color-focus);
+
     /* ── Edges & depth ──────────────────────────────────────────────────── */
     /* Static things get bezel hairlines. Only floating things get a plain dark shadow. */
     --shadow-surface: none;
@@ -166,6 +207,9 @@
     --shadow-float: 0 1px 2px oklch(0.1 0.02 235 / 0.2), 0 8px 20px -8px oklch(0.1 0.02 235 / 0.35);
     --shadow-overlay:
       0 2px 4px oklch(0.1 0.02 235 / 0.2), 0 20px 48px -12px oklch(0.1 0.02 235 / 0.45);
+    /* A dragged item: the same plain dark shadow, a little deeper. */
+    --shadow-lift:
+      0 2px 4px oklch(0.1 0.02 235 / 0.22), 0 14px 32px -8px oklch(0.1 0.02 235 / 0.42);
     --canvas-image: none;
   }
 }

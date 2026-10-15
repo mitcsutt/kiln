@@ -136,6 +136,45 @@
     --color-cat-8: light-dark(oklch(0.78 0.03 257), oklch(0.68 0.03 257));
     --color-cat-ink: oklch(0.22 0.02 257);
 
+    /* ── Data ───────────────────────────────────────────────────────────── */
+    /* Ramps say how much; categorical colours say who. Sequential: the slate of the
+       monograph's figure plates, deepening on the page and brightening under the lamp. */
+    --color-seq-1: light-dark(oklch(0.94 0.02 240), oklch(0.29 0.035 255));
+    --color-seq-2: light-dark(oklch(0.86 0.04 242), oklch(0.38 0.05 252));
+    --color-seq-3: light-dark(oklch(0.77 0.055 245), oklch(0.47 0.06 249));
+    --color-seq-4: light-dark(oklch(0.67 0.065 248), oklch(0.56 0.065 246));
+    --color-seq-5: light-dark(oklch(0.57 0.07 251), oklch(0.65 0.065 243));
+    --color-seq-6: light-dark(oklch(0.47 0.065 254), oklch(0.75 0.055 240));
+    --color-seq-7: light-dark(oklch(0.37 0.055 257), oklch(0.85 0.04 238));
+
+    /* Diverging: lamplight against night, a warm rust and a cool slate about a grey page. */
+    --color-div-neg-3: light-dark(oklch(0.5 0.13 35), oklch(0.73 0.12 40));
+    --color-div-neg-2: light-dark(oklch(0.64 0.1 38), oklch(0.59 0.1 38));
+    --color-div-neg-1: light-dark(oklch(0.79 0.055 42), oklch(0.45 0.065 36));
+    --color-div-mid: light-dark(oklch(0.93 0.005 250), oklch(0.3 0.012 257));
+    --color-div-pos-1: light-dark(oklch(0.79 0.04 240), oklch(0.45 0.05 245));
+    --color-div-pos-2: light-dark(oklch(0.64 0.07 242), oklch(0.59 0.07 242));
+    --color-div-pos-3: light-dark(oklch(0.5 0.09 245), oklch(0.73 0.08 240));
+
+    /* Strokes: each categorical colour as a line, dark on paper, pale under the lamp. */
+    --color-cat-1-stroke: light-dark(oklch(0.52 0.12 45), oklch(0.82 0.09 50));
+    --color-cat-2-stroke: light-dark(oklch(0.5 0.09 160), oklch(0.82 0.08 160));
+    --color-cat-3-stroke: light-dark(oklch(0.5 0.08 238), oklch(0.82 0.07 235));
+    --color-cat-4-stroke: light-dark(oklch(0.52 0.09 90), oklch(0.85 0.1 95));
+    --color-cat-5-stroke: light-dark(oklch(0.5 0.12 15), oklch(0.81 0.08 15));
+    --color-cat-6-stroke: light-dark(oklch(0.5 0.07 195), oklch(0.82 0.06 195));
+    --color-cat-7-stroke: light-dark(oklch(0.5 0.08 125), oklch(0.84 0.07 125));
+    --color-cat-8-stroke: light-dark(oklch(0.5 0.03 257), oklch(0.8 0.025 257));
+
+    /* Chart chrome: a figure's hairline grid and ruled axis, captions in muted ink. */
+    --chart-grid: light-dark(oklch(0.89 0.008 250), oklch(0.3 0.015 257));
+    --chart-axis: light-dark(oklch(0.58 0.02 257), oklch(0.6 0.016 257));
+    --chart-label: var(--color-ink-muted);
+    --chart-tooltip-surface: var(--color-surface-raised);
+    --chart-tooltip-border: var(--color-line-strong);
+    --chart-tooltip-ink: var(--color-ink);
+    --chart-focus: var(--color-focus);
+
     /* ── Edges & depth ──────────────────────────────────────────────────── */
     /* Static things get hairlines. Only floating things get shadows. */
     --shadow-surface: none;
@@ -145,6 +184,8 @@
       0 1px 2px oklch(0.2 0.02 257 / 0.12), 0 10px 28px -6px oklch(0.2 0.03 257 / 0.22);
     --shadow-overlay:
       0 2px 4px oklch(0.15 0.02 257 / 0.14), 0 24px 64px -12px oklch(0.15 0.03 257 / 0.36);
+    /* A dragged item, lifted off the page under the lamp. */
+    --shadow-lift: 0 2px 4px oklch(0.2 0.02 257 / 0.14), 0 18px 40px -8px oklch(0.2 0.03 257 / 0.3);
     --canvas-image: none;
   }
 }

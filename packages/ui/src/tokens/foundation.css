@@ -82,6 +82,18 @@
     --table-head-font: initial;
   }
 
+  /* Chart chrome that aliases role tokens — declared on every theme scope so a theme
+     that doesn't set them resolves against its own inks, not Paper's or its parent's.
+     A theme that sets them overrides this in kiln.themes. */
+  :root,
+  [data-theme] {
+    --chart-label: var(--color-ink-muted);
+    --chart-tooltip-surface: var(--color-surface-raised);
+    --chart-tooltip-border: var(--color-line-strong);
+    --chart-tooltip-ink: var(--color-ink);
+    --chart-focus: var(--color-focus);
+  }
+
   /* Density axis — orthogonal to theme. Multiplies the theme's own density. */
   [data-density='compact'] {
     --density-adjust: 0.85;
