@@ -219,6 +219,43 @@ describe('CommandPalette', () => {
     expect(notes).toHaveFocus()
   })
 
+  it.each([
+    ['a timer', (focus: () => void) => setTimeout(focus)],
+    ['an animation frame', (focus: () => void) => requestAnimationFrame(focus)],
+  ])('leaves focus where an action moved it after %s', async (_, defer) => {
+    render(
+      <>
+        <input aria-label="Notes" />
+        <input aria-label="Comment" />
+        <CommandPalette
+          shortcut="mod+k"
+          actions={[
+            {
+              id: 'comment',
+              label: 'Add comment',
+              onSelect: () => {
+                defer(() => {
+                  screen.getByRole('textbox', { name: 'Comment' }).focus()
+                })
+              },
+            },
+          ]}
+        />
+      </>,
+    )
+    screen.getByRole('textbox', { name: 'Notes' }).focus()
+    await userEvent.keyboard('{Control>}k{/Control}')
+    await userEvent.keyboard('{Enter}')
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    })
+    await waitFor(() => {
+      expect(screen.getByRole('textbox', { name: 'Comment' })).toHaveFocus()
+    })
+    await new Promise((resolve) => setTimeout(resolve, 50))
+    expect(screen.getByRole('textbox', { name: 'Comment' })).toHaveFocus()
+  })
+
   it('has no page-wide shortcut unless asked', async () => {
     render(<Palette />)
     await userEvent.keyboard('{Control>}k{/Control}')

@@ -448,6 +448,10 @@ const Panel = forwardRef<HTMLDivElement, PanelProps>(function Panel(
         returnFocusRef.current = null
         if (event.defaultPrevented || hasTrigger || !(returnFocus instanceof HTMLElement)) return
         if (!returnFocus.isConnected) return
+        const current = returnFocus.ownerDocument.activeElement
+        const content = event.target instanceof Node ? event.target : null
+        if (current && current !== returnFocus.ownerDocument.body && !content?.contains(current))
+          return
         event.preventDefault()
         returnFocus.focus()
       }}
