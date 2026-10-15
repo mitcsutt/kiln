@@ -44,7 +44,7 @@ Where this document says **must**, a test enforces it. Where it gives a signatur
 
 **Non-goals (v1)**
 
-- A calendar-popover date picker (needs a date library, so a separate ADR; v1 uses native date and time inputs).
+- A calendar-popover date picker (kiln-ui has one since [ADR 0042](../../../docs/adr/0042-date-and-time-pickers.md), but v1 fields use native date and time inputs; binding the new controls is follow-up work).
 - Phone formatting and validation (needs libphonenumber; write a custom field in the consuming app).
 - Rich text, signatures, drag-and-drop reordering (keyboard move up/down ships instead), upload transport (fields hold `File`s; the consumer uploads in `onSubmit`).
 - JSON Schema import or export (conditions and layout don't map cleanly; §10.10).
