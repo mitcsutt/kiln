@@ -8,27 +8,27 @@
     {
       "name": "Preset: monograph.css",
       "file": "dist/themes/monograph.css",
-      "budget": 1900
+      "budget": 2400
     },
     {
       "name": "Preset: flightdeck.css",
       "file": "dist/themes/flightdeck.css",
-      "budget": 1600
+      "budget": 2100
     },
     {
       "name": "Preset: ledger.css",
       "file": "dist/themes/ledger.css",
-      "budget": 1900
+      "budget": 2300
     },
     {
       "name": "Preset: fiesta.css",
       "file": "dist/themes/fiesta.css",
-      "budget": 1900
+      "budget": 2400
     },
     {
       "name": "Preset: riso.css",
       "file": "dist/themes/riso.css",
-      "budget": 1900
+      "budget": 2300
     },
     {
       "name": "import { Button }",

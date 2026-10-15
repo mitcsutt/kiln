@@ -154,6 +154,45 @@
     --color-cat-8: oklch(0.82 0.06 70);
     --color-cat-ink: oklch(0.22 0.065 300);
 
+    /* ── Data ───────────────────────────────────────────────────────────── */
+    /* Ramps say how much; categorical colours say who. Sequential: spot inks overprinting
+       from gold through coral to aubergine, darker by day and brighter under floodlights. */
+    --color-seq-1: light-dark(oklch(0.94 0.05 92), oklch(0.34 0.08 310));
+    --color-seq-2: light-dark(oklch(0.86 0.1 80), oklch(0.43 0.12 345));
+    --color-seq-3: light-dark(oklch(0.78 0.13 60), oklch(0.52 0.16 10));
+    --color-seq-4: light-dark(oklch(0.69 0.16 38), oklch(0.62 0.17 25));
+    --color-seq-5: light-dark(oklch(0.6 0.17 18), oklch(0.71 0.16 45));
+    --color-seq-6: light-dark(oklch(0.48 0.13 350), oklch(0.8 0.14 70));
+    --color-seq-7: light-dark(oklch(0.36 0.09 310), oklch(0.89 0.1 90));
+
+    /* Diverging: tangerine against teal, the poster's two loudest inks, about bare stock. */
+    --color-div-neg-3: light-dark(oklch(0.5 0.15 38), oklch(0.8 0.13 50));
+    --color-div-neg-2: light-dark(oklch(0.64 0.14 45), oklch(0.66 0.14 45));
+    --color-div-neg-1: light-dark(oklch(0.79 0.08 55), oklch(0.5 0.1 40));
+    --color-div-mid: light-dark(oklch(0.94 0.012 85), oklch(0.36 0.02 305));
+    --color-div-pos-1: light-dark(oklch(0.79 0.06 190), oklch(0.5 0.07 192));
+    --color-div-pos-2: light-dark(oklch(0.64 0.09 190), oklch(0.66 0.1 190));
+    --color-div-pos-3: light-dark(oklch(0.5 0.09 192), oklch(0.8 0.1 188));
+
+    /* Strokes: each sticker ink pulled darker for a keyline by day, paler at night. */
+    --color-cat-1-stroke: light-dark(oklch(0.48 0.17 12), oklch(0.8 0.14 12));
+    --color-cat-2-stroke: light-dark(oklch(0.46 0.1 300), oklch(0.84 0.08 300));
+    --color-cat-3-stroke: light-dark(oklch(0.46 0.08 188), oklch(0.82 0.1 185));
+    --color-cat-4-stroke: light-dark(oklch(0.48 0.13 40), oklch(0.8 0.13 45));
+    --color-cat-5-stroke: light-dark(oklch(0.46 0.11 245), oklch(0.82 0.09 240));
+    --color-cat-6-stroke: light-dark(oklch(0.46 0.11 138), oklch(0.84 0.13 135));
+    --color-cat-7-stroke: light-dark(oklch(0.46 0.12 330), oklch(0.82 0.1 330));
+    --color-cat-8-stroke: light-dark(oklch(0.46 0.04 70), oklch(0.84 0.05 70));
+
+    /* Chart chrome: the axis is the poster's aubergine keyline; the grid a pale screen of it. */
+    --chart-grid: light-dark(oklch(0.76 0.05 60), oklch(0.4 0.06 305));
+    --chart-axis: var(--color-ink);
+    --chart-label: var(--color-ink-muted);
+    --chart-tooltip-surface: var(--color-surface-raised);
+    --chart-tooltip-border: var(--color-ink);
+    --chart-tooltip-ink: var(--color-ink);
+    --chart-focus: var(--color-focus);
+
     /* ── Edges & depth ──────────────────────────────────────────────────── */
     /* The misregistered offset. Solid, never blurred. Presses flat on :active. */
     --shadow-surface: 4px 4px 0 0 light-dark(oklch(0.25 0.065 300), oklch(0.08 0.04 305));
@@ -161,6 +200,8 @@
     --shadow-active: 2px 2px 0 0 light-dark(oklch(0.25 0.065 300), oklch(0.08 0.04 305));
     --shadow-float: 5px 5px 0 0 light-dark(oklch(0.25 0.065 300), oklch(0.08 0.04 305));
     --shadow-overlay: 8px 8px 0 0 light-dark(oklch(0.25 0.065 300), oklch(0.08 0.04 305));
+    /* A dragged sticker, peeled further off the poster than a menu sits. */
+    --shadow-lift: 6px 6px 0 0 light-dark(oklch(0.25 0.065 300), oklch(0.08 0.04 305));
     /* Halftone dot screen — print texture, 6% ink */
     --canvas-image: radial-gradient(
       circle at 1px 1px,

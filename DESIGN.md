@@ -25,6 +25,7 @@ Generated UI converges on the statistical median: indigo buttons, Inter, gradien
 - Authored in **OKLCH**. Neutrals are **tinted** (chroma 0.004–0.02 toward the theme's hue). Never `#000`/`#fff` surfaces, never stock slate/zinc.
 - **One accent, ~5–10% of pixels**: the primary action, the current item, live state, key data. A second hue only when it carries meaning (`--color-highlight` = "you" / selected; tones = status).
 - **No gradients** unless they encode data. No gradient text. No glow halos in dark mode.
+- **Categorical colour marks who; ramps mark how much.** `--color-cat-N` tells series, people and teams apart and carries no order, so never use it for an amount. An amount (a heatmap cell, a choropleth, a bar shaded by value) takes the sequential ramp `--color-seq-1` to `--color-seq-7`, where more data sits further from the page. A value either side of a reference (change against last month, above or below target) takes the diverging ramp, whose neutral midpoint `--color-div-mid` is the reference itself. Status stays with the tones, and a chart's text and axes stay in ink.
 - No indigo/violet as a primary. No warm cream canvas (such as `#F4F1EA`) and no terracotta or ember accent (such as `#D97757`). See _Second-order tells_ below.
 
 ### Type
@@ -76,7 +77,7 @@ Beyond the checks, a theme has a subject, and each colour, face, radius and easi
 ### Components & depth
 
 - **Radii are roles**, not a global roundness: `--radius-action`, `--radius-field`, `--radius-surface`, `--radius-media`, `--radius-chip`, `--radius-avatar`. Nested radii shrink (inner = outer − padding).
-- **One edge treatment per element**: a border _or_ a shadow _or_ a fill change. Static structure uses hairlines; soft shadows are only for things that float (popover, menu, dialog). Hard-offset shadows never go on static surfaces in a new theme. Fiesta keeps its hard offset as a legacy preset: it is the print misregistration, and it _is_ the edge. Riso's misregistered offset (the second ink drum slightly off) is floating-only.
+- **One edge treatment per element**: a border _or_ a shadow _or_ a fill change. Static structure uses hairlines; soft shadows are only for things that float (popover, menu, dialog, an item lifted to be dragged). Hard-offset shadows never go on static surfaces in a new theme. Fiesta keeps its hard offset as a legacy preset: it is the print misregistration, and it _is_ the edge. Riso's misregistered offset (the second ink drum slightly off) is floating-only.
 - **Icons**: the library ships ~40 glyphs on a 20px grid with a themed stroke: the ones its components need, plus common navigation and page-furniture glyphs so apps don't mix in a second set. At most one icon per row; never an icon in a tinted chip; never emoji as UI.
 - **No left-border-accent callouts.** Alerts are a neutral hairline frame; the tone lives only in the glyph and a short tab on the top edge (`variant="soft"` for a tinted box when it must shout).
 - **Categorical colour marks who, never how.** A row or card with `color` draws a thin rail or a top keyline in `--color-cat-N`, matching that person's or team's `Tag` and `Avatar`. It's identity, not status or emphasis, so it's not the accent callout above; tones stay in badges and figures.
@@ -140,7 +141,12 @@ A theme never sets these: it sets the inputs they're derived from.
   - `--color-highlight`, `--color-highlight-ink`; `--color-focus`, `--color-selection`, `--color-scrim`;
   - tones `--tone-positive`, `--tone-positive-soft`, `--tone-positive-text`, `--tone-positive-ink`, and the same four for `caution`, `critical` and `info`: `--tone-caution`, `--tone-caution-soft`, `--tone-caution-text`, `--tone-caution-ink`, `--tone-critical`, `--tone-critical-soft`, `--tone-critical-text`, `--tone-critical-ink`, `--tone-info`, `--tone-info-soft`, `--tone-info-text`, `--tone-info-ink`;
   - categorical `--color-cat-1`, `--color-cat-2`, `--color-cat-3`, `--color-cat-4`, `--color-cat-5`, `--color-cat-6`, `--color-cat-7`, `--color-cat-8`, and `--color-cat-ink` (readable on every one of them).
-- **Depth**: `--shadow-surface` (static surfaces that opt in), `--shadow-active` and `--active-shift` (how far a pressed control travels toward its shadow), `--shadow-float` (popovers, menus), `--shadow-overlay` (dialogs), `--canvas-image` (a texture on the page ground, or `none`).
+- **Data** (each a `light-dark()` pair; `themes/data.test.ts` checks every built-in theme in both modes):
+  - sequential ramp `--color-seq-1`, `--color-seq-2`, `--color-seq-3`, `--color-seq-4`, `--color-seq-5`, `--color-seq-6`, `--color-seq-7`: one family, least to most, each step at least 0.05 OKLCH lightness further from the page than the last (darker in light mode, lighter in dark mode);
+  - diverging ramp `--color-div-neg-3`, `--color-div-neg-2`, `--color-div-neg-1`, `--color-div-mid`, `--color-div-pos-1`, `--color-div-pos-2`, `--color-div-pos-3`: two hues at least 90° apart at matching lightness, stepping away from a neutral midpoint (chroma ≤ 0.025);
+  - categorical strokes `--color-cat-1-stroke`, `--color-cat-2-stroke`, `--color-cat-3-stroke`, `--color-cat-4-stroke`, `--color-cat-5-stroke`, `--color-cat-6-stroke`, `--color-cat-7-stroke`, `--color-cat-8-stroke`: each categorical colour as a line or an outline, at least 3:1 on the canvas and the surface (never text);
+  - chart chrome `--chart-grid` (visible, quieter than the axis), `--chart-axis` (3:1 on the canvas and the surface), `--chart-label` (tick and legend text, AA on the canvas, the surface and the tooltip), `--chart-tooltip-surface`, `--chart-tooltip-border`, `--chart-tooltip-ink` (AA on the tooltip surface) and `--chart-focus` (3:1 on the canvas, the surface and the tooltip).
+- **Depth**: `--shadow-surface` (static surfaces that opt in), `--shadow-active` and `--active-shift` (how far a pressed control travels toward its shadow), `--shadow-float` (popovers, menus), `--shadow-overlay` (dialogs), `--shadow-lift` (an item picked up and dragged; floating, so a hard offset is allowed where the theme's subject explains it), `--canvas-image` (a texture on the page ground, or `none`).
 
 ### 3.3 Optional theme tokens
 

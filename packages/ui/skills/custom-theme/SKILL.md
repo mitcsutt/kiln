@@ -163,12 +163,44 @@ This is every token in the contract, set to Paper's values, under your theme's n
     --color-cat-8: light-dark(oklch(0.8 0.01 250), oklch(0.7 0.01 250));
     --color-cat-ink: oklch(0.21 0.03 258);
 
+    /* Data */
+    --color-seq-1: light-dark(oklch(0.93 0.03 230), oklch(0.3 0.04 252));
+    --color-seq-2: light-dark(oklch(0.85 0.055 233), oklch(0.39 0.06 250));
+    --color-seq-3: light-dark(oklch(0.76 0.075 237), oklch(0.48 0.075 246));
+    --color-seq-4: light-dark(oklch(0.66 0.09 242), oklch(0.57 0.085 242));
+    --color-seq-5: light-dark(oklch(0.56 0.1 247), oklch(0.66 0.085 237));
+    --color-seq-6: light-dark(oklch(0.46 0.1 251), oklch(0.76 0.075 232));
+    --color-seq-7: light-dark(oklch(0.36 0.09 256), oklch(0.86 0.055 228));
+    --color-div-neg-3: light-dark(oklch(0.5 0.15 25), oklch(0.72 0.13 25));
+    --color-div-neg-2: light-dark(oklch(0.64 0.11 25), oklch(0.58 0.11 25));
+    --color-div-neg-1: light-dark(oklch(0.79 0.06 25), oklch(0.44 0.07 25));
+    --color-div-mid: light-dark(oklch(0.93 0.004 250), oklch(0.3 0.008 250));
+    --color-div-pos-1: light-dark(oklch(0.79 0.045 245), oklch(0.44 0.05 245));
+    --color-div-pos-2: light-dark(oklch(0.64 0.08 248), oklch(0.58 0.075 245));
+    --color-div-pos-3: light-dark(oklch(0.5 0.1 252), oklch(0.72 0.085 245));
+    --color-cat-1-stroke: light-dark(oklch(0.5 0.09 232), oklch(0.82 0.07 228));
+    --color-cat-2-stroke: light-dark(oklch(0.5 0.09 160), oklch(0.82 0.08 160));
+    --color-cat-3-stroke: light-dark(oklch(0.52 0.1 70), oklch(0.84 0.09 75));
+    --color-cat-4-stroke: light-dark(oklch(0.5 0.12 22), oklch(0.81 0.08 20));
+    --color-cat-5-stroke: light-dark(oklch(0.5 0.09 300), oklch(0.82 0.06 300));
+    --color-cat-6-stroke: light-dark(oklch(0.5 0.09 125), oklch(0.84 0.08 125));
+    --color-cat-7-stroke: light-dark(oklch(0.5 0.07 195), oklch(0.82 0.06 195));
+    --color-cat-8-stroke: light-dark(oklch(0.5 0.015 250), oklch(0.8 0.012 250));
+    --chart-grid: light-dark(oklch(0.89 0.008 250), oklch(0.31 0.01 250));
+    --chart-axis: light-dark(oklch(0.58 0.03 256), oklch(0.6 0.015 250));
+    --chart-label: var(--color-ink-muted);
+    --chart-tooltip-surface: var(--color-surface-raised);
+    --chart-tooltip-border: var(--color-line-strong);
+    --chart-tooltip-ink: var(--color-ink);
+    --chart-focus: var(--color-focus);
+
     /* Edges & depth */
     --shadow-surface: none;
     --active-shift: 0px;
     --shadow-active: none;
     --shadow-float: 0 1px 2px oklch(0.2 0.04 258 / 0.1), 0 8px 24px -6px oklch(0.2 0.04 258 / 0.18);
     --shadow-overlay: 0 2px 4px oklch(0.15 0.04 258 / 0.12), 0 20px 56px -12px oklch(0.15 0.04 258 / 0.32);
+    --shadow-lift: 0 2px 4px oklch(0.2 0.04 258 / 0.12), 0 16px 36px -8px oklch(0.2 0.04 258 / 0.28);
     --canvas-image: none;
   }
 }

@@ -35,6 +35,26 @@ Components take a `tone` prop and pick the right token for the job: `<Badge tone
 Eight muted inks at even lightness for things that need telling apart but have no order: people, series in a chart, tags. `--color-cat-ink` is readable on all eight. `Avatar` and `Tag` use them.
 
 
+## Ramps
+
+Categorical colour marks who; ramps mark how much. An amount, like a heatmap cell or a bar shaded by its value, takes the sequential ramp: seven steps from least to most, each one further from the page, so more is darker in light mode and lighter in dark mode.
+
+
+A value either side of a reference, like change against last month or distance from a target, takes the diverging ramp. Its two arms are different hues at matching lightness, so neither side looks bigger, and they step out from `--color-div-mid`, a neutral that stands for the reference itself.
+
+
+Status still belongs to the tones: a ramp says how much, never whether it's good.
+
+## Charts
+
+Each categorical colour has a stroke variant, `--color-cat-N-stroke`, for lines and the outlines of filled marks. The fills are pale, and a 1px line in one would disappear, so the stroke reaches 3:1 on the canvas and the surface. Strokes are for lines, never text.
+
+
+The chart chrome tokens are the grid, the axis, tick and legend labels, the tooltip and the focus ring on a data point. Labels and tooltip text are ink-coloured and meet AA, and the axis and focus meet 3:1. A legend or tick never takes its series colour.
+
+
+kiln-ui's tests check all of this in every built-in theme and both modes: the ramp order, the neutral midpoint and every contrast pair.
+
 ## Light and dark
 
 Every colour token is a `light-dark(<light>, <dark>)` pair. The page's `color-scheme`, set by `data-mode`, chooses between them, so dark mode needs no second stylesheet and no class juggling, and a nested scope can be dark inside a light page:

@@ -50,6 +50,29 @@ const COLOUR_GROUPS: Record<string, string[]> = {
     '--tone-info-text',
   ],
   Categorical: Array.from({ length: 8 }, (_, index) => `--color-cat-${String(index + 1)}`),
+  'Categorical strokes': Array.from(
+    { length: 8 },
+    (_, index) => `--color-cat-${String(index + 1)}-stroke`,
+  ),
+  Sequential: Array.from({ length: 7 }, (_, index) => `--color-seq-${String(index + 1)}`),
+  Diverging: [
+    '--color-div-neg-3',
+    '--color-div-neg-2',
+    '--color-div-neg-1',
+    '--color-div-mid',
+    '--color-div-pos-1',
+    '--color-div-pos-2',
+    '--color-div-pos-3',
+  ],
+  'Chart chrome': [
+    '--chart-grid',
+    '--chart-axis',
+    '--chart-label',
+    '--chart-tooltip-surface',
+    '--chart-tooltip-border',
+    '--chart-tooltip-ink',
+    '--chart-focus',
+  ],
 }
 
 /** Every semantic colour of the current theme and mode. */
@@ -192,9 +215,10 @@ const DEPTHS = [
   '--shadow-active',
   '--shadow-float',
   '--shadow-overlay',
+  '--shadow-lift',
 ] as const
 
-/** The four depths. Only floating layers get a soft shadow; Riso's misregistered offset sits on floating layers too, and Fiesta's offset is its legacy edge. */
+/** The five depths. Only floating layers and a dragged item get a soft shadow; Riso's misregistered offset sits on floating layers too, and Fiesta's offset is its legacy edge. */
 export function DepthRoles() {
   return (
     <div className={styles.specimen} data-kiln-component="specimen">

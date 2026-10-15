@@ -34,6 +34,7 @@ Generated UI converges on the statistical median: indigo buttons, Inter, gradien
 - Authored in **OKLCH**. Neutrals are **tinted** (chroma 0.004–0.02 toward the theme's hue). Never `#000`/`#fff` surfaces, never stock slate/zinc.
 - **One accent, ~5–10% of pixels**: the primary action, the current item, live state, key data. A second hue only when it carries meaning (`--color-highlight` = "you" / selected; tones = status).
 - **No gradients** unless they encode data. No gradient text. No glow halos in dark mode.
+- **Categorical colour marks who; ramps mark how much.** `--color-cat-N` tells series, people and teams apart and carries no order, so never use it for an amount. An amount (a heatmap cell, a choropleth, a bar shaded by value) takes the sequential ramp `--color-seq-1` to `--color-seq-7`, where more data sits further from the page. A value either side of a reference (change against last month, above or below target) takes the diverging ramp, whose neutral midpoint `--color-div-mid` is the reference itself. Status stays with the tones, and a chart's text and axes stay in ink.
 - No indigo/violet as a primary. No warm cream canvas (such as `#F4F1EA`) and no terracotta or ember accent (such as `#D97757`). See _Second-order tells_ below.
 
 ### Type
@@ -85,7 +86,7 @@ Beyond the checks, a theme has a subject, and each colour, face, radius and easi
 ### Components & depth
 
 - **Radii are roles**, not a global roundness: `--radius-action`, `--radius-field`, `--radius-surface`, `--radius-media`, `--radius-chip`, `--radius-avatar`. Nested radii shrink (inner = outer − padding).
-- **One edge treatment per element**: a border _or_ a shadow _or_ a fill change. Static structure uses hairlines; soft shadows are only for things that float (popover, menu, dialog). Hard-offset shadows never go on static surfaces in a new theme. Fiesta keeps its hard offset as a legacy preset: it is the print misregistration, and it _is_ the edge. Riso's misregistered offset (the second ink drum slightly off) is floating-only.
+- **One edge treatment per element**: a border _or_ a shadow _or_ a fill change. Static structure uses hairlines; soft shadows are only for things that float (popover, menu, dialog, an item lifted to be dragged). Hard-offset shadows never go on static surfaces in a new theme. Fiesta keeps its hard offset as a legacy preset: it is the print misregistration, and it _is_ the edge. Riso's misregistered offset (the second ink drum slightly off) is floating-only.
 - **Icons**: the library ships ~40 glyphs on a 20px grid with a themed stroke: the ones its components need, plus common navigation and page-furniture glyphs so apps don't mix in a second set. At most one icon per row; never an icon in a tinted chip; never emoji as UI.
 - **No left-border-accent callouts.** Alerts are a neutral hairline frame; the tone lives only in the glyph and a short tab on the top edge (`variant="soft"` for a tinted box when it must shout).
 - **Categorical colour marks who, never how.** A row or card with `color` draws a thin rail or a top keyline in `--color-cat-N`, matching that person's or team's `Tag` and `Avatar`. It's identity, not status or emphasis, so it's not the accent callout above; tones stay in badges and figures.
