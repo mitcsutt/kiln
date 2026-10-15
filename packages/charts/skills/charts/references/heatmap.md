@@ -96,7 +96,7 @@ Also accepts every prop of `HTMLAttributes<HTMLElement>`.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `by` (required) | `string` |  | The key whose values become the series (`'region'`). |
+| `by` (required) | `string` |  | The key whose values become the series (`'region'`). Its values name them as written (`'iOS'` stays `'iOS'`); only wide keys are made readable. |
 | `value` (required) | `string` |  | The key that holds each series' value (`'sales'`). |
 | `limit` | `number \| false` | `7` | How many series to keep before grouping the rest as one "Other" series. They are ranked by their total. With 8 or fewer there's nothing to group. `false` keeps every series. |
 | `other` | `string` | `'Other'` | The name of the grouped series, which the chart colours neutral. |

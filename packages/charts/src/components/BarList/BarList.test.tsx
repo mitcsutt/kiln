@@ -29,6 +29,28 @@ describe('BarList', () => {
     ).toEqual(['/docs/install3,120', '/pricing1,840', '/changelog960'])
   })
 
+  it('shows pivoted names as written', () => {
+    render(
+      <BarList
+        data={[
+          { platform: 'iOS', visits: 600 },
+          { platform: 'macOS', visits: 400 },
+        ]}
+        label="Visits"
+        pivot={{ by: 'platform', value: 'visits' }}
+        locale="en-AU"
+      />,
+    )
+    expect(
+      within(screen.getByRole('list'))
+        .getAllByRole('listitem')
+        .map((item) => item.textContent),
+    ).toEqual(['iOS600', 'macOS400'])
+    expect(screen.getByRole('figure')).toHaveAccessibleDescription(
+      '2 items. The largest is iOS at 600.',
+    )
+  })
+
   it('sizes each bar against the largest', () => {
     const { container } = render(
       <BarList data={PAGES} label="Top pages" pivot={{ by: 'page', value: 'views' }} />,

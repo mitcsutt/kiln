@@ -73,7 +73,7 @@ export function ManyParts() {
 | `height` | `ChartHeight` | `200` |  |
 | `format` | `ValueFormat` | `'number'` | How to write amounts. |
 | `locale` | `string` |  | The locale for numbers, passed to `Intl`. |
-| `labels` | `Readonly<Record<string, string>>` |  | Names for the parts, by key. Defaults to a readable form of each key. |
+| `labels` | `Readonly<Record<string, string>>` |  | Names for the parts, by key. Defaults to each `pivot` value as written, or a readable form of each wide key (`unitsSold` reads "Units sold"). |
 | `colors` | `Readonly<Record<string, ChartColor>>` |  | Colours pinned to some parts, by key. |
 | `totalLabel` | `string \| false` | `'total'` | A word for the total in the middle, such as "visits". `false` leaves the middle empty. |
 | `status` | `'loading' \| 'error' \| 'empty' \| 'ready'` |  |  |
@@ -87,7 +87,7 @@ Also accepts every prop of `HTMLAttributes<HTMLElement>`.
 
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
-| `by` (required) | `string` |  | The key whose values become the series (`'region'`). |
+| `by` (required) | `string` |  | The key whose values become the series (`'region'`). Its values name them as written (`'iOS'` stays `'iOS'`); only wide keys are made readable. |
 | `value` (required) | `string` |  | The key that holds each series' value (`'sales'`). |
 | `limit` | `number \| false` | `7` | How many series to keep before grouping the rest as one "Other" series. They are ranked by their total. With 8 or fewer there's nothing to group. `false` keeps every series. |
 | `other` | `string` | `'Other'` | The name of the grouped series, which the chart colours neutral. |

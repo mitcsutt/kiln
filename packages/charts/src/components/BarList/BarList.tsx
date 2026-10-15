@@ -29,7 +29,10 @@ export interface BarListProps extends Omit<HTMLAttributes<HTMLElement>, 'childre
   format?: ValueFormat
   /** The locale for numbers, passed to `Intl`. */
   locale?: string
-  /** Names for the items, by key. Defaults to each key as written. */
+  /**
+   * Names for the items, by key. Defaults to each `pivot` value as written, or a readable form
+   * of each wide key (`unitsSold` reads "Units sold").
+   */
   labels?: Readonly<Record<string, string>>
   /** The bars' colour. Bars measure amounts, so a ramp step suits. @defaultValue 'seq-5' */
   color?: ChartColor
@@ -85,7 +88,7 @@ export const BarList = forwardRef<HTMLElement, BarListProps>(function BarList(
   const items = max === undefined ? ranked : ranked.slice(0, max)
   const largest = Math.max(0, ...items.map((item) => Math.abs(item.value)))
   const formatValue = useMemo(() => valueFormatter(format, { locale }), [format, locale])
-  const nameOf = (key: string) => labels?.[key] ?? humanise(key)
+  const nameOf = (key: string) => labels?.[key] ?? (pivot ? key : humanise(key))
   const first = items[0]
   const description =
     summary ??

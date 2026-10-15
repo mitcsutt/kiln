@@ -6,7 +6,10 @@ import type { ValueFormat } from '#core/format'
 export interface SeriesConfig {
   /** The key of this series' values in each row. */
   key: string
-  /** Its name in the legend, tooltip and table. Defaults to a readable form of `key`. */
+  /**
+   * Its name in the legend, tooltip and table. Defaults to the `pivot` value as written, or a
+   * readable form of a wide key.
+   */
   label?: string
   /** A theme colour or any CSS colour. Defaults to the next categorical colour. */
   color?: ChartColor
@@ -31,11 +34,13 @@ export function presetSeries(
     : (pivoted?.keys ?? numericKeys(rows, x ?? '')).map((key) => ({ key }))
   return {
     rows,
-    series: configs.map((config) =>
-      config.key === pivoted?.otherKey && config.color === undefined
-        ? { ...config, color: 'neutral' }
-        : config,
-    ),
+    series: configs.map((config) => {
+      // A pivoted series is named by a value from the data, shown as written.
+      const named = pivoted && config.label === undefined ? { ...config, label: config.key } : config
+      return config.key === pivoted?.otherKey && config.color === undefined
+        ? { ...named, color: 'neutral' }
+        : named
+    }),
   }
 }
 

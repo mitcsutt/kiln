@@ -17,7 +17,10 @@ export type EngineProps = Readonly<Record<string, unknown>>
 export interface ChartSeriesProps {
   /** The key of this series' values in each row. */
   dataKey: string
-  /** The series' name in the legend, the tooltip and the data table. Defaults to a readable form of `dataKey`. */
+  /**
+   * The series' name in the legend, the tooltip and the data table. Defaults to `dataKey` as
+   * written when the chart has `pivot`, or a readable form of it otherwise.
+   */
   label?: string
   /** A theme colour or any CSS colour. Defaults to the next categorical colour. */
   color?: ChartColor

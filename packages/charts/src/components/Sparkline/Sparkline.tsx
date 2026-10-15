@@ -147,7 +147,7 @@ export const Sparkline = forwardRef<HTMLElement, SparklineProps>(function Sparkl
   }))
   const last = points.findLast((point) => point.y !== undefined)
 
-  const described = [{ key, label: humanise(key), format: formatValue }]
+  const described = [{ key, label: pivot ? key : humanise(key), format: formatValue }]
   const xLabel = plain ? 'Point' : humanise(xKey)
   const { fill, stroke } = resolveColor(color)
   const barWidth = values.length > 0 ? 100 / values.length : 0
