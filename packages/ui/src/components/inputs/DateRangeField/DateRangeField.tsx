@@ -302,6 +302,14 @@ export const DateRangeField = forwardRef<HTMLFieldSetElement, DateRangeFieldProp
         end: next.end ? join(next.end, timeOf(value.end) ?? LAST_SECOND) : '',
       })
     }
+    const presetRange = (preset: DateRangePreset): DateRangeValue => {
+      const range = resolvePreset(preset)
+      if (!withTime) return range
+      return {
+        start: parseDate(range.start) ? join(range.start, MIDNIGHT) : range.start,
+        end: parseDate(range.end) ? join(range.end, LAST_SECOND) : range.end,
+      }
+    }
     const setTime = (part: keyof DateRangeValue, text: string) => {
       const time = parseTime(text)
       const date = part === 'start' ? startDate : endDate
@@ -413,7 +421,7 @@ export const DateRangeField = forwardRef<HTMLFieldSetElement, DateRangeFieldProp
                 {presets && presets.length > 0 ? (
                   <div role="group" aria-label={labels.presets} className={styles.presets}>
                     {presets.map((preset) => {
-                      const range = resolvePreset(preset)
+                      const range = presetRange(preset)
                       const current = range.start === value.start && range.end === value.end
                       return (
                         <Button
@@ -423,7 +431,7 @@ export const DateRangeField = forwardRef<HTMLFieldSetElement, DateRangeFieldProp
                           className={styles.preset}
                           aria-pressed={current}
                           onClick={() => {
-                            setRange(resolvePreset(preset))
+                            setRange(range)
                             setOpen(false)
                           }}
                         >

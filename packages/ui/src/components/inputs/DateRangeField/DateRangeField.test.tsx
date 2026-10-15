@@ -248,6 +248,47 @@ describe('DateRangeField with the calendar picker', () => {
     expect((onValueChange.mock.lastCall?.[0] as DateRangeValue).end).toMatch(/T18:59$/)
   })
 
+  it('with a time, runs a date-only preset from its first day’s start to its last day’s end', async () => {
+    const user = userEvent.setup()
+    const onValueChange = vi.fn()
+    render(
+      <DateRangeField
+        label="Incident window"
+        granularity="minute"
+        hourCycle={24}
+        timeZone="Australia/Sydney"
+        presets={[
+          { label: 'Last 7 days', value: { start: '2026-10-08', end: '2026-10-15' } },
+          {
+            label: 'Morning shift',
+            value: { start: '2026-10-15T06:00:00Z', end: '2026-10-15T09:30:00Z' },
+          },
+        ]}
+        onValueChange={onValueChange}
+      />,
+    )
+    await user.click(screen.getByRole('button', { name: 'Choose date' }))
+    let presets = await screen.findByRole('group', { name: 'Presets' })
+    await user.click(within(presets).getByRole('button', { name: 'Last 7 days' }))
+    expect(onValueChange).toHaveBeenLastCalledWith({
+      start: '2026-10-07T13:00:00Z',
+      end: '2026-10-15T12:59:59Z',
+    })
+    expect(seg('Hour')).toHaveTextContent('00')
+    expect(seg('Hour', 1)).toHaveTextContent('23')
+    await user.click(screen.getByRole('button', { name: 'Choose date' }))
+    presets = await screen.findByRole('group', { name: 'Presets' })
+    expect(within(presets).getByRole('button', { name: 'Last 7 days' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    )
+    await user.click(within(presets).getByRole('button', { name: 'Morning shift' }))
+    expect(onValueChange).toHaveBeenLastCalledWith({
+      start: '2026-10-15T06:00:00Z',
+      end: '2026-10-15T09:30:00Z',
+    })
+  })
+
   it('keeps the start before the end while typing', () => {
     render(
       <DateRangeField
