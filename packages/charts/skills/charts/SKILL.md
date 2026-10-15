@@ -243,7 +243,7 @@ A series can take its own `format`, and an axis can take a shorter one (``) whil
 
 `xFormat` decides how dates read: `date` (the default, `3 Mar`), `month`, `year`, `weekday`, `time`, `datetime`, any `Intl.DateTimeFormatOptions`, or a function.
 
-`locale` and `timeZone` go straight to `Intl`. Without them a chart uses the reader's, which can differ between your server and the reader's browser. Set both when a chart renders on the server, so the server's text and the browser's match. A date with no time (`'2026-03-01'`) is a calendar day and reads the same in every time zone.
+`locale` and `timeZone` go straight to `Intl`. Without them a chart uses the reader's, which can differ between your server and the reader's browser. Set both when a chart renders on the server, so the server's text and the browser's match. A date string with no offset (`'2026-03-01'` or `'2026-03-01T14:30'`) is a wall-clock time, not an instant: it prints as written, on the server and in every time zone, whatever `timeZone` says. `timeZone` applies only to instants: `Date` objects and strings with `Z` or an offset (`'2026-03-01T14:30Z'`, `'2026-03-01T14:30+10:00'`).
 
 ```tsx
 import { TimeSeries } from '@mitcsutt/kiln-charts'

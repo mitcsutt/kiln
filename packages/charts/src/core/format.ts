@@ -23,6 +23,10 @@ export type ValueFormat =
  * `year`, `weekday` (`Tue`), `time` (`14:30`), `datetime`, any `Intl.DateTimeFormatOptions`, or a
  * function from the date to its text. Text and number x values print as they are unless you pass a
  * function.
+ *
+ * A date string with no offset (`2026-03-01`, `2026-03-01T14:30`) is a wall-clock time, not an
+ * instant: it prints as written, in every time zone. `timeZone` applies only to instants: `Date`
+ * objects and strings with `Z` or an offset (`2026-03-01T14:30Z`, `2026-03-01T14:30+10:00`).
  */
 export type XFormat =
   | 'date'
@@ -37,6 +41,7 @@ export type XFormat =
 /** Where formatting happens: the chart's `locale` and `timeZone`, both passed to `Intl`. */
 export interface FormatLocale {
   locale?: string | undefined
+  /** The zone instants print in. A date string with no offset prints as written, in any zone. */
   timeZone?: string | undefined
 }
 
@@ -104,28 +109,32 @@ export function xFormatter(
         ? DATE_PRESETS[format]
         : format
   const intl = dateFormat({ ...options, ...(timeZone ? { timeZone } : {}) }, locale)
-  // A date with no time (`2026-03-01`) is a calendar day, not an instant: read it in UTC, as
-  // `Date` parses it, so it prints the same day on the server and in every visitor's zone.
-  const calendar = dateFormat({ ...options, timeZone: 'UTC' }, locale)
+  // A date string with no offset is a wall-clock time, not an instant: `toDate` reads it in UTC,
+  // so it prints as written on the server and in every visitor's zone.
+  const wallClock = dateFormat({ ...options, timeZone: 'UTC' }, locale)
   return (value) => {
     const date = toDate(value)
     if (date) {
       if (custom) return custom(date)
-      return (typeof value === 'string' && DATE_ONLY.test(value) ? calendar : intl).format(date)
+      return (typeof value === 'string' && !OFFSET.test(value) ? wallClock : intl).format(date)
     }
     if (value === null || value === undefined) return ''
     return typeof value === 'string' || typeof value === 'number' ? String(value) : ''
   }
 }
 
-const DATE_ONLY = /^\d{4}-\d{2}(-\d{2})?$/
+const OFFSET = /(Z|[+-]\d{2}:?\d{2})$/
 const ISO_DATE = /^\d{4}-\d{2}(-\d{2})?([T ]\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|[+-]\d{2}:?\d{2})?)?$/
 
-/** A date for a `Date` or an ISO 8601 date string; anything else is not a date. */
+/**
+ * A date for a `Date` or an ISO 8601 date string; anything else is not a date. A string with no
+ * offset is read in UTC, so it means the same instant in every runtime.
+ */
 export function toDate(value: unknown): Date | undefined {
   if (value instanceof Date) return Number.isNaN(value.getTime()) ? undefined : value
   if (typeof value === 'string' && ISO_DATE.test(value)) {
-    const date = new Date(value)
+    const iso = value.replace(' ', 'T')
+    const date = new Date(OFFSET.test(iso) || !iso.includes('T') ? iso : `${iso}Z`)
     return Number.isNaN(date.getTime()) ? undefined : date
   }
   return undefined

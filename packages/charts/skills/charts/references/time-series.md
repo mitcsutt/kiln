@@ -147,7 +147,7 @@ export function Comparison() {
 | `pivot` | `PivotOptions` |  | Turn long rows into wide ones, one series per value of `by`. |
 | `xFormat` | `XFormat` | `'date'` | How to write x values that are dates. |
 | `xLabel` | `string` |  | The x column's header in the data table. Defaults to a readable form of `x`. |
-| `timeZone` | `string` |  | The time zone dates print in, passed to `Intl`. Defaults to the reader's. |
+| `timeZone` | `string` |  | The time zone instants print in, passed to `Intl`: `Date` objects and date strings with `Z` or an offset. A date string with no offset prints as written. Defaults to the reader's. |
 | `errorMessage` | `ReactNode` | `"This chart couldn't load"` |  |
 | `engineProps` | `EngineProps` |  | Props for the engine's own chart component. Outside semver. |
 
@@ -185,7 +185,7 @@ Also accepts every prop of `HTMLAttributes<HTMLElement>`.
 | `xFormat` | `XFormat` | `'date'` | How to write x values that are dates. |
 | `xLabel` | `string` |  | The x column's header in the data table. Defaults to a readable form of `x`. |
 | `locale` | `string` |  | The locale for every number and date, passed to `Intl`. Defaults to the reader's. |
-| `timeZone` | `string` |  | The time zone dates print in, passed to `Intl`. Defaults to the reader's. |
+| `timeZone` | `string` |  | The time zone instants print in, passed to `Intl`: `Date` objects and date strings with `Z` or an offset. A date string with no offset prints as written. Defaults to the reader's. |
 | `stacking` | `'normal' \| 'percent'` | `'normal'` | `percent` stacks to 100%, showing each series' share. |
 | `animate` | `boolean` | `true` | Animate marks in and between data. Never under reduced motion. |
 | `status` | `'loading' \| 'error' \| 'empty' \| 'ready'` |  | Shows a loading, empty or error state in place of the chart. Empty data shows `empty`. |

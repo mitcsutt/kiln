@@ -36,6 +36,12 @@ export function ChartColorScope({ colors, order, children }: ChartColorScopeProp
   return <ColorScopeContext.Provider value={assigner}>{children}</ColorScopeContext.Provider>
 }
 
+const CATEGORY = /^cat-[1-8]$/
+const CATEGORIES: readonly ChartColor[] = Array.from(
+  { length: 8 },
+  (_, i) => `cat-${String(i + 1)}`,
+)
+
 /** A series key and the colour it asks for, if it pins one. */
 export interface SeriesColorRequest {
   key: string
@@ -53,17 +59,30 @@ export function useSeriesColors(
   const scope = useContext(ColorScopeContext)
   // Assignment is idempotent, so doing it during render is safe under StrictMode and on the
   // server, and the first-seen order is the render order. A series' own pin stays local to its
-  // chart: in a scope, pin a colour everywhere with the scope's `colors`.
+  // chart: in a scope, pin a colour everywhere with the scope's `colors`. An automatic key whose
+  // scope colour a pin here holds takes another slot this chart doesn't use, in this chart only.
   const assigner = scope ?? new ColorAssigner()
   const colors = new Map<string, ChartColor>()
+  const used = new Set<ChartColor>()
   for (const { key, color } of series) {
     if (color === undefined) continue
     if (!scope) assigner.pin(key, color)
     colors.set(key, color)
+    used.add(color)
   }
+  const clashing: string[] = []
   for (const { key, color } of series) {
     if (color !== undefined) continue
-    colors.set(key, key === neutralKey ? 'neutral' : assigner.colorOf(key))
+    const auto = key === neutralKey ? 'neutral' : assigner.colorOf(key)
+    if (scope && CATEGORY.test(auto) && used.has(auto)) clashing.push(key)
+    else used.add(auto)
+    colors.set(key, auto)
+  }
+  for (const key of clashing) {
+    const free = CATEGORIES.find((color) => !used.has(color))
+    if (free === undefined) continue
+    colors.set(key, free)
+    used.add(free)
   }
   return colors
 }
