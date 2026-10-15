@@ -24,6 +24,7 @@ const SECTIONS = [
   { href: '/docs/ui', label: 'UI' },
   { href: '/docs/forms', label: 'Forms' },
   { href: '/docs/drag-and-drop', label: 'Drag and drop' },
+  { href: '/docs/charts', label: 'Charts' },
   { href: '/docs/tooling', label: 'Tooling' },
 ] as const
 

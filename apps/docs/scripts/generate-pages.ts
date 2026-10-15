@@ -40,7 +40,7 @@ const tokens = JSON.parse(readFileSync(join(app, '.generated/tokens.json'), 'utf
 
 /** The groups of the ADR 0010 tree whose pages document one export each. */
 const REFERENCE =
-  /^(UI\/(Actions|Inputs|Layout|Display|Navigation|Feedback|Overlays|Typography)|Forms\/(Fields|Layouts|Hooks)|Drag and drop\/(Components|Hooks))\//
+  /^(UI\/(Actions|Inputs|Layout|Display|Navigation|Feedback|Overlays|Typography)|Forms\/(Fields|Layouts|Hooks)|Drag and drop\/(Components|Hooks)|Charts\/(Presets|Primitives|Building blocks))\//
 
 /** `text: FormTextField` in the default kit, read from source: export → kind. */
 function fieldKinds(): Map<string, string> {
@@ -244,7 +244,12 @@ function apiTables(page: Page): string[] {
   }
   for (const entry of page.exports) {
     addProps(`${entry.name}Props`)
-    for (const member of entry.members ?? []) addProps(`${entry.name}${member}Props`)
+    // A part whose `<Name><Member>Props` would name another export's props (`Chart.Tooltip`
+    // beside the `ChartTooltip` component) types them as `<Name><Member>PartProps` instead.
+    for (const member of entry.members ?? []) {
+      const part = `${entry.name}${member}PartProps`
+      addProps(api[part] ? part : `${entry.name}${member}Props`)
+    }
   }
   for (const table of [...names]) {
     for (const prop of api[table]?.props ?? []) {

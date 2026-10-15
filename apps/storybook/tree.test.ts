@@ -113,9 +113,19 @@ describe('the Storybook tree', () => {
     expect(wrong).toEqual([])
   })
 
+  it('titles charts components by their export (Charts/<Group>/<Name>)', () => {
+    const wrong = TITLES.flatMap(({ file, title }) => {
+      const match = /^packages\/charts\/src\/components\/([^/]+)\/\1\.stories\.tsx$/.exec(file)
+      if (!match) return []
+      const [top, , name] = title.split('/')
+      return top === 'Charts' && name === match[1] ? [] : [`${file}: ${title}`]
+    })
+    expect(wrong).toEqual([])
+  })
+
   it('gives every component a Playground story', () => {
     const component =
-      /^packages\/(ui\/src\/components\/[^/]+|forms\/src\/(fields|layouts|components)|dnd\/src\/(components))\/([^/]+)\/\4\.stories\.tsx$/
+      /^packages\/(ui\/src\/components\/[^/]+|forms\/src\/(fields|layouts|components)|dnd\/src\/(components)|charts\/src\/components)\/([^/]+)\/\4\.stories\.tsx$/
     const withPlayground = new Set(
       ENTRIES.filter(({ type, name }) => type === 'story' && name === 'Playground').map(
         ({ file }) => file,

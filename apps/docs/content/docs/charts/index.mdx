@@ -1,0 +1,49 @@
+---
+title: Overview
+description: Charts drawn in your theme's colours, readable by everyone and rendered on the server, from ready-made presets or parts you compose.
+---
+
+`@mitcsutt/kiln-charts` draws charts with kiln-ui's tokens: series take the theme's categorical colours, amounts take its ramps, and axes, labels and tooltips take its chart chrome. Switch the theme or the colour mode and every chart restyles through CSS, with no re-render.
+
+<Example of="TimeSeries" name="Usage" />
+
+## Install
+
+```sh
+pnpm add @mitcsutt/kiln-charts @mitcsutt/kiln-ui react-is
+```
+
+kiln-ui, React, React DOM and `react-is` (18.3 or 19, matching your React) are peer dependencies. Load the stylesheet once, after kiln-ui's:
+
+```tsx
+import '@mitcsutt/kiln-ui/styles.css'
+import '@mitcsutt/kiln-charts/styles.css'
+```
+
+## Presets first
+
+Most charts are one of a few kinds, and each has a preset that takes your rows and a few props:
+
+- [TimeSeries](/docs/charts/presets/time-series): values over time, as lines or areas, with drag-to-zoom.
+- [Bars](/docs/charts/presets/bars): amounts compared across categories, grouped or stacked.
+- [Share](/docs/charts/presets/share): parts of a whole, as a ring with every share in its legend.
+- [BarList](/docs/charts/presets/bar-list): a ranked list of named amounts.
+- [Sparkline](/docs/charts/presets/sparkline): a word-sized trend beside a figure.
+- [Heatmap](/docs/charts/presets/heatmap): a grid of cells coloured by amount.
+
+When a preset doesn't do what you need, compose a [Chart](/docs/charts/primitives/chart) from its parts. `TimeSeries` and `Bars` are short compositions of those parts, so their source is the place to start. For a meter, a progress ring or a stat tile, use kiln-ui's `Meter`, `Progress` and `Stat`.
+
+## What every chart does for you
+
+- **An accessible name and summary.** Every chart is a figure named by its `label`, and described by a summary written from the data unless you write your own.
+- **The data as a table.** A visually hidden table holds every value, for screen readers and for the server-rendered page.
+- **Keyboard reading.** Focus a chart and the arrow keys move between points, with the tooltip reading each one out.
+- **Server rendering without a jump.** Charts reserve their height before they draw, so the page doesn't move when they arrive. `Sparkline`, `Heatmap`, `Share` and `BarList` render completely on the server.
+- **Reduced motion.** Marks never animate when the reader asks for less motion.
+
+## Where next
+
+- [Choosing a chart](/docs/charts/getting-started/choosing-a-chart): which preset fits your data.
+- [Data and formatting](/docs/charts/getting-started/data-and-formatting): wide and long rows, `pivot`, and how values and dates are written.
+- [Colour](/docs/charts/getting-started/colour): categorical colours for who, ramps for how much, and keeping colours consistent across a dashboard.
+- [Accessibility and server rendering](/docs/charts/getting-started/accessibility-and-server-rendering): what readers get, and what you still decide.

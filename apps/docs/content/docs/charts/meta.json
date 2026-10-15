@@ -1,0 +1,6 @@
+{
+  "title": "Charts",
+  "description": "Themed, accessible charts: presets first, parts to compose your own.",
+  "root": true,
+  "pages": ["index", "getting-started", "presets", "primitives", "building-blocks"]
+}

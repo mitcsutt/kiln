@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "@mitcsutt/kiln-dnd": "workspace:*",
+    "@mitcsutt/kiln-charts": "workspace:*",
     "@mitcsutt/kiln-forms": "workspace:*",
     "@mitcsutt/kiln-ui": "workspace:*",
     "fumadocs-core": "~16.15.18",

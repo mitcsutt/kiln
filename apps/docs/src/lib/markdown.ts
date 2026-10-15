@@ -15,7 +15,7 @@ export function llmsIndex(): string {
   const lines = [
     '# Kiln',
     '',
-    '> Kiln is a themeable React design system (`@mitcsutt/kiln-ui`), a form library on TanStack Form (`@mitcsutt/kiln-forms`), a drag-and-drop library for sortable lists, boards and grid layouts (`@mitcsutt/kiln-dnd`), and the ESLint, Prettier and TypeScript configs they are built with. Components render through design tokens; a theme is one CSS file.',
+    '> Kiln is a themeable React design system (`@mitcsutt/kiln-ui`), a form library on TanStack Form (`@mitcsutt/kiln-forms`), a drag-and-drop library for sortable lists, boards and grid layouts (`@mitcsutt/kiln-dnd`), themed charts (`@mitcsutt/kiln-charts`), and the ESLint, Prettier and TypeScript configs they are built with. Components render through design tokens; a theme is one CSS file.',
     '',
     `Every page below is Markdown. The whole site in one file: ${SITE_URL}/llms-full.txt`,
   ]
@@ -31,6 +31,7 @@ export function llmsIndex(): string {
     ui: 'UI',
     forms: 'Forms',
     'drag-and-drop': 'Drag and drop',
+    charts: 'Charts',
     tooling: 'Tooling',
   }
   for (const [section, pages] of groups) {

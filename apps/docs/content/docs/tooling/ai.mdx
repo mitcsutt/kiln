@@ -3,7 +3,7 @@ title: AI tooling
 description: The agent skills Kiln's packages ship, how to load them into your coding agent, and the Markdown versions of these docs.
 ---
 
-Kiln ships guidance for coding agents alongside its code. `@mitcsutt/kiln-ui`, `@mitcsutt/kiln-forms`, `@mitcsutt/kiln-dnd` and `@mitcsutt/kiln-structure` each include agent skills in their npm package, and every page of these docs is also available as Markdown. Both are built from the same pages you're reading, so an agent learns what the docs say, for the version you have installed.
+Kiln ships guidance for coding agents alongside its code. `@mitcsutt/kiln-ui`, `@mitcsutt/kiln-forms`, `@mitcsutt/kiln-dnd`, `@mitcsutt/kiln-charts` and `@mitcsutt/kiln-structure` each include agent skills in their npm package, and every page of these docs is also available as Markdown. Both are built from the same pages you're reading, so an agent learns what the docs say, for the version you have installed.
 
 ## Agent skills
 
@@ -35,6 +35,12 @@ A skill is a `SKILL.md` file, with optional reference pages, that tells an agent
 | `lists-and-boards` | Reordering a list with `Sortable` or moving cards on a `Board`, by pointer, touch and keyboard   |
 | `grid-layout`      | Building a dashboard of panels people move and resize, with layouts stored as plain data         |
 | `drop-zones`       | Dropping things onto places with `Draggable` and `DropZone`, or building custom drag-and-drop UI |
+
+`@mitcsutt/kiln-charts` ships one:
+
+| Skill    | Use it when                                                                                            |
+| -------- | ------------------------------------------------------------------------------------------------------ |
+| `charts` | Adding a chart: picking a preset before composing one, data and `pivot`, formatting, colour and access |
 
 `@mitcsutt/kiln-structure` ships the [Project structure](/docs/tooling/project-structure) rules as a core skill plus one add-on per stack. Load the core skill, and the add-on for each stack your project depends on:
 
