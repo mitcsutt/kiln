@@ -1,4 +1,4 @@
-import { filterOptions, foldText, rankOption } from './filterOptions'
+import { filterOptions, foldText, groupOptions, matchRange, rankOption } from './filterOptions'
 
 const countries = [
   { label: 'Australia' },
@@ -66,5 +66,51 @@ describe('filterOptions', () => {
     expect(rankOption({ label: 'Spain' }, 'sp')).toBe(1)
     expect(rankOption({ label: 'Spain' }, 'ain')).toBe(2)
     expect(rankOption({ label: 'Spain' }, 'xyz')).toBe(3)
+  })
+})
+
+describe('groupOptions', () => {
+  it('groups in order of each group’s first option, ungrouped options in their own section', () => {
+    const sections = groupOptions([
+      { label: 'Invoices', group: 'Pages' },
+      { label: 'Log out' },
+      { label: 'Toggle dark mode', group: 'Settings' },
+      { label: 'Clients', group: 'Pages' },
+    ])
+    expect(sections.map((section) => [section.label, section.options.map((o) => o.label)])).toEqual(
+      [
+        ['Pages', ['Invoices', 'Clients']],
+        [undefined, ['Log out']],
+        ['Settings', ['Toggle dark mode']],
+      ],
+    )
+    expect(new Set(sections.map((section) => section.key)).size).toBe(3)
+  })
+})
+
+describe('matchRange', () => {
+  const slice = (label: string, query: string) => {
+    const range = matchRange(label, query)
+    return range ? label.slice(range[0], range[1]) : null
+  }
+
+  it('finds the label prefix first, then a word start, then anywhere', () => {
+    expect(matchRange('Settings', 'set')).toEqual([0, 3])
+    expect(slice('Reset settings', 'set')).toBe('set')
+    expect(matchRange('Reset settings', 'set')).toEqual([6, 9])
+    expect(slice('Unassigned', 'sign')).toBe('sign')
+  })
+
+  it('folds case, accents and whitespace but returns the original characters', () => {
+    expect(slice('Côte d’Ivoire', 'cote')).toBe('Côte')
+    expect(slice('Curaçao', 'CURAC')).toBe('Curaç')
+    expect(slice('Open   the  ledger', 'the ledger')).toBe('the  ledger')
+    // A precomposed and a decomposed accent both stay whole inside the mark.
+    expect(slice('Cafe\u0301 Rouge', 'cafe')).toBe('Cafe\u0301')
+  })
+
+  it('returns null for a blank query or a match outside the label', () => {
+    expect(matchRange('United States', '  ')).toBeNull()
+    expect(matchRange('United States', 'usa')).toBeNull()
   })
 })

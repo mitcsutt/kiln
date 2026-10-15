@@ -1,5 +1,6 @@
 /**
- * Option filtering for type-to-search controls (Combobox). Not exported from the package.
+ * Option filtering for type-to-search controls (Combobox, CommandPalette). Not exported from the
+ * package.
  *
  * Matching is case-insensitive and diacritic-folded ("cote" finds "Côte d'Ivoire",
  * "curacao" finds "Curaçao"). Results are ranked, and stable within a rank:
@@ -72,4 +73,81 @@ export function filterOptions<O extends FilterableOption>(
   })
   ranked.sort((a, b) => a.rank - b.rank || a.index - b.index)
   return ranked.map((entry) => entry.option)
+}
+
+export interface GroupableOption {
+  group?: string
+}
+
+export interface OptionSection<O> {
+  key: string
+  label?: string
+  options: O[]
+}
+
+/**
+ * Splits options into sections by `group`, in order of each group's first option (so a ranked
+ * list keeps its best group first). Options without a group form an unlabelled section.
+ */
+export function groupOptions<O extends GroupableOption>(options: readonly O[]): OptionSection<O>[] {
+  const sections: OptionSection<O>[] = []
+  const byKey = new Map<string, OptionSection<O>>()
+  for (const option of options) {
+    const key = option.group === undefined ? '' : `g:${option.group}`
+    let section = byKey.get(key)
+    if (!section) {
+      section = { key, label: option.group, options: [] }
+      byKey.set(key, section)
+      sections.push(section)
+    }
+    section.options.push(option)
+  }
+  return sections
+}
+
+/**
+ * Where `query` matches inside `label`, as `[start, end)` indices into the original label, for
+ * highlighting. Folds both sides like `filterOptions`, and prefers the match it ranked: the
+ * label's start, then the start of a word, then anywhere. `null` when the label doesn't contain
+ * the query (the option matched on a keyword or its description).
+ */
+export function matchRange(label: string, query: string): [number, number] | null {
+  const folded = foldText(query)
+  if (folded === '') return null
+  // Fold the label one character at a time, remembering which slice of it each folded
+  // character came from. A character that folds away (a combining accent) joins the one before.
+  let text = ''
+  const starts: number[] = []
+  const ends: number[] = []
+  let index = 0
+  for (const char of label) {
+    const next = index + char.length
+    const piece = /\s/.test(char)
+      ? text === '' || text.endsWith(' ')
+        ? ''
+        : ' '
+      : char
+          .normalize('NFD')
+          .replace(/\p{Diacritic}/gu, '')
+          .toLowerCase()
+    if (piece === '' && !/\s/.test(char) && ends.length > 0) ends[ends.length - 1] = next
+    starts.push(...Array<number>(piece.length).fill(index))
+    ends.push(...Array<number>(piece.length).fill(next))
+    text += piece
+    index = next
+  }
+  let start = -1
+  if (text.startsWith(folded)) start = 0
+  else {
+    const boundary = /[\s\-–—'’/().,]/
+    for (let at = text.indexOf(folded); at !== -1; at = text.indexOf(folded, at + 1)) {
+      if (start === -1) start = at
+      if (boundary.test(text.charAt(at - 1))) {
+        start = at
+        break
+      }
+    }
+  }
+  if (start === -1) return null
+  return [starts[start] ?? 0, ends[start + folded.length - 1] ?? label.length]
 }

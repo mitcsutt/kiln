@@ -23,7 +23,7 @@ import { Spinner } from '#components/feedback/Spinner'
 import { Tag, TagList } from '#components/display/Tag'
 import { PortalAnchorContext, usePortalTheme } from '#components/overlays/usePortalTheme'
 import { markFieldAware, useResolvedField } from '#components/inputs/internal/FieldContext'
-import { filterOptions, foldText } from '#components/inputs/internal/filterOptions'
+import { filterOptions, foldText, groupOptions } from '#components/inputs/internal/filterOptions'
 import { useMergedRefs } from '#components/inputs/internal/refs'
 import control from '#components/inputs/internal/control.module.css'
 import messageStyles from '#components/inputs/internal/messages.module.css'
@@ -102,27 +102,10 @@ export type ComboboxProps = ComboboxSingleProps | ComboboxMultipleProps
 
 /* ─── Pure helpers ────────────────────────────────────────────────────────── */
 
-interface Section {
-  key: string
-  label?: string
-  options: ComboboxOption[]
-}
-
 /** Visible options, in groups (ordered by each group's first/best option), and flattened. */
 function buildView(options: readonly ComboboxOption[], query: string, shouldFilter: boolean) {
   const matched = shouldFilter ? filterOptions(options, query) : [...options]
-  const sections: Section[] = []
-  const byKey = new Map<string, Section>()
-  for (const option of matched) {
-    const key = option.group === undefined ? '' : `g:${option.group}`
-    let section = byKey.get(key)
-    if (!section) {
-      section = { key, label: option.group, options: [] }
-      byKey.set(key, section)
-      sections.push(section)
-    }
-    section.options.push(option)
-  }
+  const sections = groupOptions(matched)
   return { sections, ordered: sections.flatMap((section) => section.options) }
 }
 
