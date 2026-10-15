@@ -103,24 +103,24 @@ export function Shares() {
 | `stacked` | `'percent' \| boolean` | `false` | Stack the series into one bar per row: `true` adds them up, `percent` shows each one's share of the row. |
 | `legend` | `boolean` | `true when there's more than one series` | Show the legend. |
 | `target` | `{ value: number; label?: string }` |  | A line across the plot at a value, such as a target. |
-| `label` (required) | `string` |  | The chart's accessible name: what it shows, such as "Revenue by month". |
-| `x` (required) | `string` |  | The key of each row's x value: a category, or a date (a `Date` or an ISO 8601 string). |
-| `format` | `ValueFormat` | `'number'` | How to write values. |
-| `locale` | `string` |  | The locale for every number and date, passed to `Intl`. Defaults to the reader's. |
 | `data` (required) | `readonly ChartRow[]` |  | The rows to plot. Wide rows have one key per series (`{ month: 'Mar', revenue: 1200 }`); long rows have one row per series and x, and need `pivot`. |
+| `x` (required) | `string` |  | The key of each row's x value: a category, or a date (a `Date` or an ISO 8601 string). |
+| `label` (required) | `string` |  | The chart's accessible name: what it shows, such as "Revenue by month". |
 | `summary` | `string` |  | What the data says, read after the name. Defaults to a summary of each series' range. |
-| `animate` | `boolean` | `true` | Animate marks in and between data. Never under reduced motion. |
-| `status` | `'loading' \| 'error' \| 'empty' \| 'ready'` |  | Shows a loading, empty or error state in place of the chart. Empty data shows `empty`. |
-| `layout` | `'horizontal' \| 'vertical'` | `'horizontal'` | `vertical` runs the chart sideways: categories down the side and bars across. |
 | `height` | `ChartHeight` | `240` | Pixels, legend included, or `fill` to fill a sized parent. |
-| `emptyMessage` | `ReactNode` | `'No data to show'` |  |
-| `action` | `ReactNode` |  | One thing to do from the empty or error state, such as a retry button. |
-| `onPointClick` | `(point: ChartPoint) => void` |  | Called when a reader clicks a point, or presses Enter or Space on the active point when the chart has keyboard focus. |
+| `layout` | `'horizontal' \| 'vertical'` | `'horizontal'` | `vertical` runs the chart sideways: categories down the side and bars across. |
 | `pivot` | `PivotOptions` |  | Turn long rows into wide ones, one series per value of `by`. |
+| `format` | `ValueFormat` | `'number'` | How to write values. |
 | `xFormat` | `XFormat` | `'date'` | How to write x values that are dates. |
 | `xLabel` | `string` |  | The x column's header in the data table. Defaults to a readable form of `x`. |
+| `locale` | `string` |  | The locale for every number and date, passed to `Intl`. Defaults to the reader's. |
 | `timeZone` | `string` |  | The time zone instants print in, passed to `Intl`: `Date` objects and date strings with `Z` or an offset. A date string with no offset prints as written. Defaults to the reader's. |
+| `animate` | `boolean` | `true` | Animate marks in and between data. Never under reduced motion. |
+| `status` | `'loading' \| 'error' \| 'empty' \| 'ready'` |  | Shows a loading, empty or error state in place of the chart. Empty data shows `empty`. |
+| `emptyMessage` | `ReactNode` | `'No data to show'` |  |
 | `errorMessage` | `ReactNode` | `"This chart couldn't load"` |  |
+| `action` | `ReactNode` |  | One thing to do from the empty or error state, such as a retry button. |
+| `onPointClick` | `(point: ChartPoint) => void` |  | Called when a reader clicks a point, or presses Enter or Space on the active point when the chart has keyboard focus. |
 | `engineProps` | `EngineProps` |  | Props for the engine's own chart component. Outside semver. |
 
 Also accepts every prop of `HTMLAttributes<HTMLElement>`.
@@ -134,14 +134,6 @@ Also accepts every prop of `HTMLAttributes<HTMLElement>`.
 | `color` | `ChartColor` |  | A theme colour or any CSS colour. Defaults to the next categorical colour. |
 | `format` | `ValueFormat` |  | How to write this series' values, when it differs from the chart's `format`. |
 
-`ChartPoint`:
-
-| Prop | Type | Default | Description |
-| --- | --- | --- | --- |
-| `index` (required) | `number` |  | The row's position in the data the chart shows. |
-| `x` (required) | `unknown` |  | The row's x value. |
-| `row` (required) | `ChartRow` |  | The row itself. |
-
 `PivotOptions`:
 
 | Prop | Type | Default | Description |
@@ -150,3 +142,11 @@ Also accepts every prop of `HTMLAttributes<HTMLElement>`.
 | `value` (required) | `string` |  | The key that holds each series' value (`'sales'`). |
 | `limit` | `number \| false` | `7` | How many series to keep before grouping the rest as one "Other" series. They are ranked by their total. With 8 or fewer there's nothing to group. `false` keeps every series. |
 | `other` | `string` | `'Other'` | The name of the grouped series, which the chart colours neutral. |
+
+`ChartPoint`:
+
+| Prop | Type | Default | Description |
+| --- | --- | --- | --- |
+| `index` (required) | `number` |  | The row's position in the data the chart shows. |
+| `x` (required) | `unknown` |  | The row's x value. |
+| `row` (required) | `ChartRow` |  | The row itself. |

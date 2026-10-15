@@ -130,16 +130,24 @@ export const DragToZoom: Story = {
     })
     const box = wrapper.getBoundingClientRect()
     const y = box.top + box.height / 2
-    await userEvent.pointer([
-      {
-        keys: '[MouseLeft>]',
-        coords: { clientX: box.left + box.width * 0.25, clientY: y },
-        target: wrapper,
-      },
-      { coords: { clientX: box.left + box.width * 0.5, clientY: y }, target: wrapper },
-      { coords: { clientX: box.left + box.width * 0.75, clientY: y }, target: wrapper },
-      { keys: '[/MouseLeft]', target: wrapper },
+    const start = { clientX: box.left + box.width * 0.25, clientY: y }
+    const end = { clientX: box.left + box.width * 0.75, clientY: y }
+    const user = userEvent.setup()
+    // The engine handles a move on the next animation frame, so wait for each move to land, as it
+    // would between a real pointer's events: the hover finds the point under it, then the drag
+    // draws the selection.
+    await user.pointer({ coords: start, target: wrapper })
+    await waitFor(() => {
+      if (!wrapper.querySelector('.recharts-active-dot')) throw new Error('not hovered yet')
+    })
+    await user.pointer([
+      { keys: '[MouseLeft>]', coords: start, target: wrapper },
+      { coords: end, target: wrapper },
     ])
+    await waitFor(() => {
+      if (!wrapper.querySelector('.recharts-reference-area')) throw new Error('not selected yet')
+    })
+    await user.pointer({ keys: '[/MouseLeft]', coords: end, target: wrapper })
     await waitFor(() => expect(args.onZoom).toHaveBeenCalled())
     await userEvent.click(canvas.getByRole('button', { name: 'Show all' }))
     await expect(args.onZoom).toHaveBeenLastCalledWith(null)

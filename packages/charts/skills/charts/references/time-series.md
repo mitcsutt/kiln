@@ -133,22 +133,22 @@ export function Comparison() {
 | `zoom` | `ChartZoomRange \| null` |  | The zoomed range, when you control it. `null` shows everything. |
 | `onZoom` | `(range: ChartZoomRange \| null) => void` |  | Called with the range a reader zooms to, or `null` when they reset. |
 | `onPointClick` | `ChartProps['onPointClick']` |  | Called when a reader clicks a point, or activates it from the keyboard. |
-| `label` (required) | `string` |  | The chart's accessible name: what it shows, such as "Revenue by month". |
-| `x` (required) | `string` |  | The key of each row's x value: a category, or a date (a `Date` or an ISO 8601 string). |
-| `format` | `ValueFormat` | `'number'` | How to write values. |
-| `locale` | `string` |  | The locale for every number and date, passed to `Intl`. Defaults to the reader's. |
 | `data` (required) | `readonly ChartRow[]` |  | The rows to plot. Wide rows have one key per series (`{ month: 'Mar', revenue: 1200 }`); long rows have one row per series and x, and need `pivot`. |
+| `x` (required) | `string` |  | The key of each row's x value: a category, or a date (a `Date` or an ISO 8601 string). |
+| `label` (required) | `string` |  | The chart's accessible name: what it shows, such as "Revenue by month". |
 | `summary` | `string` |  | What the data says, read after the name. Defaults to a summary of each series' range. |
-| `animate` | `boolean` | `true` | Animate marks in and between data. Never under reduced motion. |
-| `status` | `'loading' \| 'error' \| 'empty' \| 'ready'` |  | Shows a loading, empty or error state in place of the chart. Empty data shows `empty`. |
 | `height` | `ChartHeight` | `240` | Pixels, legend included, or `fill` to fill a sized parent. |
-| `emptyMessage` | `ReactNode` | `'No data to show'` |  |
-| `action` | `ReactNode` |  | One thing to do from the empty or error state, such as a retry button. |
 | `pivot` | `PivotOptions` |  | Turn long rows into wide ones, one series per value of `by`. |
+| `format` | `ValueFormat` | `'number'` | How to write values. |
 | `xFormat` | `XFormat` | `'date'` | How to write x values that are dates. |
 | `xLabel` | `string` |  | The x column's header in the data table. Defaults to a readable form of `x`. |
+| `locale` | `string` |  | The locale for every number and date, passed to `Intl`. Defaults to the reader's. |
 | `timeZone` | `string` |  | The time zone instants print in, passed to `Intl`: `Date` objects and date strings with `Z` or an offset. A date string with no offset prints as written. Defaults to the reader's. |
+| `animate` | `boolean` | `true` | Animate marks in and between data. Never under reduced motion. |
+| `status` | `'loading' \| 'error' \| 'empty' \| 'ready'` |  | Shows a loading, empty or error state in place of the chart. Empty data shows `empty`. |
+| `emptyMessage` | `ReactNode` | `'No data to show'` |  |
 | `errorMessage` | `ReactNode` | `"This chart couldn't load"` |  |
+| `action` | `ReactNode` |  | One thing to do from the empty or error state, such as a retry button. |
 | `engineProps` | `EngineProps` |  | Props for the engine's own chart component. Outside semver. |
 
 Also accepts every prop of `HTMLAttributes<HTMLElement>`.

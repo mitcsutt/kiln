@@ -48,11 +48,11 @@ export function Usage() {
 | `label` | `string` | `"Move"` | The accessible name. Default "Move" and the item's label, from `announcements.handle`. |
 | `hideBelow` | `'sm' \| 'md' \| 'lg' \| 'xl'` |  | Hide below this breakpoint (e.g. `md` → hidden on phones, shown from 48em). |
 | `hideAbove` | `'sm' \| 'md' \| 'lg' \| 'xl'` |  | Hide from this breakpoint up (e.g. `md` → shown on phones only). |
-| `size` | `'sm' \| 'md' \| 'lg'` | `sm` |  |
-| `tone` | `'neutral' \| 'accent' \| 'critical'` |  | Colour intent. `critical` is for destructive actions only. |
-| `asChild` | `boolean` |  | Render the single child element instead of a <button>, merging props and styles. Use for links: `<Button asChild><Link to="/work">Work</Link></Button>`. |
 | `variant` | `'solid' \| 'outline' \| 'ghost'` |  | Visual weight. One `solid` per view is the norm — it *is* the primary action. |
+| `tone` | `'neutral' \| 'accent' \| 'critical'` |  | Colour intent. `critical` is for destructive actions only. |
+| `size` | `'sm' \| 'md' \| 'lg'` | `sm` |  |
 | `loading` | `boolean` |  | Shows a spinner, sets `aria-busy` and disables interaction while keeping the width. |
+| `asChild` | `boolean` |  | Render the single child element instead of a <button>, merging props and styles. Use for links: `<Button asChild><Link to="/work">Work</Link></Button>`. |
 | `shape` | `'auto' \| 'round' \| 'square'` | `auto` | `auto` (default) follows the theme's action radius — a circle where actions are pills, a small square in Ledger. `round` forces a circle; `square` uses the field radius. |
 | `showTitle` | `boolean` | `false` | Also set the native `title`, so pointer users get the name on hover. Default `false`. |
 
