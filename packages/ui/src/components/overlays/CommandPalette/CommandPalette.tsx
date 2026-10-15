@@ -234,6 +234,7 @@ const Panel = forwardRef<HTMLDivElement, PanelProps>(function Panel(
   // The action picked to run once the palette has closed and let go of focus.
   const pendingRef = useRef<CommandAction | null>(null)
   const onActionRef = useLatest(onAction)
+  const openRef = useLatest(open)
   const flushPending = useCallback(() => {
     const action = pendingRef.current
     if (!action) return
@@ -352,6 +353,10 @@ const Panel = forwardRef<HTMLDivElement, PanelProps>(function Panel(
     // (a field, another dialog) stays where it put it.
     pendingRef.current = action
     close()
+    // A controller that keeps the palette open never lets go of focus, so run the action now.
+    setTimeout(() => {
+      if (openRef.current && pendingRef.current === action) flushPending()
+    })
   }
 
   const move = (delta: 1 | -1) => {
@@ -487,9 +492,10 @@ const Panel = forwardRef<HTMLDivElement, PanelProps>(function Panel(
         returnFocusRef.current = null
         if (pendingRef.current) {
           // Put focus back first, then run the action, so whatever it focuses wins.
+          const prevented = event.defaultPrevented
           event.preventDefault()
           const target = hasTrigger ? anchor?.current : returnFocus
-          if (target instanceof HTMLElement && target.isConnected) target.focus()
+          if (!prevented && target instanceof HTMLElement && target.isConnected) target.focus()
           flushPending()
           return
         }

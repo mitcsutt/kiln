@@ -289,6 +289,55 @@ describe('CommandPalette', () => {
     expect(onSelect).toHaveBeenCalledTimes(1)
   })
 
+  it.each([
+    ['pinned open', undefined],
+    ['kept open by onOpenChange', () => undefined],
+  ])('runs an action once when the palette is %s', async (_, onOpenChange) => {
+    const onSelect = vi.fn()
+    const onAction = vi.fn()
+    render(
+      <CommandPalette
+        open
+        onOpenChange={onOpenChange}
+        actions={[{ id: 'a', label: 'Archive', onSelect }]}
+        onAction={onAction}
+      />,
+    )
+    await userEvent.keyboard('{Enter}')
+    await waitFor(() => {
+      expect(onSelect).toHaveBeenCalledTimes(1)
+    })
+    expect(onAction).toHaveBeenCalledTimes(1)
+    expect(screen.getByRole('dialog')).toBeInTheDocument()
+    await new Promise((resolve) => setTimeout(resolve, 50))
+    expect(onSelect).toHaveBeenCalledTimes(1)
+    expect(onAction).toHaveBeenCalledTimes(1)
+  })
+
+  it('leaves focus to a consumer’s onCloseAutoFocus that handles it, and still runs the action', async () => {
+    const onSelect = vi.fn()
+    render(
+      <>
+        <input aria-label="Comment" />
+        <CommandPalette
+          trigger={<button type="button">Search</button>}
+          actions={[{ id: 'a', label: 'Archive', onSelect }]}
+          onCloseAutoFocus={(event) => {
+            event.preventDefault()
+            screen.getByRole('textbox', { name: 'Comment' }).focus()
+          }}
+        />
+      </>,
+    )
+    await openPalette()
+    await userEvent.keyboard('{Enter}')
+    await waitFor(() => {
+      expect(onSelect).toHaveBeenCalledTimes(1)
+    })
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    expect(screen.getByRole('textbox', { name: 'Comment' })).toHaveFocus()
+  })
+
   it('highlights the first result again on every opening', async () => {
     render(<Palette />)
     await openPalette()
