@@ -1,0 +1,35 @@
+/*
+ * Component tokens (themes may set any of these on [data-theme]):
+ *   --drop-zone-radius     default var(--radius-surface)
+ *   --drop-zone-over-bg    default var(--color-accent-soft)
+ *
+ * Resting, a zone is a hairline frame. A compatible drag darkens the frame; the item
+ * being over it fills it. One edge treatment at a time: the frame changes colour, and
+ * the fill only arrives with the accent.
+ */
+.zone {
+  --_edge: var(--color-line);
+  --_bg: transparent;
+
+  padding: var(--space-4);
+  min-block-size: var(--control-lg);
+  border: var(--border-width) solid var(--_edge);
+  border-radius: var(--drop-zone-radius, var(--radius-surface));
+  background: var(--_bg);
+  transition:
+    background-color var(--dur-1) var(--ease-out),
+    border-color var(--dur-1) var(--ease-out);
+}
+
+.zone[data-active] {
+  --_edge: var(--color-line-control);
+}
+
+.zone[data-over] {
+  --_edge: var(--color-accent);
+  --_bg: var(--drop-zone-over-bg, var(--color-accent-soft));
+}
+
+.zone[data-disabled] {
+  opacity: 0.6;
+}

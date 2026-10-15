@@ -6,7 +6,7 @@ import { contentPages, repoDir } from '@/test/content'
 import { buildSkills } from './build'
 import { skills } from './manifest'
 
-// ADR 0011: the skills kiln-ui and kiln-forms ship are built from the docs pages, so the two
+// ADR 0011: the skills kiln-ui, kiln-forms and kiln-dnd ship are built from the docs pages, so the two
 // can't drift. A failure here means a page changed: run `pnpm generate:skills` and commit.
 const files = buildSkills()
 

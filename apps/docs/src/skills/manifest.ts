@@ -10,7 +10,7 @@ import type { VariantKey } from '@/lib/variants'
  */
 export interface SkillSpec {
   /** The package directory that ships the skill: `packages/<package>/skills/<name>`. */
-  package: 'ui' | 'forms' | 'structure'
+  package: 'ui' | 'forms' | 'dnd' | 'structure'
   /** Lowercase and hyphenated, unique across the packages. */
   name: string
   /** SKILL.md's heading. */
@@ -237,4 +237,62 @@ export const skills: SkillSpec[] = [
     addOn: { extends: 'app-structure', variant },
     maxLines,
   })),
+  {
+    package: 'dnd',
+    name: 'lists-and-boards',
+    title: 'Reorder lists and move cards between columns',
+    description:
+      'Use when adding drag and drop to a React app with @mitcsutt/kiln-dnd: installing it and its stylesheet, a reorderable list with Sortable, a kanban board with Board, drag handles with DragHandle, controlled and uncontrolled state with onChange, arrayMove and moveBetween, the keyboard model and announcements, translating announcements, and testing drags with Testing Library.',
+    purpose:
+      'Build sortable lists and boards that work by pointer, touch and keyboard and report each move as plain data.',
+    type: 'core',
+    pages: ['drag-and-drop/index', 'drag-and-drop/getting-started/keyboard-and-screen-readers'],
+    references: [
+      'drag-and-drop/components/sortable',
+      'drag-and-drop/components/board',
+      'drag-and-drop/components/drag-handle',
+      'drag-and-drop/getting-started/layouts-as-data',
+      'drag-and-drop/getting-started/testing',
+    ],
+  },
+  {
+    package: 'dnd',
+    name: 'grid-layout',
+    title: 'Build a dashboard grid you can rearrange',
+    description:
+      'Use when building a dashboard or any grid of panels users move and resize with @mitcsutt/kiln-dnd: GridLayout and GridLayout.Item, layouts as [{ i, x, y, w, h }] data, columns per breakpoint, row height and gap, compaction, size limits and static items, keyboard move and resize, and changing a layout in code with appendItem, removeItem and compact.',
+    purpose:
+      'Build grids of panels that move and resize by pointer and keyboard, stored as plain layout data.',
+    type: 'core',
+    pages: [
+      'drag-and-drop/components/grid-layout',
+      'drag-and-drop/getting-started/layouts-as-data',
+    ],
+    references: [
+      'drag-and-drop/getting-started/keyboard-and-screen-readers',
+      'drag-and-drop/components/drag-handle',
+    ],
+  },
+  {
+    package: 'dnd',
+    name: 'drop-zones',
+    title: 'Drop things onto places, or build your own drag surfaces',
+    description:
+      'Use when items are dropped onto targets with @mitcsutt/kiln-dnd (filing, assigning, deleting): Dnd, Draggable, DropZone, accept and onDrop, onDragEnd events; or when building custom draggable markup with the useDraggable, useDroppable and useSortable hooks.',
+    purpose:
+      'Make things draggable onto drop zones, and build custom drag-and-drop markup on the same keyboard model.',
+    type: 'core',
+    pages: [
+      'drag-and-drop/components/dnd',
+      'drag-and-drop/components/draggable',
+      'drag-and-drop/components/drop-zone',
+    ],
+    references: [
+      'drag-and-drop/hooks/use-draggable',
+      'drag-and-drop/hooks/use-droppable',
+      'drag-and-drop/hooks/use-sortable',
+      'drag-and-drop/getting-started/keyboard-and-screen-readers',
+      'drag-and-drop/getting-started/testing',
+    ],
+  },
 ]

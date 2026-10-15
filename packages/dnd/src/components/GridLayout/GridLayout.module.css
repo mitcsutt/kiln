@@ -1,0 +1,128 @@
+/*
+ * Component tokens (themes may set any of these on [data-theme]):
+ *   --dnd-lift-shadow          default var(--shadow-lift), or --shadow-float before kiln-ui 0.7
+ *   --dnd-placeholder-bg       default var(--color-accent-soft): where the item will land
+ *   --grid-layout-radius       default var(--radius-surface)
+ *
+ * Items are placed from grid units in CSS alone (no measuring), so the server renders the
+ * finished grid. `100%` inside `--_col` is the grid's width wherever it's used, because
+ * only inline-axis properties read it.
+ */
+.grid {
+  --_cols: 12;
+  --_rows: 0;
+  --_gap: var(--space-4);
+  --_row: var(--space-9);
+
+  position: relative;
+  block-size: calc(var(--_rows) * var(--_row) + max(var(--_rows) - 1, 0) * var(--_gap));
+}
+
+.grid[hidden] {
+  display: none;
+}
+
+.item,
+.placeholder {
+  --_x: 0;
+  --_y: 0;
+  --_w: 1;
+  --_h: 1;
+  --_col: calc((100% - (var(--_cols) - 1) * var(--_gap)) / var(--_cols));
+
+  position: absolute;
+  inset-inline-start: calc(var(--_x) * (var(--_col) + var(--_gap)));
+  inset-block-start: calc(var(--_y) * (var(--_row) + var(--_gap)));
+  inline-size: calc(var(--_w) * var(--_col) + (var(--_w) - 1) * var(--_gap));
+  block-size: calc(var(--_h) * var(--_row) + (var(--_h) - 1) * var(--_gap));
+  border-radius: var(--grid-layout-radius, var(--radius-surface));
+}
+
+.item {
+  --_dx: 0px;
+  --_dy: 0px;
+
+  display: grid;
+  transition:
+    inset-inline-start var(--dur-2) var(--ease-out),
+    inset-block-start var(--dur-2) var(--ease-out),
+    inline-size var(--dur-2) var(--ease-out),
+    block-size var(--dur-2) var(--ease-out);
+}
+
+.item[hidden] {
+  display: none;
+}
+
+.item[data-dragging] {
+  z-index: var(--z-raised);
+  box-shadow: var(--dnd-lift-shadow, var(--shadow-lift, var(--shadow-float)));
+}
+
+/* A pointer carries the item; the placeholder shows where it will land. */
+.item[data-dragging='pointer'][data-mode='move'] {
+  translate: var(--_dx) var(--_dy);
+  transition: none;
+  cursor: grabbing;
+}
+
+/* Let go: land where the pointer left it, without sliding back from the old cell. */
+.item[data-landed] {
+  transition: none;
+}
+
+.placeholder {
+  background: var(--dnd-placeholder-bg, var(--color-accent-soft));
+  pointer-events: none;
+}
+
+/* Measures one gap (width) and one row (height) in pixels, for pointer drags. */
+.probe {
+  position: absolute;
+  inline-size: var(--_gap);
+  block-size: var(--_row);
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.grip {
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline-end: 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  inline-size: var(--space-5);
+  block-size: var(--space-5);
+  color: var(--color-ink-subtle);
+  cursor: nwse-resize;
+  touch-action: none;
+}
+
+.grip:dir(rtl) {
+  cursor: nesw-resize;
+}
+
+.grip svg {
+  inline-size: 12px;
+  block-size: 12px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: var(--icon-stroke);
+  stroke-linecap: round;
+}
+
+.grip:dir(rtl) svg {
+  scale: -1 1;
+}
+
+.item:hover > .grip,
+.item[data-dragging] > .grip {
+  color: var(--color-ink-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .item {
+    transition: none;
+  }
+}

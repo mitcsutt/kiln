@@ -43,5 +43,6 @@ Each record captures one decision: the context, what was decided, and what follo
 | [0037](0037-app-structure.md)                           | Kiln recommends a structure for React web apps               | Accepted                                             |
 | [0038](0038-variant-blocks.md)                          | Stack-specific docs content goes in variant blocks           | Accepted                                             |
 | [0039](0039-subpath-or-package.md)                      | A small add-on is a subpath entry; a family is a package     | Accepted                                             |
+| [0040](0040-kiln-dnd.md)                                | kiln-dnd: dnd-kit's DOM engine, Kiln's own keyboard model    | Accepted                                             |
 
 New records use the next number and the same headings: Status, Context, Decision, Consequences.

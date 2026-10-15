@@ -1,0 +1,38 @@
+---
+title: Layouts as data
+description: Lists, boards and grid layouts are plain data you can store as JSON, with pure helpers to change them in your own code.
+exports: [arrayMove, moveBetween, appendItem, removeItem, compact]
+---
+
+kiln-dnd never owns your data. A drop hands `onChange` the new value, and the helpers below make the same changes from your own code, such as an "Add panel" button or a sync from your server. They return new values and leave their input alone.
+
+## Lists and boards
+
+A `Sortable` list is an array. `arrayMove` moves one entry.
+
+<ApiSignature of="arrayMove" />
+
+A `Board` is a map from column id to that column's items. `moveBetween` moves one entry between columns, or within one, and keeps every untouched column's array as it was, so a memoised column doesn't re-render.
+
+<ApiSignature of="moveBetween" />
+
+## Grid layouts
+
+A `GridLayout` layout is an array of `{ i, x, y, w, h }`, in columns and rows. Store the one for your widest breakpoint; narrower ones are generated from it. Fields of your own on each item are kept through every change.
+
+```json
+[
+  { "i": "revenue", "x": 0, "y": 0, "w": 6, "h": 2 },
+  { "i": "orders", "x": 6, "y": 0, "w": 6, "h": 2, "minW": 3 }
+]
+```
+
+`minW`, `maxW`, `minH` and `maxH` limit resizing, and `static: true` pins an item in place.
+
+<Example of="GridLayout" name="Controlled" />
+
+<ApiSignature of="appendItem" />
+
+<ApiSignature of="removeItem" />
+
+<ApiSignature of="compact" />

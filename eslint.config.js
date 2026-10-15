@@ -33,6 +33,16 @@ const FORMS_SYNTAX = [
   { selector: "JSXAttribute[name.name='style']", message: FORMS_NO_STYLING },
   { selector: "JSXAttribute[name.name='className']", message: FORMS_NO_STYLING },
 ]
+// packages/dnd/AGENTS.md: `#` subpath imports inside the package, kiln-ui from its barrel
+// only, and the drag engine imported by src/core/engine.ts alone (ADR 0040).
+const DND_ENGINE =
+  'Only src/core/engine.ts imports the drag engine; everything else uses Kiln types (ADR 0040).'
+const DND_IMPORT_PATTERNS = [
+  { group: ['../*'], message: 'Import with a `#` subpath import (`#core/...`).' },
+  { group: ['@mitcsutt/kiln-ui/*'], message: 'Import @mitcsutt/kiln-ui from its barrel.' },
+  { group: ['@dnd-kit/*'], message: DND_ENGINE },
+]
+
 // One config for the whole workspace. Each package runs `eslint .` from its
 // own directory and picks this file up, so lint stays cached per package.
 export default defineConfig(
@@ -152,6 +162,46 @@ export default defineConfig(
     },
   },
   {
+    name: 'kiln/workspace/dnd',
+    files: ['packages/dnd/src/**'],
+    extends: [react, storybook],
+    rules: {
+      // `GridLayout.Item` is a compound part, as in ui (ADR 0015).
+      'react-refresh/only-export-components': 'off',
+      // `role="list"` on a `list-style: none` list is deliberate: Safari drops list
+      // semantics without it.
+      'jsx-a11y/no-redundant-roles': ['error', { nav: ['navigation'], ul: ['list'], ol: ['list'] }],
+      // A list item dragged without a handle is itself the drag control: it takes focus
+      // and points to the keyboard instructions (packages/dnd/AGENTS.md).
+      'jsx-a11y/no-noninteractive-tabindex': [
+        'error',
+        { tags: [], roles: [], allowExpressionValues: true },
+      ],
+      '@typescript-eslint/no-restricted-imports': ['error', { patterns: DND_IMPORT_PATTERNS }],
+    },
+  },
+  {
+    // Vendored from react-grid-layout 2.3.0 and kept as written there (index-based loops
+    // and all), so a diff against the upstream source stays readable.
+    name: 'kiln/workspace/dnd/vendored',
+    files: ['packages/dnd/src/grid/engine/*.ts'],
+    ignores: ['packages/dnd/src/grid/engine/*.test.ts'],
+    rules: {
+      '@typescript-eslint/prefer-for-of': 'off',
+      '@typescript-eslint/prefer-optional-chain': 'off',
+    },
+  },
+  {
+    name: 'kiln/workspace/dnd/engine',
+    files: ['packages/dnd/src/core/engine.ts', 'packages/dnd/src/core/engine.test.ts'],
+    rules: {
+      '@typescript-eslint/no-restricted-imports': [
+        'error',
+        { patterns: DND_IMPORT_PATTERNS.filter((pattern) => pattern.message !== DND_ENGINE) },
+      ],
+    },
+  },
+  {
     // ADR 0028: a story tagged `docs` is a docs example, the code readers copy.
     name: 'kiln/workspace/docs-stories',
     files: ['packages/*/src/**/*.stories.tsx'],
@@ -210,6 +260,8 @@ export default defineConfig(
       'packages/forms/src/test/**',
       'packages/forms/src/stories/**',
       'packages/forms/src/**/*.test-d.{ts,tsx}',
+      'packages/dnd/src/test/**',
+      'packages/dnd/src/stories/**',
     ],
     rules: {
       // Test setup and helpers, like test files, may import dev dependencies.
@@ -228,6 +280,10 @@ export default defineConfig(
       // carries `aria-describedby` on a group field (ADR 0017).
       'packages/forms/src/**/*.test.{ts,tsx}',
       'packages/forms/src/test/**',
+      // kiln-dnd tests assert on the data attributes its CSS and themes style (the drop
+      // edge, the drag input) and read its live region.
+      'packages/dnd/src/**/*.test.{ts,tsx}',
+      'packages/dnd/src/test/**',
     ],
     rules: {
       // A design system's DOM is part of its contract: themes and consumers style the

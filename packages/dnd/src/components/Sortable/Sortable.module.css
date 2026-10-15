@@ -1,0 +1,37 @@
+/*
+ * A vertical list is rows on one sheet, split by hairlines (DESIGN.md §2: not a card per
+ * row). A horizontal list is a row of items with a small gap. The drop line and the
+ * lifted look come from the shared entry styles.
+ */
+.list {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.list[data-orientation='vertical'] {
+  flex-direction: column;
+}
+
+.list[data-orientation='horizontal'] {
+  flex-flow: row wrap;
+  gap: var(--space-3);
+}
+
+.item {
+  border-radius: var(--radius-field);
+}
+
+.list[data-orientation='horizontal'] > .item {
+  /* The drop line sits in the middle of the gap between items. */
+  --_line-offset: calc(var(--space-3) / 2);
+}
+
+.list[data-orientation='vertical'] > .item {
+  padding: var(--space-3) var(--space-4);
+}
+
+.list[data-orientation='vertical'] > .item + .item {
+  border-block-start: var(--border-width) solid var(--color-line);
+}

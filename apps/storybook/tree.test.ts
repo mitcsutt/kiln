@@ -1,6 +1,6 @@
 /**
  * Keeps the Storybook tree on the ADR 0010 structure, which the docs site shares:
- * every title sits under a known group, ui and forms titles follow their source
+ * every title sits under a known group, ui, forms and dnd titles follow their source
  * folders, and every component's stories include a `Playground`. Docs examples are
  * stories tagged `docs` in the same files (ADR 0028), so they follow the same rules. It
  * reads the index Storybook itself builds from `.storybook/main.ts` (`storybook index`),
@@ -103,9 +103,19 @@ describe('the Storybook tree', () => {
     expect(wrong).toEqual([])
   })
 
+  it('titles kiln-dnd components by their folder (Drag and drop/Components/<Name>)', () => {
+    const wrong = TITLES.flatMap(({ file, title }) => {
+      const match = /^packages\/dnd\/src\/components\/([^/]+)\/\1\.stories\.tsx$/.exec(file)
+      if (!match) return []
+      const expected = `Drag and drop/Components/${match[1] ?? ''}`
+      return title === expected ? [] : [`${file}: ${title}, expected ${expected}`]
+    })
+    expect(wrong).toEqual([])
+  })
+
   it('gives every component a Playground story', () => {
     const component =
-      /^packages\/(ui\/src\/components\/[^/]+|forms\/src\/(fields|layouts|components))\/([^/]+)\/\3\.stories\.tsx$/
+      /^packages\/(ui\/src\/components\/[^/]+|forms\/src\/(fields|layouts|components)|dnd\/src\/(components))\/([^/]+)\/\4\.stories\.tsx$/
     const withPlayground = new Set(
       ENTRIES.filter(({ type, name }) => type === 'story' && name === 'Playground').map(
         ({ file }) => file,

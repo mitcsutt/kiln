@@ -117,6 +117,8 @@ const preview: Preview = {
           ],
           'Forms',
           ['Getting started', 'Fields', 'Layouts', 'Hooks', 'Schema'],
+          'Drag and drop',
+          ['Getting started', 'Components', 'Hooks'],
           'Tooling',
         ],
       },

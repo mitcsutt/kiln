@@ -1,0 +1,78 @@
+<!-- Generated from the Kiln docs by apps/docs/src/skills. Edit the docs pages, then run `pnpm generate:skills`. -->
+
+# Keyboard and screen readers
+
+> The one keyboard model every kiln-dnd pattern shares, what it announces, and how to translate it.
+
+Source: https://kiln.mitchellsutton.com/docs/drag-and-drop/getting-started/keyboard-and-screen-readers
+
+Every pattern in kiln-dnd uses the same keys. A drag handle (a `DragHandle`, or the whole item when there is no handle) takes focus and is described by short instructions, so a screen reader says how to use it when it's reached.
+
+| Key                       | What it does                                                                                     |
+| ------------------------- | ------------------------------------------------------------------------------------------------ |
+| Space or Enter            | Picks the item up, and drops it once it's moving                                                 |
+| Arrow keys                | Move it: through a list, to the next column of a board, from zone to zone, or one cell on a grid |
+| Shift and the arrow keys  | On a grid, resize it one cell                                                                    |
+| Escape                    | Cancels and puts everything back                                                                 |
+| Tab, or a click elsewhere | Also cancels: leaving the handle never drops by accident                                         |
+
+When sortable items and drop zones share a `Dnd`, the zones come after the last list. The arrow across the last list (Right, or Down for a horizontal list) steps onto the first zone that accepts the item, the arrow keys then step through the zones in document order, and stepping back past the first zone returns to the last list. A pointer reaches the same zones, and a drop on one arrives the same way from either.
+
+Focus stays on the handle the whole time, and comes back to it after a drop moves the item somewhere else in the page.
+
+## What it says
+
+The announcer is a live region that each scope renders once. It speaks at every step, with the item's `label` and where it is:
+
+- "Picked up Write the 2.4 release notes, position 1 of 5."
+- "Fix the export button moved to position 1 of 2 in Doing."
+- "Revenue moved to row 2, column 7." and "Revenue is now 4 columns wide and 3 rows tall."
+- "Invoice 1042 is over Archive."
+- "Move cancelled. Run the QA pass is back at position 2 of 4."
+
+Pointer drags are announced too, a moment after the pointer settles, so a fast drag isn't read out step by step.
+
+## Translating
+
+Pass `announcements` to any preset or to `Dnd` with the keys you want to change; the rest stay English. Each announcement is a function of where the item is, so word order is yours.
+
+```tsx
+import { Dnd, Draggable, DropZone } from '@mitcsutt/kiln-dnd'
+import { Card, Stack, Text } from '@mitcsutt/kiln-ui'
+
+export function Translated() {
+  return (
+    <Dnd
+      announcements={{
+        instructions:
+          'Pulsa Espacio o Intro para coger. Usa las flechas para mover, Espacio o Intro para soltar y Escape para cancelar.',
+        zoneLifted: ({ item }) => `${item} cogido.`,
+        zoneMoved: ({ item, zone }) =>
+          zone ? `${item} sobre ${zone}.` : `${item} fuera de las zonas.`,
+        zoneDropped: ({ item, zone }) =>
+          zone ? `${item} soltado en ${zone}.` : `${item} no se ha movido.`,
+        zoneCanceled: ({ item }) => `Cancelado. ${item} vuelve a su sitio.`,
+      }}
+    >
+      <Stack gap={4}>
+        <Draggable id="factura" label="Factura 1042">
+          <Card padding={3}>Factura 1042</Card>
+        </Draggable>
+        <DropZone id="archivo" label="Archivo">
+          <Text>Archivo</Text>
+        </DropZone>
+      </Stack>
+    </Dnd>
+  )
+}
+```
+
+```ts
+defaultAnnouncements
+```
+
+The English defaults.
+
+## Labels
+
+Every item needs a `label`: it's the handle's name ("Move Revenue") and the subject of every announcement. Lists and boards take `getLabel`, grid items and draggables take `label`, and drop zones are named by their own `label`, so name a zone after the destination ("Archive", not "Drop here").

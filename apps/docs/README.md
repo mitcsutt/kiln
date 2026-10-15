@@ -16,7 +16,7 @@ content/docs/         MDX pages and meta.json files: the sidebar tree (docs/tree
 scripts/              generate-api.ts, generate-tokens.ts, generate-examples.ts, stories-examples.ts, extract-example.ts, generate-pages.ts, generate-design-rules.ts, check-links.ts
 src/app/              routes: pages, /api/search, /llms.txt, /llms-full.txt, /docs/<page>.md
 src/components/       the site chrome, MDX components, foundations specimens
-src/skills/           the agent skills kiln-ui and kiln-forms ship, built from these pages
+src/skills/           the agent skills kiln-ui, kiln-forms and kiln-dnd ship, built from these pages
 src/styles/harbour.css  the custom theme the Theming guide builds
 ```
 

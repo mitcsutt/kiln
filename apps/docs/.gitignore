@@ -21,3 +21,5 @@ content/docs/forms/hooks/*.mdx
 content/docs/forms/layouts/*.mdx
 !content/docs/forms/layouts/custom-layouts.mdx
 !content/docs/forms/layouts/stack-and-inline.mdx
+content/docs/drag-and-drop/components/*.mdx
+content/docs/drag-and-drop/hooks/*.mdx

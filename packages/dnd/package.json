@@ -1,0 +1,127 @@
+{
+  "name": "@mitcsutt/kiln-dnd",
+  "version": "0.0.0",
+  "description": "Kiln drag and drop: sortable lists, boards, drop zones and grid layouts with one keyboard model and one announcer, rendered through kiln-ui",
+  "keywords": [
+    "kiln",
+    "react",
+    "drag-and-drop",
+    "dnd",
+    "sortable",
+    "kanban",
+    "grid-layout",
+    "dashboard",
+    "accessibility",
+    "tanstack-intent"
+  ],
+  "homepage": "https://kiln.mitchellsutton.com",
+  "bugs": "https://github.com/mitcsutt/kiln/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mitcsutt/kiln.git",
+    "directory": "packages/dnd"
+  },
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "imports": {
+    "#*": [
+      "./src/*",
+      "./src/*.ts",
+      "./src/*.tsx",
+      "./src/*/index.ts",
+      "./src/*/index.tsx"
+    ]
+  },
+  "exports": {
+    ".": {
+      "kiln-dist": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "default": "./src/index.ts"
+    },
+    "./testing": {
+      "kiln-dist": {
+        "types": "./dist/testing/index.d.ts",
+        "default": "./dist/testing/index.js"
+      },
+      "default": "./src/testing/index.ts"
+    },
+    "./styles.css": {
+      "kiln-dist": "./dist/styles.css",
+      "default": "./src/styles.css"
+    },
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./testing": {
+        "types": "./dist/testing/index.d.ts",
+        "default": "./dist/testing/index.js"
+      },
+      "./styles.css": "./dist/styles.css",
+      "./package.json": "./package.json"
+    },
+    "imports": {}
+  },
+  "files": [
+    "dist",
+    "skills"
+  ],
+  "scripts": {
+    "build": "vite build",
+    "build:watch": "vite build --watch",
+    "check:package": "pnpm pack --out node_modules/.cache/kiln-pack/package.tgz > /dev/null && publint --pack pnpm --strict && attw node_modules/.cache/kiln-pack/package.tgz --profile esm-only --exclude-entrypoints ./styles.css",
+    "check:skills": "intent validate",
+    "lint": "eslint --max-warnings=0 .",
+    "size": "node ../../size-report.ts",
+    "test": "vitest run",
+    "test:react18": "vitest run --config vitest.react18.config.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@dnd-kit/abstract": "catalog:",
+    "@dnd-kit/dom": "catalog:"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "catalog:",
+    "@mitcsutt/kiln-testing-react18": "workspace:*",
+    "@mitcsutt/kiln-tsconfig": "workspace:*",
+    "@mitcsutt/kiln-ui": "workspace:*",
+    "@storybook/react-vite": "catalog:",
+    "@tanstack/intent": "catalog:",
+    "@testing-library/jest-dom": "catalog:",
+    "@testing-library/react": "catalog:",
+    "@testing-library/user-event": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "axe-core": "catalog:",
+    "eslint": "catalog:",
+    "jsdom": "catalog:",
+    "publint": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "storybook": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:"
+  },
+  "peerDependencies": {
+    "@mitcsutt/kiln-ui": ">=0.6.0 <1.0.0",
+    "react": "^18.3.0 || ^19.0.0",
+    "react-dom": "^18.3.0 || ^19.0.0"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

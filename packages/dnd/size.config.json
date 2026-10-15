@@ -1,0 +1,49 @@
+{
+  "checks": [
+    {
+      "name": "Everything, engine included (import *)",
+      "import": "* as dnd",
+      "from": "dist/index.js",
+      "withDependencies": true,
+      "budget": 45000
+    },
+    {
+      "name": "Kiln's own code (import *, engine external)",
+      "import": "* as dnd",
+      "from": "dist/index.js",
+      "budget": 13800
+    },
+    {
+      "name": "import { GridLayout }, engine included",
+      "import": "{ GridLayout }",
+      "from": "dist/index.js",
+      "withDependencies": true,
+      "budget": 44200
+    },
+    {
+      "name": "import { Sortable }, engine included",
+      "import": "{ Sortable }",
+      "from": "dist/index.js",
+      "withDependencies": true,
+      "budget": 38900
+    },
+    {
+      "name": "Grid maths (vendored, with Kiln's layout helpers)",
+      "import": "* as layout",
+      "from": "dist/data/layout.js",
+      "budget": 2970
+    },
+    {
+      "name": "import { arrayMove }",
+      "import": "{ arrayMove }",
+      "from": "dist/index.js",
+      "isolatedTo": "dist/data/lists.js",
+      "budget": 300
+    },
+    {
+      "name": "Stylesheet (styles.css)",
+      "file": "dist/styles.css",
+      "budget": 1950
+    }
+  ]
+}

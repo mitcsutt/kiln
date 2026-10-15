@@ -1,0 +1,33 @@
+---
+title: Testing
+description: Test kiln-dnd components with Testing Library in jsdom by keyboard, and pointer drags in a real browser.
+exports: [stubDndBrowserApis]
+---
+
+Keyboard dragging moves in data space (an index, a column, a cell), so it works in jsdom: focus a handle and press keys with Testing Library's `user-event`, then check the result and the live region.
+
+```tsx
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+
+it('moves a task down the list', async () => {
+  const user = userEvent.setup()
+  render(<Checklist />)
+  screen.getByText('Write the release notes').focus()
+  await user.keyboard(' {ArrowDown}{Enter}')
+  expect(screen.getAllByRole('listitem')[1]).toHaveTextContent('Write the release notes')
+})
+```
+
+jsdom lacks a few browser APIs the drag engine calls as it starts. Stub them once in your setup file:
+
+```ts
+// vitest.setup.ts
+import { stubDndBrowserApis } from '@mitcsutt/kiln-dnd/testing'
+
+stubDndBrowserApis()
+```
+
+<ApiSignature of="stubDndBrowserApis" />
+
+Pointer drags measure where things are on screen, and jsdom has no layout, so test those in a real browser: Playwright, or Storybook interaction tests run through Vitest's browser mode.

@@ -35,6 +35,11 @@ const PACKAGES = [
     summary: 'Typed forms on TanStack Form, written as components or described as JSON.',
   },
   {
+    name: '@mitcsutt/kiln-dnd',
+    href: '/docs/drag-and-drop',
+    summary: 'Sortable lists, boards, drop zones and dashboard grids, by pointer or keyboard.',
+  },
+  {
     name: '@mitcsutt/kiln-eslint-config',
     href: '/docs/tooling/eslint-config',
     summary: 'A type-aware flat config with no warning tier.',
