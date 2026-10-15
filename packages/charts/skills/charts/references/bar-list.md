@@ -73,7 +73,7 @@ export function TopFew() {
 | `labels` | `Readonly<Record<string, string>>` |  | Names for the items, by key. Defaults to each `pivot` value as written, or a readable form of each wide key (`unitsSold` reads "Units sold"). |
 | `color` | `ChartColor` | `'seq-5'` | The bars' colour. Bars measure amounts, so a ramp step suits. |
 | `max` | `number` |  | Show only the largest this many. |
-| `sort` | `'none' \| 'descending'` | `'descending'` | `descending` ranks the items; `none` keeps their order. |
+| `sort` | `'none' \| 'descending'` | `'descending'` | `descending` ranks the items; `none` keeps their order, including the ones `max` keeps. |
 | `status` | `'loading' \| 'error' \| 'empty' \| 'ready'` |  |  |
 | `emptyMessage` | `ReactNode` |  |  |
 | `errorMessage` | `ReactNode` |  |  |

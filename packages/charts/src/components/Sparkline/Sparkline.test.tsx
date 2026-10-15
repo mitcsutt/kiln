@@ -57,6 +57,23 @@ describe('Sparkline', () => {
     expect(rows.map((row) => row.textContent)).toEqual(['DayOrders', '2 Mar14', '3 Mar22'])
   })
 
+  it('numbers the points of rows without an x', () => {
+    render(
+      <Sparkline
+        data={[
+          { day: '2026-03-02', orders: 14 },
+          { day: '2026-03-03', orders: 22 },
+        ]}
+        label="Orders this week"
+      />,
+    )
+    expect(screen.getByRole('figure', { name: 'Orders this week' })).toHaveAccessibleDescription(
+      '1 series over 2 points, from 1 to 2. Orders ranges from 14 (1) to 22 (2).',
+    )
+    const rows = within(screen.getByRole('table')).getAllByRole('row')
+    expect(rows.map((row) => row.textContent)).toEqual(['PointOrders', '114', '222'])
+  })
+
   it('has no axe violations', async () => {
     const { container } = render(<Sparkline data={[4, 8, 6, 12]} label="Orders" />)
     await expectNoAxeViolations(container)

@@ -432,6 +432,7 @@ const ChartRoot = forwardRef<HTMLElement, ChartProps>(function Chart(
   const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
     onKeyDown?.(event)
     if (event.defaultPrevented) return
+    if (!(event.target instanceof Element) || !event.target.closest('.recharts-surface')) return
     const last = rows.length - 1
     if (zoom && event.shiftKey && (event.key === 'ArrowLeft' || event.key === 'ArrowRight')) {
       // The engine has already moved the active point; follow it with the selection's end.

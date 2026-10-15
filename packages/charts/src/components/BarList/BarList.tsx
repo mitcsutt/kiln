@@ -38,7 +38,10 @@ export interface BarListProps extends Omit<HTMLAttributes<HTMLElement>, 'childre
   color?: ChartColor
   /** Show only the largest this many. */
   max?: number
-  /** `descending` ranks the items; `none` keeps their order. @defaultValue 'descending' */
+  /**
+   * `descending` ranks the items; `none` keeps their order, including the ones `max` keeps.
+   * @defaultValue 'descending'
+   */
   sort?: 'descending' | 'none'
   status?: ChartStatus
   emptyMessage?: ReactNode
@@ -84,16 +87,17 @@ export const BarList = forwardRef<HTMLElement, BarListProps>(function BarList(
     () => presetEntries(data, pivot ? { limit: false, ...pivot } : undefined),
     [data, pivot],
   )
-  const ranked = sort === 'descending' ? [...entries].sort((a, b) => b.value - a.value) : entries
-  const items = max === undefined ? ranked : ranked.slice(0, max)
+  const ranked = [...entries].sort((a, b) => b.value - a.value)
+  const kept = max === undefined ? ranked : ranked.slice(0, max)
+  const items = sort === 'descending' ? kept : entries.filter((entry) => kept.includes(entry))
   const largest = Math.max(0, ...items.map((item) => Math.abs(item.value)))
   const formatValue = useMemo(() => valueFormatter(format, { locale }), [format, locale])
   const nameOf = (key: string) => labels?.[key] ?? (pivot ? key : humanise(key))
-  const first = items[0]
+  const top = kept[0]
   const description =
     summary ??
-    (first
-      ? `${String(items.length)} items. The largest is ${nameOf(first.key)} at ${formatValue(first.value)}.`
+    (top
+      ? `${String(items.length)} items. The largest is ${nameOf(top.key)} at ${formatValue(top.value)}.`
       : 'No data.')
   const { fill, stroke } = resolveColor(color)
 

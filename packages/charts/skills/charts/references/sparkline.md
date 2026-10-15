@@ -78,7 +78,7 @@ export function WithDates() {
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `data` (required) | `readonly ChartRow[] \| readonly number[]` |  | The points: rows with a value (and an x for the data table), or plain numbers. |
-| `x` | `string` |  | The key of each row's x value, for the data table and summary. |
+| `x` | `string` |  | The key of each row's x value, for the data table and summary. Defaults to point numbers. |
 | `dataKey` | `string` |  | The key of the value to plot. Defaults to the first numeric key. |
 | `pivot` | `PivotOptions` |  | Long rows: plots the first series `pivot` makes. |
 | `label` (required) | `string` |  | The sparkline's accessible name, such as "Orders, last 14 days". |

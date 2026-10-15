@@ -63,18 +63,30 @@ describe('BarList', () => {
     ])
   })
 
-  it('takes a wide row, keeps order with sort none, and shows the top few with max', () => {
+  it('takes a wide row and keeps its order with sort none', () => {
+    render(<BarList data={[{ harbour: 12, quay: 30, riverside: 21 }]} label="Stops" sort="none" />)
+    expect(screen.getAllByRole('listitem').map((item) => item.textContent)).toEqual([
+      'Harbour12',
+      'Quay30',
+      'Riverside21',
+    ])
+    expect(screen.getByRole('figure')).toHaveAccessibleDescription(
+      '3 items. The largest is Quay at 30.',
+    )
+  })
+
+  it('keeps the largest few with max, in their own order with sort none', () => {
     render(
       <BarList
-        data={[{ harbour: 12, quay: 30, riverside: 21 }]}
+        data={[{ harbour: 12, quay: 30, ferry: 4, riverside: 21 }]}
         label="Stops"
         sort="none"
         max={2}
       />,
     )
     expect(screen.getAllByRole('listitem').map((item) => item.textContent)).toEqual([
-      'Harbour12',
       'Quay30',
+      'Riverside21',
     ])
   })
 

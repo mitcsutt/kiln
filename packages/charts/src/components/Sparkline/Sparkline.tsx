@@ -13,7 +13,7 @@ import styles from './Sparkline.module.css'
 export interface SparklineProps extends Omit<HTMLAttributes<HTMLElement>, 'children'> {
   /** The points: rows with a value (and an x for the data table), or plain numbers. */
   data: readonly ChartRow[] | readonly number[]
-  /** The key of each row's x value, for the data table and summary. */
+  /** The key of each row's x value, for the data table and summary. Defaults to point numbers. */
   x?: string
   /** The key of the value to plot. Defaults to the first numeric key. */
   dataKey?: string
@@ -113,15 +113,20 @@ export const Sparkline = forwardRef<HTMLElement, SparklineProps>(function Sparkl
   },
   ref,
 ) {
+  const plain = data.length > 0 && typeof data[0] === 'number'
+  const numbered = plain || x === undefined
   const rowsIn = useMemo<readonly ChartRow[]>(
     () =>
       data.map((item: ChartRow | number, index) =>
-        typeof item === 'number' ? { point: index + 1, value: item } : item,
+        typeof item === 'number'
+          ? { point: index + 1, value: item }
+          : numbered
+            ? { ...item, point: index + 1 }
+            : item,
       ),
-    [data],
+    [data, numbered],
   )
-  const plain = data.length > 0 && typeof data[0] === 'number'
-  const xKey = plain ? 'point' : (x ?? '')
+  const xKey = numbered ? 'point' : x
   const { rows, series } = presetSeries(rowsIn, xKey, pivot, undefined)
   const key = dataKey ?? (plain ? 'value' : series[0]?.key) ?? ''
   const formatValue = useMemo(() => valueFormatter(format, { locale }), [format, locale])
@@ -148,7 +153,7 @@ export const Sparkline = forwardRef<HTMLElement, SparklineProps>(function Sparkl
   const last = points.findLast((point) => point.y !== undefined)
 
   const described = [{ key, label: pivot ? key : humanise(key), format: formatValue }]
-  const xLabel = plain ? 'Point' : humanise(xKey)
+  const xLabel = numbered ? 'Point' : humanise(xKey)
   const { fill, stroke } = resolveColor(color)
   const barWidth = values.length > 0 ? 100 / values.length : 0
 

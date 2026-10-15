@@ -1,12 +1,4 @@
-import {
-  humanise,
-  isTimeAxis,
-  numericKeys,
-  pivotRows,
-  summarise,
-  tableOf,
-  type ChartRow,
-} from '#core/data'
+import { humanise, numericKeys, pivotRows, summarise, tableOf, type ChartRow } from '#core/data'
 import { valueFormatter } from '#core/format'
 
 const REGIONS = [
@@ -93,12 +85,6 @@ describe('series helpers', () => {
     expect(humanise('units_sold')).toBe('Units sold')
     expect(humanise('North')).toBe('North')
     expect(humanise('Harbour Street')).toBe('Harbour Street')
-  })
-
-  it('tells a time axis from categories', () => {
-    expect(isTimeAxis([{ d: '2026-03-01' }, { d: new Date() }], 'd')).toBe(true)
-    expect(isTimeAxis([{ d: 'Mar' }], 'd')).toBe(false)
-    expect(isTimeAxis([], 'd')).toBe(false)
   })
 })
 

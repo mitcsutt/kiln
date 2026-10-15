@@ -1,5 +1,3 @@
-import { toDate } from '#core/format'
-
 /** One row of chart data: an x value and a value per series, keyed by name. */
 export type ChartRow = Readonly<Record<string, unknown>>
 
@@ -121,18 +119,6 @@ export function humanise(key: string): string {
   if (spaced === '') return key
   const lower = spaced.replace(/\b[A-Z](?=[a-z])/g, (letter) => letter.toLowerCase())
   return lower.charAt(0).toUpperCase() + lower.slice(1)
-}
-
-/** Whether every present x value is a date (a `Date` or an ISO 8601 string). */
-export function isTimeAxis(rows: readonly ChartRow[], x: string): boolean {
-  let seen = false
-  for (const row of rows) {
-    const value = row[x]
-    if (value === null || value === undefined) continue
-    if (!toDate(value)) return false
-    seen = true
-  }
-  return seen
 }
 
 /** A series as the summary and the data table read it. */

@@ -53,7 +53,7 @@ catalog:
   react: ^19.3.0
   react-dom: ^19.3.0
   react-is: ^19.3.0
-  # The chart engine behind @mitcsutt/kiln-charts, hidden behind its API (#47, ADR 0039).
+  # The chart engine behind @mitcsutt/kiln-charts, hidden behind its API (#47, ADR 0041).
   recharts: ^3.10.1
   storybook: ^10.6.1
   turbo: ^2.11.7

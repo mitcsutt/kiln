@@ -407,6 +407,37 @@ describe('Chart', () => {
     expect(within(screen.getByRole('table')).getAllByRole('row')).toHaveLength(5)
   })
 
+  it('leaves selection and zoom to the plot, not the legend', async () => {
+    const onZoom = vi.fn()
+    const onPointClick = vi.fn()
+    const { container } = render(
+      <Revenue onPointClick={onPointClick}>
+        <Chart.XAxis />
+        <Chart.Line dataKey="revenue" />
+        <Chart.Line dataKey="costs" />
+        <Chart.Tooltip />
+        <Chart.Legend />
+        <Chart.Zoom onZoom={onZoom} />
+      </Revenue>,
+    )
+    const svg = surface(container)
+    act(() => {
+      svg.focus()
+    })
+    await screen.findByText('Jan 2026', { selector: 'p' })
+    const costs = within(screen.getByRole('list', { name: 'Legend' })).getByRole('button', {
+      name: 'Costs',
+    })
+    fireEvent.keyDown(costs, { key: 'ArrowRight', shiftKey: true })
+    expect(screen.queryByText(/Selected/)).toBeNull()
+    fireEvent.keyDown(costs, { key: 'Enter' })
+    fireEvent.click(costs)
+    expect(costs).toHaveAttribute('aria-pressed', 'false')
+    expect(onZoom).not.toHaveBeenCalled()
+    expect(onPointClick).not.toHaveBeenCalled()
+    expect(within(screen.getByRole('table')).getAllByRole('row')).toHaveLength(5)
+  })
+
   it('follows a controlled zoom', () => {
     render(
       <Revenue>
