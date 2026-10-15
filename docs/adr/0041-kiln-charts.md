@@ -1,4 +1,4 @@
-# 0040. How kiln-charts is built: a hidden engine, plain SVG where it can be, and a frame that renders on the server
+# 0041. How kiln-charts is built: a hidden engine, plain SVG where it can be, and a frame that renders on the server
 
 - **Status:** Accepted
 - **Date:** 2026-10-15
