@@ -553,6 +553,8 @@ export type {
   DropdownMenuSubContentProps,
 } from './components/overlays/DropdownMenu'
 export { Tooltip, TooltipProvider } from './components/overlays/Tooltip'
+export { CommandPalette } from './components/overlays/CommandPalette'
+export type { CommandAction, CommandPaletteProps } from './components/overlays/CommandPalette'
 export type {
   TooltipProps,
   TooltipProviderProps,
