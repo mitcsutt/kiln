@@ -1,14 +1,7 @@
-import {
-  forwardRef,
-  useEffect,
-  useId,
-  useRef,
-  useState,
-  type HTMLAttributes,
-  type ReactNode,
-} from 'react'
+import { forwardRef, useId, type HTMLAttributes, type ReactNode } from 'react'
 import { CheckIcon, CopyIcon } from '#icons'
 import { Button } from '#components/actions/Button'
+import { useClipboard } from '#components/actions/CopyButton'
 import { cx } from '#utils/cx'
 import { trimTrailingNewlines } from '#utils/newlines'
 import styles from './CodeBlock.module.css'
@@ -58,8 +51,6 @@ export interface CodeBlockProps extends Omit<HTMLAttributes<HTMLElement>, 'title
   /** Accessible name of the copy button. Default "Copy code". */
   copyLabel?: string
 }
-
-type CopyState = 'idle' | 'copied' | 'failed'
 
 /**
  * A block of source with an optional filename bar, line numbers, highlighted lines and a copy
@@ -117,8 +108,8 @@ export const CodeBlock = forwardRef<HTMLElement, CodeBlockProps>(function CodeBl
   },
   ref,
 ) {
-  const [copy, setCopy] = useState<CopyState>('idle')
-  const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+  const clipboard = useClipboard({ timeout: 2000 })
+  const copy = clipboard.copied ? 'copied' : clipboard.error ? 'failed' : 'idle'
   const captionId = useId()
   const source = trimTrailingNewlines(code)
   const lines = source.split('\n')
@@ -129,26 +120,6 @@ export const CodeBlock = forwardRef<HTMLElement, CodeBlockProps>(function CodeBl
       : undefined
   const highlighted = new Set(highlightLines)
   const hasHeader = Boolean(title) || Boolean(language) || copyable
-
-  useEffect(
-    () => () => {
-      clearTimeout(timer.current)
-    },
-    [],
-  )
-
-  const onCopy = async () => {
-    clearTimeout(timer.current)
-    try {
-      await navigator.clipboard.writeText(source)
-      setCopy('copied')
-    } catch {
-      setCopy('failed')
-    }
-    timer.current = setTimeout(() => {
-      setCopy('idle')
-    }, 2000)
-  }
 
   return (
     <figure
@@ -177,7 +148,7 @@ export const CodeBlock = forwardRef<HTMLElement, CodeBlockProps>(function CodeBl
               leadingIcon={copy === 'copied' ? <CheckIcon /> : <CopyIcon />}
               aria-label={copyLabel}
               onClick={() => {
-                void onCopy()
+                void clipboard.copy(source)
               }}
               data-state={copy}
             >

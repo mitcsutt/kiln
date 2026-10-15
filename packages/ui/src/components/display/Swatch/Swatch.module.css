@@ -1,0 +1,62 @@
+/*
+ * Component tokens (themes may set any of these on [data-theme]):
+ *   --swatch-radius   default var(--radius-chip)
+ *   --swatch-ring     the hairline that keeps a pale colour visible,
+ *                     default color-mix(in oklch, var(--color-ink) 22%, transparent)
+ *
+ * The fill is a categorical slot (data-color) or a colour from data, written inline as
+ * --_swatch. Sized in em, so it follows its host's text.
+ */
+.swatch {
+  --_swatch: var(--color-ink-subtle);
+  --_size: 0.75em;
+
+  display: inline-block;
+  flex: none;
+  inline-size: var(--_size);
+  block-size: var(--_size);
+  border-radius: var(--swatch-radius, var(--radius-chip));
+  background-color: var(--_swatch);
+  box-shadow: inset 0 0 0 1px
+    var(--swatch-ring, color-mix(in oklch, var(--color-ink) 22%, transparent));
+  vertical-align: middle;
+}
+
+.swatch[data-size='sm'] {
+  --_size: 0.625em;
+}
+.swatch[data-size='lg'] {
+  --_size: 1em;
+}
+
+.swatch[data-color='1'] {
+  --_swatch: var(--color-cat-1);
+}
+.swatch[data-color='2'] {
+  --_swatch: var(--color-cat-2);
+}
+.swatch[data-color='3'] {
+  --_swatch: var(--color-cat-3);
+}
+.swatch[data-color='4'] {
+  --_swatch: var(--color-cat-4);
+}
+.swatch[data-color='5'] {
+  --_swatch: var(--color-cat-5);
+}
+.swatch[data-color='6'] {
+  --_swatch: var(--color-cat-6);
+}
+.swatch[data-color='7'] {
+  --_swatch: var(--color-cat-7);
+}
+.swatch[data-color='8'] {
+  --_swatch: var(--color-cat-8);
+}
+
+/* Windows high contrast drops backgrounds: keep the mark as an outline. */
+@media (forced-colors: active) {
+  .swatch {
+    border: 1px solid CanvasText;
+  }
+}

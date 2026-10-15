@@ -133,6 +133,13 @@ export { Button } from './components/actions/Button'
 export type { ButtonProps, ButtonVariant, ButtonTone } from './components/actions/Button'
 export { IconButton } from './components/actions/IconButton'
 export type { IconButtonProps, IconButtonShape } from './components/actions/IconButton'
+export { CopyButton, useClipboard } from './components/actions/CopyButton'
+export type {
+  CopyButtonProps,
+  CopyButtonRenderProps,
+  UseClipboardOptions,
+  UseClipboardResult,
+} from './components/actions/CopyButton'
 export { ToggleChip } from './components/actions/ToggleChip'
 export type { ToggleChipProps, ToggleChipSize } from './components/actions/ToggleChip'
 export { ChipGroup } from './components/actions/ChipGroup'
@@ -305,6 +312,8 @@ export { Badge } from './components/display/Badge'
 export type { BadgeProps, BadgeVariant, BadgeSize } from './components/display/Badge'
 export { Tag, TagList } from './components/display/Tag'
 export type { TagProps, TagColor, TagSize, TagListProps } from './components/display/Tag'
+export { Swatch } from './components/display/Swatch'
+export type { SwatchProps, SwatchColor, SwatchSize } from './components/display/Swatch'
 export { Avatar, getInitials, avatarColor } from './components/display/Avatar'
 export type { AvatarProps, AvatarSize, AvatarColor } from './components/display/Avatar'
 export { AvatarGroup } from './components/display/AvatarGroup'
@@ -424,6 +433,12 @@ export { Flash } from './components/feedback/Flash'
 export type { FlashProps } from './components/feedback/Flash'
 export { StatusDot } from './components/feedback/StatusDot'
 export type { StatusDotProps } from './components/feedback/StatusDot'
+export { Indicator } from './components/feedback/Indicator'
+export type {
+  IndicatorProps,
+  IndicatorPosition,
+  IndicatorShape,
+} from './components/feedback/Indicator'
 export {
   RelativeTime,
   formatRelativeTime,

@@ -1,6 +1,7 @@
 import { forwardRef, type HTMLAttributes } from 'react'
 import { cx } from '#utils/cx'
 import type { Tone } from '#utils/tokens'
+import { Swatch, type SwatchColor } from '#components/display/Swatch'
 import styles from './Badge.module.css'
 
 export type BadgeVariant = 'soft' | 'solid' | 'outline'
@@ -14,6 +15,11 @@ export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
   size?: BadgeSize
   /** Leading status dot in the tone colour. Decorative — the label carries the meaning. */
   dot?: boolean
+  /**
+   * A leading colour swatch that says who or what the badge is about: a team, a label, a series.
+   * A categorical slot (`1` to `8`) or a CSS colour from data. Takes the place of `dot`.
+   */
+  swatch?: SwatchColor
 }
 
 /**
@@ -28,7 +34,16 @@ export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
  * Metadata and categories are Tags; a Badge says what *state* something is in.
  */
 export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
-  { tone = 'neutral', variant = 'soft', size = 'sm', dot = false, className, children, ...rest },
+  {
+    tone = 'neutral',
+    variant = 'soft',
+    size = 'sm',
+    dot = false,
+    swatch,
+    className,
+    children,
+    ...rest
+  },
   ref,
 ) {
   return (
@@ -40,7 +55,11 @@ export const Badge = forwardRef<HTMLSpanElement, BadgeProps>(function Badge(
       data-size={size}
       {...rest}
     >
-      {dot ? <span className={styles.dot} aria-hidden="true" /> : null}
+      {swatch !== undefined ? (
+        <Swatch color={swatch} />
+      ) : dot ? (
+        <span className={styles.dot} aria-hidden="true" />
+      ) : null}
       {children}
     </span>
   )

@@ -1,0 +1,164 @@
+/*
+ * Component tokens (themes may set any of these on [data-theme]):
+ *   --indicator-ring          the gap drawn round the mark so it reads over its child,
+ *                             default var(--color-surface)
+ *   --indicator-dot-size      default var(--space-2)
+ *   --indicator-count-size    height of a count, default var(--space-4)
+ *   --indicator-radius        default var(--radius-chip)
+ *   --indicator-pulse-scale   how far the processing ring swells, default 2.4
+ *
+ * The mark sits centred on the child's corner: the inset follows the child's outline (`shape`)
+ * plus `offset`, and negative margins of half the mark's height centre it on that point. A count
+ * grows inward from there, so it never needs a transform and RTL needs nothing extra.
+ */
+.indicator {
+  --_offset: 0px;
+  --_inset: 0px;
+
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  vertical-align: middle;
+}
+
+/* On a circle, the point of the outline nearest the corner is 1 − 1/√2 of the radius in. */
+.indicator[data-shape='round'] {
+  --_inset: 14.645%;
+}
+.indicator[data-shape='avatar'] {
+  --_inset: calc(var(--avatar-radius, var(--radius-avatar)) * 0.2929);
+}
+
+.mark {
+  --_c: var(--color-accent);
+  --_c-ink: var(--color-accent-ink);
+  --_h: var(--indicator-dot-size, var(--space-2));
+  --_edge: calc(var(--_inset) + var(--_offset));
+
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  box-sizing: border-box;
+  min-inline-size: var(--_h);
+  block-size: var(--_h);
+  border-radius: var(--indicator-radius, var(--radius-chip));
+  background: var(--_c);
+  color: var(--_c-ink);
+  box-shadow: 0 0 0 2px var(--indicator-ring, var(--color-surface));
+  font-family: var(--font-numeric);
+  font-stretch: var(--numeric-stretch);
+  font-size: var(--text-2xs);
+  font-weight: var(--label-weight);
+  font-variant-numeric: tabular-nums lining-nums;
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.mark[data-kind='count'] {
+  --_h: var(--indicator-count-size, var(--space-4));
+
+  padding-inline: calc(var(--_h) / 4);
+}
+.mark[data-kind='swatch'] {
+  display: inline-block;
+  inline-size: var(--_h);
+  block-size: var(--_h);
+  border-radius: var(--indicator-radius, var(--radius-chip));
+  box-shadow:
+    inset 0 0 0 1px var(--swatch-ring, color-mix(in oklch, var(--color-ink) 22%, transparent)),
+    0 0 0 2px var(--indicator-ring, var(--color-surface));
+}
+
+.indicator[data-pinned] > .mark {
+  position: absolute;
+  z-index: 1;
+}
+.indicator[data-position^='top'] > .mark {
+  inset-block-start: var(--_edge);
+  margin-block-start: calc(var(--_h) / -2);
+}
+.indicator[data-position^='bottom'] > .mark {
+  inset-block-end: var(--_edge);
+  margin-block-end: calc(var(--_h) / -2);
+}
+.indicator[data-position$='-start'] > .mark {
+  inset-inline-start: var(--_edge);
+  margin-inline-start: calc(var(--_h) / -2);
+}
+.indicator[data-position$='-end'] > .mark {
+  inset-inline-end: var(--_edge);
+  margin-inline-end: calc(var(--_h) / -2);
+}
+
+.mark[data-tone='neutral'] {
+  --_c: var(--color-surface-inverse);
+  --_c-ink: var(--color-ink-inverse);
+}
+.mark[data-tone='positive'] {
+  --_c: var(--tone-positive);
+  --_c-ink: var(--tone-positive-ink);
+}
+.mark[data-tone='caution'] {
+  --_c: var(--tone-caution);
+  --_c-ink: var(--tone-caution-ink);
+}
+.mark[data-tone='critical'] {
+  --_c: var(--tone-critical);
+  --_c-ink: var(--tone-critical-ink);
+}
+.mark[data-tone='info'] {
+  --_c: var(--tone-info);
+  --_c-ink: var(--tone-info-ink);
+}
+
+/* The same slow ring as LiveIndicator. */
+.mark[data-processing]::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: currentColor;
+  color: var(--_c);
+  animation: ring calc(var(--dur-3) * 5) var(--ease-out) infinite;
+}
+.mark[data-kind='swatch'][data-processing]::after {
+  background: inherit;
+}
+
+@keyframes ring {
+  0% {
+    scale: 1;
+    opacity: 0.5;
+  }
+  70%,
+  100% {
+    scale: var(--indicator-pulse-scale, 2.4);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mark[data-processing]::after {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+/* Read through the child's aria-describedby; kept in the tree for reading order. */
+.label {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (forced-colors: active) {
+  .mark {
+    border: 1px solid CanvasText;
+  }
+}

@@ -123,6 +123,18 @@ describe('CodeBlock', () => {
     expect(screen.getByRole('status')).toHaveTextContent('Copy failed')
   })
 
+  it('copies without the Clipboard API, through the shared fallback', async () => {
+    const user = userEvent.setup()
+    Object.defineProperty(navigator, 'clipboard', { value: undefined, configurable: true })
+    const execCommand = vi.fn(() => true)
+    Object.defineProperty(document, 'execCommand', { value: execCommand, configurable: true })
+    render(<CodeBlock code={code} />)
+    await user.click(screen.getByRole('button', { name: 'Copy code' }))
+    expect(execCommand).toHaveBeenCalledWith('copy')
+    expect(screen.getByRole('status')).toHaveTextContent('Copied to clipboard')
+    Reflect.deleteProperty(document, 'execCommand')
+  })
+
   it('makes the scroll area keyboard reachable and exposes wrap', () => {
     const { container } = render(<CodeBlock code={code} wrap copyable={false} />)
     expect(container.querySelector('pre')).toHaveAttribute('tabindex', '0')

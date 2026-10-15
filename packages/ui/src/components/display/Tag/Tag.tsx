@@ -2,6 +2,7 @@ import { Children, forwardRef, isValidElement, type HTMLAttributes, type MouseEv
 import { Slot } from 'radix-ui'
 import { cx } from '#utils/cx'
 import { CloseIcon } from '#icons'
+import { Swatch, type SwatchColor } from '#components/display/Swatch'
 import styles from './Tag.module.css'
 
 /** Categorical colour slot → `--color-cat-N`. */
@@ -11,6 +12,12 @@ export type TagSize = 'sm' | 'md'
 export interface TagProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'color'> {
   /** A categorical colour (category, person, topic). Omit for a neutral tag. */
   color?: TagColor
+  /**
+   * A leading colour swatch on a quiet tag, for a colour that belongs to the thing it labels: a
+   * label a user coloured, a series in a chart. A categorical slot (`1` to `8`) or a CSS colour.
+   * Use `color` instead to fill the whole tag with a categorical colour.
+   */
+  swatch?: SwatchColor
   /** `md` (default), or `sm` for dense lists of many tags. */
   size?: TagSize
   /** Renders a remove button after the label. Not rendered when `asChild`. */
@@ -33,7 +40,17 @@ export interface TagProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'color'>
  * for status. Group several in a `TagList`.
  */
 export const Tag = forwardRef<HTMLSpanElement, TagProps>(function Tag(
-  { color, size = 'md', onRemove, removeLabel, asChild = false, className, children, ...rest },
+  {
+    color,
+    swatch,
+    size = 'md',
+    onRemove,
+    removeLabel,
+    asChild = false,
+    className,
+    children,
+    ...rest
+  },
   ref,
 ) {
   const Comp = asChild ? Slot.Root : 'span'
@@ -48,6 +65,7 @@ export const Tag = forwardRef<HTMLSpanElement, TagProps>(function Tag(
       data-removable={canRemove || undefined}
       {...rest}
     >
+      {swatch !== undefined ? <Swatch color={swatch} /> : null}
       <Slot.Slottable>{children}</Slot.Slottable>
       {canRemove ? (
         <button type="button" className={styles.remove} aria-label={label} onClick={onRemove}>
