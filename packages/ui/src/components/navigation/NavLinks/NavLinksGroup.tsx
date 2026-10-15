@@ -187,6 +187,15 @@ export const NavLinksGroup = forwardRef<HTMLLIElement, NavLinksGroupProps>(funct
   const item = cx(styles.item, styles.group, visibilityClass({ hideBelow, hideAbove }), className)
 
   if (!vertical) {
+    const flyout = (
+      <NavLinksContext.Provider value={{ orientation: 'vertical', size }}>
+        <NavLinksGroupContext.Provider value={groupContext}>
+          <ul className={styles.sublist} role="list" data-flyout="">
+            {children}
+          </ul>
+        </NavLinksGroupContext.Provider>
+      </NavLinksContext.Provider>
+    )
     return (
       <li ref={ref} className={item} data-navlinks-group="" {...rest}>
         <Popover open={open} onOpenChange={setOpen}>
@@ -223,15 +232,10 @@ export const NavLinksGroup = forwardRef<HTMLLIElement, NavLinksGroupProps>(funct
               if ((event.target as Element).closest('a')) setOpen(false)
             }}
           >
-            <NavLinksContext.Provider value={{ orientation: 'vertical', size }}>
-              <NavLinksGroupContext.Provider value={groupContext}>
-                <ul className={styles.sublist} role="list" data-flyout="">
-                  {children}
-                </ul>
-              </NavLinksGroupContext.Provider>
-            </NavLinksContext.Provider>
+            {flyout}
           </Popover.Content>
         </Popover>
+        {open ? null : <div hidden>{flyout}</div>}
       </li>
     )
   }

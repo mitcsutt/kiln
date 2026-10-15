@@ -196,6 +196,28 @@ describe('NavLinks.Group', () => {
     expect(screen.getByRole('button', { name: 'Books' })).toHaveAttribute('aria-expanded', 'true')
   })
 
+  it('marks a closed horizontal group that holds a current page in your own component', () => {
+    function MyLink({ to, current }: { to: string; current: boolean }) {
+      return (
+        <NavLinks.Item href={to} active={current}>
+          VAT returns
+        </NavLinks.Item>
+      )
+    }
+    render(
+      <NavLinks label="Main">
+        <NavLinks.Group label="Reports">
+          <NavLinks.Item href="/reports/aged">Aged debt</NavLinks.Item>
+          <MyLink to="/reports/vat" current />
+        </NavLinks.Group>
+      </NavLinks>,
+    )
+    const reports = screen.getByRole('button', { name: 'Reports' })
+    expect(reports).toHaveAttribute('aria-expanded', 'false')
+    expect(reports).toHaveAttribute('data-contains-active')
+    expect(screen.queryByRole('link', { name: 'VAT returns' })).not.toBeInTheDocument()
+  })
+
   it('supports controlled state', async () => {
     const onChange = vi.fn()
     const { rerender } = render(<Sidebar settingsOpen={false} onSettingsChange={onChange} />)
