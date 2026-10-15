@@ -1,0 +1,277 @@
+/*
+ * Component tokens (themes may set any of these on [data-theme]):
+ *   --toast-width         default 24rem (capped by the viewport)
+ *   --toast-radius        default var(--radius-surface)
+ *   --toast-bg            default var(--color-surface-raised)
+ *   --toast-edge          default var(--color-line-strong)
+ *   --toast-rule-length   the tone tab on the top edge, default var(--space-6)
+ *
+ * A toast floats, so it takes the floating shadow; otherwise it's the Alert frame: a hairline,
+ * the tone only in the glyph and a short tab set into the top edge. No tinted box, no stripe.
+ * It slides in from the edge it's pinned to (the same edge a swipe sends it back to) and fades
+ * out; reduced motion keeps only the fade, which the collapsed durations make instant.
+ */
+.viewport {
+  --_gap: var(--space-3);
+  --_edge-gap: var(--space-5);
+
+  position: fixed;
+  z-index: var(--z-toast);
+  display: flex;
+  flex-direction: column;
+  gap: var(--_gap);
+  inline-size: min(var(--toast-width, 24rem), calc(100vw - 2 * var(--_edge-gap)));
+  max-block-size: 100vh;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  outline: none;
+}
+.viewport:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 4px;
+}
+
+.viewport[data-position^='top'] {
+  inset-block-start: var(--_edge-gap);
+  flex-direction: column-reverse;
+}
+.viewport[data-position^='bottom'] {
+  inset-block-end: var(--_edge-gap);
+}
+.viewport[data-position$='-start'] {
+  inset-inline-start: var(--_edge-gap);
+}
+.viewport[data-position$='-end'] {
+  inset-inline-end: var(--_edge-gap);
+}
+.viewport[data-position$='-center'] {
+  inset-inline-start: 50%;
+  translate: -50% 0;
+}
+
+.toast {
+  --_c: var(--tone-info);
+  --_text: var(--tone-info-text);
+  --_from-x: 0px;
+  --_from-y: 0px;
+
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  column-gap: var(--space-3);
+  padding-block: var(--space-3);
+  padding-inline: var(--space-4);
+  border: var(--border-width) solid var(--toast-edge, var(--color-line-strong));
+  border-radius: var(--toast-radius, var(--radius-surface));
+  background: var(--toast-bg, var(--color-surface-raised));
+  box-shadow: var(--shadow-float);
+  color: var(--color-ink);
+  font-family: var(--font-text);
+  font-size: var(--text-sm);
+  line-height: var(--leading-body);
+}
+.toast:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.toast::before {
+  content: '';
+  position: absolute;
+  inset-block-start: calc(var(--border-width) * -1);
+  inset-inline-start: var(--space-4);
+  inline-size: var(--toast-rule-length, var(--space-6));
+  block-size: calc(var(--border-width) + 2px);
+  background: var(--_c);
+}
+
+.toast[data-tone='neutral'] {
+  --_c: var(--color-ink-subtle);
+  --_text: var(--color-ink-muted);
+}
+.toast[data-tone='positive'] {
+  --_c: var(--tone-positive);
+  --_text: var(--tone-positive-text);
+}
+.toast[data-tone='caution'] {
+  --_c: var(--tone-caution);
+  --_text: var(--tone-caution-text);
+}
+.toast[data-tone='critical'] {
+  --_c: var(--tone-critical);
+  --_text: var(--tone-critical-text);
+}
+
+.glyph {
+  display: inline-flex;
+  block-size: calc(var(--text-md) * var(--leading-snug));
+  align-items: center;
+  color: var(--_text);
+  font-size: var(--text-lg);
+}
+.toast[data-loading] .glyph {
+  color: var(--color-ink-muted);
+  font-size: var(--text-md);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-inline-size: 0;
+}
+
+.title {
+  margin: 0;
+  color: var(--color-ink);
+  font-family: var(--heading-font);
+  font-size: var(--text-md);
+  font-weight: var(--heading-weight);
+  letter-spacing: var(--heading-tracking);
+  text-transform: var(--heading-transform);
+  line-height: var(--leading-snug);
+  text-wrap: balance;
+}
+
+.description {
+  margin: 0;
+  color: var(--color-ink-muted);
+  text-wrap: pretty;
+}
+.body > .description:first-child {
+  color: var(--color-ink);
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-2);
+  margin-block-start: var(--space-2);
+}
+
+.action {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--control-sm);
+  padding-inline: var(--space-3);
+  border: var(--border-width) solid var(--color-line-control);
+  border-radius: var(--radius-action);
+  background: transparent;
+  color: var(--color-ink);
+  font-family: var(--font-text);
+  font-size: var(--text-sm);
+  font-weight: var(--label-weight);
+  letter-spacing: var(--label-tracking);
+  text-transform: var(--label-transform);
+  cursor: pointer;
+  transition: background-color var(--dur-1) var(--ease-out);
+}
+@media (hover: hover) {
+  .action:hover {
+    background: var(--color-surface-sunken);
+  }
+}
+.action:focus-visible,
+.close:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.close {
+  display: grid;
+  place-items: center;
+  inline-size: var(--control-sm);
+  block-size: var(--control-sm);
+  margin-block: calc(var(--space-2) * -1);
+  margin-inline-end: calc(var(--space-2) * -1);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-action);
+  background: transparent;
+  color: var(--color-ink-muted);
+  font-size: var(--text-md);
+  cursor: pointer;
+  transition:
+    background-color var(--dur-1) var(--ease-out),
+    color var(--dur-1) var(--ease-out);
+}
+@media (hover: hover) {
+  .close:hover {
+    background: var(--color-surface-sunken);
+    color: var(--color-ink);
+  }
+}
+
+/* ── Motion: in from the pinned edge, out by fading; a swipe follows the finger ─────── */
+.toast[data-swipe-direction='right'] {
+  --_from-x: var(--space-7);
+}
+.toast[data-swipe-direction='left'] {
+  --_from-x: calc(var(--space-7) * -1);
+}
+.toast[data-swipe-direction='up'] {
+  --_from-y: calc(var(--space-7) * -1);
+}
+.toast[data-swipe-direction='down'] {
+  --_from-y: var(--space-7);
+}
+
+.toast[data-state='open'] {
+  animation: toast-in var(--dur-3) var(--ease-out);
+}
+.toast[data-state='open'][data-updated] {
+  animation: none;
+}
+.toast[data-state='closed'] {
+  animation: toast-out var(--dur-2) var(--ease-in-out) forwards;
+}
+.toast[data-swipe='move'] {
+  translate: var(--radix-toast-swipe-move-x, 0px) var(--radix-toast-swipe-move-y, 0px);
+}
+.toast[data-swipe='cancel'] {
+  translate: 0 0;
+  transition: translate var(--dur-2) var(--ease-out);
+}
+.toast[data-swipe='end'] {
+  animation: toast-swipe-out var(--dur-2) var(--ease-out) forwards;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    translate: var(--_from-x) var(--_from-y);
+  }
+}
+@keyframes toast-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes toast-swipe-out {
+  from {
+    translate: var(--radix-toast-swipe-end-x, 0px) var(--radix-toast-swipe-end-y, 0px);
+  }
+  to {
+    opacity: 0;
+    translate: calc(var(--radix-toast-swipe-end-x, 0px) + var(--_from-x))
+      calc(var(--radix-toast-swipe-end-y, 0px) + var(--_from-y));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast[data-state='open'] {
+    animation-name: toast-fade-in;
+  }
+  .toast[data-swipe='end'] {
+    animation-name: toast-out;
+  }
+  .toast[data-swipe='cancel'] {
+    transition: none;
+  }
+}
+@keyframes toast-fade-in {
+  from {
+    opacity: 0;
+  }
+}

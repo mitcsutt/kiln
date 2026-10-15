@@ -1,0 +1,28 @@
+/*
+ * Component tokens: none. The timing is the theme's: --dur-3 and --ease-out, which collapse
+ * under reduced motion.
+ *
+ * Closed, the height is 0; open, it's the content's. `useHeightMotion` sets `data-animating`
+ * and an inline block-size while it moves between the two, so the transition runs only then and
+ * an open Collapse never clips focus rings or popovers.
+ */
+.collapse {
+  min-inline-size: 0;
+}
+
+.collapse[data-state='closed'] {
+  block-size: 0;
+  overflow: hidden;
+}
+
+.collapse[data-animating] {
+  overflow: hidden;
+  transition: block-size var(--dur-3) var(--ease-out);
+}
+.collapse[data-animating][data-state='closed'] {
+  transition-duration: var(--dur-2);
+}
+
+.collapse[hidden] {
+  display: none;
+}

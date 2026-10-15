@@ -81,6 +81,12 @@ export type {
   ActionBarAlign,
   ActionBarElement,
 } from './components/layout/ActionBar'
+export { Collapse } from './components/layout/Collapse'
+export type { CollapseProps } from './components/layout/Collapse'
+export { Transition } from './components/layout/Transition'
+export type { TransitionProps, TransitionPreset } from './components/layout/Transition'
+export { ShowMore } from './components/layout/ShowMore'
+export type { ShowMoreProps, ShowMoreMode } from './components/layout/ShowMore'
 
 // Typography
 export { Heading, DEFAULT_HEADING_SIZE } from './components/typography/Heading'
@@ -415,6 +421,7 @@ export { NavLinks } from './components/navigation/NavLinks'
 export type {
   NavLinksProps,
   NavLinksItemProps,
+  NavLinksGroupProps,
   NavLinksOrientation,
   NavLinksSize,
 } from './components/navigation/NavLinks'
@@ -429,6 +436,12 @@ export type {
   AccordionTriggerProps,
   AccordionContentProps,
 } from './components/navigation/Accordion'
+export { Collapsible } from './components/navigation/Collapsible'
+export type {
+  CollapsibleProps,
+  CollapsibleTriggerProps,
+  CollapsibleContentProps,
+} from './components/navigation/Collapsible'
 export { Stepper } from './components/navigation/Stepper'
 export type { StepperProps, StepperStep, StepperStatus } from './components/navigation/Stepper'
 
@@ -437,6 +450,16 @@ export { Spinner } from './components/feedback/Spinner'
 export type { SpinnerProps } from './components/feedback/Spinner'
 export { Alert } from './components/feedback/Alert'
 export type { AlertProps, AlertTone, AlertVariant } from './components/feedback/Alert'
+export { Toaster, toast } from './components/feedback/Toaster'
+export type {
+  ToasterProps,
+  ToastPosition,
+  ToastOptions,
+  ToastTone,
+  ToastAction,
+  ToastPromiseMessage,
+  ToastPromiseMessages,
+} from './components/feedback/Toaster'
 export { LiveIndicator } from './components/feedback/LiveIndicator'
 export type { LiveIndicatorProps, LiveIndicatorVariant } from './components/feedback/LiveIndicator'
 export { Flash } from './components/feedback/Flash'

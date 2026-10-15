@@ -1,0 +1,49 @@
+---
+title: Clamping content
+description: Long content gets a ShowMore around it. Layout and text components never take a clamp prop.
+---
+
+Descriptions, comments, logs and long lists often need cutting short with a way to show the rest. In Kiln that's always the same move: wrap the content in [`ShowMore`](/docs/ui/layout/show-more). `Text`, `Prose`, `List`, `TagList`, `Table` and `CodeBlock` have no `maxLines` or `clamp` prop of their own, and they won't get one.
+
+## The rule
+
+**Layout and text components never take clamp props. Wrap them in `ShowMore`.**
+
+One wrapper means one toggle, in one place, with one label and one animation, whatever it wraps. It also means the clamp can't fight a component's own layout: a `Table` keeps its scrolling, a `CodeBlock` keeps its copy button, and a `TagList` keeps its wrapping.
+
+## Pick the clamp by the content
+
+| Content                              | Clamp       | Why                                                      |
+| ------------------------------------ | ----------- | -------------------------------------------------------- |
+| A paragraph of `Text`                | `lines`     | The cut falls between lines.                             |
+| `Prose`, a `Table`, a `CodeBlock`    | `maxHeight` | Their lines aren't all one height, or they have a frame. |
+| A `List`, a `TagList`, a set of rows | `maxItems`  | Whole items show or hide, and the toggle counts them.    |
+
+## Text
+
+<Example of="ui/patterns/clamping-content" name="Paragraph" />
+
+## Prose
+
+<Example of="ui/patterns/clamping-content" name="ProseBlock" />
+
+## Lists and tags
+
+`maxItems` counts the children of the one element it wraps, so it works around any list component.
+
+<Example of="ui/patterns/clamping-content" name="Rows" />
+
+<Example of="ui/patterns/clamping-content" name="Tags" />
+
+## Tables and code
+
+<Example of="ui/patterns/clamping-content" name="TableRows" />
+
+<Example of="ui/patterns/clamping-content" name="Code" />
+
+## Accessibility
+
+- The toggle is a button with `aria-expanded` and `aria-controls`, and it appears only when there's more to show.
+- Text clamped by `lines` or `maxHeight` stays in the page, so screen readers read all of it. If keyboard focus lands on a link below the cut, the content opens so the focused link is on screen.
+- Items hidden by `maxItems` are out of the page until the toggle shows them, and the toggle says how many there are.
+- Opening and closing animate with the theme's motion tokens, and change instantly under reduced motion.

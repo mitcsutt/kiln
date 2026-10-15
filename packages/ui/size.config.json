@@ -3,7 +3,7 @@
     {
       "name": "Base stylesheet (styles.css)",
       "file": "dist/styles.css",
-      "budget": 34500
+      "budget": 36300
     },
     {
       "name": "Preset: monograph.css",
@@ -73,10 +73,38 @@
       "budget": 2000
     },
     {
+      "name": "import { Collapse }",
+      "import": "{ Collapse }",
+      "from": "dist/index.js",
+      "isolatedTo": "dist/components/layout/Collapse/Collapse.js",
+      "budget": 1200
+    },
+    {
+      "name": "import { Transition }",
+      "import": "{ Transition }",
+      "from": "dist/index.js",
+      "isolatedTo": "dist/components/layout/Transition/Transition.js",
+      "budget": 1200
+    },
+    {
+      "name": "import { ShowMore }",
+      "import": "{ ShowMore }",
+      "from": "dist/index.js",
+      "isolatedTo": "dist/components/layout/ShowMore/ShowMore.js",
+      "budget": 2700
+    },
+    {
+      "name": "import { Toaster, toast }",
+      "import": "{ Toaster, toast }",
+      "from": "dist/index.js",
+      "isolatedTo": "dist/components/feedback/Toaster/Toaster.js",
+      "budget": 3300
+    },
+    {
       "name": "Everything (import *)",
       "import": "* as kiln",
       "from": "dist/index.js",
-      "budget": 49000
+      "budget": 54500
     }
   ]
 }

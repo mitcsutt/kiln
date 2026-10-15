@@ -1,0 +1,112 @@
+/*
+ * Component tokens:
+ *   --transition-distance   how far slide-up and slide-down travel, default var(--space-4)
+ *
+ * Every preset fades; the movement on top is small, because motion here answers an action rather
+ * than decorating it. Enter uses --dur-3 with --ease-out (things arriving), exit the shorter --dur-2
+ * with --ease-in-out. `pop` lands on --ease-spring, so it bounces only in themes that bounce.
+ * Animations run only once `data-animate` is set, so nothing moves on the first render.
+ */
+.transition {
+  --_distance: var(--transition-distance, var(--space-4));
+}
+
+.transition[hidden] {
+  display: none;
+}
+
+.transition[data-animate][data-state='open']:not([data-preset='none']) {
+  animation: fade-in var(--dur-3) var(--ease-out) both;
+}
+.transition[data-animate][data-state='closed']:not([data-preset='none']) {
+  animation: fade-out var(--dur-2) var(--ease-in-out) both;
+}
+
+.transition[data-animate][data-state='open'][data-preset='slide-up'] {
+  animation-name: slide-up-in;
+}
+.transition[data-animate][data-state='closed'][data-preset='slide-up'] {
+  animation-name: slide-up-out;
+}
+.transition[data-animate][data-state='open'][data-preset='slide-down'] {
+  animation-name: slide-down-in;
+}
+.transition[data-animate][data-state='closed'][data-preset='slide-down'] {
+  animation-name: slide-down-out;
+}
+.transition[data-animate][data-state='open'][data-preset='scale'] {
+  animation-name: scale-in;
+}
+.transition[data-animate][data-state='closed'][data-preset='scale'] {
+  animation-name: scale-out;
+}
+.transition[data-animate][data-state='open'][data-preset='pop'] {
+  animation-name: pop-in;
+  animation-timing-function: var(--ease-spring);
+}
+.transition[data-animate][data-state='closed'][data-preset='pop'] {
+  animation-name: scale-out;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes slide-up-in {
+  from {
+    opacity: 0;
+    translate: 0 var(--_distance);
+  }
+}
+@keyframes slide-up-out {
+  to {
+    opacity: 0;
+    translate: 0 var(--_distance);
+  }
+}
+@keyframes slide-down-in {
+  from {
+    opacity: 0;
+    translate: 0 calc(var(--_distance) * -1);
+  }
+}
+@keyframes slide-down-out {
+  to {
+    opacity: 0;
+    translate: 0 calc(var(--_distance) * -1);
+  }
+}
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    scale: 0.96;
+  }
+}
+@keyframes scale-out {
+  to {
+    opacity: 0;
+    scale: 0.96;
+  }
+}
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    scale: 0.9;
+  }
+}
+
+/* Reduced motion: nothing travels or grows. The durations are already ~0; this drops the movement. */
+@media (prefers-reduced-motion: reduce) {
+  .transition[data-animate][data-state='open']:not([data-preset='none']) {
+    animation-name: fade-in;
+  }
+  .transition[data-animate][data-state='closed']:not([data-preset='none']) {
+    animation-name: fade-out;
+  }
+}

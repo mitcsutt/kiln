@@ -1,6 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { NavLinks, Stack } from '@mitcsutt/kiln-ui'
-import { expect, within } from 'storybook/test'
+import {
+  Badge,
+  CalendarIcon as KilnCalendarIcon,
+  NavLinks,
+  Stack,
+  UsersIcon,
+  createIcon as createKilnIcon,
+} from '@mitcsutt/kiln-ui'
+import { expect, userEvent, waitFor, within } from 'storybook/test'
 import { fontSize, resolvedSize } from '#components/_story/fontSize'
 import { storyRoot } from '#components/_story/storyRoot'
 import { Inline } from '#components/layout/Inline'
@@ -162,5 +169,131 @@ export const Usage: Story = {
     await expect(fontSize(md)).toBe(resolvedSize(md, 'var(--text-md)'))
     await expect(fontSize(sm)).toBe(resolvedSize(sm, 'var(--text-sm)'))
     await expect(fontSize(sm)).toBeGreaterThan(resolvedSize(sm, 'var(--text-xs)'))
+  },
+}
+
+const LedgerIcon = createKilnIcon(
+  'LedgerIcon',
+  <>
+    <rect x="4.5" y="3.5" width="11" height="13" rx="1" />
+    <path d="M7.5 7.5h5M7.5 10.5h5M7.5 13.5h3" />
+  </>,
+)
+const GearIcon = createKilnIcon(
+  'GearIcon',
+  <>
+    <circle cx="10" cy="10" r="2.5" />
+    <path d="M10 3.5v2M10 14.5v2M3.5 10h2M14.5 10h2M5.4 5.4l1.4 1.4M13.2 13.2l1.4 1.4M5.4 14.6l1.4-1.4M13.2 6.8l1.4-1.4" />
+  </>,
+)
+
+/**
+ * `NavLinks.Group` nests links under a section, and groups nest inside groups. Each level is
+ * indented on a guide rule, and labels stay at body size at every depth. The group holding the
+ * current page opens by itself; close it and a ring shows where the current page is. Items and
+ * groups take an `icon` and a `trailing` count.
+ */
+export const Groups: Story = {
+  tags: ['docs'],
+  render: () => (
+    <NavLinks label="Workspace" orientation="vertical" size="sm">
+      <NavLinks.Item href="#calendar" icon={<KilnCalendarIcon />}>
+        Calendar
+      </NavLinks.Item>
+      <NavLinks.Group label="Ledgers" icon={<LedgerIcon />} trailing={<Badge>3</Badge>}>
+        <NavLinks.Item href="#granton">Granton yard</NavLinks.Item>
+        <NavLinks.Item href="#leith" active>
+          Leith yard
+        </NavLinks.Item>
+        <NavLinks.Item href="#newhaven">Newhaven yard</NavLinks.Item>
+      </NavLinks.Group>
+      <NavLinks.Item href="#people" icon={<UsersIcon />}>
+        People
+      </NavLinks.Item>
+      <NavLinks.Group label="Settings" icon={<GearIcon />}>
+        <NavLinks.Item href="#profile">Profile</NavLinks.Item>
+        <NavLinks.Item href="#billing">Billing</NavLinks.Item>
+        <NavLinks.Group label="Integrations">
+          <NavLinks.Item href="#bank-feeds">Bank feeds</NavLinks.Item>
+          <NavLinks.Item href="#payroll">Payroll export</NavLinks.Item>
+        </NavLinks.Group>
+      </NavLinks.Group>
+    </NavLinks>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(storyRoot(canvasElement))
+    const ledgers = canvas.getByRole('button', { name: 'Ledgers 3' })
+    await expect(ledgers).toHaveAttribute('aria-expanded', 'true')
+    await expect(canvas.getByRole('link', { name: 'Leith yard' })).toHaveAttribute(
+      'aria-current',
+      'page',
+    )
+    // Keyboard: Down to Settings, Right opens it, Right again steps in, Left steps back out.
+    canvas.getByRole('link', { name: 'People' }).focus()
+    await userEvent.keyboard('{ArrowDown}')
+    const settings = canvas.getByRole('button', { name: 'Settings' })
+    await expect(settings).toHaveFocus()
+    await userEvent.keyboard('{ArrowRight}')
+    await expect(settings).toHaveAttribute('aria-expanded', 'true')
+    await userEvent.keyboard('{ArrowRight}')
+    await waitFor(() => expect(canvas.getByRole('link', { name: 'Profile' })).toHaveFocus())
+    await userEvent.keyboard('{ArrowLeft}')
+    await expect(settings).toHaveFocus()
+    // Nested labels stay at the same size as the top level.
+    await expect(fontSize(canvas.getByRole('link', { name: 'Profile' }))).toBe(
+      fontSize(canvas.getByRole('link', { name: 'People' })),
+    )
+  },
+}
+
+/**
+ * A section with a landing page of its own: give the group `href`, or a router `link` such as
+ * `link={<Link to="/reports" />}`. The label becomes a link, with its own button to open and close
+ * the group.
+ */
+export const LinkedGroup: Story = {
+  tags: ['docs'],
+  render: () => (
+    <NavLinks label="Reports" orientation="vertical">
+      <NavLinks.Item href="#overview">Overview</NavLinks.Item>
+      <NavLinks.Group label="Reports" href="#reports" defaultOpen>
+        <NavLinks.Item href="#aged-debt">Aged debt</NavLinks.Item>
+        <NavLinks.Item href="#vat">VAT returns</NavLinks.Item>
+      </NavLinks.Group>
+    </NavLinks>
+  ),
+}
+
+/**
+ * In a horizontal nav, a group opens its links in a panel under the button, so a top bar gets one
+ * level of nesting. Following a link closes the panel.
+ */
+export const TopBarGroups: Story = {
+  tags: ['docs'],
+  render: () => (
+    <NavLinks label="Main">
+      <NavLinks.Item href="#home">Home</NavLinks.Item>
+      <NavLinks.Group label="Products">
+        <NavLinks.Item href="#ledgers">Ledgers</NavLinks.Item>
+        <NavLinks.Item href="#payroll" active>
+          Payroll
+        </NavLinks.Item>
+        <NavLinks.Item href="#expenses">Expenses</NavLinks.Item>
+      </NavLinks.Group>
+      <NavLinks.Item href="#pricing">Pricing</NavLinks.Item>
+    </NavLinks>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(storyRoot(canvasElement))
+    const page = within(canvasElement.ownerDocument.body)
+    const products = canvas.getByRole('button', { name: 'Products' })
+    await userEvent.click(products)
+    const panel = await page.findByRole('dialog', { name: 'Products' })
+    await expect(within(panel).getByRole('link', { name: 'Payroll' })).toHaveAttribute(
+      'aria-current',
+      'page',
+    )
+    await userEvent.keyboard('{Escape}')
+    await waitFor(() => expect(products).toHaveAttribute('aria-expanded', 'false'))
   },
 }
