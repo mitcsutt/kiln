@@ -1,0 +1,4 @@
+{
+  "title": "Presets",
+  "pages": ["time-series", "bars", "share", "bar-list", "sparkline", "heatmap"]
+}

@@ -1,6 +1,6 @@
 ---
 title: Introduction
-description: Kiln is a themeable React design system, a form library, a drag-and-drop library, and the configs they're built with. Start here.
+description: Kiln is a themeable React design system, a form library, a drag-and-drop library, a chart library, and the configs they're built with. Start here.
 ---
 
 Kiln is a set of packages for building React apps that look like they were designed on purpose:
@@ -8,6 +8,7 @@ Kiln is a set of packages for building React apps that look like they were desig
 - **[`@mitcsutt/kiln-ui`](/docs/ui)**: one set of accessible components whose entire look comes from a theme. A theme is one CSS file of tokens; Kiln ships a neutral default and a set of presets, and you can write your own.
 - **[`@mitcsutt/kiln-forms`](/docs/forms)**: typed forms on TanStack Form, written as components or described as JSON, rendered entirely through kiln-ui.
 - **[`@mitcsutt/kiln-dnd`](/docs/drag-and-drop)**: sortable lists, kanban boards, drop zones and dashboard grids, with one keyboard model and one announcer for all of them.
+- **[`@mitcsutt/kiln-charts`](/docs/charts)**: charts drawn in the theme's colours, accessible and rendered on the server, from presets or parts you compose.
 - **[Tooling](/docs/tooling)**: the ESLint, Prettier and TypeScript configs Kiln is built with, and the [AI tooling](/docs/tooling/ai) that teaches coding agents to use Kiln.
 
 Nothing is published to npm yet. These docs describe the packages as they'll be released.
@@ -24,18 +25,19 @@ Nothing is published to npm yet. These docs describe the packages as they'll be 
 - Building an interface: [UI, getting started](/docs/ui).
 - Building a form: [Forms, getting started](/docs/forms).
 - Adding drag and drop: [Drag and drop](/docs/drag-and-drop).
+- Adding a chart: [Charts, overview](/docs/charts).
 - Writing a theme: [Theming](/docs/ui/foundations/theming).
 - Setting up a project's tooling: [Tooling](/docs/tooling).
 - Using Kiln with a coding agent: [AI tooling](/docs/tooling/ai).
 
 ## How these docs are organised
 
-The docs have one section per package: **UI** (foundations, then components by group, then themes and patterns), **Forms** (getting started, fields, layouts, hooks, schema), **Drag and drop** (getting started, components, hooks) and **Tooling**. The sidebar shows the section you're in, and the links at the top switch between them. Kiln's Storybook uses the same tree, so a component lives at the same path in both.
+The docs have one section per package: **UI** (foundations, then components by group, then themes and patterns), **Forms** (getting started, fields, layouts, hooks, schema), **Drag and drop** (getting started, components, hooks), **Charts** (getting started, presets, primitives, building blocks) and **Tooling**. The sidebar shows the section you're in, and the links at the top switch between them. Kiln's Storybook uses the same tree, so a component lives at the same path in both.
 
 Every component page has a live example rendered from the real package, the code that renders it, and an API table generated from the component's TypeScript types.
 
 ## For agents
 
-`@mitcsutt/kiln-ui`, `@mitcsutt/kiln-forms` and `@mitcsutt/kiln-dnd` ship agent skills, built from these pages and versioned with the code. Run `npx @tanstack/intent@latest install` in your project and [TanStack Intent](https://tanstack.com/intent) adds them to your agent's instructions.
+`@mitcsutt/kiln-ui`, `@mitcsutt/kiln-forms`, `@mitcsutt/kiln-dnd` and `@mitcsutt/kiln-charts` ship agent skills, built from these pages and versioned with the code. Run `npx @tanstack/intent@latest install` in your project and [TanStack Intent](https://tanstack.com/intent) adds them to your agent's instructions.
 
 Every page is also available as Markdown: add `.md` to its URL, or use the **View as Markdown** link under the title. [`/llms.txt`](/llms.txt) lists every page, and [`/llms-full.txt`](/llms-full.txt) is the whole site in one file. [AI tooling](/docs/tooling/ai) lists every skill and covers both in full.

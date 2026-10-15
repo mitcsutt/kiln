@@ -1,0 +1,54 @@
+---
+title: Data and formatting
+description: Wide and long rows, pivot, missing values, and how numbers and dates are written with format, locale and timeZone.
+---
+
+## Rows
+
+Charts take an array of plain objects. **Wide rows** have one key per series, which is what the charts draw natively:
+
+```ts
+const rows = [
+  { month: '2026-03-01', online: 420, store: 310 },
+  { month: '2026-04-01', online: 455, store: 298 },
+]
+```
+
+**Long rows** have one row per series and x, which is what most queries return. Pass them with `pivot`, naming the key that becomes the series (`by`) and the key that holds the value (`value`):
+
+```ts
+const rows = [
+  { month: '2026-03-01', channel: 'Online', orders: 420 },
+  { month: '2026-03-01', channel: 'In store', orders: 310 },
+]
+// <Bars data={rows} x="month" pivot={{ by: 'channel', value: 'orders' }} label="Orders" />
+```
+
+A chart can show eight categorical colours apart, so past eight series `pivot` keeps the seven largest by total and groups the rest as one neutral "Other". Change that with `limit` and `other`, or keep everything with `limit: false`. `Share` and `BarList` take long rows the same way, without an x; `Heatmap` keeps every column.
+
+Series and parts are named for you. A key from wide rows is made readable, so `unitsSold` reads "Units sold". A value from `pivot`'s `by` key is data you wrote, so it's shown exactly as written: `iOS` stays `iOS`. To name either another way, give the series a `label`, or pass `labels` to `Share` and `BarList`.
+
+<Example of="Chart" name="Pivot" />
+
+## x values
+
+`x` names the key of each row's x value: a category (`'Harbour'`), or a date (a `Date` or an ISO 8601 string such as `'2026-03-01'`). Points sit evenly along the axis, one per row, in the order of your rows. For a gap in time, include the row with its values missing: lines break there instead of joining across it.
+
+## Writing values
+
+`format` decides how values read in the tooltip, the axis, the legend and the data table:
+
+- `number` (the default): grouped digits, up to two decimals.
+- `integer`, `compact` (`12K`, `3.4M`) and `percent` (a fraction, so `0.125` reads `12.5%`).
+- any `Intl.NumberFormatOptions`, such as `{ style: 'currency', currency: 'EUR' }`.
+- a function from the value to its text.
+
+A series can take its own `format`, and an axis can take a shorter one (`<Chart.YAxis format="compact" />`) while the tooltip keeps the full value.
+
+## Writing dates
+
+`xFormat` decides how dates read: `date` (the default, `3 Mar`), `month`, `year`, `weekday`, `time`, `datetime`, any `Intl.DateTimeFormatOptions`, or a function.
+
+`locale` and `timeZone` go straight to `Intl`. Without them a chart uses the reader's, which can differ between your server and the reader's browser. Set both when a chart renders on the server, so the server's text and the browser's match. A date string with no offset (`'2026-03-01'` or `'2026-03-01T14:30'`) is a wall-clock time, not an instant: it prints as written, on the server and in every time zone, whatever `timeZone` says. `timeZone` applies only to instants: `Date` objects and strings with `Z` or an offset (`'2026-03-01T14:30Z'`, `'2026-03-01T14:30+10:00'`). An `xFormat` function gets a wall-clock string as a `Date` in the runtime's own zone with the fields as written, so `getHours()`, date-fns `format` or `toLocaleTimeString()` read `'2026-03-01T14:30'` as 14:30 everywhere; it gets instants unchanged.
+
+<Example of="TimeSeries" name="Stacked" />
