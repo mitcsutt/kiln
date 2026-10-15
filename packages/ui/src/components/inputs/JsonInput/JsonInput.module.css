@@ -1,0 +1,185 @@
+/*
+ * The box, its border and its states are the field box (inputs/internal/control.module.css).
+ *
+ * Component tokens (themes may set any of these on [data-theme]):
+ *   --json-input-size        code size, default var(--text-sm)
+ *   --json-input-error-bg    the marked line's fill, default var(--tone-critical-soft)
+ *
+ * The text is a transparent <textarea> laid over a highlighted <pre> in one grid cell: the
+ * browser edits, the <pre> paints. Both must set the same font, padding, line height, tab size
+ * and wrapping, or the caret drifts from the glyphs. Line numbers sit in each line's start
+ * padding, so they stay with their line when it wraps. --_min-rows, --_max-rows and --_digits
+ * are written inline.
+ */
+.root {
+  --_min-rows: 4;
+  --_max-rows: 0;
+  --_digits: 1;
+  --_pad: var(--space-3);
+  --_py: var(--space-2);
+  --_gutter: 0px;
+
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+  overflow: hidden;
+  padding: 0;
+}
+
+.root[data-line-numbers] {
+  --_gutter: calc(var(--_digits) * 1ch + var(--space-3));
+}
+
+/* The ring goes round the whole box while the text has focus, never round the toolbar's buttons. */
+.root:has(.textarea:focus-visible) {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-1);
+  padding: var(--space-1);
+  border-block-end: var(--border-width) solid var(--color-line);
+}
+
+.scroller {
+  overflow: auto;
+  font-family: var(--font-mono);
+  font-stretch: var(--mono-stretch);
+  font-size: var(--json-input-size, var(--text-sm));
+  font-variant-ligatures: none;
+  line-height: 1.6;
+  scrollbar-width: thin;
+}
+.root[data-max-rows] .scroller {
+  max-block-size: calc(var(--_max-rows) * 1lh + 2 * var(--_py));
+}
+
+.stack {
+  display: grid;
+  min-inline-size: 100%;
+  inline-size: max-content;
+  min-block-size: calc(var(--_min-rows) * 1lh + 2 * var(--_py));
+}
+.root[data-wrap] .stack {
+  inline-size: 100%;
+}
+
+.highlight,
+.textarea {
+  grid-area: 1 / 1;
+  box-sizing: border-box;
+  margin: 0;
+  padding-block: var(--_py);
+  font: inherit;
+  letter-spacing: 0;
+  tab-size: 2;
+  white-space: pre;
+  overflow-wrap: normal;
+}
+.root[data-wrap] .highlight,
+.root[data-wrap] .textarea {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.highlight {
+  padding-inline: 0;
+  color: var(--color-ink);
+  pointer-events: none;
+  user-select: none;
+}
+
+.line {
+  display: block;
+  position: relative;
+  min-block-size: 1lh;
+  padding-inline: calc(var(--_pad) + var(--_gutter)) var(--_pad);
+}
+.root[data-line-numbers] .line::before {
+  content: attr(data-line);
+  position: absolute;
+  inset-inline-start: 0;
+  inline-size: calc(var(--_pad) + var(--_digits) * 1ch);
+  text-align: end;
+  color: var(--color-ink-subtle);
+  font-variant-numeric: tabular-nums;
+}
+.line[data-error] {
+  background: var(--json-input-error-bg, var(--tone-critical-soft));
+}
+.root[data-line-numbers] .line[data-error]::before {
+  color: var(--tone-critical-text);
+}
+
+.textarea {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  min-inline-size: 0;
+  padding-inline: calc(var(--_pad) + var(--_gutter)) var(--_pad);
+  border: 0;
+  border-radius: 0;
+  outline: none;
+  background: transparent;
+  color: transparent;
+  caret-color: var(--color-ink);
+  overflow: hidden;
+  resize: none;
+}
+.textarea::selection {
+  background: var(--color-selection);
+  color: transparent;
+}
+.textarea::placeholder {
+  color: var(--color-ink-subtle);
+}
+.textarea:disabled {
+  cursor: not-allowed;
+}
+
+/* The theme's code colours, as CodeBlock's highlighting maps them. */
+.token[data-token='type'] {
+  color: var(--tone-info-text);
+}
+.token[data-token='string'] {
+  color: var(--tone-positive-text);
+}
+.token[data-token='constant'] {
+  color: var(--tone-caution-text);
+}
+.token[data-token='punctuation'] {
+  color: var(--color-ink-muted);
+}
+
+.root[data-disabled] .highlight {
+  color: var(--color-ink-subtle);
+}
+.root[data-disabled] .token {
+  color: inherit;
+}
+
+.status {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* High contrast: show the text itself, since the painted layer may lose its colours. */
+@media (forced-colors: active) {
+  .textarea {
+    color: CanvasText;
+  }
+  .highlight {
+    visibility: hidden;
+  }
+}

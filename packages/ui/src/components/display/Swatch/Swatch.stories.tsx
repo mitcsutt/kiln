@@ -1,5 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Badge, Inline, Stack, Swatch, Table, Tag, TagList, Text, ToggleChip } from '@mitcsutt/kiln-ui'
+import {
+  Badge,
+  Inline,
+  Stack,
+  Swatch,
+  Table,
+  Tag,
+  TagList,
+  Text,
+  ToggleChip,
+} from '@mitcsutt/kiln-ui'
 import { expect } from 'storybook/test'
 
 const meta = {

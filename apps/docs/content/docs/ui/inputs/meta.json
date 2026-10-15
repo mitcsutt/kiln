@@ -23,6 +23,7 @@
     "combobox",
     "tags-input",
     "file-drop",
+    "json-input",
     "---Fields---",
     "text-field",
     "textarea-field",
@@ -45,6 +46,7 @@
     "rating-field",
     "combobox-field",
     "tags-field",
-    "file-field"
+    "file-field",
+    "json-field"
   ]
 }

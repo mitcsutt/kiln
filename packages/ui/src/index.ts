@@ -297,6 +297,16 @@ export type {
 } from './components/inputs/FileDrop'
 export { FileField } from './components/inputs/FileField'
 export type { FileFieldProps } from './components/inputs/FileField'
+export { JsonInput, validateJson, formatJson, minifyJson } from './components/inputs/JsonInput'
+export type {
+  JsonInputProps,
+  JsonValidation,
+  JsonInputError,
+  JsonIndent,
+  JsonSyntaxError,
+} from './components/inputs/JsonInput'
+export { JsonField, describeJsonError } from './components/inputs/JsonField'
+export type { JsonFieldProps } from './components/inputs/JsonField'
 
 // Display
 export { Card } from './components/display/Card'

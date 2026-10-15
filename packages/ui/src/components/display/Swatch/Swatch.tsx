@@ -70,10 +70,7 @@ export const Swatch = forwardRef<HTMLSpanElement, SwatchProps>(function Swatch(
       className={cx(styles.swatch, className)}
       data-color={category ? color : undefined}
       data-size={size}
-      style={mergeStyles(
-        category ? undefined : ({ '--_swatch': color } as CSSProperties),
-        style,
-      )}
+      style={mergeStyles(category ? undefined : ({ '--_swatch': color } as CSSProperties), style)}
       role={label ? 'img' : undefined}
       aria-label={label}
       aria-hidden={label ? undefined : true}

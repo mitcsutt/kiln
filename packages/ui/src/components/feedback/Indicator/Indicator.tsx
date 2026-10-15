@@ -17,7 +17,10 @@ import styles from './Indicator.module.css'
 export type IndicatorPosition = 'top-start' | 'top-end' | 'bottom-start' | 'bottom-end'
 export type IndicatorShape = 'rect' | 'round' | 'avatar'
 
-export interface IndicatorProps extends Omit<HTMLAttributes<HTMLSpanElement>, 'children' | 'color'> {
+export interface IndicatorProps extends Omit<
+  HTMLAttributes<HTMLSpanElement>,
+  'children' | 'color'
+> {
   /**
    * The element the mark is pinned to: an `IconButton`, an `Avatar`, a link. It must accept
    * `aria-describedby`, which carries `label`. Omit it to show the mark on its own, in the flow.

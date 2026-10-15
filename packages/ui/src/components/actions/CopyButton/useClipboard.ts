@@ -30,6 +30,8 @@ export interface UseClipboardResult {
  * selection.
  */
 function copyWithTextarea(text: string): boolean {
+  // execCommand is deprecated, but it's the only way to copy where the Clipboard API is missing.
+  // eslint-disable-next-line @typescript-eslint/no-deprecated -- the fallback, see above
   if (typeof document === 'undefined' || typeof document.execCommand !== 'function') return false
   const active = document.activeElement
   const selection = document.getSelection()
@@ -44,8 +46,9 @@ function copyWithTextarea(text: string): boolean {
   area.style.pointerEvents = 'none'
   document.body.append(area)
   area.select()
-  let ok = false
+  let ok: boolean
   try {
+    // eslint-disable-next-line @typescript-eslint/no-deprecated -- the fallback, see above
     ok = document.execCommand('copy')
   } catch {
     ok = false
@@ -63,7 +66,6 @@ function copyWithTextarea(text: string): boolean {
 async function writeClipboard(text: string): Promise<void> {
   const clipboard = typeof navigator === 'undefined' ? undefined : navigator.clipboard
   // `navigator.clipboard` is missing in insecure contexts and older browsers.
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- see above
   if (clipboard?.writeText) {
     try {
       await clipboard.writeText(text)

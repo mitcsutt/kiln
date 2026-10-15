@@ -4,8 +4,7 @@ import { IconButton } from '#components/actions/IconButton'
 import { must } from '#test/must'
 import { Indicator } from './Indicator'
 
-const markOf = (container: HTMLElement) =>
-  container.querySelector('[data-kind]') as HTMLElement | null
+const markOf = (container: HTMLElement) => container.querySelector<HTMLElement>('[data-kind]')
 
 describe('Indicator', () => {
   it('adds its label to the child’s description and hides the mark', () => {

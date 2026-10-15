@@ -59,9 +59,9 @@ describe('the swatch prop', () => {
       </>,
     )
     const tag = screen.getByText('Docs')
-    expect(must(tag.firstElementChild as HTMLElement | null).style.getPropertyValue('--_swatch')).toBe(
-      '#0b7285',
-    )
+    expect(
+      must(tag.firstElementChild as HTMLElement | null).style.getPropertyValue('--_swatch'),
+    ).toBe('#0b7285')
     const link = screen.getByRole('link', { name: 'Design' })
     expect(link.querySelector('[data-color="2"]')).not.toBeNull()
   })
@@ -82,6 +82,7 @@ describe('the swatch prop', () => {
     )
     expect(screen.getByText('Live').children).toHaveLength(0)
     expect(screen.getByText('Docs').children).toHaveLength(0)
-    expect(screen.getByRole('button', { name: 'Mine' }).querySelector('[data-color]')).toBeNull()
+    const chip = screen.getByRole('button', { name: 'Mine' })
+    expect(chip.querySelector('[data-color]')).toBeNull()
   })
 })

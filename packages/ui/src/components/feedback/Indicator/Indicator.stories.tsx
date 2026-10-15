@@ -138,7 +138,12 @@ export const Offset: Story = {
         <IconButton label="Activity, offset 2" icon={<MessageIcon />} />
       </Indicator>
       <Indicator shape="round" label="New activity">
-        <IconButton label="Activity, round" icon={<MessageIcon />} shape="round" variant="outline" />
+        <IconButton
+          label="Activity, round"
+          icon={<MessageIcon />}
+          shape="round"
+          variant="outline"
+        />
       </Indicator>
     </Inline>
   ),
@@ -149,13 +154,11 @@ export const TonesAndPositions: Story = {
   render: () => (
     <Stack gap={6}>
       <Inline gap={6}>
-        {(['neutral', 'accent', 'positive', 'caution', 'critical', 'info'] as const).map(
-          (tone) => (
-            <Indicator key={tone} tone={tone} count={8} label={`8 ${tone}`}>
-              <IconButton label={tone} icon={<MessageIcon />} variant="outline" />
-            </Indicator>
-          ),
-        )}
+        {(['neutral', 'accent', 'positive', 'caution', 'critical', 'info'] as const).map((tone) => (
+          <Indicator key={tone} tone={tone} count={8} label={`8 ${tone}`}>
+            <IconButton label={tone} icon={<MessageIcon />} variant="outline" />
+          </Indicator>
+        ))}
       </Inline>
       <Inline gap={6}>
         {(['top-start', 'top-end', 'bottom-start', 'bottom-end'] as const).map((position) => (
