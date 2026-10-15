@@ -60,6 +60,27 @@ describe('xFormatter', () => {
     }
   })
 
+  it('gives a custom formatter the wall clock as written in every runtime zone', () => {
+    const zone = process.env.TZ
+    const clock = (date: Date) =>
+      `${String(date.getHours())}:${String(date.getMinutes()).padStart(2, '0')}`
+    try {
+      const written = ['UTC', 'America/New_York', 'Australia/Sydney'].map((tz) => {
+        process.env.TZ = tz
+        return [
+          xFormatter(clock)('2026-03-01T14:30'),
+          xFormatter((d) => String(d.getDate()))('2026-03-01'),
+        ]
+      })
+      expect(written).toEqual(Array(3).fill(['14:30', '1']))
+      process.env.TZ = 'Australia/Sydney'
+      expect(xFormatter(clock)('2026-03-01T03:30Z')).toBe('14:30')
+    } finally {
+      if (zone === undefined) delete process.env.TZ
+      else process.env.TZ = zone
+    }
+  })
+
   it('writes a datetime with an offset in the given time zone', () => {
     const format = xFormatter('time', { locale: 'en-GB', timeZone: 'Australia/Sydney' })
     expect(format('2026-03-01T03:30Z')).toBe('14:30')
