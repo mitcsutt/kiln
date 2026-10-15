@@ -146,6 +146,37 @@ describe('Toaster', () => {
     expect(done).not.toHaveAttribute('data-loading')
   })
 
+  it('replaces the loading message rather than merging into it', async () => {
+    render(<Toaster />)
+    const cancel = vi.fn()
+    let resolve: () => void = () => undefined
+    const work = new Promise<void>((done) => {
+      resolve = done
+    })
+    act(() => {
+      void toast.promise(work, {
+        loading: {
+          title: 'Uploading',
+          description: '3 receipts',
+          action: { label: 'Cancel', onClick: cancel },
+        },
+        success: 'Uploaded',
+        error: 'Upload failed',
+      })
+    })
+    const loading = within(region()).getByRole('listitem')
+    expect(loading).toHaveTextContent('3 receipts')
+    expect(within(loading).getByRole('button', { name: 'Cancel' })).toBeInTheDocument()
+    await act(async () => {
+      resolve()
+      await work
+    })
+    const done = within(region()).getByRole('listitem')
+    expect(done).toHaveTextContent('Uploaded')
+    expect(done).not.toHaveTextContent('3 receipts')
+    expect(within(done).queryByRole('button', { name: 'Cancel' })).not.toBeInTheDocument()
+  })
+
   it('reports a rejected promise in the critical tone', async () => {
     render(<Toaster />)
     const work = Promise.reject(new Error('Server busy'))

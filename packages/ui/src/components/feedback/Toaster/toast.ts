@@ -190,6 +190,9 @@ toast.promise = <T>(promise: Promise<T>, messages: ToastPromiseMessages<T>): Pro
       upsert({
         tone: 'positive',
         duration: undefined,
+        description: undefined,
+        action: undefined,
+        onDismiss: undefined,
         ...toOptions(messages.success, value),
         id,
         loading: false,
@@ -200,6 +203,9 @@ toast.promise = <T>(promise: Promise<T>, messages: ToastPromiseMessages<T>): Pro
       upsert({
         tone: 'critical',
         duration: undefined,
+        description: undefined,
+        action: undefined,
+        onDismiss: undefined,
         ...toOptions(messages.error, error),
         id,
         loading: false,
