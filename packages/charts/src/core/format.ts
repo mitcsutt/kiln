@@ -27,6 +27,9 @@ export type ValueFormat =
  * A date string with no offset (`2026-03-01`, `2026-03-01T14:30`) is a wall-clock time, not an
  * instant: it prints as written, in every time zone. `timeZone` applies only to instants: `Date`
  * objects and strings with `Z` or an offset (`2026-03-01T14:30Z`, `2026-03-01T14:30+10:00`).
+ * A function gets a wall-clock string as a `Date` in the runtime's own zone with the written
+ * fields, so `getHours()`, date-fns `format` and `toLocaleTimeString()` read it as written; it
+ * gets instants unchanged.
  */
 export type XFormat =
   | 'date'
@@ -115,12 +118,26 @@ export function xFormatter(
   return (value) => {
     const date = toDate(value)
     if (date) {
-      if (custom) return custom(date)
-      return (typeof value === 'string' && !OFFSET.test(value) ? wallClock : intl).format(date)
+      const written = typeof value === 'string' && !OFFSET.test(value)
+      if (custom) return custom(written ? localWallClock(date) : date)
+      return (written ? wallClock : intl).format(date)
     }
     if (value === null || value === undefined) return ''
     return typeof value === 'string' || typeof value === 'number' ? String(value) : ''
   }
+}
+
+/** The same wall-clock fields as a UTC-read date, in the runtime's own zone. */
+function localWallClock(date: Date): Date {
+  return new Date(
+    date.getUTCFullYear(),
+    date.getUTCMonth(),
+    date.getUTCDate(),
+    date.getUTCHours(),
+    date.getUTCMinutes(),
+    date.getUTCSeconds(),
+    date.getUTCMilliseconds(),
+  )
 }
 
 const OFFSET = /(Z|[+-]\d{2}:?\d{2})$/
