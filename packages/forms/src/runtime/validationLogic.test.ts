@@ -179,7 +179,7 @@ describe('kitValidationLogic: a field’s own check (useFieldBinding({ check }))
       element: () => null,
       check: (value) => (value === 'bad' ? 'checked' : undefined),
     })
-    let dynamic: ((props: { value: unknown }) => unknown) | undefined
+    let dynamics: (((props: { value: unknown }) => unknown) | undefined)[] = []
     kitValidationLogic(base ? { base } : {})({
       form,
       validators,
@@ -189,10 +189,11 @@ describe('kitValidationLogic: a field’s own check (useFieldBinding({ check }))
       }: {
         validators: ({ cause: string; fn?: (props: { value: unknown }) => unknown } | undefined)[]
       }) => {
-        dynamic = list.find((v) => v?.cause === 'dynamic')?.fn
+        dynamics = list.filter((v) => v?.cause === 'dynamic').map((v) => v?.fn)
       },
     } as unknown as ValidationLogicProps)
-    return must(dynamic)
+    expect(dynamics).toHaveLength(1)
+    return must(dynamics[0])
   }
 
   it('runs ahead of the onDynamic validator, which only sees values the check passes', () => {
@@ -223,6 +224,21 @@ describe('kitValidationLogic: a field’s own check (useFieldBinding({ check }))
 
   it('runs under an explicit base logic for a field with no validators of its own', () => {
     const run = dynamicFor({}, revalidateLogic())
+    expect(run({ value: 'bad' })).toBe('checked')
+    expect(run({ value: 'good' })).toBeUndefined()
+  })
+
+  it('runs once when the base logic gives a field with only onChange a dynamic slot', () => {
+    const base: ValidationLogicFn = (props) => {
+      props.runValidation({
+        validators: [
+          { fn: props.validators?.onChange as unknown, cause: 'change' },
+          { fn: props.validators?.onDynamic as unknown, cause: 'dynamic' },
+        ],
+        form: props.form,
+      })
+    }
+    const run = dynamicFor({ onChange: () => 'change' }, base)
     expect(run({ value: 'bad' })).toBe('checked')
     expect(run({ value: 'good' })).toBeUndefined()
   })

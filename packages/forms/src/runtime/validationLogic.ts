@@ -121,7 +121,11 @@ export function kitValidationLogic({
             v?.cause === 'dynamic' ? { ...v, fn: withCheck(check, v.fn) } : v,
           )
           // A field with no `onDynamic` of its own gets no dynamic slot from the base logic.
-          if (!validators?.onDynamic && shouldRunDynamic(props, validateOn, false)) {
+          if (
+            !validators?.onDynamic &&
+            !list.some((v) => v?.cause === 'dynamic') &&
+            shouldRunDynamic(props, validateOn, false)
+          ) {
             list.push({ fn: withCheck(check, undefined), cause: 'dynamic' })
           }
           // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression -- as above
