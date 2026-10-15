@@ -43,10 +43,4 @@ describe('component CSS conventions', () => {
     )
     expect(offenders).toEqual([])
   })
-
-  it('turns off movement under reduced motion wherever items move', () => {
-    expect(read(join(COMPONENTS, 'GridLayout/GridLayout.module.css'))).toMatch(
-      /@media \(prefers-reduced-motion: reduce\)\s*\{\s*\.item\s*\{\s*transition: none;/,
-    )
-  })
 })

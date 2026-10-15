@@ -53,6 +53,12 @@ export interface UseSortableResult {
  * across it move it to the neighbouring list. A list is vertical unless its container says
  * otherwise: `useDroppable({ list, orientation: 'horizontal' })`. That container is also
  * what an item drops into when the list is empty.
+ *
+ * Drop zones in the same `Dnd` that accept the item come after the last list: the arrow
+ * across it (Right, or Down for a horizontal list) steps onto the first zone, the arrows
+ * then step through the zones in document order, and stepping back past the first zone
+ * returns to the last list. A drop there arrives as a `{ kind: 'zone' }` target and calls
+ * the zone's `onDrop`, just as a pointer drop on the zone does.
  */
 export function useSortable(options: UseSortableOptions): UseSortableResult {
   const controller = useDndController('useSortable')

@@ -26,9 +26,16 @@ export interface DndProps {
   onDragStart?: (event: DragStartEvent) => void
   /** Called whenever the place an item would land changes. */
   onDragOver?: (event: DragOverEvent) => void
-  /** Called once when an item is dropped. Apply the move here. */
+  /**
+   * Called once when an item is dropped. Apply the move here. A sortable item only ends here
+   * when the drop moves it; a draggable always does, with `target: null` over no zone.
+   */
   onDragEnd?: (event: DragEndEvent) => void
-  /** Called when a drag is cancelled (Escape, or the pointer let go over nothing). */
+  /**
+   * Called when a drag is cancelled: Escape, focus leaving the handle or a cancelled pointer
+   * drag. A sortable item dropped where nothing moves (its own slot, or over nothing) lands
+   * here too, instead of in `onDragEnd`.
+   */
   onDragCancel?: (event: DragCancelEvent) => void
   /**
    * Options passed straight to the drag engine. An escape hatch outside semver: the

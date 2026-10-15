@@ -67,14 +67,22 @@ export interface DragOverEvent {
   input: DragInput
 }
 
-/** Passed to `onDragEnd` when an item is dropped. `target` is `null` if it was over nothing. */
+/**
+ * Passed to `onDragEnd` when an item is dropped. A sortable item only ends here when the
+ * drop moves it (to another slot, list or zone); a draggable always does, with `target`
+ * `null` if it was over no zone.
+ */
 export interface DragEndEvent {
   item: DndItem
   target: DndTarget | null
   input: DragInput
 }
 
-/** Passed to `onDragCancel`. */
+/**
+ * Passed to `onDragCancel`: on Escape, focus leaving the handle or a cancelled pointer drag,
+ * and when a sortable item is dropped where nothing moves (back in its own slot, or over
+ * nothing).
+ */
 export interface DragCancelEvent {
   item: DndItem
   input: DragInput
@@ -461,8 +469,24 @@ export class DndController {
     this.retarget(this.#zoneStep(record, operation.target, direction))
   }
 
+  /**
+   * A list item's next target. The arrows across the last list carry on onto the drop zones
+   * that accept it, in document order; from a zone, the arrows step through the zones, and
+   * back past the first one to the last list.
+   */
   #listStep(record: DraggableRecord, current: Target | null, direction: ArrowDirection): Target {
     const lists = this.lists()
+    const forward = direction === 'down' || direction === 'right'
+    if (current?.kind === 'zone') {
+      const zones = this.zonesFor(record)
+      const at = zones.findIndex((zone) => zone.id === current.id)
+      const zone = zones[at + (forward ? 1 : -1)]
+      if (zone) return { kind: 'zone', id: zone.id }
+      const last = lists.at(-1)
+      if (forward || !last) return current
+      const index = Math.min(record.index, this.others(last, record.id).length)
+      return { kind: 'list', list: last.id, index }
+    }
     const at =
       current?.kind === 'list'
         ? current
@@ -474,14 +498,16 @@ export class DndController {
     const along = vertical
       ? direction === 'up' || direction === 'down'
       : !(direction === 'up' || direction === 'down')
-    const forward = direction === 'down' || direction === 'right'
     if (along) {
       const last = this.others(group, record.id).length
       const index = Math.max(0, Math.min(last, at.index + (forward ? 1 : -1)))
       return { kind: 'list', list: group.id, index }
     }
     const next = lists[position + (forward ? 1 : -1)]
-    if (!next) return at
+    if (!next) {
+      const zone = forward ? this.zonesFor(record)[0] : undefined
+      return zone ? { kind: 'zone', id: zone.id } : at
+    }
     const last = this.others(next, record.id).length
     return { kind: 'list', list: next.id, index: Math.min(at.index, last) }
   }
