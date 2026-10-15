@@ -172,7 +172,8 @@ export const NestedPage: Story = {
     await userEvent.type(input, 'switch')
     await userEvent.keyboard('{Enter}')
     await expect(input).toHaveAccessibleName('Switch project')
-    await expect(screen.getByRole('button', { name: 'Back' })).toBeVisible()
+    // The panel fades in from opacity 0, so wait out the entry animation.
+    await waitFor(() => expect(screen.getByRole('button', { name: 'Back' })).toBeVisible())
     await expect(screen.getAllByRole('option')).toHaveLength(3)
     await userEvent.keyboard('{Backspace}')
     await expect(input).toHaveAccessibleName('Command palette')
