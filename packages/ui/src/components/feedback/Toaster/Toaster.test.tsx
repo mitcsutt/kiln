@@ -177,6 +177,23 @@ describe('Toaster', () => {
     expect(within(done).queryByRole('button', { name: 'Cancel' })).not.toBeInTheDocument()
   })
 
+  it('drops the loading title when a stage brings none of its own', async () => {
+    render(<Toaster />)
+    const work = Promise.reject(new Error('Server busy'))
+    await act(async () => {
+      await toast
+        .promise(work, {
+          loading: 'Uploading receipts',
+          success: 'Uploaded',
+          error: { description: 'The server is busy. Try again in a minute.' },
+        })
+        .catch(() => undefined)
+    })
+    const item = within(region()).getByRole('listitem')
+    expect(item).toHaveTextContent('The server is busy. Try again in a minute.')
+    expect(item).not.toHaveTextContent('Uploading receipts')
+  })
+
   it('reports a rejected promise in the critical tone', async () => {
     render(<Toaster />)
     const work = Promise.reject(new Error('Server busy'))

@@ -254,6 +254,34 @@ describe('NavLinks.Group', () => {
     expect(settings).toHaveFocus()
   })
 
+  it('skips items hidden at this breakpoint', async () => {
+    HTMLElement.prototype.checkVisibility = function (this: HTMLElement) {
+      return !this.closest('.hideBelowMd')
+    }
+    render(
+      <NavLinks label="Workspace" orientation="vertical">
+        <NavLinks.Item href="/">Home</NavLinks.Item>
+        <NavLinks.Group label="Settings">
+          <NavLinks.Item href="/settings/profile">Profile</NavLinks.Item>
+        </NavLinks.Group>
+        <NavLinks.Item href="/archive" hideBelow="md">
+          Archive
+        </NavLinks.Item>
+        <NavLinks.Item href="/help">Help</NavLinks.Item>
+      </NavLinks>,
+    )
+    const settings = screen.getByRole('button', { name: 'Settings' })
+    settings.focus()
+    await userEvent.keyboard('{ArrowDown}')
+    const help = screen.getByRole('link', { name: 'Help' })
+    expect(help).toHaveFocus()
+    await userEvent.keyboard('{ArrowUp}')
+    expect(settings).toHaveFocus()
+    await userEvent.keyboard('a')
+    expect(settings).toHaveFocus()
+    Reflect.deleteProperty(HTMLElement.prototype, 'checkVisibility')
+  })
+
   it('opens a panel in a horizontal nav, and closes it when a link is followed', async () => {
     render(
       <NavLinks label="Main">

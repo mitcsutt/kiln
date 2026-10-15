@@ -44,12 +44,13 @@ export interface NavLinksProps extends HTMLAttributes<HTMLElement>, VisibilityPr
   size?: NavLinksSize
 }
 
-/** The links and group buttons a reader can reach now: not inside a closed group. */
+/** The links and group buttons a reader can reach now: shown, and not inside a closed group. */
 function reachable(nav: HTMLElement): HTMLElement[] {
   return Array.from(nav.querySelectorAll<HTMLElement>('a[href], button')).filter(
     (element) =>
       !element.closest('[data-navlinks-panel][data-state="closed"]') &&
-      !(element as HTMLButtonElement).disabled,
+      !(element as HTMLButtonElement).disabled &&
+      (!('checkVisibility' in element) || element.checkVisibility()),
   )
 }
 
