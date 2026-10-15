@@ -110,9 +110,9 @@ export const Shape: Story = {
   ),
 }
 
-const depths = ['--shadow-surface', '--shadow-float', '--shadow-overlay'] as const
+const depths = ['--shadow-surface', '--shadow-float', '--shadow-overlay', '--shadow-lift'] as const
 
-/** Hairlines for anything static; soft shadows only for layers that float. */
+/** Hairlines for anything static; soft shadows only for layers that float, and for an item lifted to be dragged. */
 export const Depth: Story = {
   render: () => (
     <div className={styles.shapeGrid}>

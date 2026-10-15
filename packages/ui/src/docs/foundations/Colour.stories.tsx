@@ -105,3 +105,47 @@ export const Categorical: Story = {
     />
   ),
 }
+
+/** Ramps for amounts: the sequential ramp runs least to most, away from the page; the diverging ramp steps out from a neutral midpoint. Categorical colours mark who, ramps mark how much. */
+export const Ramps: Story = {
+  render: () => (
+    <Swatches
+      groups={{
+        Sequential: Array.from({ length: 7 }, (_, i) => `--color-seq-${String(i + 1)}`),
+        Diverging: [
+          '--color-div-neg-3',
+          '--color-div-neg-2',
+          '--color-div-neg-1',
+          '--color-div-mid',
+          '--color-div-pos-1',
+          '--color-div-pos-2',
+          '--color-div-pos-3',
+        ],
+      }}
+    />
+  ),
+}
+
+/** Chart chrome and the categorical strokes: the line or outline variant of each categorical colour, at 3:1 on the page. */
+export const ChartChrome: Story = {
+  name: 'Chart chrome',
+  render: () => (
+    <Swatches
+      groups={{
+        'Categorical strokes': Array.from(
+          { length: 8 },
+          (_, i) => `--color-cat-${String(i + 1)}-stroke`,
+        ),
+        Chrome: [
+          '--chart-grid',
+          '--chart-axis',
+          '--chart-label',
+          '--chart-tooltip-surface',
+          '--chart-tooltip-border',
+          '--chart-tooltip-ink',
+          '--chart-focus',
+        ],
+      }}
+    />
+  ),
+}

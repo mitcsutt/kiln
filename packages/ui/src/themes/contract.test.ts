@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
+import { THEMES } from '../theme/themes'
 
 /*
  * The token contract is the public theming API (ADR 0003): DESIGN.md §3.2 lists what every
@@ -29,6 +30,12 @@ describe('token contract', () => {
     const contract = mentioned(section(design, '### 3.2 The theme contract'))
     expect([...paper].filter((token) => !contract.has(token)).sort()).toEqual([])
     expect([...contract].filter((token) => !paper.has(token)).sort()).toEqual([])
+  })
+
+  it.each(THEMES)('%s sets every contract token', (theme) => {
+    const contract = mentioned(section(design, '### 3.2 The theme contract'))
+    const tokens = declared(read(`./${theme}.css`))
+    expect([...contract].filter((token) => !tokens.has(token)).sort()).toEqual([])
   })
 
   it('documents exactly the optional tokens every scope resets', () => {

@@ -139,6 +139,46 @@
     --color-cat-8: light-dark(oklch(0.65 0.02 170), oklch(0.7 0.02 170));
     --color-cat-ink: oklch(0.2 0.02 170);
 
+    /* ── Data ───────────────────────────────────────────────────────────── */
+    /* Ramps say how much; categorical colours say who. Sequential: the ledger's ruling
+       green, a pale rule deepening to banknote ink, brighter by night. */
+    --color-seq-1: light-dark(oklch(0.94 0.03 155), oklch(0.33 0.035 175));
+    --color-seq-2: light-dark(oklch(0.86 0.055 157), oklch(0.42 0.05 170));
+    --color-seq-3: light-dark(oklch(0.77 0.075 159), oklch(0.51 0.065 166));
+    --color-seq-4: light-dark(oklch(0.67 0.09 161), oklch(0.6 0.075 162));
+    --color-seq-5: light-dark(oklch(0.57 0.095 163), oklch(0.69 0.08 159));
+    --color-seq-6: light-dark(oklch(0.47 0.09 165), oklch(0.78 0.075 157));
+    --color-seq-7: light-dark(oklch(0.37 0.075 168), oklch(0.87 0.06 155));
+
+    /* Diverging: the auditor's red and blue pencils, either side of a blank column. */
+    --color-div-neg-3: light-dark(oklch(0.5 0.16 25), oklch(0.78 0.11 25));
+    --color-div-neg-2: light-dark(oklch(0.64 0.12 25), oklch(0.65 0.11 25));
+    --color-div-neg-1: light-dark(oklch(0.79 0.065 25), oklch(0.52 0.08 25));
+    --color-div-mid: light-dark(oklch(0.94 0.004 150), oklch(0.38 0.012 185));
+    --color-div-pos-1: light-dark(oklch(0.79 0.05 235), oklch(0.52 0.06 235));
+    --color-div-pos-2: light-dark(oklch(0.64 0.08 235), oklch(0.65 0.08 235));
+    --color-div-pos-3: light-dark(oklch(0.5 0.1 235), oklch(0.78 0.08 235));
+
+    /* Strokes: each categorical colour as a pen line, carbon-dark by day, pale by night. */
+    --color-cat-1-stroke: light-dark(oklch(0.48 0.08 165), oklch(0.82 0.08 165));
+    --color-cat-2-stroke: light-dark(oklch(0.5 0.1 70), oklch(0.84 0.1 75));
+    --color-cat-3-stroke: light-dark(oklch(0.48 0.08 235), oklch(0.82 0.07 235));
+    --color-cat-4-stroke: light-dark(oklch(0.5 0.13 30), oklch(0.82 0.09 30));
+    --color-cat-5-stroke: light-dark(oklch(0.5 0.08 120), oklch(0.84 0.08 120));
+    --color-cat-6-stroke: light-dark(oklch(0.48 0.08 300), oklch(0.82 0.06 300));
+    --color-cat-7-stroke: light-dark(oklch(0.5 0.06 195), oklch(0.84 0.05 195));
+    --color-cat-8-stroke: light-dark(oklch(0.5 0.02 170), oklch(0.82 0.02 170));
+
+    /* Chart chrome: the pad's own green ruling is the grid; the axis is the deeper column
+       rule; labels in muted carbon ink. */
+    --chart-grid: light-dark(oklch(0.89 0.04 155), oklch(0.35 0.03 170));
+    --chart-axis: light-dark(oklch(0.56 0.08 158), oklch(0.62 0.05 160));
+    --chart-label: var(--color-ink-muted);
+    --chart-tooltip-surface: var(--color-surface-raised);
+    --chart-tooltip-border: var(--color-line-strong);
+    --chart-tooltip-ink: var(--color-ink);
+    --chart-focus: var(--color-focus);
+
     /* ── Edges & depth ──────────────────────────────────────────────────── */
     --shadow-surface: none;
     --active-shift: 0px; /* how far pressed things travel toward their shadow */
@@ -147,6 +187,9 @@
       0 1px 2px oklch(0.24 0.02 170 / 0.1), 0 8px 20px -6px oklch(0.24 0.02 170 / 0.18);
     --shadow-overlay:
       0 2px 4px oklch(0.2 0.02 170 / 0.12), 0 20px 48px -12px oklch(0.2 0.02 170 / 0.3);
+    /* A dragged entry, a slip lifted off the pad. */
+    --shadow-lift:
+      0 2px 4px oklch(0.24 0.02 170 / 0.12), 0 14px 32px -8px oklch(0.24 0.02 170 / 0.26);
     --canvas-image: none;
   }
 }
