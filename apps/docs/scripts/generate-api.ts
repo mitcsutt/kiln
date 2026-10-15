@@ -1,5 +1,5 @@
 /**
- * Reads the public surface of kiln-ui and kiln-forms with the TypeScript checker and
+ * Reads the public surface of kiln-ui, kiln-forms and kiln-dnd with the TypeScript checker and
  * writes `.generated/api.json`: one entry per export, with its doc comment and, for prop
  * and option types, a row per property. The docs site renders API tables from it, so a
  * table can't drift from the types it describes.

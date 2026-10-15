@@ -78,7 +78,7 @@ export async function Example({
   )
 }
 
-/** The props of one or more types, generated from kiln-ui and kiln-forms source. */
+/** The props of one or more types, generated from kiln-ui, kiln-forms and kiln-dnd source. */
 export function ApiTable({ of }: { of: string }) {
   const names = of.split(',').map((name) => name.trim())
   return (
