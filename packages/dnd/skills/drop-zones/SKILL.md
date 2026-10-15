@@ -112,8 +112,8 @@ Space or Enter on a handle picks the item up. The arrow keys move it, Space or E
 | `announcements` | `Partial<DndAnnouncements>` |  | Replace any of the words kiln-dnd says: the handle instructions, the drag handle's name and every announcement. The rest stay English. |
 | `onDragStart` | `(event: DragStartEvent) => void` |  | Called when an item is picked up, by pointer or keyboard. |
 | `onDragOver` | `(event: DragOverEvent) => void` |  | Called whenever the place an item would land changes. |
-| `onDragEnd` | `(event: DragEndEvent) => void` |  | Called once when an item is dropped. Apply the move here. |
-| `onDragCancel` | `(event: DragCancelEvent) => void` |  | Called when a drag is cancelled (Escape, or the pointer let go over nothing). |
+| `onDragEnd` | `(event: DragEndEvent) => void` |  | Called once when an item is dropped. Apply the move here. A sortable item only ends here when the drop moves it; a draggable always does, with `target: null` over no zone. |
+| `onDragCancel` | `(event: DragCancelEvent) => void` |  | Called when a drag is cancelled: Escape, focus leaving the handle or a cancelled pointer drag. A sortable item dropped where nothing moves (its own slot, or over nothing) lands here too, instead of in `onDragEnd`. |
 | `engineProps` | `EngineProps` |  | Options passed straight to the drag engine. An escape hatch outside semver: the engine and its options can change in any release. Read when the scope mounts. |
 
 `DndAnnouncements`:

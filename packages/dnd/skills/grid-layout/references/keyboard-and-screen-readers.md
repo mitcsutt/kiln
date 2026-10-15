@@ -16,6 +16,8 @@ Every pattern in kiln-dnd uses the same keys. A drag handle (a `DragHandle`, or 
 | Escape                    | Cancels and puts everything back                                                                 |
 | Tab, or a click elsewhere | Also cancels: leaving the handle never drops by accident                                         |
 
+When sortable items and drop zones share a `Dnd`, the zones come after the last list. The arrow across the last list (Right, or Down for a horizontal list) steps onto the first zone that accepts the item, the arrow keys then step through the zones in document order, and stepping back past the first zone returns to the last list. A pointer reaches the same zones, and a drop on one arrives the same way from either.
+
 Focus stays on the handle the whole time, and comes back to it after a drop moves the item somewhere else in the page.
 
 ## What it says

@@ -10,6 +10,8 @@ Source: https://kiln.mitchellsutton.com/docs/drag-and-drop/hooks/use-sortable
 
 By keyboard, the arrow keys along the list move the item through it and the arrow keys across it move it to the neighbouring list. A list is vertical unless its container says otherwise: `useDroppable({ list, orientation: 'horizontal' })`. That container is also what an item drops into when the list is empty.
 
+Drop zones in the same `Dnd` that accept the item come after the last list: the arrow across it (Right, or Down for a horizontal list) steps onto the first zone, the arrows then step through the zones in document order, and stepping back past the first zone returns to the last list. A drop there arrives as a `{ kind: 'zone' }` target and calls the zone's `onDrop`, just as a pointer drop on the zone does.
+
 Your own markup: one `useSortable` per item and `arrayMove` in `Dnd`'s `onDragEnd`. `dropEdge` says where to draw the drop line; `useDroppable({ list })` on the container lets an item land past the last one.
 
 ```tsx
