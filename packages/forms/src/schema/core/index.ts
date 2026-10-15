@@ -67,7 +67,7 @@ export {
   MAX_UNBOUNDED_QUANTIFIERS,
   WIDE_RANGE,
 } from '#schema/core/patterns'
-export { toStandardSchema, DEFAULT_EMPTIES } from '#schema/core/toStandardSchema'
-export type { ToStandardSchemaOptions } from '#schema/core/toStandardSchema'
+export { toStandardSchema, DEFAULT_EMPTIES, DEFAULT_CHECKS } from '#schema/core/toStandardSchema'
+export type { ToStandardSchemaOptions, KindCheck } from '#schema/core/toStandardSchema'
 export { defineLoader, defineValidator, defineComputer } from '#schema/core/registry'
 export { defineSchemaFor } from '#schema/core/define'

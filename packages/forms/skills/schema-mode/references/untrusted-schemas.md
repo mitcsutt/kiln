@@ -64,6 +64,7 @@ The second argument lists the keys the schema may reference: field kinds, layout
 - Every prop name is a camelCase React prop, so attributes like `aria-*` and `data-*` can't be set from JSON.
 - No prop can reach a DOM sink: `dangerouslySetInnerHTML`, `ref`, `style`, `className`, any `on…` handler, form retargeting (`action`, `formAction`…), and `javascript:`, `vbscript:` and `data:` URLs are all rejected.
 - No field `type` of `submit`, `reset`, `button`, `image`, `file` or `hidden`, and no `pattern` prop.
+- An option's `swatch` is a categorical slot (`1` to `8`) or a plain CSS colour (a hex colour, a colour keyword, or a colour function of numbers such as `oklch(62% 0.19 264)`), never `url()`, `var()` or anything else a style could act on.
 - It's bounded: 64 levels deep, 2,000 nodes.
 - No literal `pattern` rules, because no check can promise a regular expression is fast. Register a validator for formats instead. For a source you trust (your own schema files), pass `{ allowPatterns: true }`: the patterns are then screened by a heuristic, which isn't a guarantee.
 
@@ -72,7 +73,7 @@ The second argument lists the keys the schema may reference: field kinds, layout
 - It checks that props are safe, not that they make sense for the component.
 - A custom node's `props` aren't filtered. A custom node that spreads them onto the DOM must filter them itself.
 
-The renderer strips the same unsafe props again, as a second line of defence for schemas that skip the parser.
+The renderer strips the same unsafe props again, and drops any other option `swatch`, as a second line of defence for schemas that skip the parser.
 
 ```ts
 declare function parseFormSchema(json: unknown, registry: SchemaRegistryNames, options?: ParseFormSchemaOptions): ParseFormSchemaResult

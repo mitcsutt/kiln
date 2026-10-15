@@ -165,9 +165,10 @@ describe('§13 #56: a stable data-field={name} on every kind', () => {
     multiSelect: [[], (f) => <f.MultiSelectField name={n} label="Pick" options={o as never} />],
     tags: [[], (f) => <f.TagsField name={n} label="Pick" />],
     file: [[], (f) => <f.FileField name={n} label="Pick" />],
+    json: ['', (f) => <f.JsonField name={n} label="Pick" />],
   }
-  it('covers all 28 kinds', () => {
-    expect(Object.keys(kinds)).toHaveLength(28)
+  it('covers all 29 kinds', () => {
+    expect(Object.keys(kinds)).toHaveLength(29)
   })
   for (const [kind, [value, build]] of Object.entries(kinds)) {
     it(kind, async () => {

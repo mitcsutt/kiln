@@ -26,6 +26,7 @@
     "date-range-field",
     "one-time-code-field",
     "color-field",
+    "json-field",
     "tags-field",
     "file-field",
     "hidden-field"

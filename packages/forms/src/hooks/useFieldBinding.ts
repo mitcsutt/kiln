@@ -34,6 +34,13 @@ export interface FieldBindingOptions<V> extends CommonFieldProps<V> {
   labelHidden?: boolean
   /** Extra ids to describe the control, merged with an external error id. */
   'aria-describedby'?: string
+  /**
+   * The field's own check of its value, for a value the control can hold but the field can't
+   * accept (a JSON field's text that doesn't parse). Return a message to reject it. It runs when
+   * the field's validators do and blocks submit like them, ahead of the field's `onDynamic`
+   * validator, and it doesn't run while the field is inactive.
+   */
+  check?: (value: V) => string | undefined
 }
 
 /** Exactly the `@mitcsutt/kiln-ui` FieldLabelProps additions (§8.1) + wiring. Undefined keys are omitted. */
@@ -154,6 +161,12 @@ export function useFieldBinding<V>(options: FieldBindingOptions<V>): FieldBindin
   const ref = useCallback<RefCallback<HTMLElement>>((element) => {
     elementRef.current = element
   }, [])
+  // The latest `check`, read when the field validates, so a new function doesn't re-register.
+  const checkRef = useRef(options.check)
+  useIsomorphicLayoutEffect(() => {
+    checkRef.current = options.check
+  })
+  const hasCheck = options.check !== undefined
   useIsomorphicLayoutEffect(() => {
     if (mode === 'view') return undefined
     const chain = scopeChain(scopeNode)
@@ -177,12 +190,13 @@ export function useFieldBinding<V>(options: FieldBindingOptions<V>): FieldBindin
           name,
         ),
     }
+    if (hasCheck) entry.check = (current) => checkRef.current?.(current as V)
     runtime.fields.set(name, entry)
     return () => {
       for (const done of unregister) done()
       if (runtime.fields.get(name) === entry) runtime.fields.delete(name)
     }
-  }, [runtime, name, id, scopeNode, mode])
+  }, [runtime, name, id, scopeNode, mode, hasCheck])
 
   // §4.2.12 — dev guard for the canonical path, once per field.
   const warned = useRef(false)

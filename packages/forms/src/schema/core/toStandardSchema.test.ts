@@ -489,4 +489,49 @@ describe('toStandardSchema', () => {
       ['name', 'Enter a value'],
     ])
   })
+
+  describe('a kind’s own check (DEFAULT_CHECKS)', () => {
+    const json: UntypedFormSchema = {
+      version: 1,
+      root: {
+        layout: 'stack',
+        children: [
+          {
+            kind: 'json',
+            name: 'payload',
+            rules: [{ rule: 'maxLength', value: 40 }],
+          },
+        ],
+      },
+    }
+
+    it('rejects JSON text that does not parse before the rules run, with messages.invalidJson', async () => {
+      expect(issuesOf(await run(toStandardSchema(json), { payload: '{"a":' }))).toEqual([
+        ['payload', 'Enter valid JSON'],
+      ])
+      expect(
+        issuesOf(
+          await run(toStandardSchema(json, { messages: { invalidJson: () => 'Not JSON' } }), {
+            payload: '[',
+          }),
+        ),
+      ).toEqual([['payload', 'Not JSON']])
+      // Valid JSON reaches the rules.
+      expect(
+        issuesOf(await run(toStandardSchema(json), { payload: JSON.stringify('x'.repeat(50)) })),
+      ).toEqual([['payload', 'Enter 40 characters or fewer']])
+    })
+
+    it('can be replaced or turned off with `checks`', async () => {
+      expect(await run(toStandardSchema(json, { checks: {} }), { payload: '{"a":' })).toEqual({
+        value: { payload: '{"a":' },
+      })
+      const strict = toStandardSchema(json, {
+        checks: { json: (value) => (value === '{}' ? 'Add at least one key' : undefined) },
+      })
+      expect(issuesOf(await run(strict, { payload: '{}' }))).toEqual([
+        ['payload', 'Add at least one key'],
+      ])
+    })
+  })
 })

@@ -1,11 +1,10 @@
-import type { FocusEvent } from 'react'
+import { useMemo, type FocusEvent } from 'react'
 import {
   ChipGroupField as UiChipGroupField,
-  Tag,
-  TagList,
   type ChipGroupFieldProps as UiChipGroupFieldProps,
 } from '@mitcsutt/kiln-ui'
 import { FieldView } from '#components/fields/FieldView'
+import { optionTags, withSwatchIcons } from '#components/fields/internal/optionSwatches'
 import type { ControlledKeys } from '#components/fields/internal/controlledKeys'
 import { useOptionMapping } from '#hooks/useOptionMapping'
 import { accepts, useFieldBinding, type CommonFieldProps } from '#hooks/useFieldBinding'
@@ -66,27 +65,16 @@ export const FormChipsField = defineOptionsField<ChipsValue>()(function FormChip
     empty: [],
   })
   const mapping = useOptionMapping(options)
-  if (binding.mode === 'view') {
-    const labels = binding.value.map((value) => mapping.labelOf(value) ?? String(value))
-    return (
-      <FieldView label={props.label}>
-        {labels.length > 0 ? (
-          <TagList>
-            {labels.map((label) => (
-              <Tag key={label}>{label}</Tag>
-            ))}
-          </TagList>
-        ) : undefined}
-      </FieldView>
-    )
-  }
+  const uiOptions = useMemo(() => withSwatchIcons(mapping), [mapping])
+  if (binding.mode === 'view')
+    return <FieldView label={props.label}>{optionTags(binding.value, mapping)}</FieldView>
   return (
     <UiChipGroupField
       {...props}
       {...binding.fieldProps}
       ref={binding.ref}
       type="multiple"
-      options={mapping.uiOptions}
+      options={uiOptions}
       value={binding.value.map(mapping.toUi)}
       onValueChange={(next) => {
         binding.setValue(

@@ -30,6 +30,28 @@ import { getPath, joinPath, pathSegments, setPath } from '#schema/core/values'
  */
 export const DEFAULT_EMPTIES: Readonly<Record<string, unknown>> = { checkbox: false, switch: false }
 
+/** A field kind's own check of its value, ahead of its rules: a message rejects it. */
+export type KindCheck = (value: unknown, messages: FormMessages) => string | undefined
+
+/** `json`: text that isn't valid JSON, or a value that isn't text, is rejected. Empty passes. */
+const checkJsonText: KindCheck = (value, messages) => {
+  if (value === undefined || value === null) return undefined
+  if (typeof value !== 'string') return messages.invalidJson()
+  if (value.trim() === '') return undefined
+  try {
+    JSON.parse(value)
+    return undefined
+  } catch {
+    return messages.invalidJson()
+  }
+}
+
+/**
+ * The checks default kinds run on a server before their rules, matching the field's own check on
+ * the client (`useFieldBinding({ check })`): a `json` field's text must parse.
+ */
+export const DEFAULT_CHECKS: Readonly<Record<string, KindCheck>> = { json: checkJsonText }
+
 export interface ToStandardSchemaOptions {
   /** The kit's validator registry (needed when the schema has `custom` rules). */
   validators?: Readonly<Record<string, NamedValidator>>
@@ -38,6 +60,8 @@ export interface ToStandardSchemaOptions {
   messages?: Partial<FormMessages>
   /** kind → empty value for `required` (default `DEFAULT_EMPTIES`). */
   empties?: Readonly<Record<string, unknown>>
+  /** kind → its own check of the value, run before its rules (default `DEFAULT_CHECKS`). */
+  checks?: Readonly<Record<string, KindCheck>>
 }
 
 interface Job {
@@ -74,6 +98,7 @@ export function toStandardSchema(
   const context = opts.context ?? {}
   const messages = mergeMessages(opts.messages)
   const empties = opts.empties ?? DEFAULT_EMPTIES
+  const checks = opts.checks ?? DEFAULT_CHECKS
   const compiled = new Map<readonly UntypedRule[], Map<unknown, CompiledRules>>()
   const noRules: readonly UntypedRule[] = []
 
@@ -114,10 +139,21 @@ export function toStandardSchema(
     const is = (c: Parameters<typeof evaluateCondition>[0] | undefined): boolean =>
       c !== undefined && evaluateCondition(c, input, context)
 
-    const check = (path: string, rules: readonly UntypedRule[], empty: unknown) => {
-      if (rules.length === 0 || checked.has(path)) return
+    const check = (
+      path: string,
+      rules: readonly UntypedRule[],
+      empty: unknown,
+      own?: KindCheck,
+    ) => {
+      if ((rules.length === 0 && !own) || checked.has(path)) return
       checked.add(path)
       const value = getPath(input, path)
+      const failed = own?.(value, messages)
+      if (failed) {
+        issues.push({ message: failed, path: pathSegments(path) })
+        return
+      }
+      if (rules.length === 0) return
       const { sync, async } = compile(rules, empty)
       const error = sync?.(value, input)
       if (error) issues.push({ message: error.message, path: pathSegments(path) })
@@ -137,7 +173,12 @@ export function toStandardSchema(
         // Inactive on the client (§5.4): never validated there, so never trusted here.
         if ((flags & (EXCLUDED | DISABLED | READ_ONLY)) !== 0) return
         const path = joinPath(prefix, node.name)
-        check(path, effectiveRules(node.rules, (flags & REQUIRED) !== 0), empties[node.kind])
+        check(
+          path,
+          effectiveRules(node.rules, (flags & REQUIRED) !== 0),
+          empties[node.kind],
+          Object.prototype.hasOwnProperty.call(checks, node.kind) ? checks[node.kind] : undefined,
+        )
         keep(path, getPath(input, path))
         return
       }

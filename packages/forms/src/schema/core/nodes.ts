@@ -7,6 +7,7 @@ import type {
   UntypedNode,
   UntypedRepeaterNode,
 } from '#schema/core/types'
+import { isSchemaSwatch } from '#schema/core/swatch'
 import { unsafePropReason } from '#schema/core/unsafeProps'
 
 // `kind` wins: a field node may carry a `layout` prop ('stack' | 'horizontal' | 'inline').
@@ -76,9 +77,27 @@ function omitKeys(node: object, keys: readonly string[], onField = false): Recor
   return out
 }
 
-/** The component props of a field node (`label`, `options`, `min`, …), schema keys removed. */
+/** `options` with any swatch a schema may not set removed (`swatch.ts`). */
+function safeOptions(options: unknown): unknown {
+  if (!Array.isArray(options)) return options
+  return options.map((option: unknown) =>
+    typeof option === 'object' &&
+    option !== null &&
+    'swatch' in option &&
+    !isSchemaSwatch(option.swatch)
+      ? Object.fromEntries(Object.entries(option).filter(([key]) => key !== 'swatch'))
+      : option,
+  )
+}
+
+/**
+ * The component props of a field node (`label`, `options`, `min`, …), schema keys removed, and
+ * option swatches a schema may not set dropped.
+ */
 export function fieldNodeProps(node: UntypedFieldNode): Record<string, unknown> {
-  return omitKeys(node, FIELD_SCHEMA_KEYS, true)
+  const props = omitKeys(node, FIELD_SCHEMA_KEYS, true)
+  if (props.options !== undefined) props.options = safeOptions(props.options)
+  return props
 }
 
 /** The component props of a layout or repeater node (`title`, `columns`, `label`, …). Repeater keeps `name`. */

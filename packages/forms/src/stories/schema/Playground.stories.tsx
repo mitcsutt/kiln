@@ -139,6 +139,7 @@ const WORKBENCH_EMPTIES: Readonly<Record<string, unknown>> = {
   time: '',
   dateTime: '',
   oneTimeCode: '',
+  json: '',
   select: null,
   radio: null,
   segmented: null,

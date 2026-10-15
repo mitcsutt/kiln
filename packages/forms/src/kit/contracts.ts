@@ -1,4 +1,5 @@
 import type { ComponentType } from 'react'
+import type { SwatchColor } from '@mitcsutt/kiln-ui'
 
 /** The value types an option may carry. */
 export type Primitive = string | number | boolean
@@ -12,6 +13,14 @@ export interface FieldOption<V extends Primitive = Primitive> {
   /** Extra search terms for typeahead ("UK", "Britain" for United Kingdom). */
   keywords?: readonly string[]
   disabled?: boolean
+  /**
+   * A colour that marks what the option stands for (a team, a label, a series): a categorical
+   * slot `1` to `8`, or a CSS colour that comes from data. Fields whose kiln-ui control has a
+   * place for it show it: chips and segmented draw it before the label, and the tags that chips,
+   * checkbox group and multi choice cards show in view mode carry it. Other fields ignore it.
+   * Colour alone is never the answer, so the label still says it.
+   */
+  swatch?: SwatchColor
 }
 
 /** Reads and writes exactly V. The field may additionally be null/undefined. */

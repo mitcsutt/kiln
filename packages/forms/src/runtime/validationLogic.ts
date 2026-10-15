@@ -76,6 +76,16 @@ function shouldRunDynamic(
   }
 }
 
+/** A field's sync `onDynamic` validator with its own `check` in front. */
+function withCheck(
+  check: (value: unknown) => string | undefined,
+  dynamic: unknown,
+): (props: { value: unknown }) => unknown {
+  return (props) =>
+    check(props.value) ??
+    (typeof dynamic === 'function' ? (dynamic as (props: unknown) => unknown)(props) : undefined)
+}
+
 /**
  * The kit's `validationLogic` (§5.2): TanStack's standard slots unchanged; `onDynamic` runs on
  * submit always, on blur unless `validateOn: 'submit'`, and on change once the field is live (a
@@ -95,8 +105,28 @@ export function kitValidationLogic({
       // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
       return props.runValidation({ validators: [], form })
     }
-    // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression -- as above
-    if (base) return base(props)
+    // A field's own check (a JSON field's syntax) runs ahead of its sync `onDynamic`, in its slot.
+    const check =
+      isFormLevel || event.async || !event.fieldName
+        ? undefined
+        : getFormRuntime(form).fields.get(event.fieldName)?.check
+    if (base) {
+      // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression -- as above
+      if (!check) return base(props)
+      // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression -- as above
+      return base({
+        ...props,
+        runValidation: (result) => {
+          // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression -- as above
+          return props.runValidation({
+            ...result,
+            validators: result.validators.map((v) =>
+              v?.cause === 'dynamic' ? { ...v, fn: withCheck(check, v.fn) } : v,
+            ),
+          })
+        },
+      })
+    }
 
     let collected: ValidationLogicValidatorsFn[] = []
     defaultValidationLogic({
@@ -115,9 +145,11 @@ export function kitValidationLogic({
     // TanStack types validator functions as `any`.
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const dynamic = event.async ? validators?.onDynamicAsync : validators?.onDynamic
-    if (dynamic && shouldRunDynamic(props, validateOn, isFormLevel)) {
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- as above
+    const fn = check ? withCheck(check, dynamic) : dynamic
+    if (fn && shouldRunDynamic(props, validateOn, isFormLevel)) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- as above
-      collected.push({ fn: dynamic, cause: 'dynamic' })
+      collected.push({ fn, cause: 'dynamic' })
     }
     // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression -- as above
     return props.runValidation({ validators: collected, form })

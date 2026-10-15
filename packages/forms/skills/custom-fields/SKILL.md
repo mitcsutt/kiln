@@ -116,6 +116,8 @@ declare function useFieldBinding<V>(options: FieldBindingOptions<V>): FieldBindi
 THE binding hook: ids, error visibility + normalisation, warnings, disabled/readOnly/excluded
 semantics, focus registration and view mode, for the field in context.
 
+When the control can hold a value the field can't accept, such as JSON text that doesn't parse, pass `check`: a function of the value that returns a message to reject it. It runs whenever the field's validators do, ahead of them, and blocks submit like them, so the control keeps the person's text while the form refuses it. `FormJsonField` checks its syntax this way.
+
 Option fields map their values through `useOptionMapping`, so numbers and booleans survive the string-only controls underneath.
 
 ```ts
