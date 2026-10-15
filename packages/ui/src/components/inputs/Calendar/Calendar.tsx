@@ -244,7 +244,11 @@ export const Calendar = forwardRef<HTMLDivElement, CalendarProps>(function Calen
   const focusedIndex = monthIndex(focused)
   if (focusedIndex < firstVisible || focusedIndex > firstVisible + months - 1) {
     const day = Math.min(focused.day, daysInMonth(visible.year, visible.month))
-    setFocused(clampDate({ ...visible, day }, minDate, maxDate))
+    const date = clampDate({ ...visible, day }, minDate, maxDate)
+    const index = monthIndex(date)
+    setFocused(
+      index < firstVisible || index > firstVisible + months - 1 ? { ...visible, day } : date,
+    )
   }
 
   useEffect(() => {

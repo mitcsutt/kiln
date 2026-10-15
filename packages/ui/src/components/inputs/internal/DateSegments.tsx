@@ -159,8 +159,8 @@ export function useSegmentDraft(
     setDraft(toDraft(value))
   }
   const update = (next: Draft) => {
-    setDraft(next)
     const nextValue = fromDraft(next)
+    setDraft(nextValue ? toDraft(nextValue) : next)
     if (nextValue !== value) {
       setSynced(nextValue)
       setValue(nextValue)

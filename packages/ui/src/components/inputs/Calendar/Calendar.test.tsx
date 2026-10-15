@@ -120,6 +120,33 @@ describe('Calendar', () => {
     expect(screen.getAllByRole('gridcell').filter((c) => c.tabIndex === 0)).toHaveLength(1)
   })
 
+  it('shows a month wholly outside min and max, with one tab stop', () => {
+    function Controlled() {
+      const [month, setMonth] = useState('2026-10')
+      return (
+        <>
+          <Calendar month={month} onMonthChange={setMonth} min="2026-10-01" max="2026-10-31" />
+          <button
+            type="button"
+            onClick={() => {
+              setMonth('2027-03')
+            }}
+          >
+            March
+          </button>
+        </>
+      )
+    }
+    const { unmount } = render(<Calendar min="2026-10-01" defaultMonth="2026-09" />)
+    expect(screen.getByRole('grid', { name: 'September 2026' })).toBeInTheDocument()
+    expect(screen.getAllByRole('gridcell').filter((c) => c.tabIndex === 0)).toHaveLength(1)
+    unmount()
+    render(<Controlled />)
+    fireEvent.click(screen.getByRole('button', { name: 'March' }))
+    expect(screen.getByRole('grid', { name: 'March 2027' })).toBeInTheDocument()
+    expect(screen.getAllByRole('gridcell').filter((c) => c.tabIndex === 0)).toHaveLength(1)
+  })
+
   it('keeps min, max and isDateDisabled days focusable but not pickable', async () => {
     const user = userEvent.setup()
     const onValueChange = vi.fn()

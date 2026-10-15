@@ -50,6 +50,24 @@ describe('DateTimeInput', () => {
     expect(onValueChange).toHaveBeenLastCalledWith('2026-10-15T04:30:00Z')
   })
 
+  it('with timeZone, moves a wall time the clocks skip to the instant it reports', async () => {
+    const user = userEvent.setup()
+    const onValueChange = vi.fn()
+    render(
+      <DateTimeInput
+        aria-label="Starts"
+        hourCycle={24}
+        timeZone="Australia/Sydney"
+        onValueChange={onValueChange}
+      />,
+    )
+    await user.click(seg('Day'))
+    await user.keyboard('041020260230')
+    expect(onValueChange).toHaveBeenLastCalledWith('2026-10-03T16:30:00Z')
+    expect(seg('Hour')).toHaveTextContent('03')
+    expect(seg('Minute')).toHaveTextContent('30')
+  })
+
   it('picks a day in the calendar, keeping the time, and sets the time beneath it', async () => {
     const user = userEvent.setup()
     const onValueChange = vi.fn()
