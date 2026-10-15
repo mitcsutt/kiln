@@ -6,7 +6,7 @@ import type { StorybookConfig } from '@storybook/react-vite'
  * The workbench loads the stories co-located with each package's source
  * (`<Name>.stories.tsx`), docs examples included (stories tagged `docs`, ADR 0028), plus
  * this app's own short MDX pages. Titles follow the ADR 0010 tree (`UI/...`, `Forms/...`,
- * `Drag and drop/...`, `Tooling/...`), which `tree.test.ts` checks.
+ * `Drag and drop/...`, `Charts/...`, `Tooling/...`), which `tree.test.ts` checks.
  */
 const config: StorybookConfig = {
   stories: [
@@ -14,6 +14,7 @@ const config: StorybookConfig = {
     '../../../packages/ui/src/**/*.stories.@(ts|tsx)',
     '../../../packages/forms/src/**/*.stories.@(ts|tsx)',
     '../../../packages/dnd/src/**/*.stories.@(ts|tsx)',
+    '../../../packages/charts/src/**/*.stories.@(ts|tsx)',
   ],
   addons: ['@storybook/addon-docs', '@storybook/addon-a11y', '@storybook/addon-vitest'],
   framework: { name: '@storybook/react-vite', options: {} },

@@ -1,0 +1,5 @@
+/*
+ * In the workspace, each component imports its own CSS Module, so this entry is empty. The
+ * published build fills `dist/styles.css` with every component's CSS (vite.library.ts):
+ * import `@mitcsutt/kiln-charts/styles.css` once, after `@mitcsutt/kiln-ui/styles.css`.
+ */

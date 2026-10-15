@@ -10,7 +10,7 @@ import type { VariantKey } from '@/lib/variants'
  */
 export interface SkillSpec {
   /** The package directory that ships the skill: `packages/<package>/skills/<name>`. */
-  package: 'ui' | 'forms' | 'dnd' | 'structure'
+  package: 'ui' | 'forms' | 'dnd' | 'charts' | 'structure'
   /** Lowercase and hyphenated, unique across the packages. */
   name: string
   /** SKILL.md's heading. */
@@ -113,6 +113,34 @@ export const skills: SkillSpec[] = [
       "Kiln's binding principles and anti-slop rules, as a checklist for anything built with it.",
     type: 'core',
     pages: ['ui/foundations/design-rules'],
+  },
+  {
+    package: 'charts',
+    name: 'charts',
+    title: 'Add a chart',
+    description:
+      'Use when adding a chart to a React app with @mitcsutt/kiln-charts: choosing a preset (TimeSeries, Bars, Share, BarList, Sparkline, Heatmap) before composing one, wide or long rows with pivot, format, locale and timeZone, theme colours (cat, seq, div, tones) and ChartColorScope, drag-to-zoom, accessible labels and summaries, loading, empty and error states, height and fill, and server rendering.',
+    purpose:
+      'Draw themed, accessible charts from a preset first, and compose your own from Chart parts only when no preset fits.',
+    type: 'core',
+    pages: [
+      'charts/index',
+      'charts/getting-started/choosing-a-chart',
+      'charts/getting-started/data-and-formatting',
+    ],
+    references: [
+      'charts/getting-started/colour',
+      'charts/getting-started/accessibility-and-server-rendering',
+      'charts/presets/time-series',
+      'charts/presets/bars',
+      'charts/presets/share',
+      'charts/presets/bar-list',
+      'charts/presets/sparkline',
+      'charts/presets/heatmap',
+      'charts/primitives/chart',
+      'charts/building-blocks/chart-frame',
+      'charts/building-blocks/chart-color-scope',
+    ],
   },
   {
     package: 'forms',

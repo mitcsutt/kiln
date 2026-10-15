@@ -1,0 +1,31 @@
+---
+title: Choosing a chart
+description: Which preset fits your data, and when to compose your own chart from parts.
+---
+
+Start from the question the chart answers, then pick the preset built for it. Every preset takes the same data shapes and formatting props, so switching between them is cheap.
+
+| The question                                  | Use                                            |
+| --------------------------------------------- | ---------------------------------------------- |
+| How did it change over time?                  | [TimeSeries](/docs/charts/presets/time-series) |
+| How do a few categories compare?              | [Bars](/docs/charts/presets/bars)              |
+| How is a whole split into parts?              | [Share](/docs/charts/presets/share)            |
+| Which items are largest, in order?            | [BarList](/docs/charts/presets/bar-list)       |
+| Where is this one figure heading?             | [Sparkline](/docs/charts/presets/sparkline)    |
+| Where are the patterns across two categories? | [Heatmap](/docs/charts/presets/heatmap)        |
+| How full is it, or how far along?             | kiln-ui's `Meter` and `Progress`               |
+
+## A few rules of thumb
+
+- **Over time, use `TimeSeries`**, even with few points. Lines show change; bars for periods suit a handful of totals, such as revenue by quarter.
+- **Parts of a whole over time are `Bars` with `stacked="percent"`**, not a row of rings: shares are easier to compare along one baseline.
+- **More than about eight categories reads better as a `BarList`** than as bars: names stay legible and the ranking is the layout.
+- **A single figure needs no chart.** Use kiln-ui's `Stat`, with a `Sparkline` beside it for the trend.
+
+## When a preset isn't enough
+
+Compose a [Chart](/docs/charts/primitives/chart) from its parts: bars, lines and areas on one axis, reference lines, a tooltip, a legend and zoom.
+
+<Example of="Chart" name="Usage" />
+
+`TimeSeries` and `Bars` are themselves short compositions of these parts. Copy their source as a starting point rather than reaching for the chart engine underneath: every part takes `engineProps` for the rare engine setting Kiln doesn't cover, but those are outside semver.

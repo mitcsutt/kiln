@@ -70,14 +70,16 @@ describe('one tree for the docs and Storybook', () => {
           }
         ).root === true,
     )
-    expect(top).toEqual(['ui', 'forms', 'drag-and-drop', 'tooling'])
+    expect(top).toEqual(['ui', 'forms', 'drag-and-drop', 'charts', 'tooling'])
     expect(roots).toEqual(top)
   })
 
-  it('nests every docs page under UI, Forms, Drag and drop or Tooling', () => {
+  it('nests every docs page under UI, Forms, Drag and drop, Charts or Tooling', () => {
     const stray = pages
       .map((page) => page.path)
-      .filter((path) => path !== 'index' && !/^(ui|forms|drag-and-drop|tooling)(\/|$)/.test(path))
+      .filter(
+        (path) => path !== 'index' && !/^(ui|forms|drag-and-drop|charts|tooling)(\/|$)/.test(path),
+      )
     expect(stray).toEqual([])
   })
 })
