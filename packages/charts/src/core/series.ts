@@ -36,7 +36,8 @@ export function presetSeries(
     rows,
     series: configs.map((config) => {
       // A pivoted series is named by a value from the data, shown as written.
-      const named = pivoted && config.label === undefined ? { ...config, label: config.key } : config
+      const named =
+        pivoted && config.label === undefined ? { ...config, label: config.key } : config
       return config.key === pivoted?.otherKey && config.color === undefined
         ? { ...named, color: 'neutral' }
         : named
