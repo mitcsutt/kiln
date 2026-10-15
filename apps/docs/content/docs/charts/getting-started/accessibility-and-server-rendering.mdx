@@ -18,7 +18,7 @@ Colour is never the only signal: series have names in the legend and the tooltip
 
 The chart engine behind `Chart`, `TimeSeries` and `Bars` draws only in the browser. On the server those charts render their frame at its full `height`, the legend and the data table, so the page reads correctly before it hydrates and nothing moves when the plot draws into the reserved space. `Sparkline`, `Heatmap`, `Share` and `BarList` are plain SVG and HTML, and render completely on the server.
 
-Pass `locale` and `timeZone` to a chart that renders on the server, so the dates and numbers in its server HTML match what the browser writes.
+Pass `locale` and `timeZone` to a chart that renders on the server, so the dates and numbers in its server HTML match what the browser writes. `timeZone` applies to instants: `Date` objects and date strings with `Z` or an offset. A date string with no offset (`'2026-03-01'`, `'2026-03-01T14:30'`) prints as written in every zone, so it always matches.
 
 ## Sizing
 

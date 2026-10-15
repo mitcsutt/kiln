@@ -237,6 +237,41 @@ describe('Chart', () => {
     ])
   })
 
+  it('in a scope, an automatic series skips a slot a pin in the same chart holds', () => {
+    const { container } = render(
+      <ChartColorScope>
+        <Chart
+          data={[
+            { m: 'Mar', revenue: 1, orders: 2 },
+            { m: 'Apr', revenue: 2, orders: 1 },
+          ]}
+          x="m"
+          label="Pinned"
+        >
+          <Chart.Line dataKey="revenue" color="cat-1" />
+          <Chart.Line dataKey="orders" />
+        </Chart>
+        <Chart
+          data={[
+            { m: 'Mar', orders: 2 },
+            { m: 'Apr', orders: 1 },
+          ]}
+          x="m"
+          label="Orders"
+        >
+          <Chart.Line dataKey="orders" />
+        </Chart>
+      </ChartColorScope>,
+    )
+    const strokes = (chart: number) =>
+      [
+        ...(container.querySelectorAll('figure')[chart]?.querySelectorAll('.recharts-line-curve') ??
+          []),
+      ].map((line) => line.getAttribute('stroke'))
+    expect(strokes(0)).toEqual(['var(--color-cat-1-stroke)', 'var(--color-cat-2-stroke)'])
+    expect(strokes(1)).toEqual(['var(--color-cat-1-stroke)'])
+  })
+
   it('without a scope, each chart colours its own series from the start', () => {
     const { container } = render(
       <>

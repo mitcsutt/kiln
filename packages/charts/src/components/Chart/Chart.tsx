@@ -108,7 +108,10 @@ export interface ChartProps extends Omit<HTMLAttributes<HTMLElement>, 'children'
   xLabel?: string
   /** The locale for every number and date, passed to `Intl`. Defaults to the reader's. */
   locale?: string
-  /** The time zone dates print in, passed to `Intl`. Defaults to the reader's. */
+  /**
+   * The time zone instants print in, passed to `Intl`: `Date` objects and date strings with `Z` or
+   * an offset. A date string with no offset prints as written. Defaults to the reader's.
+   */
   timeZone?: string
   /** `percent` stacks to 100%, showing each series' share. @defaultValue 'normal' */
   stacking?: 'normal' | 'percent'

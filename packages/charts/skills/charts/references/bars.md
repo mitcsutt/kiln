@@ -119,7 +119,7 @@ export function Shares() {
 | `pivot` | `PivotOptions` |  | Turn long rows into wide ones, one series per value of `by`. |
 | `xFormat` | `XFormat` | `'date'` | How to write x values that are dates. |
 | `xLabel` | `string` |  | The x column's header in the data table. Defaults to a readable form of `x`. |
-| `timeZone` | `string` |  | The time zone dates print in, passed to `Intl`. Defaults to the reader's. |
+| `timeZone` | `string` |  | The time zone instants print in, passed to `Intl`: `Date` objects and date strings with `Z` or an offset. A date string with no offset prints as written. Defaults to the reader's. |
 | `errorMessage` | `ReactNode` | `"This chart couldn't load"` |  |
 | `engineProps` | `EngineProps` |  | Props for the engine's own chart component. Outside semver. |
 

@@ -35,6 +35,37 @@ describe('xFormatter', () => {
     expect(xFormatter('month', options)('2026-03')).toBe('Mar 2026')
   })
 
+  it('writes a datetime with no offset as written, whatever time zone is given', () => {
+    const plain = xFormatter('datetime', { locale: 'en-GB' })('2026-03-01T14:30')
+    expect(plain).toBe('1 Mar, 14:30')
+    for (const timeZone of ['UTC', 'Europe/London', 'America/New_York', 'Australia/Sydney']) {
+      expect(xFormatter('datetime', { locale: 'en-GB', timeZone })('2026-03-01T14:30')).toBe(plain)
+    }
+    expect(
+      xFormatter('time', { locale: 'en-GB', timeZone: 'Australia/Sydney' })('2026-03-01 09:05'),
+    ).toBe('9:05')
+  })
+
+  it('reads a datetime with no offset as the same instant in every runtime zone', () => {
+    const zone = process.env.TZ
+    try {
+      const instants = ['UTC', 'America/New_York', 'Australia/Sydney'].map((tz) => {
+        process.env.TZ = tz
+        return toDate('2026-03-01T14:30')?.toISOString()
+      })
+      expect(instants).toEqual(Array(3).fill('2026-03-01T14:30:00.000Z'))
+    } finally {
+      if (zone === undefined) delete process.env.TZ
+      else process.env.TZ = zone
+    }
+  })
+
+  it('writes a datetime with an offset in the given time zone', () => {
+    const format = xFormatter('time', { locale: 'en-GB', timeZone: 'Australia/Sydney' })
+    expect(format('2026-03-01T03:30Z')).toBe('14:30')
+    expect(format('2026-03-01T14:30+11:00')).toBe('14:30')
+  })
+
   it('uses the given time zone for instants', () => {
     const format = xFormatter('time', { locale: 'en-GB', timeZone: 'UTC' })
     expect(format(new Date(Date.UTC(2026, 2, 1, 14, 30)))).toBe('14:30')
