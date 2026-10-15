@@ -1,12 +1,18 @@
 import { forwardRef, type ComponentPropsWithoutRef, type ReactNode } from 'react'
 import { Toggle } from 'radix-ui'
 import { cx } from '#utils/cx'
+import { Swatch, type SwatchColor } from '#components/display/Swatch'
 import styles from './chip.module.css'
 
 export type ToggleChipSize = 'sm' | 'md'
 
 export interface ToggleChipProps extends ComponentPropsWithoutRef<typeof Toggle.Root> {
   size?: ToggleChipSize
+  /**
+   * A leading colour swatch, for a filter on something that has a colour: a team, a label, a
+   * chart series. A categorical slot (`1` to `8`) or a CSS colour from data.
+   */
+  swatch?: SwatchColor
   /** A leading glyph. Keep it meaningful — one icon per row at most. */
   icon?: ReactNode
   /** How many items the filter matches. Rendered in tabular figures after the label. */
@@ -36,7 +42,7 @@ export interface ToggleChipProps extends ComponentPropsWithoutRef<typeof Toggle.
  * (Fiesta), resting chips stand proud and pressed chips sit flat — literally pushed in.
  */
 export const ToggleChip = forwardRef<HTMLButtonElement, ToggleChipProps>(function ToggleChip(
-  { size = 'md', icon, count, trailing, className, children, type, ...rest },
+  { size = 'md', swatch, icon, count, trailing, className, children, type, ...rest },
   ref,
 ) {
   return (
@@ -47,6 +53,7 @@ export const ToggleChip = forwardRef<HTMLButtonElement, ToggleChipProps>(functio
       data-size={size}
       {...rest}
     >
+      {swatch !== undefined ? <Swatch color={swatch} /> : null}
       {icon ? (
         <span className={styles.icon} aria-hidden="true">
           {icon}
