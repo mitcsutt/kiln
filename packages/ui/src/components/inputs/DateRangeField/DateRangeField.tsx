@@ -51,7 +51,10 @@ export interface DateRangeValue {
 /** A range offered beside the calendar: "Last 7 days", "This month". */
 export interface DateRangePreset {
   label: string
-  /** The range, or a function that works it out when picked (so "today" is always today). */
+  /**
+   * The range, or a function that works it out when picked (so "today" is always today). With a
+   * time `granularity`, a date-only end runs from the start of its first day to the end of its last.
+   */
   value: DateRangeValue | (() => DateRangeValue)
 }
 
