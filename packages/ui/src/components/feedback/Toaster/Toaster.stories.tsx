@@ -4,7 +4,7 @@ import { expect, userEvent, waitFor, within } from 'storybook/test'
 import { storyRoot } from '#components/_story/storyRoot'
 
 const meta = {
-  title: 'UI/Feedback/Toast',
+  title: 'UI/Feedback/Toaster',
   component: Toaster,
   args: { position: 'bottom-end', max: 3, closeLabel: 'Dismiss' },
   render: (args) => (

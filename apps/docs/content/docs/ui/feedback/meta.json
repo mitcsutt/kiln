@@ -2,7 +2,7 @@
   "title": "Feedback",
   "pages": [
     "alert",
-    "toast",
+    "toaster",
     "spinner",
     "live-indicator",
     "status-dot",
