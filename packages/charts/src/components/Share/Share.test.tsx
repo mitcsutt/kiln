@@ -69,9 +69,7 @@ describe('Share', () => {
     expect(screen.getByRole('figure')).toHaveAccessibleDescription(
       '2 parts of 1,000. iOS: 60% (600). macOS: 40% (400).',
     )
-    expect(within(screen.getByRole('table')).getAllByRole('row')[1]?.textContent).toBe(
-      'iOS60060%',
-    )
+    expect(within(screen.getByRole('table')).getAllByRole('row')[1]?.textContent).toBe('iOS60060%')
   })
 
   it('pins colours by key', () => {
