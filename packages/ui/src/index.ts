@@ -236,10 +236,11 @@ export { ColorField } from './components/inputs/ColorField'
 export type { ColorFieldProps } from './components/inputs/ColorField'
 export { SwitchField } from './components/inputs/SwitchField'
 export type { SwitchFieldProps } from './components/inputs/SwitchField'
-export { DateRangeField } from './components/inputs/DateRangeField'
+export { DateRangeField, DateRangePickerField } from './components/inputs/DateRangeField'
 export type {
   DateRangeFieldProps,
   DateRangeValue,
+  DateRangePickerFieldProps,
   DateRangePreset,
 } from './components/inputs/DateRangeField'
 export { Calendar } from './components/inputs/Calendar'
@@ -440,7 +441,7 @@ export type {
   TabsTriggerProps,
   TabsContentProps,
 } from './components/navigation/Tabs'
-export { NavLinks } from './components/navigation/NavLinks'
+export { NavLinks, NavLinksGroup } from './components/navigation/NavLinks'
 export type {
   NavLinksProps,
   NavLinksItemProps,

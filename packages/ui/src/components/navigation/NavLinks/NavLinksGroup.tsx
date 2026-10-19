@@ -25,6 +25,7 @@ import {
   holdsActive,
   type NavLinksGroupContextValue,
 } from './context'
+import { onTreeKeyDown } from './treeKeys'
 import styles from './NavLinks.module.css'
 
 const useIsomorphicLayoutEffect = typeof document === 'undefined' ? useEffect : useLayoutEffect
@@ -72,7 +73,7 @@ function Chevron() {
 }
 
 /**
- * A group of links in a `NavLinks`: a section with child pages.
+ * A group of links in a `NavLinks`: a section with child pages, and further groups.
  *
  * @privateRemarks
  * Vertical: a disclosure button and a nested list in a Collapse (the disclosure-navigation
@@ -101,7 +102,12 @@ export const NavLinksGroup = forwardRef<HTMLLIElement, NavLinksGroupProps>(funct
   },
   ref,
 ) {
-  const { orientation, size } = useContext(NavLinksContext)
+  const { orientation, size, treeKeysRef } = useContext(NavLinksContext)
+  // A nav with a group gets the tree-style arrow keys. Every group sets the same handler, and it
+  // does nothing once the nav has no groups, so none of them clears it.
+  useEffect(() => {
+    if (treeKeysRef) treeKeysRef.current = onTreeKeyDown
+  }, [treeKeysRef])
   const parent = useContext(NavLinksGroupContext)
   const id = useId()
   const labelId = `${id}-label`

@@ -3,6 +3,7 @@ import {
   Badge,
   CalendarIcon as KilnCalendarIcon,
   NavLinks,
+  NavLinksGroup,
   Stack,
   UsersIcon,
   createIcon as createKilnIcon,
@@ -188,10 +189,10 @@ const GearIcon = createKilnIcon(
 )
 
 /**
- * `NavLinks.Group` nests links under a section, and groups nest inside groups. Each level is
- * indented on a guide rule, and labels stay at body size at every depth. The group holding the
- * current page opens by itself; close it and a ring shows where the current page is. Items and
- * groups take an `icon` and a `trailing` count.
+ * `NavLinksGroup`, imported beside `NavLinks`, nests links under a section, and groups nest inside
+ * groups. Each level is indented on a guide rule, and labels stay at body size at every depth. The
+ * group holding the current page opens by itself; close it and a ring shows where the current page
+ * is. Items and groups take an `icon` and a `trailing` count.
  */
 export const Groups: Story = {
   tags: ['docs'],
@@ -200,24 +201,24 @@ export const Groups: Story = {
       <NavLinks.Item href="#calendar" icon={<KilnCalendarIcon />}>
         Calendar
       </NavLinks.Item>
-      <NavLinks.Group label="Ledgers" icon={<LedgerIcon />} trailing={<Badge>3</Badge>}>
+      <NavLinksGroup label="Ledgers" icon={<LedgerIcon />} trailing={<Badge>3</Badge>}>
         <NavLinks.Item href="#granton">Granton yard</NavLinks.Item>
         <NavLinks.Item href="#leith" active>
           Leith yard
         </NavLinks.Item>
         <NavLinks.Item href="#newhaven">Newhaven yard</NavLinks.Item>
-      </NavLinks.Group>
+      </NavLinksGroup>
       <NavLinks.Item href="#people" icon={<UsersIcon />}>
         People
       </NavLinks.Item>
-      <NavLinks.Group label="Settings" icon={<GearIcon />}>
+      <NavLinksGroup label="Settings" icon={<GearIcon />}>
         <NavLinks.Item href="#profile">Profile</NavLinks.Item>
         <NavLinks.Item href="#billing">Billing</NavLinks.Item>
-        <NavLinks.Group label="Integrations">
+        <NavLinksGroup label="Integrations">
           <NavLinks.Item href="#bank-feeds">Bank feeds</NavLinks.Item>
           <NavLinks.Item href="#payroll">Payroll export</NavLinks.Item>
-        </NavLinks.Group>
-      </NavLinks.Group>
+        </NavLinksGroup>
+      </NavLinksGroup>
     </NavLinks>
   ),
   play: async ({ canvasElement }) => {
@@ -256,10 +257,10 @@ export const LinkedGroup: Story = {
   render: () => (
     <NavLinks label="Reports" orientation="vertical">
       <NavLinks.Item href="#overview">Overview</NavLinks.Item>
-      <NavLinks.Group label="Reports" href="#reports" defaultOpen>
+      <NavLinksGroup label="Reports" href="#reports" defaultOpen>
         <NavLinks.Item href="#aged-debt">Aged debt</NavLinks.Item>
         <NavLinks.Item href="#vat">VAT returns</NavLinks.Item>
-      </NavLinks.Group>
+      </NavLinksGroup>
     </NavLinks>
   ),
 }
@@ -273,13 +274,13 @@ export const TopBarGroups: Story = {
   render: () => (
     <NavLinks label="Main">
       <NavLinks.Item href="#home">Home</NavLinks.Item>
-      <NavLinks.Group label="Products">
+      <NavLinksGroup label="Products">
         <NavLinks.Item href="#ledgers">Ledgers</NavLinks.Item>
         <NavLinks.Item href="#payroll" active>
           Payroll
         </NavLinks.Item>
         <NavLinks.Item href="#expenses">Expenses</NavLinks.Item>
-      </NavLinks.Group>
+      </NavLinksGroup>
       <NavLinks.Item href="#pricing">Pricing</NavLinks.Item>
     </NavLinks>
   ),

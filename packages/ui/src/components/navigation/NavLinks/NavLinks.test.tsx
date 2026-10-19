@@ -2,6 +2,7 @@ import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createRef, forwardRef, type AnchorHTMLAttributes } from 'react'
 import { NavLinks } from './NavLinks'
+import { NavLinksGroup } from './NavLinksGroup'
 
 // Stand-in for a router <Link>.
 const RouterLink = forwardRef<
@@ -88,17 +89,17 @@ function Sidebar(props: { settingsOpen?: boolean; onSettingsChange?: (open: bool
   return (
     <NavLinks label="Workspace" orientation="vertical">
       <NavLinks.Item href="/">Home</NavLinks.Item>
-      <NavLinks.Group
+      <NavLinksGroup
         label="Settings"
         open={props.settingsOpen}
         onOpenChange={props.onSettingsChange}
       >
         <NavLinks.Item href="/settings/profile">Profile</NavLinks.Item>
         <NavLinks.Item href="/settings/billing">Billing</NavLinks.Item>
-        <NavLinks.Group label="Integrations">
+        <NavLinksGroup label="Integrations">
           <NavLinks.Item href="/settings/integrations/git">Git</NavLinks.Item>
-        </NavLinks.Group>
-      </NavLinks.Group>
+        </NavLinksGroup>
+      </NavLinksGroup>
       <NavLinks.Item href="/help">Help</NavLinks.Item>
     </NavLinks>
   )
@@ -133,7 +134,7 @@ describe('NavLinks, flat', () => {
   })
 })
 
-describe('NavLinks.Group', () => {
+describe('NavLinksGroup', () => {
   it('is a disclosure button over a nested list', async () => {
     render(<Sidebar />)
     const settings = screen.getByRole('button', { name: 'Settings' })
@@ -152,15 +153,15 @@ describe('NavLinks.Group', () => {
   it('opens a group that holds the current page and marks it, keeping aria-current on the leaf', () => {
     render(
       <NavLinks orientation="vertical">
-        <NavLinks.Group label="Reports" icon={<svg />} trailing="4">
+        <NavLinksGroup label="Reports" icon={<svg />} trailing="4">
           <NavLinks.Item href="/reports/aged">Aged debt</NavLinks.Item>
           <NavLinks.Item href="/reports/vat" active>
             VAT returns
           </NavLinks.Item>
-        </NavLinks.Group>
-        <NavLinks.Group label="Archive">
+        </NavLinksGroup>
+        <NavLinksGroup label="Archive">
           <NavLinks.Item href="/archive/2023">2023</NavLinks.Item>
-        </NavLinks.Group>
+        </NavLinksGroup>
       </NavLinks>,
     )
     const reports = screen.getByRole('button', { name: 'Reports 4' })
@@ -185,9 +186,9 @@ describe('NavLinks.Group', () => {
     }
     const view = (current: boolean) => (
       <NavLinks orientation="vertical">
-        <NavLinks.Group label="Books">
+        <NavLinksGroup label="Books">
           <MyLink to="/books/ledger" current={current} />
-        </NavLinks.Group>
+        </NavLinksGroup>
       </NavLinks>
     )
     const { rerender } = render(view(false))
@@ -206,10 +207,10 @@ describe('NavLinks.Group', () => {
     }
     render(
       <NavLinks label="Main">
-        <NavLinks.Group label="Reports">
+        <NavLinksGroup label="Reports">
           <NavLinks.Item href="/reports/aged">Aged debt</NavLinks.Item>
           <MyLink to="/reports/vat" current />
-        </NavLinks.Group>
+        </NavLinksGroup>
       </NavLinks>,
     )
     const reports = screen.getByRole('button', { name: 'Reports' })
@@ -237,9 +238,9 @@ describe('NavLinks.Group', () => {
   it('can be a link to its own page, with a separate toggle', async () => {
     render(
       <NavLinks orientation="vertical">
-        <NavLinks.Group label="Settings" link={<RouterLink to="/settings" />} active>
+        <NavLinksGroup label="Settings" link={<RouterLink to="/settings" />} active>
           <NavLinks.Item href="/settings/profile">Profile</NavLinks.Item>
-        </NavLinks.Group>
+        </NavLinksGroup>
       </NavLinks>,
     )
     const link = screen.getByRole('link', { name: 'Settings' })
@@ -283,9 +284,9 @@ describe('NavLinks.Group', () => {
     render(
       <NavLinks label="Workspace" orientation="vertical">
         <NavLinks.Item href="/">Home</NavLinks.Item>
-        <NavLinks.Group label="Settings">
+        <NavLinksGroup label="Settings">
           <NavLinks.Item href="/settings/profile">Profile</NavLinks.Item>
-        </NavLinks.Group>
+        </NavLinksGroup>
         <NavLinks.Item href="/archive" hideBelow="md">
           Archive
         </NavLinks.Item>
@@ -308,10 +309,10 @@ describe('NavLinks.Group', () => {
     render(
       <NavLinks label="Main">
         <NavLinks.Item href="/">Home</NavLinks.Item>
-        <NavLinks.Group label="Products">
+        <NavLinksGroup label="Products">
           <NavLinks.Item href="#ledgers">Ledgers</NavLinks.Item>
           <NavLinks.Item href="#payroll">Payroll</NavLinks.Item>
-        </NavLinks.Group>
+        </NavLinksGroup>
       </NavLinks>,
     )
     const products = screen.getByRole('button', { name: 'Products' })

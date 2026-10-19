@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { DateRangeField, type DateRangeValue } from '@mitcsutt/kiln-ui'
+import { DateRangeField, DateRangePickerField, type DateRangeValue } from '@mitcsutt/kiln-ui'
 import { expect, screen, userEvent, waitFor, within } from 'storybook/test'
 import { storyRoot } from '#components/_story/storyRoot'
 import { Stack } from '#components/layout/Stack'
@@ -75,9 +75,14 @@ export const Usage: Story = {
   },
 }
 
-/** `picker="calendar"`: typed ends and one two-month calendar. Pick the 4th, then the 11th. */
+/** `DateRangePickerField`: typed ends and one two-month calendar. Pick the 4th, then the 11th. */
 export const CalendarPicker: Story = {
-  args: { picker: 'calendar', defaultValue: { start: '', end: '' }, min: undefined },
+  args: { defaultValue: { start: '', end: '' }, min: undefined },
+  render: (args) => (
+    <Stack style={{ maxInlineSize: '32rem' }}>
+      <DateRangePickerField {...args} />
+    </Stack>
+  ),
   play: async ({ canvasElement }) => {
     const canvas = within(storyRoot(canvasElement))
     await userEvent.click(canvas.getByRole('button', { name: 'Choose date' }))
@@ -96,25 +101,21 @@ export const CalendarWithTime: Story = {
   args: {
     label: 'Incident window',
     description: 'Times in UTC',
-    granularity: 'minute',
-    hourCycle: 24,
-    timeZone: 'UTC',
     defaultValue: { start: '2026-10-14T21:40:00Z', end: '2026-10-15T02:15:00Z' },
     min: undefined,
   },
   render: (args) => (
     <Stack style={{ maxInlineSize: '44rem' }}>
-      <DateRangeField {...args} />
+      <DateRangePickerField {...args} granularity="minute" hourCycle={24} timeZone="UTC" />
     </Stack>
   ),
 }
 
 /** Below ~25rem the two typed ends stack and the calendar button follows them. */
 export const CalendarNarrow: Story = {
-  args: { picker: 'calendar' },
   render: (args) => (
     <Stack style={{ maxInlineSize: '18rem' }}>
-      <DateRangeField {...args} />
+      <DateRangePickerField {...args} />
     </Stack>
   ),
 }
@@ -129,16 +130,16 @@ const lastDays = (days: number): DateRangeValue => ({
 })
 
 /**
- * `picker="calendar"` swaps the native inputs for typed dates and one calendar showing two months:
- * the first pick is the start, the second the end. `presets` lists ready-made ranges beside it. A
- * preset's `value` can be a function, worked out when it's picked, so "Last 7 days" always ends
- * today.
+ * `DateRangePickerField` swaps the native inputs for typed dates and one calendar showing two
+ * months: the first pick is the start, the second the end. `presets` lists ready-made ranges beside
+ * it. A preset's `value` can be a function, worked out when it's picked, so "Last 7 days" always
+ * ends today.
  */
 export const Presets: Story = {
   tags: ['docs'],
   render: function Presets() {
     return (
-      <DateRangeField
+      <DateRangePickerField
         label="Report period"
         defaultValue={lastDays(7)}
         presets={[
@@ -153,15 +154,15 @@ export const Presets: Story = {
 }
 
 /**
- * `granularity="minute"` gives each end a time, set beneath the calendar. A new range runs from the
- * start of its first day to the end of its last. With `timeZone`, each end is a UTC instant typed
- * as that zone's clock.
+ * `granularity="minute"` gives each end of a `DateRangePickerField` a time, set beneath the
+ * calendar. A new range runs from the start of its first day to the end of its last. With
+ * `timeZone`, each end is a UTC instant typed as that zone's clock.
  */
 export const WithTime: Story = {
   tags: ['docs'],
   render: function WithTime() {
     return (
-      <DateRangeField
+      <DateRangePickerField
         label="Show logs from"
         granularity="minute"
         timeZone="UTC"

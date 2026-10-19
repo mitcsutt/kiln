@@ -1,7 +1,8 @@
 import type { FocusEvent } from 'react'
 import {
   DateRangeField as UiDateRangeField,
-  type DateRangeFieldProps as UiDateRangeFieldProps,
+  DateRangePickerField as UiDateRangePickerField,
+  type DateRangePickerFieldProps as UiDateRangePickerFieldProps,
   type DateRangeValue,
 } from '@mitcsutt/kiln-ui'
 import { FieldView } from '#components/fields/FieldView'
@@ -11,7 +12,18 @@ import { accepts, useFieldBinding, type CommonFieldProps } from '#hooks/useField
 import { defineField } from '#kit/contracts'
 
 export interface FormDateRangeFieldProps
-  extends Omit<UiDateRangeFieldProps, ControlledKeys>, CommonFieldProps<DateRangeValue> {}
+  extends Omit<UiDateRangePickerFieldProps, ControlledKeys>, CommonFieldProps<DateRangeValue> {
+  /**
+   * `native`: kiln-ui's {@link DateRangeField | DateRangeField}, two native date inputs and the
+   * platform's own picker. `calendar`: kiln-ui's {@link DateRangePickerField | DateRangePickerField},
+   * two typed date inputs and one calendar for the whole range, which also takes `granularity`,
+   * `presets`, `clearable`, `isDateDisabled`, `firstDayOfWeek`, `locale`, `timeZone`, `hourCycle`
+   * and `labels`.
+   *
+   * @defaultValue `'calendar'` when `presets` or a time `granularity` is set, otherwise `'native'`
+   */
+  picker?: 'native' | 'calendar'
+}
 
 const EMPTY: DateRangeValue = { start: '', end: '' }
 
@@ -36,8 +48,8 @@ const formatEnd = (
  *
  * @remarks
  * It renders kiln-ui's {@link DateRangeField | DateRangeField}: two native date inputs by default.
- * `picker="calendar"` types each end part by part and opens one two-month calendar for the whole
- * range, `presets` lists ranges such as "Last 7 days" beside it, and `granularity="minute"` gives
+ * `picker="calendar"` renders {@link DateRangePickerField | DateRangePickerField} instead, which
+ * types each end part by part and opens one two-month calendar for the whole range, `presets` lists ranges such as "Last 7 days" beside it, and `granularity="minute"` gives
  * each end a time. Either of the last two turns the calendar on by itself.
  *
  * @example In a schema
@@ -58,13 +70,24 @@ const formatEnd = (
  * @privateRemarks
  * Two ISO dates bound to a `{ start, end }` path (§7.2 `dateRange`). Empty is `{ start: '', end:
  * '' }`. View mode formats each side with `formatDate` (or, for an end with a time,
- * `formatDateTimeIn` on the field's `timeZone`), in its `locale` and `hourCycle`, and joins them with an en dash. Every ui prop,
- * the calendar picker's included, passes straight through (Appendix A.6).
+ * `formatDateTimeIn` on the field's `timeZone`), in its `locale` and `hourCycle`, and joins them with an en dash. `picker`
+ * chooses between ui DateRangeField and DateRangePickerField, and every other ui prop passes
+ * straight through; the native field doesn't get the picker's own props (Appendix A.6).
  */
 export const FormDateRangeField = defineField<DateRangeValue>()(function FormDateRangeField({
   warn,
   excluded,
   onBlur,
+  picker,
+  granularity,
+  presets,
+  clearable,
+  isDateDisabled,
+  firstDayOfWeek,
+  locale,
+  timeZone,
+  hourCycle,
+  labels,
   ...props
 }: FormDateRangeFieldProps) {
   const binding = useFieldBinding<DateRangeValue>({
@@ -74,10 +97,11 @@ export const FormDateRangeField = defineField<DateRangeValue>()(function FormDat
     accepts: accepts.dateRange,
     empty: EMPTY,
   })
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- the accepts guard lets null through, and an untyped schema's missing default reads as undefined
+  const value = binding.value ?? EMPTY
   if (binding.mode === 'view') {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- the accepts guard lets null through, and an untyped schema's missing default reads as undefined
-    const value = binding.value ?? EMPTY
-    const parts = [formatEnd(value.start, props), formatEnd(value.end, props)].filter(
+    const reading = { timeZone, locale, hourCycle }
+    const parts = [formatEnd(value.start, reading), formatEnd(value.end, reading)].filter(
       (part) => part !== '',
     )
     return (
@@ -86,18 +110,33 @@ export const FormDateRangeField = defineField<DateRangeValue>()(function FormDat
       </FieldView>
     )
   }
+  const control = {
+    ...props,
+    ...binding.fieldProps,
+    ref: binding.ref,
+    value,
+    onValueChange: binding.setValue,
+    onBlur: (event: FocusEvent<HTMLFieldSetElement>) => {
+      onBlur?.(event)
+      binding.onBlur()
+    },
+  }
+  const usesCalendar =
+    picker === 'calendar' ||
+    (picker === undefined && (presets !== undefined || (granularity ?? 'day') !== 'day'))
+  if (!usesCalendar) return <UiDateRangeField {...control} />
   return (
-    <UiDateRangeField
-      {...props}
-      {...binding.fieldProps}
-      ref={binding.ref}
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- the accepts guard lets null through, and an untyped schema's missing default reads as undefined
-      value={binding.value ?? EMPTY}
-      onValueChange={binding.setValue}
-      onBlur={(event: FocusEvent<HTMLFieldSetElement>) => {
-        onBlur?.(event)
-        binding.onBlur()
-      }}
+    <UiDateRangePickerField
+      {...control}
+      granularity={granularity}
+      presets={presets}
+      clearable={clearable}
+      isDateDisabled={isDateDisabled}
+      firstDayOfWeek={firstDayOfWeek}
+      locale={locale}
+      timeZone={timeZone}
+      hourCycle={hourCycle}
+      labels={labels}
     />
   )
 })

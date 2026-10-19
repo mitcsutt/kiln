@@ -21,7 +21,7 @@ import styles from './segments.module.css'
  * Segmented entry for dates and times: each part (day, month, year, hour, minute, second,
  * am/pm) is its own spin button. Typing digits fills a part and moves on once it can't take
  * another digit; arrows step it; Backspace clears it. Shared by DateInput, TimeInput,
- * DateTimeInput and DateRangeField's calendar picker (internal, not exported).
+ * DateTimeInput and DateRangePickerField (internal, not exported).
  *
  * Each part is `contenteditable` only so a phone opens its numeric keyboard: every key and
  * `beforeinput` is handled here and the DOM text never changes under React.
