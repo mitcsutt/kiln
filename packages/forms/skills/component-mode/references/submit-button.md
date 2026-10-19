@@ -49,9 +49,9 @@ export function Usage() {
 | `submitMeta` | `unknown` |  | Meta passed to `onSubmit` for this button (`form.handleSubmit(meta)`). |
 | `hideBelow` | `'sm' \| 'md' \| 'lg' \| 'xl'` |  | Hide below this breakpoint (e.g. `md` → hidden on phones, shown from 48em). |
 | `hideAbove` | `'sm' \| 'md' \| 'lg' \| 'xl'` |  | Hide from this breakpoint up (e.g. `md` → shown on phones only). |
-| `size` | `'sm' \| 'md' \| 'lg'` |  |  |
-| `tone` | `'neutral' \| 'accent' \| 'critical'` |  | Colour intent. `critical` is for destructive actions only. |
 | `variant` | `'solid' \| 'outline' \| 'ghost'` |  | Visual weight. One `solid` per view is the norm — it *is* the primary action. |
+| `tone` | `'neutral' \| 'accent' \| 'critical'` |  | Colour intent. `critical` is for destructive actions only. |
+| `size` | `'sm' \| 'md' \| 'lg'` |  |  |
 | `leadingIcon` | `ReactNode` |  | Icon before the label. Pass a library icon or any SVG node. |
 | `trailingIcon` | `ReactNode` |  | Icon after the label. Not a decorative "→" — only when it adds meaning (e.g. external). |
 | `fullWidth` | `boolean` |  | Stretch to the container's width. |

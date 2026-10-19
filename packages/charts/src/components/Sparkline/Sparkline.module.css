@@ -1,0 +1,60 @@
+/*
+ * The SVG stretches a 100 × 100 box to the frame; strokes keep their width with
+ * `vector-effect`, and the last point is an HTML dot so it stays round at any aspect ratio.
+ */
+.plot {
+  --_fill: currentcolor;
+  --_stroke: currentcolor;
+
+  position: absolute;
+  inset: 0;
+}
+
+.svg {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  overflow: visible;
+}
+
+.line {
+  fill: none;
+  stroke: var(--_stroke);
+  stroke-width: 1.5px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.area {
+  fill: var(--_fill);
+  fill-opacity: 0.25;
+  stroke: none;
+}
+
+.bar {
+  fill: var(--_fill);
+  stroke: var(--_stroke);
+  stroke-width: 1px;
+  vector-effect: non-scaling-stroke;
+}
+
+.last {
+  --_x: 100%;
+  --_y: 50%;
+
+  position: absolute;
+  inset-inline-start: var(--_x);
+  inset-block-start: var(--_y);
+  inline-size: 5px;
+  block-size: 5px;
+  background: var(--_stroke);
+  border-radius: 50%;
+  translate: -50% -50%;
+}
+
+@media (forced-colors: active) {
+  .plot {
+    forced-color-adjust: none;
+  }
+}

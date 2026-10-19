@@ -1,0 +1,95 @@
+/*
+ * Cells share the width and keep a fixed height. Colour comes from the ramps only; a cell with
+ * no value is the sunken surface. The tooltip sits above the hovered or focused cell.
+ */
+.scroll {
+  position: relative;
+  overflow-x: auto;
+}
+
+.table {
+  inline-size: 100%;
+  table-layout: fixed;
+  border-spacing: 2px;
+  border-collapse: separate;
+  font-family: var(--font-numeric);
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums lining-nums;
+  font-stretch: var(--numeric-stretch);
+  color: var(--chart-label);
+}
+
+.corner {
+  inline-size: 4.5rem;
+}
+
+.columnHeader {
+  padding: 0 0 var(--space-1);
+  overflow: hidden;
+  font-weight: inherit;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rowHeader {
+  padding: 0 var(--space-2) 0 0;
+  overflow: hidden;
+  font-weight: inherit;
+  text-align: start;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cell {
+  --_fill: var(--color-surface-sunken);
+
+  block-size: var(--control-sm);
+  padding: 0;
+  background: var(--_fill);
+  border-radius: 2px;
+}
+
+.cell:focus {
+  outline: none;
+}
+
+.cell:focus-visible,
+.cell[data-active] {
+  outline: 2px solid var(--chart-focus);
+  outline-offset: 1px;
+}
+
+.tooltip {
+  --_left: 0;
+  --_top: 0;
+
+  position: absolute;
+  inset-inline-start: var(--_left);
+  inset-block-start: var(--_top);
+  z-index: 1;
+  pointer-events: none;
+  translate: -50% calc(-100% - var(--space-2));
+}
+
+.key {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  font-family: var(--font-numeric);
+  font-size: var(--text-xs);
+  font-variant-numeric: tabular-nums lining-nums;
+  color: var(--chart-label);
+}
+
+.ramp {
+  display: inline-flex;
+  gap: 2px;
+  font-size: var(--text-md);
+}
+
+@media (forced-colors: active) {
+  .cell {
+    forced-color-adjust: none;
+  }
+}

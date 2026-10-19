@@ -225,34 +225,54 @@ describe('perf acceptance (§12): 60-field form', () => {
     ).toHaveLength(10)
   })
 
-  it('typing 10 characters into a root text field re-renders only that field, 10 times', async () => {
-    const { user } = setup()
-    resetRenderCounts()
-    await user.type(screen.getByLabelText('Root r7'), 'abcdefghij')
-    expect(withoutSubmit(counts(FIELDS_AND_CHROME))).toEqual({ r7: 10 })
-  })
+  // The assertion is a render count, not wall time; typing slows down under the parallel CI test run.
+  it(
+    'typing 10 characters into a root text field re-renders only that field, 10 times',
+    { timeout: 15_000 },
+    async () => {
+      const { user } = setup()
+      resetRenderCounts()
+      await user.type(screen.getByLabelText('Root r7'), 'abcdefghij')
+      expect(withoutSubmit(counts(FIELDS_AND_CHROME))).toEqual({ r7: 10 })
+    },
+  )
 
-  it('typing 10 characters into a field inside a When re-renders only that field', async () => {
-    const { user } = setup()
-    resetRenderCounts()
-    await user.type(screen.getByLabelText('Extra w5'), 'abcdefghij')
-    expect(withoutSubmit(counts(FIELDS_AND_CHROME))).toEqual({ w5: 10 })
-  })
+  // The assertion is a render count, not wall time; typing slows down under the parallel CI test run.
+  it(
+    'typing 10 characters into a field inside a When re-renders only that field',
+    { timeout: 15_000 },
+    async () => {
+      const { user } = setup()
+      resetRenderCounts()
+      await user.type(screen.getByLabelText('Extra w5'), 'abcdefghij')
+      expect(withoutSubmit(counts(FIELDS_AND_CHROME))).toEqual({ w5: 10 })
+    },
+  )
 
-  it('typing 10 characters into a Repeater item field re-renders only that field', async () => {
-    const { user } = setup()
-    resetRenderCounts()
-    await user.type(screen.getByLabelText('Row note 6'), 'abcdefghij')
-    expect(withoutSubmit(counts(FIELDS_AND_CHROME))).toEqual({ 'rows[5].note': 10 })
-  })
+  // The assertion is a render count, not wall time; typing slows down under the parallel CI test run.
+  it(
+    'typing 10 characters into a Repeater item field re-renders only that field',
+    { timeout: 15_000 },
+    async () => {
+      const { user } = setup()
+      resetRenderCounts()
+      await user.type(screen.getByLabelText('Row note 6'), 'abcdefghij')
+      expect(withoutSubmit(counts(FIELDS_AND_CHROME))).toEqual({ 'rows[5].note': 10 })
+    },
+  )
 
-  it('typing into a Repeater item field after a submit still re-renders only that field', async () => {
-    const { user } = setup()
-    await submit(user)
-    resetRenderCounts()
-    await user.type(screen.getByLabelText('Row note 2'), 'abc')
-    expect(withoutSubmit(counts(FIELDS_AND_CHROME))).toEqual({ 'rows[1].note': 3 })
-  })
+  // The assertion is a render count, not wall time; typing slows down under the parallel CI test run.
+  it(
+    'typing into a Repeater item field after a submit still re-renders only that field',
+    { timeout: 15_000 },
+    async () => {
+      const { user } = setup()
+      await submit(user)
+      resetRenderCounts()
+      await user.type(screen.getByLabelText('Row note 2'), 'abc')
+      expect(withoutSubmit(counts(FIELDS_AND_CHROME))).toEqual({ 'rows[1].note': 3 })
+    },
+  )
 
   // SubmitButton only subscribes to `isDefaultValue` through `requireChanges`, so the first
   // keystroke of a pristine form doesn't re-render it.

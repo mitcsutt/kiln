@@ -17,6 +17,9 @@ content/docs/ui/navigation/*.mdx
 content/docs/ui/overlays/*.mdx
 content/docs/ui/typography/*.mdx
 content/docs/forms/fields/*.mdx
+content/docs/charts/presets/*.mdx
+content/docs/charts/primitives/*.mdx
+content/docs/charts/building-blocks/*.mdx
 content/docs/forms/hooks/*.mdx
 content/docs/forms/layouts/*.mdx
 !content/docs/forms/layouts/custom-layouts.mdx

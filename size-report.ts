@@ -13,8 +13,10 @@
  *   would (dependencies and peers external, the package's `sideEffects` honoured) and
  *   measure the result. With `isolatedTo`, they also fail unless every module in the
  *   bundle is reachable from that file: importing one component must not pull in
- *   another. With `withDependencies`, only peers stay external, and every chunk counts,
- *   lazily loaded ones included: what an app downloads for the feature, engine and all.
+ *   another. With `bundle`, the named dependencies are bundled in and measured too, for
+ *   a package whose engine is a dependency a consumer always ships with it. With
+ *   `withDependencies`, only peers stay external, and every chunk counts, lazily loaded
+ *   ones included: what an app downloads for the feature, engine and all.
  *
  * Sizes are gzip, in bytes.
  *
@@ -40,6 +42,8 @@ interface ImportCheck {
   from: string
   budget: number
   isolatedTo?: string
+  /** Dependencies to bundle and measure rather than leave external. */
+  bundle?: string[]
   withDependencies?: boolean
 }
 
@@ -152,12 +156,25 @@ async function measure(root: string): Promise<SizeReport> {
       results.push({ name: check.name, bytes, budget: check.budget, problems: [] })
       continue
     }
-    const chunks = await bundle(root, check, check.withDependencies ? isPeer : isExternal)
-    const modules = chunks.flatMap((chunk) =>
-      Object.entries(chunk.modules)
-        .filter(([id, info]) => !id.startsWith('\0') && info.renderedLength > 0)
-        .map(([id]) => id),
+    const bundled = check.bundle ?? []
+    const chunks = await bundle(
+      root,
+      check,
+      check.withDependencies
+        ? isPeer
+        : (id) =>
+            bundled.some((name) => id === name || id.startsWith(`${name}/`))
+              ? false
+              : isExternal(id),
     )
+    const modules = chunks
+      .flatMap((chunk) =>
+        Object.entries(chunk.modules)
+          .filter(([id, info]) => !id.startsWith('\0') && info.renderedLength > 0)
+          .map(([id]) => id),
+      )
+      // A bundled dependency's modules are measured, but they aren't the package's own.
+      .filter((id) => bundled.length === 0 || !id.includes('/node_modules/'))
     const problems: string[] = []
     if (check.isolatedTo) {
       const allowed = closure(root, check.isolatedTo)

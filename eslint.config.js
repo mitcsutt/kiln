@@ -202,6 +202,36 @@ export default defineConfig(
     },
   },
   {
+    name: 'kiln/workspace/charts',
+    files: ['packages/charts/src/**'],
+    extends: [react, storybook],
+    rules: {
+      // Compound charts (`Chart.Bar`) follow the ui authoring standard, so the rule is off
+      // here for the same reason as in ui (ADR 0015).
+      'react-refresh/only-export-components': 'off',
+      // `role="list"` on a `list-style: none` list is deliberate: Safari drops list
+      // semantics without it.
+      'jsx-a11y/no-redundant-roles': ['error', { nav: ['navigation'], ul: ['list'], ol: ['list'] }],
+      // A heatmap is a grid of cells: the focused cell is the one tab stop (roving tabindex).
+      'jsx-a11y/no-noninteractive-tabindex': [
+        'error',
+        { roles: ['gridcell'], allowExpressionValues: true },
+      ],
+      '@typescript-eslint/no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            { group: ['../*'], message: 'Import with a `#` subpath import (`#core/...`).' },
+            {
+              group: ['@mitcsutt/kiln-ui/*'],
+              message: 'Import @mitcsutt/kiln-ui from its barrel.',
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
     // ADR 0028: a story tagged `docs` is a docs example, the code readers copy.
     name: 'kiln/workspace/docs-stories',
     files: ['packages/*/src/**/*.stories.tsx'],
@@ -257,6 +287,7 @@ export default defineConfig(
     name: 'kiln/workspace/ui/test-support',
     files: [
       'packages/ui/src/test/**',
+      'packages/charts/src/test/**',
       'packages/forms/src/test/**',
       'packages/forms/src/stories/**',
       'packages/forms/src/**/*.test-d.{ts,tsx}',
@@ -275,6 +306,8 @@ export default defineConfig(
     name: 'kiln/workspace/ui/tests',
     files: [
       'packages/ui/src/**/*.test.{ts,tsx}',
+      'packages/charts/src/**/*.test.{ts,tsx}',
+      'packages/charts/src/test/**',
       // Forms tests and their harness read the same contract through kiln-ui, plus what
       // a form submits: hidden inputs and `name`s for FormData, and the wrapper that
       // carries `aria-describedby` on a group field (ADR 0017).
@@ -295,7 +328,7 @@ export default defineConfig(
   },
   {
     name: 'kiln/workspace/forms/tests',
-    files: ['packages/forms/src/**/*.test.{ts,tsx}'],
+    files: ['packages/forms/src/**/*.test.{ts,tsx}', 'packages/charts/src/**/*.test.{ts,tsx}'],
     rules: {
       // The axe helper asserts, and fails the test with the violations it finds.
       'vitest/expect-expect': [

@@ -26,12 +26,14 @@ const entries = [
   },
   { pkg: '@mitcsutt/kiln-dnd', file: join(root, 'packages/dnd/src/index.ts') },
   { pkg: '@mitcsutt/kiln-dnd/testing', file: join(root, 'packages/dnd/src/testing/index.ts') },
+  { pkg: '@mitcsutt/kiln-charts', file: join(root, 'packages/charts/src/index.ts') },
 ] as const
 
 const kilnSource = [
   join(root, 'packages/ui/src') + sep,
   join(root, 'packages/forms/src') + sep,
   join(root, 'packages/dnd/src') + sep,
+  join(root, 'packages/charts/src') + sep,
 ]
 
 export interface ApiProp {
@@ -329,10 +331,18 @@ function propsOf(type: ts.Type): ApiProp[] {
     return [...merged.values()]
   }
   const props: ApiProp[] = []
-  for (const prop of checker.getPropertiesOfType(type)) {
-    const decls = prop.getDeclarations() ?? []
-    const own = decls.find((d) => isKilnSource(d.getSourceFile().fileName))
-    if (!own) continue
+  // TypeScript lists the props of a mapped type (`Omit<ChartProps, 'children'>`) in the order of
+  // their key types' internal ids, which shifts with unrelated code. Keep each declaring type's
+  // props together, in the order it declares them.
+  const owned = checker.getPropertiesOfType(type).flatMap((prop) => {
+    const own = prop.getDeclarations()?.find((d) => isKilnSource(d.getSourceFile().fileName))
+    return own ? [{ prop, own }] : []
+  })
+  const groups = [...new Set(owned.map(({ own }) => own.parent))]
+  owned.sort(
+    (a, b) => groups.indexOf(a.own.parent) - groups.indexOf(b.own.parent) || a.own.pos - b.own.pos,
+  )
+  for (const { prop, own } of owned) {
     const propType = checker.getTypeOfSymbol(prop)
     const description = docs(prop)
     const row: ApiProp = {

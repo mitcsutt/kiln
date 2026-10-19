@@ -10,6 +10,7 @@ body:
         - '@mitcsutt/kiln-ui'
         - '@mitcsutt/kiln-forms'
         - '@mitcsutt/kiln-dnd'
+        - '@mitcsutt/kiln-charts'
         - '@mitcsutt/kiln-eslint-config'
         - '@mitcsutt/kiln-prettier-config'
         - '@mitcsutt/kiln-tsconfig'

@@ -18,7 +18,8 @@ const REFRESH = 'react-refresh/only-export-components'
 
 const NEXT_OPTIONS = { ...APP_OPTIONS, router: 'next' } satisfies KilnStructureOptions
 
-describe('valid apps', () => {
+// A type-aware ESLint cold start is CPU-bound and slows down under the parallel CI test run.
+describe('valid apps', { timeout: 20_000 }, () => {
   it('lints the TanStack Router app with no errors', async () => {
     const { messages } = await lintApp('tanstack-app', APP_OPTIONS)
     expect(messages).toEqual([])
@@ -213,7 +214,8 @@ const CASES: {
   },
 ]
 
-describe('invalid cases', () => {
+// A type-aware ESLint cold start is CPU-bound and slows down under the parallel CI test run.
+describe('invalid cases', { timeout: 20_000 }, () => {
   it('has a case for every overlay folder', () => {
     const folders = fs.readdirSync(path.join(import.meta.dirname, 'fixtures/invalid')).sort()
     expect(CASES.map((c) => c.overlay).sort()).toEqual(folders)
@@ -226,7 +228,8 @@ describe('invalid cases', () => {
   })
 })
 
-describe('options', () => {
+// A type-aware ESLint cold start is CPU-bound and slows down under the parallel CI test run.
+describe('options', { timeout: 20_000 }, () => {
   it('accepts a declared extra kind', async () => {
     const { messages } = await lintApp(
       'tanstack-app',

@@ -1,0 +1,4 @@
+{
+  "title": "Building blocks",
+  "pages": ["chart-frame", "chart-tooltip", "chart-legend", "chart-color-scope"]
+}

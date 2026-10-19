@@ -1,0 +1,43 @@
+{
+  "checks": [
+    {
+      "name": "import { Sparkline } (no chart engine)",
+      "import": "{ Sparkline }",
+      "from": "dist/index.js",
+      "bundle": ["recharts"],
+      "budget": 6000
+    },
+    {
+      "name": "import { Heatmap } (no chart engine)",
+      "import": "{ Heatmap }",
+      "from": "dist/index.js",
+      "bundle": ["recharts"],
+      "budget": 6000
+    },
+    {
+      "name": "import { TimeSeries }, with the chart engine",
+      "import": "{ TimeSeries }",
+      "from": "dist/index.js",
+      "bundle": ["recharts"],
+      "budget": 121000
+    },
+    {
+      "name": "Every preset, with the chart engine (spike 114 kB + 10%)",
+      "import": "{ TimeSeries, Bars, Share, BarList, Sparkline, Heatmap }",
+      "from": "dist/index.js",
+      "bundle": ["recharts"],
+      "budget": 125400
+    },
+    {
+      "name": "Everything (import *), engine external",
+      "import": "* as charts",
+      "from": "dist/index.js",
+      "budget": 14000
+    },
+    {
+      "name": "Stylesheet (styles.css)",
+      "file": "dist/styles.css",
+      "budget": 3000
+    }
+  ]
+}
