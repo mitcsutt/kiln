@@ -88,7 +88,7 @@ export const FormDateField = defineField<string>()(function FormDateField({
     empty: '',
   })
   if (binding.mode === 'view')
-    return <FieldView label={props.label}>{formatDate(binding.value)}</FieldView>
+    return <FieldView label={props.label}>{formatDate(binding.value, locale)}</FieldView>
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- the accepts guard lets null through, and an untyped schema's missing default reads as undefined
   const value = binding.value ?? ''
   if (picker !== 'native')

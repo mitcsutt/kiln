@@ -15,9 +15,21 @@ export interface FormDateRangeFieldProps
 
 const EMPTY: DateRangeValue = { start: '', end: '' }
 
-/** One end for reading: a date, or with a time `granularity` a date and time on `timeZone`'s clock. */
-const formatEnd = (value: string, timeZone: string | undefined): string =>
-  value.includes('T') ? formatDateTimeIn(value, timeZone) : formatDate(value)
+/**
+ * One end for reading, in `locale`: a date, or with a time `granularity` a date and time on
+ * `timeZone`'s clock and `hourCycle`.
+ */
+const formatEnd = (
+  value: string,
+  {
+    timeZone,
+    locale,
+    hourCycle,
+  }: Pick<FormDateRangeFieldProps, 'timeZone' | 'locale' | 'hourCycle'>,
+): string =>
+  value.includes('T')
+    ? formatDateTimeIn(value, timeZone, locale, hourCycle)
+    : formatDate(value, locale)
 
 /**
  * Two ISO dates bound to a `{ start, end }` path.
@@ -46,7 +58,7 @@ const formatEnd = (value: string, timeZone: string | undefined): string =>
  * @privateRemarks
  * Two ISO dates bound to a `{ start, end }` path (§7.2 `dateRange`). Empty is `{ start: '', end:
  * '' }`. View mode formats each side with `formatDate` (or, for an end with a time,
- * `formatDateTimeIn` on the field's `timeZone`) and joins them with an en dash. Every ui prop,
+ * `formatDateTimeIn` on the field's `timeZone`), in its `locale` and `hourCycle`, and joins them with an en dash. Every ui prop,
  * the calendar picker's included, passes straight through (Appendix A.6).
  */
 export const FormDateRangeField = defineField<DateRangeValue>()(function FormDateRangeField({
@@ -65,10 +77,9 @@ export const FormDateRangeField = defineField<DateRangeValue>()(function FormDat
   if (binding.mode === 'view') {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- the accepts guard lets null through, and an untyped schema's missing default reads as undefined
     const value = binding.value ?? EMPTY
-    const parts = [
-      formatEnd(value.start, props.timeZone),
-      formatEnd(value.end, props.timeZone),
-    ].filter((part) => part !== '')
+    const parts = [formatEnd(value.start, props), formatEnd(value.end, props)].filter(
+      (part) => part !== '',
+    )
     return (
       <FieldView label={props.label}>
         {parts.length === 0 ? undefined : parts.join(' – ')}

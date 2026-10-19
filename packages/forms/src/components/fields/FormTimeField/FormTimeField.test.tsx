@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { fireEvent, screen } from '@testing-library/react'
 import { FormTimeField } from '#components/fields/FormTimeField'
 import { defaultFields } from '#components/fields/defaultFields'
@@ -81,5 +82,32 @@ describe('FormTimeField picker', () => {
     })
     expect(part('Hour')).toHaveTextContent('14')
     expect(part('Minute')).toHaveTextContent('30')
+  })
+})
+
+describe('FormTimeField view', () => {
+  const view = (field: ReactNode) =>
+    renderForm((f) => <f.AppField name="departs">{() => field}</f.AppField>, {
+      defaultValues: { departs: '14:30' },
+      formProps: { mode: 'view' },
+    })
+
+  it('reads the value in the field’s locale and on its clock when it sets them', () => {
+    view(<FormTimeField label="Departs" picker="segmented" locale="en-US" hourCycle={12} />)
+    expect(screen.getByText(/^2:30\sPM$/)).toBeInTheDocument()
+  })
+
+  it('reads the value on the field’s 24-hour clock in a 12-hour locale', () => {
+    view(<FormTimeField label="Departs" picker="segmented" locale="en-US" hourCycle={24} />)
+    expect(screen.getByText('14:30')).toBeInTheDocument()
+  })
+
+  it('reads the value in the device’s locale and clock without them', () => {
+    view(<FormTimeField label="Departs" picker="segmented" />)
+    const expected = new Intl.DateTimeFormat(undefined, {
+      timeStyle: 'short',
+      timeZone: 'UTC',
+    }).format(new Date(Date.UTC(1970, 0, 1, 14, 30)))
+    expect(screen.getByText(expected)).toBeInTheDocument()
   })
 })

@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { fireEvent, screen, waitFor, within } from '@testing-library/react'
 import { FormDateField } from '#components/fields/FormDateField'
 import { defaultFields } from '#components/fields/defaultFields'
@@ -116,5 +117,27 @@ describe('FormDateField picker', () => {
     expect(part('Day')).toHaveTextContent('15')
     expect(screen.getByRole('button', { name: 'Choose date' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Clear' })).toBeInTheDocument()
+  })
+})
+
+describe('FormDateField view', () => {
+  const view = (field: ReactNode) =>
+    renderForm((f) => <f.AppField name="travel">{() => field}</f.AppField>, {
+      defaultValues: { travel: '2026-10-03' },
+      formProps: { mode: 'view' },
+    })
+
+  it('reads the value in the field’s locale when it sets one', () => {
+    view(<FormDateField label="Travel date" picker="calendar" locale="de-DE" />)
+    expect(screen.getByText('03.10.2026')).toBeInTheDocument()
+  })
+
+  it('reads the value in the device’s locale without one', () => {
+    view(<FormDateField label="Travel date" picker="calendar" />)
+    const expected = new Intl.DateTimeFormat(undefined, {
+      dateStyle: 'medium',
+      timeZone: 'UTC',
+    }).format(new Date(Date.UTC(2026, 9, 3)))
+    expect(screen.getByText(expected)).toBeInTheDocument()
   })
 })

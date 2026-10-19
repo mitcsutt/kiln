@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { fireEvent, screen, waitFor, within } from '@testing-library/react'
 import { FormDateTimeField } from '#components/fields/FormDateTimeField'
 import { defaultFields } from '#components/fields/defaultFields'
@@ -96,5 +97,26 @@ describe('FormDateTimeField picker', () => {
     })
     expect(part('Day')).toHaveTextContent('15')
     expect(part('Minute')).toHaveTextContent('30')
+  })
+})
+
+describe('FormDateTimeField view', () => {
+  const view = (field: ReactNode) =>
+    renderForm((f) => <f.AppField name="pickup">{() => field}</f.AppField>, {
+      defaultValues: { pickup: '2026-10-03T14:30' },
+      formProps: { mode: 'view' },
+    })
+
+  it('reads the value in the field’s locale and on its clock when it sets them', () => {
+    view(<FormDateTimeField label="Pick-up" picker="calendar" locale="de-DE" hourCycle={12} />)
+    expect(screen.getByText(/^03\.10\.2026, 0?2:30\sPM$/)).toBeInTheDocument()
+  })
+
+  it('reads the value in the device’s locale and clock without them', () => {
+    view(<FormDateTimeField label="Pick-up" picker="calendar" />)
+    const date = new Intl.DateTimeFormat(undefined, { dateStyle: 'medium', timeZone: 'UTC' })
+    const time = new Intl.DateTimeFormat(undefined, { timeStyle: 'short', timeZone: 'UTC' })
+    const expected = `${date.format(new Date(Date.UTC(2026, 9, 3)))}, ${time.format(new Date(Date.UTC(1970, 0, 1, 14, 30)))}`
+    expect(screen.getByText(expected)).toBeInTheDocument()
   })
 })

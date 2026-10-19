@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { fireEvent, screen, waitFor, within } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { FormDateRangeField } from '#components/fields/FormDateRangeField'
@@ -210,5 +211,49 @@ describe('FormDateRangeField', () => {
       expect(form.state.values.period).toEqual({ start: '2026-09-01', end: '2026-09-30' })
     })
     expect(endPart('End date')).toHaveTextContent('30')
+  })
+})
+
+describe('FormDateRangeField view locale', () => {
+  const view = (field: ReactNode, value: { start: string; end: string }) =>
+    renderForm((f) => <f.AppField name="trip">{() => field}</f.AppField>, {
+      defaultValues: { trip: value },
+      formProps: { mode: 'view' },
+    })
+
+  it('reads dates in the field’s locale when it sets one', () => {
+    view(<FormDateRangeField label="Trip" picker="calendar" locale="de-DE" />, {
+      start: '2026-10-03',
+      end: '2026-10-10',
+    })
+    expect(screen.getByText('03.10.2026 – 10.10.2026')).toBeInTheDocument()
+  })
+
+  it('reads times in the field’s locale and on its clock when it sets them', () => {
+    view(
+      <FormDateRangeField
+        label="Trip"
+        granularity="minute"
+        locale="de-DE"
+        hourCycle={12}
+        timeZone="UTC"
+      />,
+      { start: '2026-10-03T14:30:00Z', end: '2026-10-03T16:00:00Z' },
+    )
+    expect(
+      screen.getByText(/^03\.10\.2026, 0?2:30\sPM – 03\.10\.2026, 0?4:00\sPM$/),
+    ).toBeInTheDocument()
+  })
+
+  it('reads dates and times in the device’s locale and clock without them', () => {
+    view(<FormDateRangeField label="Trip" granularity="minute" timeZone="UTC" />, {
+      start: '2026-10-03',
+      end: '2026-10-03T16:00:00Z',
+    })
+    const date = new Intl.DateTimeFormat(undefined, { dateStyle: 'medium', timeZone: 'UTC' })
+    const time = new Intl.DateTimeFormat(undefined, { timeStyle: 'short', timeZone: 'UTC' })
+    const day = date.format(new Date(Date.UTC(2026, 9, 3)))
+    const expected = `${day} – ${day}, ${time.format(new Date(Date.UTC(1970, 0, 1, 16)))}`
+    expect(screen.getByText(expected)).toBeInTheDocument()
   })
 })

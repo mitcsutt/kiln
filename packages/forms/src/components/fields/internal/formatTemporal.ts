@@ -11,22 +11,34 @@ export function formatDate(value: string | null | undefined, locale?: string): s
   return new Intl.DateTimeFormat(locale, { dateStyle: 'medium', timeZone: 'UTC' }).format(date)
 }
 
-/** `14:30` → "14:30" / "2:30 PM" per locale. */
-export function formatTime(value: string | null | undefined, locale?: string): string {
+/** `14:30` → "14:30" / "2:30 PM" per locale, or on `hourCycle`'s clock when it's set. */
+export function formatTime(
+  value: string | null | undefined,
+  locale?: string,
+  hourCycle?: 12 | 24,
+): string {
   if (!value) return ''
   const match = ISO_TIME.exec(value)
   if (!match) return value
   const [, h, min] = match
   const date = new Date(Date.UTC(1970, 0, 1, Number(h), Number(min)))
-  return new Intl.DateTimeFormat(locale, { timeStyle: 'short', timeZone: 'UTC' }).format(date)
+  return new Intl.DateTimeFormat(locale, {
+    timeStyle: 'short',
+    timeZone: 'UTC',
+    hour12: hourCycle === undefined ? undefined : hourCycle === 12,
+  }).format(date)
 }
 
 /** `2026-10-03T14:30` → date + time per locale (wall-clock, no time-zone conversion). */
-export function formatDateTime(value: string | null | undefined, locale?: string): string {
+export function formatDateTime(
+  value: string | null | undefined,
+  locale?: string,
+  hourCycle?: 12 | 24,
+): string {
   if (!value) return ''
   const [datePart = '', timePart = ''] = value.split('T')
   if (!ISO_DATE.test(datePart) || !ISO_TIME.test(timePart)) return value
-  return `${formatDate(datePart, locale)}, ${formatTime(timePart, locale)}`
+  return `${formatDate(datePart, locale)}, ${formatTime(timePart, locale, hourCycle)}`
 }
 
 const OFFSET = /(?:Z|[+-]\d{2}:\d{2})$/
@@ -40,8 +52,9 @@ export function formatDateTimeIn(
   value: string | null | undefined,
   timeZone?: string,
   locale?: string,
+  hourCycle?: 12 | 24,
 ): string {
-  if (!value || !OFFSET.test(value)) return formatDateTime(value, locale)
+  if (!value || !OFFSET.test(value)) return formatDateTime(value, locale, hourCycle)
   const instant = new Date(value)
   if (Number.isNaN(instant.getTime())) return value
   const parts = Object.fromEntries(
@@ -60,5 +73,6 @@ export function formatDateTimeIn(
   return formatDateTime(
     `${String(parts.year)}-${String(parts.month)}-${String(parts.day)}T${String(parts.hour)}:${String(parts.minute)}`,
     locale,
+    hourCycle,
   )
 }
