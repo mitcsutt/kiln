@@ -4,7 +4,7 @@ Themed, accessible charts for kiln-ui. Two layers, both Kiln's own: **presets** 
 
 ## Rules
 
-- **The engine is hidden.** Recharts is a dependency, imported only in `src/components/Chart/` (`Chart.tsx`, `parts.tsx`). No public type names it: `src/test/publicTypes.test.ts` emits the declarations and fails on any mention. `engineProps` is typed `Readonly<Record<string, unknown>>` and documented as outside semver.
+- **The engine is hidden.** Recharts is a dependency, imported only in `src/components/Chart/` (`Chart.tsx`, `parts.tsx`). No public type names it: `check:package` reads every declaration in the packed tarball and fails on any mention. `engineProps` is typed `Readonly<Record<string, unknown>>` and documented as outside semver.
 - **Plain SVG or HTML where the engine isn't needed.** `Sparkline`, `Heatmap`, `Share` and `BarList` never import Recharts (the size checks bundle Recharts in and would show it), so they cost a few kB and render completely on the server.
 - **Colours are tokens, resolved to `var()`.** Every colour goes through `resolveColor` (`#core/colors`): `cat-N` fills with `--color-cat-N` and strokes with `--color-cat-N-stroke`, ramps and tones map to their variables. Never read a computed style: a theme or mode switch restyles a mounted chart through CSS with no React render (`Chart.test.tsx` counts commits).
 - **Text is ink, never a series colour.** Ticks, legends and tooltips use `--chart-label`, `--chart-tooltip-*` and the ink tokens; the swatch carries the series colour. Legend swatches are kiln-ui's `Swatch` (lines get their own stroke mark).
@@ -44,7 +44,7 @@ pnpm --filter @mitcsutt/kiln-charts test:react18    # the same suite on React 18
 pnpm --filter @mitcsutt/kiln-charts typecheck
 pnpm --filter @mitcsutt/kiln-charts lint
 pnpm --filter @mitcsutt/kiln-charts build
-pnpm --filter @mitcsutt/kiln-charts check:package   # publint and attw
+pnpm --filter @mitcsutt/kiln-charts check:package   # publint, attw and the no-engine-types check
 pnpm --filter @mitcsutt/kiln-charts size            # budgets, with Recharts bundled in for the engine checks
 ```
 

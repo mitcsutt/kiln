@@ -68,7 +68,7 @@
   "scripts": {
     "build": "vite build",
     "build:watch": "vite build --watch",
-    "check:package": "pnpm pack --out node_modules/.cache/kiln-pack/package.tgz > /dev/null && publint --pack pnpm --strict && attw node_modules/.cache/kiln-pack/package.tgz --profile esm-only --exclude-entrypoints ./styles.css",
+    "check:package": "pnpm pack --out node_modules/.cache/kiln-pack/package.tgz > /dev/null && publint --pack pnpm --strict && attw node_modules/.cache/kiln-pack/package.tgz --profile esm-only --exclude-entrypoints ./styles.css && node scripts/check-public-types.ts node_modules/.cache/kiln-pack/package.tgz",
     "check:skills": "intent validate",
     "lint": "eslint --max-warnings=0 .",
     "size": "node ../../size-report.ts",
