@@ -27,11 +27,16 @@ export interface FormDragAndDrop {
     onMove: (from: number, to: number, input: 'keyboard' | 'pointer') => void
     children: ReactNode
   }>
-  /** One item. `children` renders its element, with `ref` and `props` on it. */
+  /**
+   * One item. `children` renders its element, with `ref` and `props` on it; the `ref` also hands
+   * the element to `setItemElement(index)`, the repeater's item-focus map.
+   */
   readonly Item: ComponentType<{
     id: string
     index: number
     label: string
+    /** Stable across renders. */
+    setItemElement: (index: number) => (element: HTMLElement | null) => void
     children: (item: {
       ref: (element: HTMLElement | null) => void
       props: RepeaterDragAttributes

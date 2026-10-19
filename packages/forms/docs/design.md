@@ -2182,7 +2182,7 @@ These entries record the specific decisions that refine the body above or depart
 
 ### A.3 Messages (D15)
 
-`FormMessages` also has `yes`, `no` and `notProvided` (view mode), `actions` (the Repeater table header), `edit` (FormReview), `stepComplete`, `stepError` and `stepCompact(index, count)` (Stepper), `reset` (the ResetButton's default text, so a schema `{ content: 'reset' }` needs no label), `invalidJson` (`FormJsonField`'s syntax error, with the line and column when known), and `drag` (a Repeater's drag handle, its instructions and what a drag announces, A.7). `mergeMessages` merges `drag` one level deep, like `rules` and `fileRejected`.
+`FormMessages` also has `yes`, `no` and `notProvided` (view mode), `actions` (the Repeater table header), `edit` (FormReview), `stepComplete`, `stepError` and `stepCompact(index, count)` (Stepper), `reset` (the ResetButton's default text, so a schema `{ content: 'reset' }` needs no label), `invalidJson` (`FormJsonField`'s syntax error, with the line and column when known), and `drag` (a Repeater's drag handle, its instructions and what a drag announces, A.7). `drag`'s keys are optional: their English defaults ship in `@mitcsutt/kiln-forms/dnd`, so forms without drag and drop don't carry them, and `defaultMessages.drag` is empty. `mergeMessages` merges `drag` one level deep, like `rules` and `fileRejected`.
 
 ### A.4 View mode (§9.11)
 

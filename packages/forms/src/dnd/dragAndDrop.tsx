@@ -13,13 +13,32 @@ import type { FormMessages } from '#runtime/messages'
 
 type ListProps = ComponentProps<FormDragAndDrop['List']>
 type ItemProps = ComponentProps<FormDragAndDrop['Item']>
+type ElementRef = (element: HTMLElement | null) => void
 
 /** Each repeater has a `Dnd` scope of its own, so one list name serves them all. */
 const LIST = 'repeater'
 
+/** `FormMessages.drag`'s defaults, here so that only forms with drag and drop carry them. */
+const defaultDragMessages: Required<FormMessages['drag']> = {
+  instructions:
+    'To pick up, press Space or Enter. Then use the arrow keys to move, Space or Enter to drop, and Escape to cancel.',
+  handle: (item) => `Drag ${item}`,
+  lifted: (item, position, count) =>
+    `Picked up ${item}, position ${String(position)} of ${String(count)}.`,
+  moved: (item, position, count) =>
+    `${item} moved to position ${String(position)} of ${String(count)}.`,
+  dropped: (item, position, count) =>
+    `Dropped ${item} at position ${String(position)} of ${String(count)}.`,
+  canceled: (item, position, count) =>
+    `Move cancelled. ${item} is back at position ${String(position)} of ${String(count)}.`,
+}
+
 /** The repeater's words as kiln-dnd's announcements, rebuilt only when one of them changes. */
 function useAnnouncements(messages: FormMessages['drag']): Partial<DndAnnouncements> {
-  const { instructions, handle, lifted, moved, dropped, canceled } = messages
+  const { instructions, handle, lifted, moved, dropped, canceled } = {
+    ...defaultDragMessages,
+    ...messages,
+  }
   return useMemo(() => {
     const at =
       (say: (item: string, position: number, count: number) => string) =>
@@ -58,12 +77,41 @@ function RepeaterDropArea({ label, children }: { label: string; children: ReactN
   return <div ref={ref}>{children}</div>
 }
 
-function RepeaterDragItem({ id, index, label, children }: ItemProps) {
+function RepeaterDragItem({ id, index, label, setItemElement, children }: ItemProps) {
   return (
     <SortableItem id={id} index={index} label={label} list={LIST} handle>
-      {({ ref, props }) => children({ ref, props })}
+      {({ ref, props }) => (
+        <ItemRef source={ref} index={index} setItemElement={setItemElement}>
+          {(merged) => children({ ref: merged, props })}
+        </ItemRef>
+      )}
     </SortableItem>
   )
+}
+
+/**
+ * One ref for the item's element that tells both kiln-dnd and the repeater's item-focus map.
+ * Its inputs are stable, so the element is never detached and attached again on a render.
+ */
+function ItemRef({
+  source,
+  index,
+  setItemElement,
+  children,
+}: {
+  source: ElementRef
+  index: number
+  setItemElement: ItemProps['setItemElement']
+  children: (ref: ElementRef) => ReactNode
+}) {
+  const ref = useCallback(
+    (element: HTMLElement | null) => {
+      source(element)
+      setItemElement(index)(element)
+    },
+    [source, index, setItemElement],
+  )
+  return <>{children(ref)}</>
 }
 
 function RepeaterDragHandle(props: { 'data-repeater-action': 'drag' }) {

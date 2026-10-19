@@ -29,7 +29,7 @@
       "name": "Drag and drop entry (import { dragAndDrop } from ./dnd, kiln-dnd external)",
       "import": "{ dragAndDrop }",
       "from": "dist/dnd/index.js",
-      "budget": 620
+      "budget": 800
     },
     {
       "name": "Everything (import *)",

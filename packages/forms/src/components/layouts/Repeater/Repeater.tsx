@@ -216,31 +216,6 @@ interface ItemsListOptions {
   dragAndDrop?: FormDragAndDrop | null
 }
 
-/**
- * One ref for a draggable item's element that tells both the drag library and the item-focus
- * map. Its inputs are stable, so the element is never detached and attached again on a render.
- */
-function ItemRef({
-  source,
-  index,
-  setItemElement,
-  children,
-}: {
-  source: ElementRef
-  index: number
-  setItemElement: ItemsListOptions['setItemElement']
-  children: (ref: ElementRef) => ReactNode
-}) {
-  const ref = useCallback(
-    (element: HTMLElement | null) => {
-      source(element)
-      setItemElement?.(index)(element)
-    },
-    [source, index, setItemElement],
-  )
-  return <>{children(ref)}</>
-}
-
 /** The items in the chosen variant (shared by edit and view mode). */
 function renderItems({
   props,
@@ -255,17 +230,19 @@ function renderItems({
   const { variant = 'list', empty, columns, children } = props
   const indexes = Array.from({ length: count }, (_, index) => index)
   if (count === 0) return empty ?? null
-  const shell: ItemShell = dragAndDrop
-    ? (index, render) => (
-        <dragAndDrop.Item id={String(index)} index={index} label={labelOf(index)}>
-          {({ ref, props: drag }) => (
-            <ItemRef source={ref} index={index} setItemElement={setItemElement}>
-              {(merged) => render(merged, drag)}
-            </ItemRef>
-          )}
-        </dragAndDrop.Item>
-      )
-    : (index, render) => render(setItemElement?.(index), undefined)
+  const shell: ItemShell =
+    dragAndDrop && setItemElement
+      ? (index, render) => (
+          <dragAndDrop.Item
+            id={String(index)}
+            index={index}
+            label={labelOf(index)}
+            setItemElement={setItemElement}
+          >
+            {({ ref, props: drag }) => render(ref, drag)}
+          </dragAndDrop.Item>
+        )
+      : (index, render) => render(setItemElement?.(index), undefined)
   if (variant === 'table') {
     return (
       <FieldPresentation labelHidden layout="inline">

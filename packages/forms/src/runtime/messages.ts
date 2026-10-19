@@ -25,9 +25,10 @@ export interface FormMessages {
   actions: string
   /**
    * Repeater with `reorderable="drag"`: its drag handles and what is announced at each step of
-   * a drag. `position` counts from 1, out of `count` items.
+   * a drag. `position` counts from 1, out of `count` items. Their defaults live in
+   * `@mitcsutt/kiln-forms/dnd`, so forms without drag and drop don't carry them.
    */
-  drag: {
+  drag: Partial<{
     /** How to use a handle, linked to every handle with `aria-describedby`. */
     instructions: string
     /** A drag handle's accessible name. */
@@ -36,7 +37,7 @@ export interface FormMessages {
     moved: (item: string, position: number, count: number) => string
     dropped: (item: string, position: number, count: number) => string
     canceled: (item: string, position: number, count: number) => string
-  }
+  }>
   stepOf: (index: number, count: number, title: string) => string
   back: string
   next: string
@@ -106,19 +107,7 @@ export const defaultMessages: FormMessages = {
   itemMoved: (item, pos) => `${item} moved to position ${String(pos)}`,
   maxItems: (max) => `You can add up to ${String(max)}`,
   actions: 'Actions',
-  drag: {
-    instructions:
-      'To pick up, press Space or Enter. Then use the arrow keys to move, Space or Enter to drop, and Escape to cancel.',
-    handle: (item) => `Drag ${item}`,
-    lifted: (item, position, count) =>
-      `Picked up ${item}, position ${String(position)} of ${String(count)}.`,
-    moved: (item, position, count) =>
-      `${item} moved to position ${String(position)} of ${String(count)}.`,
-    dropped: (item, position, count) =>
-      `Dropped ${item} at position ${String(position)} of ${String(count)}.`,
-    canceled: (item, position, count) =>
-      `Move cancelled. ${item} is back at position ${String(position)} of ${String(count)}.`,
-  },
+  drag: {},
   stepOf: (index, count, title) => `Step ${String(index)} of ${String(count)}: ${title}`,
   back: 'Back',
   next: 'Next',
