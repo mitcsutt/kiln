@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { expect, screen, userEvent, within } from 'storybook/test'
 import { Form, useAppForm, useFieldValue } from '@mitcsutt/kiln-forms'
 import { Code, Stack, Text } from '@mitcsutt/kiln-ui'
-import { FieldDemo, NEVER_SETTLES, StatesGrid, StoryForm } from '#stories/_kit'
+import { FieldDemo, NEVER_SETTLES, StatesGrid, StoryForm, storyRoot } from '#stories/_kit'
 import { FormDateField } from './FormDateField'
 
 const meta = {
@@ -139,6 +140,33 @@ export const ViewMode: Story = {
   ),
 }
 
+export const CalendarPicker: Story = {
+  name: 'Calendar picker',
+  render: () => (
+    <FieldDemo defaultValues={{ value: '2026-10-04' }} label="Submit an expense">
+      {(form) => (
+        <form.DateField
+          name="value"
+          label="Date"
+          description="The date printed on the receipt"
+          picker="calendar"
+          max="2026-10-31"
+          clearable
+        />
+      )}
+    </FieldDemo>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(storyRoot(canvasElement))
+    await userEvent.click(canvas.getByRole('spinbutton', { name: 'Day' }))
+    await userEvent.keyboard('15102026')
+    await expect(canvas.getByRole('spinbutton', { name: 'Year' })).toHaveTextContent('2026')
+    await userEvent.click(canvas.getByRole('button', { name: 'Choose date' }))
+    await userEvent.click(await screen.findByRole('gridcell', { name: /20 October 2026/ }))
+    await expect(canvas.getByRole('spinbutton', { name: 'Day' })).toHaveTextContent('20')
+  },
+}
+
 /**
  * Dates are ISO strings, never `Date` objects: they survive JSON and don't drift across time
  * zones. It renders kiln-ui's [TextField](/docs/ui/inputs/text-field) with `type="date"`, so the
@@ -153,6 +181,39 @@ export const Usage: Story = {
       <Form form={form} aria-label="DateField example">
         <Stack gap={4}>
           <form.DateField name="travelDate" label="Travel date" min="2026-10-01" />
+          <Text size="sm" tone="muted">
+            Value: <Code>{JSON.stringify(value)}</Code>
+          </Text>
+        </Stack>
+      </Form>
+    )
+  },
+}
+
+/**
+ * `picker="calendar"` swaps the native input for kiln-ui's
+ * [DateField](/docs/ui/inputs/date-field): the day, month and year typed in the locale's order,
+ * and a calendar to pick from. The value is the same ISO date. Here `isDateDisabled` rules out
+ * Sundays, in the calendar and when typed.
+ */
+export const WithACalendar: Story = {
+  name: 'With a calendar',
+  tags: ['docs'],
+  render: function WithACalendar() {
+    const form = useAppForm({ defaultValues: { travelDate: '' } })
+    const value = useFieldValue(form, 'travelDate')
+    return (
+      <Form form={form} aria-label="DateField with a calendar example">
+        <Stack gap={4}>
+          <form.DateField
+            name="travelDate"
+            label="Travel date"
+            description="No departures on Sundays"
+            picker="calendar"
+            min="2026-10-01"
+            isDateDisabled={(date) => new Date(`${date}T00:00:00Z`).getUTCDay() === 0}
+            clearable
+          />
           <Text size="sm" tone="muted">
             Value: <Code>{JSON.stringify(value)}</Code>
           </Text>

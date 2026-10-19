@@ -44,7 +44,6 @@ Where this document says **must**, a test enforces it. Where it gives a signatur
 
 **Non-goals (v1)**
 
-- A calendar-popover date picker (kiln-ui has one since [ADR 0042](../../../docs/adr/0042-date-and-time-pickers.md), but v1 fields use native date and time inputs; binding the new controls is follow-up work).
 - Phone formatting and validation (needs libphonenumber; write a custom field in the consuming app).
 - Rich text, signatures, drag-and-drop reordering (keyboard move up/down ships instead), upload transport (fields hold `File`s; the consumer uploads in `onSubmit`).
 - JSON Schema import or export (conditions and layout don't map cleanly; §10.10).
@@ -951,10 +950,10 @@ Typed `DeriveRule<T> = { [K in DeepKeys<T>]: { field: K; from: readonly DeepKeys
 | `slider`           | exact `number`                          | `SliderField`                                                                     | `min`, `max`, `step`, `marks`, `showValue`, `formatOptions`                                                                                                            |
 | `range`            | exact `[number, number]`                | `RangeSliderField`                                                                | as slider + `minStepsBetweenThumbs`, `thumbLabels`                                                                                                                     |
 | `rating`           | exact `number` (emits `number \| null`) | `RatingField`                                                                     | `max`, `clearable`, `itemLabel`                                                                                                                                        |
-| `date`             | exact `string`                          | `TextField type="date"`                                                           | `min`, `max` (ISO)                                                                                                                                                     |
-| `time`             | exact `string`                          | `TextField type="time"`                                                           | `min`, `max`, `step`                                                                                                                                                   |
-| `dateTime`         | exact `string`                          | `TextField type="datetime-local"`                                                 | `min`, `max`                                                                                                                                                           |
-| `dateRange`        | exact `{ start: string; end: string }`  | `DateRangeField`                                                                  | `min`, `max`, `startLabel`, `endLabel`                                                                                                                                 |
+| `date`             | exact `string`                          | `TextField type="date"`, or `DateField` with `picker`                             | `min`, `max` (ISO), `picker: 'native' \| 'calendar' \| 'segmented'` and its props (A.6)                                                                                |
+| `time`             | exact `string`                          | `TextField type="time"`, or `TimeField` with `picker`                             | `min`, `max`, `step`, `picker: 'native' \| 'segmented'` and its props (A.6)                                                                                            |
+| `dateTime`         | exact `string`                          | `TextField type="datetime-local"`, or `DateTimeField` with `picker`               | `min`, `max`, `picker: 'native' \| 'calendar' \| 'segmented'` and its props (A.6)                                                                                      |
+| `dateRange`        | exact `{ start: string; end: string }`  | `DateRangeField`                                                                  | `min`, `max`, `startLabel`, `endLabel`, `picker: 'native' \| 'calendar'`, `presets`, `granularity`                                                                     |
 | `oneTimeCode`      | exact `string`                          | `OneTimeCodeField`                                                                | `length`, `validationType`, `masked`, `submitOnComplete` (forms side: calls `form.handleSubmit()`)                                                                     |
 | `color`            | exact `string` (`#rrggbb`)              | `ColorField`                                                                      | `swatches` (`{ value, label }[]`), `swatchesOnly`                                                                                                                      |
 | `tags`             | exact `string[]`                        | `TagsField`                                                                       | `maxTags`, `delimiters`, `allowDuplicates`, `normalise: 'none' \| 'trim' \| 'lowercase'`                                                                               |
@@ -964,7 +963,7 @@ Typed `DeriveRule<T> = { [K in DeepKeys<T>]: { field: K; from: readonly DeepKeys
 
 That is 29 kinds. The `radio`, `chips` and `range` kinds export as `FormRadioField`, `FormChipsField` and `FormRangeField`, named after the kind rather than the ui component.
 
-Not in v1 (documented alternatives): a calendar popover (a later ADR; use `date`), phone (a custom field using `text type="tel"` and a validator of the consumer's choosing), location or places search (a custom field), rich text.
+Not in v1 (documented alternatives): phone (a custom field using `text type="tel"` and a validator of the consumer's choosing), location or places search (a custom field), rich text.
 
 ### 7.3 Field specifics that aren't obvious
 
@@ -2207,6 +2206,7 @@ These entries record the specific decisions that refine the body above or depart
 - The `chips`, `checkboxGroup` and `multiChoiceCards` kinds bind `string | number` options only, matching §7.2. Only `radio` takes booleans among the choice groups.
 - `FormMultiSelectField` has no `creatable` prop, so "creatable is single only" is a type rule. The combobox and multi-select fields have no `emptyOption`, because ui `Combobox` has `clearable`.
 - `runFieldConformance` takes `leaveControl`, `describedByTarget`, `focusTarget` and `isDisabled` options, so compound controls configure a check instead of skipping it.
+- The `date`, `time` and `dateTime` kinds render a native input unless `picker` asks for kiln-ui's own control ([ADR 0042](../../../docs/adr/0042-date-and-time-pickers.md)): `calendar` for `DateField`/`DateTimeField` with the calendar button, `segmented` for the typed parts alone (and for `TimeField`, which has no calendar). The prop name and the `calendar` value are ui `DateRangeField`'s, which `dateRange` already passed through. The native input stays the default, so existing forms don't change, and the value is the same ISO string either way, so view mode and the rules are untouched. The picker's own props are typed beside the text input's: `isDateDisabled`, `firstDayOfWeek`, `locale`, `timeZone` (`date` only), `granularity` and `hourCycle` (`time` and `dateTime`), `clearable` and `labels`. With a picker only the label props, `size`, `className`, `style` and `aria-*`/`data-*` reach the control, and `onBlur` gets the part's focus event. `dateTime` doesn't offer ui `timeZone`, because it turns the value into a UTC instant; `dateRange` does (it always passed ui props through), so its view mode reads an end with a time on that zone's clock.
 
 ### A.7 Layouts (§6.6, §9)
 

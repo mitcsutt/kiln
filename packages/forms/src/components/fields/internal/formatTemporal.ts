@@ -28,3 +28,37 @@ export function formatDateTime(value: string | null | undefined, locale?: string
   if (!ISO_DATE.test(datePart) || !ISO_TIME.test(timePart)) return value
   return `${formatDate(datePart, locale)}, ${formatTime(timePart, locale)}`
 }
+
+const OFFSET = /(?:Z|[+-]\d{2}:\d{2})$/
+
+/**
+ * A date-time that may be a UTC instant (`2026-10-03T04:30:00Z`), read on `timeZone`'s clock (the
+ * device's without one) and formatted like `formatDateTime`. A wall-clock value is formatted as
+ * it is.
+ */
+export function formatDateTimeIn(
+  value: string | null | undefined,
+  timeZone?: string,
+  locale?: string,
+): string {
+  if (!value || !OFFSET.test(value)) return formatDateTime(value, locale)
+  const instant = new Date(value)
+  if (Number.isNaN(instant.getTime())) return value
+  const parts = Object.fromEntries(
+    new Intl.DateTimeFormat('en-GB', {
+      timeZone,
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      hourCycle: 'h23',
+    })
+      .formatToParts(instant)
+      .map((part) => [part.type, part.value]),
+  )
+  return formatDateTime(
+    `${String(parts.year)}-${String(parts.month)}-${String(parts.day)}T${String(parts.hour)}:${String(parts.minute)}`,
+    locale,
+  )
+}
