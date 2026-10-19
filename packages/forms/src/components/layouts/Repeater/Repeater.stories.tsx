@@ -1,16 +1,19 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Form, Repeater, SubmitButton, useAppForm } from '@mitcsutt/kiln-forms'
+import { Form, kit, Repeater, SubmitButton, useAppForm } from '@mitcsutt/kiln-forms'
+import { dragAndDrop } from '@mitcsutt/kiln-forms/dnd'
 import { Stack } from '@mitcsutt/kiln-ui'
-import { expect, userEvent, within } from 'storybook/test'
+import { expect, userEvent, waitFor, within } from 'storybook/test'
 import {
   repeaterCardsFixture,
   repeaterCardsSchema,
+  repeaterDragFixture,
+  repeaterDragSchema,
   repeaterListFixture,
   repeaterListSchema,
   repeaterTableFixture,
   repeaterTableSchema,
 } from '#stories/fixtures/collections'
-import { StoryForm, storyRoot } from '#stories/_kit'
+import { dndKit, pointerDrag, StoryForm, storyRoot } from '#stories/_kit'
 import { parityStory } from '#stories/parity'
 
 // `Repeater` is generic over the form and the array path, so the meta names no `component`.
@@ -76,6 +79,134 @@ export const Cards: Story = parityStory(
   ['Repeater variant="cards"'],
   'Cards',
 )
+
+export const DragParity: Story = parityStory(
+  repeaterDragFixture,
+  repeaterDragSchema,
+  ['Repeater reorderable="drag"'],
+  'Drag to reorder',
+)
+
+interface Stop {
+  place: string
+  arrive: string
+}
+
+const route: Stop[] = [
+  { place: 'Leeds depot', arrive: '07:30' },
+  { place: 'York, Fossgate', arrive: '09:15' },
+  { place: 'Hull marina', arrive: '11:00' },
+  { place: 'Beverley market', arrive: '12:40' },
+]
+
+function DeliveryRoute({ variant }: { variant?: 'list' | 'table' | 'cards' }) {
+  const form = dndKit.useAppForm({ defaultValues: { stops: route } })
+  return (
+    <Form form={form} aria-label="Delivery route">
+      <Repeater
+        form={form}
+        name="stops"
+        label="Stops"
+        variant={variant}
+        columns={[{ header: 'Place' }, { header: 'Arrive by', width: 'min' }]}
+        newItem={{ place: '', arrive: '' }}
+        itemLabel={(index) => `Stop ${String(index + 1)}`}
+        reorderable="drag"
+        addLabel="Add stop"
+      >
+        {(item) => (
+          <>
+            <item.fields.TextField name="place" label="Place" />
+            <item.fields.TextField name="arrive" label="Arrive by" />
+          </>
+        )}
+      </Repeater>
+    </Form>
+  )
+}
+
+const places = (root: HTMLElement) =>
+  within(root)
+    .getAllByRole('textbox', { name: /^Place/ })
+    .map((input) => (input as HTMLInputElement).value)
+
+/** By keyboard: pick a stop up by its handle, move it with the arrows, drop it. */
+export const DragByKeyboard: Story = {
+  render: () => <DeliveryRoute />,
+  play: async ({ canvasElement }) => {
+    const root = storyRoot(canvasElement)
+    const canvas = within(root)
+    const announcer = () => root.querySelector('[data-kiln-dnd-announcer]')?.textContent.trim()
+    canvas.getByRole('button', { name: 'Drag Stop 3' }).focus()
+    await userEvent.keyboard(' ')
+    await waitFor(() => expect(announcer()).toBe('Picked up Stop 3, position 3 of 4.'))
+    await userEvent.keyboard('{ArrowUp}{ArrowUp}')
+    await waitFor(() => expect(announcer()).toBe('Stop 3 moved to position 1 of 4.'))
+    await userEvent.keyboard(' ')
+    await waitFor(() => expect(announcer()).toBe('Dropped Stop 3 at position 1 of 4.'))
+    await expect(places(root)).toEqual([
+      'Hull marina',
+      'Leeds depot',
+      'York, Fossgate',
+      'Beverley market',
+    ])
+    await expect(canvas.getByRole('button', { name: 'Drag Stop 1' })).toHaveFocus()
+  },
+}
+
+/** By pointer: drag the first stop's handle below the third. Nothing moves until the drop. */
+export const DragByPointer: Story = {
+  render: () => <DeliveryRoute />,
+  play: async ({ canvasElement }) => {
+    const root = storyRoot(canvasElement)
+    const canvas = within(root)
+    // The drag engine loads after the story mounts, and a drag before then does nothing, so
+    // drag again until one lands. A drag that lands in the wrong place still fails.
+    await waitFor(
+      async () => {
+        if (places(root)[0] === 'Leeds depot') {
+          const third = canvas.getAllByRole('group')[3]?.getBoundingClientRect()
+          if (!third) throw new Error('Expected a third stop')
+          await pointerDrag(canvas.getByRole('button', { name: 'Drag Stop 1' }), {
+            x: third.left + 40,
+            y: third.bottom - 4,
+          })
+        }
+        await expect(places(root)).toEqual([
+          'York, Fossgate',
+          'Hull marina',
+          'Leeds depot',
+          'Beverley market',
+        ])
+      },
+      { timeout: 5000 },
+    )
+  },
+}
+
+/** Rows of a table drag the same way; the handle sits with the row's other actions. */
+export const DragTable: Story = {
+  render: () => <DeliveryRoute variant="table" />,
+  play: async ({ canvasElement }) => {
+    const root = storyRoot(canvasElement)
+    const canvas = within(root)
+    canvas.getByRole('button', { name: 'Drag Stop 1' }).focus()
+    await userEvent.keyboard('{Enter}{ArrowDown}{Enter}')
+    await waitFor(() =>
+      expect(places(root)).toEqual([
+        'York, Fossgate',
+        'Leeds depot',
+        'Hull marina',
+        'Beverley market',
+      ]),
+    )
+  },
+}
+
+/** Cards stack in one column while they can be dragged, so a drag runs one way. */
+export const DragCards: Story = {
+  render: () => <DeliveryRoute variant="cards" />,
+}
 
 interface Passenger {
   name: string
@@ -166,6 +297,55 @@ export const Table: Story = {
               <item.fields.TextField name="from" label="From" />
               <item.fields.TextField name="to" label="To" />
               <item.fields.AmountField name="fare" label="Fare" currency="GBP" locale="en-GB" />
+            </>
+          )}
+        </Repeater>
+      </Form>
+    )
+  },
+}
+
+/** The default kit with drag and drop. Create it once, beside your other kit code. */
+const formKit = kit.extend({ dragAndDrop })
+
+/**
+ * `reorderable="drag"` adds a drag handle to each item, beside its move buttons. Drag it, or
+ * focus it and press Space, the arrow keys and Space again; each step is announced, and the
+ * item's values, errors and focus go with it.
+ *
+ * Drag and drop comes from `@mitcsutt/kiln-forms/dnd`, built on `@mitcsutt/kiln-dnd`: install
+ * it, give the kit its `dragAndDrop` with `kit.extend`, and import
+ * `@mitcsutt/kiln-dnd/styles.css` after kiln-ui's stylesheet. A schema asks for the same with
+ * `"reorderable": "drag"`.
+ */
+export const DragToReorder: Story = {
+  name: 'Drag to reorder',
+  tags: ['docs'],
+  render: function DragToReorder() {
+    const form = formKit.useAppForm({
+      defaultValues: {
+        stops: [
+          { place: 'Leeds depot', arrive: '07:30' },
+          { place: 'York, Fossgate', arrive: '09:15' },
+          { place: 'Hull marina', arrive: '11:00' },
+        ],
+      },
+    })
+    return (
+      <Form form={form} aria-label="Delivery route">
+        <Repeater
+          form={form}
+          name="stops"
+          label="Stops"
+          newItem={{ place: '', arrive: '' }}
+          itemLabel={(index) => `Stop ${String(index + 1)}`}
+          reorderable="drag"
+          addLabel="Add stop"
+        >
+          {(item) => (
+            <>
+              <item.fields.TextField name="place" label="Place" />
+              <item.fields.TextField name="arrive" label="Arrive by" />
             </>
           )}
         </Repeater>

@@ -4,7 +4,9 @@ import {
   Fragment,
   isValidElement,
   useCallback,
+  useEffect,
   useId,
+  useReducer,
   useRef,
   type ComponentType,
   type ReactNode,
@@ -61,6 +63,8 @@ import { readLegend } from '#runtime/labels'
 import type { FormMessages } from '#runtime/messages'
 import { scopeChain, useScopeNode } from '#components/layouts/FieldScope'
 import { useAnnouncer } from '#components/layouts/internal/announcer'
+import { warnOnce } from '#schema/render/warn'
+import type { FormDragAndDrop, RepeaterDragAttributes } from './dragAndDrop'
 
 /** One item of a Repeater, passed to its render prop. */
 export interface RepeaterItem<I, R = FieldRegistry> {
@@ -95,8 +99,14 @@ export interface RepeaterProps<A extends AnyKitForm, N extends ArrayPaths<Values
   min?: number
   /** At `max`, Add is `aria-disabled` with `messages.maxItems(max)`. */
   max?: number
-  /** Move up / Move down buttons (keyboard-first; no drag). */
-  reorderable?: boolean
+  /**
+   * `true` adds Move up and Move down buttons to each item. `'drag'` adds a drag handle as well,
+   * which moves the item by pointer, touch or keyboard (Space or Enter to pick it up, the arrow
+   * keys, Space or Enter to drop). Drag needs the kit's `dragAndDrop` from
+   * `@mitcsutt/kiln-forms/dnd`; without it the buttons alone are shown. The buttons stay with a
+   * handle, so a move never needs a drag. Default `false`.
+   */
+  reorderable?: boolean | 'drag'
   /** Default `messages.item(index)` ("Item 1"). */
   itemLabel?: (index: number) => string
   /** Default `messages.add`. */
@@ -132,7 +142,7 @@ interface LooseProps {
   variant?: 'list' | 'table' | 'cards'
   min?: number
   max?: number
-  reorderable?: boolean
+  reorderable?: boolean | 'drag'
   itemLabel?: (index: number) => string
   addLabel?: string
   empty?: ReactNode
@@ -160,6 +170,17 @@ function cellsOf(node: ReactNode): ReactNode[] {
 }
 
 type PendingFocus = () => void
+
+type ElementRef = (element: HTMLElement | null) => void
+
+/**
+ * Renders one item's element with the `ref` (and, with drag and drop, the `props`) it needs.
+ * Without drag and drop it's the item-focus ref alone.
+ */
+type ItemShell = (
+  index: number,
+  render: (ref: ElementRef | undefined, drag: RepeaterDragAttributes | undefined) => ReactNode,
+) => ReactNode
 
 /** TanStack's array helpers, with the path typed loosely (AnyFormApi collapses it to `never`). */
 interface ArrayOps {
@@ -191,6 +212,8 @@ interface ItemsListOptions {
   /** Edit mode: the item's Move / Remove buttons. View mode renders none (and no actions column). */
   actionsOf?: (item: LooseItem) => ReactNode
   setItemElement?: (index: number) => (element: HTMLElement | null) => void
+  /** Edit mode with `reorderable="drag"`: each item inside its sortable item. */
+  dragAndDrop?: FormDragAndDrop | null
 }
 
 /** The items in the chosen variant (shared by edit and view mode). */
@@ -202,10 +225,24 @@ function renderItems({
   labelOf,
   actionsOf,
   setItemElement,
+  dragAndDrop,
 }: ItemsListOptions): ReactNode {
   const { variant = 'list', empty, columns, children } = props
   const indexes = Array.from({ length: count }, (_, index) => index)
   if (count === 0) return empty ?? null
+  const shell: ItemShell =
+    dragAndDrop && setItemElement
+      ? (index, render) => (
+          <dragAndDrop.Item
+            id={String(index)}
+            index={index}
+            label={labelOf(index)}
+            setItemElement={setItemElement}
+          >
+            {({ ref, props: drag }) => render(ref, drag)}
+          </dragAndDrop.Item>
+        )
+      : (index, render) => render(setItemElement?.(index), undefined)
   if (variant === 'table') {
     return (
       <FieldPresentation labelHidden layout="inline">
@@ -228,12 +265,16 @@ function renderItems({
             {indexes.map((index) => {
               const item = itemOf(index)
               return (
-                <Table.Row key={item.key} ref={setItemElement?.(index)} aria-label={labelOf(index)}>
-                  {cellsOf(children(item)).map((cell, cellIndex) => (
-                    <Table.Cell key={cellIndex}>{cell}</Table.Cell>
+                <Fragment key={item.key}>
+                  {shell(index, (ref, drag) => (
+                    <Table.Row ref={ref} {...drag} aria-label={labelOf(index)}>
+                      {cellsOf(children(item)).map((cell, cellIndex) => (
+                        <Table.Cell key={cellIndex}>{cell}</Table.Cell>
+                      ))}
+                      {actionsOf ? <Table.Cell align="end">{actionsOf(item)}</Table.Cell> : null}
+                    </Table.Row>
                   ))}
-                  {actionsOf ? <Table.Cell align="end">{actionsOf(item)}</Table.Cell> : null}
-                </Table.Row>
+                </Fragment>
               )
             })}
           </Table.Body>
@@ -242,12 +283,12 @@ function renderItems({
     )
   }
   if (variant === 'cards') {
-    return (
-      <Grid columns={{ base: 1, md: 2 }} gap={4}>
-        {indexes.map((index) => {
-          const item = itemOf(index)
-          return (
-            <Card key={item.key} ref={setItemElement?.(index)} variant="outline">
+    const cards = indexes.map((index) => {
+      const item = itemOf(index)
+      return (
+        <Fragment key={item.key}>
+          {shell(index, (ref, drag) => (
+            <Card ref={ref} {...drag} variant="outline">
               <Fieldset variant="section" legend={labelOf(index)}>
                 <Stack gap={4}>
                   {children(item)}
@@ -255,8 +296,16 @@ function renderItems({
                 </Stack>
               </Fieldset>
             </Card>
-          )
-        })}
+          ))}
+        </Fragment>
+      )
+    })
+    // A drag moves through one list in one direction, so draggable cards stack in one column.
+    return dragAndDrop ? (
+      <Stack gap={4}>{cards}</Stack>
+    ) : (
+      <Grid columns={{ base: 1, md: 2 }} gap={4}>
+        {cards}
       </Grid>
     )
   }
@@ -265,12 +314,16 @@ function renderItems({
       {indexes.map((index) => {
         const item = itemOf(index)
         return (
-          <Fieldset key={item.key} ref={setItemElement?.(index)} legend={labelOf(index)}>
-            <Stack gap={4}>
-              {children(item)}
-              {actionsOf?.(item)}
-            </Stack>
-          </Fieldset>
+          <Fragment key={item.key}>
+            {shell(index, (ref, drag) => (
+              <Fieldset ref={ref} {...drag} legend={labelOf(index)}>
+                <Stack gap={4}>
+                  {children(item)}
+                  {actionsOf?.(item)}
+                </Stack>
+              </Fieldset>
+            ))}
+          </Fragment>
         )
       })}
     </Stack>
@@ -294,6 +347,14 @@ function RepeaterBody({ field, props }: { field: AnyFieldApi; props: LooseProps 
   const arrays = api as unknown as ArrayOps
   const runtime = getFormRuntime(api)
   const messages = runtime.options.messages
+  const dragAndDrop = reorderable === 'drag' ? runtime.dragAndDrop : null
+  const missingDragAndDrop = reorderable === 'drag' && !dragAndDrop
+  useEffect(() => {
+    if (missingDragAndDrop)
+      warnOnce(
+        'Repeater reorderable="drag" needs the kit\'s dragAndDrop from @mitcsutt/kiln-forms/dnd; it shows the move buttons alone.',
+      )
+  }, [missingDragAndDrop])
   const labelOf = itemLabel ?? messages.item
   const items = (field.state.value as readonly unknown[] | undefined) ?? []
   const count = items.length
@@ -400,6 +461,24 @@ function RepeaterBody({ field, props }: { field: AnyFieldApi; props: LooseProps 
     announce(messages.itemRemoved(removedLabel))
   }
 
+  // A drop re-renders the group, so the pending focus runs once the move has committed.
+  const [, rerender] = useReducer((n: number) => n + 1, 0)
+  // kiln-dnd announces a drag's every step, the drop included, so a drop isn't announced again.
+  const drop = (from: number, to: number, input: 'keyboard' | 'pointer') => {
+    if (to < 0 || to >= count || to === from) return
+    if (input === 'keyboard') {
+      // Focus follows the item to its new place: its handle there.
+      pending.current = () => {
+        itemElements.current
+          .get(to)
+          ?.querySelector<HTMLElement>('[data-repeater-action="drag"]')
+          ?.focus()
+      }
+    }
+    void arrays.moveFieldValues(name, from, to)
+    rerender()
+  }
+
   const move = (from: number, to: number, direction: 'up' | 'down') => {
     if (to < 0 || to >= count || to === from) return
     const movedLabel = labelOf(from)
@@ -428,14 +507,15 @@ function RepeaterBody({ field, props }: { field: AnyFieldApi; props: LooseProps 
       move(index, to, to < index ? 'up' : 'down')
     },
     canRemove: count > min,
-    canMoveUp: reorderable && index > 0,
-    canMoveDown: reorderable && index < count - 1,
+    canMoveUp: reorderable !== false && index > 0,
+    canMoveDown: reorderable !== false && index < count - 1,
   })
 
   const actionsOf = (item: LooseItem) => {
     const itemName = labelOf(item.index)
     return (
       <Inline gap={1} justify="end" wrap={false}>
+        {dragAndDrop && count > 1 ? <dragAndDrop.Handle data-repeater-action="drag" /> : null}
         {item.canMoveUp ? (
           <IconButton
             label={messages.moveUp(itemName)}
@@ -473,7 +553,27 @@ function RepeaterBody({ field, props }: { field: AnyFieldApi; props: LooseProps 
     )
   }
 
-  const list = renderItems({ props, count, messages, itemOf, labelOf, actionsOf, setItemElement })
+  const rendered = renderItems({
+    props,
+    count,
+    messages,
+    itemOf,
+    labelOf,
+    actionsOf,
+    setItemElement,
+    dragAndDrop,
+  })
+  const list = dragAndDrop ? (
+    <dragAndDrop.List
+      label={typeof label === 'string' ? label : name}
+      messages={messages.drag}
+      onMove={drop}
+    >
+      {rendered}
+    </dragAndDrop.List>
+  ) : (
+    rendered
+  )
 
   return (
     <Fieldset
@@ -571,6 +671,11 @@ function RepeaterEdit({ props }: { props: LooseProps }) {
  * typed shorthand fields relative to itself (`item.fields.TextField name="name"`), and the
  * repeater handles adding, removing and moving items, focus after each change, and announcing it.
  *
+ * `reorderable` adds Move up and Move down buttons. `reorderable="drag"` adds a drag handle too,
+ * from `@mitcsutt/kiln-forms/dnd`: give the kit its `dragAndDrop`
+ * (`kit.extend({ dragAndDrop })`) and import `@mitcsutt/kiln-dnd/styles.css`. Values,
+ * errors and focus move with the item, and each step of a drag is announced.
+ *
  * @example In a schema
  * ```json
  * {
@@ -588,7 +693,9 @@ function RepeaterEdit({ props }: { props: LooseProps }) {
  * keyed by index. Add / Remove / Move move focus deterministically and are announced politely;
  * `min` hides Remove, `max` makes Add `aria-disabled`; array-level errors render as the group's
  * error. The render prop gets item-relative typed fields (`item.fields.TextField name="first"`).
- * In view mode it creates no field and renders the items read-only.
+ * In view mode it creates no field and renders the items read-only. `reorderable="drag"` renders
+ * the kit's `dragAndDrop` parts (ADR 0043): a drop is one `moveFieldValues`, announced by
+ * kiln-dnd, not the repeater, and keyboard focus returns to the moved item's handle.
  */
 export function Repeater<A extends AnyKitForm, const N extends ArrayPaths<Values<A>>>(
   props: RepeaterProps<A, N>,

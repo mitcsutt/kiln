@@ -7,6 +7,7 @@ import type { ErrorVisibility } from '#runtime/visibility'
 import { defaultMessages, resolveMessage, type FormMessages } from '#runtime/messages'
 import { isAtOrUnder } from '#utils/paths'
 import type { ScopeHandle } from '#components/layouts/FieldScope'
+import type { FormDragAndDrop } from '#components/layouts/Repeater/dragAndDrop'
 
 export type { AnyKitForm }
 
@@ -89,6 +90,11 @@ export interface FormRuntime {
    */
   registry: FieldRegistry | null
   /**
+   * The kit's `dragAndDrop` (set by `useAppForm`), which a Repeater with `reorderable="drag"`
+   * renders its handles with. `null` when the kit has none.
+   */
+  dragAndDrop: FormDragAndDrop | null
+  /**
    * Derive rules registered at runtime (schema `compute`, §10.6), by owner (a schema object),
    * ref-counted. Read by the same form `onChange` listener as the `derive` option (§6.9): they
    * run when a `from` path changes, never on mount, whether or not the derived field is rendered.
@@ -140,6 +146,7 @@ export function createFormRuntime(): FormRuntime {
     changing: null,
     forceDynamic: false,
     registry: null,
+    dragAndDrop: null,
     derive: new Map(),
     itemTemplates: new Map(),
     subscribe(listener) {

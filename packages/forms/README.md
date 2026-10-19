@@ -8,7 +8,7 @@ Typed React forms on [TanStack Form](https://tanstack.com/form), rendered throug
 pnpm add @mitcsutt/kiln-forms @mitcsutt/kiln-ui
 ```
 
-`@mitcsutt/kiln-ui`, React and React DOM (18.3 or 19) are peer dependencies, so your app has one copy of the UI. The package ships no CSS: import kiln-ui's stylesheet once, as its README describes. The only runtime dependency is `@tanstack/react-form`, which you never import yourself.
+`@mitcsutt/kiln-ui`, React and React DOM (18.3 or 19) are peer dependencies, so your app has one copy of the UI. `@mitcsutt/kiln-dnd` is an optional peer, needed only for the `@mitcsutt/kiln-forms/dnd` entry that lets a Repeater reorder by drag. The package ships no CSS: import kiln-ui's stylesheet once, as its README describes. The only runtime dependency is `@tanstack/react-form`, which you never import yourself.
 
 ## Usage
 

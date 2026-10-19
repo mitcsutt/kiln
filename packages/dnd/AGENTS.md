@@ -22,8 +22,9 @@ src/
                engine (the only dnd-kit import), engineTypes, messages, store, context,
                useDragSource (the record, engine registration and focus return every source shares)
   hooks/       useDraggable, useDroppable, useSortable, each with its stories
-  components/  one folder per component: Dnd, Sortable, Board, GridLayout, Draggable, DropZone,
-               DragHandle; internal/ListEntry is the list item Sortable and Board share
+  components/  one folder per component: Dnd, Sortable, SortableItem, Board, GridLayout, Draggable,
+               DropZone, DragHandle; internal/ListEntry is the `li` Sortable and Board share,
+               rendered through SortableItem
   data/        the pure helpers: lists (arrayMove, moveBetween) and layout (grid items, compact,
                appendItem, removeItem, and the move, resize and keyboard-step previews)
   grid/engine/ react-grid-layout 2.3.0's core maths, vendored (MIT)

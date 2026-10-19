@@ -10,6 +10,8 @@ type DefaultForm<T, M = undefined> = KitForm<T, M, typeof kit.registries.fields>
 export interface RenderFormOptions<T, M = undefined> extends KitFormOptions<T, T, M> {
   /** Wrap `ui` in `<Form form={form}>` (default `true`). */
   wrap?: boolean
+  /** The kit to build the form with: the default kit, or an extension with the same fields. */
+  kit?: Pick<typeof kit, 'useAppForm'>
   /** Props for the wrapping `<Form>`. */
   formProps?: {
     mode?: 'edit' | 'view'
@@ -28,17 +30,17 @@ export interface RenderFormResult<T, M = undefined> extends RenderResult {
 }
 
 /**
- * Renders a form built with the default kit. `ui` receives the form; by default it is wrapped in
+ * Renders a form built with the default kit (or `options.kit`). `ui` receives the form; by default it is wrapped in
  * `<Form>` (labelled "Test form").
  */
 export function renderForm<T, M = undefined>(
   ui: (form: DefaultForm<T, M>) => ReactNode,
   options: RenderFormOptions<T, M>,
 ): RenderFormResult<T, M> {
-  const { wrap = true, formProps, ...formOptions } = options
+  const { wrap = true, formProps, kit: formKit = kit, ...formOptions } = options
   const holder: { form?: DefaultForm<T, M> } = {}
   function Harness() {
-    const form = kit.useAppForm<T, T, M>(formOptions)
+    const form = formKit.useAppForm<T, T, M>(formOptions)
     holder.form = form
     if (!wrap) return <>{ui(form)}</>
     return (

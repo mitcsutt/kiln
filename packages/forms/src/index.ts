@@ -129,6 +129,8 @@ export type {
   StepStatus,
   RepeaterProps,
   RepeaterItem,
+  FormDragAndDrop,
+  RepeaterDragAttributes,
   FormSentenceProps,
   FormReviewProps,
   FormActionsProps,

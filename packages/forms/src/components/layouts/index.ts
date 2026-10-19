@@ -17,7 +17,12 @@ export type { FormAccordionProps, FormAccordionItemProps } from './FormAccordion
 export { FormSteps, FormStep, useFormSteps } from './FormSteps'
 export type { FormStepsProps, FormStepProps, StepsApi, StepStatus } from './FormSteps'
 export { Repeater } from './Repeater'
-export type { RepeaterProps, RepeaterItem } from './Repeater'
+export type {
+  RepeaterProps,
+  RepeaterItem,
+  FormDragAndDrop,
+  RepeaterDragAttributes,
+} from './Repeater'
 export { FormSentence } from './FormSentence'
 export type { FormSentenceProps } from './FormSentence'
 export { FormReview } from './FormReview'

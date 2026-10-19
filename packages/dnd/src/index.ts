@@ -25,6 +25,12 @@ export type { EngineProps } from './core/engineTypes'
 // Components
 export { Sortable } from './components/Sortable'
 export type { SortableProps, SortableMove, SortableItemState } from './components/Sortable'
+export { SortableItem } from './components/SortableItem'
+export type {
+  SortableItemProps,
+  SortableItemRender,
+  SortableItemAttributes,
+} from './components/SortableItem'
 export { Board } from './components/Board'
 export type { BoardProps, BoardColumn, BoardMove, BoardItemState } from './components/Board'
 export { Draggable } from './components/Draggable'

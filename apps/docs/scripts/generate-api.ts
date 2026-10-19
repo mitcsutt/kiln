@@ -24,6 +24,7 @@ const entries = [
     pkg: '@mitcsutt/kiln-forms/schema',
     file: join(root, 'packages/forms/src/schema/core/index.ts'),
   },
+  { pkg: '@mitcsutt/kiln-forms/dnd', file: join(root, 'packages/forms/src/dnd/index.ts') },
   { pkg: '@mitcsutt/kiln-dnd', file: join(root, 'packages/dnd/src/index.ts') },
   { pkg: '@mitcsutt/kiln-dnd/testing', file: join(root, 'packages/dnd/src/testing/index.ts') },
   { pkg: '@mitcsutt/kiln-charts', file: join(root, 'packages/charts/src/index.ts') },

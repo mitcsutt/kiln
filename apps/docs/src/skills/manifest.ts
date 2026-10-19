@@ -270,13 +270,14 @@ export const skills: SkillSpec[] = [
     name: 'lists-and-boards',
     title: 'Reorder lists and move cards between columns',
     description:
-      'Use when adding drag and drop to a React app with @mitcsutt/kiln-dnd: installing it and its stylesheet, a reorderable list with Sortable, a kanban board with Board, drag handles with DragHandle, controlled and uncontrolled state with onChange, arrayMove and moveBetween, the keyboard model and announcements, translating announcements, and testing drags with Testing Library.',
+      'Use when adding drag and drop to a React app with @mitcsutt/kiln-dnd: installing it and its stylesheet, a reorderable list with Sortable, a kanban board with Board, table rows or your own markup with SortableItem, drag handles with DragHandle, controlled and uncontrolled state with onChange, arrayMove and moveBetween, the keyboard model and announcements, translating announcements, and testing drags with Testing Library.',
     purpose:
       'Build sortable lists and boards that work by pointer, touch and keyboard and report each move as plain data.',
     type: 'core',
     pages: ['drag-and-drop/index', 'drag-and-drop/getting-started/keyboard-and-screen-readers'],
     references: [
       'drag-and-drop/components/sortable',
+      'drag-and-drop/components/sortable-item',
       'drag-and-drop/components/board',
       'drag-and-drop/components/drag-handle',
       'drag-and-drop/getting-started/layouts-as-data',

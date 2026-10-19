@@ -48,6 +48,13 @@
       },
       "default": "./src/schema/core/index.ts"
     },
+    "./dnd": {
+      "kiln-dist": {
+        "types": "./dist/dnd/index.d.ts",
+        "default": "./dist/dnd/index.js"
+      },
+      "default": "./src/dnd/index.ts"
+    },
     "./package.json": "./package.json"
   },
   "publishConfig": {
@@ -60,6 +67,10 @@
       "./schema": {
         "types": "./dist/schema/core/index.d.ts",
         "default": "./dist/schema/core/index.js"
+      },
+      "./dnd": {
+        "types": "./dist/dnd/index.d.ts",
+        "default": "./dist/dnd/index.js"
       },
       "./package.json": "./package.json"
     },
@@ -85,6 +96,7 @@
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "catalog:",
+    "@mitcsutt/kiln-dnd": "workspace:*",
     "@mitcsutt/kiln-testing-react18": "workspace:*",
     "@mitcsutt/kiln-tsconfig": "workspace:*",
     "@tanstack/intent": "catalog:",
@@ -110,9 +122,15 @@
     "zod": "catalog:"
   },
   "peerDependencies": {
+    "@mitcsutt/kiln-dnd": ">=0.1.0 <1.0.0",
     "@mitcsutt/kiln-ui": ">=0.1.0 <1.0.0",
     "react": "^18.3.0 || ^19.0.0",
     "react-dom": "^18.3.0 || ^19.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@mitcsutt/kiln-dnd": {
+      "optional": true
+    }
   },
   "engines": {
     "node": ">=22.12.0"

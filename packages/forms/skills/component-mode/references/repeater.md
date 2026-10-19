@@ -8,6 +8,8 @@ Source: https://kiln.mitchellsutton.com/docs/forms/layouts/repeater
 
 `Repeater` edits an array of objects: passengers, legs of a journey, line items. Each item gets typed shorthand fields relative to itself (`item.fields.TextField name="name"`), and the repeater handles adding, removing and moving items, focus after each change, and announcing it.
 
+`reorderable` adds Move up and Move down buttons. `reorderable="drag"` adds a drag handle too, from `@mitcsutt/kiln-forms/dnd`: give the kit its `dragAndDrop` (`kit.extend({ dragAndDrop })`) and import `@mitcsutt/kiln-dnd/styles.css`. Values, errors and focus move with the item, and each step of a drag is announced.
+
 - `newItem` is the value a new item starts with (or a function returning one).
 - `min` and `max` bound the count: at `max`, Add is `aria-disabled` with a reason; at `min`, Remove is hidden.
 - `itemLabel` names each item, and `addLabel` names the add button.
@@ -104,6 +106,52 @@ export function Table() {
 }
 ```
 
+## Drag to reorder
+
+`reorderable="drag"` adds a drag handle to each item, beside its move buttons. Drag it, or focus it and press Space, the arrow keys and Space again; each step is announced, and the item's values, errors and focus go with it.
+
+Drag and drop comes from `@mitcsutt/kiln-forms/dnd`, built on `@mitcsutt/kiln-dnd`: install it, give the kit its `dragAndDrop` with `kit.extend`, and import `@mitcsutt/kiln-dnd/styles.css` after kiln-ui's stylesheet. A schema asks for the same with `"reorderable": "drag"`.
+
+```tsx
+import { Form, kit, Repeater } from '@mitcsutt/kiln-forms'
+import { dragAndDrop } from '@mitcsutt/kiln-forms/dnd'
+
+/** The default kit with drag and drop. Create it once, beside your other kit code. */
+const formKit = kit.extend({ dragAndDrop })
+
+export function DragToReorder() {
+  const form = formKit.useAppForm({
+    defaultValues: {
+      stops: [
+        { place: 'Leeds depot', arrive: '07:30' },
+        { place: 'York, Fossgate', arrive: '09:15' },
+        { place: 'Hull marina', arrive: '11:00' },
+      ],
+    },
+  })
+  return (
+    <Form form={form} aria-label="Delivery route">
+      <Repeater
+        form={form}
+        name="stops"
+        label="Stops"
+        newItem={{ place: '', arrive: '' }}
+        itemLabel={(index) => `Stop ${String(index + 1)}`}
+        reorderable="drag"
+        addLabel="Add stop"
+      >
+        {(item) => (
+          <>
+            <item.fields.TextField name="place" label="Place" />
+            <item.fields.TextField name="arrive" label="Arrive by" />
+          </>
+        )}
+      </Repeater>
+    </Form>
+  )
+}
+```
+
 ## In a schema
 
 ```json
@@ -130,7 +178,7 @@ export function Table() {
 | `variant` | `'table' \| 'list' \| 'cards'` | `'list'` | Default `'list'`. |
 | `min` | `number` | `0` | At `min`, Remove is hidden. Default 0. |
 | `max` | `number` |  | At `max`, Add is `aria-disabled` with `messages.maxItems(max)`. |
-| `reorderable` | `boolean` |  | Move up / Move down buttons (keyboard-first; no drag). |
+| `reorderable` | `'drag' \| boolean` | `false` | `true` adds Move up and Move down buttons to each item. `'drag'` adds a drag handle as well, which moves the item by pointer, touch or keyboard (Space or Enter to pick it up, the arrow keys, Space or Enter to drop). Drag needs the kit's `dragAndDrop` from `@mitcsutt/kiln-forms/dnd`; without it the buttons alone are shown. The buttons stay with a handle, so a move never needs a drag. Default `false`. |
 | `itemLabel` | `(index: number) => string` | `messages.item(index)` | Default `messages.item(index)` ("Item 1"). |
 | `addLabel` | `string` | `messages.add` | Default `messages.add`. |
 | `empty` | `ReactNode` |  | Shown when there are no items. |

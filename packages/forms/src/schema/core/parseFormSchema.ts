@@ -481,6 +481,12 @@ function checkRepeater(ctx: Ctx, node: Obj, path: string, scope: Set<string>, de
   else if (!isObject(node.newItem) || !isJson(node.newItem))
     issue(ctx, `${path}.newItem`, 'Expected a JSON object')
   checkColumns(ctx, node.columns, `${path}.columns`)
+  if ('reorderable' in node && typeof node.reorderable !== 'boolean' && node.reorderable !== 'drag')
+    issue(
+      ctx,
+      `${path}.reorderable`,
+      `Unknown reorderable ${quote(node.reorderable)} (expected true, false or "drag")`,
+    )
   checkRules(ctx, node.rules, `${path}.rules`)
   checkWhenHidden(ctx, node.whenHidden, `${path}.whenHidden`)
   checkChildren(ctx, node.item, `${path}.item`, new Set(), 'item nodes', depth)

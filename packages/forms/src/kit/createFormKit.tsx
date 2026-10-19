@@ -66,6 +66,7 @@ function buildKit<R extends FieldRegistry, X>(registries: { fields: R } & X): Fo
     const [runtime] = useState(createFormRuntime)
     configureRuntime(runtime, loose, kitDefaults)
     runtime.registry = fields
+    runtime.dragAndDrop = extras.dragAndDrop ?? null
     const form = hook.useAppForm(toTanStackOptions(loose, runtime)) as unknown as AnyFormApi & {
       AppField: unknown
     }
