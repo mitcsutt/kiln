@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
+import { expect, userEvent, within } from 'storybook/test'
 import { Form, useAppForm, useFieldValue } from '@mitcsutt/kiln-forms'
 import { Code, Stack, Text } from '@mitcsutt/kiln-ui'
-import { FieldDemo, NEVER_SETTLES, StatesGrid, StoryForm } from '#stories/_kit'
+import { FieldDemo, NEVER_SETTLES, StatesGrid, StoryForm, storyRoot } from '#stories/_kit'
 import { FormTimeField } from './FormTimeField'
 
 const meta = {
@@ -144,6 +145,30 @@ export const ViewMode: Story = {
   ),
 }
 
+export const SegmentedPicker: Story = {
+  name: 'Segmented picker',
+  render: () => (
+    <FieldDemo defaultValues={{ value: '' }} label="Set a reminder">
+      {(form) => (
+        <form.TimeField
+          name="value"
+          label="Reminder time"
+          picker="segmented"
+          hourCycle={12}
+          clearable
+        />
+      )}
+    </FieldDemo>
+  ),
+  play: async ({ canvasElement }) => {
+    const canvas = within(storyRoot(canvasElement))
+    await userEvent.click(canvas.getByRole('spinbutton', { name: 'Hour' }))
+    await userEvent.keyboard('0715p')
+    await expect(canvas.getByRole('spinbutton', { name: 'Minute' })).toHaveTextContent('15')
+    await expect(canvas.getByRole('spinbutton', { name: 'AM/PM' })).toHaveTextContent('pm')
+  },
+}
+
 /**
  * It renders kiln-ui's [TextField](/docs/ui/inputs/text-field) with `type="time"`. `step` is in
  * seconds.
@@ -157,6 +182,30 @@ export const Usage: Story = {
       <Form form={form} aria-label="TimeField example">
         <Stack gap={4}>
           <form.TimeField name="departs" label="Departs" step={300} />
+          <Text size="sm" tone="muted">
+            Value: <Code>{JSON.stringify(value)}</Code>
+          </Text>
+        </Stack>
+      </Form>
+    )
+  },
+}
+
+/**
+ * `picker="segmented"` swaps the native input for kiln-ui's
+ * [TimeField](/docs/ui/inputs/time-field): the hour and minute typed part by part, on the clock
+ * `hourCycle` asks for. Type `a` or `p` for am or pm. The value stays on the 24-hour clock.
+ */
+export const Segmented: Story = {
+  name: 'Typed part by part',
+  tags: ['docs'],
+  render: function Segmented() {
+    const form = useAppForm({ defaultValues: { departs: '19:15' } })
+    const value = useFieldValue(form, 'departs')
+    return (
+      <Form form={form} aria-label="TimeField typed part by part example">
+        <Stack gap={4}>
+          <form.TimeField name="departs" label="Departs" picker="segmented" hourCycle={12} />
           <Text size="sm" tone="muted">
             Value: <Code>{JSON.stringify(value)}</Code>
           </Text>

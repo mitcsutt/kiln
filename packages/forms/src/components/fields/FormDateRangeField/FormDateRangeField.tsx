@@ -6,7 +6,7 @@ import {
 } from '@mitcsutt/kiln-ui'
 import { FieldView } from '#components/fields/FieldView'
 import type { ControlledKeys } from '#components/fields/internal/controlledKeys'
-import { formatDate } from '#components/fields/internal/formatTemporal'
+import { formatDate, formatDateTimeIn } from '#components/fields/internal/formatTemporal'
 import { accepts, useFieldBinding, type CommonFieldProps } from '#hooks/useFieldBinding'
 import { defineField } from '#kit/contracts'
 
@@ -16,10 +16,29 @@ export interface FormDateRangeFieldProps
 const EMPTY: DateRangeValue = { start: '', end: '' }
 
 /**
+ * One end for reading, in `locale`: a date, or with a time `granularity` a date and time on
+ * `timeZone`'s clock and `hourCycle`.
+ */
+const formatEnd = (
+  value: string,
+  {
+    timeZone,
+    locale,
+    hourCycle,
+  }: Pick<FormDateRangeFieldProps, 'timeZone' | 'locale' | 'hourCycle'>,
+): string =>
+  value.includes('T')
+    ? formatDateTimeIn(value, timeZone, locale, hourCycle)
+    : formatDate(value, locale)
+
+/**
  * Two ISO dates bound to a `{ start, end }` path.
  *
  * @remarks
- * It renders kiln-ui's {@link DateRangeField | DateRangeField}.
+ * It renders kiln-ui's {@link DateRangeField | DateRangeField}: two native date inputs by default.
+ * `picker="calendar"` types each end part by part and opens one two-month calendar for the whole
+ * range, `presets` lists ranges such as "Last 7 days" beside it, and `granularity="minute"` gives
+ * each end a time. Either of the last two turns the calendar on by itself.
  *
  * @example In a schema
  * ```json
@@ -28,7 +47,8 @@ const EMPTY: DateRangeValue = { start: '', end: '' }
  *   "name": "trip",
  *   "label": "Travel dates",
  *   "startLabel": "First day",
- *   "endLabel": "Last day"
+ *   "endLabel": "Last day",
+ *   "picker": "calendar"
  * }
  * ```
  *
@@ -37,7 +57,9 @@ const EMPTY: DateRangeValue = { start: '', end: '' }
  *
  * @privateRemarks
  * Two ISO dates bound to a `{ start, end }` path (§7.2 `dateRange`). Empty is `{ start: '', end:
- * '' }`. View mode formats each side with `formatDate` and joins them with an en dash.
+ * '' }`. View mode formats each side with `formatDate` (or, for an end with a time,
+ * `formatDateTimeIn` on the field's `timeZone`), in its `locale` and `hourCycle`, and joins them with an en dash. Every ui prop,
+ * the calendar picker's included, passes straight through (Appendix A.6).
  */
 export const FormDateRangeField = defineField<DateRangeValue>()(function FormDateRangeField({
   warn,
@@ -55,7 +77,9 @@ export const FormDateRangeField = defineField<DateRangeValue>()(function FormDat
   if (binding.mode === 'view') {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- the accepts guard lets null through, and an untyped schema's missing default reads as undefined
     const value = binding.value ?? EMPTY
-    const parts = [formatDate(value.start), formatDate(value.end)].filter((part) => part !== '')
+    const parts = [formatEnd(value.start, props), formatEnd(value.end, props)].filter(
+      (part) => part !== '',
+    )
     return (
       <FieldView label={props.label}>
         {parts.length === 0 ? undefined : parts.join(' – ')}
