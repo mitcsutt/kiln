@@ -25,7 +25,7 @@ export function formatTime(
   return new Intl.DateTimeFormat(locale, {
     timeStyle: 'short',
     timeZone: 'UTC',
-    hour12: hourCycle === undefined ? undefined : hourCycle === 12,
+    hourCycle: hourCycle === undefined ? undefined : hourCycle === 12 ? 'h12' : 'h23',
   }).format(date)
 }
 

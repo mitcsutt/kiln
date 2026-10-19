@@ -97,6 +97,18 @@ describe('FormTimeField view', () => {
     expect(screen.getByText(/^2:30\sPM$/)).toBeInTheDocument()
   })
 
+  it('reads noon as 12 on the field’s 12-hour clock in a locale that counts from 0', () => {
+    renderForm(
+      (f) => (
+        <f.AppField name="departs">
+          {() => <FormTimeField label="Departs" picker="segmented" locale="ja-JP" hourCycle={12} />}
+        </f.AppField>
+      ),
+      { defaultValues: { departs: '12:30' }, formProps: { mode: 'view' } },
+    )
+    expect(screen.getByText('午後12:30')).toBeInTheDocument()
+  })
+
   it('reads the value on the field’s 24-hour clock in a 12-hour locale', () => {
     view(<FormTimeField label="Departs" picker="segmented" locale="en-US" hourCycle={24} />)
     expect(screen.getByText('14:30')).toBeInTheDocument()
