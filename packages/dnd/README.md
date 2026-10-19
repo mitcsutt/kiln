@@ -63,7 +63,7 @@ import { DragHandle, GridLayout } from '@mitcsutt/kiln-dnd'
 
 ## What's in it
 
-- **Components:** `Sortable`, `Board`, `GridLayout`, `Draggable`, `DropZone`, `DragHandle` and the `Dnd` scope.
+- **Components:** `Sortable`, `SortableItem`, `Board`, `GridLayout`, `Draggable`, `DropZone`, `DragHandle` and the `Dnd` scope.
 - **Hooks:** `useSortable`, `useDraggable` and `useDroppable`, for your own markup.
 - **Helpers:** `arrayMove`, `moveBetween`, `appendItem`, `removeItem` and `compact`.
 - **Testing:** `stubDndBrowserApis` from `@mitcsutt/kiln-dnd/testing` for jsdom.

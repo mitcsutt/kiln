@@ -1625,7 +1625,7 @@ export interface RepeaterProps<A, N extends ArrayPaths<ValuesOf<A>>> {
   variant?: 'list' | 'table' | 'cards' /*'list'*/
   min?: number
   max?: number
-  reorderable?: boolean // Move up / Move down buttons (keyboard-first; no drag in v1)
+  reorderable?: boolean | 'drag' // Move up / Move down buttons; 'drag' adds a drag handle too (A.7)
   itemLabel?: (index: number) => string /*messages.item(index)*/
   addLabel?: string
   empty?: ReactNode
