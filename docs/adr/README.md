@@ -45,7 +45,8 @@ Each record captures one decision: the context, what was decided, and what follo
 | [0039](0039-subpath-or-package.md)                      | A small add-on is a subpath entry; a family is a package     | Accepted                                             |
 | [0040](0040-kiln-dnd.md)                                | kiln-dnd: dnd-kit's DOM engine, Kiln's own keyboard model    | Accepted                                             |
 | [0041](0041-kiln-charts.md)                             | How kiln-charts is built: hidden engine, SSR frame           | Accepted                                             |
-| [0042](0042-date-and-time-pickers.md)                   | Date and time pickers are built on `Intl`, with ISO values   | Accepted                                             |
+| [0042](0042-date-and-time-pickers.md)                   | Date and time pickers are built on `Intl`, with ISO values   | Accepted, amended by 0044                            |
 | [0043](0043-forms-drag-and-drop.md)                     | kiln-forms drags Repeater items through an optional `./dnd`  | Accepted                                             |
+| [0044](0044-opt-in-parts-are-separate-exports.md)       | An opt-in part that brings heavy code is a separate export   | Accepted                                             |
 
 New records use the next number and the same headings: Status, Context, Decision, Consequences.

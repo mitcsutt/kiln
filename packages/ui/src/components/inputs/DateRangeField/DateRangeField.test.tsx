@@ -2,6 +2,7 @@ import { fireEvent, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { createRef, useState } from 'react'
 import { DateRangeField, type DateRangeValue } from './DateRangeField'
+import { DateRangePickerField } from './DateRangePickerField'
 
 describe('DateRangeField', () => {
   it('renders a fieldset with legend = label and two labelled date inputs; ref → fieldset', () => {
@@ -149,7 +150,7 @@ describe('DateRangeField', () => {
   })
 })
 
-describe('DateRangeField with the calendar picker', () => {
+describe('DateRangePickerField', () => {
   const seg = (name: string, index = 0) =>
     screen.getAllByRole('spinbutton', { name })[index] as HTMLElement
 
@@ -157,10 +158,9 @@ describe('DateRangeField with the calendar picker', () => {
     const user = userEvent.setup()
     const onValueChange = vi.fn()
     render(
-      <DateRangeField
+      <DateRangePickerField
         id="stay"
         label="Stay"
-        picker="calendar"
         startLabel="Check in"
         endLabel="Check out"
         onValueChange={onValueChange}
@@ -178,9 +178,8 @@ describe('DateRangeField with the calendar picker', () => {
     const user = userEvent.setup()
     const onValueChange = vi.fn()
     render(
-      <DateRangeField
+      <DateRangePickerField
         label="Stay"
-        picker="calendar"
         defaultValue={{ start: '2026-11-02', end: '' }}
         onValueChange={onValueChange}
       />,
@@ -200,7 +199,7 @@ describe('DateRangeField with the calendar picker', () => {
     let weekEnd = '2026-10-17'
     const thisWeek = vi.fn(() => ({ start: '2026-10-12', end: weekEnd }))
     render(
-      <DateRangeField
+      <DateRangePickerField
         label="Report period"
         defaultValue={{ start: '2026-10-01', end: '2026-10-31' }}
         presets={[
@@ -210,7 +209,6 @@ describe('DateRangeField with the calendar picker', () => {
         onValueChange={onValueChange}
       />,
     )
-    // Presets alone turn the calendar picker on.
     await user.click(screen.getByRole('button', { name: 'Choose date' }))
     const presets = await screen.findByRole('group', { name: 'Presets' })
     expect(within(presets).getByRole('button', { name: 'October' })).toHaveAttribute(
@@ -227,7 +225,7 @@ describe('DateRangeField with the calendar picker', () => {
     const user = userEvent.setup()
     const onValueChange = vi.fn()
     render(
-      <DateRangeField
+      <DateRangePickerField
         label="Incident window"
         granularity="minute"
         hourCycle={24}
@@ -254,7 +252,7 @@ describe('DateRangeField with the calendar picker', () => {
     const user = userEvent.setup()
     const onValueChange = vi.fn()
     render(
-      <DateRangeField
+      <DateRangePickerField
         label="Incident window"
         granularity="minute"
         hourCycle={24}
@@ -293,9 +291,8 @@ describe('DateRangeField with the calendar picker', () => {
 
   it('keeps the start before the end while typing', () => {
     render(
-      <DateRangeField
+      <DateRangePickerField
         label="Stay"
-        picker="calendar"
         defaultValue={{ start: '2026-11-12', end: '2026-11-09' }}
       />,
     )
@@ -307,7 +304,7 @@ describe('DateRangeField with the calendar picker', () => {
     const onBlur = vi.fn()
     render(
       <>
-        <DateRangeField label="Stay" picker="calendar" onBlur={onBlur} />
+        <DateRangePickerField label="Stay" onBlur={onBlur} />
         <button type="button">After</button>
       </>,
     )
@@ -324,10 +321,10 @@ describe('DateRangeField with the calendar picker', () => {
   it('submits name.start and name.end', () => {
     render(
       <form data-testid="form">
-        <DateRangeField
+        <DateRangePickerField
           label="Stay"
           name="stay"
-          picker="calendar"
+
           defaultValue={{ start: '2026-11-02', end: '2026-11-09' }}
         />
       </form>,

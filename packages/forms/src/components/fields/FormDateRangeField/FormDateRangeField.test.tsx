@@ -116,6 +116,30 @@ describe('FormDateRangeField', () => {
     expect(screen.getByText('Not provided')).toBeInTheDocument()
   })
 
+  it('keeps the native inputs for picker="native", without the picker’s own props', () => {
+    const { container } = renderForm(
+      (f) => (
+        <f.AppField name="trip">
+          {() => (
+            <FormDateRangeField
+              label="Trip dates"
+              picker="native"
+              locale="de-DE"
+              timeZone="UTC"
+              clearable
+            />
+          )}
+        </f.AppField>
+      ),
+      { defaultValues: { trip: { start: '2026-10-04', end: '' } } },
+    )
+    expect(screen.getByLabelText('Start date')).toHaveAttribute('type', 'date')
+    expect(screen.queryByRole('button', { name: 'Choose date' })).not.toBeInTheDocument()
+    const group = within(container).getByRole('group', { name: 'Trip dates' })
+    expect(group).not.toHaveAttribute('locale')
+    expect(group).not.toHaveAttribute('timezone')
+  })
+
   it('picks the range from one calendar and submits both ends', async () => {
     const { form, user, container } = renderForm(
       (f) => (

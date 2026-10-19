@@ -1,11 +1,19 @@
-import { Children, createContext, isValidElement, type ReactNode } from 'react'
+import { Children, createContext, isValidElement, type KeyboardEvent, type ReactNode } from 'react'
 
 export type NavLinksOrientation = 'horizontal' | 'vertical'
 export type NavLinksSize = 'sm' | 'md'
 
+/** The tree-style arrow keys of a vertical nav with groups. */
+export type TreeKeyDown = (event: KeyboardEvent<HTMLElement>) => void
+
 export interface NavLinksContextValue {
   orientation: NavLinksOrientation
   size: NavLinksSize
+  /**
+   * Where a group puts the arrow-key handler for the nav it's in. Groups bring it, so a nav
+   * without them doesn't carry it.
+   */
+  treeKeysRef?: { current: TreeKeyDown | null }
 }
 
 export const NavLinksContext = createContext<NavLinksContextValue>({

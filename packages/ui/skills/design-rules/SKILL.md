@@ -98,7 +98,7 @@ Beyond the checks, a theme has a subject, and each colour, face, radius and easi
 - Motion answers an action or shows a state change (count updated, row expanded, panel opened). **No fade-up-on-scroll, no hover-scale on static cards, no parallax.**
 - To point at something that just changed or that a link just opened on, wrap it in `Flash`: one primitive for any element, not a flash prop on each component. It's an outline that fades, so it never moves layout, and under reduced motion it holds and goes instead of fading.
 - Durations and easings are tokens (`--dur-1/2/3`, `--ease-out`, `--ease-spring`) and collapse to ~0 under `prefers-reduced-motion`.
-- Showing and hiding goes through the shared primitives, not a component's own animation: `Collapse` for height (behind `Collapsible`, `ShowMore` and `NavLinks.Group`), `Transition` for mounting and unmounting with an enter and an exit.
+- Showing and hiding goes through the shared primitives, not a component's own animation: `Collapse` for height (behind `Collapsible`, `ShowMore` and `NavLinksGroup`), `Transition` for mounting and unmounting with an enter and an exit.
 - **Clamping is a wrapper, never a prop.** Long content gets a `ShowMore` around it; `Text`, `Prose`, `List`, `Table` and `CodeBlock` never take `maxLines` or a clamp of their own.
 
 ### Copy (for stories, docs and examples)

@@ -140,7 +140,7 @@ function monthGrid(month: Month, firstDay: number): (CalendarDate | null)[][] {
  * `firstDayOfWeek`.
  *
  * {@link DateInput | DateInput}, {@link DateTimeInput | DateTimeInput} and
- * {@link DateRangeField | DateRangeField} open it in a popover. Use it on its own for a calendar
+ * {@link DateRangePickerField | DateRangePickerField} open it in a popover. Use it on its own for a calendar
  * that's always visible, such as a booking page.
  *
  * ## Keyboard

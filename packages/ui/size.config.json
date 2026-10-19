@@ -101,6 +101,48 @@
       "budget": 3300
     },
     {
+      "name": "import { NavLinks }",
+      "import": "{ NavLinks }",
+      "from": "dist/index.js",
+      "isolatedTo": "dist/components/navigation/NavLinks/NavLinks.js",
+      "budget": 1300
+    },
+    {
+      "name": "import { NavLinks }, radix-ui included",
+      "import": "{ NavLinks }",
+      "from": "dist/index.js",
+      "withDependencies": true,
+      "budget": 2500
+    },
+    {
+      "name": "import { NavLinksGroup }",
+      "import": "{ NavLinksGroup }",
+      "from": "dist/index.js",
+      "isolatedTo": "dist/components/navigation/NavLinks/NavLinksGroup.js",
+      "budget": 4300
+    },
+    {
+      "name": "import { DateRangeField }",
+      "import": "{ DateRangeField }",
+      "from": "dist/index.js",
+      "isolatedTo": "dist/components/inputs/DateRangeField/DateRangeField.js",
+      "budget": 3700
+    },
+    {
+      "name": "import { DateRangeField }, radix-ui included",
+      "import": "{ DateRangeField }",
+      "from": "dist/index.js",
+      "withDependencies": true,
+      "budget": 3700
+    },
+    {
+      "name": "import { DateRangePickerField }",
+      "import": "{ DateRangePickerField }",
+      "from": "dist/index.js",
+      "isolatedTo": "dist/components/inputs/DateRangeField/DateRangePickerField.js",
+      "budget": 15000
+    },
+    {
       "name": "Everything (import *)",
       "import": "* as kiln",
       "from": "dist/index.js",

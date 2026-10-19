@@ -1,6 +1,6 @@
 # 0042. Date and time pickers are built on `Intl`, with ISO string values
 
-- **Status:** Accepted
+- **Status:** Accepted, amended by [0044](0044-opt-in-parts-are-separate-exports.md)
 - **Date:** 2026-10-15
 
 ## Context

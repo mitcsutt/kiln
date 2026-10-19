@@ -19,7 +19,7 @@ function transitionMs(element: HTMLElement): number {
 
 /**
  * Animates an element's height whenever `key` changes, from the height it had before the change
- * to its natural height after it. Shared by `Collapse`, `ShowMore` and `NavLinks.Group`, so every
+ * to its natural height after it. Shared by `Collapse`, `ShowMore` and `NavLinksGroup`, so every
  * open and close in Kiln moves the same way.
  *
  * The element's CSS decides the natural height in each state (`block-size: 0` when closed, a

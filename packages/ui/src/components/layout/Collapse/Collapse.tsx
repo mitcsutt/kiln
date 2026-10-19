@@ -36,7 +36,7 @@ export interface CollapseProps extends HTMLAttributes<HTMLDivElement> {
  *
  * @privateRemarks
  * The shared height animation lives in `useHeightMotion` (also used by ShowMore and
- * NavLinks.Group): it measures from and to in px and transitions `block-size` on
+ * NavLinksGroup): it measures from and to in px and transitions `block-size` on
  * `data-animating`, so it works in every browser without `interpolate-size`. Accordion keeps
  * Radix's own measured keyframes for now; moving it would change its markup.
  *
