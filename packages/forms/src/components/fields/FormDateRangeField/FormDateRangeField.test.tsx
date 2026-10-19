@@ -148,7 +148,9 @@ describe('FormDateRangeField', () => {
     renderForm(
       (f) => (
         <f.AppField name="window">
-          {() => <FormDateRangeField label="Maintenance window" granularity="minute" />}
+          {() => (
+            <FormDateRangeField label="Maintenance window" granularity="minute" locale="en-GB" />
+          )}
         </f.AppField>
       ),
       {
@@ -169,6 +171,7 @@ describe('FormDateRangeField', () => {
               label="Maintenance window"
               granularity="minute"
               timeZone="Australia/Perth"
+              locale="en-GB"
             />
           )}
         </f.AppField>
