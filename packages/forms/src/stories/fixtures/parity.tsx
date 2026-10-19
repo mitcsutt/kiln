@@ -38,16 +38,22 @@ export interface ParityDefinition<T, C> {
   context?: C
   /** Wrap in `<Form mode="view">` (read-only detail page). */
   mode?: 'edit' | 'view'
+  /** The kit both sides use. Default the default kit; an extension adds `dragAndDrop`. */
+  kit?: FixtureKit
   render: (form: FixtureForm<T>) => ReactNode
 }
+
+/** The parts of a kit a fixture uses: the default kit or an extension with the same fields. */
+export type FixtureKit = Pick<typeof kit, 'useAppForm' | 'SchemaForm'>
 
 /** Builds the two components of a fixture. Each owns its form (`kit.useAppForm`). */
 export function defineParity<T, C = EmptyObject>(
   definition: ParityDefinition<T, C>,
 ): ParityFixture {
   const { name, covers, defaultValues, schema, context, mode, render } = definition
+  const fixtureKit = definition.kit ?? kit
   function ComponentMode() {
-    const form = kit.useAppForm<T>({ defaultValues })
+    const form = fixtureKit.useAppForm<T>({ defaultValues })
     return (
       <Form form={form} aria-label={`${name} (component mode)`} mode={mode}>
         {render(form)}
@@ -56,10 +62,10 @@ export function defineParity<T, C = EmptyObject>(
   }
   ComponentMode.displayName = `${name} (component mode)`
   function SchemaMode() {
-    const form = kit.useAppForm<T>({ defaultValues })
+    const form = fixtureKit.useAppForm<T>({ defaultValues })
     return (
       <Form form={form} aria-label={`${name} (schema mode)`} mode={mode}>
-        <kit.SchemaForm form={form} schema={schema} context={context} />
+        <fixtureKit.SchemaForm form={form} schema={schema} context={context} />
       </Form>
     )
   }

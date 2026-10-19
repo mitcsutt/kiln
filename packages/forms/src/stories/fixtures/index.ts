@@ -3,6 +3,7 @@
 import { accordionFixture, stepsFixture, tabsFixture } from '#stories/fixtures/disclosure'
 import {
   repeaterCardsFixture,
+  repeaterDragFixture,
   repeaterListFixture,
   repeaterTableFixture,
 } from '#stories/fixtures/collections'
@@ -42,6 +43,7 @@ export const parityFixtures: readonly ParityFixture[] = [
   repeaterListFixture,
   repeaterTableFixture,
   repeaterCardsFixture,
+  repeaterDragFixture,
   sentenceFixture,
   reviewFixture,
   whenFixture,

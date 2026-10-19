@@ -1,4 +1,13 @@
 {
   "title": "Components",
-  "pages": ["sortable", "board", "grid-layout", "draggable", "drop-zone", "drag-handle", "dnd"]
+  "pages": [
+    "sortable",
+    "sortable-item",
+    "board",
+    "grid-layout",
+    "draggable",
+    "drop-zone",
+    "drag-handle",
+    "dnd"
+  ]
 }

@@ -75,3 +75,6 @@ peerDependencyRules:
   # kiln-eslint-config tests run its rules on ESLint 10 to prove they work.
   allowedVersions:
     eslint-plugin-jsx-a11y>eslint: '10'
+    # kiln-dnd is 0.0.0 in the workspace until its first release (0.1.0), the lowest version
+    # kiln-forms' optional peer range accepts (ADR 0043).
+    '@mitcsutt/kiln-forms>@mitcsutt/kiln-dnd': '0.0.0'

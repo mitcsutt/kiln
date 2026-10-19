@@ -1,6 +1,7 @@
 // First: the render tracker hooks into React's commit hook, which React reads when it loads.
 import { stopRecordingCommits } from '#test/renders'
 import '@testing-library/jest-dom/vitest'
+import { stubDndBrowserApis } from '@mitcsutt/kiln-dnd/testing'
 import { cleanup } from '@testing-library/react'
 import { afterEach } from 'vitest'
 
@@ -49,3 +50,6 @@ if (typeof window !== 'undefined') {
     }
   }
 }
+
+// What kiln-dnd's engine calls, for `Repeater reorderable="drag"` (the ./dnd entry).
+stubDndBrowserApis()

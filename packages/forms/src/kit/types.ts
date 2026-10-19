@@ -30,6 +30,7 @@ import type {
 } from '#kit/contracts'
 import type { OptionsLoader } from '#hooks/useOptions'
 import type { FormMessages } from '#runtime/messages'
+import type { FormDragAndDrop } from '#components/layouts/Repeater/dragAndDrop'
 import type { AfterSubmit, FocusOnInvalid, ValidateOn } from '#runtime/formRuntime'
 import type {
   Computer,
@@ -394,6 +395,11 @@ export interface KitRegistries<R extends FieldRegistry> {
   layouts?: Partial<LayoutRegistry>
   messages?: Partial<FormMessages>
   formatError?: (error: NormalisedError) => string
+  /**
+   * Drag and drop for `Repeater reorderable="drag"`, in both modes: pass `dragAndDrop` from
+   * `@mitcsutt/kiln-forms/dnd`. Without it, those repeaters reorder by their buttons alone.
+   */
+  dragAndDrop?: FormDragAndDrop
 }
 
 /** Everything but `fields`. */

@@ -753,6 +753,9 @@ importers:
       '@arethetypeswrong/cli':
         specifier: 'catalog:'
         version: 0.18.5
+      '@mitcsutt/kiln-dnd':
+        specifier: workspace:*
+        version: link:../dnd
       '@mitcsutt/kiln-testing-react18':
         specifier: workspace:*
         version: link:../testing-react18

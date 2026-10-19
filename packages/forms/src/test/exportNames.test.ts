@@ -17,6 +17,7 @@ const uiRoot = dirname(require.resolve('@mitcsutt/kiln-ui/package.json'))
 const entries = {
   forms: join(formsRoot, 'src/index.ts'),
   formsSchema: join(formsRoot, 'src/schema/core/index.ts'),
+  formsDnd: join(formsRoot, 'src/dnd/index.ts'),
   ui: join(uiRoot, 'src/index.ts'),
 }
 
@@ -44,6 +45,7 @@ function exportNames(): Record<keyof typeof entries, string[]> {
   return {
     forms: namesOf(entries.forms),
     formsSchema: namesOf(entries.formsSchema),
+    formsDnd: namesOf(entries.formsDnd),
     ui: namesOf(entries.ui),
   }
 }
@@ -60,5 +62,11 @@ describe('export names', () => {
     const ui = new Set(names.ui)
     expect(names.forms.filter((name) => ui.has(name))).toEqual([])
     expect(names.formsSchema.filter((name) => ui.has(name))).toEqual([])
+    expect(names.formsDnd.filter((name) => ui.has(name))).toEqual([])
+  })
+
+  it('the ./dnd entry shares no name with the main entry', () => {
+    expect(names.formsDnd).toEqual(['dragAndDrop'])
+    expect(names.forms).not.toContain('dragAndDrop')
   })
 })

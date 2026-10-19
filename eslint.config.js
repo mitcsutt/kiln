@@ -13,10 +13,13 @@ const FORMS_NO_STYLING =
   'kiln-forms has no styling of its own: compose kiln-ui primitives through their props (packages/forms/AGENTS.md).'
 // packages/forms/AGENTS.md: `#` subpath imports inside the package, kiln-ui from its barrel
 // only, and no CSS.
+const FORMS_DND =
+  'kiln-dnd is an optional peer: only src/dnd (the @mitcsutt/kiln-forms/dnd entry) imports it (ADR 0043).'
 const FORMS_IMPORT_PATTERNS = [
   { group: ['../*'], message: 'Import with a `#` subpath import (`#runtime/...`).' },
   { group: ['@mitcsutt/kiln-ui/*'], message: 'Import @mitcsutt/kiln-ui from its barrel.' },
   { group: ['*.css'], message: FORMS_NO_STYLING },
+  { group: ['@mitcsutt/kiln-dnd', '@mitcsutt/kiln-dnd/*'], message: FORMS_DND },
 ]
 
 const FORMS_SYNTAX = [
@@ -159,6 +162,21 @@ export default defineConfig(
       // array each time). Select a primitive, or use `useSelector` with `shallowEqual`.
       'no-restricted-syntax': ['error', ...FORMS_SYNTAX],
       '@typescript-eslint/no-restricted-imports': ['error', { patterns: FORMS_IMPORT_PATTERNS }],
+    },
+  },
+  {
+    // The `./dnd` entry, and the tests that stub what jsdom lacks for it, may import kiln-dnd.
+    name: 'kiln/workspace/forms/dnd',
+    files: [
+      'packages/forms/src/dnd/**',
+      'packages/forms/src/**/*.test.{ts,tsx}',
+      'packages/forms/src/test/**',
+    ],
+    rules: {
+      '@typescript-eslint/no-restricted-imports': [
+        'error',
+        { patterns: FORMS_IMPORT_PATTERNS.filter((pattern) => pattern.message !== FORMS_DND) },
+      ],
     },
   },
   {

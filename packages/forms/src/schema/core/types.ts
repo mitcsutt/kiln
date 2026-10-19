@@ -300,7 +300,8 @@ export type RepeaterNode<TScope, TRoot, R, X, C> = {
     variant?: 'list' | 'table' | 'cards'
     min?: number
     max?: number
-    reorderable?: boolean
+    /** `true` for Move up and Move down buttons; `"drag"` adds a drag handle (the kit's `dragAndDrop`). */
+    reorderable?: boolean | 'drag'
     addLabel?: string
     /** Empty-state text. */
     empty?: string

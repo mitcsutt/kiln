@@ -2,6 +2,7 @@
 import { kit } from '#kit/defaultKit'
 import { Repeater } from '#components/layouts'
 import { defineParity } from '#stories/fixtures/parity'
+import { dndKit } from '#stories/_kit/dndKit'
 
 interface Guest {
   name: string
@@ -165,6 +166,64 @@ export const repeaterCardsFixture = defineParity({
         <>
           <item.fields.TextField name="volunteer" label="Volunteer" />
           <item.fields.SelectField name="role" label="Role" options={[...roles]} />
+        </>
+      )}
+    </Repeater>
+  ),
+})
+
+// --- repeater (drag to reorder) --------------------------------------------------------------
+interface Stop {
+  place: string
+  arrive: string
+}
+interface Route {
+  stops: Stop[]
+}
+
+export const repeaterDragSchema = kit.defineFormSchema<Route>()({
+  version: 1,
+  root: {
+    layout: 'repeater',
+    name: 'stops',
+    label: 'Stops',
+    description: 'Drag a stop, or use its buttons, to change the order of the route.',
+    newItem: { place: '', arrive: '' },
+    reorderable: 'drag',
+    addLabel: 'Add stop',
+    item: [
+      { kind: 'text', name: 'place', label: 'Place' },
+      { kind: 'text', name: 'arrive', label: 'Arrive by' },
+    ],
+  },
+})
+
+export const repeaterDragFixture = defineParity({
+  name: 'Delivery route',
+  covers: ['repeater'],
+  kit: dndKit,
+  defaultValues: {
+    stops: [
+      { place: 'Leeds depot', arrive: '07:30' },
+      { place: 'York, Fossgate', arrive: '09:15' },
+      { place: 'Hull marina', arrive: '11:00' },
+    ],
+  },
+  schema: repeaterDragSchema,
+  render: (form) => (
+    <Repeater
+      form={form}
+      name="stops"
+      label="Stops"
+      description="Drag a stop, or use its buttons, to change the order of the route."
+      newItem={{ place: '', arrive: '' }}
+      reorderable="drag"
+      addLabel="Add stop"
+    >
+      {(item) => (
+        <>
+          <item.fields.TextField name="place" label="Place" />
+          <item.fields.TextField name="arrive" label="Arrive by" />
         </>
       )}
     </Repeater>

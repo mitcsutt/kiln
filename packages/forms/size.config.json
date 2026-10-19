@@ -26,6 +26,12 @@
       "budget": 9500
     },
     {
+      "name": "Drag and drop entry (import { dragAndDrop } from ./dnd, kiln-dnd external)",
+      "import": "{ dragAndDrop }",
+      "from": "dist/dnd/index.js",
+      "budget": 620
+    },
+    {
       "name": "Everything (import *)",
       "import": "* as forms",
       "from": "dist/index.js",

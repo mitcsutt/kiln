@@ -188,7 +188,7 @@ The relevant shape (the real file also carries the published-package metadata):
 - **Field authoring.** `defineField`, `defineOptionField`, `defineOptionsField` and the contract types; `useFieldBinding`, `accepts`, `FieldBinding`, `FieldBindingOptions`, `CommonFieldProps`, `BoundFieldProps`; `useOptionMapping`; `FieldView`, `FieldViewList`, `FieldViewListBoundary`; `useFieldContext`, `useFormContext`; `normaliseError` and the error types; `FieldPresentation`, `useFieldPresentation`; `FieldScope`, `useFieldScope`, `useScopeErrors`; `focusField`, `focusFirstInvalid`.
 - **Bound fields.** `FormTextField` … `FormHiddenField`, each with its `Form<Name>FieldProps` type (§7.2), and `defaultFields`. The `Form` prefix keeps them apart from kiln-ui's unbound `*Field` components of the same base name ([ADR 0017](../../../docs/adr/0017-kiln-forms-port.md)). Inside a form the kit shorthand is unchanged: `form.TextField`, `field.TextField`, schema `{ kind: 'text' }`. `FieldLayout` is not re-exported: it is kiln-ui's type.
 - **Form components.** `Form`, `SubmitButton`, `ResetButton`, `ErrorSummary`, `FormStatus` and their props types.
-- **Layouts.** `FormGrid`, `FormGridItem`, `FormSection`, `FormAside`, `FormRows`, `FormPanels`, `FormPanel`, `FormTabs`, `FormTab`, `FormAccordion`, `FormAccordionItem`, `FormSteps`, `FormStep`, `useFormSteps`, `Repeater`, `FormSentence`, `FormActions`, `FormReview`, `When`, and their props types.
+- **Layouts.** `FormGrid`, `FormGridItem`, `FormSection`, `FormAside`, `FormRows`, `FormPanels`, `FormPanel`, `FormTabs`, `FormTab`, `FormAccordion`, `FormAccordionItem`, `FormSteps`, `FormStep`, `useFormSteps`, `Repeater`, `FormSentence`, `FormActions`, `FormReview`, `When`, and their props types, plus `FormDragAndDrop` and `RepeaterDragAttributes`, the shape of a kit's `dragAndDrop`. `dragAndDrop` itself is at `@mitcsutt/kiln-forms/dnd`, the only entry that imports the optional peer `@mitcsutt/kiln-dnd` (A.7).
 - **Hooks.** `useFormStatus`, `useFieldValue`, `useServerValues`, `useAutosave`, `useUnsavedChanges`, `useOptions` and their option and result types.
 - **Submission and errors.** `FormSubmitError`, `applyServerErrors`, `defaultMessages`, `FormMessages`.
 - **Schema.** `parseFormSchema`, `evaluateCondition`, `toStandardSchema`, `schemaDefaultValues`, `defineLoader`, `defineValidator`, `defineComputer`, `defineCustomNode`, and the schema types (`FormSchema`, `SchemaNodeOf`, `FieldNode`, `LayoutNode`, `ContentNode`, `CustomNode`, `RepeaterNode`, `Condition`, `Rule`, `RuleFor`, `UntypedFormSchema`, `NamedValidator`, `Computer`, `Json`, `ParseFormSchemaOptions`, `ParseFormSchemaResult`, `SchemaIssue`, `SchemaRegistryNames`, `ToStandardSchemaOptions`). The React-free subset is also at `@mitcsutt/kiln-forms/schema` (A.11).
@@ -2182,7 +2182,7 @@ These entries record the specific decisions that refine the body above or depart
 
 ### A.3 Messages (D15)
 
-`FormMessages` also has `yes`, `no` and `notProvided` (view mode), `actions` (the Repeater table header), `edit` (FormReview), `stepComplete`, `stepError` and `stepCompact(index, count)` (Stepper), `reset` (the ResetButton's default text, so a schema `{ content: 'reset' }` needs no label), and `invalidJson` (`FormJsonField`'s syntax error, with the line and column when known).
+`FormMessages` also has `yes`, `no` and `notProvided` (view mode), `actions` (the Repeater table header), `edit` (FormReview), `stepComplete`, `stepError` and `stepCompact(index, count)` (Stepper), `reset` (the ResetButton's default text, so a schema `{ content: 'reset' }` needs no label), `invalidJson` (`FormJsonField`'s syntax error, with the line and column when known), and `drag` (a Repeater's drag handle, its instructions and what a drag announces, A.7). `mergeMessages` merges `drag` one level deep, like `rules` and `fileRejected`.
 
 ### A.4 View mode (§9.11)
 
@@ -2223,6 +2223,7 @@ These entries record the specific decisions that refine the body above or depart
 - `FormSentence` renders `Text as="div"`, because bound fields render block elements and a `div` inside a `p` is invalid DOM.
 - `FormSection` requires `title` (§9.2); there is no untitled bare `<fieldset>`.
 - A tab or accordion trigger's error count is a visually hidden " 2 errors" after the label, and the `Badge` is `aria-hidden`.
+- `Repeater reorderable="drag"` adds a drag handle beside the move buttons, which stay as the single-pointer way to move (WCAG 2.5.7). The drag comes from the kit's `dragAndDrop` (`@mitcsutt/kiln-forms/dnd`, on `@mitcsutt/kiln-dnd`), so it works in both modes and the main entry never imports kiln-dnd; without it, the repeater shows the buttons and warns once. A drop is one `moveFieldValues`, announced by kiln-dnd in `messages.drag` words, and keyboard focus goes to the moved item's handle. Draggable cards stack in one column, because a drag moves along one list ([ADR 0043](../../../docs/adr/0043-forms-drag-and-drop.md)).
 
 ### A.8 Schema core (§10.1 to §10.5, §10.8, §10.9)
 

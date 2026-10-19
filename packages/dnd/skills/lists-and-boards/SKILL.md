@@ -1,6 +1,6 @@
 ---
 name: lists-and-boards
-description: "Use when adding drag and drop to a React app with @mitcsutt/kiln-dnd: installing it and its stylesheet, a reorderable list with Sortable, a kanban board with Board, drag handles with DragHandle, controlled and uncontrolled state with onChange, arrayMove and moveBetween, the keyboard model and announcements, translating announcements, and testing drags with Testing Library."
+description: "Use when adding drag and drop to a React app with @mitcsutt/kiln-dnd: installing it and its stylesheet, a reorderable list with Sortable, a kanban board with Board, table rows or your own markup with SortableItem, drag handles with DragHandle, controlled and uncontrolled state with onChange, arrayMove and moveBetween, the keyboard model and announcements, translating announcements, and testing drags with Testing Library."
 metadata:
   purpose: Build sortable lists and boards that work by pointer, touch and keyboard and report each move as plain data.
   type: core
@@ -9,6 +9,7 @@ sources:
   - mitcsutt/kiln:apps/docs/content/docs/drag-and-drop/index.mdx
   - mitcsutt/kiln:apps/docs/content/docs/drag-and-drop/getting-started/keyboard-and-screen-readers.mdx
   - mitcsutt/kiln:packages/dnd/src/components/Sortable/Sortable.tsx
+  - mitcsutt/kiln:packages/dnd/src/components/SortableItem/SortableItem.tsx
   - mitcsutt/kiln:packages/dnd/src/components/Board/Board.tsx
   - mitcsutt/kiln:packages/dnd/src/components/DragHandle/DragHandle.tsx
   - mitcsutt/kiln:apps/docs/content/docs/drag-and-drop/getting-started/layouts-as-data.mdx
@@ -162,6 +163,7 @@ Every item needs a `label`: it's the handle's name ("Move Revenue") and the subj
 Read a reference when its description matches the task:
 
 - [Sortable](references/sortable.md): A list you reorder by dragging, by pointer, touch or keyboard.
+- [SortableItem](references/sortable-item.md): One item of a sortable list you build from your own elements, with `Sortable`'s look.
 - [Board](references/board.md): Columns of items you move within and between columns by dragging, by pointer, touch or keyboard: a kanban board.
 - [DragHandle](references/drag-handle.md): The grip a draggable item is picked up by.
 - [Layouts as data](references/layouts-as-data.md): Lists, boards and grid layouts are plain data you can store as JSON, with pure helpers to change them in your own code.

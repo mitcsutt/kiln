@@ -9,7 +9,7 @@ The design is in [`docs/design.md`](docs/design.md), cited as `§n` in code comm
 - No CSS in this package: no `*.module.css` and no `style`. Layouts compose `@mitcsutt/kiln-ui` primitives through their props. If a layout needs a visual the primitives can't express, add a prop or component to `@mitcsutt/kiln-ui` first.
 - Import `@mitcsutt/kiln-ui` only from its barrel (`import { Fieldset } from '@mitcsutt/kiln-ui'`).
 - Inside the package, import with `#` subpath imports (`#hooks/useFieldBinding`). Relative `../` imports are out.
-- Apps import everything from `@mitcsutt/kiln-forms` (or the React-free `@mitcsutt/kiln-forms/schema`). They never import `@tanstack/react-form`. When an app needs a TanStack type or helper, add it to the passthrough block at the bottom of `src/index.ts`.
+- Apps import everything from `@mitcsutt/kiln-forms` (or the React-free `@mitcsutt/kiln-forms/schema`, or `@mitcsutt/kiln-forms/dnd` for drag and drop). They never import `@tanstack/react-form`. When an app needs a TanStack type or helper, add it to the passthrough block at the bottom of `src/index.ts`.
 - All user-facing text comes from `FormMessages` (`#runtime/messages`), overridable per kit and per form. A new string means a new key with an English default.
 - Public functions and props take `AnyKitForm` and convert with `toFormApi(form)` internally. A concrete `KitForm<T>` isn't assignable to TanStack's `AnyFormApi`.
 - Anything that reads TanStack form `options` goes through `coreApi(form)`. The React form is a spread copy whose `options` goes stale after `update()`.
@@ -38,6 +38,8 @@ src/
   schema/core/    React-free (the ./schema entry): types, conditions, rules, parseFormSchema,
                   toStandardSchema, analyseSchema
   schema/render/  React renderer: SchemaForm/SchemaNode, field/layout/content/custom node views
+  dnd/            the ./dnd entry: dragAndDrop, the only module that imports @mitcsutt/kiln-dnd
+                  (an optional peer, ADR 0043)
   test/           renderForm, runFieldConformance, axe helper, perf harnesses, a11y tree
   stories/        story kit, parity fixtures, layout/schema stories, recipes
   docs/           docs stories of guides with no single owner (getting-started, layouts,
@@ -48,7 +50,7 @@ docs/design.md    the design reference (§n)
 
 The layout follows kiln-ui's ([ADR 0024](../../docs/adr/0024-kiln-forms-source-layout.md)): every component in `components/<group>/<Name>/`, every public hook in `hooks/`, and a hook owned by one component next to it (`useFormSteps`).
 
-The kit (`createFormKit`) takes one `const K` input: `{ fields, formComponents?, loaders?, validators?, computers?, nodes?, layouts?, messages? }`. `kit.extend({...})` adds to it, and new field kinds can't shadow existing ones. `useAppForm` attaches a `FormRuntime` to each form. Layouts and the schema renderer reach the kit's field registry through `runtime.registry` and call `bindFields(form, registry, prefix)` for typed shorthand under a path prefix (Repeater items).
+The kit (`createFormKit`) takes one `const K` input: `{ fields, formComponents?, loaders?, validators?, computers?, nodes?, layouts?, messages?, dragAndDrop? }`. `kit.extend({...})` adds to it, and new field kinds can't shadow existing ones. `useAppForm` attaches a `FormRuntime` to each form. Layouts and the schema renderer reach the kit's field registry through `runtime.registry` and call `bindFields(form, registry, prefix)` for typed shorthand under a path prefix (Repeater items).
 
 `schema/core` must load on a server. ESLint blocks runtime imports of `react`, `react-dom`, `@tanstack/react-form` and `@mitcsutt/kiln-ui` there (type imports are fine), `schema/core/node.test.ts` catches React arriving transitively through the `#` modules it imports, and `pnpm check:package` imports the packed `./schema` entry in a project with no React installed. Put anything that renders in `schema/render`.
 
@@ -133,7 +135,7 @@ The renderer strips the same unsafe props (`fieldNodeProps`/`layoutNodeProps`), 
 
 ## Lint
 
-The root `eslint.config.js` applies `base`, `react` and `storybook` from `@mitcsutt/kiln-eslint-config` here, type-aware, with no warnings. Two forms rules are enforced there, scoped to this package: no tuple selectors (`form.Subscribe selector={(s) => [a, b]}` re-renders on every store change; select a primitive, or use `useSelector(store, sel, { compare: shallowEqual })`), and type-only imports of React, TanStack Form and kiln-ui in `schema/core`. Tests get the same exceptions as ui's (ADR 0015), and the axe helper counts as an assertion. Anything else that needs an exception gets an `eslint-disable-next-line` with a reason.
+The root `eslint.config.js` applies `base`, `react` and `storybook` from `@mitcsutt/kiln-eslint-config` here, type-aware, with no warnings. Three forms rules are enforced there, scoped to this package: no tuple selectors (`form.Subscribe selector={(s) => [a, b]}` re-renders on every store change; select a primitive, or use `useSelector(store, sel, { compare: shallowEqual })`), type-only imports of React, TanStack Form and kiln-ui in `schema/core`, and no `@mitcsutt/kiln-dnd` import outside `src/dnd` and tests. Tests get the same exceptions as ui's (ADR 0015), and the axe helper counts as an assertion. Anything else that needs an exception gets an `eslint-disable-next-line` with a reason.
 
 ## Commands
 
@@ -149,6 +151,6 @@ pnpm --filter @mitcsutt/kiln-forms size            # size report against size.co
 
 ## Don'ts
 
-- No CSS, no `style`, no class names: every pixel is kiln-ui's.
+- No CSS, no `style`, no class names: every pixel is kiln-ui's, or kiln-dnd's through the `./dnd` entry.
 - No `any`, no `@ts-ignore`. The one documented `any` is `FieldRegistry`'s (§3.2).
 - Don't add runtime dependencies without an ADR. Today: `@tanstack/react-form` only. No validation library at runtime; zod is a dev dependency for tests and stories.

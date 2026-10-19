@@ -40,6 +40,20 @@ describe('parseFormSchema — accepts', () => {
     expect(parseFormSchema(json, { kinds: [] }).ok).toBe(false)
   })
 
+  it('accepts a repeater that reorders by drag, by buttons or not at all', () => {
+    for (const reorderable of ['drag', true, false]) {
+      const json = wrap({
+        layout: 'repeater',
+        name: 'stops',
+        label: 'Stops',
+        reorderable,
+        newItem: { name: '' },
+        item: [field()],
+      })
+      expect(issues(json)).toEqual([])
+    }
+  })
+
   it('allows a review to re-render fields shown elsewhere', () => {
     const json = wrap({
       layout: 'stack',
@@ -294,6 +308,23 @@ describe('parseFormSchema — rejects with precise paths', () => {
         },
         { path: 'root.columns[2].header', message: 'Column needs a header (text)' },
         { path: 'root.columns[3]', message: 'Expected a column object' },
+      ],
+    ],
+    [
+      'repeater reorderable: true, false or "drag"',
+      wrap({
+        layout: 'repeater',
+        name: 'guests',
+        label: 'Guests',
+        reorderable: 'pointer',
+        newItem: { name: '' },
+        item: [field()],
+      }),
+      [
+        {
+          path: 'root.reorderable',
+          message: 'Unknown reorderable "pointer" (expected true, false or "drag")',
+        },
       ],
     ],
     [
