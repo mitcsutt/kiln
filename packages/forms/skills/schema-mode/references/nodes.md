@@ -16,6 +16,7 @@ On top of its own props, every field node takes:
 - `defaultValue`: a field-level default.
 - `when`, `disabledWhen`, `readOnlyWhen`, `excludeWhen`, `requiredWhen`: [conditions](./conditions.md).
 - `whenHidden`: `prune` (the default), `keep` or `reset`, as on [When](https://kiln.mitchellsutton.com/docs/forms/layouts/when).
+- `whenAnimate`: `true` to animate the field in and out as its `when` changes, as `When`'s `animate`. Layout, content and custom nodes take it too.
 - `optionsFrom: { loader, deps }`: options from a registered loader, reloaded when `deps` change.
 - `resets`: fields to reset when this one changes.
 - `compute: { computer, from }`: a value computed from other fields. Computed fields are read-only.

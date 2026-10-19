@@ -261,6 +261,54 @@ describe('SchemaForm', () => {
     })
   })
 
+  it('whenAnimate animates the node in and out, and is not passed to the field', async () => {
+    interface V {
+      gift: boolean
+      message: string
+    }
+    const schema = schemaKit.defineFormSchema<V>()({
+      version: 1,
+      root: {
+        layout: 'stack',
+        children: [
+          { kind: 'checkbox', name: 'gift', label: 'This is a gift' },
+          {
+            kind: 'textarea',
+            name: 'message',
+            label: 'Gift message',
+            when: { field: 'gift', op: 'truthy' },
+            whenAnimate: true,
+          },
+        ],
+      },
+    })
+    const { user } = renderSchema<V>(schema, { defaultValues: { gift: false, message: '' } })
+    expect(screen.queryByLabelText('Gift message')).toBeNull()
+    await user.click(screen.getByLabelText('This is a gift'))
+    const message = screen.getByLabelText('Gift message')
+    expect(message.closest('div[data-state]')).toHaveAttribute('data-state', 'open')
+    expect(message).not.toHaveAttribute('whenAnimate')
+    expect(message).not.toHaveAttribute('whenanimate')
+  })
+
+  it('a review layout takes viewLines', () => {
+    interface V {
+      notes: string
+    }
+    const schema = schemaKit.defineFormSchema<V>()({
+      version: 1,
+      root: {
+        layout: 'review',
+        title: 'Your answers',
+        viewLines: 2,
+        children: [{ kind: 'textarea', name: 'notes', label: 'Notes' }],
+      },
+    })
+    renderSchema<V>(schema, { defaultValues: { notes: 'Ring the side bell twice.' } })
+    const clamp = screen.getByRole('definition').querySelector<HTMLElement>('[data-mode="lines"]')
+    expect(clamp?.style.getPropertyValue('--_clamp')).toBe('calc(2 * 1lh)')
+  })
+
   it('a hidden subtree that never mounted is still pruned (static names from the analysis)', async () => {
     const onSubmit = vi.fn()
     interface V {

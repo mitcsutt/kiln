@@ -231,6 +231,8 @@ export type NodeBase<TRoot, C> = {
   id?: string
   /** Rendered only while true (root paths). Hidden fields unmount and are pruned per `whenHidden`. */
   when?: Condition<TRoot, C>
+  /** Animate the node in and out as `when` changes (`When`'s `animate`). Default `false`. */
+  whenAnimate?: boolean
 }
 
 /** What hidden fields do with their value (§10.7). Default `prune`. */
@@ -365,7 +367,7 @@ export interface DefaultLayoutProps {
   }
   step: { value: string; title: string; description?: string }
   sentence: { label: string }
-  review: { title?: string }
+  review: { title?: string; viewLines?: number }
   actions: { align?: 'start' | 'end' | 'between'; sticky?: boolean; status?: boolean }
 }
 
@@ -506,6 +508,7 @@ export interface UntypedRule {
 export interface UntypedNodeBase {
   readonly id?: string
   readonly when?: UntypedCondition
+  readonly whenAnimate?: boolean
 }
 
 /** Component props (`label`, `options`, `title`, …) — anything else on a field, layout or content node. */

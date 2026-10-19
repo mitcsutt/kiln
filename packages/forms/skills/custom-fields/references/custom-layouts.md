@@ -146,6 +146,7 @@ export const { useAppForm, SchemaForm } = kit.extend({ layouts: { leg: LegLayout
 | `labelHidden` | `boolean` |  |  |
 | `errorPlacement` | `'external' \| 'inline'` |  | `external`: the field keeps its invalid state but its message renders elsewhere (sentence, table). |
 | `mode` | `'view' \| 'edit'` |  | `view` renders each field's display value, no control (FormReview, `Form mode="view"`). |
+| `viewLines` | `number` |  | View mode: clamp each field's value to about this many lines, with a toggle that shows the rest (kiln-ui's `ShowMore`). Values that fit show no toggle. |
 | `disabled` | `boolean` |  | Cascades; a nested `false` cannot re-enable. |
 | `readOnly` | `boolean` |  | Cascades; a nested `false` cannot make it editable. |
 | `describedBy` | `(name: string) => string \| undefined` |  | For `errorPlacement: 'external'`: the id of the element showing a field's message. |

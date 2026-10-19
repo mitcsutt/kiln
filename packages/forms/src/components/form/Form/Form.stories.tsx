@@ -1,7 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Form, ResetButton, SubmitButton, useAppForm } from '@mitcsutt/kiln-forms'
-import { Grid, Inline, Stack, Text } from '@mitcsutt/kiln-ui'
-import { useState } from 'react'
+import { Grid, Inline, Stack, Text, Toaster, toast } from '@mitcsutt/kiln-ui'
+import { useRef, useState } from 'react'
+import { expect, userEvent, waitFor, within } from 'storybook/test'
+import { storyRoot } from '#stories/_kit'
 import type { AnyKitForm } from '#runtime/formRuntime'
 import { kit } from '#kit/defaultKit'
 
@@ -123,6 +125,77 @@ export const Usage: Story = {
         </Stack>
       </Form>
     )
+  },
+}
+
+/**
+ * A toast suits news about the submit itself once the reader has moved on: "Profile saved", or
+ * "Couldn't save" with a Retry. Raise one with kiln-ui's `toast()` at the end of `onSubmit`, and
+ * from `onSubmitError` for a throw that isn't a `FormSubmitError`. Mount a `Toaster` once near the
+ * root of the app; kiln-forms doesn't need one and never raises a toast itself.
+ *
+ * Errors the reader can fix belong beside their fields: throw a `FormSubmitError` and they land
+ * there, with focus on the first. Don't toast validation errors. An `onSubmitError` of your own
+ * replaces the default form-level "Something went wrong" message, so the toast is the only report.
+ */
+export const ToastOnSubmit: Story = {
+  name: 'Toast on submit',
+  tags: ['docs'],
+  render: function ToastOnSubmit() {
+    const attempts = useRef(0)
+    const form = useAppForm({
+      defaultValues: { displayName: 'Ines Varga' },
+      onSubmit: async ({ value }) => {
+        await new Promise((resolve) => setTimeout(resolve, 400))
+        // Pretend the first save loses its connection.
+        attempts.current += 1
+        if (attempts.current === 1) throw new Error('Network unreachable')
+        toast({
+          id: 'profile-save',
+          title: 'Profile saved',
+          description: `Shown as ${value.displayName}`,
+          tone: 'positive',
+        })
+      },
+      onSubmitError: ({ formApi }) => {
+        toast({
+          id: 'profile-save',
+          title: "Couldn't save your profile",
+          description: 'Check your connection and try again.',
+          tone: 'critical',
+          action: {
+            label: 'Retry',
+            altText: 'Press Save profile again',
+            onClick: () => void formApi.handleSubmit(),
+          },
+        })
+      },
+    })
+    return (
+      <Form form={form} aria-label="Profile">
+        <Stack gap={5}>
+          <form.TextField name="displayName" label="Display name" autoComplete="nickname" />
+          <Inline gap={3}>
+            <SubmitButton>Save profile</SubmitButton>
+          </Inline>
+        </Stack>
+        <Toaster />
+      </Form>
+    )
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(storyRoot(canvasElement))
+    const page = within(canvasElement.ownerDocument.body)
+    await userEvent.click(canvas.getByRole('button', { name: 'Save profile' }))
+    const region = await page.findByRole('region', { name: 'Notifications (F8)' })
+    await waitFor(() =>
+      expect(within(region).getByText("Couldn't save your profile")).toBeVisible(),
+    )
+    await userEvent.click(within(region).getByRole('button', { name: 'Retry' }))
+    await waitFor(() => expect(within(region).getByText('Profile saved')).toBeVisible(), {
+      timeout: 4000,
+    })
+    toast.dismiss()
   },
 }
 

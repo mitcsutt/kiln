@@ -1,6 +1,8 @@
 import { act, screen, waitFor } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import { SubmitButton } from '#components/form/SubmitButton'
+import { FieldPresentation } from '#components/fields/FieldPresentation'
+import { must } from '#test/must'
 import { renderForm } from '#test/renderForm'
 import { When, type WhenHidden } from './When'
 
@@ -167,5 +169,89 @@ describe('When', () => {
     expect(screen.queryByLabelText('Company name')).toBeNull()
     await user.click(screen.getByLabelText('I work for a company'))
     expect(screen.getByLabelText('Company name')).toBeInTheDocument()
+  })
+
+  describe('animate', () => {
+    function animated(formProps?: { mode?: 'edit' | 'view' }) {
+      const onSubmit = vi.fn()
+      const view = renderForm(
+        (f) => (
+          <>
+            <f.CheckboxField name="hasCompany" label="I work for a company" />
+            <When form={f} is={(v) => v.hasCompany} animate fallback={<p>No company.</p>}>
+              <f.TextField name="company" label="Company name" />
+            </When>
+            <SubmitButton>Save</SubmitButton>
+          </>
+        ),
+        {
+          defaultValues: { ...defaults, hasCompany: true },
+          onSubmit: ({ value }) => {
+            onSubmit(value)
+          },
+          afterSubmit: 'keep',
+          ...(formProps ? { formProps } : {}),
+        },
+      )
+      return { ...view, onSubmit }
+    }
+
+    it('wraps the children and the fallback in a Collapse that opens and closes with the condition', async () => {
+      const { user } = animated()
+      const company = screen.getByLabelText('Company name')
+      expect(company.closest('div[data-state]')).toHaveAttribute('data-state', 'open')
+      const fallbackCollapse = must(document.querySelector('div[data-state="closed"]'))
+      expect(fallbackCollapse).not.toBeVisible()
+
+      await user.click(screen.getByLabelText('I work for a company'))
+      // jsdom has no transitions, so the close settles at once and the children unmount.
+      await waitFor(() => {
+        expect(screen.queryByLabelText('Company name')).toBeNull()
+      })
+      expect(screen.getByText('No company.').closest('div[data-state]')).toHaveAttribute(
+        'data-state',
+        'open',
+      )
+
+      await user.click(screen.getByLabelText('I work for a company'))
+      expect(screen.getByLabelText('Company name')).toBeInTheDocument()
+      await waitFor(() => {
+        expect(screen.queryByText('No company.')).toBeNull()
+      })
+    })
+
+    it('keeps the hiding policy: a hidden field is pruned from what is submitted', async () => {
+      const { user, onSubmit } = animated()
+      const company = screen.getByLabelText('Company name')
+      await user.clear(company)
+      await user.type(company, 'Brightline Labs')
+      await user.click(screen.getByLabelText('I work for a company'))
+      await user.click(screen.getByRole('button', { name: 'Save' }))
+      await waitFor(() => {
+        expect(onSubmit).toHaveBeenCalledTimes(1)
+      })
+      expect(onSubmit.mock.calls[0]?.[0]).toMatchObject({ company: 'Northwind Studio' })
+    })
+
+    it('renders no Collapse in view mode', () => {
+      animated({ mode: 'view' })
+      expect(document.querySelector('div[data-state]')).toBeNull()
+      expect(screen.getByText('Northwind Studio')).toBeInTheDocument()
+    })
+
+    it('renders no Collapse in an inline layout, where a block would break the line', () => {
+      renderForm(
+        (f) => (
+          <FieldPresentation layout="inline">
+            <When form={f} is={(v) => v.hasCompany} animate>
+              <f.TextField name="company" label="Company name" />
+            </When>
+          </FieldPresentation>
+        ),
+        { defaultValues: { ...defaults, hasCompany: true } },
+      )
+      const company = screen.getByLabelText('Company name')
+      expect(company.closest('div[data-state]')).toBeNull()
+    })
   })
 })

@@ -24,6 +24,11 @@ export interface FormReviewProps {
    * described by it, so several Edit buttons stay distinguishable.
    */
   editLabel?: string
+  /**
+   * Clamp each value to about this many lines, with a "Show more" toggle, for answers that run
+   * long. Values that fit show no toggle. Default: the `Form`'s `viewLines`, else no clamp.
+   */
+  viewLines?: number
   children: ReactNode
 }
 
@@ -39,6 +44,7 @@ function FormReviewInner({
   step,
   onEdit,
   editLabel,
+  viewLines,
   children,
 }: FormReviewProps) {
   const steps = useOptionalFormSteps()
@@ -68,7 +74,7 @@ function FormReviewInner({
     </Button>
   ) : null
   return (
-    <FieldPresentation mode="view">
+    <FieldPresentation mode="view" viewLines={viewLines}>
       <Stack gap={3}>
         {title != null || editButton ? (
           <Inline justify={title != null ? 'between' : 'end'} align="center" gap={3}>

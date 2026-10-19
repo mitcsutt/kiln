@@ -400,6 +400,24 @@ describe('parseFormSchema — rejects with precise paths', () => {
     expect(issues(json)).toEqual(expected)
   })
 
+  it('takes whenAnimate on every kind of node, as a boolean only', () => {
+    const when = { field: 'a', op: 'truthy' }
+    const node = (extra: Record<string, unknown>) => ({ ...extra, when, whenAnimate: true })
+    const valid = wrap({
+      layout: 'stack',
+      children: [
+        node(field()),
+        node({ layout: 'section', title: 'More', children: [] }),
+        node({ content: 'text', text: 'Shown with a' }),
+        node({ custom: 'projectPreview' }),
+      ],
+    })
+    expect(issues(valid)).toEqual([])
+    expect(issues(wrap({ ...field(), when, whenAnimate: 'yes' }))).toEqual([
+      { path: 'root.whenAnimate', message: 'Expected a boolean' },
+    ])
+  })
+
   it('covers at least 15 malformed cases', () => {
     expect(cases.length).toBeGreaterThanOrEqual(15)
   })

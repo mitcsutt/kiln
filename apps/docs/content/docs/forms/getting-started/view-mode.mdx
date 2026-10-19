@@ -9,6 +9,12 @@ A form in view mode renders each field as its label and its value, formatted for
 
 Select fields show the option's label, amounts are formatted for their currency, switches read "Yes" or "No", and anything empty reads "Not provided". Passwords are always a fixed-length mask, so the view doesn't even leak the length.
 
+## Long values
+
+<Example of="forms/getting-started/view-mode" name="LongValues" />
+
+`viewLines` clamps each value to about that many lines, with a toggle to show the rest. Set it on `Form` for a whole detail page, or on one `FormReview`; a review inherits the form's unless it sets its own. Values that fit show no toggle.
+
 ## Three ways in
 
 - `<Form mode="view">` for a whole form.

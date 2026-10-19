@@ -540,7 +540,7 @@ function checkCustom(ctx: Ctx, node: Obj, path: string): void {
     issue(ctx, `${path}.props`, 'Expected a JSON object')
   }
   for (const key of Object.keys(node)) {
-    if (!['custom', 'props', 'id', 'when'].includes(key))
+    if (!['custom', 'props', 'id', 'when', 'whenAnimate'].includes(key))
       issue(ctx, `${path}.${key}`, `Unexpected key ${quote(key)} (put custom node data in props)`)
   }
 }
@@ -577,6 +577,8 @@ function checkNode(ctx: Ctx, node: unknown, path: string, scope: Set<string>, de
     else ctx.ids.add(node.id)
   }
   if (node.when !== undefined) checkCondition(ctx, node.when, `${path}.when`)
+  if (node.whenAnimate !== undefined && typeof node.whenAnimate !== 'boolean')
+    issue(ctx, `${path}.whenAnimate`, 'Expected a boolean')
   if ('kind' in node) checkField(ctx, node, path, scope)
   else if (node.layout === 'repeater') checkRepeater(ctx, node, path, scope, depth)
   else if ('layout' in node) checkLayout(ctx, node, path, scope, depth)

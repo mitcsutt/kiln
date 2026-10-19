@@ -9,6 +9,11 @@ export interface FieldPresentationValue {
   errorPlacement?: 'inline' | 'external'
   /** `view` renders each field's display value, no control (FormReview, `Form mode="view"`). */
   mode?: 'edit' | 'view'
+  /**
+   * View mode: clamp each field's value to about this many lines, with a toggle that shows the
+   * rest (kiln-ui's `ShowMore`). Values that fit show no toggle.
+   */
+  viewLines?: number
   /** Cascades; a nested `false` cannot re-enable. */
   disabled?: boolean
   /** Cascades; a nested `false` cannot make it editable. */
@@ -45,6 +50,7 @@ export function FieldPresentation({
   labelHidden,
   errorPlacement,
   mode,
+  viewLines,
   disabled,
   readOnly,
   describedBy,
@@ -57,11 +63,12 @@ export function FieldPresentation({
         labelHidden,
         errorPlacement,
         mode,
+        viewLines,
         disabled,
         readOnly,
         describedBy,
       }),
-    [parent, layout, labelHidden, errorPlacement, mode, disabled, readOnly, describedBy],
+    [parent, layout, labelHidden, errorPlacement, mode, viewLines, disabled, readOnly, describedBy],
   )
   return <PresentationContext.Provider value={value}>{children}</PresentationContext.Provider>
 }
