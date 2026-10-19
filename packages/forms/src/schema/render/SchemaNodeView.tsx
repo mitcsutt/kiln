@@ -98,6 +98,7 @@ export function SchemaNodeView({ node, prefix }: NodeProps) {
       condition={node.when as never}
       context={render.context}
       whenHidden={whenHiddenOf(node)}
+      animate={node.whenAnimate === true}
       scopeNames={render.analysis.names(node, prefix)}
     >
       {body}

@@ -70,6 +70,10 @@ export interface FormMessages {
   no: string
   /** View mode: an empty value. */
   notProvided: string
+  /** View mode with `viewLines`: the toggle that shows the rest of a clamped value. */
+  showMore: string
+  /** View mode with `viewLines`: the toggle that clamps it again. */
+  showLess: string
 }
 
 export const defaultMessages: FormMessages = {
@@ -134,6 +138,8 @@ export const defaultMessages: FormMessages = {
   yes: 'Yes',
   no: 'No',
   notProvided: 'Not provided',
+  showMore: 'Show more',
+  showLess: 'Show less',
 }
 
 /** Replaces `{key}` placeholders with `params[key]`. Unknown keys are left as written. */

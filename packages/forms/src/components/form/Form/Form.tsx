@@ -19,6 +19,11 @@ export interface FormProps extends Omit<
   form: AnyKitForm
   /** `view` renders every field's display value instead of its control. */
   mode?: 'edit' | 'view'
+  /**
+   * In view mode (here or in a `FormReview` inside), clamp each value to about this many lines,
+   * with a "Show more" toggle. Values that fit show no toggle. Default: no clamp.
+   */
+  viewLines?: number
   /** Disables every field inside (not focusable, not validated, submitted as-is). */
   disabled?: boolean
   /** Makes every field read-only (focusable, not editable, not validated). */
@@ -42,10 +47,10 @@ export interface FormProps extends Omit<
  * @privateRemarks
  * `<form noValidate>` wired to the kit: submit runs the pipeline (§5.5) and is ignored while a
  * submit is in flight or the form is locked; reset returns to the baseline. Provides the form
- * to `useFormContext()` and cascades `mode` / `disabled` / `readOnly` to fields.
+ * to `useFormContext()` and cascades `mode` / `viewLines` / `disabled` / `readOnly` to fields.
  */
 export const Form = forwardRef<HTMLFormElement, FormProps>(function Form(
-  { form, mode, disabled, readOnly, children, ...rest },
+  { form, mode, viewLines, disabled, readOnly, children, ...rest },
   ref,
 ) {
   const api = toFormApi(form)
@@ -85,7 +90,12 @@ export const Form = forwardRef<HTMLFormElement, FormProps>(function Form(
       {...rest}
     >
       <formContext.Provider value={api}>
-        <FieldPresentation mode={mode} disabled={disabled} readOnly={readOnly}>
+        <FieldPresentation
+          mode={mode}
+          viewLines={viewLines}
+          disabled={disabled}
+          readOnly={readOnly}
+        >
           {children}
         </FieldPresentation>
       </formContext.Provider>

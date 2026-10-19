@@ -77,6 +77,37 @@ export function Usage() {
 
 Select fields show the option's label, amounts are formatted for their currency, switches read "Yes" or "No", and anything empty reads "Not provided". Passwords are always a fixed-length mask, so the view doesn't even leak the length.
 
+## Long values
+
+```tsx
+import { Form, useAppForm } from '@mitcsutt/kiln-forms'
+import { Stack } from '@mitcsutt/kiln-ui'
+
+export function LongValues() {
+  const form = useAppForm({
+    defaultValues: {
+      venue: 'Harbour Hall, east wing',
+      access:
+        'Step-free entry is by the loading bay on Quay Street; ring the bell and the stage ' +
+        'manager will meet you. The lift to the first floor takes one wheelchair and one ' +
+        'companion at a time, and the accessible toilets are next to the green room. Hearing ' +
+        'loops cover the first six rows. Parking for blue badge holders is in the courtyard, ' +
+        'booked through the front desk by noon the day before.',
+    },
+  })
+  return (
+    <Form form={form} mode="view" viewLines={2} aria-label="Venue details">
+      <Stack gap={5}>
+        <form.TextField name="venue" label="Venue" />
+        <form.TextareaField name="access" label="Access notes" />
+      </Stack>
+    </Form>
+  )
+}
+```
+
+`viewLines` clamps each value to about that many lines, with a toggle to show the rest. Set it on `Form` for a whole detail page, or on one `FormReview`; a review inherits the form's unless it sets its own. Values that fit show no toggle.
+
 ## Three ways in
 
 - `<Form mode="view">` for a whole form.

@@ -92,7 +92,7 @@ In a typed schema, `field` must be a real path, `value` must fit it, and the num
 
 ## Hidden means gone
 
-A node whose `when` is false is unmounted: its rules stop running, its errors clear, and its values are pruned to their defaults before submission (unless `whenHidden` says otherwise). `toStandardSchema` applies the same conditions on the server, so a hidden field is never validated there either.
+A node whose `when` is false is unmounted: its rules stop running, its errors clear, and its values are pruned to their defaults before submission (unless `whenHidden` says otherwise). Add `"whenAnimate": true` to animate it in and out instead of switching at once. `toStandardSchema` applies the same conditions on the server, so a hidden field is never validated there either.
 
 ## Evaluating one yourself
 

@@ -61,4 +61,5 @@ export function Usage() {
 | `step` | `string` |  | The wizard step this block reviews. With it, an Edit button calls `onEdit(step)` — or, inside `FormSteps` without `onEdit`, goes back to that step. |
 | `onEdit` | `(step: string) => void` |  |  |
 | `editLabel` | `string` | `messages.edit` | The Edit button's text. Default `messages.edit` ("Edit"); with a `title`, the button is also described by it, so several Edit buttons stay distinguishable. |
+| `viewLines` | `number` |  | Clamp each value to about this many lines, with a "Show more" toggle, for answers that run long. Values that fit show no toggle. Default: the `Form`'s `viewLines`, else no clamp. |
 | `children` (required) | `ReactNode` |  |  |

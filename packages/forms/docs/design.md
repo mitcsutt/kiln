@@ -2190,6 +2190,7 @@ These entries record the specific decisions that refine the body above or depart
 - A view-mode field renders its own one-item `DataList`, or a bare `DataList.Item` when it sits directly in a `FieldViewList`. `FormReview` doesn't wrap children in a `DataList`, and every layout renders a `FieldViewListBoundary`. That gives valid list markup everywhere without per-layout view branches.
 - `FieldViewList` and `FieldViewListBoundary` are exported from `@mitcsutt/kiln-forms`, so custom layouts (§9.13) can render the boundary. `revealFieldErrors` and `isRevealedMeta` stay internal for now, because they take `AnyFormApi`, not `AnyKitForm`, so a custom step-like layout can't reveal errors yet.
 - `FormPasswordField` shows a fixed eight-dot mask in view mode, so it doesn't leak the value or its length.
+- `viewLines` (on `Form`, `FormReview` and `FieldPresentation`, and the schema `review` layout) clamps each view-mode value in a kiln-ui `ShowMore` with `lines`. It lives in the presentation and `FieldView` applies it, so no field grows a clamp prop, and a review inherits the form's unless it sets its own. One clamp for every kind: a tag list or a code block is cut at the same height as text. The toggle's text is `messages.showMore` / `messages.showLess`. Off by default, so existing views don't change.
 
 ### A.5 kiln-ui components (§8)
 
@@ -2212,6 +2213,7 @@ These entries record the specific decisions that refine the body above or depart
 
 - `scopeNames` is accepted by exactly `FormTab`, `FormAccordionItem`, `FormStep`, `FormSentence` and `When`. The other layouts have no scope, so the prop would do nothing there.
 - `When` takes `is` or `condition`, both optional (`is` wins; with neither, the content shows), plus an internal `context` for schema `context` conditions. It imports `evaluateCondition` from `#schema/core/conditions`.
+- `When animate` (opt-in) wraps the children, and the `fallback`, in kiln-ui `Collapse` with `keepMounted={false}`, so they stay mounted through the close and then unmount as before. Their paths go inactive the moment the condition fails, so a closing field neither validates nor submits. The wrapper is a block, so it's skipped in view mode and in an inline presentation (a sentence, a table row), and documented as not for direct grid children.
 - `Repeater` has a `validators` prop for array-level rules (`minItems`, `unique`), because component mode has no other way to attach them.
 - Repeater item actions sit after the item's fields. A button inside `<legend>` becomes part of the group's accessible name, and positioning it beside the legend would need CSS.
 - The Repeater table's actions column has a visually hidden "Actions" header. The buttons label themselves, so a visible header only adds noise.
@@ -2239,6 +2241,7 @@ These entries record the specific decisions that refine the body above or depart
 - `parseFormSchema` accepts the default layouts plus `registry.layouts`, gives a `review` subtree its own name scope, rejects stray keys on custom nodes, and checks only required text props on layouts.
 - `toStandardSchema` takes optional `validators` and an `empties` map (default `{ checkbox: false, switch: false }`), so an unticked "I agree" fails `required` on the server. A `json` field's text must parse before its rules run, as the field's own check does on the client (`messages.invalidJson`). Its success output is the active fields only (A.11).
 - `RepeaterNode` also has `rules`, `whenHidden`, `description`, `empty` and `columns`. `itemLabel` (a function) isn't available in schema mode. `columns[].width` is `'fill' | 'min'`, a literal union kept equal to ui `TableColumnWidth` by a type test, so schema core stays free of ui imports.
+- Every node takes `whenAnimate?: boolean`, `When`'s `animate`. It's a schema key (in `FIELD_SCHEMA_KEYS`, `LAYOUT_SCHEMA_KEYS`, `CONTENT_SCHEMA_KEYS` and the custom node keys), named with the `when` prefix like `whenHidden`, so a field or layout with an `animate` prop of its own never receives it. `parseFormSchema` checks it's a boolean.
 - `analyseSchema(...).names(node, prefix)` returns scope-relative names. A repeater contributes only its array name, since item names aren't known statically.
 
 ### A.9 Schema rendering (§10.6, §10.7)

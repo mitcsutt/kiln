@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Form, SubmitButton, useAppForm, When } from '@mitcsutt/kiln-forms'
 import { Code, Stack, Text } from '@mitcsutt/kiln-ui'
 import { useState } from 'react'
-import { expect, userEvent, within } from 'storybook/test'
+import { expect, userEvent, waitFor, within } from 'storybook/test'
 import { whenFixture, whenSchema } from '#stories/fixtures/flow'
 import { StoryForm, storyRoot } from '#stories/_kit'
 import { parityStory } from '#stories/parity'
@@ -99,5 +99,45 @@ export const Usage: Story = {
         </Stack>
       </Form>
     )
+  },
+}
+
+/**
+ * With `animate`, the fields grow into place when they appear and shrink away before they
+ * unmount, so the rest of the form slides instead of jumping. It uses kiln-ui's `Collapse`, so it
+ * moves with the theme's motion and changes at once when the reader asks for reduced motion.
+ *
+ * The children sit in one block, so put an animated `When` where fields stack (a `Stack`, a
+ * `FormSection`), not straight inside a `FormGrid`. In a schema, `"whenAnimate": true` on the node
+ * does the same.
+ */
+export const Animated: Story = {
+  tags: ['docs'],
+  render: function Animated() {
+    const form = useAppForm({
+      defaultValues: { invoice: false, company: '', taxNumber: '' },
+    })
+    return (
+      <Form form={form} aria-label="Billing">
+        <Stack gap={5}>
+          <form.SwitchField name="invoice" label="I need a tax invoice" />
+          <When form={form} is={(values) => values.invoice} animate>
+            <Stack gap={5}>
+              <form.TextField name="company" label="Company name" autoComplete="organization" />
+              <form.TextField name="taxNumber" label="Tax number" />
+            </Stack>
+          </When>
+          <SubmitButton>Continue to payment</SubmitButton>
+        </Stack>
+      </Form>
+    )
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(storyRoot(canvasElement))
+    await expect(canvas.queryByLabelText('Company name')).not.toBeInTheDocument()
+    await userEvent.click(canvas.getByRole('switch', { name: 'I need a tax invoice' }))
+    await expect(canvas.getByLabelText('Company name')).toBeVisible()
+    await userEvent.click(canvas.getByRole('switch', { name: 'I need a tax invoice' }))
+    await waitFor(() => expect(canvas.queryByLabelText('Company name')).not.toBeInTheDocument())
   },
 }

@@ -1,8 +1,10 @@
 import { useMemo, useState, type ReactNode } from 'react'
 import { getBy, useSelector, type AnyFormApi, type DeepKeys } from '@tanstack/react-form'
+import { Collapse } from '@mitcsutt/kiln-ui'
 import { useIsomorphicLayoutEffect } from '#utils/env'
 import type { AnyKitForm, ValuesOf } from '#kit/types'
 import { coreApi, getFormRuntime, markInactive, toFormApi } from '#runtime/formRuntime'
+import { useFieldPresentation } from '#components/fields/FieldPresentation'
 import { FieldScope } from '#components/layouts/FieldScope'
 import type { ScopeNamesProps } from '#components/layouts/internal/types'
 import { evaluateCondition } from '#schema/core/conditions'
@@ -28,6 +30,13 @@ export interface WhenProps<A extends AnyKitForm> extends ScopeNamesProps {
   names?: readonly DeepKeys<ValuesOf<A>>[]
   /** Rendered instead while hidden. */
   fallback?: ReactNode
+  /**
+   * Animate the change: the children grow open when they appear and shrink closed before they
+   * unmount (the `fallback` the other way round), with kiln-ui's `Collapse`. It wraps them in a
+   * block element, so use it where they stack, not straight inside a grid. Ignored in view mode
+   * and in inline layouts (a sentence, a table row). Default `false`.
+   */
+  animate?: boolean
   children: ReactNode
 }
 
@@ -72,14 +81,17 @@ const NO_NAMES: readonly string[] = []
  * }
  * ```
  *
- * See [Conditions](/docs/forms/schema/conditions) for every operator.
+ * See [Conditions](/docs/forms/schema/conditions) for every operator. `"whenAnimate": true` is
+ * the schema's `animate`.
  *
  * @privateRemarks
  * Conditional rendering (§6.6). Children unmount while `is(values)` (or `condition`) is false (their validators
  * stop) and every path they governed — collected from the fields mounted inside, remembered after
  * they hide, plus `names` — becomes inactive with the `whenHidden` policy: errors cleared, and
  * the submitted value pruned to the default (`prune`), kept (`keep`) or reset now (`reset`).
- * Re-renders only when visibility flips.
+ * Re-renders only when visibility flips. With `animate`, `Collapse` keeps the children mounted
+ * through the close: their paths are already inactive by then, so they neither validate nor
+ * submit while they shrink.
  */
 export function When<A extends AnyKitForm>({
   form,
@@ -90,6 +102,7 @@ export function When<A extends AnyKitForm>({
   names,
   scopeNames,
   fallback,
+  animate = false,
   children,
 }: WhenProps<A>): ReactNode {
   const api: AnyFormApi = toFormApi(form)
@@ -105,6 +118,9 @@ export function When<A extends AnyKitForm>({
     [namesKey],
   )
   const [governed, setGoverned] = useState<readonly string[]>(staticNames)
+  const presentation = useFieldPresentation()
+  // Collapse is a block: in an inline flow it would break the line, and view mode has no reveal.
+  const motion = animate && presentation.mode !== 'view' && presentation.layout !== 'inline'
 
   useIsomorphicLayoutEffect(() => {
     if (visible || governed.length === 0) return undefined
@@ -112,6 +128,22 @@ export function When<A extends AnyKitForm>({
     return markInactive(form, governed, 'hidden', whenHidden === 'keep' ? 'keep' : 'prune')
   }, [visible, governed, whenHidden, form])
 
+  if (motion) {
+    return (
+      <>
+        <FieldScope names={staticNames} onNamesChange={setGoverned}>
+          <Collapse open={visible} keepMounted={false}>
+            {children}
+          </Collapse>
+        </FieldScope>
+        {fallback == null ? null : (
+          <Collapse open={!visible} keepMounted={false}>
+            {fallback}
+          </Collapse>
+        )}
+      </>
+    )
+  }
   return (
     <>
       <FieldScope names={staticNames} onNamesChange={setGoverned}>

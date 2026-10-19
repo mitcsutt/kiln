@@ -40,6 +40,7 @@ export const FIELD_SCHEMA_KEYS = [
   'name',
   'id',
   'when',
+  'whenAnimate',
   'rules',
   'warnRules',
   'defaultValue',
@@ -58,6 +59,7 @@ export const LAYOUT_SCHEMA_KEYS = [
   'layout',
   'id',
   'when',
+  'whenAnimate',
   'children',
   'item',
   'newItem',
@@ -66,7 +68,7 @@ export const LAYOUT_SCHEMA_KEYS = [
 ] as const
 
 /** Schema-only keys of content nodes. */
-export const CONTENT_SCHEMA_KEYS = ['content', 'id', 'when'] as const
+export const CONTENT_SCHEMA_KEYS = ['content', 'id', 'when', 'whenAnimate'] as const
 
 /** The node's own props: schema keys removed, and unsafe props (`unsafeProps.ts`) stripped. */
 function omitKeys(node: object, keys: readonly string[], onField = false): Record<string, unknown> {

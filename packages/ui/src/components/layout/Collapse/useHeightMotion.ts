@@ -89,9 +89,13 @@ export function useHeightMotion<K>(
       return
     }
 
+    // Commit the start height with the transition off, so it jumps there rather than animating
+    // from the new state's height (a close would otherwise run 0 → 0 and snap shut).
+    element.removeAttribute('data-animating')
     element.style.blockSize = `${String(from)}px`
     // Read layout so the browser commits the start height before the transition target.
     element.getBoundingClientRect()
+    element.setAttribute('data-animating', '')
     element.style.blockSize = `${String(to)}px`
 
     let done = false

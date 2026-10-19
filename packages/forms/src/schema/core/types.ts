@@ -231,6 +231,8 @@ export type NodeBase<TRoot, C> = {
   id?: string
   /** Rendered only while true (root paths). Hidden fields unmount and are pruned per `whenHidden`. */
   when?: Condition<TRoot, C>
+  /** Animate the node in and out as `when` changes (`When`'s `animate`). Default `false`. */
+  whenAnimate?: boolean
 }
 
 /** What hidden fields do with their value (§10.7). Default `prune`. */
@@ -365,7 +367,7 @@ export interface DefaultLayoutProps {
   }
   step: { value: string; title: string; description?: string }
   sentence: { label: string }
-  review: { title?: string }
+  review: { title?: string; viewLines?: number }
   actions: { align?: 'start' | 'end' | 'between'; sticky?: boolean; status?: boolean }
 }
 
@@ -384,7 +386,9 @@ export type LayoutKindsOf<X> = Omit<DefaultLayoutProps, keyof CustomLayouts<X>> 
 
 /** `{ layout, …layout props, children }`. */
 export type LayoutNode<TScope, TRoot, R, X, C> = {
-  [K in keyof LayoutKindsOf<X> & string]: NodeBase<TRoot, C> & {
+  [K in keyof LayoutKindsOf<X> & string]: (K extends 'gridItem'
+    ? Omit<NodeBase<TRoot, C>, 'whenAnimate'> & { whenAnimate?: never }
+    : NodeBase<TRoot, C>) & {
     layout: K
     children: readonly SchemaNodeOf<TScope, TRoot, R, X, C>[]
   } & LayoutKindsOf<X>[K]
@@ -506,6 +510,7 @@ export interface UntypedRule {
 export interface UntypedNodeBase {
   readonly id?: string
   readonly when?: UntypedCondition
+  readonly whenAnimate?: boolean
 }
 
 /** Component props (`label`, `options`, `title`, …) — anything else on a field, layout or content node. */

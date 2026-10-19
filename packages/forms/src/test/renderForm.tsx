@@ -13,6 +13,7 @@ export interface RenderFormOptions<T, M = undefined> extends KitFormOptions<T, T
   /** Props for the wrapping `<Form>`. */
   formProps?: {
     mode?: 'edit' | 'view'
+    viewLines?: number
     disabled?: boolean
     readOnly?: boolean
     id?: string

@@ -1,6 +1,7 @@
 import { createContext, useContext, type ReactNode } from 'react'
-import { DataList, type DataListProps } from '@mitcsutt/kiln-ui'
+import { DataList, ShowMore, type DataListProps } from '@mitcsutt/kiln-ui'
 import type { AnyFormApi } from '@tanstack/react-form'
+import { useFieldPresentation } from '#components/fields/FieldPresentation'
 import { useFieldContext } from '#kit/contexts'
 import { getFormRuntime } from '#runtime/formRuntime'
 
@@ -43,15 +44,24 @@ export function FieldViewListBoundary({ children }: { children: ReactNode }) {
 /**
  * A field's view-mode rendering (FormReview, `Form mode="view"`): a self-contained one-item
  * `DataList` (`dl` → `dt`/`dd`), or a bare `DataList.Item` when directly inside a `FieldViewList`.
- * Valid list markup wherever it is placed. No control, no validation UI.
+ * Valid list markup wherever it is placed. No control, no validation UI. With `viewLines` in the
+ * presentation (`Form`, `FormReview`), the value is clamped in a `ShowMore`.
  */
 export function FieldView({ label, children }: FieldViewProps) {
   const field = useFieldContext<unknown>()
   const inList = useContext(InDataListContext)
+  const { viewLines } = useFieldPresentation()
   const messages = getFormRuntime(field.form as AnyFormApi).options.messages
   const empty = children === null || children === undefined || children === ''
-  const item = (
-    <DataList.Item label={label}>{empty ? messages.notProvided : children}</DataList.Item>
+  const value = empty ? (
+    messages.notProvided
+  ) : viewLines === undefined ? (
+    children
+  ) : (
+    <ShowMore lines={viewLines} moreLabel={messages.showMore} lessLabel={messages.showLess}>
+      {children}
+    </ShowMore>
   )
+  const item = <DataList.Item label={label}>{value}</DataList.Item>
   return inList ? item : <DataList>{item}</DataList>
 }

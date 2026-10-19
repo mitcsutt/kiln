@@ -85,4 +85,25 @@ export const Unmounting: Story = {
       </Stack>
     )
   },
+  play: async ({ canvasElement }) => {
+    const canvas = within(storyRoot(canvasElement))
+    const toggle = canvas.getByRole('button', { name: 'Add a delivery note' })
+    await userEvent.click(toggle)
+    await waitFor(() =>
+      expect(canvas.getByRole('textbox', { name: 'Delivery note' })).toBeVisible(),
+    )
+    const collapse = storyRoot(canvasElement).querySelector<HTMLElement>('#delivery-note')
+    if (!collapse) throw new Error('No Collapse')
+    await waitFor(() => expect(collapse).not.toHaveAttribute('data-animating'))
+    const full = collapse.getBoundingClientRect().height
+    await userEvent.click(canvas.getByRole('button', { name: 'Remove delivery note' }))
+    // Closing shrinks the height a frame at a time rather than snapping straight to 0.
+    await new Promise((resolve) => requestAnimationFrame(resolve))
+    const closing = collapse.getBoundingClientRect().height
+    await expect(closing).toBeGreaterThan(0)
+    await expect(closing).toBeLessThanOrEqual(full)
+    await waitFor(() =>
+      expect(canvas.queryByRole('textbox', { name: 'Delivery note' })).not.toBeInTheDocument(),
+    )
+  },
 }

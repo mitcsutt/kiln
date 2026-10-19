@@ -2,6 +2,7 @@ import { screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import { FieldViewList } from '#components/fields/FieldView'
 import { expectNoAxeViolations } from '#test/a11y'
+import { must } from '#test/must'
 import { renderForm } from '#test/renderForm'
 import { FormGrid } from '#components/layouts/FormGrid'
 import { FormRows } from '#components/layouts/FormRows'
@@ -173,6 +174,66 @@ describe('FormReview', () => {
     }
     const notes = screen.getByText('Vegan').closest('dl')
     expect(notes?.closest('fieldset')).toBe(screen.getByRole('group', { name: 'More' }))
+  })
+
+  describe('viewLines', () => {
+    const notes =
+      'Leave the parcel with the concierge at the front desk. If the desk is closed, use the ' +
+      'side gate on Kestrel Lane and ring the second bell.'
+
+    it('clamps each value in a ShowMore, and leaves "Not provided" alone', () => {
+      renderForm(
+        (f) => (
+          <FormReview title="Delivery" viewLines={2}>
+            <f.TextareaField name="notes" label="Delivery notes" />
+            <f.TextField name="phone" label="Phone" />
+          </FormReview>
+        ),
+        { defaultValues: { notes, phone: '' } },
+      )
+      const [first, second] = screen.getAllByRole('definition')
+      const clamp = must(must(first).querySelector<HTMLElement>('[data-mode="lines"]'))
+      expect(clamp).toHaveTextContent(notes)
+      expect(clamp.style.getPropertyValue('--_clamp')).toBe('calc(2 * 1lh)')
+      expect(must(second).querySelector('[data-mode]')).toBeNull()
+      expect(second).toHaveTextContent('Not provided')
+    })
+
+    it('cascades from Form mode="view", and renders no clamp without it', () => {
+      const { unmount } = renderForm((f) => <f.TextareaField name="notes" label="Notes" />, {
+        defaultValues: { notes },
+        formProps: { mode: 'view', viewLines: 3 },
+      })
+      expect(screen.getByRole('definition').querySelector('[data-mode="lines"]')).not.toBeNull()
+      unmount()
+      renderForm((f) => <f.TextareaField name="notes" label="Notes" />, {
+        defaultValues: { notes },
+        formProps: { mode: 'view' },
+      })
+      const value = screen.getByRole('definition')
+      expect(value.querySelector('[data-mode]')).toBeNull()
+    })
+
+    it("a FormReview inherits the Form's viewLines, and its own wins", () => {
+      renderForm(
+        (f) => (
+          <>
+            <FormReview title="Inherited">
+              <f.TextareaField name="notes" label="Inherited notes" />
+            </FormReview>
+            <FormReview title="Own" viewLines={1}>
+              <f.TextareaField name="notes" label="Own notes" />
+            </FormReview>
+          </>
+        ),
+        { defaultValues: { notes }, formProps: { viewLines: 4 } },
+      )
+      const clamps = [...document.querySelectorAll<HTMLElement>('[data-mode="lines"]')]
+      expect(clamps.map((clamp) => clamp.style.getPropertyValue('--_clamp'))).toEqual([
+        'calc(4 * 1lh)',
+        'calc(1 * 1lh)',
+      ])
+    })
   })
 })
 

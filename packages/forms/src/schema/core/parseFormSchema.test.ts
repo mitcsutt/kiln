@@ -400,6 +400,38 @@ describe('parseFormSchema — rejects with precise paths', () => {
     expect(issues(json)).toEqual(expected)
   })
 
+  it('takes whenAnimate on every kind of node, as a boolean only', () => {
+    const when = { field: 'a', op: 'truthy' }
+    const node = (extra: Record<string, unknown>) => ({ ...extra, when, whenAnimate: true })
+    const valid = wrap({
+      layout: 'stack',
+      children: [
+        node(field()),
+        node({ layout: 'section', title: 'More', children: [] }),
+        node({ content: 'text', text: 'Shown with a' }),
+        node({ custom: 'projectPreview' }),
+      ],
+    })
+    expect(issues(valid)).toEqual([])
+    expect(issues(wrap({ ...field(), when, whenAnimate: 'yes' }))).toEqual([
+      { path: 'root.whenAnimate', message: 'Expected a boolean' },
+    ])
+  })
+
+  it('rejects whenAnimate on a gridItem, which would lose its span', () => {
+    const when = { field: 'a', op: 'truthy' }
+    const grid = (item: Record<string, unknown>) =>
+      wrap({ layout: 'grid', columns: 2, children: [{ layout: 'gridItem', span: 2, ...item }] })
+    expect(issues(grid({ when, whenAnimate: true, children: [field()] }))).toEqual([
+      {
+        path: 'root.children[0].whenAnimate',
+        message:
+          "A gridItem can't animate: the motion wrapper would become the grid cell and drop its span",
+      },
+    ])
+    expect(issues(grid({ when, children: [{ ...field(), when, whenAnimate: true }] }))).toEqual([])
+  })
+
   it('covers at least 15 malformed cases', () => {
     expect(cases.length).toBeGreaterThanOrEqual(15)
   })
