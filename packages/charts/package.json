@@ -1,6 +1,6 @@
 {
   "name": "@mitcsutt/kiln-charts",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Kiln charts: composable, themed React chart primitives and presets for kiln-ui, accessible and server-rendered",
   "keywords": [
     "kiln",

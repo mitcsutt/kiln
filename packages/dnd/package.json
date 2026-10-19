@@ -1,6 +1,6 @@
 {
   "name": "@mitcsutt/kiln-dnd",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Kiln drag and drop: sortable lists, boards, drop zones and grid layouts with one keyboard model and one announcer, rendered through kiln-ui",
   "keywords": [
     "kiln",

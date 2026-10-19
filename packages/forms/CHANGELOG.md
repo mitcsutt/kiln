@@ -1,5 +1,24 @@
 # @mitcsutt/kiln-forms
 
+## 0.2.0
+
+### Minor Changes
+
+- 6e77724: `Repeater` can reorder its items by dragging. `reorderable="drag"` (or `"reorderable": "drag"` in a schema) adds a drag handle to each item, beside its Move up and Move down buttons, that moves the item by pointer, touch or keyboard: Space or Enter picks it up, the arrow keys move it, Space or Enter drops it and Escape puts it back, and each step is announced. The item's values, errors and touched state move with it, and keyboard focus stays on its handle. Drag and drop comes from the new `@mitcsutt/kiln-forms/dnd` entry, built on `@mitcsutt/kiln-dnd`, an optional peer dependency: install it, import `@mitcsutt/kiln-dnd/styles.css` after kiln-ui's stylesheet, and give your kit its `dragAndDrop` with `kit.extend({ dragAndDrop })`. Without it, those repeaters show the move buttons alone. The words come from a new `drag` group in `FormMessages`. Repeaters without `"drag"`, and forms that never import the entry, don't change.
+- 464d91b: Add `FormJsonField` (kind `json`), a JSON editor on kiln-ui's `JsonField` that binds the JSON text, refuses to submit text that doesn't parse (with the line and column, from `messages.invalidJson`), runs an optional `validate` on the parsed value, and shows the JSON formatted with a copy button in view mode. `toStandardSchema` runs the same check on a server. Custom fields can do the same with the new `check` option of `useFieldBinding`.
+
+  Options can carry a `swatch`, a categorical slot or a CSS colour: chips and segmented draw it before the label, and the tags chips, checkbox group and multi choice cards show in view mode carry it. `parseFormSchema` accepts only a slot or a plain colour from a schema, and the renderer drops any other.
+
+- 250f10a: Add `animate` to `When`: the fields it shows grow into place and shrink away before they unmount (its `fallback` the other way round), with kiln-ui's `Collapse`. Schema nodes take `"whenAnimate": true` for the same. Hidden fields are pruned and stop validating exactly as before.
+
+  Add `viewLines` to `Form`, `FormReview` and `FieldPresentation` (and the schema `review` layout): in view mode each value is clamped to about that many lines with a "Show more" toggle, from kiln-ui's `ShowMore`. The toggle's text comes from the new `messages.showMore` and `messages.showLess`.
+
+  Both are off by default, so existing forms render as they did. The `Form` docs page also gains a "Toast on submit" example that raises kiln-ui toasts from `onSubmit` and `onSubmitError`.
+
+- 183e796: `FormDateField`, `FormTimeField` and `FormDateTimeField` take an opt-in `picker` prop (and the same key in a schema) that renders kiln-ui's typed date and time controls in place of the native input: `picker="calendar"` for `DateField` or `DateTimeField` with a calendar to pick from, and `picker="segmented"` for the typed parts alone (the only picker for a time). With a picker they also take `isDateDisabled`, `firstDayOfWeek`, `locale`, `clearable` and `labels`, plus `timeZone` on a date and `granularity` and `hourCycle` on a time or date-time. Without `picker` nothing changes, and the value is the same ISO string either way. `FormDateRangeField` takes `picker="calendar"` too (and turns it on by itself for `presets` or a time `granularity`), rendering kiln-ui's `DateRangePickerField` with every one of its props; its view mode now reads an end with a time as a date and time (on the field's `timeZone` for an instant) instead of showing the raw ISO string.
+
+  In view mode, all four fields now read the value in the field's `locale`, and on its `hourCycle` for a time, when you set them, so reading matches editing. Without them, view mode reads exactly as before.
+
 ## 0.1.6
 
 ### Patch Changes
