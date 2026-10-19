@@ -13,7 +13,7 @@ On top of its own props, every field node takes:
 - `defaultValue`: a field-level default.
 - `when`, `disabledWhen`, `readOnlyWhen`, `excludeWhen`, `requiredWhen`: [conditions](/docs/forms/schema/conditions).
 - `whenHidden`: `prune` (the default), `keep` or `reset`, as on [When](/docs/forms/layouts/when).
-- `whenAnimate`: `true` to animate the field in and out as its `when` changes, as `When`'s `animate`. Layout, content and custom nodes take it too.
+- `whenAnimate`: `true` to animate the field in and out as its `when` changes, as `When`'s `animate`. Layout, content and custom nodes take it too, except `gridItem`: the animated wrapper is a plain block, so it would become the grid cell and drop the item's `span` and `start`. Put `when` and `whenAnimate` on the nodes inside the `gridItem` instead, as you'd keep an animated `When` out of a `FormGrid` in component mode.
 - `optionsFrom: { loader, deps }`: options from a registered loader, reloaded when `deps` change.
 - `resets`: fields to reset when this one changes.
 - `compute: { computer, from }`: a value computed from other fields. Computed fields are read-only.

@@ -248,6 +248,9 @@ d({ version: 1, root: { kind: 'radio', name: 'client', label: 'C', resets: ['com
 d({ version: 1, root: { layout: 'section', children: [] } })
 // @ts-expect-error grid columns outside the scale
 d({ version: 1, root: { layout: 'grid', columns: 13, children: [] } })
+// @ts-expect-error a gridItem can't take whenAnimate
+d({ version: 1, root: { layout: 'gridItem', span: 2, whenAnimate: true, children: [] } })
+d({ version: 1, root: { layout: 'section', title: 'More', whenAnimate: true, children: [] } })
 // @ts-expect-error unknown content kind
 d({ version: 1, root: { content: 'image', text: 'x' } })
 // @ts-expect-error alert tone outside AlertTone

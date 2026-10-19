@@ -386,7 +386,9 @@ export type LayoutKindsOf<X> = Omit<DefaultLayoutProps, keyof CustomLayouts<X>> 
 
 /** `{ layout, …layout props, children }`. */
 export type LayoutNode<TScope, TRoot, R, X, C> = {
-  [K in keyof LayoutKindsOf<X> & string]: NodeBase<TRoot, C> & {
+  [K in keyof LayoutKindsOf<X> & string]: (K extends 'gridItem'
+    ? Omit<NodeBase<TRoot, C>, 'whenAnimate'> & { whenAnimate?: never }
+    : NodeBase<TRoot, C>) & {
     layout: K
     children: readonly SchemaNodeOf<TScope, TRoot, R, X, C>[]
   } & LayoutKindsOf<X>[K]

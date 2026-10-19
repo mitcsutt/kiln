@@ -418,6 +418,20 @@ describe('parseFormSchema — rejects with precise paths', () => {
     ])
   })
 
+  it('rejects whenAnimate on a gridItem, which would lose its span', () => {
+    const when = { field: 'a', op: 'truthy' }
+    const grid = (item: Record<string, unknown>) =>
+      wrap({ layout: 'grid', columns: 2, children: [{ layout: 'gridItem', span: 2, ...item }] })
+    expect(issues(grid({ when, whenAnimate: true, children: [field()] }))).toEqual([
+      {
+        path: 'root.children[0].whenAnimate',
+        message:
+          "A gridItem can't animate: the motion wrapper would become the grid cell and drop its span",
+      },
+    ])
+    expect(issues(grid({ when, children: [{ ...field(), when, whenAnimate: true }] }))).toEqual([])
+  })
+
   it('covers at least 15 malformed cases', () => {
     expect(cases.length).toBeGreaterThanOrEqual(15)
   })

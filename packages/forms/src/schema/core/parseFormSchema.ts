@@ -497,6 +497,12 @@ function checkLayout(ctx: Ctx, node: Obj, path: string, scope: Set<string>, dept
         issue(ctx, `${path}.${key}`, `Layout "${layout}" needs a ${key} (text)`)
     }
   }
+  if (layout === 'gridItem' && node.whenAnimate !== undefined)
+    issue(
+      ctx,
+      `${path}.whenAnimate`,
+      "A gridItem can't animate: the motion wrapper would become the grid cell and drop its span",
+    )
   // A review (view mode, §9.11) re-renders fields shown elsewhere: its names get their own scope.
   const childScope = layout === 'review' ? new Set<string>() : scope
   checkChildren(ctx, node.children, `${path}.children`, childScope, 'child nodes', depth)
