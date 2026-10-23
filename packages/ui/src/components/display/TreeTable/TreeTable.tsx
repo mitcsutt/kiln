@@ -1,7 +1,6 @@
 import {
   forwardRef,
   useCallback,
-  useId,
   useLayoutEffect,
   useMemo,
   useRef,
@@ -105,7 +104,6 @@ function TreeTableInner<T>(
   const [activeId, setActiveId] = useState<string>()
   const elements = useRef(new Map<string, HTMLTableRowElement>())
   const body = useRef<HTMLTableSectionElement>(null)
-  const idPrefix = useId()
 
   const nodes = useMemo(() => {
     const open = new Set(expandedIds)
@@ -252,7 +250,6 @@ function TreeTableInner<T>(
               if (element) elements.current.set(node.id, element)
               else elements.current.delete(node.id)
             }}
-            id={`${idPrefix}-${node.id}`}
             className={styles.row}
             interactive
             tabIndex={node.id === tabId ? 0 : -1}
@@ -262,7 +259,7 @@ function TreeTableInner<T>(
             aria-expanded={node.expandable ? node.open : undefined}
           >
             {columns.map((column, columnIndex) => {
-              const cell = (
+              return (
                 <Table.Cell
                   key={column.id}
                   rowHeader={columnIndex === 0}
@@ -296,7 +293,6 @@ function TreeTableInner<T>(
                   )}
                 </Table.Cell>
               )
-              return cell
             })}
           </Table.Row>
         ))}
