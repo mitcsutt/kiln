@@ -384,6 +384,8 @@ export type {
   ListSurface,
 } from './components/display/List'
 export { Table } from './components/display/Table'
+export { TreeTable } from './components/display/TreeTable'
+export type { TreeTableProps, TreeTableColumn } from './components/display/TreeTable'
 export type {
   TableProps,
   TableDensity,

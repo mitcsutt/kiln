@@ -132,6 +132,7 @@
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "catalog:",
+    "axe-core": "catalog:",
     "@mitcsutt/kiln-testing-react18": "workspace:*",
     "@mitcsutt/kiln-tsconfig": "workspace:*",
     "@tanstack/intent": "catalog:",

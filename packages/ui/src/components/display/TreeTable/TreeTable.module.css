@@ -1,0 +1,58 @@
+/*
+ * Component tokens (themes may set any of these on [data-theme]):
+ *   --tree-table-indent  default var(--space-5) — how far each level steps in
+ *
+ * The table itself is styled by Table; this file adds the indent, the toggle and the row focus.
+ */
+.treeTable {
+  --_indent: var(--tree-table-indent, var(--space-5));
+}
+
+.row:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: -2px;
+}
+
+.treeCellContent {
+  --_level: 0;
+  margin-inline-start: calc(var(--_level) * var(--_indent));
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-1);
+  min-inline-size: 0;
+}
+
+.toggle {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-ink-muted);
+  cursor: pointer;
+  align-self: center;
+}
+
+.toggle[data-leaf] {
+  visibility: hidden;
+}
+
+.chevron {
+  inline-size: 1rem;
+  block-size: 1rem;
+  transition: transform var(--dur-3) var(--ease-out);
+}
+
+.row[aria-expanded='true'] .chevron {
+  transform: rotate(90deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chevron {
+    transition: none;
+  }
+}
