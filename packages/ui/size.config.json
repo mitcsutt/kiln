@@ -143,10 +143,17 @@
       "budget": 15000
     },
     {
+      "name": "import { TreeTable }",
+      "import": "{ TreeTable }",
+      "from": "dist/index.js",
+      "isolatedTo": "dist/components/display/TreeTable/TreeTable.js",
+      "budget": 3000
+    },
+    {
       "name": "Everything (import *)",
       "import": "* as kiln",
       "from": "dist/index.js",
-      "budget": 67000
+      "budget": 68000
     }
   ]
 }
