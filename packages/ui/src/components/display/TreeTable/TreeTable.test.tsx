@@ -141,9 +141,35 @@ describe('TreeTable', () => {
     const toggle = must(container.querySelector<HTMLElement>('tbody tr button'))
     await user.click(toggle)
     expect(row('Release train')).toHaveAttribute('aria-expanded', 'true')
+    expect(row('Release train')).toHaveFocus()
+    await user.keyboard('{ArrowDown}')
+    expect(row('Planner session')).toHaveFocus()
+    await user.keyboard('{ArrowUp}')
     expect(screen.getByText('Docs session')).toBeInTheDocument()
     await user.click(toggle)
     expect(screen.queryByText('Docs session')).not.toBeInTheDocument()
+  })
+
+  it('stays on an open row whose children have not loaded', async () => {
+    const user = userEvent.setup()
+    render(
+      <TreeTable
+        label="Sessions"
+        columns={COLUMNS}
+        rows={[
+          { id: 'lazy', name: 'Lazy', cost: '$1' },
+          { id: 'next', name: 'Next', cost: '$2' },
+        ]}
+        getRowId={(row) => row.id}
+        getChildren={() => undefined}
+        hasChildren={(row) => row.id === 'lazy'}
+        defaultExpanded={['lazy']}
+        renderCell={(row, column) => (column.id === 'name' ? row.name : row.cost)}
+      />,
+    )
+    await user.tab()
+    await user.keyboard('{ArrowRight}')
+    expect(row('Lazy')).toHaveFocus()
   })
 
   it('starts with defaultExpanded rows open when uncontrolled', () => {

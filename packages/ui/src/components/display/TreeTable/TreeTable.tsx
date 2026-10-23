@@ -192,7 +192,7 @@ function TreeTableInner<T>(
         if (!node.expandable) return
         event.preventDefault()
         if (!node.open) setExpanded(node.id, true)
-        else moveTo(nodes[index + 1]?.id)
+        else if (nodes[index + 1]?.parentId === node.id) moveTo(nodes[index + 1]?.id)
         return
       case 'ArrowLeft':
         if (node.open) {
@@ -270,15 +270,12 @@ function TreeTableInner<T>(
                   numeric={column.numeric}
                   hideBelow={column.hideBelow}
                   hideAbove={column.hideAbove}
-                  className={columnIndex === 0 ? styles.treeCell : undefined}
-                  style={
-                    columnIndex === 0
-                      ? ({ '--_level': node.level - 1 } as CSSProperties)
-                      : undefined
-                  }
                 >
                   {columnIndex === 0 ? (
-                    <span className={styles.treeCellContent}>
+                    <span
+                      className={styles.treeCellContent}
+                      style={{ '--_level': node.level - 1 } as CSSProperties}
+                    >
                       <button
                         type="button"
                         className={styles.toggle}
@@ -286,7 +283,7 @@ function TreeTableInner<T>(
                         aria-hidden="true"
                         data-leaf={node.expandable ? undefined : ''}
                         onClick={() => {
-                          setActiveId(node.id)
+                          moveTo(node.id)
                           setExpanded(node.id, !node.open)
                         }}
                       >

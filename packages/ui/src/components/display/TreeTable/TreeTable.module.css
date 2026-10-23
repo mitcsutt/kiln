@@ -8,20 +8,14 @@
   --_indent: var(--tree-table-indent, var(--space-5));
 }
 
-.row {
-  --_level: 0;
-}
-
 .row:focus-visible {
   outline: 2px solid var(--color-focus);
   outline-offset: -2px;
 }
 
-.treeCell {
-  padding-inline-start: calc(var(--_level) * var(--_indent) + var(--space-2));
-}
-
 .treeCellContent {
+  --_level: 0;
+  margin-inline-start: calc(var(--_level) * var(--_indent));
   display: inline-flex;
   align-items: baseline;
   gap: var(--space-1);
