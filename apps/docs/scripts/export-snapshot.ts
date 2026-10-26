@@ -32,7 +32,10 @@ export function normaliseAssets(text: string): string {
 
 export interface PageSummary {
   title: string
-  /** Each `<meta>` as its attributes, `name=value` in name order. */
+  /**
+   * Each `<meta>` as its attributes, `name=value` in name order, sorted: Next.js streams some
+   * tags into the head, so their order can change from one build to the next.
+   */
   meta: string[]
   ids: string[]
   /** Every `href` but the hashed build assets under `/_next/`. */
@@ -89,7 +92,7 @@ export function pageSummary(html: string): PageSummary {
   if (body) visibleText(body, text)
   return {
     title: head?.querySelector('title')?.text ?? '',
-    meta: root.querySelectorAll('meta').map(attributes),
+    meta: root.querySelectorAll('meta').map(attributes).sort(),
     ids: root.querySelectorAll('[id]').map((element) => element.getAttribute('id') ?? ''),
     hrefs: root
       .querySelectorAll('[href]')

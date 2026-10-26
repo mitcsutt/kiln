@@ -67,6 +67,15 @@ describe('page summaries', () => {
     expect(pageSummary(rehashed)).toEqual(pageSummary(html))
   })
 
+  it('reads meta tags as a set', () => {
+    const swapped = html.replace(
+      '<meta charSet="utf-8"/><title>Button · Kiln</title><meta name="description" content="A button."/>',
+      '<title>Button · Kiln</title><meta name="description" content="A button."/><meta charSet="utf-8"/>',
+    )
+    expect(swapped).not.toBe(html)
+    expect(pageSummary(swapped)).toEqual(pageSummary(html))
+  })
+
   it('tells apart pages whose text, ids or head script differ', () => {
     const summary = pageSummary(html)
     expect(pageSummary(html.replace('to send', 'to save'))).not.toEqual(summary)
