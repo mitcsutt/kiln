@@ -73,7 +73,7 @@ A site can't break these by accident, because they live in kiln-docs, not in sit
 
 These are what readers of either site, and the sites themselves, depend on. No phase changes them, and each is pinned by a test in the phase that first touches it.
 
-**Slug precedence.** A page's slug is its path inside its folder minus the extension, so `plugins/git/index.md` and `plugins/git/index.mdx` are one page. A hand-written page beats a generated page with the same slug, whatever the extension of either. `writeGenerated()` skips the generated page and reports it. Two generated pages with one slug fail the build. Tests cover both extensions on index pages and on leaf pages. (Left to Fumadocs, a hand-written `.mdx` over a generated `.md` index publishes the generated page and moves the hand-written one to `/x/index` without an error, and over a leaf page the build throws `Duplicated slugs`.)
+**Slug precedence.** A page's slug is its path inside its folder minus the extension, with a trailing `/index` folded into its folder as Fumadocs does, so `plugins/git.md`, `plugins/git/index.md` and `plugins/git/index.mdx` are one page. A hand-written page beats a generated page with the same slug, whatever the extension of either. `writeGenerated()` skips the generated page and reports it. Two generated pages with one slug fail the build. Tests cover both extensions on index pages and on leaf pages. (Left to Fumadocs, a hand-written `.mdx` over a generated `.md` index publishes the generated page and moves the hand-written one to `/x/index` without an error, and over a leaf page the build throws `Duplicated slugs`.)
 
 **Kiln's saved reader state.** These five strings never change:
 
