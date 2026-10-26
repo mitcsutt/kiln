@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { pageMarkdown } from '@/lib/markdown'
+import { markdown } from '@/lib/siteMarkdown'
 import { source } from '@/lib/source'
 
 export const dynamic = 'force-static'
@@ -21,7 +21,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ slu
     slug.length === 1 && last === INDEX ? [] : [...slug.slice(0, -1), last.slice(0, -'.md'.length)],
   )
   if (!page) notFound()
-  return new Response(await pageMarkdown(page), {
+  return new Response(await markdown.page(page), {
     headers: { 'Content-Type': 'text/markdown; charset=utf-8' },
   })
 }

@@ -2,6 +2,7 @@
 
 import { Button, Container, EmptyState, Section } from '@mitcsutt/kiln-ui'
 import NextLink from 'next/link'
+import { site } from '@/lib/site'
 
 export function NotFound() {
   return (
@@ -10,10 +11,10 @@ export function NotFound() {
         <EmptyState
           titleAs="h1"
           title="No page here"
-          description="It may have moved when the docs were reorganised. Search from the header, or start from the UI docs."
+          description={site.notFound.description}
           action={
             <Button asChild>
-              <NextLink href="/docs/ui">Open the UI docs</NextLink>
+              <NextLink href={site.notFound.action.href}>{site.notFound.action.label}</NextLink>
             </Button>
           }
           framed

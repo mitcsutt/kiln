@@ -1,4 +1,5 @@
 import NextLink from 'next/link'
+import { site } from '@/lib/site'
 import styles from './Wordmark.module.css'
 
 /**
@@ -9,7 +10,7 @@ export function Wordmark() {
   return (
     <NextLink href="/" className={styles.wordmark}>
       <span className={styles.mark} aria-hidden="true" />
-      <span className={styles.name}>Kiln</span>
+      <span className={styles.name}>{site.name}</span>
     </NextLink>
   )
 }

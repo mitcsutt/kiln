@@ -9,20 +9,19 @@ import '@/styles/harbour.css'
 import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
 import { DocsThemeProvider } from '@/components/DocsThemeProvider'
-import { SITE_URL } from '@/lib/site'
+import { site } from '@/lib/site'
 import { docsThemeScript } from '@/lib/theme'
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
-  title: { default: 'Kiln', template: '%s · Kiln' },
-  description:
-    'Kiln is a themeable React design system, a form library, and the ESLint, Prettier and TypeScript configs they are built with.',
+  metadataBase: new URL(site.url),
+  title: { default: site.name, template: `%s · ${site.name}` },
+  description: site.description,
 }
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     // The head script sets data-theme and data-mode before hydration, so they differ from the server's.
-    <html lang="en" data-theme="paper" data-mode="system" suppressHydrationWarning>
+    <html lang="en" data-theme={site.theme.default} data-mode="system" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: docsThemeScript }} />
       </head>

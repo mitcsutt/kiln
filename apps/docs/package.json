@@ -12,6 +12,7 @@
     "build": "pnpm generate && next build && node scripts/markdown-files.ts",
     "start": "next start",
     "check:links": "node scripts/check-links.ts",
+    "compare:export": "node scripts/compare-export.ts",
     "lint": "pnpm generate && eslint --max-warnings=0 .",
     "test": "pnpm generate && vitest run",
     "typecheck": "pnpm generate && next typegen && tsc --noEmit"

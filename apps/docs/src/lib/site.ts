@@ -1,3 +1,2 @@
-/** Where the site is deployed from `main` (ADR 0034). */
-export const SITE_URL = 'https://kiln.mitchellsutton.com'
-export const GITHUB_URL = 'https://github.com/mitcsutt/kiln'
+/** The site's config (`site.config.ts`), for the app's modules, client components included. */
+export { default as site } from '../../site.config'

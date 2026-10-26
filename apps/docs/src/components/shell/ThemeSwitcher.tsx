@@ -1,8 +1,10 @@
 'use client'
 
-import { Inline, ModeToggle, Select, THEME_META, THEMES, useTheme } from '@mitcsutt/kiln-ui'
+import { Inline, ModeToggle, Select, useTheme } from '@mitcsutt/kiln-ui'
+import { site } from '@/lib/site'
+import { themeLabel } from '@/lib/theme'
 
-const options = THEMES.map((name) => ({ value: name, label: THEME_META[name].label }))
+const options = site.theme.picker.map((name) => ({ value: name, label: themeLabel(name) }))
 
 /** Re-themes the whole site, chrome included: every page is a preview of every theme. */
 export function ThemeSwitcher() {
