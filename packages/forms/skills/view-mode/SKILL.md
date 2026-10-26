@@ -92,7 +92,11 @@ export function LongValues() {
         'manager will meet you. The lift to the first floor takes one wheelchair and one ' +
         'companion at a time, and the accessible toilets are next to the green room. Hearing ' +
         'loops cover the first six rows. Parking for blue badge holders is in the courtyard, ' +
-        'booked through the front desk by noon the day before.',
+        'booked through the front desk by noon the day before. Assistance dogs are welcome ' +
+        'backstage, with a water bowl kept in the green room. The quiet room on the first ' +
+        'floor is free from the get-in until the end of the show, and the house manager ' +
+        'carries spare ear defenders. Large-print and audio copies of the running order are ' +
+        'at the box office from an hour before doors.',
     },
   })
   return (
