@@ -98,6 +98,18 @@ describe('writeGenerated', () => {
     expect(report.skipped).toEqual([{ path: 'plugins/meta.json', shadowedBy: 'plugins/meta.json' }])
   })
 
+  it.each([
+    ['plugins/git/index.mdx', 'plugins/git.md'],
+    ['plugins/git.md', 'plugins/git/index.mdx'],
+  ])('skips the generated %2$s under the hand-written %1$s', (handWritten, generated) => {
+    write({ [`content/docs/${handWritten}`]: 'hand-written' })
+    expect(writeGenerated([{ path: generated, content: 'generated' }], { root })).toEqual({
+      written: [],
+      skipped: [{ path: generated, shadowedBy: handWritten }],
+    })
+    expect(listed('.generated/pages')).toEqual([])
+  })
+
   it('fails on two generated pages with one slug, before writing anything', () => {
     write({ '.generated/pages/kept.md': '' })
     expect(() =>
@@ -109,13 +121,22 @@ describe('writeGenerated', () => {
         { root },
       ),
     ).toThrow(
-      'kiln-docs: git/index.md and git/index.mdx in the generated pages are one page, git/index. Keep one of them.',
+      'kiln-docs: git/index.md and git/index.mdx in the generated pages are one page, git. Keep one of them.',
     )
     expect(() =>
       writeGenerated(
         [
           { path: 'git.md', content: '' },
           { path: 'git.mdx', content: '' },
+        ],
+        { root },
+      ),
+    ).toThrow('are one page, git.')
+    expect(() =>
+      writeGenerated(
+        [
+          { path: 'git.md', content: '' },
+          { path: 'git/index.md', content: '' },
         ],
         { root },
       ),

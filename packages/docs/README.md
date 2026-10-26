@@ -11,7 +11,7 @@ Kiln chrome for `fumadocs-core`: the foundation of a docs site built with `@mitc
 
 ## The rules it owns
 
-- **Precedence by slug.** A page's slug is its path inside its folder minus the extension, so `plugins/git/index.md` and `plugins/git/index.mdx` are one page. A hand-written page beats a generated one with the same slug, whatever the extension of either: `writeGenerated()` skips the generated page and reports it, and the loader leaves out any it still finds. Two files of one page in one collection fail. A hand-written `meta` file beats a generated one at its path.
+- **Precedence by slug.** A page's slug is its path inside its folder minus the extension, with a trailing `/index` folded into its folder, as Fumadocs gives it, so `plugins/git.md`, `plugins/git.mdx`, `plugins/git/index.md` and `plugins/git/index.mdx` are one page. A hand-written page beats a generated one with the same slug, whatever the extension of either: `writeGenerated()` skips the generated page and reports it, and the loader leaves out any it still finds. Two files of one page in one collection fail. A hand-written `meta` file beats a generated one at its path.
 - **An explicit page order.** `getPages()` lists pages by file path, compared by code unit, so `llms.txt`, `llms-full.txt` and the search index don't depend on the order Fumadocs stored the files in.
 - **The peer tuple.** `fumadocs-core ~16.15.18` and `fumadocs-mdx ~15.4.6` are the pair it's tested with, and the workspace catalog holds the same pair. They're widened together, only to a pair a fresh install has passed.
 

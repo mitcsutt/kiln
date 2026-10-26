@@ -1,14 +1,16 @@
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
+import { parse } from 'yaml'
 
 const manifest = JSON.parse(
   readFileSync(join(import.meta.dirname, '../package.json'), 'utf8'),
 ) as Record<string, Record<string, string> | undefined>
-const workspace = readFileSync(join(import.meta.dirname, '../../../pnpm-workspace.yaml'), 'utf8')
+const workspace = parse(
+  readFileSync(join(import.meta.dirname, '../../../pnpm-workspace.yaml'), 'utf8'),
+) as { catalog?: Record<string, string> }
 
 /** A dependency's range in the workspace catalog. */
-const catalog = (name: string) =>
-  new RegExp(`^ {2}'?${name}'?: (.+)$`, 'm').exec(workspace)?.[1]?.trim()
+const catalog = (name: string) => workspace.catalog?.[name]
 
 // ADR 0045, "Peers and the peer policy".
 describe('peers', () => {

@@ -126,16 +126,29 @@ describe('createDocsSite', () => {
     )
   })
 
+  it.each([
+    ['plugins/git/index.mdx', 'plugins/git.md'],
+    ['plugins/git.md', 'plugins/git/index.mdx'],
+  ])('keeps the hand-written %s over the generated %s', (handWritten, generated) => {
+    expect(publish([page(handWritten)], [page(generated)])).toEqual({
+      '/docs/plugins/git': handWritten,
+    })
+    expect(console.warn).toHaveBeenCalledExactlyOnceWith(
+      `kiln-docs: skipped the generated ${generated}: the hand-written ${handWritten} takes its place.`,
+    )
+  })
+
   it('fails on two generated pages with one slug', () => {
     expect(() => publish([], [page('git/index.md'), page('git/index.mdx')])).toThrow(
-      'kiln-docs: git/index.md and git/index.mdx in the generated pages are one page, git/index. Keep one of them.',
+      'kiln-docs: git/index.md and git/index.mdx in the generated pages are one page, git. Keep one of them.',
     )
     expect(() => publish([], [page('git.md'), page('git.mdx')])).toThrow('one page, git.')
+    expect(() => publish([], [page('git.md'), page('git/index.md')])).toThrow('one page, git.')
   })
 
   it('fails on two hand-written pages with one slug', () => {
     expect(() => publish([page('git/index.md'), page('git/index.mdx')])).toThrow(
-      'kiln-docs: git/index.md and git/index.mdx in the hand-written pages are one page, git/index. Keep one of them.',
+      'kiln-docs: git/index.md and git/index.mdx in the hand-written pages are one page, git. Keep one of them.',
     )
   })
 })
