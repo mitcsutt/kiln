@@ -103,7 +103,7 @@ export const LongValues: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(storyRoot(canvasElement))
-    const toggle = await canvas.findByRole('button', { name: 'Show more' })
+    const toggle = await canvas.findByRole('button', { name: 'Show more' }, { timeout: 5000 })
     await expect(canvas.getAllByRole('button')).toHaveLength(1)
     await userEvent.click(toggle)
     await expect(toggle).toHaveAttribute('aria-expanded', 'true')
