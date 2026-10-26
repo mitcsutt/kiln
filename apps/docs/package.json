@@ -1,5 +1,5 @@
 {
-  "name": "@mitcsutt/kiln-docs",
+  "name": "@mitcsutt/kiln-docs-site",
   "version": "0.0.0",
   "private": true,
   "description": "The Kiln docs site: Fumadocs on Next.js, built with kiln-ui",

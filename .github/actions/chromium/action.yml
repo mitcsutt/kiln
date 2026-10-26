@@ -10,7 +10,7 @@ runs:
     - name: Read the Playwright version
       id: version
       shell: bash
-      run: echo "playwright=$(pnpm --filter @mitcsutt/kiln-storybook exec playwright --version | awk '{print $2}')" >> "$GITHUB_OUTPUT"
+      run: echo "playwright=$(pnpm --filter @mitcsutt/kiln-storybook --fail-if-no-match exec playwright --version | awk '{print $2}')" >> "$GITHUB_OUTPUT"
 
     - name: Restore the browser cache
       uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
@@ -21,4 +21,4 @@ runs:
     # A no-op when the cache restored the browser.
     - name: Install Chromium
       shell: bash
-      run: pnpm --filter @mitcsutt/kiln-storybook exec playwright install --only-shell chromium
+      run: pnpm --filter @mitcsutt/kiln-storybook --fail-if-no-match exec playwright install --only-shell chromium

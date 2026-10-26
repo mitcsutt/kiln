@@ -20,7 +20,7 @@
     "check:skills": "turbo run check:skills",
     "check:links": "turbo run check:links",
     "size": "turbo run size",
-    "generate:skills": "pnpm --filter @mitcsutt/kiln-docs generate:skills"
+    "generate:skills": "pnpm --filter @mitcsutt/kiln-docs-site --fail-if-no-match generate:skills"
   },
   "prettier": "@mitcsutt/kiln-prettier-config",
   "devDependencies": {
