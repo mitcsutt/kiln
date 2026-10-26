@@ -14,28 +14,19 @@ import type * as PageTree from 'fumadocs-core/page-tree'
 import NextLink from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState, type ReactNode } from 'react'
+import { site } from '@/lib/site'
 import { Search } from './Search'
 import { SidebarNav } from './SidebarNav'
 import { ThemeSwitcher } from './ThemeSwitcher'
 import { Wordmark } from './Wordmark'
 import styles from './DocsShell.module.css'
 
-const SECTIONS = [
-  { href: '/docs/ui', label: 'UI' },
-  { href: '/docs/forms', label: 'Forms' },
-  { href: '/docs/drag-and-drop', label: 'Drag and drop' },
-  { href: '/docs/charts', label: 'Charts' },
-  { href: '/docs/tooling', label: 'Tooling' },
-] as const
-
-const GITHUB = 'https://github.com/mitcsutt/kiln'
-
 /** The section switcher: in the topbar from `md`, and at the top of the phone sheet. */
 function SectionLinks({ hideBelow }: { hideBelow?: 'md' }) {
   const pathname = usePathname()
   return (
     <NavLinks label="Sections" size="sm" hideBelow={hideBelow}>
-      {SECTIONS.map((section) => (
+      {site.nav.sections.map((section) => (
         <NavLinks.Item key={section.href} asChild active={pathname.startsWith(section.href)}>
           <NextLink href={section.href}>{section.label}</NextLink>
         </NavLinks.Item>
@@ -58,7 +49,7 @@ function MobileNav({ tree }: { tree: PageTree.Root }) {
       <Sheet.Trigger asChild>
         <IconButton label="Open navigation" icon={<MenuIcon />} variant="ghost" hideAbove="lg" />
       </Sheet.Trigger>
-      <Sheet.Content side="left" title="Kiln docs" size="sm">
+      <Sheet.Content side="left" title={`${site.name} docs`} size="sm">
         <div className={styles.sheetSections}>
           <SectionLinks />
         </div>
@@ -96,11 +87,14 @@ export function DocsShell({ tree, children }: { tree?: PageTree.Root; children: 
         <Container width="full">
           <Inline justify="between" gap={4}>
             <Text size="sm" tone="muted">
-              Kiln is MIT licensed. Nothing here is published to npm yet.
+              {site.footer.text}
             </Text>
             <NavLinks label="Elsewhere" size="sm">
-              <NavLinks.Item href={GITHUB}>Source on GitHub</NavLinks.Item>
-              <NavLinks.Item href="/llms.txt">llms.txt</NavLinks.Item>
+              {site.footer.links.map((link) => (
+                <NavLinks.Item key={link.href} href={link.href}>
+                  {link.label}
+                </NavLinks.Item>
+              ))}
             </NavLinks>
           </Inline>
         </Container>

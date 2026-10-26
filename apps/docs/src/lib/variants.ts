@@ -1,26 +1,14 @@
+import { site } from './site'
+
 /**
  * Variant blocks (ADR 0038): stack-specific content on one docs page, written as
  * `<Variant router="next">…</Variant>` or `<Variant data="graphql">…</Variant>`. The site shows
  * one value of an axis at a time, the Markdown shows every value labelled, and the skills
  * builder strips them from a core skill and gathers one value's blocks into an add-on.
  *
- * An axis is a prop name. Adding one, or a value, is an entry here.
+ * An axis is a prop name. Adding one, or a value, is an entry in `variants` in `site.config.ts`.
  */
-export const VARIANT_AXES = {
-  router: {
-    label: 'Router',
-    values: { tanstack: 'TanStack Router', next: 'Next.js' },
-  },
-  data: {
-    label: 'Data',
-    values: {
-      'tanstack-query': 'TanStack Query',
-      graphql: 'GraphQL',
-      rest: 'REST',
-      websockets: 'WebSockets',
-    },
-  },
-} as const satisfies Record<string, { label: string; values: Record<string, string> }>
+export const VARIANT_AXES = site.variants
 
 export type VariantAxis = keyof typeof VARIANT_AXES
 

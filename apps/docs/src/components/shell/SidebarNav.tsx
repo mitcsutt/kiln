@@ -6,6 +6,7 @@ import NextLink from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { nodeText } from '@/lib/nodeText'
+import { site } from '@/lib/site'
 import { containsUrl, sectionOf, sections } from '@/lib/pageTree'
 import styles from './SidebarNav.module.css'
 
@@ -136,7 +137,9 @@ function Overview({ tree, pathname }: { tree: PageTree.Root; pathname: string })
   const topPages = tree.children.filter((node) => node.type === 'page')
   return (
     <Stack gap={6}>
-      {topPages.length ? <PageLinks nodes={topPages} pathname={pathname} label="Kiln" /> : null}
+      {topPages.length ? (
+        <PageLinks nodes={topPages} pathname={pathname} label={site.name} />
+      ) : null}
       <nav aria-label="Packages">
         <Stack as="ul" gap={4} role="list" className={styles.sectionList}>
           {sections(tree).map((section) => (

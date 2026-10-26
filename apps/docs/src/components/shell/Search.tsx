@@ -15,6 +15,7 @@ import { useDocsSearch } from 'fumadocs-core/search/client'
 import { staticClient } from 'fumadocs-core/search/client/orama-static'
 import { useRouter } from 'next/navigation'
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
+import { site } from '@/lib/site'
 import styles from './Search.module.css'
 
 const client = staticClient({ from: '/api/search' })
@@ -74,7 +75,7 @@ export function Search() {
           <Input
             type="search"
             aria-label="Search"
-            placeholder="Button, FormSteps, tokens…"
+            placeholder={site.search.placeholder}
             value={search}
             onChange={(event) => {
               setSearch(event.target.value)

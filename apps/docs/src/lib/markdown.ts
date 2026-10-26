@@ -1,4 +1,4 @@
-import { SITE_URL } from './site'
+import { site } from './site'
 import { source, type DocsPageType } from './source'
 import { toMarkdown } from './to-markdown'
 
@@ -6,39 +6,33 @@ export async function pageMarkdown(page: DocsPageType): Promise<string> {
   const body = toMarkdown(await page.data.getText('processed'))
   const header = [`# ${page.data.title}`, '']
   if (page.data.description) header.push(`> ${page.data.description}`, '')
-  header.push(`Source: ${SITE_URL}${page.url}`, '')
+  header.push(`Source: ${site.url}${page.url}`, '')
   return `${header.join('\n')}\n${body.trim()}\n`
 }
 
-/** `llms.txt`: what Kiln is, then every page as a link to its Markdown, grouped by section. */
+/** `llms.txt`: what the site is, then every page as a link to its Markdown, grouped by section. */
 export function llmsIndex(): string {
+  const { intro, sections } = site.markdown.llms
   const lines = [
-    '# Kiln',
+    `# ${site.name}`,
     '',
-    '> Kiln is a themeable React design system (`@mitcsutt/kiln-ui`), a form library on TanStack Form (`@mitcsutt/kiln-forms`), a drag-and-drop library for sortable lists, boards and grid layouts (`@mitcsutt/kiln-dnd`), themed charts (`@mitcsutt/kiln-charts`), and the ESLint, Prettier and TypeScript configs they are built with. Components render through design tokens; a theme is one CSS file.',
+    `> ${intro}`,
     '',
-    `Every page below is Markdown. The whole site in one file: ${SITE_URL}/llms-full.txt`,
+    `Every page below is Markdown. The whole site in one file: ${site.url}/llms-full.txt`,
   ]
   const groups = new Map<string, DocsPageType[]>()
   for (const page of source.getPages()) {
-    const section = page.slugs[0] ?? 'kiln'
+    const section = page.slugs[0] ?? ''
     const list = groups.get(section) ?? []
     list.push(page)
     groups.set(section, list)
   }
-  const titles: Record<string, string> = {
-    kiln: 'Start here',
-    ui: 'UI',
-    forms: 'Forms',
-    'drag-and-drop': 'Drag and drop',
-    charts: 'Charts',
-    tooling: 'Tooling',
-  }
+  const titles: Readonly<Record<string, string | undefined>> = sections
   for (const [section, pages] of groups) {
     lines.push('', `## ${titles[section] ?? section}`, '')
     for (const page of pages) {
       const description = page.data.description ? `: ${page.data.description}` : ''
-      lines.push(`- [${page.data.title}](${SITE_URL}${page.url}.md)${description}`)
+      lines.push(`- [${page.data.title}](${site.url}${page.url}.md)${description}`)
     }
   }
   return `${lines.join('\n')}\n`

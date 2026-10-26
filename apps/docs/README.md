@@ -13,6 +13,7 @@ pnpm check:links                           # build, serve with Wrangler, and fai
 
 ```
 content/docs/         MDX pages and meta.json files: the sidebar tree (docs/tree.json at the root)
+site.config.ts        what makes the site Kiln's: name, URL, theme picker, header and footer links, llms.txt copy, variant axes
 scripts/              generate-api.ts, generate-tokens.ts, generate-examples.ts, stories-examples.ts, extract-example.ts, generate-pages.ts, generate-design-rules.ts, check-links.ts, compare-export.ts
 src/app/              routes: pages, /api/search, /llms.txt, /llms-full.txt, /docs/<page>.md
 src/components/       the site chrome, MDX components, foundations specimens
