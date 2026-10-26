@@ -119,6 +119,13 @@ export default defineConfig(
     extends: [node],
   },
   {
+    // kiln-docs' entries so far run in Node and the Next.js server: the loader, the generated
+    // pages and the config loader (ADR 0045).
+    name: 'kiln/workspace/docs-package',
+    files: ['packages/docs/src/**'],
+    extends: [node],
+  },
+  {
     // Build and report tooling shared by the packages, like the config files.
     name: 'kiln/workspace/tooling',
     files: ['vite.library.ts', 'size-report.ts'],
