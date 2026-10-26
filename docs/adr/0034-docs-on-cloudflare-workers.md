@@ -1,6 +1,6 @@
 # 0034. The docs site is a static export on Cloudflare Workers
 
-- **Status:** Accepted (supersedes the hosting line of [0009](0009-docs-and-storybook.md), amends [0019](0019-docs-site.md))
+- **Status:** Accepted (supersedes the hosting line of [0009](0009-docs-and-storybook.md), amends [0019](0019-docs-site.md)), amended by [0045](0045-kiln-docs.md)
 - **Date:** 2026-10-08
 
 ## Context
