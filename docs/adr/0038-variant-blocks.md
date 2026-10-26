@@ -25,7 +25,7 @@ The shell goes in `app/_shell/`.
 </Variant>
 ```
 
-- The axes are `router` (`tanstack`, `next`) and `data` (`tanstack-query`, `graphql`, `rest`, `websockets`). They and their labels are one record in `apps/docs/src/lib/variants.ts`, so another axis or value is one entry.
+- The axes are `router` (`tanstack`, `next`) and `data` (`tanstack-query`, `graphql`, `rest`, `websockets`). They and their labels are one record, `variants` in `apps/docs/site.config.ts`, so another axis or value is one entry.
 - The tags sit on lines of their own, with blank lines around the content, as MDX needs for Markdown inside a component. A block never nests and holds no heading, because a heading inside one would reach the table of contents and the search index for every stack.
 - Blocks of one axis that follow each other, with nothing but blank lines between them, are a **run**. A run covers every value of its axis exactly once, so whichever value a reader picks, something shows. `src/lib/variants.test.ts` checks every run on every page.
 
