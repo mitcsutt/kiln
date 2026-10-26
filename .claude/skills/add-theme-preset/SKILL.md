@@ -30,7 +30,7 @@ A preset is one CSS file, plus a name in each list that Storybook, the docs and 
 ```bash
 pnpm --filter @mitcsutt/kiln-ui test
 pnpm --filter @mitcsutt/kiln-ui check:package
-pnpm --filter @mitcsutt/kiln-docs test
+pnpm --filter @mitcsutt/kiln-docs-site test
 STORYBOOK_THEME=<name> STORYBOOK_MODE=light pnpm test:storybook
 STORYBOOK_THEME=<name> STORYBOOK_MODE=dark pnpm test:storybook
 pnpm size

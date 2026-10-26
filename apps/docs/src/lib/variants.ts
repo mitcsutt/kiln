@@ -33,6 +33,9 @@ export function isVariantAxis(name: string): name is VariantAxis {
   return Object.hasOwn(VARIANT_AXES, name)
 }
 
+/** Where the docs remember each axis's choice, like the theme: one key per axis. */
+export const variantStorageKey = (axis: VariantAxis) => `kiln-docs-variant-${axis}`
+
 /** The values of an axis, in order. The first is the default. */
 export function variantValues(axis: VariantAxis): string[] {
   return Object.keys(VARIANT_AXES[axis].values)

@@ -6,13 +6,11 @@ import {
   VARIANT_AXES,
   variantLabel,
   variantOf,
+  variantStorageKey,
   variantValues,
   type VariantAxis,
 } from '@/lib/variants'
 import styles from './Variant.module.css'
-
-/** Where the docs remember each axis's choice, like the theme: one key per axis. */
-const storageKey = (axis: VariantAxis) => `kiln-docs-variant-${axis}`
 
 const listeners = new Set<() => void>()
 
@@ -28,7 +26,7 @@ function subscribe(listener: () => void) {
 function stored(axis: VariantAxis): string {
   const [fallback = ''] = variantValues(axis)
   try {
-    const value = localStorage.getItem(storageKey(axis))
+    const value = localStorage.getItem(variantStorageKey(axis))
     return value !== null && variantValues(axis).includes(value) ? value : fallback
   } catch {
     return fallback
@@ -37,7 +35,7 @@ function stored(axis: VariantAxis): string {
 
 function choose(axis: VariantAxis, value: string) {
   try {
-    localStorage.setItem(storageKey(axis), value)
+    localStorage.setItem(variantStorageKey(axis), value)
   } catch {
     // Storage can be blocked; the choice then lasts until the page reloads.
   }
