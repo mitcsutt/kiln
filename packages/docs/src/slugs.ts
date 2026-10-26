@@ -11,9 +11,9 @@ export interface SourceConfig {
  * with a trailing `/index` folded into its folder, as Fumadocs gives it. So `plugins/git.md`,
  * `plugins/git.mdx`, `plugins/git/index.md` and `plugins/git/index.mdx` are one page. A
  * hand-written page beats a generated page with the same slug, whatever the extension of either;
- * two files of one page in one collection fail. Left to Fumadocs, the order its sources were read in would pick the
- * winner, and a clash would either move a page to `/x/index` without an error or throw
- * `Duplicated slugs`.
+ * two files of one page in one collection fail. Left to Fumadocs, the order its sources were read
+ * in would pick the winner, and a clash would either move a page to `/x/index` without an error or
+ * throw `Duplicated slugs`.
  */
 
 /** A page's slug: its path minus the extension, with a trailing `/index` folded into its folder. */
