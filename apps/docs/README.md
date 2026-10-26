@@ -13,12 +13,16 @@ pnpm check:links                           # build, serve with Wrangler, and fai
 
 ```
 content/docs/         MDX pages and meta.json files: the sidebar tree (docs/tree.json at the root)
-scripts/              generate-api.ts, generate-tokens.ts, generate-examples.ts, stories-examples.ts, extract-example.ts, generate-pages.ts, generate-design-rules.ts, check-links.ts
+scripts/              generate-api.ts, generate-tokens.ts, generate-examples.ts, stories-examples.ts, extract-example.ts, generate-pages.ts, generate-design-rules.ts, check-links.ts, compare-export.ts
 src/app/              routes: pages, /api/search, /llms.txt, /llms-full.txt, /docs/<page>.md
 src/components/       the site chrome, MDX components, foundations specimens
 src/skills/           the agent skills kiln-ui, kiln-forms, kiln-dnd and kiln-charts ship, built from these pages
 src/styles/harbour.css  the custom theme the Theming guide builds
 ```
+
+## Checking a refactor
+
+A change that should leave the site as it is, such as moving the chrome into a package, is checked against an export of the branch it started from (ADR 0045). Build that branch, copy its `out/` somewhere, build the change, then run `node scripts/compare-export.ts <baseline-out>`. It fails unless `llms.txt`, `llms-full.txt`, `_headers` and every `.md` file match byte for byte, each page's HTML matches once CSS Module hashes are normalised (title, meta tags, ids, hrefs, classes, visible text, `data-theme`, `data-mode` and the head script), the search index holds the same documents, and each theme selector has the same CSS rules. `--report <dir>` also writes a diff of every page's full HTML, which never fails the check. Build both exports on the same day: live examples render dates.
 
 ## Writing a page
 
