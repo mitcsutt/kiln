@@ -178,12 +178,9 @@ export async function highlight(
   if (!isHighlightLanguage(id)) return undefined
   const grammar = GRAMMARS[id]
   const core = await load(grammar)
-  // No time limit per line: Shiki's 500ms default can run out on a cold first call (each regex
-  // compiles on first use), and the rest of that line would come back as one mistyped token.
   const lines = core.codeToTokensBase(trimTrailingNewlines(code), {
     lang: grammar,
     theme: 'kiln',
-    tokenizeTimeLimit: 0,
   })
   return lines.map((line) => {
     const tokens: CodeToken[] = []
