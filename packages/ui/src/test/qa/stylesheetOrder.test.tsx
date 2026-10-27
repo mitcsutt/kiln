@@ -187,199 +187,211 @@ describe('composed component styles do not depend on stylesheet order', () => {
   }
 
   /** [what, outer sheet, inner sheet, render and return the element, expected cascaded values] */
-  const cases: [string, string, string, () => Promise<Element> | Element, Record<string, string>][] =
+  const cases: [
+    string,
+    string,
+    string,
+    () => Promise<Element> | Element,
+    Record<string, string>,
+  ][] = [
     [
-      [
-        "TreeTable's chevron is 1rem",
-        'components/display/TreeTable/TreeTable.module.css',
-        icon,
-        () => {
-          render(
-            <TreeTable
-              label="Sessions"
-              columns={[{ id: 'name', header: 'Session' }]}
-              rows={[{ id: 'a', children: [{ id: 'b' }] }]}
-              getRowId={(row) => row.id}
-              getChildren={(row) => row.children}
-              renderCell={(row) => row.id}
-            />,
-          )
-          return query('.chevron')
-        },
-        { 'inline-size': '1rem', 'block-size': '1rem' },
-      ],
-      [
-        "FileDrop's icon is 1.25em",
-        'components/inputs/FileDrop/FileDrop.module.css',
-        icon,
-        () => {
-          render(<FileDrop aria-label="Receipts" />)
-          return query('.zone > svg')
-        },
-        { 'inline-size': '1.25em', 'block-size': '1.25em' },
-      ],
-      [
-        "Checkbox's tick is 88% with a heavier stroke",
-        'components/inputs/Checkbox/Checkbox.module.css',
-        icon,
-        () => {
-          render(<Checkbox aria-label="Agree" defaultChecked />)
-          return query('.check')
-        },
-        { 'inline-size': '88%', 'stroke-width': 'calc(var(--icon-stroke) * 1.4)' },
-      ],
-      [
-        "Checkbox's dash is 88% with a heavier stroke",
-        'components/inputs/Checkbox/Checkbox.module.css',
-        icon,
-        () => {
-          render(<Checkbox aria-label="Agree" defaultChecked="indeterminate" />)
-          return query('.dash')
-        },
-        { 'inline-size': '88%', 'stroke-width': 'calc(var(--icon-stroke) * 1.4)' },
-      ],
-      [
-        "Combobox's chevron is 1.15em",
-        combobox,
-        icon,
-        () => {
-          render(<Combobox aria-label="Category" options={[{ value: 'a', label: 'A' }]} />)
-          return query('.chevron')
-        },
-        { 'inline-size': '1.15em' },
-      ],
-      [
-        "Combobox's selected-option check is 1.1em",
-        combobox,
-        icon,
-        async () => {
-          render(
-            <Combobox aria-label="Category" options={[{ value: 'a', label: 'A' }]} defaultValue="a" />,
-          )
-          await userEvent.click(screen.getByRole('combobox'))
-          return query('.check')
-        },
-        { 'inline-size': '1.1em' },
-      ],
-      [
-        "Combobox's spinner is subtle",
-        combobox,
-        spinner,
-        () => {
-          render(<Combobox aria-label="Category" options={[]} loading />)
-          return query('.spinner')
-        },
-        { color: 'var(--color-ink-subtle)' },
-      ],
-      [
-        "Combobox's chip list is display: contents",
-        combobox,
-        'components/display/Tag/Tag.module.css',
-        () => {
-          render(
-            <Combobox
-              multiple
-              aria-label="Labels"
-              options={[{ value: 'a', label: 'A' }]}
-              defaultValue={['a']}
-            />,
-          )
-          return screen.getByRole('list')
-        },
-        { display: 'contents' },
-      ],
-      [
-        "DateRangePickerField's presets are start-aligned",
-        'components/inputs/DateRangeField/DateRangeField.module.css',
-        'components/actions/Button/Button.module.css',
-        async () => {
-          render(
-            <DateRangePickerField
-              label="Period"
-              presets={[{ label: 'October', value: { start: '2026-10-01', end: '2026-10-31' } }]}
-            />,
-          )
-          await userEvent.click(screen.getByRole('button', { name: 'Choose date' }))
-          const presets = await screen.findByRole('group', { name: 'Presets' })
-          return within(presets).getByRole('button', { name: 'October' })
-        },
-        { 'justify-content': 'flex-start' },
-      ],
-      [
-        "a field error's icon is one line tall",
-        messages,
-        icon,
-        () => {
-          render(<TextField label="Name" error="Required" />)
-          return query('.errorIcon')
-        },
-        { 'inline-size': '1.1em', 'block-size': '1lh' },
-      ],
-      [
-        "a field warning's icon is one line tall",
-        messages,
-        icon,
-        () => {
-          render(<TextField label="Name" warning="Unusual" />)
-          return query('.warningIcon')
-        },
-        { 'inline-size': '1.1em', 'block-size': '1lh' },
-      ],
-      [
-        "a validating field's spinner is subtle",
-        messages,
-        spinner,
-        () => {
-          render(<TextField label="Name" validating />)
-          return query('.busy')
-        },
-        { color: 'var(--color-ink-subtle)' },
-      ],
-      [
-        "CommandPalette's search icon is 1.15em",
-        palette,
-        icon,
-        async () => {
-          await openPalette()
-          return query('.searchIcon')
-        },
-        { 'inline-size': '1.15em' },
-      ],
-      [
-        "CommandPalette's sub-action chevron is 1.1em",
-        palette,
-        icon,
-        async () => {
-          await openPalette()
-          return query('.option .chevron')
-        },
-        { 'inline-size': '1.1em' },
-      ],
-      [
-        "CommandPalette's spinner is subtle",
-        palette,
-        spinner,
-        async () => {
-          await openPalette({ loading: true })
-          return query('.spinner')
-        },
-        { color: 'var(--color-ink-subtle)' },
-      ],
-      [
-        "an external Link's arrow is 0.85em",
-        'components/typography/Link/Link.module.css',
-        icon,
-        () => {
-          render(
-            <Link href="https://example.com" external>
-              Example
-            </Link>,
-          )
-          return query('.iconWrap > svg')
-        },
-        { 'inline-size': '0.85em' },
-      ],
-    ]
+      "TreeTable's chevron is 1rem",
+      'components/display/TreeTable/TreeTable.module.css',
+      icon,
+      () => {
+        const rows: { id: string; children?: { id: string }[] }[] = [
+          { id: 'a', children: [{ id: 'b' }] },
+        ]
+        render(
+          <TreeTable
+            label="Sessions"
+            columns={[{ id: 'name', header: 'Session' }]}
+            rows={rows}
+            getRowId={(row) => row.id}
+            getChildren={(row) => row.children}
+            renderCell={(row) => row.id}
+          />,
+        )
+        return query('.chevron')
+      },
+      { 'inline-size': '1rem', 'block-size': '1rem' },
+    ],
+    [
+      "FileDrop's icon is 1.25em",
+      'components/inputs/FileDrop/FileDrop.module.css',
+      icon,
+      () => {
+        render(<FileDrop aria-label="Receipts" />)
+        return query('.zone > svg')
+      },
+      { 'inline-size': '1.25em', 'block-size': '1.25em' },
+    ],
+    [
+      "Checkbox's tick is 88% with a heavier stroke",
+      'components/inputs/Checkbox/Checkbox.module.css',
+      icon,
+      () => {
+        render(<Checkbox aria-label="Agree" defaultChecked />)
+        return query('.check')
+      },
+      { 'inline-size': '88%', 'stroke-width': 'calc(var(--icon-stroke) * 1.4)' },
+    ],
+    [
+      "Checkbox's dash is 88% with a heavier stroke",
+      'components/inputs/Checkbox/Checkbox.module.css',
+      icon,
+      () => {
+        render(<Checkbox aria-label="Agree" defaultChecked="indeterminate" />)
+        return query('.dash')
+      },
+      { 'inline-size': '88%', 'stroke-width': 'calc(var(--icon-stroke) * 1.4)' },
+    ],
+    [
+      "Combobox's chevron is 1.15em",
+      combobox,
+      icon,
+      () => {
+        render(<Combobox aria-label="Category" options={[{ value: 'a', label: 'A' }]} />)
+        return query('.chevron')
+      },
+      { 'inline-size': '1.15em' },
+    ],
+    [
+      "Combobox's selected-option check is 1.1em",
+      combobox,
+      icon,
+      async () => {
+        render(
+          <Combobox
+            aria-label="Category"
+            options={[{ value: 'a', label: 'A' }]}
+            defaultValue="a"
+          />,
+        )
+        await userEvent.click(screen.getByRole('combobox'))
+        return query('.check')
+      },
+      { 'inline-size': '1.1em' },
+    ],
+    [
+      "Combobox's spinner is subtle",
+      combobox,
+      spinner,
+      () => {
+        render(<Combobox aria-label="Category" options={[]} loading />)
+        return query('.spinner')
+      },
+      { color: 'var(--color-ink-subtle)' },
+    ],
+    [
+      "Combobox's chip list is display: contents",
+      combobox,
+      'components/display/Tag/Tag.module.css',
+      () => {
+        render(
+          <Combobox
+            multiple
+            aria-label="Labels"
+            options={[{ value: 'a', label: 'A' }]}
+            defaultValue={['a']}
+          />,
+        )
+        return screen.getByRole('list')
+      },
+      { display: 'contents' },
+    ],
+    [
+      "DateRangePickerField's presets are start-aligned",
+      'components/inputs/DateRangeField/DateRangeField.module.css',
+      'components/actions/Button/Button.module.css',
+      async () => {
+        render(
+          <DateRangePickerField
+            label="Period"
+            presets={[{ label: 'October', value: { start: '2026-10-01', end: '2026-10-31' } }]}
+          />,
+        )
+        await userEvent.click(screen.getByRole('button', { name: 'Choose date' }))
+        const presets = await screen.findByRole('group', { name: 'Presets' })
+        return within(presets).getByRole('button', { name: 'October' })
+      },
+      { 'justify-content': 'flex-start' },
+    ],
+    [
+      "a field error's icon is one line tall",
+      messages,
+      icon,
+      () => {
+        render(<TextField label="Name" error="Required" />)
+        return query('.errorIcon')
+      },
+      { 'inline-size': '1.1em', 'block-size': '1lh' },
+    ],
+    [
+      "a field warning's icon is one line tall",
+      messages,
+      icon,
+      () => {
+        render(<TextField label="Name" warning="Unusual" />)
+        return query('.warningIcon')
+      },
+      { 'inline-size': '1.1em', 'block-size': '1lh' },
+    ],
+    [
+      "a validating field's spinner is subtle",
+      messages,
+      spinner,
+      () => {
+        render(<TextField label="Name" validating />)
+        return query('.busy')
+      },
+      { color: 'var(--color-ink-subtle)' },
+    ],
+    [
+      "CommandPalette's search icon is 1.15em",
+      palette,
+      icon,
+      async () => {
+        await openPalette()
+        return query('.searchIcon')
+      },
+      { 'inline-size': '1.15em' },
+    ],
+    [
+      "CommandPalette's sub-action chevron is 1.1em",
+      palette,
+      icon,
+      async () => {
+        await openPalette()
+        return query('.option .chevron')
+      },
+      { 'inline-size': '1.1em' },
+    ],
+    [
+      "CommandPalette's spinner is subtle",
+      palette,
+      spinner,
+      async () => {
+        await openPalette({ loading: true })
+        return query('.spinner')
+      },
+      { color: 'var(--color-ink-subtle)' },
+    ],
+    [
+      "an external Link's arrow is 0.85em",
+      'components/typography/Link/Link.module.css',
+      icon,
+      () => {
+        render(
+          <Link href="https://example.com" external>
+            Example
+          </Link>,
+        )
+        return query('.iconWrap > svg')
+      },
+      { 'inline-size': '0.85em' },
+    ],
+  ]
 
   for (const [what, outer, inner, find, expected] of cases) {
     for (const [label, sheets] of orders(outer, inner)) {
