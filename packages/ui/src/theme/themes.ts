@@ -65,7 +65,7 @@ export const THEME_META: Record<BuiltInThemeName, ThemeMeta> = {
   riso: {
     label: 'Riso',
     description:
-      'A two-drum risograph zine. Fluorescent pink and blue ink on white stock, screen tints instead of shadows, a hand-drawn face.',
+      'A two-drum risograph zine. Fluorescent pink and blue ink on a blue-drum page, screen tints instead of shadows, a hand-drawn face.',
     stylesheet: '@mitcsutt/kiln-ui/themes/riso.css',
   },
 }
