@@ -73,7 +73,8 @@
   color: var(--color-ink);
 }
 
-.searchIcon {
+/* Scoped under .search so it outranks Icon's .icon whatever order the CSS chunks load in. */
+.search .searchIcon {
   flex: none;
   inline-size: 1.15em;
   block-size: 1.15em;
@@ -145,7 +146,8 @@
   opacity: 1;
 }
 
-.spinner {
+/* Scoped under .search so it outranks Spinner's .root whatever order the CSS chunks load in. */
+.search .spinner {
   flex: none;
   color: var(--color-ink-subtle);
 }
@@ -251,7 +253,8 @@
   gap: var(--space-1);
 }
 
-.chevron {
+/* Scoped under .option so it outranks Icon's .icon whatever order the CSS chunks load in. */
+.option .chevron {
   flex: none;
   inline-size: 1.1em;
   block-size: 1.1em;

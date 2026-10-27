@@ -55,7 +55,8 @@
 }
 
 /* Glyph sits on the first line's centre, not the block's. */
-.errorIcon {
+/* Scoped under .error so it outranks Icon's .icon whatever order the CSS chunks load in. */
+.error .errorIcon {
   flex: none;
   block-size: 1lh;
   inline-size: 1.1em;
@@ -73,14 +74,17 @@
   text-wrap: pretty;
 }
 
-.warningIcon {
+/* Scoped under .warning so it outranks Icon's .icon whatever order the CSS chunks load in. */
+.warning .warningIcon {
   flex: none;
   block-size: 1lh;
   inline-size: 1.1em;
 }
 
 /* validating spinner after the label text */
-.busy {
+/* Doubled so it outranks Spinner's .root whatever order the CSS chunks load in: the label
+   around it belongs to whichever field renders it. */
+.busy.busy {
   flex: none;
   color: var(--color-ink-subtle);
 }

@@ -41,7 +41,8 @@
   visibility: hidden;
 }
 
-.chevron {
+/* Scoped under .toggle so it outranks Icon's .icon whatever order the CSS chunks load in. */
+.toggle .chevron {
   inline-size: 1rem;
   block-size: 1rem;
   transition: transform var(--dur-3) var(--ease-out);
@@ -52,7 +53,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .chevron {
+  .toggle .chevron {
     transition: none;
   }
 }

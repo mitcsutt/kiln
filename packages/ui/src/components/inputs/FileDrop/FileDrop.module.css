@@ -81,7 +81,8 @@
   cursor: not-allowed;
 }
 
-.icon {
+/* Scoped under .zone so it outranks Icon's .icon whatever order the CSS chunks load in. */
+.zone .icon {
   flex: none;
   inline-size: 1.25em;
   block-size: 1.25em;
