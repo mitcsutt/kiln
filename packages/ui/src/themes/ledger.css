@@ -1,7 +1,7 @@
 /*
  * LEDGER — preset (opt-in: import '@mitcsutt/kiln-ui/themes/ledger.css')
  *
- * Idea: an accountant's columnar pad. White ruled sheet, green horizontal rules,
+ * Idea: an accountant's columnar pad. Green-grey ruled stock, green horizontal rules,
  * entries in banknote green and black ink, red for negatives, a yellow highlighter
  * for the line you circled. Edges are hairlines (the printed green rules); surfaces
  * stay flat. Figures are set in Archivo at a condensed width (receipt narrowness
@@ -70,11 +70,11 @@
     --radius-avatar: 0.25rem;
 
     /* ── Colour ─────────────────────────────────────────────────────────── */
-    /* White ruled paper with the faintest green; the green lives in the rules. Dark: carbon-copy night, a slate-teal sheet (not black) with visibly green rules and a muted banknote green accent. The red money-column rule is not expressible without a new token (out of scope). */
-    --color-canvas: light-dark(oklch(0.985 0.003 150), oklch(0.24 0.018 185));
-    --color-surface: light-dark(oklch(0.998 0.001 150), oklch(0.275 0.019 185));
-    --color-surface-sunken: light-dark(oklch(0.963 0.006 150), oklch(0.215 0.017 185));
-    --color-surface-raised: light-dark(oklch(1 0 0), oklch(0.31 0.02 185));
+    /* A pad of layers, never stark white: the pad is green-grey ruled stock, a card is a near-neutral paper slip laid on it, a popover a cooler carbon slip lifted by its shadow, a well pressed into the pad. The green lives in the rules. Dark: carbon-copy night, a slate-teal sheet (not black) with visibly green rules and a muted banknote green accent. The red money-column rule is not expressible without a new token (out of scope). */
+    --color-canvas: light-dark(oklch(0.955 0.008 155), oklch(0.24 0.018 185));
+    --color-surface: light-dark(oklch(0.97 0.003 150), oklch(0.275 0.019 185));
+    --color-surface-sunken: light-dark(oklch(0.935 0.008 155), oklch(0.215 0.017 185));
+    --color-surface-raised: light-dark(oklch(0.965 0.006 170), oklch(0.31 0.02 185));
     --color-surface-inverse: light-dark(oklch(0.24 0.02 160), oklch(0.95 0.01 170));
 
     /* Black-green ink, like carbon-paper entries */
@@ -86,9 +86,9 @@
     ); /* AA on sunken/raised */
     --color-ink-inverse: light-dark(oklch(0.97 0.006 150), oklch(0.22 0.02 170));
 
-    /* Ledger rules: visible pale green horizontals, deeper green for column heads; dim green at night */
-    --color-line: light-dark(oklch(0.86 0.05 155), oklch(0.39 0.035 165));
-    --color-line-strong: light-dark(oklch(0.7 0.08 155), oklch(0.5 0.05 160));
+    /* Ledger rules: visible green horizontals, a step deeper so they still read on the green-grey pad, deeper green for column heads; dim green at night */
+    --color-line: light-dark(oklch(0.82 0.06 155), oklch(0.39 0.035 165));
+    --color-line-strong: light-dark(oklch(0.66 0.085 155), oklch(0.5 0.05 160));
     --table-foot-rule: 3px double var(--color-ink); /* the accountant's double rule over totals */
     --stat-fit: 6; /* condensed figures are narrow, so Stat values can stay large in tight columns */
 
@@ -186,7 +186,7 @@
 
     /* Chart chrome: the pad's own green ruling is the grid; the axis is the deeper column
        rule; labels in muted carbon ink. */
-    --chart-grid: light-dark(oklch(0.89 0.04 155), oklch(0.35 0.03 170));
+    --chart-grid: light-dark(oklch(0.86 0.045 155), oklch(0.35 0.03 170));
     --chart-axis: light-dark(oklch(0.56 0.08 158), oklch(0.62 0.05 160));
     --chart-label: var(--color-ink-muted);
     --chart-tooltip-surface: var(--color-surface-raised);
