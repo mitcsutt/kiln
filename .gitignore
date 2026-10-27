@@ -34,3 +34,6 @@ projectStructure.cache.json
 
 # Size reports
 .size
+
+# Impeccable design-review snapshots and mocks
+.impeccable/
