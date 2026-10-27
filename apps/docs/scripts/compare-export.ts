@@ -8,7 +8,7 @@
  *
  * - `llms.txt`, `llms-full.txt`, `_headers` and every `.md` file match byte for byte.
  * - Each HTML page matches as a summary (`export-snapshot.ts`): title, meta tags, `id`s, `href`s,
- *   class names with module hashes normalised, visible text, `data-theme`, `data-mode` and the
+ *   visible text, `data-theme`, `data-mode` and the
  *   head script.
  * - The search index holds the same documents.
  * - Each theme selector has the same CSS rules.
@@ -111,6 +111,25 @@ if (changed.length) {
   console.log(`✓ ${String(exact.length)} Markdown, llms and _headers files match byte for byte`)
 }
 
+/**
+ * The one accepted difference (ADR 0045): the Introduction's section links all pointed at `/docs`,
+ * because folding a trailing `/index` into its folder was missing from the old slugs. They now
+ * point at their sections' indexes.
+ */
+const SECTION_INDEXES = [
+  '/docs/ui',
+  '/docs/forms',
+  '/docs/drag-and-drop',
+  '/docs/charts',
+  '/docs/tooling',
+]
+function acceptSectionLinks(before: PageSummary, after: PageSummary): void {
+  before.hrefs = before.hrefs.map((href, at) => {
+    const next = after.hrefs[at] ?? ''
+    return href === '/docs' && SECTION_INDEXES.includes(next) ? next : href
+  })
+}
+
 // HTML pages, as summaries.
 const pages = pairedFiles('**/*.html', 'the same HTML pages')
 const differing: string[] = []
@@ -118,6 +137,7 @@ const pageDetails: string[] = []
 for (const file of pages) {
   const before = pageSummary(read(baseline, file))
   const after = pageSummary(read(candidate, file))
+  if (file === 'docs.html') acceptSectionLinks(before, after)
   const fields = (Object.keys(before) as (keyof PageSummary)[]).filter(
     (key) => JSON.stringify(before[key]) !== JSON.stringify(after[key]),
   )
@@ -140,7 +160,7 @@ for (const file of pages) {
 if (differing.length) {
   fail(`the HTML pages match (${String(differing.length)} differ)`, pageDetails)
 } else {
-  console.log(`✓ ${String(pages.length)} HTML pages match: title, meta, ids, hrefs, classes, text`)
+  console.log(`✓ ${String(pages.length)} HTML pages match: title, meta, ids, hrefs, text`)
 }
 
 // The search index, as a set of documents.

@@ -2,10 +2,10 @@ import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { parse, stringify } from 'yaml'
 import { getApi } from '@/lib/api'
-import { site } from '@/lib/site'
 import { outsideCode, toMarkdown } from '@/lib/to-markdown'
 import { variantLabel, type VariantSelection } from '@/lib/variants'
 import { skills, type SkillSpec } from './manifest'
+import config from '../../site.config'
 
 const appDir = join(import.meta.dirname, '../..')
 const contentDir = join(appDir, 'content/docs')
@@ -70,7 +70,7 @@ function rewriteLinks(markdown: string, target: (path: string) => string | undef
         const local = target(path ?? 'index') ?? (path ? target(`${path}/index`) : undefined)
         if (local === '') return `](${anchor ?? '#'})`
         if (local !== undefined) return `](${local}${hash})`
-        return `](${site.url}/docs${path ? `/${path}` : ''}${hash})`
+        return `](${config.url}/docs${path ? `/${path}` : ''}${hash})`
       },
     ),
   )
@@ -174,7 +174,7 @@ function buildSkill(spec: SkillSpec): Map<string, string> {
 
   for (const page of references) {
     const lead = page.description ? `> ${page.description}\n\n` : ''
-    const source = `Source: ${site.url}/docs/${page.path.replace(/\/?index$/, '')}`
+    const source = `Source: ${config.url}/docs/${page.path.replace(/\/?index$/, '')}`
     const body = rewriteLinks(page.body, fromReference)
     files.set(
       `${dir}/references/${page.fileName}`,

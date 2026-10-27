@@ -3,7 +3,8 @@ import { existsSync, readFileSync } from 'node:fs'
 import { join } from 'node:path'
 
 /**
- * The route files a site keeps in `app/`: each re-exports what `createDocsSite()` returns. A site
+ * The route files a site keeps in `app/`: the route handlers re-export what `createDocsSite()`
+ * returns, and the layouts and pages call their entry's factory with the site. A site
  * writes them by hand from the README until `kiln-docs init` writes them (ADR 0045). Each carries a
  * stamp, the hash of the template it was written from, so a later `kiln-docs sync` can refresh
  * the ones a site hasn't edited and leave the rest alone, and `postbuild` can fail when one is
@@ -15,6 +16,8 @@ import { join } from 'node:path'
 
 const site = "import { site } from '@/lib/site'\n"
 const forceStatic = "export const dynamic = 'force-static'\n"
+/** The root layout's stylesheets: kiln-ui's, then the chrome's. A site adds its themes' between. */
+const styles = "import '@mitcsutt/kiln-ui/styles.css'\nimport '@mitcsutt/kiln-docs/styles.css'\n"
 
 /** The templates by their path inside `app/`, without their stamps. */
 const TEMPLATES: Readonly<Record<string, string>> = {
@@ -24,6 +27,10 @@ const TEMPLATES: Readonly<Record<string, string>> = {
   'llms.mdx/[...slug]/route.ts': `${site}\n${forceStatic}\nexport const { GET, generateStaticParams } = site.routes.pageMarkdown\n`,
   'sitemap.ts': `${site}\n${forceStatic}\nexport default site.routes.sitemap\n`,
   'robots.ts': `${site}\n${forceStatic}\nexport default site.routes.robots\n`,
+  'layout.tsx': `${styles}import { createRootLayout } from '@mitcsutt/kiln-docs/layout'\n${site}\nexport const metadata = site.metadata\n\nexport default createRootLayout(site)\n`,
+  'not-found.tsx': "export { NotFound as default } from '@mitcsutt/kiln-docs/not-found'\n",
+  'docs/layout.tsx': `import { createDocsLayout } from '@mitcsutt/kiln-docs/docs-layout'\n${site}\nexport default createDocsLayout(site)\n`,
+  'docs/[[...slug]]/page.tsx': `import { createDocsPage } from '@mitcsutt/kiln-docs/docs-page'\n${site}\nexport const { generateStaticParams, generateMetadata } = site\n\nexport default createDocsPage(site)\n`,
 }
 
 /** The stamp's format, which changes only if the stamp line itself does. */

@@ -31,9 +31,11 @@
   overscroll-behavior: contain;
 }
 
+/*
+ * CodeBlock keeps its own radius and overflow, and scrolls inside: restating them here would tie
+ * with its rule, and the bundler's CSS chunk order would pick the winner.
+ */
 .code {
   border-block-start: var(--border-width) solid var(--color-line);
-  border-radius: 0;
   max-block-size: 32rem;
-  overflow: auto;
 }

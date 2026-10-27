@@ -1,5 +1,6 @@
 import type { Metadata, MetadataRoute } from 'next'
 import type { SiteConfig } from './config.ts'
+import { oneLine } from './markdown.ts'
 
 /**
  * SEO basics, all from `site.url` (ADR 0045): `metadataBase`, canonical links, `sitemap.xml`,
@@ -33,10 +34,13 @@ export function rootMetadata(config: SeoConfig): Metadata {
 /**
  * A docs page's metadata: its title and description, its canonical URL, its Markdown as an
  * alternate, and its Open Graph tags. A page titled with the site's name, such as a docs index, is
- * titled with the name alone, not `<name> · <name>`.
+ * titled with the name alone, not `<name> · <name>`. A description written as a YAML block scalar
+ * (`description: |`) comes out on one line, as it does in the Markdown.
  */
 export function pageMetadata(config: SeoConfig, page: SeoPage): Metadata {
-  const { title, description } = page.data
+  const { title } = page.data
+  const description =
+    page.data.description === undefined ? undefined : oneLine(page.data.description)
   const url = `${config.url}${page.url}`
   return {
     title: title === config.name ? { absolute: config.name } : title,

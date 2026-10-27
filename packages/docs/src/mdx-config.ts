@@ -8,8 +8,9 @@ import {
 import type { z } from 'zod'
 import { DEFAULT_CONTENT_DIR, DEFAULT_GENERATED_DIR } from './config.ts'
 import { rehypeRawAsText } from './mdx/rehypeRawAsText.ts'
+import { remarkCodeTitle } from './mdx/remarkCodeTitle.ts'
 
-export { rehypeRawAsText }
+export { rehypeRawAsText, remarkCodeTitle }
 
 /** The frontmatter every page has: `title`, and optionally `description` and `icon`. */
 export type PageSchema = typeof pageSchema
@@ -52,17 +53,23 @@ export function defineDocsCollections<Schema extends z.ZodType<z.output<PageSche
  *
  * - raw HTML in `.md` shown as text and comments dropped, before any other hast step
  *   (`rehypeRawAsText`);
+ * - a fence's title kept for its code block, after the site's own remark steps
+ *   (`remarkCodeTitle`): ```` ```tsx title="app/layout.tsx" ````;
  * - Fumadocs' own Shiki pass off, because code is highlighted by kiln-ui's `CodeBlock` (ADR 0035).
  *
  * `options` are Fumadocs' MDX options, and its `remarkPlugins` and `rehypePlugins` work as Fumadocs
  * documents them.
  */
 export function defineDocsConfig(options: DefaultMDXOptions = {}): GlobalConfig {
-  const { rehypePlugins } = options
+  const { remarkPlugins, rehypePlugins } = options
   return defineConfig({
     mdxOptions: {
       rehypeCodeOptions: false,
       ...options,
+      remarkPlugins:
+        typeof remarkPlugins === 'function'
+          ? (plugins) => [...remarkPlugins(plugins), remarkCodeTitle]
+          : [...(remarkPlugins ?? []), remarkCodeTitle],
       rehypePlugins:
         typeof rehypePlugins === 'function'
           ? (plugins) => [rehypeRawAsText, ...rehypePlugins(plugins)]

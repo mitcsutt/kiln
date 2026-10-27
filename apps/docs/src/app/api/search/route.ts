@@ -1,7 +1,6 @@
-import { createFromSource } from 'fumadocs-core/search/server'
-import { source } from '@/lib/source'
+// kiln-docs route v1 1a8fe5707007: written by @mitcsutt/kiln-docs, which updates it while it's unedited.
+import { site } from '@/lib/site'
 
-// Exported once at build time and searched in the browser, so the site needs no server.
 export const dynamic = 'force-static'
 
-export const { staticGET: GET } = createFromSource(source)
+export const { GET } = site.routes.search

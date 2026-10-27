@@ -51,7 +51,6 @@ describe('page summaries', () => {
       meta: ['charSet=utf-8', 'content=A button. name=description'],
       ids: ['top'],
       hrefs: ['/docs/ui'],
-      classes: ['AppShell-module__*__shell'],
       text: 'UIPress Enter to send.',
       theme: 'paper',
       mode: 'system',
@@ -65,6 +64,18 @@ describe('page summaries', () => {
       .replace('0ore98esculfj.css', 'zzzzzzzzzzzz.css')
       .replace('/_next/static/chunks/a.js', '/_next/static/chunks/b.js')
     expect(pageSummary(rehashed)).toEqual(pageSummary(html))
+  })
+
+  it('leaves out SEO tags and links a page gains', () => {
+    const plain = page('<title>Button</title>', '<a href="/docs/ui">UI</a>')
+    const seo = page(
+      '<title>Button</title><meta property="og:title" content="Button"/>' +
+        '<meta name="twitter:card" content="summary"/>' +
+        '<link rel="canonical" href="https://example.com/docs/ui"/>' +
+        '<link rel="alternate" type="text/markdown" href="https://example.com/docs/ui.md"/>',
+      '<a href="/docs/ui">UI</a>',
+    )
+    expect(pageSummary(seo)).toEqual(pageSummary(plain))
   })
 
   it('reads meta tags as a set', () => {
@@ -100,7 +111,6 @@ describe('what a build renders differently each time', () => {
   it('reads a code block as its code, not as markup', () => {
     expect(pageSummary(code(split))).toMatchObject({
       text: 'Updated import { Grid',
-      classes: ['CodeBlock-module__*__pre'],
     })
   })
 

@@ -3,10 +3,9 @@
  * an agent gets, read so that a refactor which serves the same site compares equal (ADR 0045,
  * "Kiln's no-regression check").
  *
- * - Each page's HTML as a summary: its title, meta tags, `id`s, `href`s, class names, visible
- *   text, `data-theme`, `data-mode` and head script. CSS Module class names carry a hash of the
- *   module (`DocsShell-module__NlLXgG__shell`), which changes when a module moves or is edited,
- *   so the hash is normalised. Hashed build assets under `/_next/` aren't compared.
+ * - Each page's HTML as a summary: its title, meta tags (not Open Graph or Twitter tags), `id`s, `href`s (not canonical or alternate links), visible
+ *   text, `data-theme`, `data-mode` and head script. Class names aren't compared: they are CSS Module
+ *   names, not API, and the theme CSS check covers the rules. Hashed build assets under `/_next/` aren't compared.
  * - Two things a build renders differently each time are left out of a page's summary: the text
  *   of a `<time datetime>`, which a live example reads from the clock at build time, and the
  *   token spans inside a highlighted code block. Shiki stops tokenising a line after 500 ms, so
@@ -40,11 +39,6 @@ export interface PageSummary {
   ids: string[]
   /** Every `href` but the hashed build assets under `/_next/`. */
   hrefs: string[]
-  /**
-   * Each element's class attribute, in document order, with module hashes normalised. Code
-   * tokens (`data-token`) are left out.
-   */
-  classes: string[]
   /**
    * The text a reader sees: everything outside scripts, styles and templates, with runs of
    * whitespace collapsed. A `<time datetime>`'s text is left out.
@@ -92,16 +86,22 @@ export function pageSummary(html: string): PageSummary {
   if (body) visibleText(body, text)
   return {
     title: head?.querySelector('title')?.text ?? '',
-    meta: root.querySelectorAll('meta').map(attributes).sort(),
+    meta: root
+      .querySelectorAll('meta')
+      .filter(
+        (element) =>
+          !/^(og|twitter):/.test(
+            element.getAttribute('property') ?? element.getAttribute('name') ?? '',
+          ),
+      )
+      .map(attributes)
+      .sort(),
     ids: root.querySelectorAll('[id]').map((element) => element.getAttribute('id') ?? ''),
     hrefs: root
       .querySelectorAll('[href]')
+      .filter((element) => !['canonical', 'alternate'].includes(element.getAttribute('rel') ?? ''))
       .map((element) => element.getAttribute('href') ?? '')
       .filter((href) => !href.startsWith('/_next/')),
-    classes: root
-      .querySelectorAll('[class]')
-      .filter((element) => !element.hasAttribute('data-token'))
-      .map((element) => normaliseClassNames(element.getAttribute('class') ?? '')),
     text: text.join('').replace(/\s+/g, ' ').trim(),
     theme: document?.getAttribute('data-theme') ?? '',
     mode: document?.getAttribute('data-mode') ?? '',

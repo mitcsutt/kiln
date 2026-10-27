@@ -49,6 +49,12 @@ describe('SEO from site.url', () => {
     })
   })
 
+  it('puts a block-scalar description on one line', () => {
+    const metadata = pageMetadata(config, page('/docs/a', 'A', 'Over\ntwo lines.\n'))
+    expect(metadata.description).toBe('Over two lines.')
+    expect(metadata.openGraph).toMatchObject({ description: 'Over two lines.' })
+  })
+
   it("leaves a page's description to the site's when it has none", () => {
     const metadata = pageMetadata(config, page('/docs/install', 'Install'))
     expect(metadata.description).toBeUndefined()

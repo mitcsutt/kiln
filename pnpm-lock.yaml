@@ -394,6 +394,9 @@ importers:
       '@mitcsutt/kiln-dnd':
         specifier: workspace:*
         version: link:../../packages/dnd
+      '@mitcsutt/kiln-docs':
+        specifier: workspace:*
+        version: link:../../packages/docs
       '@mitcsutt/kiln-forms':
         specifier: workspace:*
         version: link:../../packages/forms
@@ -401,13 +404,13 @@ importers:
         specifier: workspace:*
         version: link:../../packages/ui
       fumadocs-core:
-        specifier: ~16.15.18
+        specifier: 'catalog:'
         version: 16.15.18(@mdx-js/mdx@3.1.1(supports-color@7.2.0))(@types/estree-jsx@1.0.5)(@types/hast@3.0.5)(@types/mdast@4.0.4)(@types/react@19.3.0)(next@16.3.8(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@24.19.1)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(supports-color@7.2.0)(zod@4.6.5)
       fumadocs-mdx:
-        specifier: ^15.4.6
+        specifier: 'catalog:'
         version: 15.4.6(@types/mdast@4.0.4)(@types/mdx@2.0.14)(@types/react@19.3.0)(fumadocs-core@16.15.18(@mdx-js/mdx@3.1.1(supports-color@7.2.0))(@types/estree-jsx@1.0.5)(@types/hast@3.0.5)(@types/mdast@4.0.4)(@types/react@19.3.0)(next@16.3.8(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@24.19.1)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(supports-color@7.2.0)(zod@4.6.5))(next@16.3.8(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@24.19.1)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)(rolldown@1.2.12)(supports-color@7.2.0)(vite@8.3.2(@types/node@24.19.1)(esbuild@0.28.2)(jiti@2.6.1)(yaml@2.9.1))
       next:
-        specifier: ^16.3.8
+        specifier: 'catalog:'
         version: 16.3.8(@babel/core@7.29.7(supports-color@7.2.0))(@types/node@24.19.1)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       react:
         specifier: 'catalog:'
@@ -700,6 +703,12 @@ importers:
       esbuild:
         specifier: ^0.28.2
         version: 0.28.2
+      node-html-parser:
+        specifier: ^9.0.4
+        version: 9.0.4
+      unist-util-visit:
+        specifier: ^5.1.0
+        version: 5.1.0
     devDependencies:
       '@mdx-js/mdx':
         specifier: ^3.1.1
@@ -707,6 +716,15 @@ importers:
       '@mitcsutt/kiln-tsconfig':
         specifier: workspace:*
         version: link:../tsconfig
+      '@mitcsutt/kiln-ui':
+        specifier: workspace:*
+        version: link:../ui
+      '@types/mdast':
+        specifier: ^4.0.4
+        version: 4.0.4
+      '@types/mdx':
+        specifier: ^2.0.14
+        version: 2.0.14
       '@types/node':
         specifier: 'catalog:'
         version: 24.19.1
@@ -740,6 +758,9 @@ importers:
       vitest:
         specifier: 'catalog:'
         version: 5.0.3(@types/node@24.19.1)(@vitest/browser-playwright@5.0.3)(@vitest/ui@5.0.3)(jsdom@26.1.0(supports-color@10.2.2))(vite@8.3.2(@types/node@24.19.1)(esbuild@0.28.2)(jiti@2.6.1)(yaml@2.9.1))
+      wrangler:
+        specifier: ^4.148.0
+        version: 4.148.0(@types/node@24.19.1)
       yaml:
         specifier: ^2.9.1
         version: 2.9.1
