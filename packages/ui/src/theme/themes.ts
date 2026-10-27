@@ -35,7 +35,7 @@ export const THEME_META: Record<BuiltInThemeName, ThemeMeta> = {
   paper: {
     label: 'Paper',
     description:
-      'The neutral default, built for legibility. Blue-black ink on grey recycled stock with white sheets, Golos Text throughout.',
+      'The neutral default, built for legibility. Blue-black ink on grey recycled stock with paler sheets, Golos Text throughout.',
     stylesheet: null,
   },
   monograph: {

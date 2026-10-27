@@ -206,11 +206,11 @@ Monograph and Fiesta (§4.2, §4.4) are deprecated and leave in the next minor r
 
 ### 4.1 Paper: the default (light or dark)
 
-_An office that prints for everyone: grey recycled stock, white sheets, blue-black ink._
+_An office that prints for everyone: grey recycled stock, paler sheets, blue-black ink._
 
 **Goal**: a product that shouldn't have a personality yet, or must sit under someone else's brand.
 
-- **Colour**: achromatic grey stock for the canvas, white sheets for surfaces, so a surface reads against the page by fill alone. Neutrals stay at chroma 0.004 or less in both modes (the low end of §2's tinted range, at hue 250 only so the grey never reads warm), and the sheets go to 0.002 because bleached paper carries no tint. Dark mode is the same office after hours: a neutral charcoal stock with dimmed sheets, not a blue night. **The ink is the accent**: a blue-black that is the primary action, the current item and live state. Links are ink told apart by their underline, so Paper sits under any brand without arguing with it. The one other hue is the proofreader's **non-photo blue**, kept for "you"/selected and text selection. Tones are the only saturated colour on the page.
+- **Colour**: achromatic grey stock for the canvas and paler unbleached sheets for surfaces, each light layer a different stock and none above L 0.97, so a surface reads against the page by fill alone and nothing glares paper-white. Neutrals stay at chroma 0.004 or less in both modes (the low end of §2's tinted range, at hue 250 only so the grey never reads warm), and the sheets carry even less. Dark mode is the same office after hours: a neutral charcoal stock with dimmed sheets, not a blue night. **The ink is the accent**: a blue-black that is the primary action, the current item and live state. Links are ink told apart by their underline, so Paper sits under any brand without arguing with it. The one other hue is the proofreader's **non-photo blue**, kept for "you"/selected and text selection. Tones are the only saturated colour on the page.
 - **Type**: **Golos Text** for everything, from display to prose and figures, and **Atkinson Hyperlegible Mono** for code. Paratype drew Golos for a national public-services website, so it has a plain zero, true tabular figures and distinct I, l and 1. The bundle has no italic file, so italics are synthesised. No serif. 16px base, 1.25 ratio.
 - **Shape**: square-shouldered actions and fields, slightly rounder surfaces, pill chips (the deliberate contrast), round avatars.
 - **Depth**: a fill change, not a border: a sheet on stock needs no edge. Soft blue-black shadows for floating layers.
