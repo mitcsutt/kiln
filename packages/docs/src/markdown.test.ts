@@ -83,6 +83,13 @@ describe('createMarkdown', () => {
     )
   })
 
+  it("heads pages outside any folder with the site's name when config has no title for them", () => {
+    const bare = { ...config, markdown: { llms: { intro: 'A design system.', sections: {} } } }
+    expect(createMarkdown({ config: bare, source }).llmsIndex()).toContain(
+      '## Kiln\n\n- [Introduction](https://kiln.example.com/docs.md)',
+    )
+  })
+
   it('joins every page in llms-full.txt', async () => {
     const full = await createMarkdown({ config, source }).llmsFull()
     expect(full.split('\n---\n\n').map((part) => part.split('\n')[0])).toEqual([

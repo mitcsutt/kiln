@@ -92,7 +92,7 @@ export function createMarkdown<Page extends MarkdownPage>({
     }
     const titles: Readonly<Record<string, string | undefined>> = sections
     for (const [section, pages] of groups) {
-      lines.push('', `## ${titles[section] ?? section}`, '')
+      lines.push('', `## ${titles[section] ?? (section || config.name)}`, '')
       for (const entry of pages) {
         const description = entry.data.description ? `: ${oneLine(entry.data.description)}` : ''
         lines.push(`- [${entry.data.title ?? ''}](${config.url}${entry.url}.md)${description}`)
