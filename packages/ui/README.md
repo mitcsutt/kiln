@@ -54,7 +54,7 @@ Each theme has light and dark modes (`data-mode`, or `mode`/`defaultMode` on `Th
 
 ## Fonts
 
-Kiln self-hosts the fonts its themes use, so there's nothing to set up: Golos Text and Atkinson Hyperlegible Mono come with `styles.css` (Paper, and the code font in Ledger and Riso). Each preset brings its own faces: Schibsted Grotesk and Newsreader with Monograph, Big Shoulders and Bricolage Grotesque with Fiesta, Martian Mono with both of those, Archivo with Ledger, B612 and B612 Mono with Flightdeck, and Shantell Sans with Riso. Browsers download a face only when something renders in it. All of them are licensed under the SIL Open Font License 1.1, and the licences ship in `dist/assets/fonts/licenses/`. A custom theme loads its own fonts.
+Kiln self-hosts the fonts its themes use, so there's nothing to set up: Golos Text and Atkinson Hyperlegible Mono come with `styles.css` (Paper, and the code font in Ledger and Riso). Each preset brings its own faces: Schibsted Grotesk and Newsreader with Monograph, Big Shoulders and Bricolage Grotesque with Fiesta, Martian Mono with both of those, Archivo with Ledger, B612 and B612 Mono with Flightdeck, and Recursive Casual with Riso (instances cut from Recursive, so the preset ships only its Casual style). Browsers download a face only when something renders in it. All of them are licensed under the SIL Open Font License 1.1, and the licences ship in `dist/assets/fonts/licenses/`. A custom theme loads its own fonts.
 
 ## For coding agents
 

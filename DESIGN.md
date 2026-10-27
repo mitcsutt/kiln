@@ -154,7 +154,7 @@ A theme never sets these: it sets the inputs they're derived from.
 
 Only some themes set these (Fiesta's gold-row inks, Ledger's table rule…). Every `[data-theme]` resets them in `tokens/foundation.css`, so a nested scope falls back to the component default instead of inheriting its parent theme's value. A new optional token goes in that reset list and here; `themes/themes.test.ts` fails if a theme sets a token the others neither set nor reset.
 
-`--badge-soft-ink`, `--canvas-image-size`, `--control-checked-border`, `--highlight-accent-text`, `--highlight-tone-positive-text`, `--highlight-tone-caution-text`, `--highlight-tone-critical-text`, `--highlight-tone-info-text`, `--marquee-edge`, `--numeral-scale`, `--numeral-weight`, `--section-divider-color`, `--stat-fit`, `--table-foot-rule`, `--table-head-font`.
+`--badge-soft-ink`, `--canvas-image-size`, `--control-checked-border`, `--highlight-accent-text`, `--highlight-tone-positive-text`, `--highlight-tone-caution-text`, `--highlight-tone-critical-text`, `--highlight-tone-info-text`, `--marquee-edge`, `--numeral-scale`, `--numeral-weight`, `--section-divider-color`, `--stat-fit`, `--table-foot-rule`, `--table-head-font`, `--table-head-weight`.
 
 ### 3.4 Axes and scoping
 
@@ -271,7 +271,7 @@ _A two-drum risograph zine._ `import '@mitcsutt/kiln-ui/themes/riso.css'`
 **Goal**: a product for people rather than operators: community, events, creative and personal projects. It holds the playful job Fiesta had.
 
 - **Colour**: two spot inks, **fluorescent pink** (the accent) and **blue** (the text colour), on bright white stock. Static structure is **screen tints** (a percentage of an ink) rather than borders. The highlight is an overprint: a pink tint with blue ink. Night mode is the same two inks on deep blue stock, not black.
-- **Type**: **Shantell Sans** for every role except code, drawn from the artist Shantell Martin's own handwriting: the handmade element. It has no tabular figures, so numerals are not column-aligned. **Atkinson Hyperlegible Mono** for code. 1.25 ratio.
+- **Type**: **Recursive** at its Casual master, a single-stroke brush hand, for every role except code: the zine is lettered by hand all the way down, and its digits are tabular, so figures align in columns. Headings at 800, table heads at 700. The preset ships upright and italic instances (Casual 1, Linear off, weights 400 to 800, latin and latin-ext), and `tokens/fonts-riso.css` records the recipe that cuts them. **Atkinson Hyperlegible Mono** for code. 1.25 ratio.
 - **Shape**: hand-cut and mixed: generous radii on actions and surfaces, small radii on fields, pill chips.
 - **Depth**: a fill change, with no shadow on static surfaces. The one misregistered moment is a hard pink offset on floating layers, as if the second drum printed slightly off.
 - **Motion**: a mild spring: things land with a small overshoot.
