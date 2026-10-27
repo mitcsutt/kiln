@@ -1,0 +1,79 @@
+# @mitcsutt/kiln-docs
+
+Kiln chrome for `fumadocs-core`: the foundation of a docs site built with `@mitcsutt/kiln-ui`, with each site owning its content ([ADR 0046](../../docs/adr/0046-kiln-docs.md)). It ships the site config, the Next.js config wrapper, the shell, the theme modes, search, the Markdown and `llms.txt` output and the post-build tools. Kiln's own site in [`apps/docs`](../../apps/docs) is built on it, and [`smoke/site`](smoke/site) is a site built from the published package, outside the workspace ([ADR 0048](../../docs/adr/0048-kiln-docs-smoke-and-release.md)).
+
+## Install
+
+```sh
+pnpm add @mitcsutt/kiln-docs @mitcsutt/kiln-ui next react react-dom fumadocs-core@~16.15.18 fumadocs-mdx@15.4.6 zod
+pnpm add -D typescript @types/react @types/react-dom @types/node @types/mdx wrangler
+```
+
+Pin `@mitcsutt/kiln-docs` exactly while it's `0.x`: each release's changeset has an "Upgrade:" block with the peer ranges, any route-file change and the `pnpm add` line. pnpm fails an install whose build scripts aren't approved, so a site's `pnpm-workspace.yaml` approves the two it needs: `esbuild`, which loads `site.config.ts`, and `workerd`, which Wrangler runs for `check-links`.
+
+```yaml
+allowBuilds:
+  esbuild: true
+  workerd: true
+```
+
+Code is highlighted with `@mitcsutt/kiln-ui/highlight`, which needs `shiki`. `fumadocs-core` depends on it, so a site needn't add it.
+
+## A site
+
+A site owns its content, its `site.config.ts`, its landing page and thin route files: the route handlers re-export what `createDocsSite()` returns, and each layout and page calls its own entry's factory with the site. Paths are from the site's root, and `app/` and `lib/` may sit under `src/`, as Kiln's do.
+
+| File                                                                                                                | What it holds                                                                                                                                                                            |
+| ------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `package.json`                                                                                                      | `build` runs the site's generator, if it has one, then `next build`, then `kiln-docs postbuild`; `check-links` runs `kiln-docs check-links`                                              |
+| `site.config.ts`                                                                                                    | `export default defineSite({ … })` from `@mitcsutt/kiln-docs/config`                                                                                                                     |
+| `source.config.ts`                                                                                                  | `export const { docs, generated } = defineDocsCollections({ … })` and `export default defineDocsConfig({ … })` from `@mitcsutt/kiln-docs/mdx-config`                                     |
+| `next.config.mjs`                                                                                                   | `export default withKilnDocs({ … })` from `@mitcsutt/kiln-docs/next`                                                                                                                     |
+| `tsconfig.json`                                                                                                     | `paths` for `@/*` and `fumadocs-mdx:collections/*` → `./.source/*`                                                                                                                       |
+| `lib/site.ts`                                                                                                       | `export const site = createDocsSite({ config, collections })`                                                                                                                            |
+| `app/layout.tsx`                                                                                                    | kiln-ui's `styles.css`, the preset of the fixed theme or of each theme the picker offers, `@mitcsutt/kiln-docs/styles.css`, then the site's own; `metadata` and `createRootLayout(site)` |
+| `app/not-found.tsx`, `app/docs/layout.tsx`, `app/docs/[[...slug]]/page.tsx`                                         | `NotFound`, `createDocsLayout(site)`, and `createDocsPage(site, { components })` with `generateStaticParams` and `generateMetadata`                                                      |
+| `app/api/search/route.ts`, `app/llms.txt/route.ts`, `app/llms-full.txt/route.ts`, `app/llms.mdx/[...slug]/route.ts` | re-export `site.routes.*`, each with `export const dynamic = 'force-static'` written in the file, because Next ignores re-exported segment config                                        |
+| `app/sitemap.ts`, `app/robots.ts`                                                                                   | re-export `site.routes.sitemap` and `site.routes.robots`                                                                                                                                 |
+| `app/page.tsx`                                                                                                      | the landing page, rendered in `<Shell>` from `@mitcsutt/kiln-docs/shell`                                                                                                                 |
+| `content/docs/**`                                                                                                   | hand-written pages and `meta.json`                                                                                                                                                       |
+| `wrangler.jsonc`, `public/_headers`                                                                                 | the Worker that serves `out/`, with a name the site chooses (never `kiln-docs` outside Kiln), and the content types                                                                      |
+| `pnpm-workspace.yaml`, `.gitignore`                                                                                 | `allowBuilds` for `esbuild` and `workerd`; `node_modules/`, `.next/`, `out/`, `.source/`, `.generated/pages/`, `.wrangler/` and `next-env.d.ts`                                          |
+
+[`smoke/site`](smoke/site) has every one of them. The route files are written from the templates in `src/node/routes.ts`, each with a stamp line, so a later `kiln-docs sync` can refresh the ones a site hasn't edited. `postbuild` fails when one is missing.
+
+Each layout and page has its own entry, so a route segment imports only its own UI. Next.js loads CSS by route segment, the root layout's first, so the chrome's CSS and a site's MDX components' CSS load in the order the segments nest. When one module graph holds them all, the bundler's CSS chunks decide which of two equally specific rules wins, and that moves with any change to the graph. Give a site's own MDX components to `createDocsPage`, in the page's route file, for the same reason.
+
+## What it holds
+
+- **`createDocsSite({ config, collections, markdown })`** (`@mitcsutt/kiln-docs`) builds the Fumadocs loader for the docs at `/docs` from the site's `fumadocs-mdx:collections/server` module: `docs`, the hand-written pages, and `generated`, the generated ones. A site has no `lib/source.ts`, so the rules below can't be broken from site code. It returns `config`, `source`, `metadata`, `generateStaticParams`, `generateMetadata` and the route handlers in `routes`. `markdown.transform` turns a page's processed Markdown into what its `.md` URL serves.
+- **The layouts and pages**: `createRootLayout(site)` (`./layout`), `createDocsLayout(site)` (`./docs-layout`), `createDocsPage(site, { components })` (`./docs-page`), `NotFound` (`./not-found`) and `Shell` (`./shell`), for a page of the site's own. `components` are the site's MDX components, over the defaults: `pre`, highlighted with `@mitcsutt/kiln-ui/highlight`, `a` and `Variant`.
+- **The chrome**: the header with the section links, search and the theme controls, the sidebar, the page frame with its table of contents and pager, and the 404 page, all built with kiln-ui. The chrome styles itself through the theme's tokens. Its CSS Module class names aren't API, so nothing may select them.
+- **`defineSite(config)`** (`@mitcsutt/kiln-docs/config`) types a site's `site.config.ts`, and it's strict: a key `SiteConfig` doesn't have, at any depth, throws and names the key, so a key from an older shape fails loudly instead of being ignored. It warns about a theme that's neither kiln-ui's nor listed in `theme.custom`. The config is Node-loadable: no tsconfig path aliases, and nothing plain Node can't load, such as kiln-ui's root entry. The bin loads it through esbuild.
+- **Two theme modes**, set by `theme` in `site.config.ts`. A fixed theme, `theme: { fixed: 'flightdeck' }`, is kiln-ui's own `themeScript` with the theme a constant: only the colour mode is read from storage, and the header has the mode toggle alone, or nothing with `modeToggle: false`. A picker, `theme: { picker: [...], default: 'paper' }`, lets a reader choose a theme from the header, and keeps the pick in storage. The site imports the CSS of each theme it shows; Paper is in kiln-ui's `styles.css`.
+- **`defineDocsCollections()` and `defineDocsConfig()`** (`@mitcsutt/kiln-docs/mdx-config`) are the MDX config preset for a site's `source.config.ts`. They hold the frontmatter schema hook, because a field the collection schema doesn't declare is stripped. The preset shows raw HTML in `.md` pages as text, with HTML comments dropped, keeps a fence's `title="…"` for its code block, and turns Fumadocs' own Shiki pass off.
+- **`withKilnDocs(config)`** (`@mitcsutt/kiln-docs/next`) wraps the site's Next.js config: fumadocs-mdx, a static export in `out/`, and under `next dev` a rewrite from each page's `.md` URL to the route that serves it.
+- **`writeGenerated(files, options)`** (`@mitcsutt/kiln-docs/generate`) writes a site's generated pages before `next build`, into `.generated/pages` by default. It empties that folder and nothing else, because `.generated/` may hold the site's other build data.
+- **`createVariants(axes)`** (`@mitcsutt/kiln-docs/variants`) reads, checks and resolves `<Variant>` blocks (ADR 0038) over the site's `variants` axes, for a site's own Markdown steps.
+- **A nav model** (`src/nav.ts`) for the sidebar, which reaches every page whether or not the tree has `"root": true` sections. The section labels are config (`nav.labels`).
+- **Markdown output**: each page's Markdown, `llms.txt` in Kiln's format and `llms-full.txt`. YAML block scalars (`|`, `|-`, `>`, `>-`) in descriptions come out as one line.
+- **SEO basics** from `site.url`: `metadataBase`, canonical links, the sitemap, `robots.txt` and basic Open Graph tags.
+- **Search**, through a provider seam (`search.provider`, [ADR 0049](../../docs/adr/0049-kiln-docs-pagefind.md)). The default, `'pagefind'`, indexes the built docs pages in `kiln-docs postbuild`, each from its article, into `out/pagefind/`, and the header's search loads only the index chunks a query touches. `next dev` has no build to index, so there the header searches the Orama index from `app/api/search/route.ts` instead. `'orama-static'` exports that Orama index at build time and searches it in the built site too, downloading it whole on the first search.
+- **The storage keys** a reader's choices live under: `kiln-docs-theme`, `kiln-color-mode` and `kiln-docs-variant-<axis>`. They never change.
+
+## The bin
+
+Each command runs from the site's root, beside its `site.config.ts`.
+
+- **`kiln-docs postbuild`**, after `next build`, moves each page's Markdown from `out/llms.mdx/` to `out/docs/<page>.md` and `out/docs.md`, because a static export can't rewrite. Under Pagefind it indexes `out/docs.html` and `out/docs/**/*.html` into `out/pagefind/` and deletes `out/api/search`, which a build doesn't use. Then it fails on a missing route file, on a theme the site shows (the fixed theme, or each the picker offers) with no `[data-theme=<name>]` rule in the export's CSS (matched with or without quotes, because the built CSS is minified), naming the import to add, and on a `fumadocs-core` or `fumadocs-mdx` outside the tested pair.
+- **`kiln-docs check-links`** serves `out/` with the site's own Wrangler and `wrangler.jsonc`, and follows every internal link from `/`, and the search index (`/pagefind/pagefind.js`, or `/api/search` under `orama-static`), failing on a page that doesn't answer 200 or an `#anchor` that names no element. It needs `wrangler` in the site's dependencies.
+
+## The rules it owns
+
+- **Precedence by slug.** A page's slug is its path inside its folder minus the extension, with a trailing `/index` folded into its folder, as Fumadocs gives it, so `plugins/git.md`, `plugins/git.mdx`, `plugins/git/index.md` and `plugins/git/index.mdx` are one page. A hand-written page beats a generated one with the same slug, whatever the extension of either: `writeGenerated()` skips the generated page and reports it, and the loader leaves out any it still finds. Two files of one page in one collection fail. A hand-written `meta` file beats a generated one at its path.
+- **An explicit page order.** `getPages()` lists pages by file path, compared by code unit, so `llms.txt`, `llms-full.txt` and the search index don't depend on the order Fumadocs stored the files in.
+- **The peer tuple.** `fumadocs-core ~16.15.18` and `fumadocs-mdx 15.4.6` are the pair it's tested with, and the workspace catalog holds the same pair. `fumadocs-mdx` is exact because every later patch needs `fumadocs-core ^16.17` ([ADR 0048](../../docs/adr/0048-kiln-docs-smoke-and-release.md)). They're widened together, only to a pair the smoke test has installed fresh.
+
+## Working on it
+
+Inside the workspace, the Node entries (`./config`, `./generate`, `./mdx-config`, `./next`, `./variants`) and the bin point at TypeScript source that Node runs as written: erasable syntax only, and relative imports that name their `.ts` files. The published package points every entry and the bin at `dist`, which `pnpm --filter @mitcsutt/kiln-docs build` writes (the `kiln-dist` condition, ADR 0022). `tsconfig.node.json` checks them with `erasableSyntaxOnly`. The root entry and the layout entries are compiled by the site's bundler, the layouts with their TSX and CSS Modules: kiln-docs is in `transpilePackages` through `withKilnDocs`. `pnpm --filter @mitcsutt/kiln-docs test` runs the unit tests, including one that loads every Node entry in plain Node. `pnpm --filter @mitcsutt/kiln-docs smoke`, after the build, installs the packed package into [`smoke/site`](smoke/site) outside the workspace, with its peers resolved fresh from npm, and builds, post-builds, link-checks and checks it with a fixed theme, with a picker and without `shiki` (ADR 0048). Each searches its build from the header in Chromium, the picker on `orama-static` and the fixed theme under `next dev` too (ADR 0049), so it needs Chromium from Playwright: `pnpm --filter @mitcsutt/kiln-docs exec playwright install chromium`. A change to the chrome is checked against Kiln's site with `compare-export` and the browser and axe checks, `pnpm check:browser` ([`apps/docs/README.md`](../../apps/docs/README.md)). [`AGENTS.md`](AGENTS.md) has the rules for working on it, and [ADR 0047](../../docs/adr/0047-kiln-docs-frozen-surface.md) the public surface that's frozen.

@@ -6,4 +6,4 @@ A pottery co-op app built with every component and hook in `@mitcsutt/kiln-ui`, 
 pnpm --filter @mitcsutt/kiln-demo dev   # http://localhost:5174
 ```
 
-The docs site frames the built app at `/demo`. How it's organised, and the rule that every export must appear in it, are in [AGENTS.md](AGENTS.md) and [ADR 0046](../../docs/adr/0046-demo-app.md).
+The docs site frames the built app at `/demo`. How it's organised, and the rule that every export must appear in it, are in [AGENTS.md](AGENTS.md) and [ADR 0050](../../docs/adr/0050-demo-app.md).

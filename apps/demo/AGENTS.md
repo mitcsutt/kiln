@@ -2,7 +2,7 @@
 
 Slipcast is a small pottery co-op app built with every component and hook the Kiln packages export. It has two jobs:
 
-- **Show Kiln working together inside an app.** The docs site frames it at `/demo` ([ADR 0046](../../docs/adr/0046-demo-app.md)).
+- **Show Kiln working together inside an app.** The docs site frames it at `/demo` ([ADR 0050](../../docs/adr/0050-demo-app.md)).
 - **Act as the first consumer.** It reaches Kiln only through the public entries an app uses, and its folders follow `@mitcsutt/kiln-structure` ([ADR 0037](../../docs/adr/0037-app-structure.md)).
 
 It is private and never published. Everything it shows is mock data behind short `delay()` calls. It makes no requests.

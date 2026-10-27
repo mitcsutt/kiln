@@ -151,6 +151,9 @@ function resolveDeclarationSpecifier(spec: string, fromFile: string, outDir: str
   if (spec.startsWith('#')) base = join(outDir, spec.slice(1))
   else if (spec.startsWith('.')) base = resolve(dirname(fromFile), spec)
   else return spec
+  // A package whose source names its files (`./site.ts`, as Node-loadable entries must) keeps
+  // those specifiers in its declarations.
+  base = base.replace(/\.tsx?$/, '')
   for (const [declaration, runtime] of [
     [`${base}.d.ts`, `${base}.js`],
     [join(base, 'index.d.ts'), join(base, 'index.js')],

@@ -1,5 +1,5 @@
 // Copies the built demo app (apps/demo/dist) into public/demo-app, so the static export serves
-// it at /demo-app/ and the /demo page can frame it (ADR 0046). `--optional` (for `next dev`)
+// it at /demo-app/ and the /demo page can frame it (ADR 0050). `--optional` (for `next dev`)
 // skips quietly when the demo hasn't been built; a production build fails instead.
 import { cpSync, existsSync, rmSync } from 'node:fs'
 import { join } from 'node:path'

@@ -7,7 +7,7 @@ import { defineConfig } from 'vite'
 
 /**
  * Slipcast, the Kiln demo app. It's a static single-page app: hash routing and a relative base,
- * so the same build runs at any path, including `/demo-app/` on the docs site (ADR 0046).
+ * so the same build runs at any path, including `/demo-app/` on the docs site (ADR 0050).
  */
 export default defineConfig({
   base: './',

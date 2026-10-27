@@ -151,6 +151,39 @@ jobs:
       - name: Build the docs site and check its links
         run: pnpm check:links
 
+  # The docs chrome in Chromium, on the built site: the sidebar, search, the theme picker, the
+  # phone navigation, a reader's saved state under the four keys that never change, and axe in
+  # light and dark (ADR 0046).
+  docs-browser:
+    name: Docs browser and axe
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: ./.github/actions/setup
+      - uses: ./.github/actions/chromium
+      - name: Build the docs site and check its chrome in a browser
+        run: pnpm check:browser
+
+  # kiln-docs as an outside site installs it (ADR 0046, Phase 4): the packed tarball in a folder
+  # outside the workspace, its peers resolved fresh from npm, a site shaped like a real one built,
+  # post-built and link-checked, in three variants: a fixed theme, a picker with kiln-ui at the
+  # floor of its range, and without shiki in the site's dependencies. Each searches its build
+  # from the header in Chromium: Pagefind, or the Orama index the picker opts into, and the fixed
+  # theme's under `next dev` too (ADR 0049).
+  docs-smoke:
+    name: Docs package smoke test
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: ./.github/actions/setup
+      - uses: ./.github/actions/chromium
+      - name: Build kiln-docs
+        run: pnpm turbo run build --filter=@mitcsutt/kiln-docs
+      - name: Install, build and check the smoke sites
+        run: pnpm --filter @mitcsutt/kiln-docs --fail-if-no-match smoke
+
   # The skills kiln-ui, kiln-forms and kiln-dnd ship pass TanStack Intent's validator: their
   # frontmatter and size, and every code block compiles against the package (ADR 0020).
   skills:
@@ -258,6 +291,8 @@ jobs:
       - storybook-test
       - storybook-build
       - docs
+      - docs-browser
+      - docs-smoke
       - skills
       - package
       - size

@@ -1,8 +1,11 @@
+/*
+ * Prose spaces these, as its direct children: a margin here would tie with Prose's flow rule, and
+ * the bundler's CSS chunk order would pick the winner.
+ */
 .pair,
 .grid {
   display: grid;
   gap: var(--space-5);
-  margin-block: var(--space-6);
 }
 .pair {
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));

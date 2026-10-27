@@ -3,10 +3,15 @@
   "extends": ["//"],
   "tasks": {
     "build": {
+      "dependsOn": ["^build", "transit"],
       "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/DESIGN.md"],
       "outputs": ["out/**", ".next/**", "!.next/cache/**", "!.next/dev/**"]
     },
     "check:links": {
+      "dependsOn": ["build"],
+      "outputs": []
+    },
+    "check:browser": {
       "dependsOn": ["build"],
       "outputs": []
     },

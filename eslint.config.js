@@ -68,6 +68,8 @@ export default defineConfig(
     'apps/demo/src/routeTree.gen.ts',
     // Lint input for the kiln-structure tests: apps laid out right and wrong on purpose.
     'packages/structure/test/fixtures/',
+    // kiln-docs' smoke-test site, which builds against the packed tarball outside the workspace.
+    'packages/docs/smoke/',
   ]),
   {
     name: 'kiln/workspace/type-aware',
@@ -127,6 +129,23 @@ export default defineConfig(
     name: 'kiln/workspace/docs/node',
     files: ['apps/docs/*.{js,ts}', 'apps/docs/scripts/**', 'apps/docs/src/mdx/**'],
     extends: [node],
+  },
+  {
+    // kiln-docs' Node side (ADR 0046): the entries a site's config files load, the loader and
+    // the Markdown routes on the Next.js server, and the bin.
+    name: 'kiln/workspace/docs-package',
+    files: ['packages/docs/src/**', 'packages/docs/bin/**'],
+    extends: [node],
+  },
+  {
+    // kiln-docs' chrome: the layouts a site's route files re-export, and their components.
+    name: 'kiln/workspace/docs-package/chrome',
+    files: ['packages/docs/src/**/*.tsx'],
+    extends: [react],
+    rules: {
+      // A library module isn't an app's HMR boundary, as in ui (ADR 0015).
+      'react-refresh/only-export-components': 'off',
+    },
   },
   {
     // Build and report tooling shared by the packages, like the config files.
@@ -278,7 +297,7 @@ export default defineConfig(
     },
   },
   {
-    // The demo app: a React app laid out by kiln-structure (ADR 0037, ADR 0046).
+    // The demo app: a React app laid out by kiln-structure (ADR 0037, ADR 0050).
     name: 'kiln/workspace/demo',
     files: ['apps/demo/**'],
     extends: [react],

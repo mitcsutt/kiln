@@ -1,6 +1,6 @@
 # 0005. Vite library mode for every runtime package
 
-- **Status:** Accepted
+- **Status:** Accepted, amended by [0046](0046-kiln-docs.md)
 - **Date:** 2026-10-04
 
 ## Context

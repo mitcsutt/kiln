@@ -276,13 +276,20 @@ describe('perf acceptance (§12): 60-field form', () => {
   )
 
   // SubmitButton only subscribes to `isDefaultValue` through `requireChanges`, so the first
-  // keystroke of a pristine form doesn't re-render it.
-  it('typing does not re-render SubmitButton (no requireChanges)', async () => {
-    const { user } = setup()
-    resetRenderCounts()
-    await user.type(screen.getByLabelText('Root r7'), 'abcdefghij')
-    expect(countRenders('submit')).toBe(0)
-  })
+  // keystroke of a pristine form doesn't re-render it. The assertion is a render count, not wall
+  // time. The first label lookup on a fresh 60-field form costs more than the typing, so it's
+  // scoped to the open tab, and the test still slows down under the parallel CI test run.
+  it(
+    'typing does not re-render SubmitButton (no requireChanges)',
+    { timeout: 15_000 },
+    async () => {
+      const { user } = setup()
+      resetRenderCounts()
+      const basics = screen.getByRole('tabpanel', { name: 'Basics' })
+      await user.type(within(basics).getByLabelText('Root r7'), 'abcdefghij')
+      expect(countRenders('submit')).toBe(0)
+    },
+  )
 
   it('switching tabs re-renders no field', async () => {
     const { user } = setup()

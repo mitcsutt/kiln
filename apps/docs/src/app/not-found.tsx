@@ -1,10 +1,2 @@
-import { DocsShell } from '@/components/shell/DocsShell'
-import { NotFound } from '@/components/NotFound'
-
-export default function NotFoundPage() {
-  return (
-    <DocsShell>
-      <NotFound />
-    </DocsShell>
-  )
-}
+// kiln-docs route v1 86563c5e350a: written by @mitcsutt/kiln-docs, which updates it while it's unedited.
+export { NotFound as default } from '@mitcsutt/kiln-docs/not-found'

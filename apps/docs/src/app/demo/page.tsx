@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Container, Section } from '@mitcsutt/kiln-ui'
+import { Shell } from '@mitcsutt/kiln-docs/shell'
 import { DemoFrame } from '@/components/demo/DemoFrame'
-import { DocsShell } from '@/components/shell/DocsShell'
 
 export const metadata: Metadata = {
   title: 'Demo app',
@@ -10,12 +10,12 @@ export const metadata: Metadata = {
 
 export default function DemoPage() {
   return (
-    <DocsShell>
+    <Shell>
       <Section space={6}>
         <Container width="full">
           <DemoFrame />
         </Container>
       </Section>
-    </DocsShell>
+    </Shell>
   )
 }

@@ -9,7 +9,7 @@
   "workers_dev": false,
   "preview_urls": false,
   "assets": {
-    // `next build` with `output: 'export'`, plus the Markdown files scripts/markdown-files.ts moves.
+    // `next build` with `output: 'export'`, plus the Markdown files `kiln-docs postbuild` moves.
     "directory": "./out",
     // `/docs/ui` serves `docs/ui.html`, as the export writes it.
     "html_handling": "auto-trailing-slash",

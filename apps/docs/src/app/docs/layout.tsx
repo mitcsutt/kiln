@@ -1,7 +1,5 @@
-import type { ReactNode } from 'react'
-import { DocsShell } from '@/components/shell/DocsShell'
-import { source } from '@/lib/source'
+// kiln-docs route v1 56b42d5cda97: written by @mitcsutt/kiln-docs, which updates it while it's unedited.
+import { createDocsLayout } from '@mitcsutt/kiln-docs/docs-layout'
+import { site } from '@/lib/site'
 
-export default function DocsLayout({ children }: { children: ReactNode }) {
-  return <DocsShell tree={source.getPageTree()}>{children}</DocsShell>
-}
+export default createDocsLayout(site)
