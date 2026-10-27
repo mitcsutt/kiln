@@ -95,12 +95,18 @@
       oklch(0.82 0.03 235),
       oklch(0.215 0.022 235)
     ); /* by day, the bezel: clearly darker than the panes */
-    --color-surface: light-dark(oklch(0.985 0.006 235), oklch(0.25 0.023 235)); /* a display pane */
+    --color-surface: light-dark(
+      oklch(0.945 0.012 235),
+      oklch(0.25 0.023 235)
+    ); /* a display pane: bright against the bezel, never paper-white */
     --color-surface-sunken: light-dark(
-      oklch(0.935 0.012 235),
+      oklch(0.915 0.016 235),
       oklch(0.19 0.02 235)
     ); /* a recessed well inside a pane, not the bezel */
-    --color-surface-raised: light-dark(oklch(0.995 0.004 235), oklch(0.285 0.024 235));
+    --color-surface-raised: light-dark(
+      oklch(0.968 0.008 235),
+      oklch(0.285 0.024 235)
+    ); /* a pop-up pane, one step brighter than the display it sits over */
     --color-surface-inverse: light-dark(oklch(0.23 0.02 235), oklch(0.93 0.008 235));
 
     /* Ink: white is the static scale and label colour of the display. */
@@ -129,7 +135,10 @@
       oklch(0.41 0.1 220),
       oklch(0.82 0.11 210)
     ); /* darkened for daylight: AA on the bezel */
-    --color-accent-soft: light-dark(oklch(0.94 0.025 215), oklch(0.3 0.045 220));
+    --color-accent-soft: light-dark(
+      oklch(0.9 0.045 215),
+      oklch(0.3 0.045 220)
+    ); /* deep enough to show on the dimmed day pane */
 
     /* Reverse video: the selected line of an FMS, inverted. A dark box with light ink on the
        bright day panes, a bright box with dark ink on the night glass, so "you"/selected is
