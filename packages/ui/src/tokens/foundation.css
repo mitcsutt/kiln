@@ -81,6 +81,7 @@
     --stat-fit: initial;
     --table-foot-rule: initial;
     --table-head-font: initial;
+    --table-head-weight: initial;
   }
 
   /* Chart chrome that aliases role tokens — declared on every theme scope so a theme
