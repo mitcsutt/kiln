@@ -5,6 +5,8 @@ pre-commit:
   parallel: false
   jobs:
     - name: format
+      # Each CLAUDE.md is a symlink to AGENTS.md, and Prettier refuses a symlink passed by name.
+      exclude: ['**/CLAUDE.md', 'CLAUDE.md']
       run: pnpm exec prettier --write --ignore-unknown {staged_files}
       stage_fixed: true
 
@@ -12,6 +14,11 @@ pre-commit:
       glob: '*.{js,jsx,mjs,cjs,ts,tsx,mts,cts}'
       run: pnpm exec eslint --fix --max-warnings=0 --no-warn-ignored {staged_files}
       stage_fixed: true
+
+    # apps/demo uses every export (apps/demo/AGENTS.md): catch an added or removed one at commit.
+    - name: demo-coverage
+      glob: 'packages/*/src/**/index.ts'
+      run: node apps/demo/scripts/check-coverage.ts
 
 commit-msg:
   jobs:

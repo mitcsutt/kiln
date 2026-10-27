@@ -53,5 +53,6 @@ Each record captures one decision: the context, what was decided, and what follo
 | [0047](0047-kiln-docs-frozen-surface.md)                | kiln-docs freezes its public surface before it's published   | Accepted, amended by 0049                                  |
 | [0048](0048-kiln-docs-smoke-and-release.md)             | kiln-docs is proven by an outside site before its release    | Accepted, amended by 0049                                  |
 | [0049](0049-kiln-docs-pagefind.md)                      | kiln-docs searches with Pagefind by default                  | Accepted                                                   |
+| [0050](0050-demo-app.md)                                | A demo app that uses every export                            | Accepted                                                   |
 
 New records use the next number and the same headings: Status, Context, Decision, Consequences.

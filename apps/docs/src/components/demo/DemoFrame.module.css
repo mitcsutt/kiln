@@ -1,0 +1,10 @@
+/* The demo is a whole app, so it gets most of the viewport rather than a specimen box. */
+.frame {
+  display: block;
+  inline-size: 100%;
+  block-size: 80vh;
+  min-block-size: 32rem;
+  border: var(--border-width) solid var(--color-line-strong);
+  border-radius: var(--radius-surface);
+  background: var(--color-surface);
+}

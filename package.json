@@ -30,6 +30,7 @@
     "@commitlint/config-conventional": "catalog:",
     "@mitcsutt/kiln-eslint-config": "workspace:*",
     "@mitcsutt/kiln-prettier-config": "workspace:*",
+    "@mitcsutt/kiln-structure": "workspace:*",
     "@mitcsutt/kiln-tsconfig": "workspace:*",
     "@types/node": "catalog:",
     "@vitejs/plugin-react": "catalog:",

@@ -1,0 +1,2 @@
+# Written by TanStack Router's generator on every build, lint and typecheck
+src/routeTree.gen.ts

@@ -3,6 +3,7 @@ import docsStories from '@mitcsutt/kiln-eslint-config/docs-stories'
 import node from '@mitcsutt/kiln-eslint-config/node'
 import react from '@mitcsutt/kiln-eslint-config/react'
 import storybook from '@mitcsutt/kiln-eslint-config/storybook'
+import kilnStructure from '@mitcsutt/kiln-structure/eslint'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 const FORMS_TUPLE_SELECTOR =
@@ -46,6 +47,11 @@ const DND_IMPORT_PATTERNS = [
   { group: ['@dnd-kit/*'], message: DND_ENGINE },
 ]
 
+// apps/demo/AGENTS.md: the demo proves the packages are enough to build an app, so it has no
+// styling of its own and reaches each package through its public entries only.
+const DEMO_NO_STYLING =
+  'The demo has no styling of its own: compose Kiln components through their props (apps/demo/AGENTS.md).'
+
 // One config for the whole workspace. Each package runs `eslint .` from its
 // own directory and picks this file up, so lint stays cached per package.
 export default defineConfig(
@@ -56,6 +62,10 @@ export default defineConfig(
     'apps/docs/.generated/',
     'apps/docs/.wrangler/',
     'apps/docs/next-env.d.ts',
+    // The built demo app, copied in for the static export.
+    'apps/docs/public/demo-app/',
+    // Written by TanStack Router's generator.
+    'apps/demo/src/routeTree.gen.ts',
     // Lint input for the kiln-structure tests: apps laid out right and wrong on purpose.
     'packages/structure/test/fixtures/',
     // kiln-docs' smoke-test site, which builds against the packed tarball outside the workspace.
@@ -285,6 +295,69 @@ export default defineConfig(
         { devDependencies: true, peerDependencies: true, optionalDependencies: false },
       ],
     },
+  },
+  {
+    // The demo app: a React app laid out by kiln-structure (ADR 0037, ADR 0050).
+    name: 'kiln/workspace/demo',
+    files: ['apps/demo/**'],
+    extends: [react],
+    rules: {
+      // A private app ships nothing to npm, so everything it uses is a dev dependency.
+      'import-x/no-extraneous-dependencies': [
+        'error',
+        { devDependencies: true, peerDependencies: true, optionalDependencies: false },
+      ],
+    },
+  },
+  {
+    name: 'kiln/workspace/demo/src',
+    files: ['apps/demo/src/**'],
+    rules: {
+      'no-restricted-syntax': [
+        'error',
+        { selector: "JSXAttribute[name.name='style']", message: DEMO_NO_STYLING },
+        { selector: "JSXAttribute[name.name='className']", message: DEMO_NO_STYLING },
+      ],
+      '@typescript-eslint/no-restricted-imports': [
+        'error',
+        {
+          patterns: [
+            {
+              group: ['@mitcsutt/kiln-*/src/*', '@mitcsutt/kiln-*/testing'],
+              message: 'Import Kiln packages from the public entries an app uses.',
+            },
+            { group: ['*.module.css'], message: DEMO_NO_STYLING },
+            { group: ['@tanstack/react-form'], message: 'Import it from @mitcsutt/kiln-forms.' },
+          ],
+        },
+      ],
+    },
+  },
+  ...kilnStructure({
+    srcDir: 'apps/demo/src',
+    rootDir: import.meta.dirname,
+    features: {
+      overview: ['studio', 'books', 'firings', 'community'],
+      studio: [],
+      books: [],
+      firings: [],
+      community: [],
+    },
+    groups: { components: ['sections'] },
+  }),
+  {
+    // TanStack Router reads the `Route` export from each route file, beside its component.
+    name: 'kiln/workspace/demo/routes',
+    files: ['apps/demo/src/routes/**'],
+    rules: {
+      // TanStack's autoCodeSplitting splits each route's component out for HMR.
+      'react-refresh/only-export-components': 'off',
+    },
+  },
+  {
+    name: 'kiln/workspace/demo/node',
+    files: ['apps/demo/*.ts', 'apps/demo/scripts/**'],
+    extends: [node],
   },
   {
     name: 'kiln/workspace/storybook/scripts',

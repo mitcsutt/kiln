@@ -27,6 +27,8 @@ export default defineSite({
       { href: '/docs/drag-and-drop', label: 'Drag and drop' },
       { href: '/docs/charts', label: 'Charts' },
       { href: '/docs/tooling', label: 'Tooling' },
+      // Slipcast, the demo app (ADR 0050): not a package, but it sits with them in the header.
+      { href: '/demo', label: 'Demo' },
     ],
     labels: { sections: 'Packages' },
   },
