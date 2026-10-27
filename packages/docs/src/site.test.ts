@@ -1,8 +1,6 @@
 import type { StaticSource } from 'fumadocs-core/source'
-import type { SiteConfig } from './config.ts'
+import { testConfig as config } from './fixtures.ts'
 import { createDocsSite, DOCS_BASE_URL } from './site.ts'
-
-const config = { name: 'Toolbelt' } as SiteConfig
 
 const page = (path: string, title = path) => ({ type: 'page' as const, path, data: { title } })
 const meta = (path: string, pages: string[]) => ({

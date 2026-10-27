@@ -9,8 +9,19 @@ const ENTRIES = {
     'createDocsSite',
     'variantStorageKey',
   ],
-  '@mitcsutt/kiln-docs/config': ['DEFAULT_CONTENT_DIR', 'DEFAULT_GENERATED_DIR', 'defineSite'],
+  '@mitcsutt/kiln-docs/config': [
+    'DEFAULT_CONTENT_DIR',
+    'DEFAULT_GENERATED_DIR',
+    'DEFAULT_SEARCH_PROVIDER',
+    'SEARCH_ROUTE',
+    'defineSite',
+  ],
   '@mitcsutt/kiln-docs/generate': ['writeGenerated'],
+  '@mitcsutt/kiln-docs/mdx-config': [
+    'defineDocsCollections',
+    'defineDocsConfig',
+    'rehypeRawAsText',
+  ],
 }
 
 // ADR 0045: in the workspace the entries point at erasable `.ts` source with explicit `.ts`
