@@ -1,5 +1,5 @@
-import { cpSync, existsSync, renameSync, rmSync } from 'node:fs'
-import { join, relative, resolve } from 'node:path'
+import { cpSync, existsSync, readdirSync, renameSync, rmdirSync, rmSync } from 'node:fs'
+import { dirname, join, relative, resolve } from 'node:path'
 import { close, createIndex } from 'pagefind'
 import { DEFAULT_SEARCH_PROVIDER, SEARCH_ROUTE, type SiteConfig } from '../config.ts'
 import { PAGEFIND_DIR, PAGEFIND_GLOB, PAGEFIND_ROOT } from '../pagefind.ts'
@@ -59,7 +59,10 @@ export async function indexPages(out: string): Promise<number> {
     if (written.errors.length) throw problem(written.errors)
     // The header queries Pagefind's JS API, so its prebuilt search UIs aren't deployed.
     for (const file of PAGEFIND_UI_FILES) rmSync(join(out, PAGEFIND_DIR, file), { force: true })
-    rmSync(join(out, SEARCH_ROUTE), { force: true })
+    // The search route's file, and its folder unless the site has other routes in it.
+    const route = join(out, SEARCH_ROUTE)
+    rmSync(route, { force: true })
+    if (existsSync(dirname(route)) && !readdirSync(dirname(route)).length) rmdirSync(dirname(route))
     return added.page_count
   } finally {
     await close()

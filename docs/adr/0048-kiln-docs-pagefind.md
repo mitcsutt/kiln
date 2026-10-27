@@ -56,7 +56,7 @@ Re-measured on Kiln's export with this record's indexing (the article, the bread
 | hit@5          | 17                  | 17                   |
 | MRR@20         | 0.62                | 0.76                 |
 
-Neither finds `buton` (a typo for "button"), and Pagefind doesn't find "custom theme" in its first 20 results, where Orama ranks it 11th. The header's first search for "button" downloads 16 files, 209 KB raw and 147 KB gzipped: Pagefind's script, worker and 72 KB WebAssembly, one index chunk and ten result fragments.
+Neither finds `buton` (a typo for "button"), and Pagefind doesn't find "custom theme" in its first 20 results, where Orama ranks it 11th. The header's first search for "button" downloads 16 files, 209 KB raw and 147 KB gzipped: Pagefind's script, worker and 72 KB WebAssembly, one index chunk and ten result fragments. The Orama index it replaces is one 3.6 MB file, 751 KB gzipped the same way, fetched whole. The Pagefind index is 1.2 MB in 280 files, and writing it takes 0.6 to 1.3 s (three runs).
 
 ## Consequences
 

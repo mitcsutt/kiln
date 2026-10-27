@@ -166,7 +166,7 @@ describe('the Pagefind index', () => {
     expect(log).toContain('indexed 2 pages with Pagefind in out/pagefind')
     expect(existsSync(join(root, 'out/pagefind/pagefind.js'))).toBe(true)
     expect(existsSync(join(root, 'out/pagefind/pagefind-ui.js'))).toBe(false)
-    expect(existsSync(join(root, 'out/api/search'))).toBe(false)
+    expect(existsSync(join(root, 'out/api'))).toBe(false)
     const entry = JSON.parse(read('out/pagefind/pagefind-entry.json')) as {
       languages: Record<string, { page_count: number }>
     }
