@@ -154,7 +154,7 @@ A theme never sets these: it sets the inputs they're derived from.
 
 Only some themes set these (Fiesta's gold-row inks, Ledger's table rule…). Every `[data-theme]` resets them in `tokens/foundation.css`, so a nested scope falls back to the component default instead of inheriting its parent theme's value. A new optional token goes in that reset list and here; `themes/themes.test.ts` fails if a theme sets a token the others neither set nor reset.
 
-`--canvas-image-size`, `--control-checked-border`, `--highlight-accent-text`, `--highlight-tone-positive-text`, `--highlight-tone-caution-text`, `--highlight-tone-critical-text`, `--highlight-tone-info-text`, `--marquee-edge`, `--numeral-scale`, `--numeral-weight`, `--section-divider-color`, `--stat-fit`, `--table-foot-rule`, `--table-head-font`.
+`--badge-soft-ink`, `--canvas-image-size`, `--control-checked-border`, `--highlight-accent-text`, `--highlight-tone-positive-text`, `--highlight-tone-caution-text`, `--highlight-tone-critical-text`, `--highlight-tone-info-text`, `--marquee-edge`, `--numeral-scale`, `--numeral-weight`, `--section-divider-color`, `--stat-fit`, `--table-foot-rule`, `--table-head-font`.
 
 ### 3.4 Axes and scoping
 
