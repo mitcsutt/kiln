@@ -92,30 +92,38 @@
     --table-foot-rule: 3px double var(--color-ink); /* the accountant's double rule over totals */
     --stat-fit: 6; /* condensed figures are narrow, so Stat values can stay large in tight columns */
 
-    /* Banknote green: the one action colour, deep enough to carry white text */
-    --color-accent: light-dark(oklch(0.44 0.1 160), oklch(0.76 0.085 155));
-    --color-accent-hover: light-dark(oklch(0.39 0.095 160), oklch(0.81 0.085 155));
+    /* Banknote green: the one action colour, deep enough to carry white text by day. At night
+       the same note under a lamp: saturated, not pale mint, still carrying dark ink at AA. */
+    --color-accent: light-dark(oklch(0.44 0.1 160), oklch(0.64 0.12 160));
+    --color-accent-hover: light-dark(
+      oklch(0.39 0.095 160),
+      oklch(0.69 0.12 160)
+    ); /* hover moves away from the page */
     --color-accent-ink: light-dark(oklch(0.985 0.01 150), oklch(0.2 0.03 160));
-    --color-accent-text: light-dark(oklch(0.42 0.1 160), oklch(0.85 0.08 155));
-    --color-accent-soft: light-dark(oklch(0.93 0.04 158), oklch(0.34 0.035 158));
+    --color-accent-text: light-dark(oklch(0.42 0.1 160), oklch(0.82 0.1 160));
+    --color-accent-soft: light-dark(oklch(0.93 0.04 158), oklch(0.34 0.05 160));
 
-    /* Highlighter yellow — the one thing you circled */
-    --color-highlight: light-dark(oklch(0.95 0.09 102), oklch(0.42 0.06 100));
+    /* Highlighter yellow — the one thing you circled. At night the same ink at the most chroma
+       its lightness allows, so it reads as a marker swipe, not an olive stain; muted ink keeps AA. */
+    --color-highlight: light-dark(oklch(0.95 0.09 102), oklch(0.41 0.087 102));
     --color-highlight-ink: var(--color-ink);
 
     --color-focus: var(--color-ink);
-    --color-selection: light-dark(oklch(0.93 0.1 102), oklch(0.46 0.07 100));
+    --color-selection: light-dark(oklch(0.93 0.1 102), oklch(0.45 0.09 102));
     --color-scrim: light-dark(oklch(0.24 0.02 170 / 0.4), oklch(0.08 0.01 170 / 0.66));
 
-    --tone-positive: light-dark(oklch(0.5 0.1 155), oklch(0.76 0.1 155));
-    --tone-positive-soft: light-dark(oklch(0.94 0.035 155), oklch(0.33 0.04 155));
-    --tone-positive-text: light-dark(oklch(0.44 0.1 155), oklch(0.83 0.09 155));
-    --tone-positive-ink: light-dark(oklch(0.985 0.01 155), oklch(0.18 0.03 158));
+    /* Tones are the marks an auditor leaves on the pad, each a different ink. */
+    /* The green tick: a yellower, brighter pen green, told apart from the banknote accent */
+    --tone-positive: light-dark(oklch(0.52 0.13 140), oklch(0.74 0.14 140));
+    --tone-positive-soft: light-dark(oklch(0.94 0.045 140), oklch(0.33 0.05 140));
+    --tone-positive-text: light-dark(oklch(0.45 0.12 140), oklch(0.82 0.12 140));
+    --tone-positive-ink: light-dark(oklch(0.985 0.012 140), oklch(0.18 0.03 140));
 
-    --tone-caution: light-dark(oklch(0.74 0.14 78), oklch(0.8 0.13 85));
-    --tone-caution-soft: light-dark(oklch(0.95 0.05 88), oklch(0.35 0.05 80));
-    --tone-caution-text: light-dark(oklch(0.5 0.1 70), oklch(0.87 0.1 88));
-    --tone-caution-ink: light-dark(oklch(0.22 0.04 70), oklch(0.2 0.04 80));
+    /* The orange highlighter: a query flag, kept apart from the yellow "you" swipe */
+    --tone-caution: light-dark(oklch(0.74 0.15 62), oklch(0.76 0.14 62));
+    --tone-caution-soft: light-dark(oklch(0.95 0.035 70), oklch(0.35 0.06 60));
+    --tone-caution-text: light-dark(oklch(0.51 0.12 55), oklch(0.84 0.1 65));
+    --tone-caution-ink: light-dark(oklch(0.22 0.04 55), oklch(0.2 0.04 60));
 
     /* Accounting red: negatives, overdrawn */
     --tone-critical: light-dark(oklch(0.52 0.18 25), oklch(0.68 0.16 24));
@@ -123,10 +131,11 @@
     --tone-critical-text: light-dark(oklch(0.49 0.17 25), oklch(0.82 0.11 24));
     --tone-critical-ink: light-dark(oklch(0.985 0.01 22), oklch(0.18 0.03 24));
 
-    --tone-info: light-dark(oklch(0.5 0.07 230), oklch(0.72 0.07 230));
-    --tone-info-soft: light-dark(oklch(0.94 0.02 230), oklch(0.33 0.03 230));
-    --tone-info-text: light-dark(oklch(0.45 0.07 230), oklch(0.83 0.06 230));
-    --tone-info-ink: light-dark(oklch(0.985 0.01 230), oklch(0.18 0.03 230));
+    /* The auditor's blue pencil, the diverging ramp's positive arm: greyer than a pen blue */
+    --tone-info: light-dark(oklch(0.5 0.065 235), oklch(0.72 0.06 235));
+    --tone-info-soft: light-dark(oklch(0.945 0.018 235), oklch(0.34 0.035 235));
+    --tone-info-text: light-dark(oklch(0.46 0.065 235), oklch(0.83 0.05 235));
+    --tone-info-ink: light-dark(oklch(0.985 0.005 235), oklch(0.18 0.025 235));
 
     /* Categorical: calm, distinguishable, colour-blind-aware order */
     --color-cat-1: light-dark(oklch(0.62 0.09 165), oklch(0.68 0.09 165));
