@@ -1,5 +1,11 @@
 # @mitcsutt/kiln-ui
 
+## 0.10.0
+
+### Minor Changes
+
+- 79ccf0f: `Badge` reads a new optional component token, `--badge-soft-ink`, for the text colour of soft badges. It defaults to the tone's text colour, so nothing changes until a theme sets it.
+
 ## 0.9.0
 
 ### Minor Changes
