@@ -77,13 +77,13 @@ These are what readers of either site, and the sites themselves, depend on. No p
 
 **Kiln's saved reader state.** These five strings never change:
 
-| String                     | What it is                                    | Where it's read today                      |
-| -------------------------- | --------------------------------------------- | ------------------------------------------ |
-| `kiln-docs-theme`          | the theme a reader picked                     | `apps/docs/src/lib/theme.ts`               |
-| `kiln-color-mode`          | the colour mode (kiln-ui's own key)           | `apps/docs/src/lib/theme.ts`               |
-| `kiln-docs-variant-router` | the router a reader picked in variant blocks  | `apps/docs/src/components/mdx/Variant.tsx` |
-| `kiln-docs-variant-data`   | the data layer a reader picked                | `apps/docs/src/components/mdx/Variant.tsx` |
-| `kiln-docs`                | the Cloudflare Worker that serves Kiln's site | `apps/docs/wrangler.jsonc`                 |
+| String                     | What it is                                    | Where it's read today          |
+| -------------------------- | --------------------------------------------- | ------------------------------ |
+| `kiln-docs-theme`          | the theme a reader picked                     | `packages/docs/src/storage.ts` |
+| `kiln-color-mode`          | the colour mode (kiln-ui's own key)           | `packages/docs/src/storage.ts` |
+| `kiln-docs-variant-router` | the router a reader picked in variant blocks  | `packages/docs/src/storage.ts` |
+| `kiln-docs-variant-data`   | the data layer a reader picked                | `packages/docs/src/storage.ts` |
+| `kiln-docs`                | the Cloudflare Worker that serves Kiln's site | `apps/docs/wrangler.jsonc`     |
 
 The variant keys follow `kiln-docs-variant-<axis>`, and the axes become site config ([0038](0038-variant-blocks.md)). A unit test pins all four keys from Phase 1. A browser check seeds them before load and asserts that they apply and persist. The Phase 1 rename leaves all five strings, and the ADR text, alone. Deriving keys from a prefix is ruled out: it would turn `kiln-color-mode` into `kiln-docs-color-mode` and reset every reader's choice.
 
