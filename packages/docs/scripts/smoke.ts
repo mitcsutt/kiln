@@ -133,7 +133,21 @@ function checkExport(site: string, variant: Variant, checks: Checks): void {
   }
   for (const file of ['sitemap.xml', 'robots.txt']) {
     const text = existsSync(join(out, file)) ? read(join(out, file)) : ''
-    checks.that(text.includes(SITE_URL), `${file} is exported with the site's URL`)
+    const origin = new URL(SITE_URL).origin
+    const urls =
+      file === 'sitemap.xml'
+        ? [...text.matchAll(/<loc>([^<]*)<\/loc>/g)].map((m) => m[1] ?? '')
+        : text
+            .split('\n')
+            .filter((line) => line.startsWith('Sitemap:'))
+            .map((line) => line.slice('Sitemap:'.length).trim())
+    const sameOrigin = (u: string) => URL.canParse(u) && new URL(u).origin === origin
+    checks.that(
+      urls.length > 0 &&
+        urls.every(sameOrigin) &&
+        (file === 'sitemap.xml' || urls.join() === `${SITE_URL}/sitemap.xml`),
+      `${file} is exported with the site's URL`,
+    )
   }
 
   // The sidebar reaches every page. A group is a disclosure that's open on its own pages, so
