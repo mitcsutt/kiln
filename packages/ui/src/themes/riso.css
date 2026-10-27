@@ -86,16 +86,17 @@
     --radius-avatar: 50%;
 
     /* ── Colour ─────────────────────────────────────────────────────────── */
-    /* Page: a 10% screen of the blue drum printed full-bleed, so the run reads blue before
+    /* Page: a 12% screen of the blue drum printed full-bleed, so the run reads blue before
        anything sits on it. Sheets: uncoated stock laid on the page, an off-white a touch
-       cool (not cream: riso paper is plain), dimmer than bare white so it never glares.
-       Sunken wells are 8% of the pink drum; raised layers are the brightest bare stock.
-       Night is the same run on deep blue stock, not black: the paper is dyed, so every
-       dark fill stays a blue screen. */
-    --color-canvas: light-dark(oklch(0.94 0.04 258), oklch(0.25 0.06 258));
-    --color-surface: light-dark(oklch(0.965 0.01 255), oklch(0.29 0.07 258));
-    --color-surface-sunken: light-dark(oklch(0.955 0.025 355), oklch(0.22 0.055 258));
-    --color-surface-raised: light-dark(oklch(0.988 0.004 250), oklch(0.33 0.075 258));
+       cool (not cream: riso paper is plain). Raised layers are a fresher sheet one step up,
+       and still told apart by the pink offset. Sunken wells are 10% of the pink drum. No
+       light fill goes above 0.97: matte stock, never glaring white. Night is the same run
+       on deep blue stock, not black: the paper is dyed, so every dark fill stays a blue
+       screen. */
+    --color-canvas: light-dark(oklch(0.93 0.045 258), oklch(0.25 0.06 258));
+    --color-surface: light-dark(oklch(0.95 0.012 255), oklch(0.29 0.07 258));
+    --color-surface-sunken: light-dark(oklch(0.945 0.03 355), oklch(0.22 0.055 258));
+    --color-surface-raised: light-dark(oklch(0.97 0.006 250), oklch(0.33 0.075 258));
     --color-surface-inverse: light-dark(oklch(0.39 0.14 258), oklch(0.95 0.025 350));
 
     /* Ink: the blue drum is the text colour; muted and subtle are lighter screens of it.
@@ -160,8 +161,10 @@
     --tone-info-soft: light-dark(oklch(0.88 0.05 250), oklch(0.4 0.09 250));
     --tone-info-text: light-dark(oklch(0.44 0.14 258), oklch(0.82 0.09 245));
     --tone-info-ink: oklch(0.22 0.06 258);
-    /* A status chip is overprint: the extra drum's screen with the text drum on top. */
-    --badge-soft-ink: var(--color-ink);
+    /* A status chip is overprint: the extra drum's screen with the text drum on top.
+       currentColor, not var(--color-ink), so the chip takes whatever ink the run around it
+       is printed in (a pink band, an inverse strip) instead of the page's blue. */
+    --badge-soft-ink: currentColor;
 
     /* Categorical: a zine adds a drum per category, so these are real riso inks (named
        after the drum): 1 Fluorescent Pink, 2 Sky Blue, 3 Yellow, 4 Teal, 5 Orange,
@@ -207,8 +210,9 @@
     --color-cat-7-stroke: light-dark(oklch(0.5 0.12 315), oklch(0.84 0.08 315));
     --color-cat-8-stroke: light-dark(oklch(0.52 0.04 250), oklch(0.82 0.03 250));
 
-    /* Chart chrome: a 15% blue screen for the grid, the 60% screen for the axis. */
-    --chart-grid: light-dark(oklch(0.89 0.04 258), oklch(0.38 0.07 258));
+    /* Chart chrome: a 20% blue screen for the grid (it must still show on the 12% page),
+       the 60% screen for the axis. */
+    --chart-grid: light-dark(oklch(0.86 0.05 258), oklch(0.38 0.07 258));
     --chart-axis: var(--color-line-strong);
     --chart-label: var(--color-ink-muted);
     --chart-tooltip-surface: var(--color-surface-raised);
