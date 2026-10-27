@@ -4,7 +4,7 @@ import { ThemeProvider, useTheme } from '@mitcsutt/kiln-ui'
 import { useCallback, useEffect, useSyncExternalStore, type ReactNode } from 'react'
 import type { SiteConfig } from '../config.ts'
 import { THEME_STORAGE_KEY } from '../storage.ts'
-import { isPickerTheme } from '../theme.ts'
+import { initialTheme, isPickerTheme } from '../theme.ts'
 import { useSiteConfig } from './SiteConfig.tsx'
 import { useHydrated } from './useHydrated.ts'
 
@@ -16,9 +16,9 @@ function readTheme(config: SiteConfig): string {
   if (picked) return picked
   try {
     const stored = localStorage.getItem(THEME_STORAGE_KEY)
-    return isPickerTheme(config, stored) ? stored : config.theme.default
+    return isPickerTheme(config, stored) ? stored : initialTheme(config)
   } catch {
-    return config.theme.default
+    return initialTheme(config)
   }
 }
 
@@ -52,12 +52,16 @@ function DocumentAttributes() {
   return null
 }
 
+/**
+ * The theme and colour mode for the whole site. A picker's theme is the reader's pick, kept in
+ * storage; a fixed theme never changes, and the mode is kiln-ui's own.
+ */
 export function DocsThemeProvider({ children }: { children: ReactNode }) {
   const config = useSiteConfig()
   const theme = useSyncExternalStore(
     subscribe,
     () => readTheme(config),
-    () => config.theme.default,
+    () => initialTheme(config),
   )
   const setTheme = useCallback(
     (next: string) => {

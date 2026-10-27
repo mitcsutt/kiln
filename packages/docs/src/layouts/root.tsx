@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import { DocsThemeProvider } from '../components/DocsThemeProvider.tsx'
 import { SiteConfigProvider } from '../components/SiteConfig.tsx'
 import type { SiteConfig } from '../config.ts'
-import { docsThemeScript } from '../theme.ts'
+import { docsThemeScript, initialTheme } from '../theme.ts'
 
 /**
  * `app/layout.tsx`: `export default createRootLayout(site)`. The document, the theme glue and the
@@ -15,7 +15,7 @@ export function createRootLayout({ config }: { config: SiteConfig }) {
     return (
       // The head script sets data-theme and data-mode before hydration, so they differ from the
       // server's.
-      <html lang="en" data-theme={config.theme.default} data-mode="system" suppressHydrationWarning>
+      <html lang="en" data-theme={initialTheme(config)} data-mode="system" suppressHydrationWarning>
         <head>
           <script dangerouslySetInnerHTML={{ __html: headScript }} />
         </head>

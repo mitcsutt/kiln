@@ -26,7 +26,7 @@ Each record captures one decision: the context, what was decided, and what follo
 | [0020](0020-agent-skills.md)                            | How the agent skills are built from the docs                 | Accepted, amended by 0038                                  |
 | [0021](0021-forms-context-in-nested-components.md)      | Typed form context for nested components in `kiln-forms`     | Accepted                                                   |
 | [0022](0022-linked-consumers.md)                        | Linked consumers resolve built output through `kiln-dist`    | Accepted, amended by 0045                                  |
-| [0023](0023-theme-script-entry.md)                      | A React-free `theme-script` entry that plain Node loads      | Accepted, amended by 0045                                  |
+| [0023](0023-theme-script-entry.md)                      | A React-free `theme-script` entry that plain Node loads      | Accepted, amended by 0045 and 0046                         |
 | [0024](0024-kiln-forms-source-layout.md)                | `kiln-forms` source layout: components by group, no `core`   | Accepted                                                   |
 | [0025](0025-colocated-examples.md)                      | Docs examples live beside their code, sliced per export      | Superseded by 0028                                         |
 | [0026](0026-docs-examples-in-storybook.md)              | Docs examples run as Storybook stories                       | Superseded by 0028                                         |
@@ -48,6 +48,7 @@ Each record captures one decision: the context, what was decided, and what follo
 | [0042](0042-date-and-time-pickers.md)                   | Date and time pickers are built on `Intl`, with ISO values   | Accepted, amended by 0044                                  |
 | [0043](0043-forms-drag-and-drop.md)                     | kiln-forms drags Repeater items through an optional `./dnd`  | Accepted                                                   |
 | [0044](0044-opt-in-parts-are-separate-exports.md)       | An opt-in part that brings heavy code is a separate export   | Accepted                                                   |
-| [0045](0045-kiln-docs.md)                               | `kiln-docs`: a publishable docs foundation, kiln first       | Accepted                                                   |
+| [0045](0045-kiln-docs.md)                               | `kiln-docs`: a publishable docs foundation, kiln first       | Accepted, amended by 0046                                  |
+| [0046](0046-kiln-docs-frozen-surface.md)                | kiln-docs freezes its public surface before it's published   | Accepted                                                   |
 
 New records use the next number and the same headings: Status, Context, Decision, Consequences.

@@ -151,6 +151,20 @@ jobs:
       - name: Build the docs site and check its links
         run: pnpm check:links
 
+  # The docs chrome in Chromium, on the built site: the sidebar, search, the theme picker, the
+  # phone navigation, a reader's saved state under the four keys that never change, and axe in
+  # light and dark (ADR 0045).
+  docs-browser:
+    name: Docs browser and axe
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: ./.github/actions/setup
+      - uses: ./.github/actions/chromium
+      - name: Build the docs site and check its chrome in a browser
+        run: pnpm check:browser
+
   # The skills kiln-ui, kiln-forms and kiln-dnd ship pass TanStack Intent's validator: their
   # frontmatter and size, and every code block compiles against the package (ADR 0020).
   skills:
@@ -258,6 +272,7 @@ jobs:
       - storybook-test
       - storybook-build
       - docs
+      - docs-browser
       - skills
       - package
       - size

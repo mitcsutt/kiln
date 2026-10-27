@@ -1,6 +1,6 @@
 # 0023. A React-free `theme-script` entry that plain Node loads
 
-- **Status:** Accepted, amended by [0045](0045-kiln-docs.md)
+- **Status:** Accepted, amended by [0045](0045-kiln-docs.md) and [0046](0046-kiln-docs-frozen-surface.md)
 - **Date:** 2026-10-05
 
 ## Context

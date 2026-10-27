@@ -53,6 +53,11 @@ describe('the theme CSS check', () => {
     expect(missingThemes(['[data-theme=riso]{}'], ['riso', 'ledger'])).toEqual(['ledger'])
   })
 
+  it('checks a fixed theme, unless it is the base theme', () => {
+    expect(configuredThemes({ theme: { fixed: 'flightdeck' } })).toEqual(['flightdeck'])
+    expect(configuredThemes({ theme: { fixed: 'paper' } })).toEqual([])
+  })
+
   it("names kiln-ui's preset to import for a built-in theme", () => {
     write('out/_next/static/chunks/a.css', 'body{}')
     write(
