@@ -7,6 +7,12 @@ Kiln chrome for `fumadocs-core`: the foundation of a docs site built with `@mitc
 - **`createDocsSite({ config, collections })`** (`@mitcsutt/kiln-docs`) builds the Fumadocs loader for the docs at `/docs` from the site's `fumadocs-mdx:collections/server` module: `docs`, the hand-written pages, and `generated`, the generated ones. A site has no `lib/source.ts`, so the rules below can't be broken from site code.
 - **`writeGenerated(files, options)`** (`@mitcsutt/kiln-docs/generate`) writes a site's generated pages before `next build`, into `.generated/pages` by default. It empties that folder and nothing else, because `.generated/` may hold the site's other build data.
 - **`defineSite(config)`** (`@mitcsutt/kiln-docs/config`) types a site's `site.config.ts`. The config is Node-loadable: no tsconfig path aliases, and nothing plain Node can't load, such as kiln-ui's root entry. `src/node/loadConfig.ts` loads it through esbuild, for the `kiln-docs` bin to come.
+- **`site.routes`** from `createDocsSite()`: the search, `llms.txt`, `llms-full.txt`, per-page Markdown, `sitemap.xml` and `robots.txt` handlers, which a site's route files re-export. `src/node/routes.ts` holds the stamped templates for those files, so a later `kiln-docs sync` can refresh the ones a site hasn't edited.
+- **`defineDocsCollections()` and `defineDocsConfig()`** (`@mitcsutt/kiln-docs/mdx-config`) are the MDX config preset for a site's `source.config.ts`. They hold the frontmatter schema hook, because a field the collection schema doesn't declare is stripped, and the preset shows raw HTML in `.md` pages as text, with HTML comments dropped.
+- **A nav model** (`src/nav.ts`) for the sidebar, which reaches every page whether or not the tree has `"root": true` sections. The section labels are config.
+- **Markdown output** (`createMarkdown()`): each page's Markdown, `llms.txt` in Kiln's format and `llms-full.txt`, with a `markdown.transform` hook for a site's MDX components. YAML block scalars (`|`, `|-`, `>`, `>-`) in descriptions come out as one line.
+- **SEO basics** from `site.url`: `metadataBase`, canonical links, the sitemap, `robots.txt` and basic Open Graph tags.
+- **A search-provider seam** (`search.provider`). The static Orama index is the only provider until Pagefind is measured.
 - **The storage keys** a reader's choices live under: `kiln-docs-theme`, `kiln-color-mode` and `kiln-docs-variant-<axis>`. They never change.
 
 ## The rules it owns
