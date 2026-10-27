@@ -48,7 +48,8 @@ Each record captures one decision: the context, what was decided, and what follo
 | [0042](0042-date-and-time-pickers.md)                   | Date and time pickers are built on `Intl`, with ISO values   | Accepted, amended by 0044                                  |
 | [0043](0043-forms-drag-and-drop.md)                     | kiln-forms drags Repeater items through an optional `./dnd`  | Accepted                                                   |
 | [0044](0044-opt-in-parts-are-separate-exports.md)       | An opt-in part that brings heavy code is a separate export   | Accepted                                                   |
-| [0045](0045-kiln-docs.md)                               | `kiln-docs`: a publishable docs foundation, kiln first       | Accepted, amended by 0046                                  |
+| [0045](0045-kiln-docs.md)                               | `kiln-docs`: a publishable docs foundation, kiln first       | Accepted, amended by 0046 and 0047                         |
 | [0046](0046-kiln-docs-frozen-surface.md)                | kiln-docs freezes its public surface before it's published   | Accepted                                                   |
+| [0047](0047-kiln-docs-smoke-and-release.md)             | kiln-docs is proven by an outside site before its release    | Accepted                                                   |
 
 New records use the next number and the same headings: Status, Context, Decision, Consequences.

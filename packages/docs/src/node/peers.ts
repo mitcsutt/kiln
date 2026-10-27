@@ -1,5 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 /** The peers whose installed versions `postbuild` checks: the fumadocs pair (ADR 0045). */
 export const CHECKED_PEERS = ['fumadocs-core', 'fumadocs-mdx'] as const
@@ -31,10 +32,14 @@ export function installedVersion(root: string, name: string): string | undefined
   }
 }
 
-/** kiln-docs' own peer ranges. */
+/**
+ * kiln-docs' own peer ranges, from its manifest two folders up from `src/node/` or `dist/node/`.
+ * The path is built from the module's file, not with `new URL('…', import.meta.url)`, which the
+ * library build would inline as a `data:` URL that `readFileSync` can't read.
+ */
 function peerRanges(): Record<string, string> {
   const manifest = JSON.parse(
-    readFileSync(new URL('../../package.json', import.meta.url), 'utf8'),
+    readFileSync(join(dirname(fileURLToPath(import.meta.url)), '../../package.json'), 'utf8'),
   ) as { peerDependencies?: Record<string, string> }
   return manifest.peerDependencies ?? {}
 }

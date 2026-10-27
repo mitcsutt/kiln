@@ -43,9 +43,9 @@ catalog:
   eslint-plugin-testing-library: ^7.16.2
   # The fumadocs pair kiln-docs is tested with, declared as its peers. Widen the two together,
   # only to a pair installed fresh, because fumadocs-mdx's newer patches need a newer
-  # fumadocs-core (ADR 0045).
+  # fumadocs-core: every fumadocs-mdx after 15.4.6 needs fumadocs-core ^16.17 (ADR 0045, 0047).
   fumadocs-core: ~16.15.18
-  fumadocs-mdx: ~15.4.6
+  fumadocs-mdx: 15.4.6
   globals: ^17.13.0
   jsdom: ^26.1.0
   lefthook: ^2.1.16

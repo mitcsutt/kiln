@@ -15,10 +15,11 @@ const catalog = (name: string) => workspace.catalog?.[name]
 // ADR 0045, "Peers and the peer policy".
 describe('peers', () => {
   it('declares the fumadocs pair it is tested with', () => {
-    // A wider caret fails a fresh install: fumadocs-mdx@15.4.10 needs fumadocs-core ^16.17.8.
+    // fumadocs-mdx is exact: 15.4.7 onwards needs fumadocs-core ^16.17, so even `~15.4.6` lets a
+    // fresh install pick an untested pair (ADR 0047).
     expect(manifest.peerDependencies).toMatchObject({
       'fumadocs-core': '~16.15.18',
-      'fumadocs-mdx': '~15.4.6',
+      'fumadocs-mdx': '15.4.6',
     })
   })
 

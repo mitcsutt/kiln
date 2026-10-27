@@ -1,6 +1,6 @@
 # 0045. kiln-docs: the docs site becomes a publishable foundation, with kiln's site as its first consumer
 
-- **Status:** Accepted, amended by [0046](0046-kiln-docs-frozen-surface.md) (amends [0004](0004-react-18-and-19.md), [0005](0005-library-build.md), [0019](0019-docs-site.md), [0022](0022-linked-consumers.md), [0023](0023-theme-script-entry.md), [0029](0029-generated-reference-pages.md), [0034](0034-docs-on-cloudflare-workers.md) and [0038](0038-variant-blocks.md))
+- **Status:** Accepted, amended by [0046](0046-kiln-docs-frozen-surface.md) and [0047](0047-kiln-docs-smoke-and-release.md) (amends [0004](0004-react-18-and-19.md), [0005](0005-library-build.md), [0019](0019-docs-site.md), [0022](0022-linked-consumers.md), [0023](0023-theme-script-entry.md), [0029](0029-generated-reference-pages.md), [0034](0034-docs-on-cloudflare-workers.md) and [0038](0038-variant-blocks.md))
 - **Date:** 2026-10-26
 
 ## Context
@@ -89,7 +89,7 @@ The variant keys follow `kiln-docs-variant-<axis>`, and the axes become site con
 
 **Peers and the peer policy.**
 
-- kiln-docs declares the fumadocs pair it was tested with: `fumadocs-core ~16.15.18` and `fumadocs-mdx ~15.4.6`. A wider caret doesn't work: `fumadocs-mdx@15.4.10` needs `fumadocs-core ^16.17.8`, so `^15.4` beside `~16.15` fails a fresh npm install and gives pnpm an untested pair.
+- kiln-docs declares the fumadocs pair it was tested with: `fumadocs-core ~16.15.18` and `fumadocs-mdx ~15.4.6` (made exact, `15.4.6`, by [0047](0047-kiln-docs-smoke-and-release.md)). A wider caret doesn't work: `fumadocs-mdx@15.4.10` needs `fumadocs-core ^16.17.8`, so `^15.4` beside `~16.15` fails a fresh npm install and gives pnpm an untested pair.
 - Both are peers, installed by the site, because the code fumadocs-mdx generates resolves them from the site's own folder.
 - `react` and `react-dom` are `^19.2.0`, because fumadocs-core requires it and Next.js 16 needs React 19. `next` is `^16.3.8`, and `@mitcsutt/kiln-ui` is `>=0.N.0 <1.0.0` in the style of [0017](0017-kiln-forms-port.md), where `0.N.0` is the oldest kiln-ui the Phase 4 smoke test passes against. `zod` is `^4`. `wrangler ^4` is an optional peer that `check-links` requires.
 - The two fumadocs ranges are widened together, and only to a pair the smoke test has installed fresh. A fumadocs minor is a kiln-docs minor during `0.x`. `fumadocs-core`, `fumadocs-mdx` and `next` move into the workspace catalog.
@@ -134,7 +134,7 @@ A working site owns about twenty files, not nine. In 0.1.0 a site writes them by
 | `wrangler.jsonc`, `public/_headers`                                                                                 | the Worker, with a name the site chooses (never `kiln-docs` outside Kiln), and the content types                                                           | rarely                                 |
 | `.gitignore`                                                                                                        | `node_modules/`, `.next/`, `out/`, `.source/`, `.generated/pages/`, `.wrangler/`, `next-env.d.ts`                                                          | when a new build folder appears        |
 
-The install line is `pnpm add @mitcsutt/kiln-docs @mitcsutt/kiln-ui next react react-dom fumadocs-core@~16.15.18 fumadocs-mdx@~15.4.6 zod` and `pnpm add -D typescript @types/react @types/react-dom @types/node @types/mdx wrangler`. If Phase 4 finds that kiln-ui's highlighter needs `shiki` at build time, `shiki` joins the first line. `postbuild` fails when a stamped route file is missing.
+The install line is `pnpm add @mitcsutt/kiln-docs @mitcsutt/kiln-ui next react react-dom fumadocs-core@~16.15.18 fumadocs-mdx@15.4.6 zod` and `pnpm add -D typescript @types/react @types/react-dom @types/node @types/mdx wrangler`. If Phase 4 finds that kiln-ui's highlighter needs `shiki` at build time, `shiki` joins the first line. `postbuild` fails when a stamped route file is missing.
 
 ### What this record freezes
 

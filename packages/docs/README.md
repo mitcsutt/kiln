@@ -1,6 +1,23 @@
 # @mitcsutt/kiln-docs
 
-Kiln chrome for `fumadocs-core`: the foundation of a docs site built with `@mitcsutt/kiln-ui`, with each site owning its content ([ADR 0045](../../docs/adr/0045-kiln-docs.md)). It ships the site config, the Next.js config wrapper, the shell, the theme modes, search, the Markdown and `llms.txt` output and the post-build tools. Kiln's own site in [`apps/docs`](../../apps/docs) is built on it. It's private while it's built: nothing here is published yet.
+Kiln chrome for `fumadocs-core`: the foundation of a docs site built with `@mitcsutt/kiln-ui`, with each site owning its content ([ADR 0045](../../docs/adr/0045-kiln-docs.md)). It ships the site config, the Next.js config wrapper, the shell, the theme modes, search, the Markdown and `llms.txt` output and the post-build tools. Kiln's own site in [`apps/docs`](../../apps/docs) is built on it, and [`smoke/site`](smoke/site) is a site built from the published package, outside the workspace ([ADR 0047](../../docs/adr/0047-kiln-docs-smoke-and-release.md)).
+
+## Install
+
+```sh
+pnpm add @mitcsutt/kiln-docs @mitcsutt/kiln-ui next react react-dom fumadocs-core@~16.15.18 fumadocs-mdx@15.4.6 zod
+pnpm add -D typescript @types/react @types/react-dom @types/node @types/mdx wrangler
+```
+
+Pin `@mitcsutt/kiln-docs` exactly while it's `0.x`: each release's changeset has an "Upgrade:" block with the peer ranges, any route-file change and the `pnpm add` line. pnpm fails an install whose build scripts aren't approved, so a site's `pnpm-workspace.yaml` approves the two it needs: `esbuild`, which loads `site.config.ts`, and `workerd`, which Wrangler runs for `check-links`.
+
+```yaml
+allowBuilds:
+  esbuild: true
+  workerd: true
+```
+
+Code is highlighted with `@mitcsutt/kiln-ui/highlight`, which needs `shiki`. `fumadocs-core` depends on it, so a site needn't add it.
 
 ## A site
 
@@ -20,8 +37,10 @@ A site owns its content, its `site.config.ts`, its landing page and thin route f
 | `app/sitemap.ts`, `app/robots.ts`                                                                                   | re-export `site.routes.sitemap` and `site.routes.robots`                                                                                                                                 |
 | `app/page.tsx`                                                                                                      | the landing page, rendered in `<Shell>` from `@mitcsutt/kiln-docs/shell`                                                                                                                 |
 | `content/docs/**`                                                                                                   | hand-written pages and `meta.json`                                                                                                                                                       |
+| `wrangler.jsonc`, `public/_headers`                                                                                 | the Worker that serves `out/`, with a name the site chooses (never `kiln-docs` outside Kiln), and the content types                                                                      |
+| `pnpm-workspace.yaml`, `.gitignore`                                                                                 | `allowBuilds` for `esbuild` and `workerd`; `node_modules/`, `.next/`, `out/`, `.source/`, `.generated/pages/`, `.wrangler/` and `next-env.d.ts`                                          |
 
-The route files are written from the templates in `src/node/routes.ts`, each with a stamp line, so a later `kiln-docs sync` can refresh the ones a site hasn't edited. `postbuild` fails when one is missing.
+[`smoke/site`](smoke/site) has every one of them. The route files are written from the templates in `src/node/routes.ts`, each with a stamp line, so a later `kiln-docs sync` can refresh the ones a site hasn't edited. `postbuild` fails when one is missing.
 
 Each layout and page has its own entry, so a route segment imports only its own UI. Next.js loads CSS by route segment, the root layout's first, so the chrome's CSS and a site's MDX components' CSS load in the order the segments nest. When one module graph holds them all, the bundler's CSS chunks decide which of two equally specific rules wins, and that moves with any change to the graph. Give a site's own MDX components to `createDocsPage`, in the page's route file, for the same reason.
 
@@ -39,7 +58,7 @@ Each layout and page has its own entry, so a route segment imports only its own 
 - **A nav model** (`src/nav.ts`) for the sidebar, which reaches every page whether or not the tree has `"root": true` sections. The section labels are config (`nav.labels`).
 - **Markdown output**: each page's Markdown, `llms.txt` in Kiln's format and `llms-full.txt`. YAML block scalars (`|`, `|-`, `>`, `>-`) in descriptions come out as one line.
 - **SEO basics** from `site.url`: `metadataBase`, canonical links, the sitemap, `robots.txt` and basic Open Graph tags.
-- **A search-provider seam** (`search.provider`). The static Orama index is the only provider until Pagefind is measured.
+- **A search-provider seam** (`search.provider`). The static Orama index is the only provider. Pagefind has been measured against it ([ADR 0047](../../docs/adr/0047-kiln-docs-smoke-and-release.md)), and the provider is chosen before 0.1.0 is published.
 - **The storage keys** a reader's choices live under: `kiln-docs-theme`, `kiln-color-mode` and `kiln-docs-variant-<axis>`. They never change.
 
 ## The bin
@@ -53,8 +72,8 @@ Each command runs from the site's root, beside its `site.config.ts`.
 
 - **Precedence by slug.** A page's slug is its path inside its folder minus the extension, with a trailing `/index` folded into its folder, as Fumadocs gives it, so `plugins/git.md`, `plugins/git.mdx`, `plugins/git/index.md` and `plugins/git/index.mdx` are one page. A hand-written page beats a generated one with the same slug, whatever the extension of either: `writeGenerated()` skips the generated page and reports it, and the loader leaves out any it still finds. Two files of one page in one collection fail. A hand-written `meta` file beats a generated one at its path.
 - **An explicit page order.** `getPages()` lists pages by file path, compared by code unit, so `llms.txt`, `llms-full.txt` and the search index don't depend on the order Fumadocs stored the files in.
-- **The peer tuple.** `fumadocs-core ~16.15.18` and `fumadocs-mdx ~15.4.6` are the pair it's tested with, and the workspace catalog holds the same pair. They're widened together, only to a pair a fresh install has passed.
+- **The peer tuple.** `fumadocs-core ~16.15.18` and `fumadocs-mdx 15.4.6` are the pair it's tested with, and the workspace catalog holds the same pair. `fumadocs-mdx` is exact because every later patch needs `fumadocs-core ^16.17` ([ADR 0047](../../docs/adr/0047-kiln-docs-smoke-and-release.md)). They're widened together, only to a pair the smoke test has installed fresh.
 
 ## Working on it
 
-The Node entries (`./config`, `./generate`, `./mdx-config`, `./next`, `./variants`) and the bin point at TypeScript source that Node runs as written: erasable syntax only, and relative imports that name their `.ts` files. `tsconfig.node.json` checks them with `erasableSyntaxOnly`. The root entry and the layout entries are compiled by the site's bundler, the layouts with their TSX and CSS Modules: kiln-docs is in `transpilePackages` through `withKilnDocs`. `pnpm --filter @mitcsutt/kiln-docs test` runs the unit tests, including one that loads every Node entry in plain Node. A change to the chrome is checked against Kiln's site with `compare-export` and the browser and axe checks, `pnpm check:browser` ([`apps/docs/README.md`](../../apps/docs/README.md)). [`AGENTS.md`](AGENTS.md) has the rules for working on it, and [ADR 0046](../../docs/adr/0046-kiln-docs-frozen-surface.md) the public surface that's frozen.
+Inside the workspace, the Node entries (`./config`, `./generate`, `./mdx-config`, `./next`, `./variants`) and the bin point at TypeScript source that Node runs as written: erasable syntax only, and relative imports that name their `.ts` files. The published package points every entry and the bin at `dist`, which `pnpm --filter @mitcsutt/kiln-docs build` writes (the `kiln-dist` condition, ADR 0022). `tsconfig.node.json` checks them with `erasableSyntaxOnly`. The root entry and the layout entries are compiled by the site's bundler, the layouts with their TSX and CSS Modules: kiln-docs is in `transpilePackages` through `withKilnDocs`. `pnpm --filter @mitcsutt/kiln-docs test` runs the unit tests, including one that loads every Node entry in plain Node. `pnpm --filter @mitcsutt/kiln-docs smoke`, after the build, installs the packed package into [`smoke/site`](smoke/site) outside the workspace, with its peers resolved fresh from npm, and builds, post-builds, link-checks and checks it with a fixed theme, with a picker and without `shiki` (ADR 0047). A change to the chrome is checked against Kiln's site with `compare-export` and the browser and axe checks, `pnpm check:browser` ([`apps/docs/README.md`](../../apps/docs/README.md)). [`AGENTS.md`](AGENTS.md) has the rules for working on it, and [ADR 0046](../../docs/adr/0046-kiln-docs-frozen-surface.md) the public surface that's frozen.

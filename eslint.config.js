@@ -58,6 +58,8 @@ export default defineConfig(
     'apps/docs/next-env.d.ts',
     // Lint input for the kiln-structure tests: apps laid out right and wrong on purpose.
     'packages/structure/test/fixtures/',
+    // kiln-docs' smoke-test site, which builds against the packed tarball outside the workspace.
+    'packages/docs/smoke/',
   ]),
   {
     name: 'kiln/workspace/type-aware',
