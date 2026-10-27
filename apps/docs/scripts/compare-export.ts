@@ -111,6 +111,18 @@ if (changed.length) {
   console.log(`✓ ${String(exact.length)} Markdown, llms and _headers files match byte for byte`)
 }
 
+/**
+ * The one accepted difference (ADR 0045): the Introduction's section links all pointed at `/docs`,
+ * because folding a trailing `/index` into its folder was missing from the old slugs. They now
+ * point at their sections' indexes.
+ */
+const SECTION_INDEXES = ['/docs/ui', '/docs/forms', '/docs/drag-and-drop', '/docs/charts', '/docs/tooling']
+function acceptSectionLinks(before: PageSummary, after: PageSummary): void {
+  before.hrefs = before.hrefs.map((href, at) =>
+    href === '/docs' && SECTION_INDEXES.includes(after.hrefs[at] ?? '') ? after.hrefs[at]! : href,
+  )
+}
+
 // HTML pages, as summaries.
 const pages = pairedFiles('**/*.html', 'the same HTML pages')
 const differing: string[] = []
@@ -118,6 +130,7 @@ const pageDetails: string[] = []
 for (const file of pages) {
   const before = pageSummary(read(baseline, file))
   const after = pageSummary(read(candidate, file))
+  if (file === 'docs.html') acceptSectionLinks(before, after)
   const fields = (Object.keys(before) as (keyof PageSummary)[]).filter(
     (key) => JSON.stringify(before[key]) !== JSON.stringify(after[key]),
   )
