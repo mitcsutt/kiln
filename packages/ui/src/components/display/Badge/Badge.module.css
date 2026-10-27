@@ -2,7 +2,10 @@
  * Component tokens (themes may set any of these on [data-theme]):
  *   --badge-radius   default var(--radius-chip)
  *   --badge-weight   default var(--label-weight)
- *   --badge-soft-ink default the tone's text colour; the ink of a soft badge
+ *   --badge-soft-ink default the tone's text colour; the ink of a soft badge. A theme
+ *                    sets it on [data-theme], where var() resolves, so a page ink set
+ *                    there follows the badge into inverse and accent bands; use
+ *                    currentColor to take the band's own ink instead.
  *   --badge-solid-border default the tone colour
  */
 .badge {
