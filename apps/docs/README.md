@@ -17,7 +17,7 @@ content/docs/         MDX pages and meta.json files: the sidebar tree (docs/tree
 site.config.ts        what makes the site Kiln's: name, URL, theme picker, header and footer links, llms.txt copy, variant axes
 source.config.ts      kiln-docs' MDX preset, with the `exports` frontmatter field and `<Examples of>`
 scripts/              generate-api.ts, generate-tokens.ts, generate-examples.ts, stories-examples.ts, extract-example.ts, generate-pages.ts, generate-design-rules.ts, compare-export.ts, check-browser.ts
-src/app/              the landing page, and route files that re-export what createDocsSite() returns
+src/app/              the landing page, and route files that call the factories and re-export the handlers from createDocsSite() (ADR 0046)
 src/lib/site.ts       createDocsSite(): Kiln's config, its pages, its MDX components and its Markdown transform (toMarkdown)
 src/components/       the landing page, Kiln's MDX components, foundations specimens
 src/skills/           the agent skills kiln-ui, kiln-forms, kiln-dnd and kiln-charts ship, built from these pages
