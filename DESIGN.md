@@ -234,7 +234,7 @@ _An accountant's columnar pad._ `import '@mitcsutt/kiln-ui/themes/ledger.css'`
 
 **Goal**: numbers people have to trust: money, records, dense tables, reconciliation.
 
-- **Colour**: a white sheet with **green rules** (the lines carry the green, not the canvas), a **banknote-green** accent, **accounting red** for negatives and a flat **highlighter yellow** highlight. Dark mode is a blue-green carbon-copy night, not a green-screen terminal.
+- **Colour**: a pale green-grey columnar pad with **green rules** (the lines carry the strongest green, not the canvas). The page, the sheets, the raised layers and the wells are each a slightly different stock, none above L 0.97, so nothing reads as stark white. A **banknote-green** accent, **accounting red** for negatives, a **blue-pencil** info tone and a flat **highlighter yellow** highlight. Dark mode is a blue-green carbon-copy night, not a green-screen terminal, and the highlighter stays a bright swipe with dark ink there too.
 - **Type**: **Archivo** throughout. Figures use its width axis to set condensed with tabular numerals, so a column of money reads like receipt tape without a monospace. **Atkinson Hyperlegible Mono** for code only. 15px base, 1.2 ratio.
 - **Shape**: tight radii everywhere, squarer chips, rounded-square avatars like ledger stamps; compact density (0.86).
 - **Depth**: hairlines in the ledger green; surfaces stay flat.
