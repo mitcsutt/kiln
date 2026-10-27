@@ -33,7 +33,7 @@ Each record captures one decision: the context, what was decided, and what follo
 | [0027](0027-storybook-tests-without-isolation.md)       | Story tests share one page per worker, not one per file      | Accepted                                                   |
 | [0028](0028-docs-stories.md)                            | Docs examples are stories tagged `docs`, opted in one by one | Accepted                                                   |
 | [0029](0029-generated-reference-pages.md)               | Reference pages are generated from TSDoc and stories         | Accepted, amended by 0045                                  |
-| [0030](0030-theme-family-without-ai-tells.md)           | New themes without the second-order AI tells                 | Accepted                                                   |
+| [0030](0030-theme-family-without-ai-tells.md)           | New themes without the second-order AI tells                 | Accepted, amended by 0045                                  |
 | [0031](0031-storybook-theme-matrix-on-theme-changes.md) | Story tests run every theme only when themes change          | Accepted                                                   |
 | [0032](0032-public-before-1-0.md)                       | The repository goes public before `1.0.0`                    | Accepted                                                   |
 | [0033](0033-docs-sections.md)                           | The docs sidebar shows one package at a time                 | Accepted                                                   |
@@ -48,6 +48,7 @@ Each record captures one decision: the context, what was decided, and what follo
 | [0042](0042-date-and-time-pickers.md)                   | Date and time pickers are built on `Intl`, with ISO values   | Accepted, amended by 0044                                  |
 | [0043](0043-forms-drag-and-drop.md)                     | kiln-forms drags Repeater items through an optional `./dnd`  | Accepted                                                   |
 | [0044](0044-opt-in-parts-are-separate-exports.md)       | An opt-in part that brings heavy code is a separate export   | Accepted                                                   |
+| [0045](0045-four-themes-each-with-a-goal.md)            | Four built-in themes, each with a goal                       | Accepted                                                   |
 | [0045](0045-kiln-docs.md)                               | `kiln-docs`: a publishable docs foundation, kiln first       | Accepted, amended by 0046, 0047 and 0048                   |
 | [0046](0046-kiln-docs-frozen-surface.md)                | kiln-docs freezes its public surface before it's published   | Accepted, amended by 0048                                  |
 | [0047](0047-kiln-docs-smoke-and-release.md)             | kiln-docs is proven by an outside site before its release    | Accepted, amended by 0048                                  |
