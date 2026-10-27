@@ -4,6 +4,10 @@
 /_next/static/*
   Cache-Control: public, max-age=31536000, immutable
 
+# The demo app's bundles, copied in by scripts/copy-demo.ts (ADR 0050): Vite hashes every name.
+/demo-app/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
 /llms.txt
   Content-Type: text/markdown; charset=utf-8
 
