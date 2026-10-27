@@ -23,7 +23,8 @@ A bound field wraps one kiln-ui `*Field`, so the field needs no CSS and no new c
 7. **Tests.** Run `runFieldConformance` from the test harness in the field's test, as packages/forms/AGENTS.md describes, plus tests for its own behaviour.
 8. **Stories.** Title `Forms/Fields/<Name>Field`, with a `Playground` story and real states, with invented content. Add a `Usage` story tagged `docs` (copy `FormTextField.stories.tsx`): a JSDoc caption, a `render` that takes no args, and imports from `@mitcsutt/kiln-forms` and `@mitcsutt/kiln-ui` only, not the story kit.
 9. **Docs page.** It's generated from the field's TSDoc and docs stories ([ADR 0029](../../../docs/adr/0029-generated-reference-pages.md)); add the slug to `apps/docs/content/docs/forms/fields/meta.json`. Copy `FormTextField.tsx`'s TSDoc: the summary is the description, `@remarks` the lead, `@value` and `@empty` fill the field table, and `@example In a schema` holds the field's schema node as a `json` block, which a docs test parses. Update the field count on `forms/index.mdx` if it changes, then run `pnpm generate:skills`, because those pages are part of the `component-mode` skill.
-10. **Changeset:** `pnpm changeset`, a `minor` bump for `@mitcsutt/kiln-forms`.
+10. **Demo app:** use the field as `form.<Name>Field` in `apps/demo`, in a form where it belongs ([`apps/demo/AGENTS.md`](../../../apps/demo/AGENTS.md)). `node apps/demo/scripts/check-coverage.ts` fails until it appears.
+11. **Changeset:** `pnpm changeset`, a `minor` bump for `@mitcsutt/kiln-forms`.
 
 ## Check it
 

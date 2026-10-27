@@ -114,6 +114,9 @@ export function Home() {
                 <Button asChild variant="outline" tone="neutral">
                   <NextLink href="/docs/forms">Build a form</NextLink>
                 </Button>
+                <Button asChild variant="ghost" tone="neutral">
+                  <NextLink href="/demo">See the demo app</NextLink>
+                </Button>
               </Inline>
             </Stack>
             <Text size="sm" tone="muted">

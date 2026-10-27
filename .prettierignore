@@ -7,6 +7,7 @@ apps/docs/.source/
 apps/docs/.next/
 apps/docs/.wrangler/
 apps/docs/next-env.d.ts
+apps/docs/public/demo-app/
 
 # Reference pages, written from TSDoc and stories by apps/docs/scripts/generate-pages.ts and
 # gitignored there: the same globs as apps/docs/.gitignore
@@ -34,3 +35,6 @@ packages/structure/test/fixtures/
 
 # Built from the docs by apps/docs/src/skills; the drift test compares them byte for byte
 packages/*/skills/
+
+# Written by TanStack Router in the demo app
+apps/demo/src/routeTree.gen.ts

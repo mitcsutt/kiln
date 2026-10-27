@@ -1,0 +1,42 @@
+{
+  "name": "@mitcsutt/kiln-demo",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Slipcast: a sample app built with every Kiln package, laid out by kiln-structure",
+  "license": "MIT",
+  "type": "module",
+  "imports": {
+    "#assets/*": "./src/assets/*",
+    "#routeTree": "./src/routeTree.gen.ts",
+    "#*": "./src/*/index.ts"
+  },
+  "scripts": {
+    "build": "tsr generate && vite build",
+    "check:coverage": "node scripts/check-coverage.ts",
+    "dev": "vite --port 5174",
+    "lint": "tsr generate && eslint --max-warnings=0 . && node scripts/check-coverage.ts",
+    "preview": "vite preview --port 5174",
+    "typecheck": "tsr generate && tsc --noEmit"
+  },
+  "devDependencies": {
+    "@mitcsutt/kiln-charts": "workspace:*",
+    "@mitcsutt/kiln-dnd": "workspace:*",
+    "@mitcsutt/kiln-forms": "workspace:*",
+    "@mitcsutt/kiln-structure": "workspace:*",
+    "@mitcsutt/kiln-tsconfig": "workspace:*",
+    "@mitcsutt/kiln-ui": "workspace:*",
+    "@tanstack/react-router": "catalog:",
+    "@tanstack/router-cli": "catalog:",
+    "@tanstack/router-plugin": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "eslint": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "zod": "catalog:"
+  }
+}

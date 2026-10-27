@@ -26,6 +26,7 @@ const SECTIONS = [
   { href: '/docs/drag-and-drop', label: 'Drag and drop' },
   { href: '/docs/charts', label: 'Charts' },
   { href: '/docs/tooling', label: 'Tooling' },
+  { href: '/demo', label: 'Demo' },
 ] as const
 
 const GITHUB = 'https://github.com/mitcsutt/kiln'

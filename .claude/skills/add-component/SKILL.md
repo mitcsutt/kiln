@@ -23,7 +23,8 @@ Check the catalogue in DESIGN.md §6 first: if an existing component plus a prop
 5. **Stories:** title `UI/<Group>/<Name>`, a `Playground` story and stories for real states, with invented content. Give an interactive component a story whose `play` function drives its main interaction. The docs examples are stories too: tag each one `docs` (`tags: ['docs']`, never on the meta), give it a JSDoc caption and a `render` that takes no args, and import from `@mitcsutt/kiln-ui` only (copy `Button.stories.tsx`). `kiln/docs-story` lints them.
 6. **Docs page:** it's generated from the component's TSDoc and its docs stories ([ADR 0029](../../../docs/adr/0029-generated-reference-pages.md)); add the slug to `apps/docs/content/docs/ui/<group>/meta.json` where it belongs in the sidebar. Give the component a TSDoc comment (copy `Button.tsx`): the summary, one or two sentences, is the page's description; `@remarks` is its lead in Markdown, and any `##` sections in it follow the examples; `{@link Other | text}` links to another export's page; notes for maintainers go in `@privateRemarks`. It's public copy, so DESIGN.md's copy rules apply. Defaults come from the destructured props. The API section and component tokens are added for you. `pnpm --filter @mitcsutt/kiln-docs dev` shows the page.
 7. **Skills:** if the page is one an agent skill is built from (see `apps/docs/src/skills/manifest.ts`), run `pnpm generate:skills` and commit what changes.
-8. **Changeset:** `pnpm changeset`, a `minor` bump for `@mitcsutt/kiln-ui` while it's below 1.0.
+8. **Demo app:** use the component in `apps/demo`, on a page where an app would really use it ([`apps/demo/AGENTS.md`](../../../apps/demo/AGENTS.md)). `node apps/demo/scripts/check-coverage.ts` fails until it appears, and the pre-commit hook runs it.
+9. **Changeset:** `pnpm changeset`, a `minor` bump for `@mitcsutt/kiln-ui` while it's below 1.0.
 
 ## Check it
 

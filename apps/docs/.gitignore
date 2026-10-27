@@ -4,6 +4,8 @@ out/
 .source/
 next-env.d.ts
 .generated/
+# The built demo app, copied in by scripts/copy-demo.ts (ADR 0046)
+public/demo-app/
 # Written from DESIGN.md by scripts/generate-design-rules.ts
 content/docs/ui/foundations/design-rules.mdx
 # Reference pages, written from each export's TSDoc and stories by scripts/generate-pages.ts

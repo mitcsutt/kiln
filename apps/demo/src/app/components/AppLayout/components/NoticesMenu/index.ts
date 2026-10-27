@@ -1,0 +1,1 @@
+export { NoticesMenu } from './NoticesMenu'

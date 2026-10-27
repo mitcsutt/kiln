@@ -1,0 +1,1 @@
+export { PosterDesk } from './PosterDesk'

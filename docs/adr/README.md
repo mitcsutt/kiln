@@ -49,5 +49,6 @@ Each record captures one decision: the context, what was decided, and what follo
 | [0043](0043-forms-drag-and-drop.md)                     | kiln-forms drags Repeater items through an optional `./dnd`  | Accepted                                             |
 | [0044](0044-opt-in-parts-are-separate-exports.md)       | An opt-in part that brings heavy code is a separate export   | Accepted                                             |
 | [0045](0045-four-themes-each-with-a-goal.md)            | Four built-in themes, each with a goal                       | Accepted                                             |
+| [0046](0046-demo-app.md)                                | A demo app that uses every export                            | Accepted                                             |
 
 New records use the next number and the same headings: Status, Context, Decision, Consequences.
