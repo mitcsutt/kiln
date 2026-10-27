@@ -11,6 +11,18 @@ export interface SiteLink {
   label: string
 }
 
+/**
+ * A search backend: the route that serves its index and the client that queries it. Only the
+ * static Orama index for now; Pagefind is measured before the first release, and the provider is
+ * chosen then, because switching later would change every site's search route (ADR 0045).
+ */
+export type SearchProvider = 'orama-static'
+
+export const DEFAULT_SEARCH_PROVIDER: SearchProvider = 'orama-static'
+
+/** Where the search route is: `app/api/search/route.ts`. */
+export const SEARCH_ROUTE = '/api/search'
+
 export interface SiteConfig {
   /** The wordmark, the title template, the sidebar's overview label and the `llms.txt` heading. */
   name: string
@@ -24,10 +36,22 @@ export interface SiteConfig {
    * stylesheet of each theme it lists.
    */
   theme: { picker: readonly string[]; default: string }
-  /** The sections in the header, each a top-level folder of the docs. */
-  nav: { sections: readonly SiteLink[] }
+  nav: {
+    /** The sections in the header, each a top-level folder of the docs. */
+    sections: readonly SiteLink[]
+    /**
+     * The sidebar's names for its lists outside a section: `pages` for the top-level pages (the
+     * site's name by default) and `sections` for the list of sections (`'Sections'` by default).
+     * Kiln's are "Kiln" and "Packages".
+     */
+    labels?: { pages?: string; sections?: string }
+  }
   footer: { text: string; links: readonly SiteLink[] }
-  search: { placeholder: string }
+  search: {
+    placeholder: string
+    /** Where search runs. `'orama-static'`, the default, exports one index at build time. */
+    provider?: SearchProvider
+  }
   /** The 404 page's copy, and where it sends a reader. */
   notFound: { description: string; action: SiteLink }
   markdown: {
