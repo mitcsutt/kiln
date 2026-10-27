@@ -8,9 +8,25 @@ import { trimTrailingNewlines } from '#utils/newlines'
 import type { HighlighterCore, LanguageRegistration, ThemeRegistration } from 'shiki/core'
 
 /** The languages `highlight` understands, with their usual aliases. */
-export type HighlightLanguage = 'js' | 'javascript' | 'jsx' | 'ts' | 'typescript' | 'tsx'
+export type HighlightLanguage =
+  | 'js'
+  | 'javascript'
+  | 'jsx'
+  | 'ts'
+  | 'typescript'
+  | 'tsx'
+  | 'bash'
+  | 'sh'
+  | 'shell'
+  | 'shellscript'
+  | 'zsh'
+  | 'json'
+  | 'yaml'
+  | 'yml'
+  | 'diff'
 
-type Grammar = 'javascript' | 'jsx' | 'typescript' | 'tsx'
+type Grammar =
+  'javascript' | 'jsx' | 'typescript' | 'tsx' | 'shellscript' | 'json' | 'yaml' | 'diff'
 
 const GRAMMARS: Record<HighlightLanguage, Grammar> = {
   js: 'javascript',
@@ -19,6 +35,15 @@ const GRAMMARS: Record<HighlightLanguage, Grammar> = {
   ts: 'typescript',
   typescript: 'typescript',
   tsx: 'tsx',
+  bash: 'shellscript',
+  sh: 'shellscript',
+  shell: 'shellscript',
+  shellscript: 'shellscript',
+  zsh: 'shellscript',
+  json: 'json',
+  yaml: 'yaml',
+  yml: 'yaml',
+  diff: 'diff',
 }
 
 const LOADERS: Record<Grammar, () => Promise<{ default: LanguageRegistration[] }>> = {
@@ -26,6 +51,10 @@ const LOADERS: Record<Grammar, () => Promise<{ default: LanguageRegistration[] }
   jsx: () => import('shiki/langs/jsx.mjs'),
   typescript: () => import('shiki/langs/typescript.mjs'),
   tsx: () => import('shiki/langs/tsx.mjs'),
+  shellscript: () => import('shiki/langs/shellscript.mjs'),
+  json: () => import('shiki/langs/json.mjs'),
+  yaml: () => import('shiki/langs/yaml.mjs'),
+  diff: () => import('shiki/langs/diff.mjs'),
 }
 
 const TYPES: CodeTokenType[] = [
@@ -52,7 +81,13 @@ const RULES: [string[], CodeTokenType | null][] = [
   [['string', 'punctuation.definition.string'], 'string'],
   [['meta.template.expression'], null],
   [
-    ['constant.numeric', 'constant.language', 'constant.character', 'variable.language'],
+    [
+      'constant.numeric',
+      'constant.language',
+      'constant.character',
+      'constant.other.option',
+      'variable.language',
+    ],
     'constant',
   ],
   [['keyword', 'storage', 'keyword.operator.new', 'keyword.operator.expression'], 'keyword'],
@@ -75,6 +110,16 @@ const RULES: [string[], CodeTokenType | null][] = [
     'string',
   ],
   [['punctuation.definition.template-expression'], 'punctuation'],
+  // Keys are types in JSON and YAML alike, quotes included.
+  [['punctuation.support.type.property-name', 'entity.name.tag.yaml'], 'type'],
+  // A diff's headers, hunk ranges, and added and removed lines, each with its marker.
+  [
+    ['meta.diff.header', 'punctuation.definition.from-file', 'punctuation.definition.to-file'],
+    'keyword',
+  ],
+  [['meta.diff.range', 'punctuation.definition.range'], 'function'],
+  [['markup.inserted', 'punctuation.definition.inserted'], 'string'],
+  [['markup.deleted', 'punctuation.definition.deleted'], 'constant'],
 ]
 
 const THEME: ThemeRegistration = {
@@ -133,7 +178,10 @@ export async function highlight(
   if (!isHighlightLanguage(id)) return undefined
   const grammar = GRAMMARS[id]
   const core = await load(grammar)
-  const lines = core.codeToTokensBase(trimTrailingNewlines(code), { lang: grammar, theme: 'kiln' })
+  const lines = core.codeToTokensBase(trimTrailingNewlines(code), {
+    lang: grammar,
+    theme: 'kiln',
+  })
   return lines.map((line) => {
     const tokens: CodeToken[] = []
     for (const { content, color } of line) {

@@ -4,7 +4,7 @@ import { Amount, Card, Grid, Inline, Stack, Text } from '@mitcsutt/kiln-ui'
 import { useState } from 'react'
 import { expect, userEvent, waitFor, within } from 'storybook/test'
 
-import { drag, expectAnnouncement, storyRoot, wait } from '#stories/play'
+import { drag, expectAnnouncement, storyRoot } from '#stories/play'
 
 const meta = {
   title: 'Drag and drop/Components/Draggable',
@@ -201,9 +201,8 @@ export const TouchPress: Story = {
     const zone = canvas.getByText('Paid')
 
     await drag(invoice, zone, { pointerType: 'touch', hold: 0 })
-    await wait(50)
     await expect(canvas.getByText('Invoice 1043')).toBeInTheDocument()
-    await expect(root.querySelector('[data-dragging]')).toBeNull()
+    await waitFor(() => expect(root.querySelector('[data-dragging]')).toBeNull())
 
     await drag(canvas.getByText('Invoice 1043'), zone, { pointerType: 'touch', hold: 300 })
     await expectAnnouncement(root, 'Dropped Invoice 1043 on Paid.')

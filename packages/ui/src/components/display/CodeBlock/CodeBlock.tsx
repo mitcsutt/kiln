@@ -59,14 +59,15 @@ export interface CodeBlockProps extends Omit<HTMLAttributes<HTMLElement>, 'title
  * @remarks
  * `CodeBlock` shows code: a snippet in an article, a command, a config example. It's a plain
  * surface with an optional title bar, never fake window chrome. It's plain unless you pass
- * `tokens`: `highlight` from `@mitcsutt/kiln-ui/highlight` turns JavaScript, JSX, TypeScript and
- * TSX into tokens, coloured from the theme. Every code sample in these docs is a `CodeBlock`.
+ * `tokens`: `highlight` from `@mitcsutt/kiln-ui/highlight` turns JavaScript, JSX, TypeScript,
+ * TSX, shell, JSON, YAML and diffs into tokens, coloured from the theme. Every code sample in these docs is a `CodeBlock`.
  *
  * ## Highlighting
  *
  * `highlight(code, language)` resolves to the tokens for `code`, or to `undefined` for a language
- * other than `js`, `jsx`, `ts` or `tsx` (or `javascript` and `typescript`), which `CodeBlock`
- * shows as plain code. It runs [Shiki](https://shiki.style), an optional peer dependency, so
+ * it doesn't know, which `CodeBlock` shows as plain code. It knows `js`, `jsx`, `ts` and `tsx`
+ * (or `javascript` and `typescript`), `bash` (or `sh`, `shell`, `shellscript` and `zsh`), `json`,
+ * `yaml` (or `yml`) and `diff`, in any case. It runs [Shiki](https://shiki.style), an optional peer dependency, so
  * install `shiki` to use it. The main `@mitcsutt/kiln-ui` entry never loads it.
  *
  * Keywords and tags take the accent, strings, constants, functions and types take the theme's

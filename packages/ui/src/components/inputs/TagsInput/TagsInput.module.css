@@ -29,7 +29,8 @@
   min-inline-size: 0;
 }
 
-.chips {
+/* Scoped under .values so it outranks TagList's .list whatever order the CSS chunks load in. */
+.values .chips {
   display: contents;
 }
 
