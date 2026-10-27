@@ -57,5 +57,5 @@ pnpm check:browser                               # Kiln's site built, then the c
 ## Don'ts
 
 - No `any`, no `@ts-ignore`.
-- Don't add a runtime dependency without an ADR. Today: `esbuild`, `node-html-parser` and `unist-util-visit`; everything else is a peer.
+- Don't add a runtime dependency without an ADR. Today: `esbuild`, `node-html-parser`, `pagefind` (ADR 0048) and `unist-util-visit`; everything else is a peer.
 - Don't import kiln-ui's root entry from a Node entry, or from server code: it imports CSS and creates React context.

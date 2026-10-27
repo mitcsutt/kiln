@@ -3,6 +3,8 @@ import { createRequire } from 'node:module'
 import { createServer } from 'node:net'
 import { dirname, join } from 'node:path'
 import { parse } from 'node-html-parser'
+import { DEFAULT_SEARCH_PROVIDER, SEARCH_ROUTE, type SearchProvider } from '../config.ts'
+import { PAGEFIND_DIR, PAGEFIND_SCRIPT } from '../pagefind.ts'
 
 const CONCURRENCY = 8
 /** Every request, and the whole run, gives up rather than hang. */
@@ -34,6 +36,14 @@ export interface CheckLinksOptions {
   root: string
   /** Where the site is deployed (`site.url`). Absolute links to it, as `llms.txt` writes them, are checked here. */
   url: string
+  /** The site's `search.provider`, whose index is checked with the pages. */
+  search?: SearchProvider
+}
+
+/** What a provider's index is served as: Pagefind's script and entry file, or the Orama index. */
+const SEARCH_FILES: Readonly<Record<SearchProvider, readonly string[]>> = {
+  pagefind: [PAGEFIND_SCRIPT, `/${PAGEFIND_DIR}/pagefind-entry.json`],
+  'orama-static': [SEARCH_ROUTE],
 }
 
 /** Wrangler's own binary, from the site's dependencies. */
@@ -55,11 +65,13 @@ function wranglerBin(root: string): string {
  *
  * It checks the site as a reader gets it: `wrangler dev` serves `out/` with the deployed Worker's
  * config and `_headers` (ADR 0034), so `/docs/<page>.md`, `llms.txt` and the search index are
- * crawled like any other page.
+ * crawled like any other page: Pagefind's script and entry file, or the Orama index at
+ * `/api/search` (ADR 0048).
  */
 export async function checkLinks({
   root,
   url: siteUrl,
+  search = DEFAULT_SEARCH_PROVIDER,
 }: CheckLinksOptions): Promise<{ checked: number; problems: string[] }> {
   const port = await freePort()
   const origin = `http://127.0.0.1:${String(port)}`
@@ -206,7 +218,13 @@ export async function checkLinks({
     return await Promise.race([
       (async () => {
         await waitForServer()
-        const checked = await crawl(['/', '/docs', '/llms.txt', '/llms-full.txt', '/api/search'])
+        const checked = await crawl([
+          '/',
+          '/docs',
+          '/llms.txt',
+          '/llms-full.txt',
+          ...SEARCH_FILES[search],
+        ])
         return { checked, problems: problems.sort() }
       })(),
       deadline,

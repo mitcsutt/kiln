@@ -1,6 +1,6 @@
 # 0047. kiln-docs is proven by an outside site before its first release
 
-- **Status:** Accepted (amends [0045](0045-kiln-docs.md))
+- **Status:** Accepted, amended by [0048](0048-kiln-docs-pagefind.md) (amends [0045](0045-kiln-docs.md))
 - **Date:** 2026-10-27
 
 ## Context

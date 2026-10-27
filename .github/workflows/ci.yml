@@ -168,7 +168,9 @@ jobs:
   # kiln-docs as an outside site installs it (ADR 0045, Phase 4): the packed tarball in a folder
   # outside the workspace, its peers resolved fresh from npm, a site shaped like a real one built,
   # post-built and link-checked, in three variants: a fixed theme, a picker with kiln-ui at the
-  # floor of its range, and without shiki in the site's dependencies.
+  # floor of its range, and without shiki in the site's dependencies. Each searches its build
+  # from the header in Chromium: Pagefind, or the Orama index the picker opts into, and the fixed
+  # theme's under `next dev` too (ADR 0048).
   docs-smoke:
     name: Docs package smoke test
     runs-on: ubuntu-latest
@@ -176,6 +178,7 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
       - uses: ./.github/actions/setup
+      - uses: ./.github/actions/chromium
       - name: Build kiln-docs
         run: pnpm turbo run build --filter=@mitcsutt/kiln-docs
       - name: Install, build and check the smoke sites

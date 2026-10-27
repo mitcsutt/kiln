@@ -166,6 +166,7 @@
   "dependencies": {
     "esbuild": "^0.28.2",
     "node-html-parser": "^9.0.4",
+    "pagefind": "~1.5.2",
     "unist-util-visit": "^5.1.0"
   },
   "devDependencies": {
@@ -183,6 +184,7 @@
     "fumadocs-core": "catalog:",
     "fumadocs-mdx": "catalog:",
     "next": "catalog:",
+    "playwright": "catalog:",
     "publint": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",

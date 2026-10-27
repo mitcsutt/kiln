@@ -155,7 +155,9 @@ try {
   const crumbs = await button.locator('article header p').first().textContent()
   check('the breadcrumb starts with the section', crumbs === 'UI / Actions', crumbs)
 
-  // Search: the header's dialog queries the static index.
+  // Search: the header's dialog queries the Pagefind index that postbuild wrote (ADR 0048).
+  const loaded: string[] = []
+  button.on('request', (request) => loaded.push(new URL(request.url()).pathname))
   await button
     .getByRole('button', { name: /Search/ })
     .first()
@@ -164,7 +166,11 @@ try {
   const results = button.getByRole('list', { name: 'Results' })
   await results.waitFor()
   const result = await results.getByRole('link').first().getAttribute('href')
-  check('search finds a page in the static index', result?.startsWith('/docs/') === true, result)
+  check(
+    'search finds FormSteps first in the Pagefind index',
+    result === '/docs/forms/layouts/form-steps' && loaded.includes('/pagefind/pagefind.js'),
+    { result, pagefind: loaded.filter((path) => path.startsWith('/pagefind/')).length },
+  )
 
   // The picker re-themes the site, stores the pick, and the pick survives a reload.
   await docs.getByRole('combobox', { name: 'Theme' }).click()

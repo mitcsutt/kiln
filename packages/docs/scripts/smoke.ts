@@ -3,20 +3,25 @@
  * from the packed kiln-docs tarball in a temporary folder outside the repository, so nothing
  * resolves through the workspace's links or its `node_modules`. Its peers are resolved fresh, with
  * no lockfile. Each variant installs, runs the site's `build` (its generator, `next build`, then
- * `kiln-docs postbuild`) and `check-links`, then checks the export.
+ * `kiln-docs postbuild`) and `check-links`, then checks the export, and searches it from the
+ * header in Chromium (ADR 0048).
  *
  *   node scripts/smoke.ts [variant ...]   after `pnpm build`; every variant when none is named
  *
- * - `fixed`: the fixture in `smoke/site` as it is: Flightdeck fixed, no picker.
+ * - `fixed`: the fixture in `smoke/site` as it is: Flightdeck fixed, no picker, Pagefind. Its
+ *   search is also checked under `next dev`, which searches the Orama index instead.
  * - `picker`: `smoke/variants/picker` over it, a reader's theme picker, with kiln-ui at the
- *   declared floor of its peer range.
+ *   declared floor of its peer range, and the Orama index, `search.provider: 'orama-static'`.
  * - `no-shiki`: the fixture without `shiki` in its dependencies, as the install line has it.
  */
-import { execFileSync } from 'node:child_process'
+import { execFileSync, spawn } from 'node:child_process'
 import { cpSync, existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
+import { readFile, stat } from 'node:fs/promises'
+import { createServer, type Server } from 'node:http'
 import { tmpdir } from 'node:os'
-import { join, relative } from 'node:path'
+import { extname, join, normalize, relative } from 'node:path'
 import { parse, type HTMLElement } from 'node-html-parser'
+import { chromium } from 'playwright'
 
 const pkg = join(import.meta.dirname, '..')
 const repo = join(pkg, '../..')
@@ -40,16 +45,21 @@ interface Variant {
   /** Changes to the site's dependencies. `null` removes one. */
   dependencies?: Record<string, string | null>
   picker: boolean
+  /** The site's `search.provider`. */
+  search: 'pagefind' | 'orama-static'
+  /** Whether its search is also checked under `next dev`. */
+  dev?: boolean
 }
 
 const VARIANTS: Record<string, Variant> = {
-  fixed: { picker: false },
+  fixed: { picker: false, search: 'pagefind', dev: true },
   picker: {
     overlay: join(pkg, 'smoke/variants/picker'),
     dependencies: { '@mitcsutt/kiln-ui': kilnUiFloor[1] },
     picker: true,
+    search: 'orama-static',
   },
-  'no-shiki': { dependencies: { shiki: null }, picker: false },
+  'no-shiki': { dependencies: { shiki: null }, picker: false, search: 'pagefind' },
 }
 
 /** Every page the fixture has: hand-written, generated, and `plugins/git` in both. */
@@ -195,7 +205,144 @@ function checkExport(site: string, variant: Variant, checks: Checks): void {
   }
 }
 
-function smoke(name: string, variant: Variant, tarball: string, root: string) {
+const TYPES: Record<string, string> = {
+  '.css': 'text/css',
+  '.html': 'text/html',
+  '.js': 'text/javascript',
+  '.json': 'application/json',
+}
+
+async function isFile(file: string): Promise<boolean> {
+  try {
+    return (await stat(file)).isFile()
+  } catch {
+    return false
+  }
+}
+
+/** Serves `out/` as Wrangler's `auto-trailing-slash` does: `/docs` is `docs.html`. */
+async function serveExport(out: string): Promise<{ origin: string; server: Server }> {
+  const server = createServer((request, response) => {
+    const { pathname } = new URL(request.url ?? '/', 'http://localhost')
+    const path = normalize(decodeURIComponent(pathname)).replace(/^\/+|\/+$/g, '')
+    const candidates = path ? [path, `${path}.html`, join(path, 'index.html')] : ['index.html']
+    void (async () => {
+      let file: string | undefined
+      for (const candidate of path.startsWith('..') ? [] : candidates) {
+        if (await isFile(join(out, candidate))) {
+          file = join(out, candidate)
+          break
+        }
+      }
+      const body = file ?? join(out, '404.html')
+      response.writeHead(file ? 200 : 404, {
+        'content-type': TYPES[extname(body)] ?? 'application/octet-stream',
+      })
+      response.end(await readFile(body))
+    })()
+  })
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve))
+  const address = server.address()
+  if (address === null || typeof address === 'string') throw new Error('No server address')
+  return { origin: `http://127.0.0.1:${String(address.port)}`, server }
+}
+
+/**
+ * Searches the site from the header's dialog in Chromium: "helper" is only on the hand-written
+ * `plugins/git` page, so it's the first result. `from` is what the search must have loaded: the
+ * Pagefind script, or the Orama index from the search route.
+ */
+async function checkSearch(origin: string, from: string, label: string, checks: Checks) {
+  const browser = await chromium.launch()
+  try {
+    const page = await browser.newPage()
+    const requests: string[] = []
+    const errors: string[] = []
+    page.on('request', (request) => requests.push(new URL(request.url()).pathname))
+    page.on('pageerror', (error) => errors.push(error.message))
+    const first = await (async () => {
+      await page.goto(`${origin}/docs`)
+      await page
+        .getByRole('button', { name: /Search/ })
+        .first()
+        .click()
+      await page.getByRole('searchbox', { name: 'Search' }).fill('helper')
+      const results = page.getByRole('list', { name: 'Results' })
+      await results.waitFor()
+      return results.getByRole('link').first().getAttribute('href')
+    })().catch((error: unknown) => String(error).split('\n')[0])
+    checks.that(
+      first === '/docs/plugins/git',
+      `${label}: search for "helper" finds /docs/plugins/git first, not ${String(first)}`,
+    )
+    checks.that(requests.includes(from), `${label}: search loads ${from}`)
+    checks.that(errors.length === 0, `${label}: no page errors, not ${errors.join('; ')}`)
+  } finally {
+    await browser.close()
+  }
+}
+
+/** The built site's search: the provider's files in the export, then a search in Chromium. */
+async function checkBuiltSearch(site: string, variant: Variant, checks: Checks) {
+  const out = join(site, 'out')
+  const pagefind = variant.search === 'pagefind'
+  checks.that(
+    existsSync(join(out, 'pagefind/pagefind.js')) === pagefind,
+    `the export ${pagefind ? 'has' : "hasn't"} a Pagefind index`,
+  )
+  checks.that(
+    existsSync(join(out, 'api/search')) !== pagefind,
+    `the export ${pagefind ? "hasn't" : 'has'} the Orama index at /api/search`,
+  )
+  const { origin, server } = await serveExport(out)
+  try {
+    await checkSearch(origin, pagefind ? '/pagefind/pagefind.js' : '/api/search', 'build', checks)
+  } finally {
+    server.close()
+  }
+}
+
+/** A free port on the loopback interface. */
+async function freePort(): Promise<number> {
+  const server = createServer()
+  await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve))
+  const address = server.address()
+  await new Promise((resolve) => server.close(resolve))
+  if (address === null || typeof address === 'string') throw new Error('No server address')
+  return address.port
+}
+
+/** Under `next dev` there's no export to index, so Pagefind's header searches the Orama route. */
+async function checkDevSearch(site: string, checks: Checks) {
+  const port = await freePort()
+  // localhost, not 127.0.0.1: Next.js serves its dev resources to another host only when
+  // `allowedDevOrigins` names it, and the page doesn't hydrate without them.
+  const origin = `http://localhost:${String(port)}`
+  console.log(`$ next dev --port ${String(port)}`)
+  const dev = spawn('pnpm', ['exec', 'next', 'dev', '--port', String(port)], {
+    cwd: site,
+    stdio: 'inherit',
+    detached: true,
+  })
+  try {
+    // The first request compiles the page, so the dev server is ready once /docs answers.
+    const deadline = Date.now() + 120_000
+    let ready = false
+    while (!ready && Date.now() < deadline) {
+      ready = await fetch(`${origin}/docs`).then(
+        (response) => response.ok,
+        () => false,
+      )
+      if (!ready) await new Promise((resolve) => setTimeout(resolve, 1000))
+    }
+    checks.that(ready, 'next dev serves /docs')
+    if (ready) await checkSearch(origin, '/api/search', 'next dev', checks)
+  } finally {
+    if (dev.pid) process.kill(-dev.pid, 'SIGTERM')
+  }
+}
+
+async function smoke(name: string, variant: Variant, tarball: string, root: string) {
   const site = join(root, name)
   cpSync(fixture, site, { recursive: true })
   if (variant.overlay) cpSync(variant.overlay, site, { recursive: true })
@@ -225,6 +372,8 @@ function smoke(name: string, variant: Variant, tarball: string, root: string) {
   )
   const checks = new Checks()
   checkExport(site, variant, checks)
+  await checkBuiltSearch(site, variant, checks)
+  if (variant.dev) await checkDevSearch(site, checks)
   return { name, times, versions, checks }
 }
 
@@ -250,7 +399,7 @@ try {
     const variant = VARIANTS[name]
     if (!variant) continue
     console.log(`\n== kiln-docs smoke: ${name} (${join(root, name)})`)
-    const result = smoke(name, variant, tarball, root)
+    const result = await smoke(name, variant, tarball, root)
     console.log(`\n== ${name}: installed`)
     for (const [dep, version] of Object.entries(result.versions)) console.log(`  ${dep} ${version}`)
     console.log(`== ${name}: ${JSON.stringify(result.times)} ms`)

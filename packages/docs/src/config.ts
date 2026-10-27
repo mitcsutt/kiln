@@ -14,15 +14,22 @@ export interface SiteLink {
 }
 
 /**
- * A search backend: the route that serves its index and the client that queries it. Only the
- * static Orama index for now; Pagefind is measured before the first release, and the provider is
- * chosen then, because switching later would change every site's search route (ADR 0045).
+ * A search backend: what the search route serves and the client the header queries (ADR 0048).
+ *
+ * - `'pagefind'`, the default: `kiln-docs postbuild` indexes the exported docs pages into
+ *   `out/pagefind/`, and a search downloads only the index chunks it touches. Under `next dev`,
+ *   which has no export, the header searches the search route's Orama index instead.
+ * - `'orama-static'`: the search route exports one Orama index at build time, which the header
+ *   downloads whole on the first search.
  */
-export type SearchProvider = 'orama-static'
+export type SearchProvider = 'pagefind' | 'orama-static'
 
-export const DEFAULT_SEARCH_PROVIDER: SearchProvider = 'orama-static'
+export const DEFAULT_SEARCH_PROVIDER: SearchProvider = 'pagefind'
 
-/** Where the search route is: `app/api/search/route.ts`. */
+/**
+ * Where the search route is: `app/api/search/route.ts`. It serves the Orama index: in the build
+ * for `'orama-static'`, and under `next dev` for `'pagefind'`.
+ */
 export const SEARCH_ROUTE = '/api/search'
 
 /**
@@ -78,7 +85,10 @@ export interface SiteConfig {
   footer: { text: string; links: readonly SiteLink[] }
   search: {
     placeholder: string
-    /** Where search runs. `'orama-static'`, the default, exports one index at build time. */
+    /**
+     * Where search runs: `'pagefind'`, the default, indexes the built pages in `kiln-docs
+     * postbuild`, and `'orama-static'` exports one index at build time (`SearchProvider`).
+     */
     provider?: SearchProvider
   }
   /** The 404 page's copy, and where it sends a reader. */
