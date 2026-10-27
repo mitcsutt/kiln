@@ -103,10 +103,16 @@
     --color-accent-text: light-dark(oklch(0.42 0.1 160), oklch(0.82 0.1 160));
     --color-accent-soft: light-dark(oklch(0.93 0.04 158), oklch(0.34 0.05 160));
 
-    /* Highlighter yellow — the one thing you circled. At night the same ink at the most chroma
-       its lightness allows, so it reads as a marker swipe, not an olive stain; muted ink keeps AA. */
-    --color-highlight: light-dark(oklch(0.95 0.09 102), oklch(0.41 0.087 102));
-    --color-highlight-ink: var(--color-ink);
+    /* Highlighter yellow — the one thing you circled. At night the swipe stays bright, as a
+       real highlighter does under a lamp, and the circled line keeps the day's carbon ink. */
+    --color-highlight: light-dark(oklch(0.95 0.09 102), oklch(0.86 0.15 100));
+    --color-highlight-ink: oklch(0.22 0.02 160);
+    /* Tone text on the yellow swipe: the auditor's inks at full strength, the same in both modes. */
+    --highlight-tone-positive-text: oklch(0.42 0.11 140);
+    --highlight-tone-caution-text: oklch(0.43 0.12 55);
+    --highlight-tone-critical-text: oklch(0.44 0.16 25);
+    --highlight-tone-info-text: oklch(0.42 0.07 235);
+    --highlight-accent-text: oklch(0.4 0.09 160);
 
     --color-focus: var(--color-ink);
     --color-selection: light-dark(oklch(0.93 0.1 102), oklch(0.45 0.09 102));
