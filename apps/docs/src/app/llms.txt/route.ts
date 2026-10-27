@@ -1,9 +1,6 @@
-import { markdown } from '@/lib/siteMarkdown'
+// kiln-docs route v1 f1f29020ec6d: written by @mitcsutt/kiln-docs, which updates it while it's unedited.
+import { site } from '@/lib/site'
 
 export const dynamic = 'force-static'
 
-export function GET() {
-  return new Response(markdown.llmsIndex(), {
-    headers: { 'Content-Type': 'text/markdown; charset=utf-8' },
-  })
-}
+export const { GET } = site.routes.llmsTxt

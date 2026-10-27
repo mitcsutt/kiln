@@ -1,7 +1,8 @@
 import { loader, type StaticSource } from 'fumadocs-core/source'
 import type { Metadata, MetadataRoute } from 'next'
-// Node resolves `next`'s subpaths by file: it has no `exports` map.
-import { notFound } from 'next/navigation.js'
+// The bare specifier, which Next.js resolves to its server build in route handlers and server
+// components. The root entry is compiled by the site's bundler, never loaded by plain Node.
+import { notFound } from 'next/navigation'
 import type { SiteConfig } from './config.ts'
 import { createMarkdown, type MarkdownTransform } from './markdown.ts'
 import { withPageOrder } from './pageOrder.ts'
@@ -50,8 +51,11 @@ const MARKDOWN_INDEX = 'index.md'
  * site code (ADR 0045): a hand-written page beats a generated page with the same slug, and
  * `getPages()` lists pages in a defined order.
  *
- * Each route file holds `export const dynamic = 'force-static'` itself, because Next.js ignores
- * re-exported segment config, and re-exports the rest from here.
+ * It holds no React: the route handlers re-export `routes`, and the layouts and pages come from
+ * their own entries (`createRootLayout(site)` from `@mitcsutt/kiln-docs/layout`, and so on), so
+ * each route segment imports only its own UI and its CSS. Each route handler holds
+ * `export const dynamic = 'force-static'` itself, because Next.js ignores re-exported segment
+ * config.
  */
 export function createDocsSite<
   const Config extends SiteConfig,
@@ -120,6 +124,8 @@ export function createDocsSite<
     markdown,
     /** `app/layout.tsx`: the metadata every page starts from. */
     metadata: rootMetadata(config),
+    /** `app/docs/[[...slug]]/page.tsx`: every docs page, for the static export. */
+    generateStaticParams: () => source.generateParams(),
     generateMetadata,
     routes: {
       /** `app/api/search/route.ts` */

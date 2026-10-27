@@ -1,12 +1,12 @@
 # Kiln docs
 
-The public docs site for Kiln: Fumadocs on Next.js, built with `@mitcsutt/kiln-ui` itself ([ADR 0009](../../docs/adr/0009-docs-and-storybook.md), [ADR 0019](../../docs/adr/0019-docs-site.md)). It's a private app, never published to npm. `next build` exports it as a static site, and every push to `main` that changes it deploys it to `kiln.mitchellsutton.com` on Cloudflare Workers ([ADR 0034](../../docs/adr/0034-docs-on-cloudflare-workers.md)).
+The public docs site for Kiln: Fumadocs on Next.js, built with `@mitcsutt/kiln-ui` itself ([ADR 0009](../../docs/adr/0009-docs-and-storybook.md), [ADR 0019](../../docs/adr/0019-docs-site.md)). It's a private app, never published to npm. The chrome, the theme picker, search, the Markdown routes, `kiln-docs postbuild` and the link check come from `@mitcsutt/kiln-docs` in [`packages/docs`](../../packages/docs), and this app holds what makes the site Kiln's ([ADR 0045](../../docs/adr/0045-kiln-docs.md)). `next build` exports it as a static site, and every push to `main` that changes it deploys it to `kiln.mitchellsutton.com` on Cloudflare Workers ([ADR 0034](../../docs/adr/0034-docs-on-cloudflare-workers.md)).
 
 ```sh
 pnpm --filter @mitcsutt/kiln-docs-site dev      # http://localhost:3000
 pnpm --filter @mitcsutt/kiln-docs-site build    # the static site, in out/
 pnpm --filter @mitcsutt/kiln-docs-site exec wrangler dev   # serve out/ as the Worker does, on :8787
-pnpm check:links                           # build, serve with Wrangler, and fail on any broken internal link
+pnpm check:links                           # build, serve with Wrangler, and fail on any broken internal link (kiln-docs check-links)
 ```
 
 ## Where things live
@@ -14,9 +14,11 @@ pnpm check:links                           # build, serve with Wrangler, and fai
 ```
 content/docs/         MDX pages and meta.json files: the sidebar tree (docs/tree.json at the root)
 site.config.ts        what makes the site Kiln's: name, URL, theme picker, header and footer links, llms.txt copy, variant axes
-scripts/              generate-api.ts, generate-tokens.ts, generate-examples.ts, stories-examples.ts, extract-example.ts, generate-pages.ts, generate-design-rules.ts, check-links.ts, compare-export.ts
-src/app/              routes: pages, /api/search, /llms.txt, /llms-full.txt, /docs/<page>.md
-src/components/       the site chrome, MDX components, foundations specimens
+source.config.ts      kiln-docs' MDX preset, with the `exports` frontmatter field and `<Examples of>`
+scripts/              generate-api.ts, generate-tokens.ts, generate-examples.ts, stories-examples.ts, extract-example.ts, generate-pages.ts, generate-design-rules.ts, compare-export.ts
+src/app/              the landing page, and route files that re-export what createDocsSite() returns
+src/lib/site.ts       createDocsSite(): Kiln's config, its pages, its MDX components and its Markdown transform (toMarkdown)
+src/components/       the landing page, Kiln's MDX components, foundations specimens
 src/skills/           the agent skills kiln-ui, kiln-forms, kiln-dnd and kiln-charts ship, built from these pages
 src/styles/harbour.css  the custom theme the Theming guide builds
 ```

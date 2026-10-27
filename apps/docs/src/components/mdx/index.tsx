@@ -1,7 +1,6 @@
 import type { MDXComponents } from 'mdx/types'
 import { Callout } from './client'
 import { Choice, DecisionPair } from './DecisionPair'
-import { Variant } from './Variant'
 import {
   ColourSwatches,
   DepthRoles,
@@ -11,7 +10,7 @@ import {
   TypeScale,
 } from '../foundations/Specimens'
 import { ThemeCompare, ThemeSpecimen } from '../foundations/Themes'
-import { Anchor, ApiSignature, ApiTable, Example, Pre } from './components'
+import { ApiSignature, ApiTable, Example } from './components'
 import {
   ComponentTokens,
   ContractTokens,
@@ -19,16 +18,16 @@ import {
   StarterThemeFile,
 } from './foundations'
 
-/** Everything an MDX page can use without importing it. */
+/**
+ * Kiln's MDX components, which every page can use without importing them, beside kiln-docs'
+ * own: `pre`, `a` and `Variant`.
+ */
 export function getMDXComponents(): MDXComponents {
   return {
-    pre: Pre,
-    a: Anchor,
     Example,
     ApiTable,
     ApiSignature,
     Callout,
-    Variant,
     DecisionPair,
     Choice,
     ColourSwatches,

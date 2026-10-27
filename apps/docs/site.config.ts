@@ -1,9 +1,15 @@
-import { THEMES } from '@mitcsutt/kiln-ui'
-import { defineSite } from './src/lib/config'
+import { defineSite } from '@mitcsutt/kiln-docs/config'
 
 const repository = 'https://github.com/mitcsutt/kiln'
 
-/** What makes the docs site Kiln's (`src/lib/config.ts` describes each key). */
+/**
+ * kiln-ui's built-in themes, as its `THEMES` lists them. The config is Node-loadable (ADR 0045),
+ * and kiln-ui's root entry, which exports `THEMES`, imports CSS, so they're written out here;
+ * `src/test/site-config.test.ts` fails when they differ from `THEMES`.
+ */
+const THEMES = ['paper', 'monograph', 'ledger', 'fiesta', 'flightdeck', 'riso']
+
+/** What makes the docs site Kiln's (`SiteConfig` in `@mitcsutt/kiln-docs/config` describes each key). */
 export default defineSite({
   name: 'Kiln',
   description:
@@ -22,6 +28,7 @@ export default defineSite({
       { href: '/docs/charts', label: 'Charts' },
       { href: '/docs/tooling', label: 'Tooling' },
     ],
+    labels: { sections: 'Packages' },
   },
   footer: {
     text: 'Kiln is MIT licensed. Nothing here is published to npm yet.',

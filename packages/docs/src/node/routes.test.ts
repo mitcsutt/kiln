@@ -27,7 +27,7 @@ const writeAll = () => {
 const stateOf = (path: string) => checkRouteFiles(app).find((file) => file.path === path)?.state
 
 describe('the route files', () => {
-  it('cover the route handlers and the SEO routes', () => {
+  it('cover the route handlers, the SEO routes and the layouts and pages', () => {
     expect(ROUTE_FILES.map((file) => file.path)).toEqual([
       'api/search/route.ts',
       'llms.txt/route.ts',
@@ -35,7 +35,18 @@ describe('the route files', () => {
       'llms.mdx/[...slug]/route.ts',
       'sitemap.ts',
       'robots.ts',
+      'layout.tsx',
+      'not-found.tsx',
+      'docs/layout.tsx',
+      'docs/[[...slug]]/page.tsx',
     ])
+  })
+
+  it("import the root layout's stylesheets, kiln-ui's first", () => {
+    const layout = ROUTE_FILES.find((file) => file.path === 'layout.tsx')?.content ?? ''
+    expect(layout).toContain(
+      "import '@mitcsutt/kiln-ui/styles.css'\nimport '@mitcsutt/kiln-docs/styles.css'\n",
+    )
   })
 
   it('each carry an unedited stamp', () => {
@@ -46,28 +57,48 @@ describe('the route files', () => {
   })
 
   // Next.js ignores re-exported segment config, so the literal is in each file (ADR 0045).
-  it("each hold export const dynamic = 'force-static' themselves", () => {
-    for (const file of ROUTE_FILES) {
+  it("each handler holds export const dynamic = 'force-static' itself", () => {
+    for (const file of ROUTE_FILES.filter(({ path }) => path.endsWith('.ts'))) {
       expect(file.content).toContain("\nexport const dynamic = 'force-static'\n")
     }
   })
 
-  it('re-export members createDocsSite returns', () => {
+  it('use only members createDocsSite returns and the entries kiln-docs exports', async () => {
     const site = createDocsSite({
       config: testConfig,
       collections: { docs: collection(page('index.md')) },
     })
-    const routes: Record<string, unknown> = site.routes
-    // `export const { GET } = site.routes.search`, or `export default site.routes.sitemap`.
-    const exported = ROUTE_FILES.flatMap(({ path, content }) => {
-      const match = /export (?:const \{ ([^}]+) \} =|default) site\.routes\.(\w+)/.exec(content)
-      const [, names, member = ''] = match ?? []
-      const route = routes[member] as Record<string, unknown> | undefined
-      return names
-        ? names.split(', ').map((name) => [`${path}: ${member}.${name}`, typeof route?.[name]])
-        : [[`${path}: ${member}`, typeof route]]
-    })
-    expect(exported).toEqual(exported.map(([name]) => [name, 'function']))
+    /** `site.routes.search` → the member it names. */
+    const member = (path: string) =>
+      path
+        .split('.')
+        .slice(1)
+        .reduce<unknown>((value, key) => (value as Record<string, unknown>)[key], site)
+    const used: [string, string][] = []
+    for (const { path, content } of ROUTE_FILES) {
+      // `export const { GET } = site.routes.search`, `export default site.routes.sitemap`, or
+      // `export const metadata = site.metadata`.
+      for (const [, names, , from = ''] of content.matchAll(
+        /^export (?:const \{ ([^}]+) \} = |const (\w+) = |default )(site[.\w]*)$/gm,
+      )) {
+        for (const name of names ? names.split(', ').map((name) => `${from}.${name}`) : [from]) {
+          used.push([`${path}: ${name}`, typeof member(name)])
+        }
+      }
+      // `import { createDocsPage } from '@mitcsutt/kiln-docs/docs-page'`, and the re-export form.
+      for (const [, binding = '', entry = ''] of content.matchAll(
+        /^(?:import|export) \{ (\w+)[^}]* \} from '(@mitcsutt\/kiln-docs[^']*)'$/gm,
+      )) {
+        const exported = (await import(entry)) as Record<string, unknown>
+        used.push([`${path}: ${entry} ${binding}`, typeof exported[binding]])
+      }
+    }
+    expect(used.map(([name]) => name)).toContain(
+      'layout.tsx: @mitcsutt/kiln-docs/layout createRootLayout',
+    )
+    expect(used).toEqual(
+      used.map(([name]) => [name, name.endsWith('site.metadata') ? 'object' : 'function']),
+    )
   })
 })
 

@@ -1,11 +1,11 @@
 {
-  "extends": "@mitcsutt/kiln-tsconfig/node",
+  "extends": "@mitcsutt/kiln-tsconfig/react",
   "compilerOptions": {
     "allowImportingTsExtensions": true,
-    "erasableSyntaxOnly": true,
+    "allowJs": true,
     "noEmit": true,
     "types": ["node", "vitest/globals"]
   },
-  "include": ["**/*.ts"],
+  "include": ["**/*.ts", "**/*.tsx", "bin"],
   "exclude": ["node_modules"]
 }

@@ -53,6 +53,20 @@ describe('defineDocsConfig', () => {
     )
   })
 
+  it("keeps a fence's title for the code block, after the site's remark steps", async () => {
+    const seen: (string | undefined)[] = []
+    const site = () => (tree: { children: { meta?: string }[] }) => {
+      seen.push(tree.children[0]?.meta)
+    }
+    for (const remarkPlugins of [[site], () => [site]]) {
+      const config = defineDocsConfig({ remarkPlugins })
+      expect(await html('```ts title="a.ts"\nconst a = 1\n```', 'md', config)).toBe(
+        '<pre><code class="language-ts" data-title="a.ts">const a = 1\n</code></pre>',
+      )
+    }
+    expect(seen).toEqual(['title="a.ts"', 'title="a.ts"'])
+  })
+
   describe.each([
     ['a list', (plugin: () => (tree: Node) => void) => [plugin]],
     ['a function', (plugin: () => (tree: Node) => void) => () => [plugin]],

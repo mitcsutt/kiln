@@ -119,11 +119,21 @@ export default defineConfig(
     extends: [node],
   },
   {
-    // kiln-docs' entries so far run in Node and the Next.js server: the loader, the generated
-    // pages and the config loader (ADR 0045).
+    // kiln-docs' Node side (ADR 0045): the entries a site's config files load, the loader and
+    // the Markdown routes on the Next.js server, and the bin.
     name: 'kiln/workspace/docs-package',
-    files: ['packages/docs/src/**'],
+    files: ['packages/docs/src/**', 'packages/docs/bin/**'],
     extends: [node],
+  },
+  {
+    // kiln-docs' chrome: the layouts a site's route files re-export, and their components.
+    name: 'kiln/workspace/docs-package/chrome',
+    files: ['packages/docs/src/**/*.tsx'],
+    extends: [react],
+    rules: {
+      // A library module isn't an app's HMR boundary, as in ui (ADR 0015).
+      'react-refresh/only-export-components': 'off',
+    },
   },
   {
     // Build and report tooling shared by the packages, like the config files.
