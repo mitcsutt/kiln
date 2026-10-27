@@ -16,9 +16,11 @@ export function themeSelector(name: string): RegExp {
   return new RegExp(`\\[data-theme=(["']?)${escape(name)}\\1\\]`)
 }
 
-/** The themes a site offers readers, but the base theme, which every export has. */
+/** The themes a site shows readers, but the base theme, which every export has. */
 export function configuredThemes(config: Pick<SiteConfig, 'theme'>): string[] {
-  return [...new Set(config.theme.picker)].filter((name) => name !== BASE_THEME)
+  const { theme } = config
+  const names = 'fixed' in theme ? [theme.fixed] : theme.picker
+  return [...new Set(names)].filter((name) => name !== BASE_THEME)
 }
 
 /** The themes no stylesheet in `css` styles. */
@@ -38,8 +40,8 @@ function importFor(root: string, name: string): string {
 }
 
 /**
- * Fails, naming the import to add, when a theme the site offers has no CSS in the static export:
- * its picker would switch to an unstyled theme (ADR 0045). The selectors are matched with or
+ * Fails, naming the import to add, when a theme the site shows has no CSS in the static export:
+ * the site, or its picker, would show an unstyled theme (ADR 0045). The selectors are matched with or
  * without quotes, because the built CSS is minified.
  */
 export function checkThemeCss(

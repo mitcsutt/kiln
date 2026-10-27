@@ -6,6 +6,8 @@
  * the browser. It's also Node-loadable (ADR 0045): the `kiln-docs` bin loads it through esbuild,
  * so it uses no tsconfig path aliases and imports nothing plain Node can't load.
  */
+import { KILN_UI_THEMES } from './themes.ts'
+
 export interface SiteLink {
   href: string
   label: string
@@ -23,6 +25,36 @@ export const DEFAULT_SEARCH_PROVIDER: SearchProvider = 'orama-static'
 /** Where the search route is: `app/api/search/route.ts`. */
 export const SEARCH_ROUTE = '/api/search'
 
+/**
+ * One theme for the whole site, with no picker: `theme: { fixed: 'flightdeck' }`. The head script
+ * is kiln-ui's own `themeScript`, so only the colour mode is read from storage. The site imports
+ * kiln-ui's `styles.css` and that theme's preset; Paper is in `styles.css` and needs none.
+ */
+export interface FixedTheme {
+  fixed: string
+  /** The colour mode toggle in the header. `false` leaves the header with no theme controls. */
+  modeToggle?: boolean
+  /**
+   * The site's own themes, which its own stylesheets define. `defineSite` warns about a theme
+   * that's neither kiln-ui's nor listed here.
+   */
+  custom?: readonly string[]
+}
+
+/**
+ * A theme picker in the header, over `picker`, starting on `default`. The site imports the
+ * stylesheet of each theme it lists.
+ */
+export interface ThemePicker {
+  picker: readonly string[]
+  default: string
+  /**
+   * The site's own themes, which its own stylesheets define. `defineSite` warns about a theme
+   * that's neither kiln-ui's nor listed here.
+   */
+  custom?: readonly string[]
+}
+
 export interface SiteConfig {
   /** The wordmark, the title template, the sidebar's overview label and the `llms.txt` heading. */
   name: string
@@ -31,11 +63,8 @@ export interface SiteConfig {
   /** Where the site is deployed, with no trailing slash. The Markdown's absolute links use it. */
   url: string
   repository: { url: string }
-  /**
-   * A theme picker in the header, over `picker`, starting on `default`. The site imports the
-   * stylesheet of each theme it lists.
-   */
-  theme: { picker: readonly string[]; default: string }
+  /** One fixed theme (`FixedTheme`), or a picker in the header (`ThemePicker`). */
+  theme: FixedTheme | ThemePicker
   nav: {
     /** The sections in the header, each a top-level folder of the docs. */
     sections: readonly SiteLink[]
@@ -69,8 +98,111 @@ export interface SiteConfig {
   variants: Readonly<Record<string, { label: string; values: Readonly<Record<string, string>> }>>
 }
 
-/** Checks a site's config against `SiteConfig`, keeping its literal types. */
+/**
+ * The keys `defineSite` accepts at each level: `true` for a value it doesn't look inside, and
+ * `[shape]` for a list of objects of that shape.
+ */
+interface Shape {
+  [key: string]: true | Shape | [Shape]
+}
+
+const LINK: Shape = { href: true, label: true }
+
+const SITE_SHAPE: Shape = {
+  name: true,
+  description: true,
+  url: true,
+  repository: { url: true },
+  theme: true,
+  nav: { sections: [LINK], labels: { pages: true, sections: true } },
+  footer: { text: true, links: [LINK] },
+  search: { placeholder: true, provider: true },
+  notFound: { description: true, action: LINK },
+  markdown: { llms: { intro: true, sections: true } },
+  variants: true,
+}
+
+const FIXED_SHAPE: Shape = { fixed: true, modeToggle: true, custom: true }
+const PICKER_SHAPE: Shape = { picker: true, default: true, custom: true }
+const VARIANT_SHAPE: Shape = { label: true, values: true }
+
+const isObject = (value: unknown): value is Record<string, unknown> =>
+  typeof value === 'object' && value !== null && !Array.isArray(value)
+
+const list = (value: unknown): unknown[] => (Array.isArray(value) ? value : [])
+
+/** Each key in `value` that `shape` doesn't have, as a path from the config's root. */
+function unknownKeys(value: unknown, shape: Shape, path: string): string[] {
+  if (!isObject(value)) return []
+  return Object.entries(value).flatMap(([key, child]) => {
+    const at = path ? `${path}.${key}` : key
+    const known = Object.hasOwn(shape, key) ? shape[key] : undefined
+    if (!known) return [at]
+    if (known === true) return []
+    if (Array.isArray(known)) {
+      return list(child).flatMap((item, index) =>
+        unknownKeys(item, known[0], `${at}[${String(index)}]`),
+      )
+    }
+    return unknownKeys(child, known, at)
+  })
+}
+
+/** The keys a site's theme may have: those of a fixed theme, or those of a picker. */
+function themeShape(theme: unknown): Shape {
+  if (!isObject(theme)) return {}
+  if ('fixed' in theme && 'picker' in theme) {
+    throw new Error(
+      "kiln-docs: site.config.ts sets both theme.fixed and theme.picker. A site has one fixed theme, { fixed: 'flightdeck' }, or a picker, { picker: [...], default: 'paper' }.",
+    )
+  }
+  if (Array.isArray(theme.picker) && !theme.picker.includes(theme.default)) {
+    throw new Error(
+      `kiln-docs: site.config.ts starts the picker on ${String(theme.default)}, which theme.picker doesn't offer.`,
+    )
+  }
+  return 'fixed' in theme ? FIXED_SHAPE : PICKER_SHAPE
+}
+
+/** The themes a site names that are neither kiln-ui's nor listed in `theme.custom`. */
+function unstyledThemes(theme: unknown): string[] {
+  if (!isObject(theme)) return []
+  const names = 'fixed' in theme ? [theme.fixed] : [...list(theme.picker), theme.default]
+  const known = [...KILN_UI_THEMES, ...list(theme.custom)]
+  return [...new Set(names)].filter(
+    (name): name is string => typeof name === 'string' && !known.includes(name),
+  )
+}
+
+/**
+ * Checks a site's config against `SiteConfig`, keeping its literal types.
+ *
+ * It's strict: a key `SiteConfig` doesn't have throws, so a key from an older shape (a top-level
+ * `baseUrl`, say) fails loudly instead of being ignored (ADR 0046). It warns about a theme that's
+ * neither kiln-ui's nor listed in `theme.custom`, since nothing would style it.
+ */
 export function defineSite<const Config extends SiteConfig>(config: Config): Config {
+  const site: Record<string, unknown> = isObject(config) ? config : {}
+  const unknown = [
+    ...unknownKeys(site, SITE_SHAPE, ''),
+    ...unknownKeys(site.theme, themeShape(site.theme), 'theme'),
+    ...(isObject(site.variants)
+      ? Object.entries(site.variants).flatMap(([axis, variant]) =>
+          unknownKeys(variant, VARIANT_SHAPE, `variants.${axis}`),
+        )
+      : []),
+  ]
+  if (unknown.length) {
+    const one = unknown.length === 1
+    throw new Error(
+      `kiln-docs: site.config.ts has ${one ? 'a key' : 'keys'} SiteConfig doesn't: ${unknown.join(', ')}. Remove ${one ? 'it' : 'them'}; SiteConfig in @mitcsutt/kiln-docs/config lists the keys a site sets.`,
+    )
+  }
+  for (const name of unstyledThemes(site.theme)) {
+    console.warn(
+      `kiln-docs: the ${name} theme isn't one of kiln-ui's. If the site's own stylesheet defines it, list it in theme.custom.`,
+    )
+  }
   return config
 }
 

@@ -10,10 +10,15 @@ function themeLabel(name: string): string {
     : name
 }
 
-/** Re-themes the whole site, chrome included: every page is a preview of every theme. */
+/**
+ * The header's theme controls. A picker re-themes the whole site, chrome included, so every page
+ * is a preview of every theme. A fixed theme has the mode toggle only, or nothing with
+ * `modeToggle: false`.
+ */
 export function ThemeSwitcher() {
   const { theme: config } = useSiteConfig()
   const { theme, setTheme } = useTheme()
+  if ('fixed' in config) return config.modeToggle === false ? null : <ModeToggle size="md" />
   return (
     <Inline gap={2} wrap={false}>
       <Select

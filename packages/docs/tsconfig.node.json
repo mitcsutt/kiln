@@ -11,6 +11,7 @@
     "src/generate.ts",
     "src/mdx-config.ts",
     "src/next.ts",
+    "src/themes.ts",
     "src/variants.ts",
     "src/node/*.ts"
   ],

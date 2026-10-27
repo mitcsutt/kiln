@@ -1,5 +1,5 @@
 name: Chromium
-description: Install Playwright's headless Chromium for the Storybook app, cached per Playwright version.
+description: Install Playwright's headless Chromium for the Storybook tests and the docs browser checks, cached per Playwright version (both use the catalog's).
 
 # No `--with-deps`: the Ubuntu runner image already has every library Chromium needs, so it
 # only added fonts, and its `apt-get update` once hung for over ten minutes on the runner's

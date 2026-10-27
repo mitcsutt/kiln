@@ -50,6 +50,29 @@ describe('the entries', () => {
     ])
   })
 
+  // ADR 0046: each route segment has its own entry, so it imports only its own UI and CSS.
+  it('export one factory or component from each route segment entry', async () => {
+    const segments = {
+      '@mitcsutt/kiln-docs/layout': await import('@mitcsutt/kiln-docs/layout'),
+      '@mitcsutt/kiln-docs/docs-layout': await import('@mitcsutt/kiln-docs/docs-layout'),
+      '@mitcsutt/kiln-docs/docs-page': await import('@mitcsutt/kiln-docs/docs-page'),
+      '@mitcsutt/kiln-docs/not-found': await import('@mitcsutt/kiln-docs/not-found'),
+      '@mitcsutt/kiln-docs/shell': await import('@mitcsutt/kiln-docs/shell'),
+    }
+    expect(
+      Object.fromEntries(
+        Object.entries(segments).map(([entry, module]) => [entry, Object.keys(module)]),
+      ),
+    ).toEqual({
+      '@mitcsutt/kiln-docs/layout': ['createRootLayout'],
+      '@mitcsutt/kiln-docs/docs-layout': ['createDocsLayout'],
+      '@mitcsutt/kiln-docs/docs-page': ['createDocsPage'],
+      '@mitcsutt/kiln-docs/not-found': ['NotFound'],
+      '@mitcsutt/kiln-docs/shell': ['Shell'],
+    })
+    // Each imports the chrome and kiln-ui's source, which takes a while beside other test files.
+  }, 30_000)
+
   it('run the bin from the workspace shim', () => {
     const run = () =>
       execFileSync(process.execPath, [join(import.meta.dirname, '../bin/kiln-docs.js')], {

@@ -11,4 +11,10 @@ export default withKilnDocs({
     '@mitcsutt/kiln-dnd',
     '@mitcsutt/kiln-charts',
   ],
+  turbopack: {
+    // kiln-docs' root layout imports kiln-ui's `theme-script` entry, whose `node` condition points
+    // the server build at kiln-ui's dist/ (ADR 0023), which `next dev` doesn't build. Inside the
+    // workspace it resolves the source, like every other kiln-ui entry.
+    resolveAlias: { '@mitcsutt/kiln-ui/theme-script': '../../packages/ui/src/theme/script.ts' },
+  },
 })
