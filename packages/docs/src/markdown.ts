@@ -40,7 +40,7 @@ export interface MarkdownOptions<Page extends MarkdownPage> {
 /**
  * A description on one line. A YAML block scalar (`description: |`) keeps its line breaks, which
  * would end an `llms.txt` list item or a `>` quote early. The block's indicator itself (`>-`) never
- * reaches here: frontmatter is read by Fumadocs' YAML parser, not line by line (ADR 0045, W8).
+ * reaches here: frontmatter is read by Fumadocs' YAML parser, not line by line (ADR 0046, W8).
  */
 export const oneLine = (text: string) => text.replace(/\s+/g, ' ').trim()
 
@@ -56,7 +56,7 @@ async function processedOf(page: MarkdownPage): Promise<string> {
 }
 
 /**
- * The site's Markdown for agents, in Kiln's format (ADR 0045), not Fumadocs' `llms()` helper.
+ * The site's Markdown for agents, in Kiln's format (ADR 0046), not Fumadocs' `llms()` helper.
  * `llms.txt` is `# <name>`, a `>` intro from config, a line pointing at the absolute
  * `llms-full.txt`, then a `## <section>` group per top-level folder, titled from
  * `markdown.llms.sections`, with each page as `- [<title>](<absolute URL>.md): <description>`.

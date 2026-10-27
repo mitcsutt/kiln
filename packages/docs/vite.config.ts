@@ -5,7 +5,7 @@ import { defineLibraryConfig } from '../../vite.library.ts'
 // One entry per `exports` subpath with code, plus the bin's CLI: the Node entries
 // (`./config`, `./generate`, `./mdx-config`, `./next`, `./variants`) and the bin run in plain
 // Node, and the layouts each get their own entry so a route segment imports only its own UI
-// (ADR 0046). The chrome's CSS Modules land in `styles.css`. Node's built-ins stay imports, for
+// (ADR 0047). The chrome's CSS Modules land in `styles.css`. Node's built-ins stay imports, for
 // the Node entries and the bin, instead of Vite's browser stubs.
 export default mergeConfig(
   defineLibraryConfig({

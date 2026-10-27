@@ -1,6 +1,6 @@
 import { MODE_STORAGE_KEY, THEME_STORAGE_KEY, variantStorageKey } from './storage.ts'
 
-// ADR 0045: the keys a reader's saved choices live under never change. A changed key resets
+// ADR 0046: the keys a reader's saved choices live under never change. A changed key resets
 // every reader's choice, and a rollback can't bring it back.
 describe("the reader's saved state", () => {
   it('keeps the theme and colour mode keys', () => {

@@ -12,7 +12,7 @@ afterEach(() => {
   vi.restoreAllMocks()
 })
 
-// ADR 0046: defineSite is strict, so a key from an older shape fails loudly instead of being
+// ADR 0047: defineSite is strict, so a key from an older shape fails loudly instead of being
 // ignored.
 describe('defineSite', () => {
   it('returns the config as it is', () => {

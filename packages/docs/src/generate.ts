@@ -54,7 +54,7 @@ function filesIn(dir: string): string[] {
 
 /**
  * Writes a site's generated pages before `next build`, into their own folder (`.generated/pages`
- * by default), and empties that folder and nothing else first. Precedence is by slug (ADR 0045):
+ * by default), and empties that folder and nothing else first. Precedence is by slug (ADR 0046):
  * a page whose slug a hand-written page already has is skipped and reported, whatever the
  * extension of either, and two generated pages with one slug throw before anything is written.
  * A `meta` file is skipped when a hand-written one has its path.

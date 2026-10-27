@@ -5,7 +5,7 @@ import { pathToFileURL } from 'node:url'
 import type { SiteConfig } from '../config.ts'
 
 const NODE_LOADABLE =
-  "A site's config is Node-loadable (ADR 0045): the kiln-docs bin loads it outside the site's bundler."
+  "A site's config is Node-loadable (ADR 0046): the kiln-docs bin loads it outside the site's bundler."
 
 /** Fails the build on an import plain Node can't load, naming what to import instead. */
 const nodeLoadable: Plugin = {

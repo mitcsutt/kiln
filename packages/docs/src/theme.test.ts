@@ -15,7 +15,7 @@ function run(script: string, stored: Record<string, string>) {
 }
 
 describe('the theme head script', () => {
-  // ADR 0045: the keys a reader's saved choices live under never change.
+  // ADR 0046: the keys a reader's saved choices live under never change.
   it("reads the reader's theme and colour mode from Kiln's keys", () => {
     const script = docsThemeScript(config)
     expect(script).toContain('localStorage.getItem("kiln-docs-theme")')
@@ -40,7 +40,7 @@ describe('the theme head script', () => {
 })
 
 describe('the head script for a fixed theme', () => {
-  // ADR 0045: a fixed theme is kiln-ui's own head script, with the theme a constant.
+  // ADR 0046: a fixed theme is kiln-ui's own head script, with the theme a constant.
   it("is kiln-ui's themeScript, with the mode under Kiln's key", () => {
     expect(docsThemeScript(fixed)).toBe(
       themeScript('flightdeck', 'system', { storageKey: 'kiln-color-mode' }),

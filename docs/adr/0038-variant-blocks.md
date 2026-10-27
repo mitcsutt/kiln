@@ -1,6 +1,6 @@
 # 0038. One docs page carries stack-specific content in variant blocks
 
-- **Status:** Accepted (amends [0020](0020-agent-skills.md)), amended by [0045](0045-kiln-docs.md)
+- **Status:** Accepted (amends [0020](0020-agent-skills.md)), amended by [0046](0046-kiln-docs.md)
 - **Date:** 2026-10-09
 
 ## Context

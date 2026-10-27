@@ -1,6 +1,6 @@
 /**
  * Compares a static export of the docs site with a baseline export, and fails unless they serve
- * readers the same site (ADR 0045, "Kiln's no-regression check"). A refactor of the site's code
+ * readers the same site (ADR 0046, "Kiln's no-regression check"). A refactor of the site's code
  * is checked with it against an export of the branch it started from:
  *
  *   git switch main && pnpm build && cp -r out /tmp/baseline-out
@@ -11,7 +11,7 @@
  *   visible text, `data-theme`, `data-mode` and the
  *   head script.
  * - The search index holds the same documents: the Orama index's documents, or the number of
- *   pages in each language of the Pagefind index (ADR 0048).
+ *   pages in each language of the Pagefind index (ADR 0049).
  * - Each theme selector has the same CSS rules.
  *
  * With `--report <dir>`, it also writes `<dir>/html.diff`, a diff of every page whose full HTML
@@ -113,7 +113,7 @@ if (changed.length) {
 }
 
 /**
- * The one accepted difference (ADR 0045): the Introduction's section links all pointed at `/docs`,
+ * The one accepted difference (ADR 0046): the Introduction's section links all pointed at `/docs`,
  * because folding a trailing `/index` into its folder was missing from the old slugs. They now
  * point at their sections' indexes.
  */

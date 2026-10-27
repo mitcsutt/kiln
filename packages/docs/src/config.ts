@@ -3,7 +3,7 @@
  * routes read it instead of holding a site's facts. A site's is `site.config.ts` at its root.
  *
  * It holds data only: client components read it, so a function here would pull its imports into
- * the browser. It's also Node-loadable (ADR 0045): the `kiln-docs` bin loads it through esbuild,
+ * the browser. It's also Node-loadable (ADR 0046): the `kiln-docs` bin loads it through esbuild,
  * so it uses no tsconfig path aliases and imports nothing plain Node can't load.
  */
 import { KILN_UI_THEMES } from './themes.ts'
@@ -14,7 +14,7 @@ export interface SiteLink {
 }
 
 /**
- * A search backend: what the search route serves and the client the header queries (ADR 0048).
+ * A search backend: what the search route serves and the client the header queries (ADR 0049).
  *
  * - `'pagefind'`, the default: `kiln-docs postbuild` indexes the exported docs pages into
  *   `out/pagefind/`, and a search downloads only the index chunks it touches. Under `next dev`,
@@ -188,7 +188,7 @@ function unstyledThemes(theme: unknown): string[] {
  * Checks a site's config against `SiteConfig`, keeping its literal types.
  *
  * It's strict: a key `SiteConfig` doesn't have throws, so a key from an older shape (a top-level
- * `baseUrl`, say) fails loudly instead of being ignored (ADR 0046). It warns about a theme that's
+ * `baseUrl`, say) fails loudly instead of being ignored (ADR 0047). It warns about a theme that's
  * neither kiln-ui's nor listed in `theme.custom`, since nothing would style it.
  */
 export function defineSite<const Config extends SiteConfig>(config: Config): Config {

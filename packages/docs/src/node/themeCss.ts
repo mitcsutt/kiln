@@ -41,7 +41,7 @@ function importFor(root: string, name: string): string {
 
 /**
  * Fails, naming the import to add, when a theme the site shows has no CSS in the static export:
- * the site, or its picker, would show an unstyled theme (ADR 0045). The selectors are matched with or
+ * the site, or its picker, would show an unstyled theme (ADR 0046). The selectors are matched with or
  * without quotes, because the built CSS is minified.
  */
 export function checkThemeCss(

@@ -3,7 +3,7 @@ import { defineSite } from '@mitcsutt/kiln-docs/config'
 const repository = 'https://github.com/mitcsutt/kiln'
 
 /**
- * kiln-ui's built-in themes, as its `THEMES` lists them. The config is Node-loadable (ADR 0045),
+ * kiln-ui's built-in themes, as its `THEMES` lists them. The config is Node-loadable (ADR 0046),
  * and kiln-ui's root entry, which exports `THEMES`, imports CSS, so they're written out here;
  * `src/test/site-config.test.ts` fails when they differ from `THEMES`.
  */

@@ -5,7 +5,7 @@ import { join } from 'node:path'
 /**
  * The route files a site keeps in `app/`: the route handlers re-export what `createDocsSite()`
  * returns, and the layouts and pages call their entry's factory with the site. A site
- * writes them by hand from the README until `kiln-docs init` writes them (ADR 0045). Each carries a
+ * writes them by hand from the README until `kiln-docs init` writes them (ADR 0046). Each carries a
  * stamp, the hash of the template it was written from, so a later `kiln-docs sync` can refresh
  * the ones a site hasn't edited and leave the rest alone, and `postbuild` can fail when one is
  * missing.

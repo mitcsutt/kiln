@@ -3,7 +3,7 @@ import type { LoaderConfig, LoaderOutput } from 'fumadocs-core/source'
 import { DEFAULT_SEARCH_PROVIDER, type SearchProvider } from './config.ts'
 
 /**
- * The seam between a site and its search backend (ADR 0045, ADR 0048). A site names a provider in
+ * The seam between a site and its search backend (ADR 0046, ADR 0049). A site names a provider in
  * `search.provider`; its search route serves what that provider's client reads under `next dev`
  * or in the build.
  *

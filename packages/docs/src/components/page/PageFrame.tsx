@@ -101,7 +101,7 @@ export function PageFrame({
     <AnchorProvider toc={toc} single>
       <Container width="full">
         <div className={styles.layout}>
-          {/* Pagefind indexes the article (ADR 0048). The breadcrumb is a result's metadata, not
+          {/* Pagefind indexes the article (ADR 0049). The breadcrumb is a result's metadata, not
               its text, and the Markdown link and the pager are on every page. */}
           <article className={styles.article}>
             <header className={styles.header}>

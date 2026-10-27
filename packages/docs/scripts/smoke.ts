@@ -1,10 +1,10 @@
 /**
- * The out-of-workspace smoke test (ADR 0045, Phase 4): a site shaped like a real one, installed
+ * The out-of-workspace smoke test (ADR 0046, Phase 4): a site shaped like a real one, installed
  * from the packed kiln-docs tarball in a temporary folder outside the repository, so nothing
  * resolves through the workspace's links or its `node_modules`. Its peers are resolved fresh, with
  * no lockfile. Each variant installs, runs the site's `build` (its generator, `next build`, then
  * `kiln-docs postbuild`) and `check-links`, then checks the export, and searches it from the
- * header in Chromium (ADR 0048).
+ * header in Chromium (ADR 0049).
  *
  *   node scripts/smoke.ts [variant ...]   after `pnpm build`; every variant when none is named
  *

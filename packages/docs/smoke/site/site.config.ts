@@ -2,7 +2,7 @@ import { defineSite } from '@mitcsutt/kiln-docs/config'
 
 const repository = 'https://github.com/example/smoke-toolbelt'
 
-/** A toolbelt-shaped site: one fixed theme, the mode toggle, no picker (ADR 0045). */
+/** A toolbelt-shaped site: one fixed theme, the mode toggle, no picker (ADR 0046). */
 export default defineSite({
   name: 'Smoke Toolbelt',
   description: 'Plugins for an agent, documented by a site built on @mitcsutt/kiln-docs.',

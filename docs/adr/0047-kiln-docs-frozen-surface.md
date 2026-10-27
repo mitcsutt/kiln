@@ -1,11 +1,11 @@
-# 0046. kiln-docs freezes its public surface before it's published
+# 0047. kiln-docs freezes its public surface before it's published
 
-- **Status:** Accepted, amended by [0048](0048-kiln-docs-pagefind.md) (amends [0023](0023-theme-script-entry.md) and [0045](0045-kiln-docs.md))
+- **Status:** Accepted, amended by [0049](0049-kiln-docs-pagefind.md) (amends [0023](0023-theme-script-entry.md) and [0046](0046-kiln-docs.md))
 - **Date:** 2026-10-27
 
 ## Context
 
-[0045](0045-kiln-docs.md) locked the plan for `@mitcsutt/kiln-docs` and its reader invariants, but left the API open while Phase 3 built it: "a new record at the end of Phase 3 amends this one and freezes the route-member names, the handler signatures and the config keys. From then `defineSite` is strict." Phase 3 is done. The package is in `packages/docs`, Kiln's site runs on it, and `compare-export` showed that Kiln's readers see no change. Two things Phase 3 found also differ from 0045's text and are recorded here: the layouts and pages are entries of their own, and Kiln's picker names are written out.
+[0046](0046-kiln-docs.md) locked the plan for `@mitcsutt/kiln-docs` and its reader invariants, but left the API open while Phase 3 built it: "a new record at the end of Phase 3 amends this one and freezes the route-member names, the handler signatures and the config keys. From then `defineSite` is strict." Phase 3 is done. The package is in `packages/docs`, Kiln's site runs on it, and `compare-export` showed that Kiln's readers see no change. Two things Phase 3 found also differ from 0046's text and are recorded here: the layouts and pages are entries of their own, and Kiln's picker names are written out.
 
 What's frozen is what a site writes against: its route files, its `site.config.ts` and its `source.config.ts`. A site pins kiln-docs exactly during `0.x`, but every pin is upgraded sooner or later, and these are what an upgrade must not break silently.
 
@@ -29,7 +29,7 @@ What's frozen is what a site writes against: its route files, its `site.config.t
 
 ### Per-segment route entries
 
-0045 said a site's route files "re-export what `createDocsSite()` returns". The layouts and pages aren't on it: each is its own entry, a factory the route file calls with `site` (`createRootLayout(site)`, `createDocsLayout(site)`, `createDocsPage(site, { components })`), and `NotFound` and `Shell` are components. Next.js loads CSS by route segment, the root layout's first, so when each segment imports only its own UI, the chrome's CSS and a site's MDX components' CSS load in the order the segments nest. When one module graph held them all, the bundler's CSS chunks decided which of two equally specific rules won, and moving the chrome reshuffled them: Kiln's specimen margins flipped. `createDocsSite()` keeps the data, the metadata and the route handlers, and holds no React. A site's own MDX components go to `createDocsPage`, in the page's route file, for the same reason.
+0046 said a site's route files "re-export what `createDocsSite()` returns". The layouts and pages aren't on it: each is its own entry, a factory the route file calls with `site` (`createRootLayout(site)`, `createDocsLayout(site)`, `createDocsPage(site, { components })`), and `NotFound` and `Shell` are components. Next.js loads CSS by route segment, the root layout's first, so when each segment imports only its own UI, the chrome's CSS and a site's MDX components' CSS load in the order the segments nest. When one module graph held them all, the bundler's CSS chunks decided which of two equally specific rules won, and moving the chrome reshuffled them: Kiln's specimen margins flipped. `createDocsSite()` keeps the data, the metadata and the route handlers, and holds no React. A site's own MDX components go to `createDocsPage`, in the page's route file, for the same reason.
 
 ### Route members and handler signatures
 
@@ -68,13 +68,13 @@ defineSite({
 
 ### The fixed theme
 
-`theme: { fixed: 'flightdeck' }` is 0045's fixed mode. The head script is kiln-ui's `themeScript(theme, 'system', { storageKey: 'kiln-color-mode' })` from `@mitcsutt/kiln-ui/theme-script`, so the theme is a constant and only the mode is read, under Kiln's key. The header shows `ModeToggle` alone, or nothing with `modeToggle: false`, and a `kiln-docs-theme` left in storage is ignored. `postbuild`'s theme CSS check covers the fixed theme like a picker's.
+`theme: { fixed: 'flightdeck' }` is 0046's fixed mode. The head script is kiln-ui's `themeScript(theme, 'system', { storageKey: 'kiln-color-mode' })` from `@mitcsutt/kiln-ui/theme-script`, so the theme is a constant and only the mode is read, under Kiln's key. The header shows `ModeToggle` alone, or nothing with `modeToggle: false`, and a `kiln-docs-theme` left in storage is ignored. `postbuild`'s theme CSS check covers the fixed theme like a picker's.
 
-`defineSite` warns when a theme is neither kiln-ui's nor listed in `theme.custom`, the site's own themes that its stylesheets define. 0045 said this of a fixed theme, and it applies to a picker's themes too, since an unstyled theme renders as Paper either way. The Node entries import nothing from kiln-ui at runtime, so kiln-ui's built-in names are written out in `packages/docs/src/themes.ts`, and a test pins them to `THEMES`.
+`defineSite` warns when a theme is neither kiln-ui's nor listed in `theme.custom`, the site's own themes that its stylesheets define. 0046 said this of a fixed theme, and it applies to a picker's themes too, since an unstyled theme renders as Paper either way. The Node entries import nothing from kiln-ui at runtime, so kiln-ui's built-in names are written out in `packages/docs/src/themes.ts`, and a test pins them to `THEMES`.
 
 ### Kiln's picker names are written out
 
-0045 said Kiln's `picker: THEMES` reads `THEMES` from a Node-loadable kiln-ui entry, and that Phase 3 picks the entry. kiln-ui exports `THEMES` only from its root entry, which imports CSS, and adding an entry is a kiln-ui change outside this work. So Kiln's `site.config.ts` lists the six names, and `apps/docs/src/test/site-config.test.ts` fails when they differ from `THEMES`. If kiln-ui later exports `THEMES` from a Node-loadable entry, the config can import it then.
+0046 said Kiln's `picker: THEMES` reads `THEMES` from a Node-loadable kiln-ui entry, and that Phase 3 picks the entry. kiln-ui exports `THEMES` only from its root entry, which imports CSS, and adding an entry is a kiln-ui change outside this work. So Kiln's `site.config.ts` lists the six names, and `apps/docs/src/test/site-config.test.ts` fails when they differ from `THEMES`. If kiln-ui later exports `THEMES` from a Node-loadable entry, the config can import it then.
 
 ### The theme-script entry inside the workspace
 
@@ -90,7 +90,7 @@ The chrome's markup and its CSS Module class names (which were never API), anyth
 
 ### Changing the surface
 
-Adding an optional config key, an export or a route member is a minor release. Renaming or removing any of the above, changing a handler's signature, or making an optional key required is breaking, and needs a record that amends this one. During `0.x` a breaking change is a minor release with an "Upgrade:" block in its changeset, as 0045 set out.
+Adding an optional config key, an export or a route member is a minor release. Renaming or removing any of the above, changing a handler's signature, or making an optional key required is breaking, and needs a record that amends this one. During `0.x` a breaking change is a minor release with an "Upgrade:" block in its changeset, as 0046 set out.
 
 ## Consequences
 

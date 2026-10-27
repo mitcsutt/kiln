@@ -1,10 +1,10 @@
 # packages/docs: `@mitcsutt/kiln-docs`
 
-Kiln chrome for `fumadocs-core`: the foundation of a docs site, with each site owning its content. Read [ADR 0045](../../docs/adr/0045-kiln-docs.md) first, for the design and the invariants readers depend on, then [ADR 0046](../../docs/adr/0046-kiln-docs-frozen-surface.md), for the public surface that's frozen. [`README.md`](README.md) describes the API and the site contract. Kiln's own site in [`apps/docs`](../../apps/docs) is its first consumer. The root [`DESIGN.md`](../../DESIGN.md) applies to the chrome, and this file is a binding standard ([ADR 0012](../../docs/adr/0012-design-standards.md)).
+Kiln chrome for `fumadocs-core`: the foundation of a docs site, with each site owning its content. Read [ADR 0046](../../docs/adr/0046-kiln-docs.md) first, for the design and the invariants readers depend on, then [ADR 0047](../../docs/adr/0047-kiln-docs-frozen-surface.md), for the public surface that's frozen. [`README.md`](README.md) describes the API and the site contract. Kiln's own site in [`apps/docs`](../../apps/docs) is its first consumer. The root [`DESIGN.md`](../../DESIGN.md) applies to the chrome, and this file is a binding standard ([ADR 0012](../../docs/adr/0012-design-standards.md)).
 
 ## Rules
 
-- **The frozen surface changes only with an ADR.** The entries, their exports, the route members, the handler signatures and the `SiteConfig` keys are listed in ADR 0046, and `src/entries.test.ts` pins every export. Adding an optional config key is a minor change. Renaming or removing anything is breaking, and needs a record that amends 0046.
+- **The frozen surface changes only with an ADR.** The entries, their exports, the route members, the handler signatures and the `SiteConfig` keys are listed in ADR 0047, and `src/entries.test.ts` pins every export. Adding an optional config key is a minor change. Renaming or removing anything is breaking, and needs a record that amends 0047.
 - **A reader's saved state never changes.** `kiln-docs-theme`, `kiln-color-mode` and `kiln-docs-variant-<axis>` are in `src/storage.ts`, pinned by `src/storage.test.ts`, by `src/theme.test.ts` and by Kiln's browser check. Never rename one, derive them from a prefix, or add a migration that rewrites one.
 - **`defineSite` is strict.** A new `SiteConfig` key goes into the interface and into `SITE_SHAPE` (or the theme shapes) in `src/config.ts` together, with a case in `src/config.test.ts`. A key left out of the shape fails every site that sets it.
 - **The Node entries load in plain Node.** `./config`, `./generate`, `./mdx-config`, `./next`, `./variants` and everything under `src/node/` are erasable TypeScript with relative imports that name their `.ts` files, and they import nothing from kiln-ui at runtime: kiln-ui's built-in theme names are written out in `src/themes.ts`, pinned to `THEMES` by a test. `tsconfig.node.json` checks them, and `src/entries.test.ts` loads them in Node.
@@ -13,11 +13,11 @@ Kiln chrome for `fumadocs-core`: the foundation of a docs site, with each site o
 - **Client modules say so.** A component with state, effects or context starts with `'use client'`, one module at a time. Server code (`src/site.ts`, the layouts) imports no client-only API.
 - **Both theme modes stay working.** A fixed theme's head script is kiln-ui's own `themeScript`, and a picker's is `docsThemeScript` in `src/theme.ts`. A change to either is covered by `src/theme.test.ts` and `src/components/shell/ThemeSwitcher.test.tsx`, and Kiln's picker by its browser check.
 - **Kiln's readers notice nothing.** A change to the chrome, the Markdown or the routes is checked against Kiln's site: `compare-export` against the base branch's export, and `pnpm check:browser` ([`apps/docs/README.md`](../../apps/docs/README.md)).
-- **It's published.** A pull request that changes it adds a changeset, and one that changes a peer range, a route file or the install line gives it an "Upgrade:" block (ADR 0045). Its first changeset is the 0.1.0 `minor`.
-- **An outside site proves it.** `pnpm --filter @mitcsutt/kiln-docs smoke` installs the packed package into `smoke/site` outside the workspace, with its peers resolved fresh, and builds and checks it (ADR 0047). A change to the site contract changes `smoke/site` too: it's the reference site the README points to.
-- **The fumadocs peers are a tested pair.** `fumadocs-core ~16.15.18` with `fumadocs-mdx 15.4.6`, exact, because every later fumadocs-mdx needs a newer fumadocs-core. Widen them together, in the catalog too, and only to a pair the smoke test has installed fresh (ADR 0047).
+- **It's published.** A pull request that changes it adds a changeset, and one that changes a peer range, a route file or the install line gives it an "Upgrade:" block (ADR 0046). Its first changeset is the 0.1.0 `minor`.
+- **An outside site proves it.** `pnpm --filter @mitcsutt/kiln-docs smoke` installs the packed package into `smoke/site` outside the workspace, with its peers resolved fresh, and builds and checks it (ADR 0048). A change to the site contract changes `smoke/site` too: it's the reference site the README points to.
+- **The fumadocs peers are a tested pair.** `fumadocs-core ~16.15.18` with `fumadocs-mdx 15.4.6`, exact, because every later fumadocs-mdx needs a newer fumadocs-core. Widen them together, in the catalog too, and only to a pair the smoke test has installed fresh (ADR 0048).
 - **A module never reads a file through `new URL('…', import.meta.url)`.** The library build inlines it as a `data:` URL. Build the path from `fileURLToPath(import.meta.url)`.
-- React 19 only (ADR 0045): there's no React 18 pass.
+- React 19 only (ADR 0046): there's no React 18 pass.
 
 ## Layout
 
@@ -57,5 +57,5 @@ pnpm check:browser                               # Kiln's site built, then the c
 ## Don'ts
 
 - No `any`, no `@ts-ignore`.
-- Don't add a runtime dependency without an ADR. Today: `esbuild`, `node-html-parser`, `pagefind` (ADR 0048) and `unist-util-visit`; everything else is a peer.
+- Don't add a runtime dependency without an ADR. Today: `esbuild`, `node-html-parser`, `pagefind` (ADR 0049) and `unist-util-visit`; everything else is a peer.
 - Don't import kiln-ui's root entry from a Node entry, or from server code: it imports CSS and creates React context.

@@ -1,11 +1,11 @@
-# 0048. kiln-docs searches with Pagefind by default
+# 0049. kiln-docs searches with Pagefind by default
 
-- **Status:** Accepted (amends [0045](0045-kiln-docs.md), [0046](0046-kiln-docs-frozen-surface.md) and [0047](0047-kiln-docs-smoke-and-release.md))
+- **Status:** Accepted (amends [0046](0046-kiln-docs.md), [0047](0047-kiln-docs-frozen-surface.md) and [0048](0048-kiln-docs-smoke-and-release.md))
 - **Date:** 2026-10-27
 
 ## Context
 
-[0045](0045-kiln-docs.md) gave `@mitcsutt/kiln-docs` a seam for the search provider and kept the static Orama index behind it, saying the provider is chosen before 0.1.0 is published, because switching afterwards would change every site's search route. [0046](0046-kiln-docs-frozen-surface.md) froze `search.provider`, its default `'orama-static'`, and `routes.search.GET()` in `app/api/search/route.ts`. [0047](0047-kiln-docs-smoke-and-release.md) measured Pagefind against the Orama index on Kiln's 257 pages and kept Orama for the time being.
+[0046](0046-kiln-docs.md) gave `@mitcsutt/kiln-docs` a seam for the search provider and kept the static Orama index behind it, saying the provider is chosen before 0.1.0 is published, because switching afterwards would change every site's search route. [0047](0047-kiln-docs-frozen-surface.md) froze `search.provider`, its default `'orama-static'`, and `routes.search.GET()` in `app/api/search/route.ts`. [0048](0048-kiln-docs-smoke-and-release.md) measured Pagefind against the Orama index on Kiln's 257 pages and kept Orama for the time being.
 
 The measurement favoured Pagefind. With the same 20 Kiln queries it ranked the expected page first 14 times to Orama's 9 (both found 17 of the 20 in the first five results), and a reader's first search downloaded about 144 KB gzipped instead of the whole 718 KB index. The Orama index is fetched whole and grows with the site; Pagefind fetches only the chunks a query touches. The costs are about a second of build time after `next build`, a new dependency with a platform binary, and no index under `next dev`, since Pagefind indexes built HTML. The decision was to switch before 0.1.0, so no published site has to upgrade.
 
@@ -13,7 +13,7 @@ The measurement favoured Pagefind. With the same 20 Kiln queries it ranked the e
 
 ### The provider
 
-`SearchProvider` is `'pagefind' | 'orama-static'`, and `DEFAULT_SEARCH_PROVIDER` is `'pagefind'`. A site that wants the Orama index sets `search: { provider: 'orama-static' }`, and gets what 0045 described.
+`SearchProvider` is `'pagefind' | 'orama-static'`, and `DEFAULT_SEARCH_PROVIDER` is `'pagefind'`. A site that wants the Orama index sets `search: { provider: 'orama-static' }`, and gets what 0046 described.
 
 ### The index
 
@@ -27,7 +27,7 @@ The header's search is the same dialog, with the same keyboard behaviour: <kbd>â
 
 ### The search route under `next dev`
 
-The route file, `app/api/search/route.ts`, its stamped template, `routes.search` and `GET(): Promise<Response>` don't change, so 0046's table stands and no site rewrites a route file. What the route serves depends on the provider:
+The route file, `app/api/search/route.ts`, its stamped template, `routes.search` and `GET(): Promise<Response>` don't change, so 0047's table stands and no site rewrites a route file. What the route serves depends on the provider:
 
 | Provider       | `next dev`                                 | `next build`                                                   |
 | -------------- | ------------------------------------------ | -------------------------------------------------------------- |
@@ -42,15 +42,15 @@ So `next dev` has search under Pagefind too, ranked by Orama: results there can 
 
 ### The dependency
 
-`pagefind` `~1.5.2` is a runtime dependency of kiln-docs, which 0045 requires a record for. It installs its binary as a platform package among its optional dependencies, with no install script, so a site approves no new build script. The range is one minor, because the ranking above was measured with 1.5. A site on a platform Pagefind has no binary for sets `orama-static`.
+`pagefind` `~1.5.2` is a runtime dependency of kiln-docs, which 0046 requires a record for. It installs its binary as a platform package among its optional dependencies, with no install script, so a site approves no new build script. The range is one minor, because the ranking above was measured with 1.5. A site on a platform Pagefind has no binary for sets `orama-static`.
 
 ### Proof
 
-The smoke test ([0047](0047-kiln-docs-smoke-and-release.md)) searches each variant's build from the header in Chromium, and fails unless the first result for "helper" is `/docs/plugins/git` and the search loaded the provider's index. **fixed** and **no-shiki** run on Pagefind, and **fixed** also runs its search under `next dev`, where it reads `/api/search`. **picker** opts into `orama-static`, so the opt-in is installed and searched fresh too. The `docs-smoke` CI job installs Chromium for it. Kiln's browser check fails unless "FormSteps" finds its page first through Pagefind. `compare-export` compares the Orama index's documents when both exports have one, and the Pagefind index's page counts when both have that.
+The smoke test ([0048](0048-kiln-docs-smoke-and-release.md)) searches each variant's build from the header in Chromium, and fails unless the first result for "helper" is `/docs/plugins/git` and the search loaded the provider's index. **fixed** and **no-shiki** run on Pagefind, and **fixed** also runs its search under `next dev`, where it reads `/api/search`. **picker** opts into `orama-static`, so the opt-in is installed and searched fresh too. The `docs-smoke` CI job installs Chromium for it. Kiln's browser check fails unless "FormSteps" finds its page first through Pagefind. `compare-export` compares the Orama index's documents when both exports have one, and the Pagefind index's page counts when both have that.
 
 Re-measured on Kiln's export with this record's indexing (the article, the breadcrumb as metadata, the pager and Markdown link left out), through Pagefind's JS API in Chromium:
 
-| Query set (20) | Orama static (0047) | Pagefind, as shipped |
+| Query set (20) | Orama static (0048) | Pagefind, as shipped |
 | -------------- | ------------------- | -------------------- |
 | hit@1          | 9                   | 14                   |
 | hit@5          | 17                  | 17                   |

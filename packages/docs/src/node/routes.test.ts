@@ -56,7 +56,7 @@ describe('the route files', () => {
     }
   })
 
-  // Next.js ignores re-exported segment config, so the literal is in each file (ADR 0045).
+  // Next.js ignores re-exported segment config, so the literal is in each file (ADR 0046).
   it("each handler holds export const dynamic = 'force-static' itself", () => {
     for (const file of ROUTE_FILES.filter(({ path }) => path.endsWith('.ts'))) {
       expect(file.content).toContain("\nexport const dynamic = 'force-static'\n")

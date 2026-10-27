@@ -1,6 +1,6 @@
 # 0019. How the docs site is built
 
-- **Status:** Accepted, amended by [0025](0025-colocated-examples.md), [0029](0029-generated-reference-pages.md), [0033](0033-docs-sections.md), [0034](0034-docs-on-cloudflare-workers.md), [0035](0035-code-highlighting.md), [0045](0045-kiln-docs.md) and [0048](0048-kiln-docs-pagefind.md)
+- **Status:** Accepted, amended by [0025](0025-colocated-examples.md), [0029](0029-generated-reference-pages.md), [0033](0033-docs-sections.md), [0034](0034-docs-on-cloudflare-workers.md), [0035](0035-code-highlighting.md), [0046](0046-kiln-docs.md) and [0049](0049-kiln-docs-pagefind.md)
 - **Date:** 2026-10-04
 
 ## Context
@@ -35,14 +35,14 @@
 **Agents and search**
 
 - Each page's processed Markdown is served at `/docs/<page>.md` (a rewrite to a route handler) and joined into `/llms-full.txt`; `/llms.txt` lists every page. In the Markdown, examples become their source and API tables become Markdown tables, from the same generated data.
-- Search runs in the browser over an index built at export time, so the site needs no server beyond static hosting. The provider is Pagefind by default, with Fumadocs' static Orama index as an opt-in ([0048](0048-kiln-docs-pagefind.md)).
+- Search runs in the browser over an index built at export time, so the site needs no server beyond static hosting. The provider is Pagefind by default, with Fumadocs' static Orama index as an opt-in ([0049](0049-kiln-docs-pagefind.md)).
 - Page frontmatter carries `exports`, the public exports a page documents, so a later skills build can find the page that owns an export.
 
 **Checks**
 
 - `src/test/tree.test.ts` fails when a Storybook title has no page, when a component, field, layout, hook or exported function has no page, when a page names an example or API type that doesn't exist, or when the sidebar's groups differ from the shared tree.
 - `docs/tree.json` is the 0010 tree. Storybook's `tree.test.ts` now reads it instead of its own copy, as 0018 proposed.
-- `kiln-docs check-links` ([0045](0045-kiln-docs.md)) serves the production build on a free local port, crawls it from `/` (including `llms.txt` and the Markdown routes) and fails on any non-200 page or missing `#anchor`. Fragment-only links inside live examples are illustrative and skipped. It starts and stops its own server, times out every request and the whole run, and needs no network. CI runs it as the `docs` job.
+- `kiln-docs check-links` ([0046](0046-kiln-docs.md)) serves the production build on a free local port, crawls it from `/` (including `llms.txt` and the Markdown routes) and fails on any non-200 page or missing `#anchor`. Fragment-only links inside live examples are illustrative and skipped. It starts and stops its own server, times out every request and the whole run, and needs no network. CI runs it as the `docs` job.
 
 **Room for the form builder**
 

@@ -22,7 +22,7 @@ async function html(source: string, format: 'md' | 'mdx', config = defineDocsCon
 }
 
 describe('defineDocsConfig', () => {
-  // ADR 0045 (F5, W7): left to MDX, `.md` drops raw HTML, text and all, without an error.
+  // ADR 0046 (F5, W7): left to MDX, `.md` drops raw HTML, text and all, without an error.
   it('shows raw HTML in .md as text', async () => {
     expect(await html('Run `/review` with <name> as the plugin.', 'md')).toBe(
       '<p>Run <code>/review</code> with &lt;name&gt; as the plugin.</p>',
@@ -104,7 +104,7 @@ describe('defineDocsCollections', () => {
     }
   })
 
-  // ADR 0045 (W9): a field the collection schema doesn't declare is stripped.
+  // ADR 0046 (W9): a field the collection schema doesn't declare is stripped.
   it("strips the fields the schema doesn't declare", () => {
     const { docs } = defineDocsCollections()
     expect(z.parse(docs.docs.schema as z.ZodType, page)).toEqual({ title: 'Button' })

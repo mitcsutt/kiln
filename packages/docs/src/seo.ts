@@ -3,7 +3,7 @@ import type { SiteConfig } from './config.ts'
 import { oneLine } from './markdown.ts'
 
 /**
- * SEO basics, all from `site.url` (ADR 0045): `metadataBase`, canonical links, `sitemap.xml`,
+ * SEO basics, all from `site.url` (ADR 0046): `metadataBase`, canonical links, `sitemap.xml`,
  * `robots.txt` and basic Open Graph tags. URLs are written in full, as the Markdown's are, so they
  * hold for a site deployed under a path too.
  */

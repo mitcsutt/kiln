@@ -2,7 +2,7 @@ import { existsSync, readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
-/** The peers whose installed versions `postbuild` checks: the fumadocs pair (ADR 0045). */
+/** The peers whose installed versions `postbuild` checks: the fumadocs pair (ADR 0046). */
 export const CHECKED_PEERS = ['fumadocs-core', 'fumadocs-mdx'] as const
 
 /**

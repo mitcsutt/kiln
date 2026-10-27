@@ -1,5 +1,5 @@
 /**
- * Browser and axe checks on the docs chrome, against the built site (ADR 0045). Run it after
+ * Browser and axe checks on the docs chrome, against the built site (ADR 0046). Run it after
  * `pnpm build`:
  *
  *   node scripts/check-browser.ts
@@ -155,7 +155,7 @@ try {
   const crumbs = await button.locator('article header p').first().textContent()
   check('the breadcrumb starts with the section', crumbs === 'UI / Actions', crumbs)
 
-  // Search: the header's dialog queries the Pagefind index that postbuild wrote (ADR 0048).
+  // Search: the header's dialog queries the Pagefind index that postbuild wrote (ADR 0049).
   const loaded: string[] = []
   button.on('request', (request) => loaded.push(new URL(request.url()).pathname))
   await button
@@ -200,7 +200,7 @@ try {
     sheetCurrent,
   )
 
-  // ADR 0045: a reader's choices live under four keys that never change. Seeded before load,
+  // ADR 0046: a reader's choices live under four keys that never change. Seeded before load,
   // they apply before the first paint and persist across a reload.
   const reader = await open('/docs/tooling/project-structure', {
     seed: {

@@ -1,7 +1,7 @@
 /**
  * After `vite build`: every source module that starts with `'use client'` must still start with it
  * in `dist/`, or Next.js renders that client component on the server and its hooks throw (ADR
- * 0045, amending ADR 0005). The library build keeps the directive today; this fails the build if
+ * 0046, amending ADR 0005). The library build keeps the directive today; this fails the build if
  * a change to it ever drops one.
  */
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs'

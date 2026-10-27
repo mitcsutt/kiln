@@ -31,7 +31,7 @@ describe("the header's theme controls", () => {
     expect(view).toContain(MODE_TOGGLE)
   })
 
-  // ADR 0045: a fixed theme renders no picker, only the mode toggle.
+  // ADR 0046: a fixed theme renders no picker, only the mode toggle.
   it('offer only the mode toggle on a site with a fixed theme', () => {
     const view = controls({ fixed: 'flightdeck' })
     expect(view).not.toContain(THEME_SELECT)

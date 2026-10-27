@@ -1,5 +1,5 @@
 {
-  // The entries and the bin that Node runs as written, outside a bundler (ADR 0045): erasable
+  // The entries and the bin that Node runs as written, outside a bundler (ADR 0046): erasable
   // syntax only, so Node can strip their types. `tsconfig.json` checks the rest, the chrome
   // included, which imports kiln-ui's source.
   "extends": "./tsconfig.json",

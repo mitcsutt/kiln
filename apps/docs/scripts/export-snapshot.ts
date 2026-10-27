@@ -1,6 +1,6 @@
 /**
  * What `compare-export.ts` compares in a static export of the docs site: the parts a reader or
- * an agent gets, read so that a refactor which serves the same site compares equal (ADR 0045,
+ * an agent gets, read so that a refactor which serves the same site compares equal (ADR 0046,
  * "Kiln's no-regression check").
  *
  * - Each page's HTML as a summary: its title, meta tags (not Open Graph or Twitter tags), `id`s, `href`s (not canonical or alternate links), visible

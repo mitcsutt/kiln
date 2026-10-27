@@ -7,7 +7,7 @@ export interface SourceConfig {
 }
 
 /**
- * Precedence by slug (ADR 0045). A page's slug is its path inside its folder minus the extension,
+ * Precedence by slug (ADR 0046). A page's slug is its path inside its folder minus the extension,
  * with a trailing `/index` folded into its folder, as Fumadocs gives it. So `plugins/git.md`,
  * `plugins/git.mdx`, `plugins/git/index.md` and `plugins/git/index.mdx` are one page. A
  * hand-written page beats a generated page with the same slug, whatever the extension of either;

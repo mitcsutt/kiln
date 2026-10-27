@@ -45,7 +45,7 @@ const html = (title: string, body: string) =>
   `<!doctype html><html lang="en"><body><header>Search</header><article><p data-pagefind-meta="crumbs" data-pagefind-ignore>UI / Actions</p><h1>${title}</h1><p>${body}</p><nav data-pagefind-ignore>Next: Pager</nav></article></body></html>`
 
 describe('the theme CSS check', () => {
-  // ADR 0045 (T15): built CSS is minified, so `[data-theme='riso']` loses its quotes.
+  // ADR 0046 (T15): built CSS is minified, so `[data-theme='riso']` loses its quotes.
   it('matches a theme selector with or without quotes', () => {
     for (const css of ['[data-theme=riso]', '[data-theme="riso"]', "[data-theme='riso']"]) {
       expect(themeSelector('riso').test(css), css).toBe(true)
@@ -154,7 +154,7 @@ describe('postbuild', () => {
   })
 })
 
-// ADR 0048: Pagefind, the default provider, indexes the export's docs pages.
+// ADR 0049: Pagefind, the default provider, indexes the export's docs pages.
 describe('the Pagefind index', () => {
   it('indexes the docs pages from their articles, and deletes the search route', async () => {
     builtSite()

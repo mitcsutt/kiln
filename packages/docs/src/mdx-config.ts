@@ -18,7 +18,7 @@ export type PageSchema = typeof pageSchema
 export interface DocsCollectionsOptions<Schema extends z.ZodType<z.output<PageSchema>>> {
   /**
    * Extends the frontmatter schema with the site's own fields: `(page) => page.extend({ … })`. A
-   * field the schema doesn't declare is stripped from the page's data (ADR 0045).
+   * field the schema doesn't declare is stripped from the page's data (ADR 0046).
    */
   schema?: (page: PageSchema) => Schema
   /** Where the hand-written pages are, from the site's root. */

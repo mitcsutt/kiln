@@ -21,7 +21,7 @@ function convert(parent: Node) {
 }
 
 /**
- * Shows the raw HTML in a `.md` page as text, and drops HTML comments (ADR 0045). A `.md` page is
+ * Shows the raw HTML in a `.md` page as text, and drops HTML comments (ADR 0046). A `.md` page is
  * CommonMark with no JSX, so a page that says `<name>` means the placeholder, not an element: it
  * now shows `<name>` with no backslash. Left alone, MDX drops raw HTML from `.md` without an error,
  * text and all. It runs at the hast stage, so the processed Markdown that `/docs/<page>.md` serves

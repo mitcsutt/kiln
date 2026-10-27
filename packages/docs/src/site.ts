@@ -48,7 +48,7 @@ const MARKDOWN_INDEX = 'index.md'
 /**
  * A docs site: its config, the Fumadocs loader over its pages, and what its route files re-export.
  * The loader is built here, not in the site, so the rules readers depend on can't be broken from
- * site code (ADR 0045): a hand-written page beats a generated page with the same slug, and
+ * site code (ADR 0046): a hand-written page beats a generated page with the same slug, and
  * `getPages()` lists pages in a defined order.
  *
  * It holds no React: the route handlers re-export `routes`, and the layouts and pages come from

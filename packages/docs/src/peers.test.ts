@@ -12,11 +12,11 @@ const workspace = parse(
 /** A dependency's range in the workspace catalog. */
 const catalog = (name: string) => workspace.catalog?.[name]
 
-// ADR 0045, "Peers and the peer policy".
+// ADR 0046, "Peers and the peer policy".
 describe('peers', () => {
   it('declares the fumadocs pair it is tested with', () => {
     // fumadocs-mdx is exact: 15.4.7 onwards needs fumadocs-core ^16.17, so even `~15.4.6` lets a
-    // fresh install pick an untested pair (ADR 0047).
+    // fresh install pick an untested pair (ADR 0048).
     expect(manifest.peerDependencies).toMatchObject({
       'fumadocs-core': '~16.15.18',
       'fumadocs-mdx': '15.4.6',

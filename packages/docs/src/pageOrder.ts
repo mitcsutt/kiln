@@ -13,7 +13,7 @@ export function comparePages(a: OrderedPage, b: OrderedPage): number {
  * Makes the loader's `getPages()` return pages in a defined order, by file path. `llms.txt`,
  * `llms-full.txt` and the search index read pages through it, so their order doesn't rest on the
  * order Fumadocs stored the files in, which changes once pages come from more than one
- * collection (ADR 0045).
+ * collection (ADR 0046).
  */
 export function withPageOrder<Source extends { getPages: (language?: string) => OrderedPage[] }>(
   source: Source,

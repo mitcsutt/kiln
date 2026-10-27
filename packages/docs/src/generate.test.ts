@@ -50,7 +50,7 @@ describe('writeGenerated', () => {
     expect(listed('build/docs')).toEqual(['a.md'])
   })
 
-  // ADR 0045: a site's `.generated/` may hold its other build data (Kiln's api.json, tokens.json
+  // ADR 0046: a site's `.generated/` may hold its other build data (Kiln's api.json, tokens.json
   // and example slices).
   it('empties the generated-pages folder and nothing else', () => {
     write({

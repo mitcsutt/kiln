@@ -61,7 +61,7 @@ describe('SEO from site.url', () => {
     expect(metadata.openGraph).not.toHaveProperty('description')
   })
 
-  // ADR 0045: the docs index's title is the site's name alone, not `<name> · <name>`.
+  // ADR 0046: the docs index's title is the site's name alone, not `<name> · <name>`.
   it('titles a page named after the site with the name alone', () => {
     expect(pageMetadata(config, page('/docs', 'Toolbelt')).title).toEqual({ absolute: 'Toolbelt' })
     expect(pageMetadata(config, page('/docs', 'Introduction')).title).toBe('Introduction')

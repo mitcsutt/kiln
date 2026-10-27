@@ -1,7 +1,7 @@
 /**
  * Where a reader's saved choices live. These are Kiln's key names, so Kiln's readers keep their
  * choices; storage is per origin, so another site using the same names is harmless. They never
- * change (ADR 0045): a changed key resets every reader's choice, and a rollback can't bring it
+ * change (ADR 0046): a changed key resets every reader's choice, and a rollback can't bring it
  * back. Deriving them from a prefix is ruled out for the same reason, since it would rename the
  * colour mode's key.
  */

@@ -72,7 +72,7 @@ describe('createDocsSite', () => {
     ])
   })
 
-  // ADR 0045: left to Fumadocs, a hand-written `.mdx` over a generated `.md` index publishes the
+  // ADR 0046: left to Fumadocs, a hand-written `.mdx` over a generated `.md` index publishes the
   // generated page and moves the hand-written one to `/x/index`, and over a leaf throws.
   describe.each([
     ['.mdx', '.md'],

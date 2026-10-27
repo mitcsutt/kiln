@@ -21,7 +21,7 @@ const NODE_ENTRIES = {
   '@mitcsutt/kiln-docs/variants': ['createVariants', 'dedent'],
 }
 
-// ADR 0045: in the workspace the entries point at erasable `.ts` source with explicit `.ts`
+// ADR 0046: in the workspace the entries point at erasable `.ts` source with explicit `.ts`
 // imports, which Node loads as it is, with no bundler and no `node` condition.
 describe('the entries', () => {
   it('load in plain Node', () => {
@@ -50,7 +50,7 @@ describe('the entries', () => {
     ])
   })
 
-  // ADR 0046: each route segment has its own entry, so it imports only its own UI and CSS.
+  // ADR 0047: each route segment has its own entry, so it imports only its own UI and CSS.
   it('export one factory or component from each route segment entry', async () => {
     const segments = {
       '@mitcsutt/kiln-docs/layout': await import('@mitcsutt/kiln-docs/layout'),

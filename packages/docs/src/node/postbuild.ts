@@ -42,7 +42,7 @@ const PAGEFIND_UI_FILES = [
 
 /**
  * Indexes the export's docs pages with Pagefind into `out/pagefind/`, each page from its article
- * (ADR 0048), and deletes what the search route wrote, which a build under Pagefind doesn't use.
+ * (ADR 0049), and deletes what the search route wrote, which a build under Pagefind doesn't use.
  * Returns how many pages it indexed.
  */
 export async function indexPages(out: string): Promise<number> {
@@ -82,7 +82,7 @@ export interface PostbuildOptions {
  * `kiln-docs postbuild`, after `next build`: moves the Markdown files into place, indexes the
  * pages with Pagefind when it's the site's search provider, then fails on a missing route file, a
  * theme the site offers with no CSS in the export, or a fumadocs peer outside the tested pair
- * (ADR 0045). Returns what it did, for the log.
+ * (ADR 0046). Returns what it did, for the log.
  */
 export async function postbuild({
   root,

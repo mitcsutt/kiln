@@ -1,6 +1,6 @@
 # 0029. Reference pages are generated from TSDoc and stories
 
-- **Status:** Accepted (amends [0019](0019-docs-site.md)), amended by [0045](0045-kiln-docs.md)
+- **Status:** Accepted (amends [0019](0019-docs-site.md)), amended by [0046](0046-kiln-docs.md)
 - **Date:** 2026-10-06
 
 ## Context

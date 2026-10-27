@@ -122,7 +122,7 @@ describe('sidebarOf', () => {
     )
   })
 
-  // ADR 0045 (T17): a site whose generated `meta.json` files mark no section, like toolbelt's,
+  // ADR 0046 (T17): a site whose generated `meta.json` files mark no section, like toolbelt's,
   // showed only the one page the reader was on.
   describe('a tree without sections', () => {
     const { source } = createDocsSite({

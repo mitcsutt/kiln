@@ -66,7 +66,7 @@ function wranglerBin(root: string): string {
  * It checks the site as a reader gets it: `wrangler dev` serves `out/` with the deployed Worker's
  * config and `_headers` (ADR 0034), so `/docs/<page>.md`, `llms.txt` and the search index are
  * crawled like any other page: Pagefind's script and entry file, or the Orama index at
- * `/api/search` (ADR 0048).
+ * `/api/search` (ADR 0049).
  */
 export async function checkLinks({
   root,

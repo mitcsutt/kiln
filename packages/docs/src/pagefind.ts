@@ -1,5 +1,5 @@
 /**
- * Pagefind, the default search provider (ADR 0048): `kiln-docs postbuild` indexes the exported
+ * Pagefind, the default search provider (ADR 0049): `kiln-docs postbuild` indexes the exported
  * docs pages into `out/pagefind/`, and the header's search loads Pagefind's own script from
  * there, which fetches only the index chunks a query touches. This module holds what both halves
  * share. It imports nothing, so the bin loads it in plain Node.

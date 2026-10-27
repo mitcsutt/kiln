@@ -55,7 +55,7 @@ describe('createMarkdown', () => {
     ).rejects.toThrow('kiln-docs: a.md has no processed Markdown.')
   })
 
-  // ADR 0045 (W6): Kiln's format, not Fumadocs' `llms()` helper.
+  // ADR 0046 (W6): Kiln's format, not Fumadocs' `llms()` helper.
   it("writes llms.txt in Kiln's format, by section, in the source's order", () => {
     expect(createMarkdown({ config, source }).llmsIndex()).toBe(
       [
@@ -100,7 +100,7 @@ describe('createMarkdown', () => {
     ])
   })
 
-  // ADR 0045 (W8): a reader that took frontmatter line by line put `>-` into descriptions.
+  // ADR 0046 (W8): a reader that took frontmatter line by line put `>-` into descriptions.
   describe('a description written as a YAML block scalar', () => {
     const described = (yaml: string) => {
       const { data } = frontmatter(`---\ntitle: Review\n${yaml}\n---\nBody`)

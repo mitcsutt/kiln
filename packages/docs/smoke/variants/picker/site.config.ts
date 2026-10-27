@@ -3,8 +3,8 @@ import { defineSite } from '@mitcsutt/kiln-docs/config'
 const repository = 'https://github.com/example/smoke-toolbelt'
 
 /**
- * The picker variant: Kiln's mode, a theme a reader picks from the header (ADR 0045), and the
- * Orama index a site opts into instead of Pagefind (ADR 0048).
+ * The picker variant: Kiln's mode, a theme a reader picks from the header (ADR 0046), and the
+ * Orama index a site opts into instead of Pagefind (ADR 0049).
  */
 export default defineSite({
   name: 'Smoke Toolbelt',

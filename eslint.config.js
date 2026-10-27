@@ -121,7 +121,7 @@ export default defineConfig(
     extends: [node],
   },
   {
-    // kiln-docs' Node side (ADR 0045): the entries a site's config files load, the loader and
+    // kiln-docs' Node side (ADR 0046): the entries a site's config files load, the loader and
     // the Markdown routes on the Next.js server, and the bin.
     name: 'kiln/workspace/docs-package',
     files: ['packages/docs/src/**', 'packages/docs/bin/**'],
