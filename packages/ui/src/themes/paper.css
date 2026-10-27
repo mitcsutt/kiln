@@ -87,30 +87,32 @@
 
     /* ── Colour ─────────────────────────────────────────────────────────── */
     /* Neutrals: achromatic grey stock, chroma <= 0.004 (hue 250 only so it never reads
-       warm), so the ink and the non-photo blue are the only blue on the page. The canvas
-       is recycled stock (a real mid-light grey) so the near-white sheets (0.002, bleached)
-       read against it with no border. Never #000/#fff. Dark mode is the same office after
+       warm), so the ink and the non-photo blue are the only blue on the page. In light mode
+       nothing is paper-white (no fill above L 0.97): each layer is a different stock, about
+       0.02-0.025 L apart, so a sheet reads against the desk with no border. The canvas is
+       grey recycled stock; a surface is unbleached office paper; raised is the top sheet off
+       the ream; sunken is the grey board of the in-tray. Dark mode is the same office after
        hours: neutral charcoal stock and dimmed sheets, not a blue night and not black. */
-    --color-canvas: light-dark(oklch(0.952 0.004 250), oklch(0.195 0.004 250));
-    --color-surface: light-dark(oklch(0.995 0.002 250), oklch(0.24 0.004 250));
-    --color-surface-sunken: light-dark(oklch(0.935 0.004 250), oklch(0.165 0.004 250));
-    --color-surface-raised: light-dark(oklch(0.998 0.002 250), oklch(0.275 0.004 250));
+    --color-canvas: light-dark(oklch(0.925 0.004 250), oklch(0.195 0.004 250));
+    --color-surface: light-dark(oklch(0.95 0.003 250), oklch(0.24 0.004 250));
+    --color-surface-sunken: light-dark(oklch(0.9 0.004 250), oklch(0.165 0.004 250));
+    --color-surface-raised: light-dark(oklch(0.97 0.002 250), oklch(0.275 0.004 250));
     --color-surface-inverse: light-dark(oklch(0.26 0.06 256), oklch(0.93 0.004 250));
 
     /* Ink: fountain-pen blue-black, visibly blue and never slate. Muted and subtle inks are
        the press's grey, so the pen's blue stays the one coloured ink. By night the text is
        pale grey and the blue moves to the accent. */
     --color-ink: light-dark(oklch(0.26 0.06 256), oklch(0.94 0.004 250));
-    --color-ink-muted: light-dark(oklch(0.44 0.004 250), oklch(0.78 0.004 250));
+    --color-ink-muted: light-dark(oklch(0.42 0.004 250), oklch(0.78 0.004 250));
     --color-ink-subtle: light-dark(
-      oklch(0.5 0.004 250),
+      oklch(0.47 0.004 250),
       oklch(0.68 0.004 250)
     ); /* AA on sunken/raised: it sets placeholders and meta text */
     --color-ink-inverse: light-dark(oklch(0.96 0.004 250), oklch(0.2 0.05 256));
 
     /* Lines divide things inside a sheet, ruled in press grey; the sheet itself needs none. */
-    --color-line: light-dark(oklch(0.9 0.004 250), oklch(0.32 0.004 250));
-    --color-line-strong: light-dark(oklch(0.78 0.004 250), oklch(0.44 0.004 250));
+    --color-line: light-dark(oklch(0.865 0.004 250), oklch(0.32 0.004 250));
+    --color-line-strong: light-dark(oklch(0.72 0.004 250), oklch(0.44 0.004 250));
 
     /* The accent is the ink: solid ink-blue for the primary action and the current
        item (pale ink-blue in dark); ink text for links, told apart by underline. */
@@ -197,7 +199,7 @@
 
     /* Chart chrome: printed form furniture. A faint pencil grid, an axis ruled in the ink at
        half strength, labels in muted ink, and a tooltip that is one more sheet on the stack. */
-    --chart-grid: light-dark(oklch(0.89 0.004 250), oklch(0.33 0.004 250));
+    --chart-grid: light-dark(oklch(0.87 0.004 250), oklch(0.33 0.004 250));
     --chart-axis: light-dark(oklch(0.58 0.03 256), oklch(0.6 0.015 250));
     --chart-label: var(--color-ink-muted);
     --chart-tooltip-surface: var(--color-surface-raised);
