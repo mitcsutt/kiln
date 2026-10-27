@@ -66,6 +66,7 @@
      `initial` on a custom property = unset, so `var(--x, fallback)` takes the fallback.
      themes/themes.test.ts fails if a theme sets a token the others neither set nor reset here. */
   [data-theme] {
+    --badge-soft-ink: initial;
     --canvas-image-size: auto;
     --control-checked-border: initial;
     --highlight-accent-text: initial;

@@ -1,5 +1,17 @@
 # @mitcsutt/kiln-ui
 
+## 0.9.0
+
+### Minor Changes
+
+- 571415a: `highlight` from `@mitcsutt/kiln-ui/highlight` now understands shell (`bash`, `sh`, `shell`, `shellscript`, `zsh`), `json`, `yaml` (or `yml`) and `diff`, as well as JavaScript and TypeScript. Keys in JSON and YAML are coloured as types, shell flags as constants, and a diff's added lines as strings and removed lines as constants, with its headers and hunk ranges set apart. Each grammar still loads only when a block in that language is first highlighted.
+
+### Patch Changes
+
+- 85b8d1c: The `design-rules` agent skill now gives each built-in theme its goal, the kind of product to choose it for: Paper for products that shouldn't have a personality yet, Ledger for numbers people have to trust, Flightdeck for operating something live, and Riso for products made for people. It also notes that Monograph and Fiesta are deprecated and leave in the next minor release ([ADR 0045](https://github.com/mitcsutt/kiln/blob/main/docs/adr/0045-four-themes-each-with-a-goal.md)). No code changes.
+- 13bd01f: CodeBlock's copy button stays muted, and TagsInput's chip list stays `display: contents`, whatever order a bundler loads the CSS in. Both rules used to tie on specificity with Button's and TagList's base rules, so a Next.js build could load them in the other order and flip them.
+- 74bf87c: Components that size or colour an inner Icon, Spinner, Button or TagList through `className` now win on specificity instead of stylesheet order: TreeTable's chevron, FileDrop's icon, Checkbox's tick and dash, Combobox's chevron, check, spinner and chip list, DateRangePickerField's presets, field error and warning icons and the validating spinner, CommandPalette's search icon, chevron and spinner, and an external Link's arrow. Each rule used to tie with the inner component's base rule, so a Next.js build that loaded the CSS in the other order changed them (TreeTable chevrons and FileDrop icons shrank from 16px to 12.8px).
+
 ## 0.8.0
 
 ### Minor Changes
