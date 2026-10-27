@@ -1,6 +1,6 @@
 # 0046. kiln-docs freezes its public surface before it's published
 
-- **Status:** Accepted (amends [0023](0023-theme-script-entry.md) and [0045](0045-kiln-docs.md))
+- **Status:** Accepted, amended by [0048](0048-kiln-docs-pagefind.md) (amends [0023](0023-theme-script-entry.md) and [0045](0045-kiln-docs.md))
 - **Date:** 2026-10-27
 
 ## Context

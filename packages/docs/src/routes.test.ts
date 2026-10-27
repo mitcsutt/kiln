@@ -88,32 +88,83 @@ describe("createDocsSite's routes", () => {
 })
 
 describe('the search seam', () => {
-  it("exports the static index the default provider's client reads", async () => {
-    const response = await site.routes.search.GET()
-    const exported = (await response.json()) as { type: string }
-    expect(exported.type).toBe('advanced')
-    expect(JSON.stringify(exported)).toContain('Commits.')
+  const orama = createDocsSite({
+    config: { ...testConfig, search: { placeholder: 'Search', provider: 'orama-static' } },
+    collections: { docs: collection(doc('plugins/git.md', 'git', 'Commits.', 'Git helpers.')) },
   })
 
-  it('fetches the index from the search route in the browser', async () => {
-    const fetch = vi.fn(() => Promise.resolve(Response.json({ type: 'simple', data: {} })))
-    vi.stubGlobal('fetch', fetch)
+  /** Runs `body` with `NODE_ENV` set, as `next dev` or `next build` sets it. */
+  async function under(env: 'development' | 'production', body: () => Promise<void>) {
+    vi.stubEnv('NODE_ENV', env)
     try {
-      const client = searchClient()
-      await Promise.resolve(client.search('git')).catch(() => undefined)
-      expect(fetch).toHaveBeenCalledWith('/api/search')
+      await body()
+    } finally {
+      vi.unstubAllEnvs()
+    }
+  }
+
+  /**
+   * What the client finds for "git", serving the Orama index on any fetch, or why it failed. The
+   * Orama client keeps the index it fetched, so only the first search fetches it.
+   */
+  async function searchGit(provider?: SearchProvider): Promise<string[] | string> {
+    const index = await (await orama.routes.search.GET()).text()
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(() => Promise.resolve(new Response(index))),
+    )
+    try {
+      const results = await searchClient(provider).search('git')
+      return [...new Set(results.map((result) => result.url))]
+    } catch (error) {
+      return String(error)
     } finally {
       vi.unstubAllGlobals()
     }
+  }
+
+  it('exports the static index under orama-static, in a build', async () => {
+    await under('production', async () => {
+      const exported = (await (await orama.routes.search.GET()).json()) as { type: string }
+      expect(exported.type).toBe('advanced')
+      expect(JSON.stringify(exported)).toContain('Commits.')
+    })
+  })
+
+  it('serves no index in a build under Pagefind, the default', async () => {
+    await under('production', async () => {
+      const response = await site.routes.search.GET()
+      expect(response.status).toBe(404)
+      expect(await response.text()).toBe('kiln-docs: search runs on Pagefind, in /pagefind/.')
+    })
+  })
+
+  it('serves the static index under next dev with Pagefind, which has no build to index', async () => {
+    await under('development', async () => {
+      const exported = (await (await site.routes.search.GET()).json()) as { type: string }
+      expect(exported.type).toBe('advanced')
+      expect(JSON.stringify(exported)).toContain('Commits.')
+    })
+  })
+
+  it("searches Pagefind's index from the export in a build, and the search route under next dev", async () => {
+    await under('production', async () => {
+      // There's no export here, so the import fails, naming what it tried to load.
+      expect(await searchGit()).toContain('/pagefind/pagefind.js')
+      expect(await searchGit('orama-static')).toEqual(['/docs/plugins/git'])
+    })
+    await under('development', async () => {
+      expect(await searchGit()).toEqual(['/docs/plugins/git'])
+    })
   })
 
   it('fails on a provider it does not know', () => {
-    const unknown = 'pagefind' as SearchProvider
+    const unknown = 'algolia' as SearchProvider
     expect(() => createSearchRoute(site.source, unknown)).toThrow(
-      "kiln-docs: search.provider pagefind isn't a search provider.",
+      "kiln-docs: search.provider algolia isn't a search provider.",
     )
     expect(() => searchClient(unknown)).toThrow(
-      "kiln-docs: search.provider pagefind isn't a search provider.",
+      "kiln-docs: search.provider algolia isn't a search provider.",
     )
   })
 })

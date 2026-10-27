@@ -2,7 +2,7 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync
 import { tmpdir } from 'node:os'
 import { dirname, join } from 'node:path'
 import { checkPeers, inRange } from './peers.ts'
-import { moveMarkdown, postbuild } from './postbuild.ts'
+import { indexPages, moveMarkdown, postbuild } from './postbuild.ts'
 import { ROUTE_FILES } from './routes.ts'
 import { checkThemeCss, configuredThemes, missingThemes, themeSelector } from './themeCss.ts'
 
@@ -29,12 +29,20 @@ function builtSite({ css = '[data-theme=riso]{--a:1}' } = {}) {
   write('out/llms.mdx/index.md', '# Index')
   write('out/llms.mdx/ui/button.md', '# Button')
   write('out/docs/ui/button.html', '<p>Button</p>')
+  write('out/api/search', '{"type":"advanced"}')
   write('out/_next/static/chunks/a.css', css)
   write('node_modules/fumadocs-core/package.json', '{"version":"16.15.20"}')
   write('node_modules/fumadocs-mdx/package.json', '{"version":"15.4.6"}')
 }
 
-const picker = { theme: { picker: ['paper', 'riso'], default: 'paper' } }
+const picker = {
+  theme: { picker: ['paper', 'riso'], default: 'paper' },
+  search: { provider: 'orama-static' as const },
+}
+
+/** An exported docs page, as the chrome renders one: the content is in its article. */
+const html = (title: string, body: string) =>
+  `<!doctype html><html lang="en"><body><header>Search</header><article><p data-pagefind-meta="crumbs" data-pagefind-ignore>UI / Actions</p><h1>${title}</h1><p>${body}</p><nav data-pagefind-ignore>Next: Pager</nav></article></body></html>`
 
 describe('the theme CSS check', () => {
   // ADR 0045 (T15): built CSS is minified, so `[data-theme='riso']` loses its quotes.
@@ -106,9 +114,9 @@ describe('the peer check', () => {
 })
 
 describe('postbuild', () => {
-  it("moves each page's Markdown to its URL, and the index to /docs.md", () => {
+  it("moves each page's Markdown to its URL, and the index to /docs.md", async () => {
     builtSite()
-    expect(postbuild({ root, config: picker })[0]).toBe(
+    expect((await postbuild({ root, config: picker }))[0]).toBe(
       'moved out/llms.mdx to out/docs/<page>.md and out/docs.md',
     )
     expect(read('out/docs.md')).toBe('# Index')
@@ -123,17 +131,52 @@ describe('postbuild', () => {
     }).toThrow('Run `next build` first.')
   })
 
-  it('fails on a missing route file and a theme with no CSS, naming each', () => {
+  it('fails on a missing route file and a theme with no CSS, naming each', async () => {
     builtSite({ css: 'body{}' })
     rmSync(join(root, 'src/app/robots.ts'))
-    expect(() => postbuild({ root, config: picker })).toThrow(
+    await expect(postbuild({ root, config: picker })).rejects.toThrow(
       /2 problem\(s\):\n- src\/app\/robots\.ts is missing\. Write it from the kiln-docs README\.\n- The riso theme has no CSS/,
     )
   })
 
-  it('reads the route files from app/ when the site has no src/app', () => {
+  it('reads the route files from app/ when the site has no src/app', async () => {
     builtSite()
     rmSync(join(root, 'src'), { recursive: true })
-    expect(() => postbuild({ root, config: picker })).toThrow('app/layout.tsx is missing')
+    await expect(postbuild({ root, config: picker })).rejects.toThrow('app/layout.tsx is missing')
   })
+
+  it('keeps the Orama index under orama-static, and writes no Pagefind index', async () => {
+    builtSite()
+    const log = await postbuild({ root, config: picker })
+    expect(log.some((line) => line.includes('Pagefind'))).toBe(false)
+    expect(read('out/api/search')).toBe('{"type":"advanced"}')
+    expect(existsSync(join(root, 'out/pagefind'))).toBe(false)
+  })
+})
+
+// ADR 0048: Pagefind, the default provider, indexes the export's docs pages.
+describe('the Pagefind index', () => {
+  it('indexes the docs pages from their articles, and deletes the search route', async () => {
+    builtSite()
+    write('out/docs.html', html('Toolbelt', 'Start here.'))
+    write('out/docs/ui/button.html', html('Button', 'Presses a thing.'))
+    write('out/index.html', html('Landing', 'Not a docs page.'))
+    write('out/404.html', html('Not found', 'Not a docs page.'))
+    const log = await postbuild({ root, config: { theme: { fixed: 'paper' } } })
+    expect(log).toContain('indexed 2 pages with Pagefind in out/pagefind')
+    expect(existsSync(join(root, 'out/pagefind/pagefind.js'))).toBe(true)
+    expect(existsSync(join(root, 'out/pagefind/pagefind-ui.js'))).toBe(false)
+    expect(existsSync(join(root, 'out/api'))).toBe(false)
+    const entry = JSON.parse(read('out/pagefind/pagefind-entry.json')) as {
+      languages: Record<string, { page_count: number }>
+    }
+    expect(entry.languages.en?.page_count).toBe(2)
+  }, 30_000)
+
+  it('fails when the export has no docs pages', async () => {
+    write('out/index.html', html('Landing', 'Not a docs page.'))
+    await expect(indexPages(join(root, 'out'))).rejects.toThrow(
+      `Pagefind found no docs pages in ${join(root, 'out')}. Run \`next build\` first.`,
+    )
+  }, 30_000)
 })

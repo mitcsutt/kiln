@@ -1,6 +1,6 @@
 # 0019. How the docs site is built
 
-- **Status:** Accepted, amended by [0025](0025-colocated-examples.md), [0029](0029-generated-reference-pages.md), [0033](0033-docs-sections.md), [0034](0034-docs-on-cloudflare-workers.md), [0035](0035-code-highlighting.md) and [0045](0045-kiln-docs.md)
+- **Status:** Accepted, amended by [0025](0025-colocated-examples.md), [0029](0029-generated-reference-pages.md), [0033](0033-docs-sections.md), [0034](0034-docs-on-cloudflare-workers.md), [0035](0035-code-highlighting.md), [0045](0045-kiln-docs.md) and [0048](0048-kiln-docs-pagefind.md)
 - **Date:** 2026-10-04
 
 ## Context
@@ -35,7 +35,7 @@
 **Agents and search**
 
 - Each page's processed Markdown is served at `/docs/<page>.md` (a rewrite to a route handler) and joined into `/llms-full.txt`; `/llms.txt` lists every page. In the Markdown, examples become their source and API tables become Markdown tables, from the same generated data.
-- Search is Fumadocs' static index, exported at build time and searched in the browser, so the site needs no server beyond static hosting.
+- Search runs in the browser over an index built at export time, so the site needs no server beyond static hosting. The provider is Pagefind by default, with Fumadocs' static Orama index as an opt-in ([0048](0048-kiln-docs-pagefind.md)).
 - Page frontmatter carries `exports`, the public exports a page documents, so a later skills build can find the page that owns an export.
 
 **Checks**

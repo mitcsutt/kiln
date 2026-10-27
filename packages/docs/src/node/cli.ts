@@ -6,8 +6,8 @@ import { postbuild } from './postbuild.ts'
 
 const USAGE = `Usage: kiln-docs <command>, from the site's root
 
-  postbuild     after \`next build\`: moves the Markdown files into place, and checks the route
-                files, the themes' CSS and the fumadocs peers
+  postbuild     after \`next build\`: moves the Markdown files into place, indexes the pages
+                with Pagefind, and checks the route files, the themes' CSS and the fumadocs peers
   check-links   serves the export with Wrangler, and fails on a broken internal link or anchor`
 
 /** The `kiln-docs` bin. Every command runs from the site's root, beside its `site.config.ts`. */
@@ -16,13 +16,14 @@ async function main(command: string | undefined): Promise<number> {
   const config = () => loadSiteConfig(join(root, 'site.config.ts'))
   switch (command) {
     case 'postbuild': {
-      for (const line of postbuild({ root, config: await config() })) {
+      for (const line of await postbuild({ root, config: await config() })) {
         console.log(`kiln-docs postbuild: ${line}`)
       }
       return 0
     }
     case 'check-links': {
-      const { checked, problems } = await checkLinks({ root, url: (await config()).url })
+      const { url, search } = await config()
+      const { checked, problems } = await checkLinks({ root, url, search: search.provider })
       if (problems.length) {
         console.error(`Broken internal links (${String(problems.length)}):`)
         for (const problem of problems) console.error(`  ${problem}`)

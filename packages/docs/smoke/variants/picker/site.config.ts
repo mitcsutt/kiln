@@ -2,7 +2,10 @@ import { defineSite } from '@mitcsutt/kiln-docs/config'
 
 const repository = 'https://github.com/example/smoke-toolbelt'
 
-/** The picker variant: Kiln's mode, a theme a reader picks from the header (ADR 0045). */
+/**
+ * The picker variant: Kiln's mode, a theme a reader picks from the header (ADR 0045), and the
+ * Orama index a site opts into instead of Pagefind (ADR 0048).
+ */
 export default defineSite({
   name: 'Smoke Toolbelt',
   description: 'Plugins for an agent, documented by a site built on @mitcsutt/kiln-docs.',
@@ -17,7 +20,7 @@ export default defineSite({
       { href: '/llms.txt', label: 'llms.txt' },
     ],
   },
-  search: { placeholder: 'Search plugins' },
+  search: { placeholder: 'Search plugins', provider: 'orama-static' },
   notFound: {
     description: 'That page isn’t here. Start from the docs.',
     action: { href: '/docs', label: 'Open the docs' },

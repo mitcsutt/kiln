@@ -10,7 +10,8 @@
  * - Each HTML page matches as a summary (`export-snapshot.ts`): title, meta tags, `id`s, `href`s,
  *   visible text, `data-theme`, `data-mode` and the
  *   head script.
- * - The search index holds the same documents.
+ * - The search index holds the same documents: the Orama index's documents, or the number of
+ *   pages in each language of the Pagefind index (ADR 0048).
  * - Each theme selector has the same CSS rules.
  *
  * With `--report <dir>`, it also writes `<dir>/html.diff`, a diff of every page whose full HTML
@@ -163,17 +164,41 @@ if (differing.length) {
   console.log(`✓ ${String(pages.length)} HTML pages match: title, meta, ids, hrefs, text`)
 }
 
-// The search index, as a set of documents.
-const searchBefore = searchDocuments(read(baseline, 'api/search'))
-const searchAfter = searchDocuments(read(candidate, 'api/search'))
-const search = listDifference(searchBefore, searchAfter)
-if (search.missing.length || search.extra.length) {
-  fail('the search index holds the same documents', [
-    ...search.missing.map((doc) => `missing ${doc.slice(0, 160)}`),
-    ...search.extra.map((doc) => `new ${doc.slice(0, 160)}`),
-  ])
+// The search index: the Orama index as a set of documents, or the Pagefind index's page counts,
+// which is all its entry file says about it.
+const ORAMA = 'api/search'
+const PAGEFIND = 'pagefind/pagefind-entry.json'
+const pagefindPages = (dir: string) =>
+  Object.entries(
+    (JSON.parse(read(dir, PAGEFIND)) as { languages: Record<string, { page_count: number }> })
+      .languages,
+  ).map(([language, { page_count }]) => `${language}: ${String(page_count)} pages`)
+if (existsSync(join(baseline, ORAMA)) && existsSync(join(candidate, ORAMA))) {
+  const searchBefore = searchDocuments(read(baseline, ORAMA))
+  const searchAfter = searchDocuments(read(candidate, ORAMA))
+  const search = listDifference(searchBefore, searchAfter)
+  if (search.missing.length || search.extra.length) {
+    fail('the search index holds the same documents', [
+      ...search.missing.map((doc) => `missing ${doc.slice(0, 160)}`),
+      ...search.extra.map((doc) => `new ${doc.slice(0, 160)}`),
+    ])
+  } else {
+    console.log(`✓ the search index holds the same ${String(searchBefore.length)} documents`)
+  }
+} else if (existsSync(join(baseline, PAGEFIND)) && existsSync(join(candidate, PAGEFIND))) {
+  const before = pagefindPages(baseline)
+  const after = pagefindPages(candidate)
+  if (JSON.stringify(before) === JSON.stringify(after)) {
+    console.log(`✓ the Pagefind index holds the same pages (${after.join(', ')})`)
+  } else {
+    fail('the Pagefind index holds the same pages', [
+      `${before.join(', ')} became ${after.join(', ')}`,
+    ])
+  }
 } else {
-  console.log(`✓ the search index holds the same ${String(searchBefore.length)} documents`)
+  fail('both exports have the same search provider', [
+    `the baseline has ${existsSync(join(baseline, ORAMA)) ? 'the Orama index' : 'no Orama index'}, the candidate ${existsSync(join(candidate, ORAMA)) ? 'the Orama index' : 'no Orama index'}`,
+  ])
 }
 
 // Each theme's CSS rules, wherever the build put them.

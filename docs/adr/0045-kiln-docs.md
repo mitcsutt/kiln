@@ -1,6 +1,6 @@
 # 0045. kiln-docs: the docs site becomes a publishable foundation, with kiln's site as its first consumer
 
-- **Status:** Accepted, amended by [0046](0046-kiln-docs-frozen-surface.md) and [0047](0047-kiln-docs-smoke-and-release.md) (amends [0004](0004-react-18-and-19.md), [0005](0005-library-build.md), [0019](0019-docs-site.md), [0022](0022-linked-consumers.md), [0023](0023-theme-script-entry.md), [0029](0029-generated-reference-pages.md), [0034](0034-docs-on-cloudflare-workers.md) and [0038](0038-variant-blocks.md))
+- **Status:** Accepted, amended by [0046](0046-kiln-docs-frozen-surface.md), [0047](0047-kiln-docs-smoke-and-release.md) and [0048](0048-kiln-docs-pagefind.md) (amends [0004](0004-react-18-and-19.md), [0005](0005-library-build.md), [0019](0019-docs-site.md), [0022](0022-linked-consumers.md), [0023](0023-theme-script-entry.md), [0029](0029-generated-reference-pages.md), [0034](0034-docs-on-cloudflare-workers.md) and [0038](0038-variant-blocks.md))
 - **Date:** 2026-10-26
 
 ## Context

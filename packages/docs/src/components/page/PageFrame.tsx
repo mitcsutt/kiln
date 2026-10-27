@@ -60,7 +60,7 @@ function Toc({ items }: { items: TOCItemType[] }) {
 function Pager({ previous, next }: { previous?: Neighbour; next?: Neighbour }) {
   if (!previous && !next) return null
   return (
-    <nav aria-label="Pages" className={styles.pager}>
+    <nav aria-label="Pages" className={styles.pager} data-pagefind-ignore="">
       {previous ? (
         <NextLink href={previous.url} className={styles.pagerLink} rel="prev">
           <Text as="span" size="sm" tone="muted">
@@ -101,11 +101,19 @@ export function PageFrame({
     <AnchorProvider toc={toc} single>
       <Container width="full">
         <div className={styles.layout}>
+          {/* Pagefind indexes the article (ADR 0048). The breadcrumb is a result's metadata, not
+              its text, and the Markdown link and the pager are on every page. */}
           <article className={styles.article}>
             <header className={styles.header}>
               <Stack gap={4}>
                 {crumbs.length ? (
-                  <Text as="p" size="sm" tone="muted">
+                  <Text
+                    as="p"
+                    size="sm"
+                    tone="muted"
+                    data-pagefind-meta="crumbs"
+                    data-pagefind-ignore=""
+                  >
                     {crumbs.join(' / ')}
                   </Text>
                 ) : null}
@@ -117,7 +125,7 @@ export function PageFrame({
                     {description}
                   </Text>
                 ) : null}
-                <Text as="p" size="sm">
+                <Text as="p" size="sm" data-pagefind-ignore="">
                   <Link href={markdownUrl} tone="muted">
                     View as Markdown
                   </Link>
