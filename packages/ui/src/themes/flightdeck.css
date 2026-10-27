@@ -4,7 +4,7 @@
  * Idea: a glass cockpit, an electronic flight instrument display. Cockpit colour has fixed
  * meaning, and Flightdeck maps it onto Kiln's roles exactly:
  *   CYAN    = values the pilot sets and acts on (the live target)  -> --color-accent
- *   REVERSE = the selected line of an FMS, a brighter neutral box  -> --color-highlight, selection
+ *   REVERSE = the selected line of an FMS, a neutral inverted box  -> --color-highlight, selection
  *   GREEN   = engaged / normal                                    -> --tone-positive
  *   AMBER   = caution                                             -> --tone-caution
  *   RED     = warning                                             -> --tone-critical
@@ -131,10 +131,18 @@
     ); /* darkened for daylight: AA on the bezel */
     --color-accent-soft: light-dark(oklch(0.94 0.025 215), oklch(0.3 0.045 220));
 
-    /* Reverse video: a neutral, slightly brighter box, like the selected line of an FMS, so
-       "you"/selected rows and text selection need no second hue. */
-    --color-highlight: light-dark(oklch(0.88 0.015 235), oklch(0.36 0.02 235));
-    --color-highlight-ink: light-dark(oklch(0.22 0.02 235), oklch(0.96 0.005 235));
+    /* Reverse video: the selected line of an FMS, inverted. A dark box with light ink on the
+       bright day panes, a bright box with dark ink on the night glass, so "you"/selected is
+       the strongest thing on a row and needs no second hue. */
+    --color-highlight: light-dark(oklch(0.33 0.03 235), oklch(0.88 0.012 235));
+    --color-highlight-ink: light-dark(oklch(0.97 0.006 235), oklch(0.2 0.02 235));
+    /* Status and accent text inside the inverted line: the bright legend by day, the dark
+       one at night, each AA on the box (the default 25% mix fails on a reversed box). */
+    --highlight-tone-positive-text: light-dark(oklch(0.84 0.14 148), oklch(0.42 0.12 148));
+    --highlight-tone-caution-text: light-dark(oklch(0.86 0.13 80), oklch(0.42 0.09 65));
+    --highlight-tone-critical-text: light-dark(oklch(0.8 0.13 27), oklch(0.45 0.17 27));
+    --highlight-tone-info-text: light-dark(oklch(0.84 0.08 255), oklch(0.4 0.1 255));
+    --highlight-accent-text: light-dark(oklch(0.84 0.1 210), oklch(0.42 0.1 220));
 
     --color-focus: var(--color-ink); /* neutral — focus must never look like validation */
     --color-selection: light-dark(
