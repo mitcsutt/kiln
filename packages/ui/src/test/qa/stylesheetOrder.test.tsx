@@ -3,18 +3,28 @@
  * stylesheet order.
  *
  * A bundler can emit CSS Modules chunks in any order (Next.js/Turbopack does, with no setting to
- * pin it), so `.copy` on CodeBlock's Button or `.chips` on TagsInput's TagList must outrank the
- * inner component's base class (`.button`, `.list`) whichever sheet loads first. jsdom loads no
+ * pin it), so `.copy` on CodeBlock's Button, `.chips` on TagsInput's TagList or `.chevron` on
+ * TreeTable's icon must outrank the inner component's base class (`.button`, `.list`, `.icon`)
+ * whichever sheet loads first. jsdom loads no
  * stylesheets in this package's tests, so the real module CSS is injected here in both orders
  * (class names are non-scoped in this config). jsdom's `getComputedStyle` cascades by source order
  * alone, ignoring specificity, so `cascaded` below resolves a property the way a browser does.
  */
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it } from 'vitest'
 import { CodeBlock } from '#components/display/CodeBlock'
+import { TreeTable } from '#components/display/TreeTable'
+import { Checkbox } from '#components/inputs/Checkbox'
+import { Combobox } from '#components/inputs/Combobox'
+import { DateRangePickerField } from '#components/inputs/DateRangeField'
+import { FileDrop } from '#components/inputs/FileDrop'
 import { TagsInput } from '#components/inputs/TagsInput'
+import { TextField } from '#components/inputs/TextField'
+import { CommandPalette } from '#components/overlays/CommandPalette'
+import { Link } from '#components/typography/Link'
 import { must } from '#test/must'
 
 let styles: HTMLStyleElement[] = []
@@ -25,7 +35,7 @@ afterEach(() => {
 
 function inject(path: string) {
   const style = document.createElement('style')
-  style.textContent = readFileSync(join(process.cwd(), 'src/components', path), 'utf8')
+  style.textContent = readFileSync(join(process.cwd(), 'src', path), 'utf8')
   document.head.append(style)
   styles.push(style)
 }
@@ -123,7 +133,7 @@ const orders = (outer: string, inner: string): [string, string[]][] => [
 
 describe('cascaded', () => {
   it('ranks by specificity before source order', () => {
-    inject('display/Tag/Tag.module.css')
+    inject('components/display/Tag/Tag.module.css')
     const style = document.createElement('style')
     style.textContent = '.list { display: grid } .x:where(.list) { display: block }'
     document.head.append(style)
@@ -135,8 +145,8 @@ describe('cascaded', () => {
 
 describe('composed component styles do not depend on stylesheet order', () => {
   for (const [label, sheets] of orders(
-    'display/CodeBlock/CodeBlock.module.css',
-    'actions/Button/Button.module.css',
+    'components/display/CodeBlock/CodeBlock.module.css',
+    'components/actions/Button/Button.module.css',
   )) {
     it(`CodeBlock's copy button is muted when loading ${label}`, () => {
       for (const sheet of sheets) inject(sheet)
@@ -148,13 +158,250 @@ describe('composed component styles do not depend on stylesheet order', () => {
   }
 
   for (const [label, sheets] of orders(
-    'inputs/TagsInput/TagsInput.module.css',
-    'display/Tag/Tag.module.css',
+    'components/inputs/TagsInput/TagsInput.module.css',
+    'components/display/Tag/Tag.module.css',
   )) {
     it(`TagsInput's chip list is display: contents when loading ${label}`, () => {
       for (const sheet of sheets) inject(sheet)
       render(<TagsInput aria-label="Labels" defaultValue={['Design']} />)
       expect(cascaded(screen.getByRole('list'), 'display')).toBe('contents')
     })
+  }
+
+  const icon = 'icons/Icon.module.css'
+  const spinner = 'components/feedback/Spinner/Spinner.module.css'
+  const messages = 'components/inputs/internal/messages.module.css'
+  const combobox = 'components/inputs/Combobox/Combobox.module.css'
+  const palette = 'components/overlays/CommandPalette/CommandPalette.module.css'
+  const query = (selector: string) => must(document.querySelector(selector))
+
+  async function openPalette(props: { loading?: boolean } = {}) {
+    render(
+      <CommandPalette
+        {...props}
+        trigger={<button type="button">Search</button>}
+        actions={[{ id: 'switch', label: 'Switch project', actions: [{ id: 'a', label: 'A' }] }]}
+      />,
+    )
+    await userEvent.click(screen.getByRole('button', { name: 'Search' }))
+  }
+
+  /** [what, outer sheet, inner sheet, render and return the element, expected cascaded values] */
+  const cases: [
+    string,
+    string,
+    string,
+    () => Promise<Element> | Element,
+    Record<string, string>,
+  ][] = [
+    [
+      "TreeTable's chevron is 1rem",
+      'components/display/TreeTable/TreeTable.module.css',
+      icon,
+      () => {
+        const rows: { id: string; children?: { id: string }[] }[] = [
+          { id: 'a', children: [{ id: 'b' }] },
+        ]
+        render(
+          <TreeTable
+            label="Sessions"
+            columns={[{ id: 'name', header: 'Session' }]}
+            rows={rows}
+            getRowId={(row) => row.id}
+            getChildren={(row) => row.children}
+            renderCell={(row) => row.id}
+          />,
+        )
+        return query('.chevron')
+      },
+      { 'inline-size': '1rem', 'block-size': '1rem' },
+    ],
+    [
+      "FileDrop's icon is 1.25em",
+      'components/inputs/FileDrop/FileDrop.module.css',
+      icon,
+      () => {
+        render(<FileDrop aria-label="Receipts" />)
+        return query('.zone > svg')
+      },
+      { 'inline-size': '1.25em', 'block-size': '1.25em' },
+    ],
+    [
+      "Checkbox's tick is 88% with a heavier stroke",
+      'components/inputs/Checkbox/Checkbox.module.css',
+      icon,
+      () => {
+        render(<Checkbox aria-label="Agree" defaultChecked />)
+        return query('.check')
+      },
+      { 'inline-size': '88%', 'stroke-width': 'calc(var(--icon-stroke) * 1.4)' },
+    ],
+    [
+      "Checkbox's dash is 88% with a heavier stroke",
+      'components/inputs/Checkbox/Checkbox.module.css',
+      icon,
+      () => {
+        render(<Checkbox aria-label="Agree" defaultChecked="indeterminate" />)
+        return query('.dash')
+      },
+      { 'inline-size': '88%', 'stroke-width': 'calc(var(--icon-stroke) * 1.4)' },
+    ],
+    [
+      "Combobox's chevron is 1.15em",
+      combobox,
+      icon,
+      () => {
+        render(<Combobox aria-label="Category" options={[{ value: 'a', label: 'A' }]} />)
+        return query('.chevron')
+      },
+      { 'inline-size': '1.15em' },
+    ],
+    [
+      "Combobox's selected-option check is 1.1em",
+      combobox,
+      icon,
+      async () => {
+        render(
+          <Combobox
+            aria-label="Category"
+            options={[{ value: 'a', label: 'A' }]}
+            defaultValue="a"
+          />,
+        )
+        await userEvent.click(screen.getByRole('combobox'))
+        return query('.check')
+      },
+      { 'inline-size': '1.1em' },
+    ],
+    [
+      "Combobox's spinner is subtle",
+      combobox,
+      spinner,
+      () => {
+        render(<Combobox aria-label="Category" options={[]} loading />)
+        return query('.spinner')
+      },
+      { color: 'var(--color-ink-subtle)' },
+    ],
+    [
+      "Combobox's chip list is display: contents",
+      combobox,
+      'components/display/Tag/Tag.module.css',
+      () => {
+        render(
+          <Combobox
+            multiple
+            aria-label="Labels"
+            options={[{ value: 'a', label: 'A' }]}
+            defaultValue={['a']}
+          />,
+        )
+        return screen.getByRole('list')
+      },
+      { display: 'contents' },
+    ],
+    [
+      "DateRangePickerField's presets are start-aligned",
+      'components/inputs/DateRangeField/DateRangeField.module.css',
+      'components/actions/Button/Button.module.css',
+      async () => {
+        render(
+          <DateRangePickerField
+            label="Period"
+            presets={[{ label: 'October', value: { start: '2026-10-01', end: '2026-10-31' } }]}
+          />,
+        )
+        await userEvent.click(screen.getByRole('button', { name: 'Choose date' }))
+        const presets = await screen.findByRole('group', { name: 'Presets' })
+        return within(presets).getByRole('button', { name: 'October' })
+      },
+      { 'justify-content': 'flex-start' },
+    ],
+    [
+      "a field error's icon is one line tall",
+      messages,
+      icon,
+      () => {
+        render(<TextField label="Name" error="Required" />)
+        return query('.errorIcon')
+      },
+      { 'inline-size': '1.1em', 'block-size': '1lh' },
+    ],
+    [
+      "a field warning's icon is one line tall",
+      messages,
+      icon,
+      () => {
+        render(<TextField label="Name" warning="Unusual" />)
+        return query('.warningIcon')
+      },
+      { 'inline-size': '1.1em', 'block-size': '1lh' },
+    ],
+    [
+      "a validating field's spinner is subtle",
+      messages,
+      spinner,
+      () => {
+        render(<TextField label="Name" validating />)
+        return query('.busy')
+      },
+      { color: 'var(--color-ink-subtle)' },
+    ],
+    [
+      "CommandPalette's search icon is 1.15em",
+      palette,
+      icon,
+      async () => {
+        await openPalette()
+        return query('.searchIcon')
+      },
+      { 'inline-size': '1.15em' },
+    ],
+    [
+      "CommandPalette's sub-action chevron is 1.1em",
+      palette,
+      icon,
+      async () => {
+        await openPalette()
+        return query('.option .chevron')
+      },
+      { 'inline-size': '1.1em' },
+    ],
+    [
+      "CommandPalette's spinner is subtle",
+      palette,
+      spinner,
+      async () => {
+        await openPalette({ loading: true })
+        return query('.spinner')
+      },
+      { color: 'var(--color-ink-subtle)' },
+    ],
+    [
+      "an external Link's arrow is 0.85em",
+      'components/typography/Link/Link.module.css',
+      icon,
+      () => {
+        render(
+          <Link href="https://example.com" external>
+            Example
+          </Link>,
+        )
+        return query('.iconWrap > svg')
+      },
+      { 'inline-size': '0.85em' },
+    ],
+  ]
+
+  for (const [what, outer, inner, find, expected] of cases) {
+    for (const [label, sheets] of orders(outer, inner)) {
+      it(`${what} when loading ${label}`, async () => {
+        for (const sheet of sheets) inject(sheet)
+        const element = await find()
+        for (const [property, value] of Object.entries(expected)) {
+          expect(cascaded(element, property), property).toBe(value)
+        }
+      })
+    }
   }
 })

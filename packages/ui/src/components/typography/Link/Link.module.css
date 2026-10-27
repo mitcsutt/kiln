@@ -56,7 +56,8 @@
 .iconWrap {
   white-space: nowrap;
 }
-.icon {
+/* Scoped under .iconWrap so it outranks Icon's .icon whatever order the CSS chunks load in. */
+.iconWrap .icon {
   display: inline-block;
   inline-size: 0.85em;
   block-size: 0.85em;

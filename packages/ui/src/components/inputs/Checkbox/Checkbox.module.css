@@ -88,8 +88,9 @@
   animation: tick-in var(--dur-2) var(--ease-spring);
 }
 
-.check,
-.dash {
+/* Scoped under .indicator so it outranks Icon's .icon whatever order the CSS chunks load in. */
+.indicator .check,
+.indicator .dash {
   grid-area: 1 / 1;
   inline-size: 88%;
   block-size: 88%;

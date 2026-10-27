@@ -38,7 +38,8 @@
   min-inline-size: 0;
 }
 
-.chips {
+/* Scoped under .values so it outranks TagList's .list whatever order the CSS chunks load in. */
+.values .chips {
   display: contents;
 }
 
@@ -83,7 +84,8 @@
   color: var(--color-ink-muted);
 }
 
-.spinner {
+/* Scoped under .trailing so it outranks Spinner's .root whatever order the CSS chunks load in. */
+.trailing .spinner {
   color: var(--color-ink-subtle);
 }
 
@@ -121,7 +123,8 @@
   outline-offset: 1px;
 }
 
-.chevron {
+/* Scoped under .trailing so it outranks Icon's .icon whatever order the CSS chunks load in. */
+.trailing .chevron {
   inline-size: 1.15em;
   block-size: 1.15em;
   transition: rotate var(--dur-2) var(--ease-spring);
@@ -176,7 +179,7 @@
   .popup[data-state='open'] {
     animation: none;
   }
-  .chevron {
+  .trailing .chevron {
     transition: none;
   }
 }
@@ -264,7 +267,8 @@
   block-size: 0.9em;
 }
 
-.check {
+/* Scoped under .option so it outranks Icon's .icon whatever order the CSS chunks load in. */
+.option .check {
   flex: none;
   inline-size: 1.1em;
   block-size: 1.1em;
