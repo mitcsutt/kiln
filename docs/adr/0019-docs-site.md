@@ -42,7 +42,7 @@
 
 - `src/test/tree.test.ts` fails when a Storybook title has no page, when a component, field, layout, hook or exported function has no page, when a page names an example or API type that doesn't exist, or when the sidebar's groups differ from the shared tree.
 - `docs/tree.json` is the 0010 tree. Storybook's `tree.test.ts` now reads it instead of its own copy, as 0018 proposed.
-- `scripts/check-links.ts` serves the production build on a free local port, crawls it from `/` (including `llms.txt` and the Markdown routes) and fails on any non-200 page or missing `#anchor`. Fragment-only links inside live examples are illustrative and skipped. It starts and stops its own server, times out every request and the whole run, and needs no network. CI runs it as the `docs` job.
+- `kiln-docs check-links` ([0045](0045-kiln-docs.md)) serves the production build on a free local port, crawls it from `/` (including `llms.txt` and the Markdown routes) and fails on any non-200 page or missing `#anchor`. Fragment-only links inside live examples are illustrative and skipped. It starts and stops its own server, times out every request and the whole run, and needs no network. CI runs it as the `docs` job.
 
 **Room for the form builder**
 

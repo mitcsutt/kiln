@@ -116,11 +116,18 @@ if (changed.length) {
  * because folding a trailing `/index` into its folder was missing from the old slugs. They now
  * point at their sections' indexes.
  */
-const SECTION_INDEXES = ['/docs/ui', '/docs/forms', '/docs/drag-and-drop', '/docs/charts', '/docs/tooling']
+const SECTION_INDEXES = [
+  '/docs/ui',
+  '/docs/forms',
+  '/docs/drag-and-drop',
+  '/docs/charts',
+  '/docs/tooling',
+]
 function acceptSectionLinks(before: PageSummary, after: PageSummary): void {
-  before.hrefs = before.hrefs.map((href, at) =>
-    href === '/docs' && SECTION_INDEXES.includes(after.hrefs[at] ?? '') ? after.hrefs[at]! : href,
-  )
+  before.hrefs = before.hrefs.map((href, at) => {
+    const next = after.hrefs[at] ?? ''
+    return href === '/docs' && SECTION_INDEXES.includes(next) ? next : href
+  })
 }
 
 // HTML pages, as summaries.

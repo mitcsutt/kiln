@@ -88,7 +88,12 @@ export function pageSummary(html: string): PageSummary {
     title: head?.querySelector('title')?.text ?? '',
     meta: root
       .querySelectorAll('meta')
-      .filter((element) => !/^(og|twitter):/.test(element.getAttribute('property') ?? element.getAttribute('name') ?? ''))
+      .filter(
+        (element) =>
+          !/^(og|twitter):/.test(
+            element.getAttribute('property') ?? element.getAttribute('name') ?? '',
+          ),
+      )
       .map(attributes)
       .sort(),
     ids: root.querySelectorAll('[id]').map((element) => element.getAttribute('id') ?? ''),
