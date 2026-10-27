@@ -1,6 +1,6 @@
 # DESIGN.md: the Kiln design system
 
-> One component library, many personalities. `@mitcsutt/kiln-ui` is a single set of React components whose entire look (colour, type, shape, density, depth, motion) is decided by a theme applied at the root. The same `<Button>` is a blue-black office-print key in Paper, a quiet ember pill in Monograph, a banknote-green ledger key in Ledger, a chunky poster sticker in Fiesta, a square instrument key in Flightdeck and a hand-cut fluorescent pink pill in Riso.
+> One component library, many personalities. `@mitcsutt/kiln-ui` is a single set of React components whose entire look (colour, type, shape, density, depth, motion) is decided by a theme applied at the root. The same `<Button>` is a blue-black office-print key in Paper, a banknote-green ledger key in Ledger, a square instrument key in Flightdeck and a hand-cut fluorescent pink pill in Riso.
 
 This document is the contract, and it is **binding** ([ADR 0012](docs/adr/0012-design-standards.md)): its principles, its anti-slop rules and its token contract apply to every component, theme, story and docs page in this repo. Read it before designing a screen, writing a component, or adding a theme. Component-authoring mechanics live in [`packages/ui/AGENTS.md`](packages/ui/AGENTS.md). To change a rule here, change the lint rule or test that enforces it in the same pull request.
 
@@ -9,7 +9,7 @@ This document is the contract, and it is **binding** ([ADR 0012](docs/adr/0012-d
 ## 1. Principles
 
 1. **Themes are data, components are structure.** A component never knows which theme it is in. Everything visual is a token; a new theme is one CSS file and zero component changes.
-2. **One idea per theme, drawn from its subject.** Paper is an office that prints for everyone, on grey recycled stock in blue-black ink. Monograph is a scholar's monograph read under a desk lamp. Ledger is an accountant's columnar pad. Fiesta is a screen-printed festival poster. Flightdeck is a glass-cockpit display. Riso is a two-drum risograph zine. Monograph and Fiesta predate the second-order rules in §2 and keep their original design for compatibility (Fiesta's status and categorical inks have since been tuned apart for real use). Every choice in a theme designed since has a one-line reason traced to its subject, written in the stylesheet next to the value. If you can't write the reason, the choice is wrong and it doesn't ship.
+2. **Every theme has a goal, and one idea drawn from its subject.** The goal is the kind of product to choose the theme for; the subject is how it gets there ([ADR 0045](https://github.com/mitcsutt/kiln/blob/main/docs/adr/0045-four-themes-each-with-a-goal.md)). Paper is for products that shouldn't have a personality yet, and it's an office that prints for everyone, on grey recycled stock in blue-black ink. Ledger is for numbers people have to trust, and it's an accountant's columnar pad. Flightdeck is for operating something live, and it's a glass-cockpit display. Riso is for products made for people rather than operators, and it's a two-drum risograph zine. Every choice in a theme has a one-line reason traced to its subject, written in the stylesheet next to the value. If you can't write the reason, or the choice works against the theme's goal, it doesn't ship. Monograph and Fiesta are deprecated and leave in the next minor release.
 3. **Props, not styles.** Consumers compose layout and intent through typed props (`gap={5}`, `tone="critical"`, `width="text"`). No utility classes, no inline style soup, no raw px/hex/ms at call sites. `className` exists as an escape hatch, not a workflow.
 4. **Durable by default.** Every component forwards refs, spreads native props, works with React 18 and 19, is keyboard- and screen-reader-complete, respects `prefers-reduced-motion`, and renders on the server.
 5. **Specific beats safe.** The median choice is the wrong choice (see §2).
@@ -59,7 +59,7 @@ Models that are told to avoid the tells above converge on a second set instead (
 
 The rest is review.
 
-**Legacy exemption.** Monograph and Fiesta are listed as `LEGACY` in that test and are exempt, along with the font stylesheets only they use (`fonts-monograph.css`, `fonts-fiesta.css` and `fonts-martian-mono.css`), because they keep their design from before these rules ([ADR 0030](https://github.com/mitcsutt/kiln/blob/main/docs/adr/0030-theme-family-without-ai-tells.md)). Monograph still has its ember accent and serif display, and Fiesta its apricot canvas and halftone. Do not treat them as precedent: a new theme gets no exemption, and a redesigned Monograph or Fiesta loses its own.
+**Legacy exemption.** Monograph and Fiesta are listed as `LEGACY` in that test and are exempt, along with the font stylesheets only they use (`fonts-monograph.css`, `fonts-fiesta.css` and `fonts-martian-mono.css`), because they keep their design from before these rules ([ADR 0030](https://github.com/mitcsutt/kiln/blob/main/docs/adr/0030-theme-family-without-ai-tells.md)). Monograph still has its ember accent and serif display, and Fiesta its apricot canvas and halftone. Do not treat them as precedent: a new theme gets no exemption. Both themes are deprecated ([ADR 0045](https://github.com/mitcsutt/kiln/blob/main/docs/adr/0045-four-themes-each-with-a-goal.md)), and they leave, with their exemption, in the next minor release.
 
 The banned font families, from the research: the first-order defaults plus the faces models now reach for as "distinctive" escapes (several are on Anthropic's own recommended list): Inter, Roboto, Open Sans, Poppins, Montserrat, Space Grotesk, Space Mono, Geist, DM Sans, DM Serif, Manrope, Plus Jakarta Sans, Outfit, Sora, Syne, Satoshi, Cabinet Grotesk, Clash Display, General Sans, Instrument Sans, Instrument Serif, Fraunces, Playfair Display, Cormorant, Lora, EB Garamond, Newsreader, Bricolage Grotesque, IBM Plex, JetBrains Mono and Fira Code. The list goes stale as model defaults move: change the list in the test and here together.
 
@@ -193,9 +193,22 @@ Each component module lists the tokens a theme may set at the top of its CSS, al
 
 Paper is in the base stylesheet. The presets are opt-in stylesheets, so an app pays only for what it imports ([ADR 0003](docs/adr/0003-theming-model.md)).
 
+Each theme has a **goal**: the kind of product to choose it for ([ADR 0045](docs/adr/0045-four-themes-each-with-a-goal.md)). The goal comes first, and every change to a theme is judged against it. Each mode is authored, not inverted: the lead mode carries the identity, the other is the same subject at another moment, and no two themes share a canvas in the same mode.
+
+| Theme      | Choose it when                                                                                                                   | It should feel           | Lead mode |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------------- | ------------------------ | --------- |
+| Paper      | the product shouldn't have a personality yet, or must sit under someone else's brand: admin, internal tools, forms, early builds | clear and out of the way | neither   |
+| Ledger     | the work is numbers people have to trust: money, records, dense tables, reconciliation                                           | precise and calm         | light     |
+| Flightdeck | someone is operating something live: dashboards, monitoring, developer tools, status at a glance                                 | alert, fast, in control  | dark      |
+| Riso       | the product is for people rather than operators: community, events, creative and personal projects                               | warm, playful, handmade  | light     |
+
+Monograph and Fiesta (§4.2, §4.4) are deprecated and leave in the next minor release. Switch Fiesta to Riso, and Monograph to Paper or Flightdeck, depending on whether the app is a page or a tool.
+
 ### 4.1 Paper: the default (light or dark)
 
 _An office that prints for everyone: grey recycled stock, white sheets, blue-black ink._
+
+**Goal**: a product that shouldn't have a personality yet, or must sit under someone else's brand.
 
 - **Colour**: cool grey stock for the canvas, near-white sheets for surfaces, so a surface reads against the page by fill alone. **The ink is the accent**: a blue-black that is the primary action, the current item and live state. Links are ink told apart by their underline, so Paper sits under any brand without arguing with it. The one other hue is the proofreader's **non-photo blue**, kept for "you"/selected and text selection. Tones are the only saturated colour on the page.
 - **Type**: **Golos Text** for everything, from display to prose and figures, and **Atkinson Hyperlegible Mono** for code. Paratype drew Golos for a national public-services website, so it has a plain zero, true tabular figures and distinct I, l and 1. The bundle has no italic file, so italics are synthesised. No serif. 16px base, 1.25 ratio.
@@ -203,11 +216,11 @@ _An office that prints for everyone: grey recycled stock, white sheets, blue-bla
 - **Depth**: a fill change, not a border: a sheet on stock needs no edge. Soft blue-black shadows for floating layers.
 - **Motion**: quart ease-out, brisk, no bounce.
 
-### 4.2 Monograph: preset (dark-first, legacy)
+### 4.2 Monograph: preset (dark-first, deprecated)
 
 _A scholarly monograph read under a desk lamp at night: "modern nostalgia"._ `import '@mitcsutt/kiln-ui/themes/monograph.css'`
 
-Kept unchanged for compatibility. It predates the second-order rules in §2 and is exempt from them. Its stylesheet loads its own faces, and Martian Mono through `tokens/fonts-martian-mono.css`, so the base stylesheet carries none of them.
+**Deprecated** by [ADR 0045](docs/adr/0045-four-themes-each-with-a-goal.md): it has no goal of its own, and it leaves in the next minor release. Switch to Paper for a page or Flightdeck for a tool. Until then it is kept unchanged and exempt from the second-order rules in §2. Its stylesheet loads its own faces, and Martian Mono through `tokens/fonts-martian-mono.css`, so the base stylesheet carries none of them.
 
 - **Colour**: blue-slate neutrals (hue 255, never black). One **ember** accent (`oklch(0.72 0.15 52)` dark / `oklch(0.565 0.158 44)` light) that behaves like phosphor: it marks _live_ and _current_, never decorates. A cool slate `highlight`.
 - **Type**: **Newsreader** (display/prose serif, optical sizes, set big at weight ~430 with −0.035em tracking) + **Schibsted Grotesk** (text/UI; a newsroom grotesk). **Martian Mono** only for code. 17px base, 1.25 ratio.
@@ -219,17 +232,19 @@ Kept unchanged for compatibility. It predates the second-order rules in §2 and 
 
 _An accountant's columnar pad._ `import '@mitcsutt/kiln-ui/themes/ledger.css'`
 
+**Goal**: numbers people have to trust: money, records, dense tables, reconciliation.
+
 - **Colour**: a white sheet with **green rules** (the lines carry the green, not the canvas), a **banknote-green** accent, **accounting red** for negatives and a flat **highlighter yellow** highlight. Dark mode is a blue-green carbon-copy night, not a green-screen terminal.
 - **Type**: **Archivo** throughout. Figures use its width axis to set condensed with tabular numerals, so a column of money reads like receipt tape without a monospace. **Atkinson Hyperlegible Mono** for code only. 15px base, 1.2 ratio.
 - **Shape**: tight radii everywhere, squarer chips, rounded-square avatars like ledger stamps; compact density (0.86).
 - **Depth**: hairlines in the ledger green; surfaces stay flat.
 - **Motion**: brief and flat, no bounce.
 
-### 4.4 Fiesta: preset (light-first, legacy)
+### 4.4 Fiesta: preset (light-first, deprecated)
 
 _A screen-printed festival poster and sticker album._ `import '@mitcsutt/kiln-ui/themes/fiesta.css'`
 
-Kept to its original design for compatibility. It predates the second-order rules in §2 and is exempt from them.
+**Deprecated** by [ADR 0045](docs/adr/0045-four-themes-each-with-a-goal.md): Riso now holds the playful job, and Fiesta leaves in the next minor release. Switch to Riso. Until then it keeps its original design and is exempt from the second-order rules in §2.
 
 - **Colour**: flat spot inks (**coral** accent, **gold** highlight, **teal** positive) on apricot poster stock, all keylined in **aubergine ink**. The gold is only ever the highlight: caution is **marigold**, critical a deep **brick** that never reads as the coral accent, and no categorical ink repeats either. Night mode is a floodlit aubergine. A 6% halftone dot screen on the canvas; no gradients (screen printing can't do them).
 - **Type**: **Big Shoulders** (condensed signage face; headings in caps, figures, numerals) + **Bricolage Grotesque** (ink-trapped, mischievous text). 1.28 ratio. The preset stylesheet carries these two faces (`tokens/fonts-fiesta.css`), and **Martian Mono** for code comes from `tokens/fonts-martian-mono.css`, so they cost nothing unless you import it.
@@ -241,6 +256,8 @@ Kept to its original design for compatibility. It predates the second-order rule
 
 _A glass-cockpit flight display._ `import '@mitcsutt/kiln-ui/themes/flightdeck.css'`
 
+**Goal**: someone operating something live: dashboards, monitoring, developer tools, status at a glance.
+
 - **Colour**: cockpit colour convention, mapped onto Kiln's roles. **Cyan** is the accent: what the pilot sets and acts on. "You"/selected is a neutral **reverse-video box** (a brighter neutral with its text inverted), like the selected line of a flight-management display. Green, amber and red are the status tones, and info is steel blue. Neutrals are dark blue-grey display glass, never black. The light mode is the day mode of an electronic flight bag, with the cyan darkened for contrast.
 - **Type**: **B612** for text, display and figures (its digits are already equal width, so columns align without a monospace), and **B612 Mono** for code. Both were designed for Airbus cockpit displays. B612 ships static 400 and 700 weights and a Latin subset only, so Latin Extended text falls back to system faces. No uppercase transforms.
 - **Shape**: square instrument bezels (small radii on actions, fields and surfaces), with pill chips as annunciator capsules.
@@ -250,6 +267,8 @@ _A glass-cockpit flight display._ `import '@mitcsutt/kiln-ui/themes/flightdeck.c
 ### 4.6 Riso: preset (light-first)
 
 _A two-drum risograph zine._ `import '@mitcsutt/kiln-ui/themes/riso.css'`
+
+**Goal**: a product for people rather than operators: community, events, creative and personal projects. It holds the playful job Fiesta had.
 
 - **Colour**: two spot inks, **fluorescent pink** (the accent) and **blue** (the text colour), on bright white stock. Static structure is **screen tints** (a percentage of an ink) rather than borders. The highlight is an overprint: a pink tint with blue ink. Night mode is the same two inks on deep blue stock, not black.
 - **Type**: **Shantell Sans** for every role except code, drawn from the artist Shantell Martin's own handwriting: the handmade element. It has no tabular figures, so numerals are not column-aligned. **Atkinson Hyperlegible Mono** for code. 1.25 ratio.
@@ -284,6 +303,8 @@ A theme is one CSS file. You don't need Kiln's source to write one:
 Set optional tokens (§3.3) and component tokens (§3.5) only where your idea needs them.
 
 ### 4.8 Adding a built-in preset (contributors)
+
+Write the goal before the subject. A new built-in theme needs a goal none of the four serves (§4, [ADR 0045](docs/adr/0045-four-themes-each-with-a-goal.md)); if an existing theme serves it, improve that theme instead.
 
 1. Copy `packages/ui/src/themes/paper.css` to `<name>.css`; change the selector to `[data-theme='<name>']` (drop the `:where(:root)` default) and every value. Keep every token (§3.2).
 2. Export it from `packages/ui/package.json` (both `exports` and `publishConfig.exports`), add it to `stylesheets` in `packages/ui/vite.config.ts` and to `size.config.json`, and add the name to `THEMES` and `THEME_META` in `src/theme/themes.ts` and to the `THEMES` list in `src/themes/themes.test.ts` (`src/themes/tells.test.ts` checks every registered theme not in its `LEGACY` list). A new preset is never added to `LEGACY`.
