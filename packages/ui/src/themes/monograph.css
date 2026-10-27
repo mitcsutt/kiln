@@ -1,6 +1,9 @@
 /*
  * MONOGRAPH — preset (opt-in: import '@mitcsutt/kiln-ui/themes/monograph.css')
  *
+ * DEPRECATED (ADR 0045): Monograph leaves in the next minor release. Switch to Paper for
+ * a page or Flightdeck for a tool.
+ *
  * Idea: a scholarly monograph read under a desk lamp at night ("modern nostalgia").
  * Blue-slate, not black; one ember accent that behaves like phosphor (it marks *live*
  * and *current* things, never decoration). Serif display set big and tight; a newsroom
