@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { join } from 'node:path'
 import { checkLinks } from './checkLinks.ts'
 import { loadSiteConfig } from './loadConfig.ts'

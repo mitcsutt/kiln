@@ -270,7 +270,7 @@ catalogs:
       specifier: ~16.15.18
       version: 16.15.18
     fumadocs-mdx:
-      specifier: ~15.4.6
+      specifier: 15.4.6
       version: 15.4.6
     globals:
       specifier: ^17.13.0
@@ -716,6 +716,9 @@ importers:
         specifier: ^5.1.0
         version: 5.1.0
     devDependencies:
+      '@arethetypeswrong/cli':
+        specifier: 'catalog:'
+        version: 0.18.5
       '@mdx-js/mdx':
         specifier: ^3.1.1
         version: 3.1.1(supports-color@10.2.2)
@@ -740,6 +743,9 @@ importers:
       '@types/react-dom':
         specifier: 'catalog:'
         version: 19.3.0(@types/react@19.3.0)
+      '@vitejs/plugin-react':
+        specifier: 'catalog:'
+        version: 6.1.1(vite@8.3.2(@types/node@24.19.1)(esbuild@0.28.2)(jiti@2.6.1)(yaml@2.9.1))
       eslint:
         specifier: 'catalog:'
         version: 10.12.0(jiti@2.6.1)(supports-color@10.2.2)
@@ -752,6 +758,9 @@ importers:
       next:
         specifier: 'catalog:'
         version: 16.3.8(@babel/core@7.29.7(supports-color@10.2.2))(@types/node@24.19.1)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      publint:
+        specifier: 'catalog:'
+        version: 0.3.25
       react:
         specifier: 'catalog:'
         version: 19.3.0
@@ -761,6 +770,9 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
+      vite:
+        specifier: 'catalog:'
+        version: 8.3.2(@types/node@24.19.1)(esbuild@0.28.2)(jiti@2.6.1)(yaml@2.9.1)
       vitest:
         specifier: 'catalog:'
         version: 5.0.3(@types/node@24.19.1)(@vitest/browser-playwright@5.0.3)(@vitest/ui@5.0.3)(jsdom@26.1.0(supports-color@10.2.2))(vite@8.3.2(@types/node@24.19.1)(esbuild@0.28.2)(jiti@2.6.1)(yaml@2.9.1))

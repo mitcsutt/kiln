@@ -1,0 +1,7 @@
+node_modules/
+.next/
+out/
+.source/
+.generated/pages/
+.wrangler/
+next-env.d.ts

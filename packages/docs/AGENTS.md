@@ -13,7 +13,10 @@ Kiln chrome for `fumadocs-core`: the foundation of a docs site, with each site o
 - **Client modules say so.** A component with state, effects or context starts with `'use client'`, one module at a time. Server code (`src/site.ts`, the layouts) imports no client-only API.
 - **Both theme modes stay working.** A fixed theme's head script is kiln-ui's own `themeScript`, and a picker's is `docsThemeScript` in `src/theme.ts`. A change to either is covered by `src/theme.test.ts` and `src/components/shell/ThemeSwitcher.test.tsx`, and Kiln's picker by its browser check.
 - **Kiln's readers notice nothing.** A change to the chrome, the Markdown or the routes is checked against Kiln's site: `compare-export` against the base branch's export, and `pnpm check:browser` ([`apps/docs/README.md`](../../apps/docs/README.md)).
-- **It stays `"private": true`** until the 0.1.0 changeset (ADR 0045, Phase 4), so its pull requests need no changeset yet.
+- **It's published.** A pull request that changes it adds a changeset, and one that changes a peer range, a route file or the install line gives it an "Upgrade:" block (ADR 0045). Its first changeset is the 0.1.0 `minor`.
+- **An outside site proves it.** `pnpm --filter @mitcsutt/kiln-docs smoke` installs the packed package into `smoke/site` outside the workspace, with its peers resolved fresh, and builds and checks it (ADR 0047). A change to the site contract changes `smoke/site` too: it's the reference site the README points to.
+- **The fumadocs peers are a tested pair.** `fumadocs-core ~16.15.18` with `fumadocs-mdx 15.4.6`, exact, because every later fumadocs-mdx needs a newer fumadocs-core. Widen them together, in the catalog too, and only to a pair the smoke test has installed fresh (ADR 0047).
+- **A module never reads a file through `new URL('…', import.meta.url)`.** The library build inlines it as a `data:` URL. Build the path from `fileURLToPath(import.meta.url)`.
 - React 19 only (ADR 0045): there's no React 18 pass.
 
 ## Layout
@@ -35,15 +38,20 @@ src/
   node/           the bin: postbuild, check-links, the config loader, the route templates and
                   the theme CSS and peer checks
 bin/kiln-docs.js  the workspace shim for the bin
+scripts/          the 'use client' check after the build, and the smoke test
+smoke/site/       the smoke test's site, the reference for a site's files; smoke/variants/ goes over it
 ```
 
 ## Commands
 
 ```bash
-pnpm --filter @mitcsutt/kiln-docs test        # unit tests, the Node entries in plain Node included
-pnpm --filter @mitcsutt/kiln-docs typecheck   # the chrome, then the Node entries with erasableSyntaxOnly
+pnpm --filter @mitcsutt/kiln-docs test           # unit tests, the Node entries in plain Node included
+pnpm --filter @mitcsutt/kiln-docs typecheck      # the chrome, then the Node entries with erasableSyntaxOnly
 pnpm --filter @mitcsutt/kiln-docs lint
-pnpm check:browser                            # Kiln's site built, then the chrome in Chromium, with axe
+pnpm --filter @mitcsutt/kiln-docs build          # dist/, which publishing ships, then the 'use client' check
+pnpm --filter @mitcsutt/kiln-docs check:package  # publint and attw on the packed tarball
+pnpm --filter @mitcsutt/kiln-docs smoke          # after build: the packed package in an outside site, three variants
+pnpm check:browser                               # Kiln's site built, then the chrome in Chromium, with axe
 ```
 
 ## Don'ts
