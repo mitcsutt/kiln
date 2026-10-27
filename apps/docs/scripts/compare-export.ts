@@ -8,7 +8,7 @@
  *
  * - `llms.txt`, `llms-full.txt`, `_headers` and every `.md` file match byte for byte.
  * - Each HTML page matches as a summary (`export-snapshot.ts`): title, meta tags, `id`s, `href`s,
- *   class names with module hashes normalised, visible text, `data-theme`, `data-mode` and the
+ *   visible text, `data-theme`, `data-mode` and the
  *   head script.
  * - The search index holds the same documents.
  * - Each theme selector has the same CSS rules.
@@ -140,7 +140,7 @@ for (const file of pages) {
 if (differing.length) {
   fail(`the HTML pages match (${String(differing.length)} differ)`, pageDetails)
 } else {
-  console.log(`✓ ${String(pages.length)} HTML pages match: title, meta, ids, hrefs, classes, text`)
+  console.log(`✓ ${String(pages.length)} HTML pages match: title, meta, ids, hrefs, text`)
 }
 
 // The search index, as a set of documents.
