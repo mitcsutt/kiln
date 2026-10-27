@@ -53,14 +53,15 @@
   margin-inline-end: var(--space-3);
 }
 
-.copy {
+/* Scoped under .header so it outranks Button's .button whatever order the CSS chunks load in. */
+.header .copy {
   margin-inline-start: auto;
   color: var(--color-ink-muted);
 }
-.copy[data-state='copied'] {
+.header .copy[data-state='copied'] {
   color: var(--tone-positive-text);
 }
-.copy[data-state='failed'] {
+.header .copy[data-state='failed'] {
   color: var(--tone-critical-text);
 }
 
