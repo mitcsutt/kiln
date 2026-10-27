@@ -38,7 +38,8 @@
   border-inline-end: var(--border-width) solid var(--color-line);
 }
 
-.preset {
+/* Scoped under .presets so it outranks Button's .button whatever order the CSS chunks load in. */
+.presets .preset {
   justify-content: flex-start;
 }
 .preset[aria-pressed='true'] {
