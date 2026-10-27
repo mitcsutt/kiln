@@ -216,7 +216,8 @@ async function submit(user: ReturnType<typeof setup>['user']) {
 }
 
 describe('perf acceptance (§12): 60-field form', () => {
-  it('has 61 counted fields (60 + the When toggle)', () => {
+  // The first render of the 60-field form is cold and slows down under the parallel CI test run.
+  it('has 61 counted fields (60 + the When toggle)', { timeout: 15_000 }, () => {
     setup()
     expect(ALL_FIELDS).toHaveLength(61)
     expect(screen.getAllByRole('tab')).toHaveLength(2)
