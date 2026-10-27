@@ -116,17 +116,17 @@ This is every token in the contract, set to Paper's values, under your theme's n
     --radius-avatar: 50%;
 
     /* Colour */
-    --color-canvas: light-dark(oklch(0.952 0.006 250), oklch(0.17 0.008 250));
-    --color-surface: light-dark(oklch(0.995 0.002 250), oklch(0.215 0.009 250));
-    --color-surface-sunken: light-dark(oklch(0.935 0.006 250), oklch(0.14 0.008 250));
-    --color-surface-raised: light-dark(oklch(0.998 0.002 250), oklch(0.25 0.009 250));
-    --color-surface-inverse: light-dark(oklch(0.26 0.06 256), oklch(0.93 0.012 250));
-    --color-ink: light-dark(oklch(0.26 0.06 256), oklch(0.94 0.01 250));
-    --color-ink-muted: light-dark(oklch(0.42 0.06 256), oklch(0.77 0.015 250));
-    --color-ink-subtle: light-dark(oklch(0.47 0.06 256), oklch(0.66 0.015 250));
-    --color-ink-inverse: light-dark(oklch(0.96 0.006 250), oklch(0.2 0.05 256));
-    --color-line: light-dark(oklch(0.9 0.006 250), oklch(0.3 0.01 250));
-    --color-line-strong: light-dark(oklch(0.78 0.012 252), oklch(0.42 0.012 250));
+    --color-canvas: light-dark(oklch(0.925 0.004 250), oklch(0.195 0.004 250));
+    --color-surface: light-dark(oklch(0.95 0.003 250), oklch(0.24 0.004 250));
+    --color-surface-sunken: light-dark(oklch(0.9 0.004 250), oklch(0.165 0.004 250));
+    --color-surface-raised: light-dark(oklch(0.97 0.002 250), oklch(0.275 0.004 250));
+    --color-surface-inverse: light-dark(oklch(0.26 0.06 256), oklch(0.93 0.004 250));
+    --color-ink: light-dark(oklch(0.26 0.06 256), oklch(0.94 0.004 250));
+    --color-ink-muted: light-dark(oklch(0.42 0.004 250), oklch(0.78 0.004 250));
+    --color-ink-subtle: light-dark(oklch(0.47 0.004 250), oklch(0.68 0.004 250));
+    --color-ink-inverse: light-dark(oklch(0.96 0.004 250), oklch(0.2 0.05 256));
+    --color-line: light-dark(oklch(0.865 0.004 250), oklch(0.32 0.004 250));
+    --color-line-strong: light-dark(oklch(0.72 0.004 250), oklch(0.44 0.004 250));
     --color-accent: light-dark(oklch(0.37 0.1 255), oklch(0.86 0.06 250));
     --color-accent-hover: light-dark(oklch(0.31 0.095 255), oklch(0.92 0.045 250));
     --color-accent-ink: light-dark(oklch(0.985 0.005 250), oklch(0.2 0.05 256));
@@ -160,7 +160,7 @@ This is every token in the contract, set to Paper's values, under your theme's n
     --color-cat-5: light-dark(oklch(0.8 0.05 300), oklch(0.7 0.06 300));
     --color-cat-6: light-dark(oklch(0.82 0.06 125), oklch(0.72 0.07 125));
     --color-cat-7: light-dark(oklch(0.8 0.05 195), oklch(0.7 0.06 195));
-    --color-cat-8: light-dark(oklch(0.8 0.01 250), oklch(0.7 0.01 250));
+    --color-cat-8: light-dark(oklch(0.8 0.004 250), oklch(0.7 0.004 250));
     --color-cat-ink: oklch(0.21 0.03 258);
 
     /* Data */
@@ -174,7 +174,7 @@ This is every token in the contract, set to Paper's values, under your theme's n
     --color-div-neg-3: light-dark(oklch(0.5 0.15 25), oklch(0.72 0.13 25));
     --color-div-neg-2: light-dark(oklch(0.64 0.11 25), oklch(0.58 0.11 25));
     --color-div-neg-1: light-dark(oklch(0.79 0.06 25), oklch(0.44 0.07 25));
-    --color-div-mid: light-dark(oklch(0.93 0.004 250), oklch(0.3 0.008 250));
+    --color-div-mid: light-dark(oklch(0.93 0.004 250), oklch(0.32 0.004 250));
     --color-div-pos-1: light-dark(oklch(0.79 0.045 245), oklch(0.44 0.05 245));
     --color-div-pos-2: light-dark(oklch(0.64 0.08 248), oklch(0.58 0.075 245));
     --color-div-pos-3: light-dark(oklch(0.5 0.1 252), oklch(0.72 0.085 245));
@@ -185,8 +185,8 @@ This is every token in the contract, set to Paper's values, under your theme's n
     --color-cat-5-stroke: light-dark(oklch(0.5 0.09 300), oklch(0.82 0.06 300));
     --color-cat-6-stroke: light-dark(oklch(0.5 0.09 125), oklch(0.84 0.08 125));
     --color-cat-7-stroke: light-dark(oklch(0.5 0.07 195), oklch(0.82 0.06 195));
-    --color-cat-8-stroke: light-dark(oklch(0.5 0.015 250), oklch(0.8 0.012 250));
-    --chart-grid: light-dark(oklch(0.89 0.008 250), oklch(0.31 0.01 250));
+    --color-cat-8-stroke: light-dark(oklch(0.5 0.004 250), oklch(0.8 0.004 250));
+    --chart-grid: light-dark(oklch(0.87 0.004 250), oklch(0.33 0.004 250));
     --chart-axis: light-dark(oklch(0.58 0.03 256), oklch(0.6 0.015 250));
     --chart-label: var(--color-ink-muted);
     --chart-tooltip-surface: var(--color-surface-raised);
