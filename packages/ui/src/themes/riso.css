@@ -4,10 +4,11 @@
  * Idea: a risograph-printed zine run on two drums, fluorescent pink and blue, on bright
  * uncoated stock. A riso can't do gradients or shadows: it prints flat spot ink, screen
  * tints (a percentage of one ink), overprint, and sometimes a drum lands slightly off
- * register. So: blue is the text drum, pink is the accent drum, surfaces are tints of
- * blue over white (a fill change, never a border), and the one misregistered moment is
- * the second drum's pink offset under floating layers. Shantell Sans, drawn from artist
- * Shantell Martin's own handwriting, is the handmade element.
+ * register. So: blue is the text drum, pink is the accent drum, the page is a screen of
+ * the blue drum with sheets of stock laid on it (a fill change, never a border), and the
+ * one misregistered moment is the second drum's pink offset under floating layers.
+ * Recursive at its Casual master, a single-stroke brush hand, is the handmade element: the
+ * zine is lettered by hand all the way down, so body copy and figures are handmade too.
  * Light-first; dark is the same run printed on deep blue stock.
  */
 
@@ -18,38 +19,41 @@
 @layer kiln.themes {
   [data-theme='riso'] {
     /* ── Type roles ─────────────────────────────────────────────────────── */
-    /* One handwritten family for every voice; only code leaves it. Shantell Sans ships
-       no tabular-figure feature, so figures stay in Shantell too (digits are monowidth-ish
-       enough for columns, and a monospace for numbers would be decoration). */
-    --font-display: 'Shantell Sans', ui-sans-serif, system-ui, sans-serif;
-    --font-text: 'Shantell Sans', ui-sans-serif, system-ui, sans-serif;
-    --font-prose: 'Shantell Sans', ui-sans-serif, system-ui, sans-serif;
+    /* One brush-lettered family for every voice; only code leaves it. Recursive Casual is
+       handmade but built for reading, and its digits are tabular, so columns of dates,
+       counts and money align without a monospace. Weight, not a second face, makes the
+       cover line. */
+    --font-display: 'Recursive Casual', ui-sans-serif, system-ui, sans-serif;
+    --font-text: 'Recursive Casual', ui-sans-serif, system-ui, sans-serif;
+    --font-prose: 'Recursive Casual', ui-sans-serif, system-ui, sans-serif;
     --font-mono: 'Atkinson Hyperlegible Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
-    --font-numeric: 'Shantell Sans', ui-sans-serif, system-ui, sans-serif;
+    --font-numeric: 'Recursive Casual', ui-sans-serif, system-ui, sans-serif;
 
     --type-base: 1rem;
     --display-scale: 1.2; /* a zine cover title is big against body copy */
     --type-ratio: 1.25;
 
-    /* Weights: the face's heaviest cut for the cover line, then a clear step down. */
+    /* Weights: the shipped range's heaviest (800) for the cover line and headings, so a
+       one-family page still has a loud voice; labels a step down. */
     --display-weight: 800;
     --display-style: normal;
     --display-stretch: 100%;
     --display-transform: none; /* sentence case; shouting caps is a template tell */
     --display-tracking: -0.02em;
-    --display-opsz: 72;
+    --display-opsz: 72; /* Recursive has no optical-size axis; inert */
     --heading-font: var(--font-display);
-    --heading-weight: 700;
+    --heading-weight: 800;
     --heading-tracking: -0.01em;
     --heading-transform: none;
     --label-weight: 600;
     --label-tracking: 0;
     --label-transform: none;
-    --numeric-stretch: 100%; /* Shantell has no width axis */
+    --numeric-stretch: 100%; /* Recursive has no width axis */
     --numeral-weight: 700;
     --numeral-scale: 1;
     --mono-stretch: 100%;
     --table-head-font: var(--font-text); /* column heads are labels, not poster type */
+    --table-head-weight: 700; /* heavier than a label so a head reads over brush-weight cells */
 
     --leading-tight: 0.95;
     --leading-snug: 1.15;
@@ -82,14 +86,16 @@
     --radius-avatar: 50%;
 
     /* ── Colour ─────────────────────────────────────────────────────────── */
-    /* Stock: bright white, a touch cool. Not cream: uncoated riso paper is plain white.
-       Surfaces are screen tints: 6% of the blue drum for cards, 8% of the pink drum for
-       sunken wells, bare stock for raised layers. Night is the same run on deep blue stock, not black: the paper is
-       dyed, so every dark fill stays a blue screen. */
-    --color-canvas: light-dark(oklch(0.985 0.003 250), oklch(0.25 0.06 258));
-    --color-surface: light-dark(oklch(0.955 0.02 255), oklch(0.29 0.07 258));
+    /* Page: a 10% screen of the blue drum printed full-bleed, so the run reads blue before
+       anything sits on it. Sheets: uncoated stock laid on the page, an off-white a touch
+       cool (not cream: riso paper is plain), dimmer than bare white so it never glares.
+       Sunken wells are 8% of the pink drum; raised layers are the brightest bare stock.
+       Night is the same run on deep blue stock, not black: the paper is dyed, so every
+       dark fill stays a blue screen. */
+    --color-canvas: light-dark(oklch(0.94 0.04 258), oklch(0.25 0.06 258));
+    --color-surface: light-dark(oklch(0.965 0.01 255), oklch(0.29 0.07 258));
     --color-surface-sunken: light-dark(oklch(0.955 0.025 355), oklch(0.22 0.055 258));
-    --color-surface-raised: light-dark(oklch(0.998 0.002 250), oklch(0.33 0.075 258));
+    --color-surface-raised: light-dark(oklch(0.988 0.004 250), oklch(0.33 0.075 258));
     --color-surface-inverse: light-dark(oklch(0.39 0.14 258), oklch(0.95 0.025 350));
 
     /* Ink: the blue drum is the text colour; muted and subtle are lighter screens of it.
@@ -130,28 +136,32 @@
     --color-selection: light-dark(oklch(0.88 0.09 355), oklch(0.5 0.17 355));
     --color-scrim: light-dark(oklch(0.25 0.1 258 / 0.5), oklch(0.08 0.03 258 / 0.7));
 
-    /* Tones: flat spot inks. Positive is a green-teal, critical a red clearly off the
-       pink (hue 27 vs 355), caution the yellow a riso palette carries for warnings, info
-       the blue drum lightened. */
+    /* Tones: flat spot inks, each an extra drum. Positive is a green-teal, critical a red
+       clearly off the pink (hue 27 vs 355), caution the yellow a riso palette carries for
+       warnings, info the blue drum lightened. Soft fills are heavy screens of that drum
+       (35-50%), so a status chip reads printed, not pastel; critical's screen leans to 32
+       so it never passes for the pale pink accent tint. */
     --tone-positive: light-dark(oklch(0.7 0.12 175), oklch(0.76 0.13 172));
-    --tone-positive-soft: light-dark(oklch(0.94 0.04 175), oklch(0.32 0.06 175));
+    --tone-positive-soft: light-dark(oklch(0.86 0.07 178), oklch(0.4 0.08 180));
     --tone-positive-text: light-dark(oklch(0.42 0.09 175), oklch(0.82 0.12 172));
     --tone-positive-ink: oklch(0.2 0.05 200);
 
     --tone-caution: light-dark(oklch(0.88 0.16 95), oklch(0.86 0.15 95));
-    --tone-caution-soft: light-dark(oklch(0.95 0.07 98), oklch(0.34 0.06 90));
+    --tone-caution-soft: light-dark(oklch(0.91 0.12 98), oklch(0.42 0.08 92));
     --tone-caution-text: light-dark(oklch(0.44 0.1 80), oklch(0.88 0.14 95));
     --tone-caution-ink: oklch(0.22 0.05 258);
 
     --tone-critical: light-dark(oklch(0.56 0.21 27), oklch(0.66 0.21 27));
-    --tone-critical-soft: light-dark(oklch(0.94 0.04 27), oklch(0.34 0.1 27));
+    --tone-critical-soft: light-dark(oklch(0.87 0.07 32), oklch(0.4 0.12 28));
     --tone-critical-text: light-dark(oklch(0.46 0.19 27), oklch(0.8 0.14 25));
     --tone-critical-ink: light-dark(oklch(0.985 0.01 27), oklch(0.18 0.04 27));
 
     --tone-info: light-dark(oklch(0.76 0.1 245), oklch(0.74 0.11 245));
-    --tone-info-soft: light-dark(oklch(0.94 0.03 250), oklch(0.32 0.07 255));
+    --tone-info-soft: light-dark(oklch(0.88 0.05 250), oklch(0.4 0.09 250));
     --tone-info-text: light-dark(oklch(0.44 0.14 258), oklch(0.82 0.09 245));
     --tone-info-ink: oklch(0.22 0.06 258);
+    /* A status chip is overprint: the extra drum's screen with the text drum on top. */
+    --badge-soft-ink: var(--color-ink);
 
     /* Categorical: a zine adds a drum per category, so these are real riso inks (named
        after the drum): 1 Fluorescent Pink, 2 Sky Blue, 3 Yellow, 4 Teal, 5 Orange,
