@@ -1,0 +1,219 @@
+{
+  "name": "@mitcsutt/kiln-docs",
+  "version": "0.0.0",
+  "description": "Kiln docs: Kiln chrome for fumadocs-core, a docs site foundation built with kiln-ui",
+  "homepage": "https://kiln.mitchellsutton.com",
+  "bugs": "https://github.com/mitcsutt/kiln/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mitcsutt/kiln.git",
+    "directory": "packages/docs"
+  },
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "kiln-dist": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "default": "./src/index.ts"
+    },
+    "./config": {
+      "kiln-dist": {
+        "types": "./dist/config.d.ts",
+        "default": "./dist/config.js"
+      },
+      "default": "./src/config.ts"
+    },
+    "./generate": {
+      "kiln-dist": {
+        "types": "./dist/generate.d.ts",
+        "default": "./dist/generate.js"
+      },
+      "default": "./src/generate.ts"
+    },
+    "./mdx-config": {
+      "kiln-dist": {
+        "types": "./dist/mdx-config.d.ts",
+        "default": "./dist/mdx-config.js"
+      },
+      "default": "./src/mdx-config.ts"
+    },
+    "./next": {
+      "kiln-dist": {
+        "types": "./dist/next.d.ts",
+        "default": "./dist/next.js"
+      },
+      "default": "./src/next.ts"
+    },
+    "./variants": {
+      "kiln-dist": {
+        "types": "./dist/variants.d.ts",
+        "default": "./dist/variants.js"
+      },
+      "default": "./src/variants.ts"
+    },
+    "./layout": {
+      "kiln-dist": {
+        "types": "./dist/layouts/root.d.ts",
+        "default": "./dist/layouts/root.js"
+      },
+      "default": "./src/layouts/root.tsx"
+    },
+    "./docs-layout": {
+      "kiln-dist": {
+        "types": "./dist/layouts/docs.d.ts",
+        "default": "./dist/layouts/docs.js"
+      },
+      "default": "./src/layouts/docs.tsx"
+    },
+    "./docs-page": {
+      "kiln-dist": {
+        "types": "./dist/layouts/page.d.ts",
+        "default": "./dist/layouts/page.js"
+      },
+      "default": "./src/layouts/page.tsx"
+    },
+    "./not-found": {
+      "kiln-dist": {
+        "types": "./dist/layouts/notFound.d.ts",
+        "default": "./dist/layouts/notFound.js"
+      },
+      "default": "./src/layouts/notFound.tsx"
+    },
+    "./shell": {
+      "kiln-dist": {
+        "types": "./dist/layouts/shell.d.ts",
+        "default": "./dist/layouts/shell.js"
+      },
+      "default": "./src/layouts/shell.tsx"
+    },
+    "./styles.css": {
+      "kiln-dist": "./dist/styles.css",
+      "default": "./src/styles.css"
+    },
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./config": {
+        "types": "./dist/config.d.ts",
+        "default": "./dist/config.js"
+      },
+      "./generate": {
+        "types": "./dist/generate.d.ts",
+        "default": "./dist/generate.js"
+      },
+      "./mdx-config": {
+        "types": "./dist/mdx-config.d.ts",
+        "default": "./dist/mdx-config.js"
+      },
+      "./next": {
+        "types": "./dist/next.d.ts",
+        "default": "./dist/next.js"
+      },
+      "./variants": {
+        "types": "./dist/variants.d.ts",
+        "default": "./dist/variants.js"
+      },
+      "./layout": {
+        "types": "./dist/layouts/root.d.ts",
+        "default": "./dist/layouts/root.js"
+      },
+      "./docs-layout": {
+        "types": "./dist/layouts/docs.d.ts",
+        "default": "./dist/layouts/docs.js"
+      },
+      "./docs-page": {
+        "types": "./dist/layouts/page.d.ts",
+        "default": "./dist/layouts/page.js"
+      },
+      "./not-found": {
+        "types": "./dist/layouts/notFound.d.ts",
+        "default": "./dist/layouts/notFound.js"
+      },
+      "./shell": {
+        "types": "./dist/layouts/shell.d.ts",
+        "default": "./dist/layouts/shell.js"
+      },
+      "./styles.css": "./dist/styles.css",
+      "./package.json": "./package.json"
+    },
+    "bin": {
+      "kiln-docs": "./dist/node/cli.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "bin": {
+    "kiln-docs": "./bin/kiln-docs.js"
+  },
+  "scripts": {
+    "build": "vite build && node scripts/check-client-directives.ts",
+    "check:package": "pnpm pack --out node_modules/.cache/kiln-pack/package.tgz > /dev/null && publint --pack pnpm --strict && attw node_modules/.cache/kiln-pack/package.tgz --profile esm-only --exclude-entrypoints ./styles.css",
+    "lint": "eslint --max-warnings=0 .",
+    "smoke": "node scripts/smoke.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.node.json"
+  },
+  "dependencies": {
+    "esbuild": "^0.28.2",
+    "node-html-parser": "^9.0.4",
+    "pagefind": "~1.5.2",
+    "unist-util-visit": "^5.1.0"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "catalog:",
+    "@mdx-js/mdx": "^3.1.1",
+    "@mitcsutt/kiln-tsconfig": "workspace:*",
+    "@mitcsutt/kiln-ui": "workspace:*",
+    "@types/mdast": "^4.0.4",
+    "@types/mdx": "^2.0.14",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "eslint": "catalog:",
+    "fumadocs-core": "catalog:",
+    "fumadocs-mdx": "catalog:",
+    "next": "catalog:",
+    "playwright": "catalog:",
+    "publint": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:",
+    "wrangler": "^4.148.0",
+    "yaml": "^2.9.1",
+    "zod": "catalog:"
+  },
+  "peerDependencies": {
+    "@mitcsutt/kiln-ui": ">=0.8.0 <1.0.0",
+    "fumadocs-core": "~16.15.18",
+    "fumadocs-mdx": "15.4.6",
+    "next": "^16.3.8",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "wrangler": "^4.0.0",
+    "zod": "^4.0.0"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "peerDependenciesMeta": {
+    "wrangler": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

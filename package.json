@@ -19,8 +19,9 @@
     "check:package": "turbo run check:package",
     "check:skills": "turbo run check:skills",
     "check:links": "turbo run check:links",
+    "check:browser": "turbo run check:browser",
     "size": "turbo run size",
-    "generate:skills": "pnpm --filter @mitcsutt/kiln-docs generate:skills"
+    "generate:skills": "pnpm --filter @mitcsutt/kiln-docs-site --fail-if-no-match generate:skills"
   },
   "prettier": "@mitcsutt/kiln-prettier-config",
   "devDependencies": {

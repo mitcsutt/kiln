@@ -32,6 +32,6 @@ pnpm --filter @mitcsutt/kiln-forms typecheck
 pnpm --filter @mitcsutt/kiln-forms test
 pnpm --filter @mitcsutt/kiln-forms test:react18
 pnpm --filter @mitcsutt/kiln-forms lint
-pnpm --filter @mitcsutt/kiln-docs test
+pnpm --filter @mitcsutt/kiln-docs-site test
 pnpm test:storybook
 ```

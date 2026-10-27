@@ -1,6 +1,6 @@
 # 0035. CodeBlock highlights code through an opt-in Shiki entry
 
-- **Status:** Accepted (amends [0019](0019-docs-site.md)); amended by [0045](0045-kiln-docs.md), which adds shell, JSON, YAML and diff to the grammar table, so the docs now highlight those blocks too and "understands" below is the JavaScript and TypeScript family plus those four
+- **Status:** Accepted (amends [0019](0019-docs-site.md)); amended by [0046](0046-kiln-docs.md), which adds shell, JSON, YAML and diff to the grammar table, so the docs now highlight those blocks too and "understands" below is the JavaScript and TypeScript family plus those four
 - **Date:** 2026-10-08
 
 ## Context

@@ -1,0 +1,5 @@
+[
+  { "name": "git", "description": "Commits, branches and pull requests." },
+  { "name": "review", "description": "A panel of reviewers for a diff." },
+  { "name": "memory", "description": "Notes that last between sessions." }
+]

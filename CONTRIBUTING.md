@@ -58,6 +58,7 @@ Run these from the repo root. Turborepo runs each one across the workspace and c
 | `pnpm test:react18`    | The runtime packages' test suites again, on React 18.3                |
 | `pnpm test:storybook`  | Every story as a browser test: render, `play` function and axe        |
 | `pnpm check:links`     | Builds the docs site, serves it and fails on any broken internal link |
+| `pnpm check:browser`   | Builds the docs site and checks its chrome in Chromium, with axe      |
 | `pnpm check:package`   | `publint` and `@arethetypeswrong/cli` on each packed package          |
 | `pnpm check:skills`    | `intent validate` on each package's agent skills, examples included   |
 | `pnpm size`            | Size report against each package's budgets, with tree-shaking checks  |
@@ -66,7 +67,7 @@ Run these from the repo root. Turborepo runs each one across the workspace and c
 
 To work on one package, filter to it, for example `pnpm turbo run test --filter=@mitcsutt/kiln-eslint-config`.
 
-To run the docs site, run `pnpm --filter @mitcsutt/kiln-docs dev` and open http://localhost:3000. A component, field, layout or hook page is generated from that export's TSDoc and its stories tagged `docs`, and the guides are MDX in `apps/docs/content/docs` that show docs stories with `<Example of="…" />`; API tables come from the package types. [`apps/docs/README.md`](apps/docs/README.md) has the details.
+To run the docs site, run `pnpm --filter @mitcsutt/kiln-docs-site dev` and open http://localhost:3000. A component, field, layout or hook page is generated from that export's TSDoc and its stories tagged `docs`, and the guides are MDX in `apps/docs/content/docs` that show docs stories with `<Example of="…" />`; API tables come from the package types. [`apps/docs/README.md`](apps/docs/README.md) has the details.
 
 The agent skills that `kiln-ui`, `kiln-forms`, `kiln-dnd` and `kiln-charts` ship are built from docs pages, which `apps/docs/src/skills/manifest.ts` lists ([ADR 0011](docs/adr/0011-ai-tooling.md)). After you change one of those pages, run `pnpm generate:skills` and commit the result: the docs tests fail while a skill differs from its pages. Never edit a file in `packages/*/skills` by hand.
 

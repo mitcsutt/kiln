@@ -1,6 +1,6 @@
 # 0022. Linked consumers resolve built output through `kiln-dist`
 
-- **Status:** Accepted (amends [0005](0005-library-build.md))
+- **Status:** Accepted (amends [0005](0005-library-build.md)), amended by [0046](0046-kiln-docs.md)
 - **Date:** 2026-10-05
 
 ## Context

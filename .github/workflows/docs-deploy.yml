@@ -11,6 +11,7 @@ on:
     branches: [main]
     paths:
       - apps/docs/**
+      - packages/docs/**
       - packages/ui/**
       - packages/forms/**
       - packages/dnd/**
@@ -50,10 +51,10 @@ jobs:
           persist-credentials: false
       - uses: ./.github/actions/setup
       - name: Build the static site
-        run: pnpm turbo run build --filter=@mitcsutt/kiln-docs
+        run: pnpm turbo run build --filter=@mitcsutt/kiln-docs-site
       - name: Deploy to Cloudflare Workers
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           MESSAGE: ${{ github.event_name }} ${{ github.sha }}
-        run: pnpm --filter @mitcsutt/kiln-docs exec wrangler deploy --message "$MESSAGE"
+        run: pnpm --filter @mitcsutt/kiln-docs-site --fail-if-no-match exec wrangler deploy --message "$MESSAGE"

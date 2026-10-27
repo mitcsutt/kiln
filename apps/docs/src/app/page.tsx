@@ -1,10 +1,10 @@
-import { DocsShell } from '@/components/shell/DocsShell'
+import { Shell } from '@mitcsutt/kiln-docs/shell'
 import { Home } from '@/components/home/Home'
 
 export default function HomePage() {
   return (
-    <DocsShell>
+    <Shell>
       <Home />
-    </DocsShell>
+    </Shell>
   )
 }

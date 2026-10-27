@@ -29,7 +29,7 @@ More general utilities will follow as `@mitcsutt/kiln-*` packages.
 
 | App                                | What it is                                                                                                                                       | Run it locally                               |
 | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------- |
-| [`apps/docs`](apps/docs)           | The public docs site: every component, field, layout and hook with a live example, generated API tables, guides, search, and Markdown for agents | `pnpm --filter @mitcsutt/kiln-docs dev`      |
+| [`apps/docs`](apps/docs)           | The public docs site: every component, field, layout and hook with a live example, generated API tables, guides, search, and Markdown for agents | `pnpm --filter @mitcsutt/kiln-docs-site dev` |
 | [`apps/storybook`](apps/storybook) | The developer workbench: every ui, forms and drag-and-drop story, in every theme and mode, each one a render, interaction and a11y test          | `pnpm --filter @mitcsutt/kiln-storybook dev` |
 
 ## Quick start
@@ -83,7 +83,7 @@ Each package's README shows how to wire it up, and the docs site has a getting-s
 
 ## Links
 
-- Docs site: [kiln.mitchellsutton.com](https://kiln.mitchellsutton.com) (run it locally with `pnpm --filter @mitcsutt/kiln-docs dev`). For agents: [`/llms.txt`](https://kiln.mitchellsutton.com/llms.txt), and any page as Markdown by adding `.md` to its URL
+- Docs site: [kiln.mitchellsutton.com](https://kiln.mitchellsutton.com) (run it locally with `pnpm --filter @mitcsutt/kiln-docs-site dev`). For agents: [`/llms.txt`](https://kiln.mitchellsutton.com/llms.txt), and any page as Markdown by adding `.md` to its URL
 - Storybook: [kiln.mitchellsutton.com/storybook](https://kiln.mitchellsutton.com/storybook) (not live yet)
 - [Contributing](CONTRIBUTING.md), [Security policy](SECURITY.md), [Code of Conduct](CODE_OF_CONDUCT.md)
 

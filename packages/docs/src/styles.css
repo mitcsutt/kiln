@@ -1,0 +1,6 @@
+/*
+ * The chrome's global stylesheet, for a site's root layout to import after kiln-ui's:
+ * `import '@mitcsutt/kiln-docs/styles.css'`. The chrome styles itself through CSS Modules beside
+ * its components and the theme's tokens, so in the workspace this file holds nothing yet. The
+ * published build gathers those modules here, as kiln-ui's does.
+ */
