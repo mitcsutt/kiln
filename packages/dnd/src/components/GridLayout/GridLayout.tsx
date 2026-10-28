@@ -305,13 +305,17 @@ const GridSurface = forwardRef(function GridSurface(
         const node = controller.draggables.get(item.i)?.element
         return node && !node.hidden ? [[item.i, node] as const] : []
       })
-    const moving = new Set<EventTarget>()
     const measure = () => {
-      // Measuring would cancel a running size transition, so wait for it to end.
-      if (moving.size > 0) return
       const unit = probe.current?.getBoundingClientRect()
       if (!unit?.height) return
       const items = nodes()
+      // Measuring would cancel a running size transition; its end schedules another pass.
+      const growing = items.some(([, node]) =>
+        node
+          .getAnimations?.()
+          .some((a) => a instanceof CSSTransition && a.transitionProperty === 'block-size'),
+      )
+      if (growing) return
       for (const [, node] of items) node.setAttribute('data-measuring', '')
       const next = Object.fromEntries(
         items.map(([i, node]) => {
@@ -340,24 +344,27 @@ const GridSurface = forwardRef(function GridSurface(
         for (const child of node.children) watch(child)
       }
     }
+    let frame = 0
+    const schedule = () => {
+      if (frame) return
+      frame = requestAnimationFrame(() => {
+        frame = 0
+        measure()
+      })
+    }
     const track = (event: Event) => {
-      if ((event as TransitionEvent).propertyName !== 'block-size') return
-      if (!(event.target instanceof Element) || event.target.parentElement !== element) return
-      if (event.type === 'transitionrun') {
-        moving.add(event.target)
-        return
-      }
-      moving.delete(event.target)
-      if (moving.size === 0) measure()
+      if ((event as TransitionEvent).propertyName === 'block-size') schedule()
     }
     observe()
-    const mutations = new MutationObserver(observe)
+    const mutations = new MutationObserver(() => {
+      observe()
+      schedule()
+    })
     mutations.observe(element, { childList: true, subtree: true })
-    element.addEventListener('transitionrun', track)
     element.addEventListener('transitionend', track)
     element.addEventListener('transitioncancel', track)
     return () => {
-      element.removeEventListener('transitionrun', track)
+      cancelAnimationFrame(frame)
       element.removeEventListener('transitionend', track)
       element.removeEventListener('transitioncancel', track)
       mutations.disconnect()
@@ -372,6 +379,7 @@ const GridSurface = forwardRef(function GridSurface(
       let request: GridRequest | null = null
       let current: readonly GridItem[] | null = null
       let lastCell = ''
+      let found = { key: '', y: 0 }
       let carried = { x: 0, y: 0 }
       const options = () => ({
         columns: latest.current.cols,
@@ -405,6 +413,7 @@ const GridSurface = forwardRef(function GridSurface(
           origin = find(latest.current.fitted) ?? null
           if (!start || !origin) return ''
           request = { x: start.x, y: start.y, w: start.w, h: start.h }
+          found = { key: '', y: 0 }
           lastCell = `${String(start.x)},${String(start.y)},${String(start.w)},${String(start.h)}`
           setActive({ i, mode, input, origin })
           show(latest.current.display)
@@ -474,8 +483,9 @@ const GridSurface = forwardRef(function GridSurface(
             const x = origin.x + Math.round(dx)
             const target = Math.max(0, origin.y + Math.round(dy))
             const { display, fits, cols: columns, compaction } = latest.current
-            let best = target
-            let distance = Infinity
+            const key = `${String(x)},${String(target)}`
+            let best = found.key === key ? found.y : target
+            let distance = found.key === key ? 0 : Infinity
             for (let y = 0; y <= target && distance > 0; y += 1) {
               const rendered = find(
                 fitLayout(previewLayout(display, i, { ...request, x, y }, options()), fits, {
@@ -489,12 +499,14 @@ const GridSurface = forwardRef(function GridSurface(
                 best = y
               }
             }
+            found = { key, y: best }
             request = { ...request, x, y: best }
           } else {
+            const h = origin.h + Math.round(dy)
             request = {
               ...request,
               w: Math.max(1, origin.w + Math.round(dx)),
-              h: Math.max(1, origin.h + Math.round(dy)),
+              h: Math.max(1, h > origin.h ? h : Math.min(start.h, h)),
             }
           }
           const cell = `${String(request.x)},${String(request.y)},${String(request.w)},${String(request.h)}`
