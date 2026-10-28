@@ -1,4 +1,4 @@
-import { Button, Divider, Heading, SectionHeader, Split, Stack, Text } from '@mitcsutt/kiln-ui'
+import { Button, Divider, Page, SectionHeader, Split } from '@mitcsutt/kiln-ui'
 import { Link as RouterLink } from '@tanstack/react-router'
 
 import { PageHeader } from '#components/PageHeader'
@@ -13,7 +13,7 @@ import { Trends } from './components/sections/Trends'
 /** The co-op's books: balance, trends, every transaction, the budget and open invoices. */
 export function Books({ ledger }: { ledger: Ledger }) {
   return (
-    <Stack gap={8}>
+    <Page>
       <PageHeader
         kicker="Books"
         title="Ledger"
@@ -27,29 +27,24 @@ export function Books({ ledger }: { ledger: Ledger }) {
       />
       <Overview ledger={ledger} />
       <Divider />
-      <Stack gap={5}>
-        <SectionHeader level={2} size="lg" title="Trends" description="May to October." />
+      <Page.Section title="Trends" description="May to October.">
         <Trends ledger={ledger} />
-      </Stack>
-      <Stack gap={5}>
-        <SectionHeader level={2} size="lg" title="Transactions" />
+      </Page.Section>
+      <Page.Section title="Transactions">
         <Transactions transactions={ledger.transactions} />
-      </Stack>
+      </Page.Section>
       <Split ratio="1/3" gap={{ base: 5, md: 7 }}>
-        <Stack gap={2}>
-          <Heading level={2} size="lg">
-            Budget
-          </Heading>
-          <Text tone="muted">
-            Kilns are the heaviest line: electricity is 61% of what they cost.
-          </Text>
-        </Stack>
+        <SectionHeader
+          level={2}
+          size="lg"
+          title="Budget"
+          description="Kilns are the heaviest line: electricity is 61% of what they cost."
+        />
         <Budget budget={ledger.budget} />
       </Split>
-      <Stack gap={5}>
-        <SectionHeader level={2} size="lg" title="Invoices" divider />
+      <Page.Section title="Invoices">
         <Invoices invoices={ledger.invoices} />
-      </Stack>
-    </Stack>
+      </Page.Section>
+    </Page>
   )
 }

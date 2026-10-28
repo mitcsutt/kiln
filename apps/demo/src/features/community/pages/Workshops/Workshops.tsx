@@ -4,13 +4,13 @@ import {
   ChoiceCards,
   Combobox,
   EmptyState,
+  Container,
   Grid,
   Marquee,
   Quote,
+  Page,
   Section,
-  SectionHeader,
   ShowMore,
-  Stack,
   Text,
 } from '@mitcsutt/kiln-ui'
 import { useState } from 'react'
@@ -49,7 +49,7 @@ export function Workshops({ workshops }: { workshops: Workshop[] }) {
       (host === null || workshop.host === host),
   )
   return (
-    <Stack gap={8}>
+    <Page>
       <PageHeader
         kicker="Community"
         title="Workshops"
@@ -62,7 +62,7 @@ export function Workshops({ workshops }: { workshops: Workshop[] }) {
         speed="slow"
         separator="·"
       />
-      <Stack gap={4}>
+      <Page.Section aria-label="Filter workshops">
         <ChipGroup
           type="multiple"
           aria-label="Level"
@@ -98,7 +98,7 @@ export function Workshops({ workshops }: { workshops: Workshop[] }) {
             },
           ]}
         />
-      </Stack>
+      </Page.Section>
       {shown.length === 0 ? (
         <EmptyState title="No workshops match" description="Clear a filter to see them all." />
       ) : (
@@ -109,25 +109,24 @@ export function Workshops({ workshops }: { workshops: Workshop[] }) {
         </Grid>
       )}
       <Section space={6} surface="inverse" divider="top">
-        <Stack gap={5}>
-          <SectionHeader level={2} size="lg" title="What people said" />
-          <Grid columns={{ base: 1, md: 2 }} gap={6}>
-            {REVIEWS.map((review) => (
-              <Quote key={review.id} size="sm" cite={`${review.name}, ${review.workshop}`}>
-                {review.quote}
-              </Quote>
-            ))}
-          </Grid>
-        </Stack>
+        <Container width="full">
+          <Page.Section title="What people said">
+            <Grid columns={{ base: 1, md: 2 }} gap={6}>
+              {REVIEWS.map((review) => (
+                <Quote key={review.id} size="sm" cite={`${review.name}, ${review.workshop}`}>
+                  {review.quote}
+                </Quote>
+              ))}
+            </Grid>
+          </Page.Section>
+        </Container>
       </Section>
-      <Stack gap={4}>
-        <SectionHeader level={2} size="lg" title="How Slipcast started" />
+      <Page.Section title="How Slipcast started">
         <ShowMore lines={2}>
           <Text measure="text">{STORY}</Text>
         </ShowMore>
-      </Stack>
-      <Stack gap={4}>
-        <SectionHeader level={2} size="lg" title="Questions" />
+      </Page.Section>
+      <Page.Section title="Questions">
         <Accordion type="single" collapsible>
           {FAQS.map((faq) => (
             <Accordion.Item key={faq.id} value={faq.id}>
@@ -138,16 +137,10 @@ export function Workshops({ workshops }: { workshops: Workshop[] }) {
             </Accordion.Item>
           ))}
         </Accordion>
-      </Stack>
-      <Stack gap={4}>
-        <SectionHeader
-          level={2}
-          size="lg"
-          title="Show your work"
-          description="Put a piece forward for the gallery wall."
-        />
+      </Page.Section>
+      <Page.Section title="Show your work" description="Put a piece forward for the gallery wall.">
         <ShowYourWork />
-      </Stack>
-    </Stack>
+      </Page.Section>
+    </Page>
   )
 }

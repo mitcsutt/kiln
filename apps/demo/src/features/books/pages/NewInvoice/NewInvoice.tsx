@@ -13,7 +13,7 @@ import {
   withFieldGroup,
 } from '@mitcsutt/kiln-forms'
 import { dragAndDrop } from '@mitcsutt/kiln-forms/dnd'
-import { Alert, Amount, Grid, Stack, Text, toast } from '@mitcsutt/kiln-ui'
+import { Alert, Amount, Grid, Page, Stack, Text, toast } from '@mitcsutt/kiln-ui'
 import { useState } from 'react'
 
 import { PageHeader } from '#components/PageHeader'
@@ -86,7 +86,7 @@ export function NewInvoice() {
   const lines = useFieldValue(form, 'lines')
   const total = lines.reduce((sum, line) => sum + (line.quantity ?? 0) * (line.price ?? 0), 0)
   return (
-    <Stack gap={6}>
+    <Page>
       <PageHeader
         kicker="Books"
         title="New invoice"
@@ -168,6 +168,6 @@ export function NewInvoice() {
         </Grid.Item>
         <FeeCalculator />
       </Grid>
-    </Stack>
+    </Page>
   )
 }

@@ -6,6 +6,7 @@ import {
   Link,
   Numeral,
   Progress,
+  Page,
   Stack,
   Stat,
   StatusDot,
@@ -63,7 +64,7 @@ export function Home({ data }: { data: HomeData }) {
   const places = data.workshops.reduce((sum, w) => sum + w.spaces, 0)
   const booked = data.workshops.reduce((sum, w) => sum + w.booked, 0)
   return (
-    <Stack gap={8}>
+    <Page>
       <PageHeader
         kicker={`Morning, ${CURRENT_USER.name.split(' ')[0] ?? ''}`}
         title="Slipcast"
@@ -130,6 +131,6 @@ export function Home({ data }: { data: HomeData }) {
           </Inline>
         ))}
       </Stack>
-    </Stack>
+    </Page>
   )
 }

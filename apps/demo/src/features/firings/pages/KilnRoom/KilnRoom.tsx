@@ -1,6 +1,6 @@
 import { Heatmap, TimeSeries } from '@mitcsutt/kiln-charts'
 import { DragHandle, GridLayout } from '@mitcsutt/kiln-dnd'
-import { Alert, Card, Inline, Stack, Text } from '@mitcsutt/kiln-ui'
+import { Alert, Card, Inline, Page, Stack, Text } from '@mitcsutt/kiln-ui'
 
 import { PageHeader } from '#components/PageHeader'
 import type { KilnRoom as KilnRoomData } from '#features/firings/data/kilns'
@@ -26,7 +26,7 @@ const LAYOUT = [
 export function KilnRoom({ room }: { room: KilnRoomData }) {
   const readings = useLiveReadings(room.kilns)
   return (
-    <Stack gap={6}>
+    <Page>
       <PageHeader
         kicker="Kiln room"
         title="Live firings"
@@ -98,6 +98,6 @@ export function KilnRoom({ room }: { room: KilnRoomData }) {
           <ControllerLog log={room.log} />
         </GridLayout.Item>
       </GridLayout>
-    </Stack>
+    </Page>
   )
 }

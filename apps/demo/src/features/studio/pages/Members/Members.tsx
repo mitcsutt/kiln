@@ -16,6 +16,7 @@ import {
   SearchIcon,
   SegmentedControl,
   Select,
+  Page,
   Stack,
   Table,
   Tag,
@@ -73,7 +74,7 @@ export function Members({ members }: { members: Member[] }) {
   const allSelected = shown.length > 0 && shown.every((member) => selected.includes(member.id))
 
   return (
-    <Stack gap={6}>
+    <Page>
       <PageHeader
         kicker="Studio admin"
         title="Members"
@@ -290,7 +291,7 @@ export function Members({ members }: { members: Member[] }) {
           if (!next) setOpen(null)
         }}
       />
-    </Stack>
+    </Page>
   )
 }
 

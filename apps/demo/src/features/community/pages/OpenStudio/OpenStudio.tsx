@@ -1,5 +1,5 @@
 import { Board } from '@mitcsutt/kiln-dnd'
-import { Grid, Inline, SectionHeader, Stack, Text } from '@mitcsutt/kiln-ui'
+import { Grid, Inline, Page, Text } from '@mitcsutt/kiln-ui'
 
 import { PageHeader } from '#components/PageHeader'
 import { PROPOSAL_COLUMNS, PROPOSALS } from '#features/community/data/openStudio'
@@ -12,15 +12,14 @@ import { VolunteerForm } from './components/VolunteerForm'
 /** Planning the open studio night: who runs what, the poster, and the volunteers. */
 export function OpenStudio() {
   return (
-    <Stack gap={8}>
+    <Page>
       <PageHeader
         kicker="Community"
         title="Open studio night"
         description="Saturday 5 December. Drag a session to Confirmed once someone has said yes."
         theme="riso"
       />
-      <Stack gap={4}>
-        <SectionHeader level={2} size="lg" title="Sessions" />
+      <Page.Section title="Sessions">
         <Board
           label="Open studio sessions"
           columns={PROPOSAL_COLUMNS}
@@ -36,22 +35,19 @@ export function OpenStudio() {
             </Inline>
           )}
         </Board>
-      </Stack>
-      <Stack gap={4}>
-        <SectionHeader level={2} size="lg" title="Propose a session" />
+      </Page.Section>
+      <Page.Section title="Propose a session">
         <ProposalForm />
-      </Stack>
-      <Stack gap={4}>
-        <SectionHeader level={2} size="lg" title="The poster" />
+      </Page.Section>
+      <Page.Section title="The poster">
         <PosterDesk />
-      </Stack>
+      </Page.Section>
       <Grid columns={{ base: 1, lg: 2 }} gap={6}>
-        <Stack gap={4}>
-          <SectionHeader level={2} size="lg" title="Volunteer" />
+        <Page.Section title="Volunteer">
           <VolunteerForm />
-        </Stack>
+        </Page.Section>
         <DoorAccess />
       </Grid>
-    </Stack>
+    </Page>
   )
 }

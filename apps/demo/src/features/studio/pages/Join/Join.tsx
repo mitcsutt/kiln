@@ -11,7 +11,7 @@ import {
   useFormSteps,
   When,
 } from '@mitcsutt/kiln-forms'
-import { Alert, Button, Prose, Stack, Text, type FileValue } from '@mitcsutt/kiln-ui'
+import { Alert, Button, Page, Prose, Stack, Text, type FileValue } from '@mitcsutt/kiln-ui'
 import { useState } from 'react'
 
 import { PageHeader } from '#components/PageHeader'
@@ -100,7 +100,7 @@ export function Join() {
   const plan = useFieldValue(form, 'plan')
   if (sent) {
     return (
-      <Stack gap={6}>
+      <Page>
         <PageHeader
           kicker="Studio admin"
           title="Membership application"
@@ -126,11 +126,11 @@ export function Join() {
         >
           We&apos;ll write to {sent} within a week.
         </Alert>
-      </Stack>
+      </Page>
     )
   }
   return (
-    <Stack gap={6}>
+    <Page>
       <PageHeader
         kicker="Studio admin"
         title="Membership application"
@@ -283,6 +283,6 @@ export function Join() {
           </FormSteps>
         </Stack>
       </Form>
-    </Stack>
+    </Page>
   )
 }

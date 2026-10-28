@@ -37,15 +37,15 @@ export function KilnCard({ kiln, temperature }: { kiln: Kiln; temperature: numbe
           <DragHandle />
         </Inline>
         <Inline gap={3} align="center">
-          <StatusDot tone={status.tone} label={status.label} />
+          <Flash value={kiln.status}>
+            <StatusDot tone={status.tone} label={status.label} />
+          </Flash>
           {kiln.status === 'firing' ? <LiveIndicator label="Live" size="sm" /> : null}
         </Inline>
-        <Flash value={temperature}>
-          <Inline gap={1} align="baseline">
-            <Numeral value={temperature} size="2xl" />
-            <Text tone="muted">°C</Text>
-          </Inline>
-        </Flash>
+        <Inline gap={1} align="baseline">
+          <Numeral value={temperature} size="2xl" />
+          <Text tone="muted">°C</Text>
+        </Inline>
         <Meter
           label="Temperature"
           value={temperature}
