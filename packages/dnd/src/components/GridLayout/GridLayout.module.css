@@ -4,8 +4,8 @@
  *   --dnd-placeholder-bg       default var(--color-accent-soft): where the item will land
  *   --grid-layout-radius       default var(--radius-surface)
  *
- * Items are placed from grid units in CSS alone (no measuring), so the server renders the
- * finished grid. `100%` inside `--_col` is the grid's width wherever it's used, because
+ * Items are placed from grid units in CSS alone, so the server renders the finished grid;
+ * in the browser an item whose content needs more rows gets them (GridLayout.tsx). `100%` inside `--_col` is the grid's width wherever it's used, because
  * only inline-axis properties read it.
  */
 .grid {
@@ -52,6 +52,11 @@
 
 .item[hidden] {
   display: none;
+}
+
+/* Read at its content's own height for a moment, so the grid can make room (GridLayout.tsx). */
+.item[data-measuring] {
+  block-size: auto;
 }
 
 .item[data-dragging] {

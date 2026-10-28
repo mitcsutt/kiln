@@ -1,3 +1,4 @@
+import { fitLayout } from '#data/layout'
 import { appendItem, arrayMove, compact, moveBetween, removeItem } from '#index'
 
 describe('list helpers', () => {
@@ -54,6 +55,41 @@ describe('layout helpers', () => {
     expect(removed.map((l) => [l.i, l.y])).toEqual([
       ['orders', 0],
       ['tickets', 0],
+    ])
+  })
+})
+
+describe('fitLayout', () => {
+  const layout = [
+    { i: 'heatmap', x: 6, y: 0, w: 6, h: 3 },
+    { i: 'log', x: 6, y: 3, w: 6, h: 3 },
+    { i: 'controller', x: 0, y: 0, w: 6, h: 6 },
+  ]
+  const options = { columns: 12 }
+
+  it('grows an item to its content and moves what it covers down below it', () => {
+    expect(fitLayout(layout, { heatmap: 4, log: 2 }, options)).toEqual([
+      { i: 'heatmap', x: 6, y: 0, w: 6, h: 4 },
+      { i: 'log', x: 6, y: 4, w: 6, h: 3 },
+      { i: 'controller', x: 0, y: 0, w: 6, h: 6 },
+    ])
+  })
+
+  it('returns the layout as it is when every item already fits', () => {
+    expect(fitLayout(layout, { heatmap: 3, log: 1 }, options)).toEqual(layout)
+    expect(fitLayout(layout, {}, options)).toEqual(layout)
+  })
+
+  it('resolves the overlap without compaction too, and leaves static items where they are', () => {
+    const fixed = [
+      { i: 'note', x: 0, y: 0, w: 12, h: 1 },
+      { i: 'banner', x: 0, y: 2, w: 12, h: 1, static: true },
+      { i: 'chart', x: 0, y: 3, w: 12, h: 2 },
+    ]
+    expect(fitLayout(fixed, { note: 3 }, { columns: 12, compaction: 'none' })).toEqual([
+      { i: 'note', x: 0, y: 3, w: 12, h: 3 },
+      { i: 'banner', x: 0, y: 2, w: 12, h: 1, static: true },
+      { i: 'chart', x: 0, y: 6, w: 12, h: 2 },
     ])
   })
 })
