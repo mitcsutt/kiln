@@ -52,7 +52,11 @@ export function KilnCard({ kiln, temperature }: { kiln: Kiln; temperature: numbe
           max={kiln.maxTemperature}
           high={kiln.maxTemperature - 100}
           optimum={0}
-          valueLabel={kiln.setpoint ? `Heading for ${String(kiln.setpoint)}°C` : 'No setpoint'}
+          valueLabel={
+            kiln.status === 'firing' && kiln.setpoint
+              ? `Heading for ${String(kiln.setpoint)}°C`
+              : 'No setpoint'
+          }
         />
         <Progress
           label={kiln.cone ? `Cone ${String(kiln.cone)} programme` : 'No programme'}

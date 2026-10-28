@@ -33,10 +33,12 @@ export function KilnRoom({ room }: { room: KilnRoomData }) {
         description="Temperatures update every two seconds. Panels move by drag, or by keyboard from their handles."
         theme="flightdeck"
       />
-      <Alert tone="caution" title="Kiln 2 is behind its plan">
-        It&apos;s 52°C under the planned curve at 09:30. Check the bottom element before the next
-        segment.
-      </Alert>
+      {readings.k2?.status === 'firing' ? (
+        <Alert tone="caution" title="Kiln 2 is behind its plan">
+          It&apos;s 52°C under the planned curve at 09:30. Check the bottom element before the next
+          segment.
+        </Alert>
+      ) : null}
       <GridLayout label="Kiln room panels" defaultLayout={LAYOUT} columns={{ base: 1, sm: 12 }}>
         {room.kilns.map((kiln) => {
           const reading = readings[kiln.id]
