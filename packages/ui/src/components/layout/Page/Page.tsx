@@ -107,7 +107,8 @@ const PageSection = forwardRef<HTMLElement, PageSectionProps>(function PageSecti
  * - **`Page.Header`** is the page's `<h1>`, with an optional kicker, description and actions.
  *   Anything you nest in it sits under the title block, like a notice or a filter row.
  * - **`Page.Section`** is a `<section>` named by its `<h2>`, with its content a set distance
- *   below the title. Leave out `title` for a part with no heading. *
+ *   below the title. Leave out `title` for a part with no heading.
+ *
  * `AppShell.Main` pads the top and the end of the page, so `Page` adds no outer space of its own.
  * Change the rhythm with `gap` on any part.
  *

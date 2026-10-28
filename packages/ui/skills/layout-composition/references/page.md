@@ -9,7 +9,9 @@ Source: https://kiln.mitchellsutton.com/docs/ui/layout/page
 `Page` is the content of one screen, inside `AppShell.Main` and its `Container`. It spaces its parts at one rhythm, so every page in an app opens and steps the same way:
 
 - **`Page.Header`** is the page's `<h1>`, with an optional kicker, description and actions. Anything you nest in it sits under the title block, like a notice or a filter row.
-- **`Page.Section`** is a `<section>` named by its `<h2>`, with its content a set distance below the title. Leave out `title` for a part with no heading. * `AppShell.Main` pads the top and the end of the page, so `Page` adds no outer space of its own. Change the rhythm with `gap` on any part.
+- **`Page.Section`** is a `<section>` named by its `<h2>`, with its content a set distance below the title. Leave out `title` for a part with no heading.
+
+`AppShell.Main` pads the top and the end of the page, so `Page` adds no outer space of its own. Change the rhythm with `gap` on any part.
 
 A whole page: the header with its actions, then titled sections, one with its content in columns. Nothing here sets a gap or a heading size: every page laid out this way opens and steps the same.
 
