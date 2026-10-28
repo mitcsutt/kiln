@@ -145,6 +145,6 @@ Set these in a theme, or on one element, to change this component without touchi
 | `--app-shell-header-height` | minimum header height, also the sidebar's sticky offset (default: control-lg + space-4) |
 | `--app-shell-sidebar-width` | default 18rem |
 | `--app-shell-sidebar-bg` | default var(--color-surface-sunken): a quieter layer than Main, so the page leads and the nav reads as its own panel |
-| `--app-shell-main-padding` | Main's block padding (default var(--space-5) var(--space-6) on a phone, var(--space-7) var(--space-8) from md): the page never starts under the header rule or ends flush at the bottom of the scroll. 0 when each page pads itself. |
+| `--app-shell-main-padding` | Main's block padding (default var(--space-5) var(--space-5) on a phone, var(--space-6) var(--space-7) from md): the page never starts under the header rule or ends flush at the bottom of the scroll. 0 when each page pads itself. |
 | `--app-shell-header-bg` | default var(--color-canvas) — opaque, never glass |
 | `--app-shell-bar-rule` | rule under the header / above the bottom bar (default var(--color-line-strong): these are the frame's edges) |
