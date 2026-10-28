@@ -38,7 +38,16 @@ export function KilnRoom({ room }: { room: KilnRoomData }) {
           It&apos;s 52°C under the planned curve at 09:30. Check the bottom element before the next
           segment.
         </Alert>
-      ) : null}
+      ) : readings.k2?.status === 'cooling' ? (
+        <Alert tone="positive" title="Kiln 2 is cooling">
+          It reached its 1222°C setpoint and the elements are off. Leave the lid shut until
+          it&apos;s under 100°C.
+        </Alert>
+      ) : (
+        <Alert tone="positive" title="Kiln 2 is ready to unload">
+          It&apos;s back to room temperature. Unload it and log how the glazes came out.
+        </Alert>
+      )}
       <GridLayout label="Kiln room panels" defaultLayout={LAYOUT} columns={{ base: 1, sm: 12 }}>
         {room.kilns.map((kiln) => {
           const reading = readings[kiln.id]
