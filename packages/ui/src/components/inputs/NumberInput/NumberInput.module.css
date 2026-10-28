@@ -8,10 +8,10 @@
 .stepper {
   margin-block: calc(var(--space-1) * -1);
 }
-.stepper:first-child {
+[data-slot='leading'] > .stepper:first-child {
   margin-inline-start: calc(var(--space-2) * -1);
 }
-.stepper:last-child {
+[data-slot='trailing'] > .stepper:last-child {
   margin-inline-end: calc(var(--space-2) * -1);
 }
 .box.box[data-numeric] input {

@@ -8,7 +8,7 @@
  *   --switch-radius            default var(--radius-action), capped at a full pill
  *   --control-checked-bg       default var(--color-accent)
  *   --control-checked-border   default var(--color-accent)
- *   --control-checked-ink      default var(--color-ink)          (the check on the knob)
+ *   --switch-check-ink         default var(--color-ink)          (the check on the knob)
  *   --control-border           default var(--color-line-control) (unchecked edge, ≥ 3:1)
  *   --control-shadow           default var(--shadow-active)
  */
@@ -98,7 +98,7 @@
     translate var(--dur-2) var(--ease-spring),
     border-color var(--dur-2) var(--ease-out);
 }
-/* The check: a rotated corner, drawn in the track's own accent. Hidden until on. */
+/* The check: a rotated corner, drawn in ink on the knob. Hidden until on. */
 .thumb::after {
   content: '';
   position: absolute;
@@ -106,7 +106,7 @@
   inset-inline-start: 50%;
   inline-size: 32%;
   block-size: 58%;
-  border: solid var(--control-checked-ink, var(--color-ink));
+  border: solid var(--switch-check-ink, var(--color-ink));
   border-width: 0 2px 2px 0;
   translate: -50% -62%;
   rotate: 45deg;
