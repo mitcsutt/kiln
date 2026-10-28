@@ -121,6 +121,15 @@ describe('Stepper', () => {
     expect(screen.getByRole('list')).toHaveAttribute('data-orientation', 'vertical')
   })
 
+  it('draws a connector after every step but the last', () => {
+    const { container } = render(<Stepper steps={steps} value="you" />)
+    const items = container.querySelectorAll('li')
+    items.forEach((item, index) => {
+      const connectors = item.querySelectorAll('[class*="connector"]')
+      expect(connectors).toHaveLength(index < items.length - 1 ? 1 : 0)
+    })
+  })
+
   it('forwards a ref to the underlying ol', () => {
     const ref = { current: null as HTMLOListElement | null }
     render(<Stepper steps={steps} value="you" ref={ref} />)

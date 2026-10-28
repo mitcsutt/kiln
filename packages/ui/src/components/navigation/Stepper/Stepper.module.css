@@ -4,8 +4,8 @@
  *   --stepper-marker-radius  marker corner radius, default var(--radius-chip)
  *   --stepper-rail           connector line colour, default var(--color-line)
  *
- * --_count is written inline by the component (steps.length) — used to centre the
- * horizontal rail under the first and last markers without measuring the DOM.
+ * Each step but the last draws its own connector, running from its marker to the next
+ * one, so the rail never overshoots the first or last marker at any width.
  */
 .root {
   min-inline-size: 0;
@@ -52,20 +52,14 @@
   align-items: flex-start;
   gap: var(--space-2);
 }
-.list[data-orientation='horizontal']::before {
-  content: '';
-  position: absolute;
-  inset-inline: calc(50% / var(--_count));
-  inset-block-start: calc(var(--stepper-marker-size, 1.75rem) / 2);
-  block-size: var(--border-width);
-  background: var(--stepper-rail, var(--color-line));
-}
 .list[data-orientation='horizontal'] .item {
   position: relative;
   flex: 1 1 0;
   min-inline-size: 0;
 }
 .list[data-orientation='horizontal'] .control {
+  /* Fill the item so the marker sits at its centre, where the connectors expect it. */
+  inline-size: 100%;
   flex-direction: column;
   align-items: center;
   text-align: center;
@@ -74,7 +68,19 @@
   align-items: center;
 }
 .list[data-orientation='horizontal'] .connector {
-  display: none;
+  /* Anchored to the item (the markerCol isn't positioned): from this marker's edge to the
+     next marker's edge, across the item's own width plus the gap between items. */
+  position: absolute;
+  inset-block-start: calc(var(--stepper-marker-size, 1.75rem) / 2);
+  inset-inline-start: calc(50% + var(--stepper-marker-size, 1.75rem) / 2 + var(--space-1));
+  inline-size: calc(
+    100% + var(--space-2) - var(--stepper-marker-size, 1.75rem) - var(--space-1) * 2
+  );
+  block-size: var(--border-width);
+  background: var(--stepper-rail, var(--color-line));
+}
+.list[data-orientation='horizontal'] .connector[data-status='complete'] {
+  background: var(--color-accent);
 }
 
 /* ── Vertical ─────────────────────────────────────────────────────────── */

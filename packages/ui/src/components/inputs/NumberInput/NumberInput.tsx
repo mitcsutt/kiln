@@ -9,6 +9,7 @@ import {
   type KeyboardEvent,
   type MouseEvent,
 } from 'react'
+import { cx } from '#utils/cx'
 import { MinusIcon, PlusIcon } from '#icons'
 import { IconButton } from '#components/actions/IconButton'
 import { Input, type InputProps } from '#components/inputs/Input'
@@ -31,7 +32,7 @@ export interface NumberInputProps extends Omit<
   step?: number
   /** PageUp / PageDown increment. Default `10 × step`. */
   largeStep?: number
-  /** Show − / + buttons at the end of the box (out of the tab order — the keyboard uses arrows). Default `true`. */
+  /** Show − / + buttons either side of the number (out of the tab order — the keyboard uses arrows). Default `true`. */
   stepper?: boolean
   /** Accessible name of the − button. Default `'Decrease'`. */
   decrementLabel?: string
@@ -80,6 +81,8 @@ export const NumberInput = markFieldAware(
       name,
       form,
       trailing,
+      leading,
+      className,
       size = 'md',
       id: idProp,
       disabled: disabledProp,
@@ -223,35 +226,35 @@ export const NumberInput = markFieldAware(
     const autoId = useId()
     const controlId = field.id ?? `${autoId}number`
 
-    const buttons = stepper ? (
-      <>
-        <IconButton
-          className={styles.stepper}
-          size="sm"
-          label={decrementLabel}
-          icon={<MinusIcon />}
-          tabIndex={-1}
-          aria-controls={controlId}
-          disabled={!editable || (value != null && min != null && value <= min)}
-          onMouseDown={keepFocus}
-          onClick={() => {
-            stepBy(-step)
-          }}
-        />
-        <IconButton
-          className={styles.stepper}
-          size="sm"
-          label={incrementLabel}
-          icon={<PlusIcon />}
-          tabIndex={-1}
-          aria-controls={controlId}
-          disabled={!editable || (value != null && max != null && value >= max)}
-          onMouseDown={keepFocus}
-          onClick={() => {
-            stepBy(step)
-          }}
-        />
-      </>
+    const decrement = stepper ? (
+      <IconButton
+        className={styles.stepper}
+        size="sm"
+        label={decrementLabel}
+        icon={<MinusIcon />}
+        tabIndex={-1}
+        aria-controls={controlId}
+        disabled={!editable || (value != null && min != null && value <= min)}
+        onMouseDown={keepFocus}
+        onClick={() => {
+          stepBy(-step)
+        }}
+      />
+    ) : null
+    const increment = stepper ? (
+      <IconButton
+        className={styles.stepper}
+        size="sm"
+        label={incrementLabel}
+        icon={<PlusIcon />}
+        tabIndex={-1}
+        aria-controls={controlId}
+        disabled={!editable || (value != null && max != null && value >= max)}
+        onMouseDown={keepFocus}
+        onClick={() => {
+          stepBy(step)
+        }}
+      />
     ) : null
 
     const allowsNegative = min == null || min < 0
@@ -288,11 +291,20 @@ export const NumberInput = markFieldAware(
           onBlur={handleBlur}
           onKeyDown={handleKeyDown}
           form={form}
+          className={cx(stepper && styles.box, className)}
+          leading={
+            decrement || leading != null ? (
+              <>
+                {decrement}
+                {leading}
+              </>
+            ) : undefined
+          }
           trailing={
-            trailing != null || buttons ? (
+            trailing != null || increment ? (
               <>
                 {trailing}
-                {buttons}
+                {increment}
               </>
             ) : undefined
           }

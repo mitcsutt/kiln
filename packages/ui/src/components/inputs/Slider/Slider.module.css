@@ -5,7 +5,7 @@
  *   £500         £2,500     £5,000         ← marks, centred under where the thumb would sit
  *
  * Component tokens:
- *   --slider-track        default var(--color-surface-sunken)
+ *   --slider-track        default the unfilled track, the sunken tone pulled toward the control line, so it reads on every canvas
  *   --slider-track-line   default var(--color-line-control) — the track's edge
  *   --slider-range        default var(--color-accent) — the filled part
  *   --slider-thumb-bg     default var(--color-surface)
@@ -17,7 +17,7 @@
  */
 .slider {
   --_thumb: calc(var(--control-sm) * 0.625);
-  --_track: calc(var(--space-1) * 1.5);
+  --_track: calc(var(--space-1) * 2);
 
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -28,7 +28,7 @@
 }
 .slider[data-size='sm'] {
   --_thumb: calc(var(--control-sm) * 0.5);
-  --_track: var(--space-1);
+  --_track: calc(var(--space-1) * 1.5);
 }
 .slider[data-show-value] {
   grid-template-columns: minmax(0, 1fr) auto;
@@ -57,7 +57,10 @@
   overflow: hidden;
   block-size: var(--_track);
   border-radius: var(--_track);
-  background-color: var(--slider-track, var(--color-surface-sunken));
+  background-color: var(
+    --slider-track,
+    color-mix(in oklch, var(--color-surface-sunken), var(--color-line-control) 60%)
+  );
   box-shadow: inset 0 0 0 1px var(--slider-track-line, var(--color-line-control));
 }
 .slider[data-invalid] .track {

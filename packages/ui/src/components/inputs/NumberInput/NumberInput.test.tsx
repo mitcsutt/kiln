@@ -184,6 +184,15 @@ describe('NumberInput', () => {
     expect(onValueChange).toHaveBeenLastCalledWith(40)
   })
 
+  it('seats the decrease button before the number and the increase button after it', () => {
+    render(<NumberInput aria-label="Guests" defaultValue={2} />)
+    const dec = screen.getByRole('button', { name: 'Decrease' })
+    const input = screen.getByRole('spinbutton')
+    const inc = screen.getByRole('button', { name: 'Increase' })
+    expect(dec.compareDocumentPosition(input) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(input.compareDocumentPosition(inc) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+  })
+
   it('stepper buttons step, keep out of the tab order, and disable at the bounds', async () => {
     render(<NumberInput aria-label="Guests" locale="en-US" min={1} max={3} defaultValue={2} />)
     const input = screen.getByRole('spinbutton')
