@@ -109,7 +109,6 @@ Also accepts every prop of `HTMLAttributes<HTMLElement>`.
 | `children` | `ReactNode` |  | Anything that belongs to the header under the title block: a notice, filters, tabs. |
 | `description` | `ReactNode` |  | A sentence or two under the title. |
 | `actions` | `ReactNode` |  | Buttons or links beside the title from `md` up, below it on a phone. |
-| `size` | `Responsive<HeadingSize>` |  | Heading size; defaults from the part (`2xl` for the header, `lg` for a section). Responsive. |
 
 Also accepts every prop of `HTMLAttributes<HTMLElement>`.
 
@@ -118,10 +117,8 @@ Also accepts every prop of `HTMLAttributes<HTMLElement>`.
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `title` | `ReactNode` |  | The section title, as an `<h2>` that also names the section. Omit for an untitled section. |
-| `level` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` | `2` | Heading level. Default 2. |
 | `gap` | `Responsive<Space>` | `4` | Space between the title block and the content, and between content blocks. Default `4`. |
 | `description` | `ReactNode` |  | A sentence or two under the title. |
 | `actions` | `ReactNode` |  | Buttons or links beside the title from `md` up, below it on a phone. |
-| `size` | `Responsive<HeadingSize>` |  | Heading size; defaults from the part (`2xl` for the header, `lg` for a section). Responsive. |
 
 Also accepts every prop of `HTMLAttributes<HTMLElement>`.
