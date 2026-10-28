@@ -24,7 +24,7 @@ Fiesta sets `--heading-transform: uppercase` for poster headlines. Ledger sets `
 
 ## The scale
 
-Sizes are a modular scale: `--type-base × --type-ratio^n`. The display steps are fluid and jump hard, so the largest is at least five times body size. Display tracking tightens as size grows. Here's the scale in the current theme:
+Sizes from body up are a modular scale: `--type-base × --type-ratio^n`. Below body the steps are fixed fractions of the base (`--text-sm` is 0.875, `--text-xs` 0.75 and `--text-2xs` 0.6875, which is 14, 12 and 11px at a 16px base), so secondary text stays readable whatever the ratio. Every step is in rem, so browser zoom and the reader's font size scale all of it. The display steps are fluid and jump hard, so the largest is at least five times body size. Display tracking tightens as size grows. Here's the scale in the current theme:
 
 
 `Heading` and `Text` take these steps as `size`: `<Heading size="display-sm">`, `<Text size="sm">`. Both accept a responsive value, `size={{ base: 'xl', md: '2xl' }}`.

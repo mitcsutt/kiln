@@ -1,4 +1,4 @@
-import { SectionHeader, Stack } from '@mitcsutt/kiln-ui'
+import { Page } from '@mitcsutt/kiln-ui'
 import type { ReactNode } from 'react'
 
 import { ThemeFit } from '#components/ThemeFit'
@@ -16,16 +16,8 @@ export interface PageHeaderProps {
 /** Every page opens the same way: what it is, what to do here, and the theme it was made for. */
 export function PageHeader({ kicker, title, description, theme, actions }: PageHeaderProps) {
   return (
-    <Stack gap={4}>
-      <SectionHeader
-        level={1}
-        size="2xl"
-        kicker={kicker}
-        title={title}
-        description={description}
-        actions={actions}
-      />
+    <Page.Header kicker={kicker} title={title} description={description} actions={actions}>
       <ThemeFit theme={theme} />
-    </Stack>
+    </Page.Header>
   )
 }

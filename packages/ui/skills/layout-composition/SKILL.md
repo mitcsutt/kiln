@@ -1,6 +1,6 @@
 ---
 name: layout-composition
-description: "Use when laying out a screen, page or panel with @mitcsutt/kiln-ui: Stack, Inline, Grid, Split, Section and Container with typed props such as gap, align, width, ratio, space and surface, instead of utility classes, inline styles, margins or custom CSS."
+description: "Use when laying out a screen, page or panel with @mitcsutt/kiln-ui: Stack, Inline, Grid, Split, Page, Section and Container with typed props such as gap, align, width, ratio, space and surface, instead of utility classes, inline styles, margins or custom CSS."
 metadata:
   purpose: Build screens from kiln-ui's layout primitives and the space scale, so spacing and structure come from props and the theme.
   type: core
@@ -11,6 +11,7 @@ sources:
   - mitcsutt/kiln:packages/ui/src/components/layout/Inline/Inline.tsx
   - mitcsutt/kiln:packages/ui/src/components/layout/Grid/Grid.tsx
   - mitcsutt/kiln:packages/ui/src/components/layout/Split/Split.tsx
+  - mitcsutt/kiln:packages/ui/src/components/layout/Page/Page.tsx
   - mitcsutt/kiln:packages/ui/src/components/layout/Section/Section.tsx
   - mitcsutt/kiln:packages/ui/src/components/layout/Container/Container.tsx
   - mitcsutt/kiln:packages/ui/src/components/layout/Box/Box.tsx
@@ -425,6 +426,7 @@ Also accepts every prop of `HTMLAttributes<HTMLElement>`.
 
 Read a reference when its description matches the task:
 
+- [Page](references/page.md): The layout of a page inside an app: a title block, then sections, at one rhythm, so pages need no layout of their own.
 - [Section](references/section.md): A full-bleed band of vertical space, with an optional surface and rules. Put a Container inside it for width.
 - [Container](references/container.md): Centres content at a readable maximum width, with a fluid gutter outside it.
 - [Box](references/box.md): Padding, a surface and an edge, and nothing else. The escape hatch when no other layout fits.

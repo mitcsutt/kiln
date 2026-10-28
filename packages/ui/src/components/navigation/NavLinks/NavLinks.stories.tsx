@@ -190,7 +190,8 @@ const GearIcon = createKilnIcon(
 
 /**
  * `NavLinksGroup`, imported beside `NavLinks`, nests links under a section, and groups nest inside
- * groups. Each level is indented on a guide rule, and labels stay at body size at every depth. The
+ * groups. At the top level, groups and the links beside them are sections in the heading face, one
+ * step above the links under them; deeper levels are indented on a guide rule at the links' size. The
  * group holding the current page opens by itself; close it and a ring shows where the current page
  * is. Items and groups take an `icon` and a `trailing` count.
  */
@@ -240,10 +241,14 @@ export const Groups: Story = {
     await waitFor(() => expect(canvas.getByRole('link', { name: 'Profile' })).toHaveFocus())
     await userEvent.keyboard('{ArrowLeft}')
     await expect(settings).toHaveFocus()
-    // Nested labels stay at the same size as the top level.
+    // Links under a section share one size, and the sections sit a step above them.
     await expect(fontSize(canvas.getByRole('link', { name: 'Profile' }))).toBe(
-      fontSize(canvas.getByRole('link', { name: 'People' })),
+      fontSize(canvas.getByRole('link', { name: 'Leith yard' })),
     )
+    await expect(fontSize(settings)).toBeGreaterThan(
+      fontSize(canvas.getByRole('link', { name: 'Profile' })),
+    )
+    await expect(fontSize(canvas.getByRole('link', { name: 'People' }))).toBe(fontSize(settings))
   },
 }
 

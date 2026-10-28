@@ -71,6 +71,8 @@ export type {
   AppShellBottomBarProps,
   AppShellNavBreakpoint,
 } from './components/layout/AppShell'
+export { Page } from './components/layout/Page'
+export type { PageProps, PageHeaderProps, PageSectionProps } from './components/layout/Page'
 export { VisuallyHidden } from './components/layout/VisuallyHidden'
 export type { VisuallyHiddenProps } from './components/layout/VisuallyHidden'
 export { ScrollArea } from './components/layout/ScrollArea'

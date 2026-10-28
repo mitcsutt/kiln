@@ -2,7 +2,13 @@
  * Component tokens:
  *   --app-shell-header-height   minimum header height, also the sidebar's sticky offset
  *                               (default: control-lg + space-4)
- *   --app-shell-sidebar-width   default 16rem
+ *   --app-shell-sidebar-width   default 18rem
+ *   --app-shell-sidebar-bg      default var(--color-surface-sunken): a quieter layer than Main,
+ *                               so the page leads and the nav reads as its own panel
+ *   --app-shell-main-padding    Main's block padding (default var(--space-5) var(--space-5) on a
+ *                               phone, var(--space-6) var(--space-7) from md):
+ *                               the page never starts under the header rule or ends flush
+ *                               at the bottom of the scroll. 0 when each page pads itself.
  *   --app-shell-header-bg       default var(--color-canvas) — opaque, never glass
  *   --app-shell-bar-rule        rule under the header / above the bottom bar
  *                               (default var(--color-line-strong): these are the frame's edges)
@@ -79,6 +85,12 @@
 .main {
   grid-area: main;
   min-inline-size: 0;
+  padding-block: var(--app-shell-main-padding, var(--space-5) var(--space-5));
+}
+@media (min-width: 48em) {
+  .main {
+    padding-block: var(--app-shell-main-padding, var(--space-6) var(--space-7));
+  }
 }
 .main:focus {
   outline: none;
@@ -123,7 +135,8 @@
   block-size: calc(100dvh - var(--app-shell-sticky-offset));
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: var(--space-5) var(--space-4);
+  padding: var(--space-5) var(--space-2) var(--space-7);
+  background-color: var(--app-shell-sidebar-bg, var(--color-surface-sunken));
 }
 .sidebar[data-side='start'] {
   border-inline-end: var(--border-width) solid var(--color-line);
@@ -140,7 +153,7 @@
     display: block;
   }
   .shell[data-nav-breakpoint='md']:has(> .sidebar) {
-    grid-template-columns: var(--app-shell-sidebar-width, 16rem) minmax(0, 1fr);
+    grid-template-columns: var(--app-shell-sidebar-width, 18rem) minmax(0, 1fr);
     grid-template-areas:
       'header header'
       'sidebar main'
@@ -148,7 +161,7 @@
       'bottombar bottombar';
   }
   .shell[data-nav-breakpoint='md']:has(> .sidebar[data-side='end']) {
-    grid-template-columns: minmax(0, 1fr) var(--app-shell-sidebar-width, 16rem);
+    grid-template-columns: minmax(0, 1fr) var(--app-shell-sidebar-width, 18rem);
     grid-template-areas:
       'header header'
       'main sidebar'
@@ -165,7 +178,7 @@
     display: block;
   }
   .shell[data-nav-breakpoint='lg']:has(> .sidebar) {
-    grid-template-columns: var(--app-shell-sidebar-width, 16rem) minmax(0, 1fr);
+    grid-template-columns: var(--app-shell-sidebar-width, 18rem) minmax(0, 1fr);
     grid-template-areas:
       'header header'
       'sidebar main'
@@ -173,7 +186,7 @@
       'bottombar bottombar';
   }
   .shell[data-nav-breakpoint='lg']:has(> .sidebar[data-side='end']) {
-    grid-template-columns: minmax(0, 1fr) var(--app-shell-sidebar-width, 16rem);
+    grid-template-columns: minmax(0, 1fr) var(--app-shell-sidebar-width, 18rem);
     grid-template-areas:
       'header header'
       'main sidebar'

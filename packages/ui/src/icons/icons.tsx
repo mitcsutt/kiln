@@ -190,3 +190,13 @@ export const TrendingUpIcon = createIcon(
   'TrendingUpIcon',
   <path d="M3 14.5 8 9.5l3 3 6-6M12.5 6.5H17V11" />,
 )
+export const PaletteIcon = createIcon(
+  'PaletteIcon',
+  <>
+    <path d="M10 2.75a7.25 7.25 0 0 0 0 14.5c1.05 0 1.7-.7 1.7-1.55 0-.45-.2-.8-.45-1.1-.25-.3-.45-.65-.45-1.1 0-.9.75-1.6 1.65-1.6h1.8a3 3 0 0 0 3-3c0-3.4-3.25-6.15-7.25-6.15Z" />
+    <circle cx="6.5" cy="10" r="0.6" />
+    <circle cx="7.75" cy="6.75" r="0.6" />
+    <circle cx="11.25" cy="6.1" r="0.6" />
+    <circle cx="13.9" cy="8.75" r="0.6" />
+  </>,
+)

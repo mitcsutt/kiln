@@ -49,8 +49,12 @@ export interface AppShellProps extends HTMLAttributes<HTMLDivElement> {
  *   links and `scrollIntoView` land just below it, whatever its height. Put a `Container` and an
  *   `Inline` inside.
  * - **Sidebar** appears from `navBreakpoint` up. It sits at the start of the main region
- *   (`side="end"` for the other side), scrolls on its own, and stays below the header.
- * - **Main** is the `<main>` landmark and the skip link's target.
+ *   (`side="end"` for the other side) on the sunken surface, a step quieter than the page, scrolls
+ *   on its own, and stays below the header. Put a vertical `NavLinks` inside.
+ * - **Main** is the `<main>` landmark and the skip link's target. It pads the top and the end of
+ *   the page, so content never starts under the header's rule or ends flush with the bottom of
+ *   the scroll, with less room on a phone, where the header and bottom bar already frame it. Lay
+ *   the page out with `Page` inside a `Container`.
  * - **BottomBar** is pinned to the bottom of the viewport below `navBreakpoint`, and pads for the
  *   phone's home indicator.
  *
@@ -144,7 +148,10 @@ const Header = forwardRef<HTMLElement, AppShellHeaderProps>(function AppShellHea
 
 export type AppShellMainProps = Omit<HTMLAttributes<HTMLElement>, 'id'>
 
-/** The page's `<main>` landmark and the skip link's target. Its id comes from `AppShell`. */
+/**
+ * The page's `<main>` landmark and the skip link's target, padded at the top and the end. Its id
+ * comes from `AppShell`.
+ */
 const Main = forwardRef<HTMLElement, AppShellMainProps>(function AppShellMain(
   { className, ...rest },
   ref,

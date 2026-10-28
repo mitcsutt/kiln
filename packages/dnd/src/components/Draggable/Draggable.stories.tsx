@@ -200,7 +200,9 @@ export const TouchPress: Story = {
     const invoice = canvas.getByText('Invoice 1043')
     const zone = canvas.getByText('Paid')
 
-    await drag(invoice, zone, { pointerType: 'touch', hold: 0 })
+    // One step, so the swipe clears the 5px tolerance on its first move: a slow runner can let
+    // 12 small frames run past the 250ms press and pick the item up.
+    await drag(invoice, zone, { pointerType: 'touch', hold: 0, steps: 1 })
     await expect(canvas.getByText('Invoice 1043')).toBeInTheDocument()
     await waitFor(() => expect(root.querySelector('[data-dragging]')).toBeNull())
 

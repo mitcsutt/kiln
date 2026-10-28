@@ -4,7 +4,7 @@ import { Button, Inline, Link, Stack, Tag, Text } from '@mitcsutt/kiln-ui'
 import { useState } from 'react'
 import { expect, userEvent, waitFor, within } from 'storybook/test'
 
-import { drag, expectAnnouncement, storyRoot } from '#stories/play'
+import { announcement, drag, expectAnnouncement, storyRoot } from '#stories/play'
 
 interface Task {
   id: string
@@ -193,7 +193,11 @@ export const PointerDrag: Story = {
     const third = canvas.getByText('Tag v2.4.0 and build the installers')
     const rect = third.getBoundingClientRect()
     const drop = await drag(first, { x: rect.left + 20, y: rect.bottom - 2 }, { keepHolding: true })
-    await expectAnnouncement(root, 'Picked up Write the 2.4 release notes, position 1 of 5.')
+    // The pick-up can already be replaced by a move announcement once the pointer reaches the
+    // third row, so check only that the live region names the item.
+    await waitFor(async () => {
+      await expect(announcement(root)).toContain('Write the 2.4 release notes')
+    })
     await waitFor(async () => {
       await expect(canvas.getByText('Post the changelog to the forum')).toHaveAttribute(
         'data-drop-edge',

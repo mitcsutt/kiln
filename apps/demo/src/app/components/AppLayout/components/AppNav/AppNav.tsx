@@ -10,7 +10,7 @@ export function AppNav() {
   return (
     <ScrollArea label="Navigation" axis="y">
       <Stack gap={4}>
-        <NavLinks label="Main" orientation="vertical" size="sm">
+        <NavLinks label="Main" orientation="vertical">
           {NAV_AREAS.map((area) => {
             const Icon = area.icon
             if (area.pages.length === 1) {

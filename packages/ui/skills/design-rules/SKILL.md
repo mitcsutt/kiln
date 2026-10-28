@@ -79,6 +79,8 @@ Beyond the checks, a theme has a subject, and each colour, face, radius and easi
 - **Left-aligned by default.** Centre is an exception (empty states, a lone CTA).
 - **Asymmetric splits** (`<Split ratio="5/7">`), a hang column for labels, at least one element per page that breaks the column.
 - **Vary section rhythm.** The space scale is non-linear (4 8 12 16 24 32 48 64 96 144…) and adjacent `<Section>`s should not use the same `space`.
+- **An app page is a `Page` inside `AppShell.Main`.** Main pads the top and the end of every page, and `Page` sets one rhythm for its header and sections, so a page in an app has no layout code of its own.
+- **The app sidebar is a quieter layer than the page.** `AppShell.Sidebar` sits on the sunken surface. In a vertical `NavLinks`, each top-level group is a section in the heading face, ruled off from the one before. Each link is a full-width row: a quiet fill on hover, a soft accent fill and the dot for the current page, and a focus ring inset so the scrolling sidebar never clips it.
 - **Not everything is a card.** Prefer lists, tables, rules and whitespace. A card needs a reason: it's interactive, draggable, or a self-contained object.
 - **A list on a busy canvas gets one sheet, not a card per row.** Where rows would float on a textured or coloured canvas, `List` and `Table` take `surface` (`surface` or `raised`): the whole list sits on one sheet and its rows, fills, rails and rules stay rows inside it.
 - The hero is the subject's most characteristic thing: the open invoices, the release board, today's orders. Not a stat row with a gradient.

@@ -1,5 +1,5 @@
 import { DragHandle, Sortable } from '@mitcsutt/kiln-dnd'
-import { Inline, SectionHeader, Stack, Stepper, Text, type StepperStep } from '@mitcsutt/kiln-ui'
+import { Inline, Page, Stepper, Text, type StepperStep } from '@mitcsutt/kiln-ui'
 import { useState } from 'react'
 
 import { PageHeader } from '#components/PageHeader'
@@ -32,29 +32,17 @@ export function Schedule() {
     status: i < index ? 'complete' : i === index ? 'current' : 'upcoming',
   }))
   return (
-    <Stack gap={8}>
+    <Page>
       <PageHeader
         kicker="Kiln room"
         title="Loading schedule"
         description="Every list here reorders by pointer, touch or keyboard: focus an item, press space, then the arrow keys."
         theme="flightdeck"
       />
-      <Stack gap={4}>
-        <SectionHeader
-          level={2}
-          size="lg"
-          title="The café order"
-          description="Where 14 planters are in the making."
-        />
+      <Page.Section title="The café order" description="Where 14 planters are in the making.">
         <Stepper steps={steps} value={stage} onStepSelect={setStage} compactBelow="sm" />
-      </Stack>
-      <Stack gap={4}>
-        <SectionHeader
-          level={2}
-          size="lg"
-          title="Firing queue"
-          description="Top of the list fires next."
-        />
+      </Page.Section>
+      <Page.Section title="Firing queue" description="Top of the list fires next.">
         <Sortable
           label="Firing queue"
           defaultItems={QUEUE}
@@ -68,21 +56,14 @@ export function Schedule() {
             </Inline>
           )}
         </Sortable>
-      </Stack>
-      <Stack gap={4}>
-        <SectionHeader
-          level={2}
-          size="lg"
-          title="Loading bay"
-          description="Drag each piece to its kiln."
-        />
+      </Page.Section>
+      <Page.Section title="Loading bay" description="Drag each piece to its kiln.">
         <LoadingBay />
-      </Stack>
-      <Stack gap={4}>
-        <SectionHeader level={2} size="lg" title="Kiln 1 shelf plan" />
+      </Page.Section>
+      <Page.Section title="Kiln 1 shelf plan">
         <ShelfPlan />
-      </Stack>
+      </Page.Section>
       <BookSlot />
-    </Stack>
+    </Page>
   )
 }

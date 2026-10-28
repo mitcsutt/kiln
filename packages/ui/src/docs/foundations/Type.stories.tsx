@@ -24,7 +24,7 @@ const steps = [
   '2xs',
 ] as const
 
-/** The modular scale (`--type-base × --type-ratio^n`). Display steps are fluid. */
+/** The modular scale (`--type-base × --type-ratio^n` from body up; fixed fractions of the base below it). Display steps are fluid. */
 export const Scale: Story = {
   render: () => (
     <Stack gap={0}>

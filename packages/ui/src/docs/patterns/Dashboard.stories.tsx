@@ -89,7 +89,7 @@ export const Dashboard: Story = {
         </Container>
       </AppShell.Header>
       <AppShell.Main>
-        <Section space={{ base: 6, md: 8 }}>
+        <Section space={0}>
           <Container width="wide">
             <Stack gap={8}>
               <Inline justify="between" gap={4} align="end">
