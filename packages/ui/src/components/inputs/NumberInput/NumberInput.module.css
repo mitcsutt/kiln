@@ -1,12 +1,19 @@
 /*
  * The box, text and adornments are Input's; this only seats the − / + IconButtons
- * inside it. They are Button's own size `sm`, so they overhang the box's padding a
- * little rather than growing a `sm` box — pulled in on the block axis and toward the
- * end edge so the pair sits flush like one control.
+ * inside it: − at the start, + at the end, the number centred between them. They are
+ * Button's own size `sm`, so they overhang the box's padding a little rather than
+ * growing a `sm` box — pulled in on the block axis and toward their own edge so each
+ * sits flush like one control.
  */
 .stepper {
   margin-block: calc(var(--space-1) * -1);
 }
+.stepper:first-child {
+  margin-inline-start: calc(var(--space-2) * -1);
+}
 .stepper:last-child {
   margin-inline-end: calc(var(--space-2) * -1);
+}
+.box.box[data-numeric] input {
+  text-align: center;
 }

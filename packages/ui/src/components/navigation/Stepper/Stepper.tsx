@@ -1,6 +1,5 @@
-import { forwardRef, useId, type CSSProperties, type HTMLAttributes, type ReactNode } from 'react'
+import { forwardRef, useId, type HTMLAttributes, type ReactNode } from 'react'
 import { cx } from '#utils/cx'
-import { mergeStyles } from '#utils/responsive'
 import { CheckIcon, ErrorIcon } from '#icons'
 import { VisuallyHidden } from '#components/layout/VisuallyHidden'
 import styles from './Stepper.module.css'
@@ -93,11 +92,7 @@ export const Stepper = forwardRef<HTMLOListElement, StepperProps>(function Stepp
   const errorSuffix = statusLabels?.error ?? 'has errors'
 
   return (
-    <div
-      className={cx(styles.root, className)}
-      data-compact-below={compactBelow}
-      style={mergeStyles({ '--_count': total } as CSSProperties, style)}
-    >
+    <div className={cx(styles.root, className)} data-compact-below={compactBelow} style={style}>
       {compactBelow ? (
         <p className={styles.compact}>
           {formatCompact(Math.max(currentIndex, 0), total, currentStep?.label ?? '')}

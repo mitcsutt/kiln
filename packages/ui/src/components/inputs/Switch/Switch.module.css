@@ -1,24 +1,25 @@
 /*
- * Track + thumb. The thumb travels (track width − track height) — a pill in Monograph and
- * Fiesta, a squared key in Ledger (radius follows --radius-action). Fiesta's spring
- * easing makes the thumb land with a bump.
+ * Track + knob. The knob is a surface-coloured disc on a ringed edge, so it reads as a physical
+ * thing that slides, and it carries a check when on so the state never rests on colour alone.
+ * The track is a pill, squarer where the theme's --radius-action is. The knob travels (track
+ * width − track height); a theme's spring easing makes it land with a bump.
  *
  * Component tokens:
- *   --switch-radius            default var(--radius-action)
+ *   --switch-radius            default var(--radius-action), capped at a full pill
  *   --control-checked-bg       default var(--color-accent)
  *   --control-checked-border   default var(--color-accent)
- *   --control-checked-ink      default var(--color-accent-ink)   (thumb when on)
+ *   --control-checked-ink      default var(--color-ink)          (the check on the knob)
  *   --control-border           default var(--color-line-control) (unchecked edge, ≥ 3:1)
  *   --control-shadow           default var(--shadow-active)
  */
 .switch {
   --_h: calc(var(--control-sm) * 0.6875);
-  --_w: calc(var(--_h) * 1.8);
+  --_w: calc(var(--_h) * 1.85);
   --_inset: 2px;
   /* An unchecked box is identified only by its edge, so it needs 3:1 (WCAG 1.4.11):
      line-strong alone is a ~2:1 hairline in the quieter themes. */
   --_border: var(--control-border, var(--color-line-control));
-  --_radius: var(--switch-radius, var(--radius-action));
+  --_radius: min(var(--switch-radius, var(--radius-action)), calc(var(--_h) / 2));
 
   all: unset;
   box-sizing: border-box;
@@ -82,20 +83,45 @@
   box-shadow: none;
 }
 
-/* The thumb is always the track's direct child, so it reads the track's --_w/--_h/--_radius. */
+/* The thumb is always the track's direct child, so it reads the track's --_w/--_h. */
 .thumb {
+  box-sizing: border-box;
+  position: relative;
   display: block;
   block-size: 100%;
   aspect-ratio: 1;
   border-radius: max(1px, calc(var(--_radius) - var(--_inset) - var(--border-width)));
-  background-color: var(--color-ink-muted);
+  border: var(--border-width) solid var(--_border);
+  background-color: var(--color-surface);
+  box-shadow: var(--control-shadow, var(--shadow-active));
   transition:
     translate var(--dur-2) var(--ease-spring),
-    background-color var(--dur-2) var(--ease-out);
+    border-color var(--dur-2) var(--ease-out);
+}
+/* The check: a rotated corner, drawn in the track's own accent. Hidden until on. */
+.thumb::after {
+  content: '';
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
+  inline-size: 32%;
+  block-size: 58%;
+  border: solid var(--control-checked-ink, var(--color-ink));
+  border-width: 0 2px 2px 0;
+  translate: -50% -62%;
+  rotate: 45deg;
+  scale: 0;
+  transition: scale var(--dur-1) var(--ease-out);
 }
 .thumb[data-state='checked'] {
   translate: calc(var(--_w) - var(--_h)) 0;
-  background-color: var(--control-checked-ink, var(--color-accent-ink));
+  border-color: transparent;
+}
+.thumb[data-state='checked']::after {
+  scale: 1;
+}
+[dir='rtl'] .thumb[data-state='checked'] {
+  translate: calc((var(--_w) - var(--_h)) * -1) 0;
 }
 
 /* Inline label */
