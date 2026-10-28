@@ -53,7 +53,8 @@ export interface AppShellProps extends HTMLAttributes<HTMLDivElement> {
  *   on its own, and stays below the header. Put a vertical `NavLinks` inside.
  * - **Main** is the `<main>` landmark and the skip link's target. It pads the top and the end of
  *   the page, so content never starts under the header's rule or ends flush with the bottom of
- *   the scroll. Lay the page out with `Page` inside a `Container`.
+ *   the scroll, with less room on a phone, where the header and bottom bar already frame it. Lay
+ *   the page out with `Page` inside a `Container`.
  * - **BottomBar** is pinned to the bottom of the viewport below `navBreakpoint`, and pads for the
  *   phone's home indicator.
  *

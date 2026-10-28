@@ -5,7 +5,8 @@
  *   --app-shell-sidebar-width   default 18rem
  *   --app-shell-sidebar-bg      default var(--color-surface-sunken): a quieter layer than Main,
  *                               so the page leads and the nav reads as its own panel
- *   --app-shell-main-padding    Main's block padding (default var(--space-7) var(--space-9)):
+ *   --app-shell-main-padding    Main's block padding (default var(--space-5) var(--space-6) on a
+ *                               phone, var(--space-7) var(--space-8) from md):
  *                               the page never starts under the header rule or ends flush
  *                               at the bottom of the scroll. 0 when each page pads itself.
  *   --app-shell-header-bg       default var(--color-canvas) — opaque, never glass
@@ -84,7 +85,12 @@
 .main {
   grid-area: main;
   min-inline-size: 0;
-  padding-block: var(--app-shell-main-padding, var(--space-7) var(--space-9));
+  padding-block: var(--app-shell-main-padding, var(--space-5) var(--space-6));
+}
+@media (min-width: 48em) {
+  .main {
+    padding-block: var(--app-shell-main-padding, var(--space-7) var(--space-8));
+  }
 }
 .main:focus {
   outline: none;

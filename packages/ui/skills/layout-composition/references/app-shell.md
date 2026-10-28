@@ -94,7 +94,7 @@ export function Usage() {
 
 - **Header** is sticky by default (`sticky={false}` to scroll it away). While it sticks, in-page links and `scrollIntoView` land just below it, whatever its height. Put a `Container` and an `Inline` inside.
 - **Sidebar** appears from `navBreakpoint` up. It sits at the start of the main region (`side="end"` for the other side) on the sunken surface, a step quieter than the page, scrolls on its own, and stays below the header. Put a vertical `NavLinks` inside.
-- **Main** is the `<main>` landmark and the skip link's target. It pads the top and the end of the page, so content never starts under the header's rule or ends flush with the bottom of the scroll. Lay the page out with `Page` inside a `Container`.
+- **Main** is the `<main>` landmark and the skip link's target. It pads the top and the end of the page, so content never starts under the header's rule or ends flush with the bottom of the scroll, with less room on a phone, where the header and bottom bar already frame it. Lay the page out with `Page` inside a `Container`.
 - **BottomBar** is pinned to the bottom of the viewport below `navBreakpoint`, and pads for the phone's home indicator.
 
 ## Navigation hand-over
@@ -145,6 +145,6 @@ Set these in a theme, or on one element, to change this component without touchi
 | `--app-shell-header-height` | minimum header height, also the sidebar's sticky offset (default: control-lg + space-4) |
 | `--app-shell-sidebar-width` | default 18rem |
 | `--app-shell-sidebar-bg` | default var(--color-surface-sunken): a quieter layer than Main, so the page leads and the nav reads as its own panel |
-| `--app-shell-main-padding` | Main's block padding (default var(--space-7) var(--space-9)): the page never starts under the header rule or ends flush at the bottom of the scroll. 0 when each page pads itself. |
+| `--app-shell-main-padding` | Main's block padding (default var(--space-5) var(--space-6) on a phone, var(--space-7) var(--space-8) from md): the page never starts under the header rule or ends flush at the bottom of the scroll. 0 when each page pads itself. |
 | `--app-shell-header-bg` | default var(--color-canvas) — opaque, never glass |
 | `--app-shell-bar-rule` | rule under the header / above the bottom bar (default var(--color-line-strong): these are the frame's edges) |
