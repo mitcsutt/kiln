@@ -3,7 +3,6 @@ import type { Responsive } from '#utils/responsive'
 import type { Space } from '#utils/tokens'
 import { Stack } from '#components/layout/Stack'
 import { SectionHeader } from '#components/typography/SectionHeader'
-import type { HeadingLevel, HeadingSize } from '#components/typography/Heading'
 
 export interface PageProps extends HTMLAttributes<HTMLElement> {
   /** Space between the header and each section, as a step on the space scale. Responsive. Default `8`. */
@@ -19,8 +18,6 @@ interface TitleBlockProps {
   description?: ReactNode
   /** Buttons or links beside the title from `md` up, below it on a phone. */
   actions?: ReactNode
-  /** Heading size; defaults from the part (`2xl` for the header, `lg` for a section). Responsive. */
-  size?: Responsive<HeadingSize>
 }
 
 export interface PageHeaderProps
@@ -38,14 +35,14 @@ export interface PageHeaderProps
 
 /** The page's title block: its `<h1>`, a description and actions, and anything that belongs under them. */
 const PageHeader = forwardRef<HTMLElement, PageHeaderProps>(function PageHeader(
-  { title, kicker, description, actions, size = '2xl', children, ...rest },
+  { title, kicker, description, actions, children, ...rest },
   ref,
 ) {
   return (
     <Stack ref={ref} as="header" gap={4} {...rest}>
       <SectionHeader
         level={1}
-        size={size}
+        size="2xl"
         kicker={kicker}
         title={title}
         description={description}
@@ -60,15 +57,13 @@ export interface PageSectionProps
   extends Omit<HTMLAttributes<HTMLElement>, 'title'>, TitleBlockProps {
   /** The section title, as an `<h2>` that also names the section. Omit for an untitled section. */
   title?: ReactNode
-  /** Heading level. Default 2. */
-  level?: HeadingLevel
   /** Space between the title block and the content, and between content blocks. Default `4`. */
   gap?: Responsive<Space>
 }
 
 /** One part of a page: a titled `<section>` with its content at a set distance from the title. */
 const PageSection = forwardRef<HTMLElement, PageSectionProps>(function PageSection(
-  { title, description, actions, level = 2, size = 'lg', gap = 4, children, ...rest },
+  { title, description, actions, gap = 4, children, ...rest },
   ref,
 ) {
   const titleId = `page-section-${useId().replace(/[^\w-]/g, '')}`
@@ -83,8 +78,8 @@ const PageSection = forwardRef<HTMLElement, PageSectionProps>(function PageSecti
     >
       {titled ? (
         <SectionHeader
-          level={level}
-          size={size}
+          level={2}
+          size="lg"
           title={title}
           titleId={titleId}
           description={description}
