@@ -2,23 +2,16 @@ import { forwardRef, useId, type HTMLAttributes, type ReactNode } from 'react'
 import type { Responsive } from '#utils/responsive'
 import type { Space } from '#utils/tokens'
 import { Stack } from '#components/layout/Stack'
-import { Grid, type GridColumns } from '#components/layout/Grid'
 import { SectionHeader } from '#components/typography/SectionHeader'
 import type { HeadingLevel, HeadingSize } from '#components/typography/Heading'
-
-export type PageElement = 'div' | 'article'
 
 export interface PageProps extends HTMLAttributes<HTMLElement> {
   /** Space between the header and each section, as a step on the space scale. Responsive. Default `8`. */
   gap?: Responsive<Space>
-  as?: PageElement
 }
 
-const PageRoot = forwardRef<HTMLElement, PageProps>(function Page(
-  { gap = 8, as = 'div', ...rest },
-  ref,
-) {
-  return <Stack ref={ref} as={as} gap={gap} {...rest} />
+const PageRoot = forwardRef<HTMLElement, PageProps>(function Page({ gap = 8, ...rest }, ref) {
+  return <Stack ref={ref} as="div" gap={gap} {...rest} />
 })
 
 interface TitleBlockProps {
@@ -39,21 +32,19 @@ export interface PageHeaderProps
    * belongs to, or the period it covers. Plain muted text.
    */
   kicker?: ReactNode
-  /** Heading level. Default 1. */
-  level?: HeadingLevel
   /** Anything that belongs to the header under the title block: a notice, filters, tabs. */
   children?: ReactNode
 }
 
 /** The page's title block: its `<h1>`, a description and actions, and anything that belongs under them. */
 const PageHeader = forwardRef<HTMLElement, PageHeaderProps>(function PageHeader(
-  { title, kicker, description, actions, level = 1, size = '2xl', children, ...rest },
+  { title, kicker, description, actions, size = '2xl', children, ...rest },
   ref,
 ) {
   return (
     <Stack ref={ref} as="header" gap={4} {...rest}>
       <SectionHeader
-        level={level}
+        level={1}
         size={size}
         kicker={kicker}
         title={title}
@@ -105,33 +96,6 @@ const PageSection = forwardRef<HTMLElement, PageSectionProps>(function PageSecti
   )
 })
 
-export type PageColumnsCount = 2 | 3 | 4
-
-export interface PageColumnsProps extends HTMLAttributes<HTMLElement> {
-  /**
-   * How many columns on a wide screen. Each count steps up from one column on a phone: `2` from
-   * `md`, `3` through two at `md` to three at `lg`, `4` through two at `sm` to four at `lg`.
-   * Default `2`.
-   */
-  columns?: PageColumnsCount
-  /** Space between columns and rows. Responsive. Default `5`. */
-  gap?: Responsive<Space>
-}
-
-const COLUMNS: Record<PageColumnsCount, Responsive<GridColumns>> = {
-  2: { base: 1, md: 2 },
-  3: { base: 1, md: 2, lg: 3 },
-  4: { base: 1, sm: 2, lg: 4 },
-}
-
-/** Content side by side on a wide screen and stacked on a phone, at the page's standard gap. */
-const PageColumns = forwardRef<HTMLElement, PageColumnsProps>(function PageColumns(
-  { columns = 2, gap = 5, ...rest },
-  ref,
-) {
-  return <Grid ref={ref} columns={COLUMNS[columns]} gap={gap} {...rest} />
-})
-
 /**
  * The layout of a page inside an app: a title block, then sections, at one rhythm, so pages need
  * no layout of their own.
@@ -143,24 +107,20 @@ const PageColumns = forwardRef<HTMLElement, PageColumnsProps>(function PageColum
  * - **`Page.Header`** is the page's `<h1>`, with an optional kicker, description and actions.
  *   Anything you nest in it sits under the title block, like a notice or a filter row.
  * - **`Page.Section`** is a `<section>` named by its `<h2>`, with its content a set distance
- *   below the title. Leave out `title` for a part with no heading.
- * - **`Page.Columns`** puts content side by side: `columns` is the count on a wide screen, and
- *   each count steps down to one column on a phone.
- *
+ *   below the title. Leave out `title` for a part with no heading. *
  * `AppShell.Main` pads the top and the end of the page, so `Page` adds no outer space of its own.
  * Change the rhythm with `gap` on any part.
  *
  * @privateRemarks
- * Composition only: Stack, Grid and SectionHeader with the gaps the demo pages kept repeating
- * (page 8, section 4, columns 5). No CSS of its own, so nothing for a theme to override here.
+ * Composition only: Stack and SectionHeader with the gaps the demo pages kept repeating
+ * (page 8, section 4). No CSS of its own, so nothing for a theme to override here.
  *
  * <Page>
  *   <Page.Header kicker="Books" title="Ledger" description="…" actions={<Button>…</Button>} />
- *   <Page.Section title="This month"><Page.Columns columns={3}>…</Page.Columns></Page.Section>
+ *   <Page.Section title="This month"><Grid columns={3}>…</Grid></Page.Section>
  * </Page>
  */
 export const Page = Object.assign(PageRoot, {
   Header: PageHeader,
   Section: PageSection,
-  Columns: PageColumns,
 })

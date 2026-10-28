@@ -74,11 +74,8 @@ export type {
 export { Page } from './components/layout/Page'
 export type {
   PageProps,
-  PageElement,
   PageHeaderProps,
   PageSectionProps,
-  PageColumnsProps,
-  PageColumnsCount,
 } from './components/layout/Page'
 export { VisuallyHidden } from './components/layout/VisuallyHidden'
 export type { VisuallyHiddenProps } from './components/layout/VisuallyHidden'

@@ -14,10 +14,9 @@ describe('Page', () => {
     expect(root.style.getPropertyValue('--stack-gap-base')).toBe('var(--space-8)')
   })
 
-  it('takes another gap and element', () => {
-    const { container } = render(<Page as="article" gap={{ base: 6, md: 8 }} />)
+  it('takes another gap', () => {
+    const { container } = render(<Page gap={{ base: 6, md: 8 }} />)
     const root = container.firstElementChild as HTMLElement
-    expect(root.tagName).toBe('ARTICLE')
     expect(root.style.getPropertyValue('--stack-gap-md')).toBe('var(--space-8)')
   })
 
@@ -63,37 +62,18 @@ describe('Page', () => {
     expect(screen.queryByRole('heading')).toBeNull()
   })
 
-  it('steps columns down to one on a phone', () => {
-    const { container } = render(
-      <Page.Columns columns={3}>
-        <div>Kiln 1</div>
-        <div>Kiln 2</div>
-        <div>Kiln 3</div>
-      </Page.Columns>,
-    )
-    const grid = container.firstElementChild as HTMLElement
-    expect(grid.style.getPropertyValue('--grid-columns-base')).toBe('repeat(1, minmax(0, 1fr))')
-    expect(grid.style.getPropertyValue('--grid-columns-md')).toBe('repeat(2, minmax(0, 1fr))')
-    expect(grid.style.getPropertyValue('--grid-columns-lg')).toBe('repeat(3, minmax(0, 1fr))')
-    expect(grid.style.getPropertyValue('--grid-gap-base')).toBe('var(--space-5)')
-  })
-
   it('forwards refs on every part', () => {
     const page = createRef<HTMLElement>()
     const header = createRef<HTMLElement>()
     const section = createRef<HTMLElement>()
-    const columns = createRef<HTMLElement>()
     render(
       <Page ref={page}>
         <Page.Header ref={header} title="Members" />
-        <Page.Section ref={section} title="Teachers">
-          <Page.Columns ref={columns} />
-        </Page.Section>
+        <Page.Section ref={section} title="Teachers" />
       </Page>,
     )
     expect(page.current?.tagName).toBe('DIV')
     expect(header.current?.tagName).toBe('HEADER')
     expect(section.current?.tagName).toBe('SECTION')
-    expect(columns.current?.tagName).toBe('DIV')
   })
 })

@@ -1,11 +1,22 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { Badge, Button, Card, Inline, Numeral, Page, Stack, Stat, Text } from '@mitcsutt/kiln-ui'
+import {
+  Badge,
+  Button,
+  Card,
+  Grid,
+  Inline,
+  Numeral,
+  Page,
+  Stack,
+  Stat,
+  Text,
+} from '@mitcsutt/kiln-ui'
 
 const meta = {
   title: 'UI/Layout/Page',
   component: Page,
   args: { gap: 8 },
-  argTypes: { as: { control: false }, children: { control: false } },
+  argTypes: { children: { control: false } },
   render: (args) => (
     <Page {...args}>
       <Page.Header
@@ -47,7 +58,7 @@ export const Usage: Story = {
         actions={<Button variant="outline">Book a slot</Button>}
       />
       <Page.Section title="Now firing" description="Two kilns are on, one is cooling.">
-        <Page.Columns columns={3}>
+        <Grid columns={{ base: 1, md: 2, lg: 3 }} gap={5}>
           {kilns.map((kiln) => (
             <Card key={kiln.name} variant="outline">
               <Card.Header>
@@ -62,15 +73,15 @@ export const Usage: Story = {
               </Card.Body>
             </Card>
           ))}
-        </Page.Columns>
+        </Grid>
       </Page.Section>
       <Page.Section title="This week">
-        <Page.Columns columns={4}>
+        <Grid columns={{ base: 1, sm: 2, lg: 4 }} gap={5}>
           <Stat label="Firings" value={<Numeral value={14} />} />
           <Stat label="Pieces" value={<Numeral value={212} />} />
           <Stat label="Kiln hours" value={<Numeral value={96} />} />
           <Stat label="Failed pieces" value={<Numeral value={3} />} />
-        </Page.Columns>
+        </Grid>
       </Page.Section>
     </Page>
   ),

@@ -9,15 +9,12 @@ Source: https://kiln.mitchellsutton.com/docs/ui/layout/page
 `Page` is the content of one screen, inside `AppShell.Main` and its `Container`. It spaces its parts at one rhythm, so every page in an app opens and steps the same way:
 
 - **`Page.Header`** is the page's `<h1>`, with an optional kicker, description and actions. Anything you nest in it sits under the title block, like a notice or a filter row.
-- **`Page.Section`** is a `<section>` named by its `<h2>`, with its content a set distance below the title. Leave out `title` for a part with no heading.
-- **`Page.Columns`** puts content side by side: `columns` is the count on a wide screen, and each count steps down to one column on a phone.
-
-`AppShell.Main` pads the top and the end of the page, so `Page` adds no outer space of its own. Change the rhythm with `gap` on any part.
+- **`Page.Section`** is a `<section>` named by its `<h2>`, with its content a set distance below the title. Leave out `title` for a part with no heading. * `AppShell.Main` pads the top and the end of the page, so `Page` adds no outer space of its own. Change the rhythm with `gap` on any part.
 
 A whole page: the header with its actions, then titled sections, one with its content in columns. Nothing here sets a gap or a heading size: every page laid out this way opens and steps the same.
 
 ```tsx
-import { Badge, Button, Card, Inline, Numeral, Page, Stat } from '@mitcsutt/kiln-ui'
+import { Badge, Button, Card, Grid, Inline, Numeral, Page, Stat } from '@mitcsutt/kiln-ui'
 
 const kilns = [
   { name: 'Kiln 1', load: 'Saturday class bisque', temperature: 962, status: 'Firing' },
@@ -35,7 +32,7 @@ export function Usage() {
         actions={<Button variant="outline">Book a slot</Button>}
       />
       <Page.Section title="Now firing" description="Two kilns are on, one is cooling.">
-        <Page.Columns columns={3}>
+        <Grid columns={{ base: 1, md: 2, lg: 3 }} gap={5}>
           {kilns.map((kiln) => (
             <Card key={kiln.name} variant="outline">
               <Card.Header>
@@ -50,15 +47,15 @@ export function Usage() {
               </Card.Body>
             </Card>
           ))}
-        </Page.Columns>
+        </Grid>
       </Page.Section>
       <Page.Section title="This week">
-        <Page.Columns columns={4}>
+        <Grid columns={{ base: 1, sm: 2, lg: 4 }} gap={5}>
           <Stat label="Firings" value={<Numeral value={14} />} />
           <Stat label="Pieces" value={<Numeral value={212} />} />
           <Stat label="Kiln hours" value={<Numeral value={96} />} />
           <Stat label="Failed pieces" value={<Numeral value={3} />} />
-        </Page.Columns>
+        </Grid>
       </Page.Section>
     </Page>
   )
@@ -98,7 +95,6 @@ export function HeaderWithANotice() {
 | Prop | Type | Default | Description |
 | --- | --- | --- | --- |
 | `gap` | `Responsive<Space>` | `8` | Space between the header and each section, as a step on the space scale. Responsive. Default `8`. |
-| `as` | `'div' \| 'article'` | `div` |  |
 
 Also accepts every prop of `HTMLAttributes<HTMLElement>`.
 
@@ -108,7 +104,6 @@ Also accepts every prop of `HTMLAttributes<HTMLElement>`.
 | --- | --- | --- | --- |
 | `title` (required) | `ReactNode` |  | The page title, as its `<h1>`. |
 | `kicker` | `ReactNode` |  | Small context above the title, only when it tells the reader something: the area the page belongs to, or the period it covers. Plain muted text. |
-| `level` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` | `1` | Heading level. Default 1. |
 | `children` | `ReactNode` |  | Anything that belongs to the header under the title block: a notice, filters, tabs. |
 | `description` | `ReactNode` |  | A sentence or two under the title. |
 | `actions` | `ReactNode` |  | Buttons or links beside the title from `md` up, below it on a phone. |
@@ -126,14 +121,5 @@ Also accepts every prop of `HTMLAttributes<HTMLElement>`.
 | `description` | `ReactNode` |  | A sentence or two under the title. |
 | `actions` | `ReactNode` |  | Buttons or links beside the title from `md` up, below it on a phone. |
 | `size` | `Responsive<HeadingSize>` |  | Heading size; defaults from the part (`2xl` for the header, `lg` for a section). Responsive. |
-
-Also accepts every prop of `HTMLAttributes<HTMLElement>`.
-
-`PageColumnsProps`:
-
-| Prop | Type | Default | Description |
-| --- | --- | --- | --- |
-| `columns` | `2 \| 3 \| 4` | `2` | How many columns on a wide screen. Each count steps up from one column on a phone: `2` from `md`, `3` through two at `md` to three at `lg`, `4` through two at `sm` to four at `lg`. Default `2`. |
-| `gap` | `Responsive<Space>` | `5` | Space between columns and rows. Responsive. Default `5`. |
 
 Also accepts every prop of `HTMLAttributes<HTMLElement>`.
