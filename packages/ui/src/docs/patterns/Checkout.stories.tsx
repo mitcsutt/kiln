@@ -69,7 +69,7 @@ export const Checkout: Story = {
         </Container>
       </AppShell.Header>
       <AppShell.Main>
-        <Section space={{ base: 6, md: 8 }}>
+        <Section space={0}>
           <Container>
             <Stack gap={7}>
               <Stack gap={4}>

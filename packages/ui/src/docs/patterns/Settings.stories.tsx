@@ -74,7 +74,7 @@ export const Settings: Story = {
         </NavLinks>
       </AppShell.Sidebar>
       <AppShell.Main>
-        <Section space={{ base: 6, md: 8 }}>
+        <Section space={0}>
           <Container width="narrow">
             <Stack as="form" gap={8} aria-label="Profile settings">
               <Stack gap={2}>
