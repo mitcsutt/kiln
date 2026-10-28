@@ -290,9 +290,9 @@ const GridSurface = forwardRef(function GridSurface(
   }, [landed])
 
   // The behaviours read the latest of all this through one ref, so they never go stale.
-  const latest = useRef({ display, fitted, cols, compaction, onChange, layout })
+  const latest = useRef({ display, fitted, fits, cols, compaction, onChange, layout })
   useIsomorphicLayoutEffect(() => {
-    latest.current = { display, fitted, cols, compaction, onChange, layout }
+    latest.current = { display, fitted, fits, cols, compaction, onChange, layout }
   })
   const probe = useRef<HTMLDivElement | null>(null)
 
@@ -305,7 +305,10 @@ const GridSurface = forwardRef(function GridSurface(
         const node = controller.draggables.get(item.i)?.element
         return node && !node.hidden ? [[item.i, node] as const] : []
       })
-    const resize = new ResizeObserver(() => {
+    const moving = new Set<EventTarget>()
+    const measure = () => {
+      // Measuring would cancel a running size transition, so wait for it to end.
+      if (moving.size > 0) return
       const unit = probe.current?.getBoundingClientRect()
       if (!unit?.height) return
       const items = nodes()
@@ -323,17 +326,40 @@ const GridSurface = forwardRef(function GridSurface(
           keys.length === Object.keys(last).length && keys.every((i) => last[i] === next[i])
         return same ? last : next
       })
-    })
+    }
+    const resize = new ResizeObserver(measure)
+    const watched = new WeakSet<Element>()
+    const watch = (node: Element) => {
+      if (watched.has(node)) return
+      watched.add(node)
+      resize.observe(node)
+    }
     const observe = () => {
-      resize.observe(element)
+      watch(element)
       for (const [, node] of nodes()) {
-        for (const child of node.children) resize.observe(child)
+        for (const child of node.children) watch(child)
       }
+    }
+    const track = (event: Event) => {
+      if ((event as TransitionEvent).propertyName !== 'block-size') return
+      if (!(event.target instanceof Element) || event.target.parentElement !== element) return
+      if (event.type === 'transitionrun') {
+        moving.add(event.target)
+        return
+      }
+      moving.delete(event.target)
+      if (moving.size === 0) measure()
     }
     observe()
     const mutations = new MutationObserver(observe)
     mutations.observe(element, { childList: true, subtree: true })
+    element.addEventListener('transitionrun', track)
+    element.addEventListener('transitionend', track)
+    element.addEventListener('transitioncancel', track)
     return () => {
+      element.removeEventListener('transitionrun', track)
+      element.removeEventListener('transitionend', track)
+      element.removeEventListener('transitioncancel', track)
       mutations.disconnect()
       resize.disconnect()
     }
@@ -342,6 +368,7 @@ const GridSurface = forwardRef(function GridSurface(
   const behavior = useCallback(
     (i: string, mode: 'move' | 'resize', getLabel: () => string): CustomBehavior => {
       let start: GridItem | null = null
+      let origin: GridItem | null = null
       let request: GridRequest | null = null
       let current: readonly GridItem[] | null = null
       let lastCell = ''
@@ -375,7 +402,7 @@ const GridSurface = forwardRef(function GridSurface(
         blocked: () => (editable ? null : messages().gridLocked(getLabel())),
         lift(input) {
           start = find(latest.current.display) ?? null
-          const origin = find(latest.current.fitted)
+          origin = find(latest.current.fitted) ?? null
           if (!start || !origin) return ''
           request = { x: start.x, y: start.y, w: start.w, h: start.h }
           lastCell = `${String(start.x)},${String(start.y)},${String(start.w)},${String(start.h)}`
@@ -416,7 +443,7 @@ const GridSurface = forwardRef(function GridSurface(
           return messages().gridMoved(describe(start))
         },
         pointer(move: EngineMove) {
-          if (!start || !request) return null
+          if (!start || !request || !origin) return null
           const node = element()
           const grid = node?.parentElement
           const gapAndRow = probe.current?.getBoundingClientRect()
@@ -442,16 +469,32 @@ const GridSurface = forwardRef(function GridSurface(
           const dx = (rtl ? -delta.x : delta.x) / strideX
           const dy = delta.y / strideY
           if (mode === 'move') {
-            request = {
-              ...request,
-              x: start.x + Math.round(dx),
-              y: Math.max(0, start.y + Math.round(dy)),
+            // The pointer works in the rendered (content-fitted) grid, so find the committed
+            // row whose rendered preview puts the item on the row under the pointer.
+            const x = origin.x + Math.round(dx)
+            const target = Math.max(0, origin.y + Math.round(dy))
+            const { display, fits, cols: columns, compaction } = latest.current
+            let best = target
+            let distance = Infinity
+            for (let y = 0; y <= target && distance > 0; y += 1) {
+              const rendered = find(
+                fitLayout(previewLayout(display, i, { ...request, x, y }, options()), fits, {
+                  columns,
+                  compaction,
+                }),
+              )
+              const off = rendered ? Math.abs(rendered.y - target) : Infinity
+              if (off < distance) {
+                distance = off
+                best = y
+              }
             }
+            request = { ...request, x, y: best }
           } else {
             request = {
               ...request,
-              w: Math.max(1, start.w + Math.round(dx)),
-              h: Math.max(1, start.h + Math.round(dy)),
+              w: Math.max(1, origin.w + Math.round(dx)),
+              h: Math.max(1, origin.h + Math.round(dy)),
             }
           }
           const cell = `${String(request.x)},${String(request.y)},${String(request.w)},${String(request.h)}`
