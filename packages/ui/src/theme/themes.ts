@@ -53,7 +53,7 @@ export const THEME_META: Record<BuiltInThemeName, ThemeMeta> = {
   ledger: {
     label: 'Ledger',
     description:
-      'A columnar accounting pad. Green rules on white, banknote-green actions, red negatives, condensed figures.',
+      'A columnar accounting pad in graphite. Ink actions on grey ruled sheets, green in and red out on numbers only, condensed figures.',
     stylesheet: '@mitcsutt/kiln-ui/themes/ledger.css',
   },
   fiesta: {

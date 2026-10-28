@@ -153,7 +153,7 @@ export const Flightdeck: Story = { render: () => <Specimen theme="flightdeck" />
 /** Dark-first: blue-slate with one ember accent and a big serif display. */
 export const Monograph: Story = { render: () => <Specimen theme="monograph" /> }
 
-/** Quiet, dense and numeric: ruled green-grey paper and tabular figures. */
+/** Quiet, dense and numeric: graphite-ruled sheets, ink actions and condensed figures. */
 export const Ledger: Story = { render: () => <Specimen theme="ledger" /> }
 
 /** A two-drum risograph zine: blue and sunflower by day, a pink reverse print by night. */

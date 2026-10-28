@@ -1,12 +1,13 @@
 /*
  * LEDGER — preset (opt-in: import '@mitcsutt/kiln-ui/themes/ledger.css')
  *
- * Idea: an accountant's columnar pad. White ruled sheet, green horizontal rules,
- * entries in banknote green and black ink, red for negatives, a yellow highlighter
- * for the line you circled. Edges are hairlines (the printed green rules); surfaces
- * stay flat. Figures are set in Archivo at a condensed width (receipt narrowness
- * without a monospace). Compact rhythm, tight radii like a rubber stamp. Light-first;
- * dark is a carbon-copy night, not a green-screen terminal.
+ * Idea: an accountant's columnar pad, worked in graphite. Cool grey sheets ruled in
+ * graphite hairlines, entries and the primary action in solid ink, and colour only
+ * where a number means something: green in, red out, a yellow highlighter for the
+ * line you circled, and the auditor's blue pencil for focus. Surfaces stay flat.
+ * Figures are set in Archivo at a condensed width (receipt narrowness without a
+ * monospace), with a double rule over totals. Compact rhythm, tight radii like a
+ * rubber stamp. Light-first; dark is the pad under a desk lamp, not a terminal.
  */
 
 @layer kiln.reset, kiln.tokens, kiln.themes;
@@ -23,7 +24,7 @@
     --font-mono: 'Atkinson Hyperlegible Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
     --font-numeric: 'Archivo', ui-sans-serif, system-ui, sans-serif;
 
-    --type-base: 0.9375rem; /* 15px */
+    --type-base: 1rem; /* 16px: at 15px dense tables were too small to read */
     --type-ratio: 1.2;
     --display-scale: 1.25; /* gentle body ratio, but display must still reach ≥ 5× body */
 
@@ -50,7 +51,7 @@
     --prose-leading: 1.55;
 
     /* ── Structure & temperament ────────────────────────────────────────── */
-    --density: 0.86;
+    --density: 0.94; /* compact like a pad's narrow lines, a step looser so 16px text has room */
     --motion-scale: 0.8;
     /* Flat and brief: a pen stroke, not a bounce. */
     --ease-out: cubic-bezier(0.25, 1, 0.5, 1);
@@ -62,117 +63,123 @@
     --border-width-strong: 2px;
 
     /* Tight corners like a rubber stamp; chips are squarer, avatars are stamps. The highlight has no radius token: it is a flat marker swipe. */
-    --radius-action: 0.1875rem;
-    --radius-field: 0.1875rem;
-    --radius-surface: 0.1875rem;
+    --radius-action: 0.125rem;
+    --radius-field: 0.125rem;
+    --radius-surface: 0.25rem;
     --radius-media: 0.125rem;
     --radius-chip: 0.125rem;
     --radius-avatar: 0.25rem;
 
     /* ── Colour ─────────────────────────────────────────────────────────── */
-    /* White ruled paper with the faintest green; the green lives in the rules. Dark: carbon-copy night, a slate-teal sheet (not black) with visibly green rules and a muted banknote green accent. The red money-column rule is not expressible without a new token (out of scope). */
-    --color-canvas: light-dark(oklch(0.985 0.003 150), oklch(0.24 0.018 185));
-    --color-surface: light-dark(oklch(0.998 0.001 150), oklch(0.275 0.019 185));
-    --color-surface-sunken: light-dark(oklch(0.963 0.006 150), oklch(0.215 0.017 185));
-    --color-surface-raised: light-dark(oklch(1 0 0), oklch(0.31 0.02 185));
-    --color-surface-inverse: light-dark(oklch(0.24 0.02 160), oklch(0.95 0.01 170));
+    /* The pad worked in graphite: cool grey sheets (hue 230, chroma under 0.01) with no brand colour.
+       Structure comes from the rules and the figures, not from tinted paper. Dark is the same pad
+       under a desk lamp, a graphite sheet (never black), not a green-screen terminal. The red
+       money-column rule would need a new token (out of scope). */
+    --color-canvas: light-dark(oklch(0.973 0.004 230), oklch(0.237 0.007 230));
+    --color-surface: light-dark(oklch(0.997 0.002 230), oklch(0.268 0.007 230));
+    --color-surface-sunken: light-dark(oklch(0.952 0.004 230), oklch(0.208 0.007 230));
+    --color-surface-raised: light-dark(oklch(0.999 0.001 230), oklch(0.3 0.007 230));
+    --color-surface-inverse: light-dark(oklch(0.22 0.01 240), oklch(0.93 0.004 230));
 
-    /* Black-green ink, like carbon-paper entries */
-    --color-ink: light-dark(oklch(0.22 0.02 160), oklch(0.93 0.01 160));
-    --color-ink-muted: light-dark(oklch(0.44 0.02 160), oklch(0.83 0.015 175));
+    /* Pencil-lead ink: blue-black graphite, never pure black */
+    --color-ink: light-dark(oklch(0.22 0.01 240), oklch(0.93 0.004 230));
+    --color-ink-muted: light-dark(oklch(0.43 0.01 240), oklch(0.79 0.008 230));
     --color-ink-subtle: light-dark(
-      oklch(0.5 0.02 160),
-      oklch(0.75 0.015 175)
+      oklch(0.51 0.01 240),
+      oklch(0.69 0.008 230)
     ); /* AA on sunken/raised */
-    --color-ink-inverse: light-dark(oklch(0.97 0.006 150), oklch(0.22 0.02 170));
+    --color-ink-inverse: light-dark(oklch(0.975 0.002 230), oklch(0.2 0.011 230));
 
-    /* Ledger rules: visible pale green horizontals, deeper green for column heads; dim green at night */
-    --color-line: light-dark(oklch(0.86 0.05 155), oklch(0.39 0.035 165));
-    --color-line-strong: light-dark(oklch(0.7 0.08 155), oklch(0.5 0.05 160));
+    /* Ledger rules: graphite hairlines, a deeper rule for column heads. No green in any line or divider. */
+    --color-line: light-dark(oklch(0.895 0.006 230), oklch(0.33 0.01 230));
+    --color-line-strong: light-dark(oklch(0.76 0.006 230), oklch(0.45 0.011 230));
     --table-foot-rule: 3px double var(--color-ink); /* the accountant's double rule over totals */
     --stat-fit: 6; /* condensed figures are narrow, so Stat values can stay large in tight columns */
 
-    /* Banknote green: the one action colour, deep enough to carry white text */
-    --color-accent: light-dark(oklch(0.44 0.1 160), oklch(0.76 0.085 155));
-    --color-accent-hover: light-dark(oklch(0.39 0.095 160), oklch(0.81 0.085 155));
-    --color-accent-ink: light-dark(oklch(0.985 0.01 150), oklch(0.2 0.03 160));
-    --color-accent-text: light-dark(oklch(0.42 0.1 160), oklch(0.85 0.08 155));
-    --color-accent-soft: light-dark(oklch(0.93 0.04 158), oklch(0.34 0.035 158));
+    /* The primary action is solid ink, a stamped entry: colour is kept for numbers that mean something */
+    --color-accent: light-dark(oklch(0.27 0.012 240), oklch(0.9 0.008 230));
+    --color-accent-hover: light-dark(oklch(0.22 0.012 240), oklch(0.95 0.008 230));
+    --color-accent-ink: light-dark(oklch(0.985 0.002 230), oklch(0.18 0.014 230));
+    --color-accent-text: light-dark(oklch(0.27 0.012 240), oklch(0.93 0.004 230));
+    --color-accent-soft: light-dark(oklch(0.93 0.006 240), oklch(0.31 0.008 230));
 
-    /* Highlighter yellow — the one thing you circled */
-    --color-highlight: light-dark(oklch(0.95 0.09 102), oklch(0.42 0.06 100));
-    --color-highlight-ink: var(--color-ink);
+    /* Highlighter yellow: the one line you circled */
+    --color-highlight: light-dark(oklch(0.955 0.055 100), oklch(0.39 0.07 100));
+    --color-highlight-ink: light-dark(oklch(0.22 0.01 240), oklch(0.93 0.004 230));
 
-    --color-focus: var(--color-ink);
-    --color-selection: light-dark(oklch(0.93 0.1 102), oklch(0.46 0.07 100));
-    --color-scrim: light-dark(oklch(0.24 0.02 170 / 0.4), oklch(0.08 0.01 170 / 0.66));
+    /* The auditor's blue pencil: 3:1 on every fill a ring sits beside, and far in hue from the red and green figures */
+    --color-focus: light-dark(oklch(0.52 0.12 240), oklch(0.78 0.11 240));
+    --color-selection: light-dark(oklch(0.92 0.07 100), oklch(0.46 0.08 100));
+    --color-scrim: light-dark(oklch(0.2 0.03 230 / 0.4), oklch(0.08 0.01 230 / 0.66));
 
-    --tone-positive: light-dark(oklch(0.5 0.1 155), oklch(0.76 0.1 155));
-    --tone-positive-soft: light-dark(oklch(0.94 0.035 155), oklch(0.33 0.04 155));
-    --tone-positive-text: light-dark(oklch(0.44 0.1 155), oklch(0.83 0.09 155));
-    --tone-positive-ink: light-dark(oklch(0.985 0.01 155), oklch(0.18 0.03 158));
+    /* Green in: the only green on the page is a number that came in */
+    --tone-positive: light-dark(oklch(0.52 0.12 150), oklch(0.75 0.13 150));
+    --tone-positive-soft: light-dark(oklch(0.95 0.035 150), oklch(0.3 0.05 150));
+    --tone-positive-text: light-dark(oklch(0.515 0.12 150), oklch(0.755 0.13 150));
+    --tone-positive-ink: light-dark(oklch(0.985 0.001 230), oklch(0.18 0.04 150));
 
-    --tone-caution: light-dark(oklch(0.74 0.14 78), oklch(0.8 0.13 85));
-    --tone-caution-soft: light-dark(oklch(0.95 0.05 88), oklch(0.35 0.05 80));
-    --tone-caution-text: light-dark(oklch(0.5 0.1 70), oklch(0.87 0.1 88));
-    --tone-caution-ink: light-dark(oklch(0.22 0.04 70), oklch(0.2 0.04 80));
+    --tone-caution: light-dark(oklch(0.65 0.136 78), oklch(0.81 0.13 80));
+    --tone-caution-soft: light-dark(oklch(0.955 0.039 78), oklch(0.31 0.05 80));
+    --tone-caution-text: light-dark(oklch(0.5 0.1 78), oklch(0.81 0.13 80));
+    --tone-caution-ink: light-dark(oklch(0.2 0.04 78), oklch(0.18 0.04 80));
 
     /* Accounting red: negatives, overdrawn */
-    --tone-critical: light-dark(oklch(0.52 0.18 25), oklch(0.68 0.16 24));
-    --tone-critical-soft: light-dark(oklch(0.945 0.03 22), oklch(0.34 0.055 24));
-    --tone-critical-text: light-dark(oklch(0.49 0.17 25), oklch(0.82 0.11 24));
-    --tone-critical-ink: light-dark(oklch(0.985 0.01 22), oklch(0.18 0.03 24));
+    --tone-critical: light-dark(oklch(0.55 0.19 25), oklch(0.68 0.16 25));
+    --tone-critical-soft: light-dark(oklch(0.95 0.025 25), oklch(0.3 0.06 25));
+    --tone-critical-text: light-dark(oklch(0.545 0.19 25), oklch(0.785 0.125 25));
+    --tone-critical-ink: light-dark(oklch(0.985 0.001 230), oklch(0.18 0.04 25));
 
-    --tone-info: light-dark(oklch(0.5 0.07 230), oklch(0.72 0.07 230));
-    --tone-info-soft: light-dark(oklch(0.94 0.02 230), oklch(0.33 0.03 230));
-    --tone-info-text: light-dark(oklch(0.45 0.07 230), oklch(0.83 0.06 230));
-    --tone-info-ink: light-dark(oklch(0.985 0.01 230), oklch(0.18 0.03 230));
+    --tone-info: light-dark(oklch(0.53 0.1 240), oklch(0.74 0.09 240));
+    --tone-info-soft: light-dark(oklch(0.95 0.025 240), oklch(0.3 0.045 240));
+    --tone-info-text: light-dark(oklch(0.525 0.1 240), oklch(0.77 0.09 240));
+    --tone-info-ink: light-dark(oklch(0.985 0.001 230), oklch(0.18 0.04 240));
 
-    /* Categorical: calm, distinguishable, colour-blind-aware order */
-    --color-cat-1: light-dark(oklch(0.62 0.09 165), oklch(0.68 0.09 165));
-    --color-cat-2: light-dark(oklch(0.72 0.11 75), oklch(0.76 0.11 75));
-    --color-cat-3: light-dark(oklch(0.6 0.08 235), oklch(0.68 0.08 235));
-    --color-cat-4: light-dark(oklch(0.62 0.12 30), oklch(0.68 0.12 30));
-    --color-cat-5: light-dark(oklch(0.7 0.06 120), oklch(0.74 0.07 120));
-    --color-cat-6: light-dark(oklch(0.62 0.07 300), oklch(0.68 0.07 300));
-    --color-cat-7: light-dark(oklch(0.72 0.05 195), oklch(0.76 0.05 195));
-    --color-cat-8: light-dark(oklch(0.65 0.02 170), oklch(0.7 0.02 170));
-    --color-cat-ink: oklch(0.2 0.02 170);
+    /* Categorical: muted pencil colours at one lightness, ending in plain graphite. No green or red
+       series, so green and red on the page only ever mean money in and out. */
+    --color-cat-1: light-dark(oklch(0.82 0.07 245), oklch(0.72 0.08 245));
+    --color-cat-2: light-dark(oklch(0.82 0.07 300), oklch(0.72 0.08 300));
+    --color-cat-3: light-dark(oklch(0.82 0.07 185), oklch(0.72 0.08 185));
+    --color-cat-4: light-dark(oklch(0.82 0.07 55), oklch(0.72 0.08 55));
+    --color-cat-5: light-dark(oklch(0.82 0.07 330), oklch(0.72 0.08 330));
+    --color-cat-6: light-dark(oklch(0.82 0.07 115), oklch(0.72 0.08 115));
+    --color-cat-7: light-dark(oklch(0.82 0.07 210), oklch(0.72 0.08 210));
+    --color-cat-8: light-dark(oklch(0.82 0.004 230), oklch(0.72 0.007 230));
+    --color-cat-ink: light-dark(oklch(0.21 0.01 240), oklch(0.2 0.01 230));
 
     /* ── Data ───────────────────────────────────────────────────────────── */
-    /* Ramps say how much; categorical colours say who. Sequential: the ledger's ruling
-       green, a pale rule deepening to banknote ink, brighter by night. */
-    --color-seq-1: light-dark(oklch(0.94 0.03 155), oklch(0.33 0.035 175));
-    --color-seq-2: light-dark(oklch(0.86 0.055 157), oklch(0.42 0.05 170));
-    --color-seq-3: light-dark(oklch(0.77 0.075 159), oklch(0.51 0.065 166));
-    --color-seq-4: light-dark(oklch(0.67 0.09 161), oklch(0.6 0.075 162));
-    --color-seq-5: light-dark(oklch(0.57 0.095 163), oklch(0.69 0.08 159));
-    --color-seq-6: light-dark(oklch(0.47 0.09 165), oklch(0.78 0.075 157));
-    --color-seq-7: light-dark(oklch(0.37 0.075 168), oklch(0.87 0.06 155));
+    /* Ramps say how much; categorical colours say who. Sequential: graphite shading, a light
+       hatch deepening to a solid lead fill, lighter by night. */
+    --color-seq-1: light-dark(oklch(0.92 0.008 230), oklch(0.34 0.01 230));
+    --color-seq-2: light-dark(oklch(0.82 0.015 231.7), oklch(0.433 0.019 230));
+    --color-seq-3: light-dark(oklch(0.72 0.021 233.3), oklch(0.527 0.026 230));
+    --color-seq-4: light-dark(oklch(0.62 0.025 235), oklch(0.62 0.029 230));
+    --color-seq-5: light-dark(oklch(0.52 0.025 236.7), oklch(0.713 0.03 230));
+    --color-seq-6: light-dark(oklch(0.42 0.021 238.3), oklch(0.807 0.026 230));
+    --color-seq-7: light-dark(oklch(0.32 0.016 240), oklch(0.9 0.019 230));
 
-    /* Diverging: the auditor's red and blue pencils, either side of a blank column. */
-    --color-div-neg-3: light-dark(oklch(0.5 0.16 25), oklch(0.78 0.11 25));
-    --color-div-neg-2: light-dark(oklch(0.64 0.12 25), oklch(0.65 0.11 25));
-    --color-div-neg-1: light-dark(oklch(0.79 0.065 25), oklch(0.52 0.08 25));
-    --color-div-mid: light-dark(oklch(0.94 0.004 150), oklch(0.38 0.012 185));
-    --color-div-pos-1: light-dark(oklch(0.79 0.05 235), oklch(0.52 0.06 235));
-    --color-div-pos-2: light-dark(oklch(0.64 0.08 235), oklch(0.65 0.08 235));
-    --color-div-pos-3: light-dark(oklch(0.5 0.1 235), oklch(0.78 0.08 235));
+    /* Diverging: red out and green in, either side of a blank column. */
+    --color-div-neg-3: light-dark(oklch(0.5 0.137 25), oklch(0.74 0.137 25));
+    --color-div-neg-2: light-dark(oklch(0.65 0.098 25), oklch(0.6 0.098 25));
+    --color-div-neg-1: light-dark(oklch(0.8 0.059 25), oklch(0.46 0.059 25));
+    --color-div-mid: light-dark(oklch(0.93 0.004 230), oklch(0.35 0.007 230));
+    --color-div-pos-1: light-dark(oklch(0.8 0.059 150), oklch(0.46 0.059 150));
+    --color-div-pos-2: light-dark(oklch(0.65 0.098 150), oklch(0.6 0.098 150));
+    --color-div-pos-3: light-dark(oklch(0.5 0.137 150), oklch(0.74 0.137 150));
 
-    /* Strokes: each categorical colour as a pen line, carbon-dark by day, pale by night. */
-    --color-cat-1-stroke: light-dark(oklch(0.48 0.08 165), oklch(0.82 0.08 165));
-    --color-cat-2-stroke: light-dark(oklch(0.5 0.1 70), oklch(0.84 0.1 75));
-    --color-cat-3-stroke: light-dark(oklch(0.48 0.08 235), oklch(0.82 0.07 235));
-    --color-cat-4-stroke: light-dark(oklch(0.5 0.13 30), oklch(0.82 0.09 30));
-    --color-cat-5-stroke: light-dark(oklch(0.5 0.08 120), oklch(0.84 0.08 120));
-    --color-cat-6-stroke: light-dark(oklch(0.48 0.08 300), oklch(0.82 0.06 300));
-    --color-cat-7-stroke: light-dark(oklch(0.5 0.06 195), oklch(0.84 0.05 195));
-    --color-cat-8-stroke: light-dark(oklch(0.5 0.02 170), oklch(0.82 0.02 170));
+    /* Strokes: each categorical colour as a pencil line, dark by day, pale by night. */
+    --color-cat-1-stroke: light-dark(oklch(0.57 0.081 245), oklch(0.8 0.092 245));
+    --color-cat-2-stroke: light-dark(oklch(0.57 0.081 300), oklch(0.8 0.092 300));
+    --color-cat-3-stroke: light-dark(oklch(0.57 0.081 185), oklch(0.8 0.092 185));
+    --color-cat-4-stroke: light-dark(oklch(0.57 0.081 55), oklch(0.8 0.092 55));
+    --color-cat-5-stroke: light-dark(oklch(0.57 0.081 330), oklch(0.8 0.092 330));
+    --color-cat-6-stroke: light-dark(oklch(0.57 0.081 115), oklch(0.8 0.092 115));
+    --color-cat-7-stroke: light-dark(oklch(0.57 0.081 210), oklch(0.8 0.092 210));
+    --color-cat-8-stroke: light-dark(oklch(0.57 0.008 230), oklch(0.8 0.014 230));
 
-    /* Chart chrome: the pad's own green ruling is the grid; the axis is the deeper column
-       rule; labels in muted carbon ink. */
-    --chart-grid: light-dark(oklch(0.89 0.04 155), oklch(0.35 0.03 170));
-    --chart-axis: light-dark(oklch(0.56 0.08 158), oklch(0.62 0.05 160));
+    /* Chart chrome: the pad's graphite ruling is the grid; the axis is the deeper column rule;
+       labels in muted ink. */
+    --chart-grid: light-dark(oklch(0.9 0.006 230), oklch(0.31 0.01 230));
+    --chart-axis: light-dark(oklch(0.58 0.008 230), oklch(0.62 0.014 230));
     --chart-label: var(--color-ink-muted);
     --chart-tooltip-surface: var(--color-surface-raised);
     --chart-tooltip-border: var(--color-line-strong);
@@ -184,12 +191,12 @@
     --active-shift: 0px; /* how far pressed things travel toward their shadow */
     --shadow-active: none;
     --shadow-float:
-      0 1px 2px oklch(0.24 0.02 170 / 0.1), 0 8px 20px -6px oklch(0.24 0.02 170 / 0.18);
+      0 1px 2px oklch(0.24 0.01 230 / 0.1), 0 8px 20px -6px oklch(0.24 0.01 230 / 0.18);
     --shadow-overlay:
-      0 2px 4px oklch(0.2 0.02 170 / 0.12), 0 20px 48px -12px oklch(0.2 0.02 170 / 0.3);
+      0 2px 4px oklch(0.2 0.01 230 / 0.12), 0 20px 48px -12px oklch(0.2 0.01 230 / 0.3);
     /* A dragged entry, a slip lifted off the pad. */
     --shadow-lift:
-      0 2px 4px oklch(0.24 0.02 170 / 0.12), 0 14px 32px -8px oklch(0.24 0.02 170 / 0.26);
+      0 2px 4px oklch(0.24 0.01 230 / 0.12), 0 14px 32px -8px oklch(0.24 0.01 230 / 0.26);
     --canvas-image: none;
   }
 }
