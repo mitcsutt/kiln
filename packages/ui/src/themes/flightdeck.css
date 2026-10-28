@@ -97,8 +97,8 @@
 
     /* ── Colour ─────────────────────────────────────────────────────────── */
     /* Neutrals: display glass, blue-grey at hue 245 (240 by day), chroma ≤ 0.02, never black.
-       Dark is the darkest ladder of the four themes (sunken 0.165, canvas 0.19, surface 0.225,
-       raised 0.262): glass at night keeps symbology contrast high and glare low, and every step
+       Dark runs sunken 0.165, canvas 0.19, surface 0.225,
+       raised 0.262: glass at night keeps symbology contrast high and glare low, and every step
        is wider than ΔE_OK 0.02, so a popover reads above a card with no shadow. Light is a
        flight bag in daylight: a cool grey case holding white sheets (0.993). At 0.933 it is
        the darkest light canvas of the four, so it shares a canvas with no other theme
@@ -180,7 +180,7 @@
     --color-cat-3: light-dark(oklch(0.8 0.1 180), oklch(0.73 0.11 180)); /* teal */
     --color-cat-4: light-dark(oklch(0.8 0.1 115), oklch(0.73 0.11 115)); /* lime */
     --color-cat-5: light-dark(oklch(0.8 0.1 330), oklch(0.73 0.11 330)); /* magenta */
-    --color-cat-6: light-dark(oklch(0.8 0.1 55), oklch(0.73 0.11 55)); /* coral */
+    --color-cat-6: light-dark(oklch(0.8 0.1 355), oklch(0.73 0.11 355)); /* rose */
     --color-cat-7: light-dark(oklch(0.8 0.1 225), oklch(0.73 0.11 225)); /* sky */
     --color-cat-8: light-dark(oklch(0.8 0.012 240), oklch(0.73 0.02 245)); /* grey */
     --color-cat-ink: light-dark(oklch(0.2 0.02 245), oklch(0.18 0.02 245));
@@ -213,7 +213,7 @@
     --color-cat-3-stroke: light-dark(oklch(0.55 0.1 180), oklch(0.81 0.127 180));
     --color-cat-4-stroke: light-dark(oklch(0.55 0.115 115), oklch(0.81 0.127 115));
     --color-cat-5-stroke: light-dark(oklch(0.55 0.115 330), oklch(0.81 0.127 330));
-    --color-cat-6-stroke: light-dark(oklch(0.55 0.115 55), oklch(0.81 0.125 55));
+    --color-cat-6-stroke: light-dark(oklch(0.55 0.115 355), oklch(0.81 0.125 355));
     --color-cat-7-stroke: light-dark(oklch(0.55 0.105 225), oklch(0.81 0.127 225));
     --color-cat-8-stroke: light-dark(oklch(0.55 0.024 240), oklch(0.81 0.04 245));
 
