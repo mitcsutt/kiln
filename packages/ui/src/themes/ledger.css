@@ -104,14 +104,14 @@
     --color-accent-soft: light-dark(oklch(0.93 0.04 158), oklch(0.34 0.05 160));
 
     /* Highlighter yellow — the one thing you circled, a pale pen leaning toward the pad's green so the swipe sits with the rules rather than over them. At night it is a straw swipe under a lamp, dimmer than a neon marker, and the circled line keeps the day's carbon ink. */
-    --color-highlight: light-dark(oklch(0.94 0.06 112), oklch(0.82 0.07 112));
+    --color-highlight: light-dark(oklch(0.94 0.06 112), oklch(0.76 0.065 112));
     --color-highlight-ink: oklch(0.22 0.02 160);
-    /* Tone text on the yellow swipe: the auditor's inks at full strength, the same in both modes. */
-    --highlight-tone-positive-text: oklch(0.42 0.11 140);
-    --highlight-tone-caution-text: oklch(0.43 0.12 55);
-    --highlight-tone-critical-text: oklch(0.44 0.16 25);
-    --highlight-tone-info-text: oklch(0.42 0.07 235);
-    --highlight-accent-text: oklch(0.4 0.09 160);
+    /* Tone text on the swipe: the auditor's inks at full strength by day, a step darker at night where the swipe is dimmer, so each stays AA on it. */
+    --highlight-tone-positive-text: light-dark(oklch(0.42 0.11 140), oklch(0.34 0.1 140));
+    --highlight-tone-caution-text: light-dark(oklch(0.43 0.12 55), oklch(0.34 0.1 55));
+    --highlight-tone-critical-text: light-dark(oklch(0.44 0.16 25), oklch(0.34 0.14 25));
+    --highlight-tone-info-text: light-dark(oklch(0.42 0.07 235), oklch(0.33 0.07 235));
+    --highlight-accent-text: light-dark(oklch(0.4 0.09 160), oklch(0.32 0.08 160));
 
     --color-focus: var(--color-ink);
     --color-selection: light-dark(oklch(0.92 0.07 112), oklch(0.45 0.06 108));
