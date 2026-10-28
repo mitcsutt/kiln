@@ -50,7 +50,7 @@ export const Playground: Story = {
         </Container>
       </AppShell.Header>
       <AppShell.Main>
-        <Section space={6}>
+        <Section space={0}>
           <Container width="wide">
             <Stack gap={3}>
               <Title level={1} size="xl">
@@ -109,7 +109,7 @@ export const HeaderAndBottomBar: Story = {
         </Container>
       </AppShell.Header>
       <AppShell.Main>
-        <Section space={{ base: 6, md: 8 }}>
+        <Section space={0}>
           <Container width="wide">
             <Split ratio="1/3" collapseBelow="lg" gap={{ base: 5, lg: 8 }}>
               <Stack gap={3}>
@@ -221,7 +221,7 @@ export const DashboardWithSidebar: Story = {
         </Stack>
       </AppShell.Sidebar>
       <AppShell.Main>
-        <Section space={{ base: 6, md: 7 }}>
+        <Section space={0}>
           <Container width="full">
             <Stack gap={7}>
               <Stack gap={3}>
@@ -284,7 +284,7 @@ export const Site: Story = {
         </Container>
       </AppShell.Header>
       <AppShell.Main>
-        <Section space={{ base: 8, md: 10 }}>
+        <Section space={0}>
           <Container>
             <Stack gap={5}>
               <Title level={1} size="display">
