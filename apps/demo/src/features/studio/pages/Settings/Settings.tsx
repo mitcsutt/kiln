@@ -16,7 +16,7 @@ import {
   useAutosave,
   useServerValues,
 } from '@mitcsutt/kiln-forms'
-import { Inline, Stack, Text } from '@mitcsutt/kiln-ui'
+import { Inline, Page, Stack, Text } from '@mitcsutt/kiln-ui'
 
 import { PageHeader } from '#components/PageHeader'
 import {
@@ -60,7 +60,7 @@ export function Settings({ settings }: { settings: StudioSettings }) {
   useServerValues(form, settings)
   useAutosave(form, saveStudioSettings, { debounceMs: 700 })
   return (
-    <Stack gap={8}>
+    <Page>
       <PageHeader
         kicker="Studio admin"
         title="Settings"
@@ -225,6 +225,6 @@ export function Settings({ settings }: { settings: StudioSettings }) {
       <Inline>
         <PasswordForm />
       </Inline>
-    </Stack>
+    </Page>
   )
 }

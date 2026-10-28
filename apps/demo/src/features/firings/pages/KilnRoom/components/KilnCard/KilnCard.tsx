@@ -2,7 +2,6 @@ import { Sparkline } from '@mitcsutt/kiln-charts'
 import { DragHandle } from '@mitcsutt/kiln-dnd'
 import {
   Card,
-  Flash,
   Inline,
   LiveIndicator,
   Meter,
@@ -40,12 +39,10 @@ export function KilnCard({ kiln, temperature }: { kiln: Kiln; temperature: numbe
           <StatusDot tone={status.tone} label={status.label} />
           {kiln.status === 'firing' ? <LiveIndicator label="Live" size="sm" /> : null}
         </Inline>
-        <Flash value={temperature}>
-          <Inline gap={1} align="baseline">
-            <Numeral value={temperature} size="2xl" />
-            <Text tone="muted">°C</Text>
-          </Inline>
-        </Flash>
+        <Inline gap={1} align="baseline">
+          <Numeral value={temperature} size="2xl" />
+          <Text tone="muted">°C</Text>
+        </Inline>
         <Meter
           label="Temperature"
           value={temperature}
