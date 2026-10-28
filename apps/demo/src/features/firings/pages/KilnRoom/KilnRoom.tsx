@@ -38,11 +38,17 @@ export function KilnRoom({ room }: { room: KilnRoomData }) {
         segment.
       </Alert>
       <GridLayout label="Kiln room panels" defaultLayout={LAYOUT} columns={{ base: 1, sm: 12 }}>
-        {room.kilns.map((kiln) => (
-          <GridLayout.Item key={kiln.id} id={kiln.id} label={kiln.name}>
-            <KilnCard kiln={kiln} temperature={readings[kiln.id] ?? kiln.temperature} />
-          </GridLayout.Item>
-        ))}
+        {room.kilns.map((kiln) => {
+          const reading = readings[kiln.id]
+          return (
+            <GridLayout.Item key={kiln.id} id={kiln.id} label={kiln.name}>
+              <KilnCard
+                kiln={{ ...kiln, status: reading?.status ?? kiln.status }}
+                temperature={reading?.temperature ?? kiln.temperature}
+              />
+            </GridLayout.Item>
+          )
+        })}
         <GridLayout.Item id="curve" label="Firing curve">
           <Card variant="outline" padding={4}>
             <Stack gap={3}>
