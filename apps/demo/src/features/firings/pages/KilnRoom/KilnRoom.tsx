@@ -33,33 +33,16 @@ export function KilnRoom({ room }: { room: KilnRoomData }) {
         description="Temperatures update every two seconds. Panels move by drag, or by keyboard from their handles."
         theme="flightdeck"
       />
-      {readings.k2?.status === 'firing' ? (
-        <Alert tone="caution" title="Kiln 2 is behind its plan">
-          It&apos;s 52°C under the planned curve at 09:30. Check the bottom element before the next
-          segment.
-        </Alert>
-      ) : readings.k2?.status === 'cooling' ? (
-        <Alert tone="positive" title="Kiln 2 is cooling">
-          It reached its 1222°C setpoint and the elements are off. Leave the lid shut until
-          it&apos;s under 100°C.
-        </Alert>
-      ) : (
-        <Alert tone="positive" title="Kiln 2 is ready to unload">
-          It&apos;s back to room temperature. Unload it and log how the glazes came out.
-        </Alert>
-      )}
+      <Alert tone="caution" title="Kiln 2 is behind its plan">
+        It&apos;s 52°C under the planned curve at 09:30. Check the bottom element before the next
+        segment.
+      </Alert>
       <GridLayout label="Kiln room panels" defaultLayout={LAYOUT} columns={{ base: 1, sm: 12 }}>
-        {room.kilns.map((kiln) => {
-          const reading = readings[kiln.id]
-          return (
-            <GridLayout.Item key={kiln.id} id={kiln.id} label={kiln.name}>
-              <KilnCard
-                kiln={{ ...kiln, status: reading?.status ?? kiln.status }}
-                temperature={reading?.temperature ?? kiln.temperature}
-              />
-            </GridLayout.Item>
-          )
-        })}
+        {room.kilns.map((kiln) => (
+          <GridLayout.Item key={kiln.id} id={kiln.id} label={kiln.name}>
+            <KilnCard kiln={kiln} temperature={readings[kiln.id] ?? kiln.temperature} />
+          </GridLayout.Item>
+        ))}
         <GridLayout.Item id="curve" label="Firing curve">
           <Card variant="outline" padding={4}>
             <Stack gap={3}>

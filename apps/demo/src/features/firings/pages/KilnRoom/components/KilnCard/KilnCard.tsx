@@ -2,7 +2,6 @@ import { Sparkline } from '@mitcsutt/kiln-charts'
 import { DragHandle } from '@mitcsutt/kiln-dnd'
 import {
   Card,
-  Flash,
   Inline,
   LiveIndicator,
   Meter,
@@ -37,9 +36,7 @@ export function KilnCard({ kiln, temperature }: { kiln: Kiln; temperature: numbe
           <DragHandle />
         </Inline>
         <Inline gap={3} align="center">
-          <Flash value={kiln.status}>
-            <StatusDot tone={status.tone} label={status.label} />
-          </Flash>
+          <StatusDot tone={status.tone} label={status.label} />
           {kiln.status === 'firing' ? <LiveIndicator label="Live" size="sm" /> : null}
         </Inline>
         <Inline gap={1} align="baseline">
@@ -52,11 +49,7 @@ export function KilnCard({ kiln, temperature }: { kiln: Kiln; temperature: numbe
           max={kiln.maxTemperature}
           high={kiln.maxTemperature - 100}
           optimum={0}
-          valueLabel={
-            kiln.status === 'firing' && kiln.setpoint
-              ? `Heading for ${String(kiln.setpoint)}°C`
-              : 'No setpoint'
-          }
+          valueLabel={kiln.setpoint ? `Heading for ${String(kiln.setpoint)}°C` : 'No setpoint'}
         />
         <Progress
           label={kiln.cone ? `Cone ${String(kiln.cone)} programme` : 'No programme'}

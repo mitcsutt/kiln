@@ -44,8 +44,6 @@ export interface KilnRoom {
   log: string
 }
 
-const ROOM_TEMPERATURE = 20
-
 const KILNS: Kiln[] = [
   {
     id: 'k1',
@@ -137,34 +135,19 @@ export function fetchKilnRoom(): Promise<KilnRoom> {
   )
 }
 
-export interface Reading {
-  temperature: number
-  status: KilnStatus
-}
-
 /**
  * Live readings: calls back every two seconds with each kiln's temperature nudged the way it's
- * heading, as a controller's websocket would. A firing kiln that reaches its setpoint moves to
- * cooling, and a cooling kiln that reaches room temperature goes idle, so status changes only a
- * few minutes apart. Returns the unsubscribe.
+ * heading, as a controller's websocket would. Returns the unsubscribe.
  */
-export function subscribeToReadings(onReading: (readings: Record<string, Reading>) => void) {
-  const current: Record<string, Reading> = Object.fromEntries(
-    KILNS.map((kiln) => [kiln.id, { temperature: kiln.temperature, status: kiln.status }]),
-  )
+export function subscribeToReadings(onReading: (readings: Record<string, number>) => void) {
+  const current = Object.fromEntries(KILNS.map((kiln) => [kiln.id, kiln.temperature]))
   const timer = setInterval(() => {
     for (const kiln of KILNS) {
-      const reading = current[kiln.id]
-      if (!reading) continue
-      if (reading.status === 'firing') {
-        reading.temperature = Math.min(reading.temperature + 3, kiln.setpoint)
-        if (reading.temperature >= kiln.setpoint) reading.status = 'cooling'
-      } else if (reading.status === 'cooling') {
-        reading.temperature = Math.max(reading.temperature - 4, ROOM_TEMPERATURE)
-        if (reading.temperature <= ROOM_TEMPERATURE) reading.status = 'idle'
-      }
+      const now = current[kiln.id] ?? 0
+      if (kiln.status === 'firing') current[kiln.id] = Math.min(now + 3, kiln.setpoint)
+      if (kiln.status === 'cooling') current[kiln.id] = Math.max(now - 4, 20)
     }
-    onReading(Object.fromEntries(Object.entries(current).map(([id, r]) => [id, { ...r }])))
+    onReading({ ...current })
   }, 2000)
   return () => {
     clearInterval(timer)

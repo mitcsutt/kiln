@@ -13,7 +13,7 @@ import {
   withFieldGroup,
 } from '@mitcsutt/kiln-forms'
 import { dragAndDrop } from '@mitcsutt/kiln-forms/dnd'
-import { Alert, Amount, Grid, Stack, Text, toast } from '@mitcsutt/kiln-ui'
+import { Alert, Amount, Flash, Grid, Stack, Text, toast } from '@mitcsutt/kiln-ui'
 import { useState } from 'react'
 
 import { PageHeader } from '#components/PageHeader'
@@ -156,7 +156,10 @@ export function NewInvoice() {
                 )}
               </Repeater>
               <Text size="lg" weight="strong" aria-live="polite">
-                Total <Amount value={total} currency="GBP" locale="en-GB" />
+                Total{' '}
+                <Flash value={total}>
+                  <Amount value={total} currency="GBP" locale="en-GB" />
+                </Flash>
               </Text>
               <Schedule form={form} fields="schedule" />
               <form.TextareaField name="notes" label="Note to the client" optional />
