@@ -1,6 +1,6 @@
 # 0030. New themes without the second-order AI tells
 
-- **Status:** Accepted (amends [0003](0003-theming-model.md) and [0012](0012-design-standards.md)), amended by [0045](0045-four-themes-each-with-a-goal.md)
+- **Status:** Accepted (amends [0003](0003-theming-model.md) and [0012](0012-design-standards.md)), amended by [0045](0045-four-themes-each-with-a-goal.md), superseded in part by [0051](0051-theme-pass-fonts-and-stock.md)
 - **Date:** 2026-10-06
 
 ## Context

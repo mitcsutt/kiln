@@ -33,7 +33,7 @@ Each record captures one decision: the context, what was decided, and what follo
 | [0027](0027-storybook-tests-without-isolation.md)       | Story tests share one page per worker, not one per file      | Accepted                                                   |
 | [0028](0028-docs-stories.md)                            | Docs examples are stories tagged `docs`, opted in one by one | Accepted                                                   |
 | [0029](0029-generated-reference-pages.md)               | Reference pages are generated from TSDoc and stories         | Accepted, amended by 0046                                  |
-| [0030](0030-theme-family-without-ai-tells.md)           | New themes without the second-order AI tells                 | Accepted, amended by 0045                                  |
+| [0030](0030-theme-family-without-ai-tells.md)           | New themes without the second-order AI tells                 | Accepted, amended by 0045, superseded in part by 0051      |
 | [0031](0031-storybook-theme-matrix-on-theme-changes.md) | Story tests run every theme only when themes change          | Accepted                                                   |
 | [0032](0032-public-before-1-0.md)                       | The repository goes public before `1.0.0`                    | Accepted                                                   |
 | [0033](0033-docs-sections.md)                           | The docs sidebar shows one package at a time                 | Accepted                                                   |
@@ -54,5 +54,6 @@ Each record captures one decision: the context, what was decided, and what follo
 | [0048](0048-kiln-docs-smoke-and-release.md)             | kiln-docs is proven by an outside site before its release    | Accepted, amended by 0049                                  |
 | [0049](0049-kiln-docs-pagefind.md)                      | kiln-docs searches with Pagefind by default                  | Accepted                                                   |
 | [0050](0050-demo-app.md)                                | A demo app that uses every export                            | Accepted                                                   |
+| [0051](0051-theme-pass-fonts-and-stock.md)              | Riso's face and non-white light surfaces                     | Accepted                                                   |
 
 New records use the next number and the same headings: Status, Context, Decision, Consequences.

@@ -23,9 +23,9 @@
     --font-mono: 'Atkinson Hyperlegible Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
     --font-numeric: 'Archivo', ui-sans-serif, system-ui, sans-serif;
 
-    --type-base: 1rem; /* 16px: a pad of figures read at arm's length, small print stays above 13px */
+    --type-base: 1rem; /* 16px: a pad of figures read at arm's length, table text (--text-sm) stays above 13px */
     --type-ratio: 1.15;
-    --display-scale: 1.25; /* gentle body ratio, but display must still reach ≥ 5× body */
+    --display-scale: 1.65; /* gentle body ratio, so display is scaled up to still reach ≥ 5× body (16 × 1.15^8 × 1.65 ≈ 81px) */
 
     --display-weight: 750; /* heavy column heads, like a printed ledger title */
     --display-style: normal;
