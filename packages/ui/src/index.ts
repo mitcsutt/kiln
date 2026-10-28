@@ -343,6 +343,7 @@ export { Card } from './components/display/Card'
 export type {
   CardProps,
   CardVariant,
+  CardHeaderProps,
   CardMediaProps,
   CardMediaRatio,
   CardTitleProps,

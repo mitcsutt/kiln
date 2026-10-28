@@ -91,7 +91,8 @@ export const Sizes: Story = {
 
 /**
  * `placement="corner"` pins the stamp to the top-end of the nearest positioned ancestor —
- * Card is one — so stamping an invoice's card doesn't change its height or push its content.
+ * Card is one — and the card opens a band above its content for the stamp, so the stamp never
+ * covers a title or a date.
  */
 export const OnACard: Story = {
   render: () => (

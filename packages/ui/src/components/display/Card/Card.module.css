@@ -43,7 +43,7 @@
 
 /* A corner stamp is out of flow, so the card makes room: the stamp sits in a band above the content
    and can never cover a title or a date, however narrow the card or long the words. */
-.card:has(> [data-placement='corner']) {
+.card:has(> [data-placement='corner']):not(:has(> .media:first-child:not([data-inset]))) {
   padding-block-start: calc(var(--card-inset) + var(--space-6));
 }
 
