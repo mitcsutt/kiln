@@ -76,9 +76,9 @@
        under a desk lamp, a graphite sheet (never black), not a green-screen terminal. The red
        money-column rule would need a new token (out of scope). */
     --color-canvas: light-dark(oklch(0.973 0.004 230), oklch(0.237 0.007 230));
-    --color-surface: light-dark(oklch(0.997 0.002 230), oklch(0.268 0.007 230));
+    --color-surface: light-dark(oklch(0.997 0.004 230), oklch(0.268 0.007 230));
     --color-surface-sunken: light-dark(oklch(0.952 0.004 230), oklch(0.208 0.007 230));
-    --color-surface-raised: light-dark(oklch(0.999 0.001 230), oklch(0.3 0.007 230));
+    --color-surface-raised: light-dark(oklch(0.999 0.004 230), oklch(0.3 0.007 230));
     --color-surface-inverse: light-dark(oklch(0.22 0.01 240), oklch(0.93 0.004 230));
 
     /* Pencil-lead ink: blue-black graphite, never pure black */

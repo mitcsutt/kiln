@@ -18,7 +18,7 @@ Components read tiers 2 and 3 only.
 | 2. Semantic     | derived from the inputs, or set by the theme | `--space-5`, `--text-lg`, `--color-ink`, `--radius-field`, `--dur-2`                           |
 | 3. Component    | read inside a component's CSS, with fallback | `var(--button-radius, var(--radius-action))`                                                   |
 
-A theme sets its inputs and its semantic colours, radii and type roles. The scales (space, type sizes, control heights, durations) are formulas over the inputs, so a theme never sets them directly: Ledger sets `--density: 0.86` and every space step, control height and gap gets denser.
+A theme sets its inputs and its semantic colours, radii and type roles. The scales (space, type sizes, control heights, durations) are formulas over the inputs, so a theme never sets them directly: Ledger sets `--density: 0.94` and every space step, control height and gap gets denser.
 
 ## The scales
 
