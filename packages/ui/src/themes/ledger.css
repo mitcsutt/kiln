@@ -23,8 +23,8 @@
     --font-mono: 'Atkinson Hyperlegible Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
     --font-numeric: 'Archivo', ui-sans-serif, system-ui, sans-serif;
 
-    --type-base: 0.9375rem; /* 15px */
-    --type-ratio: 1.2;
+    --type-base: 1rem; /* 16px: a pad of figures read at arm's length, small print stays above 13px */
+    --type-ratio: 1.15;
     --display-scale: 1.25; /* gentle body ratio, but display must still reach ≥ 5× body */
 
     --display-weight: 750; /* heavy column heads, like a printed ledger title */
@@ -40,7 +40,7 @@
     --label-weight: 550;
     --label-tracking: 0;
     --label-transform: none;
-    --numeric-stretch: 78%; /* figures narrow like receipt tape; Archivo wdth 62–125% */
+    --numeric-stretch: 88%; /* figures narrower than text like receipt tape, but not so narrow they read small; Archivo wdth 62–125% */
     --mono-stretch: 100%; /* Atkinson Hyperlegible Mono has no width axis */
 
     --leading-tight: 1.05;
@@ -103,9 +103,8 @@
     --color-accent-text: light-dark(oklch(0.42 0.1 160), oklch(0.82 0.1 160));
     --color-accent-soft: light-dark(oklch(0.93 0.04 158), oklch(0.34 0.05 160));
 
-    /* Highlighter yellow — the one thing you circled. At night the swipe stays bright, as a
-       real highlighter does under a lamp, and the circled line keeps the day's carbon ink. */
-    --color-highlight: light-dark(oklch(0.95 0.09 102), oklch(0.86 0.15 100));
+    /* Highlighter yellow — the one thing you circled, a pale pen leaning toward the pad's green so the swipe sits with the rules rather than over them. At night it is a straw swipe under a lamp, dimmer than a neon marker, and the circled line keeps the day's carbon ink. */
+    --color-highlight: light-dark(oklch(0.94 0.06 112), oklch(0.82 0.07 112));
     --color-highlight-ink: oklch(0.22 0.02 160);
     /* Tone text on the yellow swipe: the auditor's inks at full strength, the same in both modes. */
     --highlight-tone-positive-text: oklch(0.42 0.11 140);
@@ -115,7 +114,7 @@
     --highlight-accent-text: oklch(0.4 0.09 160);
 
     --color-focus: var(--color-ink);
-    --color-selection: light-dark(oklch(0.93 0.1 102), oklch(0.45 0.09 102));
+    --color-selection: light-dark(oklch(0.92 0.07 112), oklch(0.45 0.06 108));
     --color-scrim: light-dark(oklch(0.24 0.02 170 / 0.4), oklch(0.08 0.01 170 / 0.66));
 
     /* Tones are the marks an auditor leaves on the pad, each a different ink. */
