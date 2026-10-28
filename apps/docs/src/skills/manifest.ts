@@ -60,7 +60,7 @@ export const skills: SkillSpec[] = [
     name: 'layout-composition',
     title: 'Compose layout with typed props',
     description:
-      'Use when laying out a screen, page or panel with @mitcsutt/kiln-ui: Stack, Inline, Grid, Split, Section and Container with typed props such as gap, align, width, ratio, space and surface, instead of utility classes, inline styles, margins or custom CSS.',
+      'Use when laying out a screen, page or panel with @mitcsutt/kiln-ui: Stack, Inline, Grid, Split, Page, Section and Container with typed props such as gap, align, width, ratio, space and surface, instead of utility classes, inline styles, margins or custom CSS.',
     purpose:
       "Build screens from kiln-ui's layout primitives and the space scale, so spacing and structure come from props and the theme.",
     type: 'core',
@@ -72,6 +72,7 @@ export const skills: SkillSpec[] = [
       'ui/layout/split',
     ],
     references: [
+      'ui/layout/page',
       'ui/layout/section',
       'ui/layout/container',
       'ui/layout/box',

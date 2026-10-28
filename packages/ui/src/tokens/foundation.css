@@ -136,11 +136,14 @@
        makes display type fit it instead. Themes do NOT become containers by default —
        containment would trap position:fixed descendants. Themes whose ratio is
        gentle can lift only the display steps with --display-scale. */
-    /* The two smallest steps are floored: a steep ratio (Fiesta 1.28) would otherwise put
-       button/badge labels under 10px. 11px / 10px at the default 16px root. */
-    --text-2xs: max(0.625rem, calc(var(--type-base) / pow(var(--type-ratio), 3)));
-    --text-xs: max(0.6875rem, calc(var(--type-base) / pow(var(--type-ratio), 2)));
-    --text-sm: calc(var(--type-base) / var(--type-ratio));
+    /* Below body the steps are fixed fractions of the base, not the ratio: dividing by a
+       1.2–1.28 ratio dropped secondary text (table cells, hints, sub-nav) to 12.5–12.8px
+       beside 15–16px body, a cliff rather than a step. 14 / 12 / 11px at a 16px base, and
+       the two smallest are floored so a compact base never puts a badge under 11px. All in
+       rem, so browser zoom and the root font size scale the whole scale. */
+    --text-2xs: max(0.6875rem, calc(var(--type-base) * 0.6875));
+    --text-xs: max(0.75rem, calc(var(--type-base) * 0.75));
+    --text-sm: calc(var(--type-base) * 0.875);
     --text-md: var(--type-base);
     --text-lg: calc(var(--type-base) * var(--type-ratio));
     --text-xl: calc(var(--type-base) * pow(var(--type-ratio), 2));

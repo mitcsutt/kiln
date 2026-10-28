@@ -33,8 +33,8 @@ export interface NavLinksProps extends HTMLAttributes<HTMLElement>, VisibilityPr
   /** `horizontal` (default) for headers; `vertical` for sidebars and footers. */
   orientation?: NavLinksOrientation
   /**
-   * Space between links, as a step on the space scale. Default `5` horizontal, `0`
-   * vertical (vertical items are already a full control tall).
+   * Space between links, as a step on the space scale. Default `5` horizontal, and a 2px
+   * hairline vertical (vertical items are already a full control tall).
    */
   gap?: Space
   /**
@@ -167,21 +167,26 @@ const NavLinksItem = forwardRef<HTMLAnchorElement, NavLinksItemProps>(function N
  *
  * @remarks
  * `NavLinks` is a `<nav>` with a list of links. The current page is marked with a short accent bar
- * under the label (horizontal) or an accent dot beside it (vertical), and gets
- * `aria-current="page"`. These docs' header and sidebar are `NavLinks`.
+ * under the label (horizontal), or with a soft accent fill across its row and a dot beside the
+ * label (vertical), and gets `aria-current="page"`. In a vertical nav every link is a full-width
+ * row, so the pointer, the current page and the keyboard focus ring all sit inside the sidebar.
+ * These docs' header and sidebar are `NavLinks`.
  *
  * ## Groups
  *
  * `NavLinksGroup` nests links under a section, and groups nest inside groups. In a vertical nav a
- * group is a button that opens its links below it, indented on a guide rule; in a horizontal nav
- * it opens them in a panel under the button, so a top bar gets one level of nesting. It's a
+ * top-level group is one of the app's sections: its label is set in the heading face a step above
+ * the links, it's ruled off from the section before it, and its button opens its links below it. A
+ * link at the top level beside groups (an Overview, say) is set the same way, so it lines up. A
+ * group nested inside another opens its links indented on a guide rule. In a horizontal nav a
+ * group opens its links in a panel under the button, so a top bar gets one level of nesting. It's a
  * separate import, so a nav without groups doesn't load the panel and animation code they use.
  *
  * A group that holds the current page opens by itself and shows a ring while it's closed, and the
  * current link keeps `aria-current="page"`. Give a group `href` (or a router `link`) when the
  * section has a landing page of its own: the label becomes a link, with a separate button to open
- * and close it. Items and groups take an `icon` and a `trailing` count or status. Labels stay at
- * body size at every depth.
+ * and close it. Items and groups take an `icon` and a `trailing` count or status. Links under a
+ * section share one size at every depth, and no label drops to the caption steps.
  *
  * With groups in a vertical nav, the arrow keys work as in a tree: Up and Down move between the
  * visible links, Right opens a group and Left closes it or steps out to its parent, Home and End

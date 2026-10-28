@@ -1,6 +1,8 @@
 /* The page tree sits on the sunken surface, ruled off from the reading column. */
 .shell {
   --app-shell-sidebar-width: 17rem;
+  /* Each page pads itself (PageFrame, and the landing page's sections). */
+  --app-shell-main-padding: 0;
 }
 
 .sidebar {

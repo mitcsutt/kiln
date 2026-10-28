@@ -15,6 +15,7 @@
     "collapse",
     "transition",
     "app-shell",
+    "page",
     "action-bar",
     "visually-hidden"
   ]

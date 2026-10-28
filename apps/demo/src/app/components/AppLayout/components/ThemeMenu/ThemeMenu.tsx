@@ -1,4 +1,4 @@
-import { DropdownMenu, IconButton, ModeToggle, StarIcon, Tooltip } from '@mitcsutt/kiln-ui'
+import { DropdownMenu, IconButton, ModeToggle, PaletteIcon, Tooltip } from '@mitcsutt/kiln-ui'
 
 import { DEMO_THEME_NAMES, DEMO_THEMES, isDemoTheme } from '#constants/demoThemes'
 import { useThemePreference } from '#stores/themePreference'
@@ -11,7 +11,7 @@ export function ThemeMenu() {
       <DropdownMenu>
         <Tooltip content={`Theme: ${DEMO_THEMES[theme].label}`}>
           <DropdownMenu.Trigger asChild>
-            <IconButton variant="ghost" label="Change theme" icon={<StarIcon />} />
+            <IconButton variant="ghost" label="Change theme" icon={<PaletteIcon />} />
           </DropdownMenu.Trigger>
         </Tooltip>
         <DropdownMenu.Content>
