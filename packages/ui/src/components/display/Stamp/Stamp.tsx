@@ -14,8 +14,8 @@ export interface StampProps extends HTMLAttributes<HTMLSpanElement> {
   size?: Size
   /**
    * `inline` (default) sits in the flow. `corner` is pinned to the top-end corner of the
-   * nearest positioned ancestor — a <Card> is positioned — so stamping an object never
-   * changes its height.
+   * nearest positioned ancestor — a <Card> is positioned, and opens a band above its content
+   * for the stamp, so the stamp never covers the content.
    */
   placement?: StampPlacement
 }

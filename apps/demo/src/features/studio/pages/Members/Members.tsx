@@ -259,14 +259,9 @@ export function Members({ members }: { members: Member[] }) {
         <Grid minItemWidth="sm" gap={4}>
           {shown.map((member) => (
             <Card key={member.id} variant="outline">
-              <Card.Header>
-                <Inline gap={3} align="center">
-                  <Avatar name={member.name} />
-                  <Stack gap={0}>
-                    <Card.Title>{member.name}</Card.Title>
-                    <Card.Meta>{ROLE_LABELS[member.role]}</Card.Meta>
-                  </Stack>
-                </Inline>
+              <Card.Header leading={<Avatar name={member.name} />}>
+                <Card.Title>{member.name}</Card.Title>
+                <Card.Meta>{ROLE_LABELS[member.role]}</Card.Meta>
               </Card.Header>
               <Card.Body>
                 <Text size="sm" tone="muted">

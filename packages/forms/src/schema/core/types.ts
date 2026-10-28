@@ -290,7 +290,7 @@ export type FieldNode<TScope, TRoot, R, X, C> = {
 }[keyof R & string]
 
 /** Repeater table column sizing — the same values as `@mitcsutt/kiln-ui` `TableColumnWidth`. */
-export type RepeaterColumnWidth = 'fill' | 'min'
+export type RepeaterColumnWidth = 'fill' | 'min' | 'bar'
 
 /** An array of objects with item nodes rendered under `name[i].` (§9.9). Item names are item-relative. */
 export type RepeaterNode<TScope, TRoot, R, X, C> = {
@@ -309,7 +309,7 @@ export type RepeaterNode<TScope, TRoot, R, X, C> = {
     empty?: string
     /**
      * Table variant: one per item field, in order. `width` is ui `TableColumnWidth` (the Repeater
-     * prop): `fill` takes the spare width, `min` shrinks to fit; omit it for automatic sizing.
+     * prop): `fill` takes the spare width, `min` shrinks to fit, `bar` keeps room for a bar; omit it for automatic sizing.
      */
     columns?: readonly { header: string; width?: RepeaterColumnWidth }[]
     /** Array-level rules (`minItems`, `unique`, …). */

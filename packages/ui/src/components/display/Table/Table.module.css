@@ -157,6 +157,10 @@
 .headerCell[data-width='min'] {
   inline-size: 1%;
 }
+/* A bar has no width of its own, so a shrink-wrapped column would squeeze it to nothing. */
+.headerCell[data-width='bar'] {
+  min-inline-size: var(--space-10);
+}
 
 .cell[data-numeric] {
   font-family: var(--font-numeric);
@@ -164,6 +168,19 @@
   font-variant-numeric: tabular-nums lining-nums;
   white-space: nowrap;
 }
+/*
+ * A cell that holds only a selection control centres it in the row, whatever the row's valign. The
+ * control is a block, so the line box's strut doesn't add room under it.
+ */
+:is(.headerCell, .cell):has(
+  > :is([role='checkbox'], [role='radio'], input[type='checkbox'], input[type='radio']):only-child
+) {
+  vertical-align: middle;
+}
+:is(.headerCell, .cell) > :is([role='checkbox'], [role='radio']):only-child {
+  display: flex;
+}
+
 .cell[data-row-header] {
   font-weight: var(--label-weight);
 }

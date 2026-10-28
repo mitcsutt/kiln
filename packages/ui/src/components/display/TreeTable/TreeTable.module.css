@@ -35,6 +35,18 @@
   color: var(--color-ink-muted);
   cursor: pointer;
   align-self: center;
+  position: relative;
+}
+/* The chevron is small; the button's hit area reaches the cell's padding. */
+.toggle::after {
+  content: '';
+  position: absolute;
+  inset: calc(var(--space-2) * -1);
+}
+@media (hover: hover) {
+  .toggle:hover {
+    color: var(--color-ink);
+  }
 }
 
 .toggle[data-leaf] {

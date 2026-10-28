@@ -1,4 +1,4 @@
-import { forwardRef, type HTMLAttributes } from 'react'
+import { forwardRef, type HTMLAttributes, type ReactNode } from 'react'
 import { Slot } from 'radix-ui'
 import { cx } from '#utils/cx'
 import { mergeStyles, responsiveVars, type Responsive } from '#utils/responsive'
@@ -44,7 +44,10 @@ export interface CardProps extends Omit<HTMLAttributes<HTMLDivElement>, 'color'>
  * ## Slots
  *
  * `Card.Media`, `Card.Header` (with `Card.Title` and `Card.Meta`), `Card.Description`, `Card.Body`
- * and `Card.Footer`. Use only the ones the object needs. `variant` is `outline` (the default, a
+ * and `Card.Footer`. Use only the ones the object needs. `Card.Header` takes a `leading` slot for an
+ * `Avatar` or icon: it sits above the title at every width, so cards of one width look alike
+ * however long their titles are. A corner `Stamp` gets a band of its own above the header, so it
+ * never covers the title or the date. `variant` is `outline` (the default, a
  * hairline), `raised` (the theme's surface shadow) or `plain` (a fill and no edge). `padding`
  * takes a space step.
  *
@@ -108,11 +111,32 @@ const CardMedia = forwardRef<HTMLDivElement, CardMediaProps>(function CardMedia(
   )
 })
 
-const CardHeader = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(function CardHeader(
-  { className, ...rest },
+export interface CardHeaderProps extends HTMLAttributes<HTMLDivElement> {
+  /**
+   * Something that leads the title, like an `Avatar` or an icon. It sits above the title and meta at
+   * every width, so a row of cards lays out the same whatever the names are, instead of one card's
+   * long name pushing its text under the avatar while its neighbour's stays beside it.
+   */
+  leading?: ReactNode
+}
+
+const CardHeader = forwardRef<HTMLDivElement, CardHeaderProps>(function CardHeader(
+  { leading, className, children, ...rest },
   ref,
 ) {
-  return <div ref={ref} className={cx(styles.header, className)} {...rest} />
+  if (leading === undefined || leading === null) {
+    return (
+      <div ref={ref} className={cx(styles.header, className)} {...rest}>
+        {children}
+      </div>
+    )
+  }
+  return (
+    <div ref={ref} className={cx(styles.header, className)} data-leading="" {...rest}>
+      <div className={styles.leading}>{leading}</div>
+      <div className={styles.headerText}>{children}</div>
+    </div>
+  )
 })
 
 export interface CardTitleProps extends HTMLAttributes<HTMLHeadingElement> {

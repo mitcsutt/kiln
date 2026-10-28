@@ -47,6 +47,9 @@
   margin: 0;
   font-family: var(--font-numeric);
   font-variant-numeric: tabular-nums lining-nums;
-  font-stretch: var(--numeric-stretch);
+  /* The theme's figures, but never condensed: at tooltip size a narrowed face (Ledger's receipt-tape
+     figures) is hard to read, and the weight keeps the value apart from its label. */
+  font-stretch: max(var(--numeric-stretch), 100%);
+  font-weight: var(--label-weight);
   text-align: end;
 }

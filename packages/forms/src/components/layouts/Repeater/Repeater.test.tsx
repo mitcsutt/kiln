@@ -266,6 +266,39 @@ describe('Repeater', () => {
     )
   })
 
+  it('keeps the actions the same width on every row, so a table does not reflow', () => {
+    renderForm(
+      (f) => (
+        <Repeater
+          form={f}
+          name="guests"
+          label="Guests"
+          variant="table"
+          newItem={newGuest}
+          itemLabel={guestLabel}
+          reorderable
+        >
+          {(item) => <item.fields.TextField name="name" label="Name" />}
+        </Repeater>
+      ),
+      {
+        defaultValues: {
+          host: '',
+          guests: [guest('Ada'), guest('Grace'), guest('Hedy')],
+        } satisfies Party,
+      },
+    )
+    const cells = screen
+      .getAllByRole('row')
+      .slice(1)
+      .map((row) => must(row.querySelector('td:last-child')))
+    // Every cell holds Move up, Move down and Remove, as buttons or as hidden slots.
+    expect(cells.map((cell) => cell.querySelectorAll('button').length)).toEqual([3, 3, 3])
+    // A slot is out of the accessibility tree: only the offered actions can be reached.
+    expect(within(cells[0] as HTMLElement).getAllByRole('button')).toHaveLength(2)
+    expect(within(cells[1] as HTMLElement).getAllByRole('button')).toHaveLength(3)
+  })
+
   it('hides Remove at min and makes Add aria-disabled (with the reason) at max', async () => {
     const { user, form } = renderForm(
       (f) => (

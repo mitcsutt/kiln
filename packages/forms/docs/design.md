@@ -2241,7 +2241,7 @@ These entries record the specific decisions that refine the body above or depart
   - `truthy` treats `[]` as false.
 - `parseFormSchema` accepts the default layouts plus `registry.layouts`, gives a `review` subtree its own name scope, rejects stray keys on custom nodes, and checks only required text props on layouts.
 - `toStandardSchema` takes optional `validators` and an `empties` map (default `{ checkbox: false, switch: false }`), so an unticked "I agree" fails `required` on the server. A `json` field's text must parse before its rules run, as the field's own check does on the client (`messages.invalidJson`). Its success output is the active fields only (A.11).
-- `RepeaterNode` also has `rules`, `whenHidden`, `description`, `empty` and `columns`. `itemLabel` (a function) isn't available in schema mode. `columns[].width` is `'fill' | 'min'`, a literal union kept equal to ui `TableColumnWidth` by a type test, so schema core stays free of ui imports.
+- `RepeaterNode` also has `rules`, `whenHidden`, `description`, `empty` and `columns`. `itemLabel` (a function) isn't available in schema mode. `columns[].width` is `'fill' | 'min' | 'bar'`, a literal union kept equal to ui `TableColumnWidth` by a type test, so schema core stays free of ui imports.
 - Every node takes `whenAnimate?: boolean`, `When`'s `animate`. It's a schema key (in `FIELD_SCHEMA_KEYS`, `LAYOUT_SCHEMA_KEYS`, `CONTENT_SCHEMA_KEYS` and the custom node keys), named with the `when` prefix like `whenHidden`, so a field or layout with an `animate` prop of its own never receives it. `parseFormSchema` checks it's a boolean.
 - `analyseSchema(...).names(node, prefix)` returns scope-relative names. A repeater contributes only its array name, since item names aren't known statically.
 

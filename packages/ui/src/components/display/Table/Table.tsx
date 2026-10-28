@@ -19,8 +19,11 @@ export type TableAlign = 'start' | 'center' | 'end'
 /** Where body and footer cells sit in a row taller than their content. */
 export type TableVerticalAlign = 'middle' | 'baseline' | 'top'
 export type TableSort = 'asc' | 'desc' | 'none'
-/** `fill` takes the spare width (the name column); `min` shrinks to its content. */
-export type TableColumnWidth = 'fill' | 'min'
+/**
+ * `fill` takes the spare width (the name column); `min` shrinks to its content; `bar` holds a
+ * `Progress` or `Meter`, which have no width of their own, so the column keeps room for the bar.
+ */
+export type TableColumnWidth = 'fill' | 'min' | 'bar'
 
 export interface TableProps extends TableHTMLAttributes<HTMLTableElement> {
   /** Row height. Default `regular`. */
@@ -172,7 +175,7 @@ export interface TableHeaderCellProps
   align?: TableAlign
   /** Numeric column: right-aligned with tabular figures. */
   numeric?: boolean
-  /** Column sizing: `fill` takes the spare width, `min` shrinks to fit. Default: automatic. */
+  /** Column sizing: `fill` takes the spare width, `min` shrinks to fit, `bar` keeps room for a bar. Default: automatic. */
   width?: TableColumnWidth
   /** Current sort of this column. With `onSort`, the label becomes a button and `aria-sort` is set. */
   sort?: TableSort

@@ -8,6 +8,7 @@ import {
   type CSSProperties,
   type FocusEvent,
   type KeyboardEvent,
+  type MouseEvent,
   type ReactElement,
   type ReactNode,
   type Ref,
@@ -34,7 +35,7 @@ export interface TreeTableColumn extends VisibilityProps {
   align?: TableAlign
   /** Numeric column: right-aligned with tabular figures. */
   numeric?: boolean
-  /** Column sizing: `fill` takes the spare width, `min` shrinks to fit. */
+  /** Column sizing: `fill` takes the spare width, `min` shrinks to fit, `bar` keeps room for a bar. */
   width?: TableColumnWidth
 }
 
@@ -211,6 +212,20 @@ function TreeTableInner<T>(
     }
   }
 
+  // A click on an expandable row opens or closes it, so the whole row is the toggle and the chevron
+  // is its hint. Links, buttons and fields inside a cell keep their own clicks.
+  const onClick = (event: MouseEvent<HTMLTableSectionElement>) => {
+    const target = event.target as HTMLElement
+    const rowElement = target.closest('tr')
+    const found = nodes.find((node) => elements.current.get(node.id) === rowElement)
+    if (!found?.expandable) return
+    const own = target.closest('a[href], button, input, select, textarea, label')
+    if (own && !own.hasAttribute('data-tree-toggle')) return
+    if (window.getSelection()?.toString()) return
+    moveTo(found.id)
+    setExpanded(found.id, !found.open)
+  }
+
   // Clicking inside a row (or focusing a link in it) makes that row the one tab stop.
   const onFocus = (event: FocusEvent<HTMLTableSectionElement>) => {
     const rowElement = (event.target as HTMLElement).closest('tr')
@@ -242,7 +257,7 @@ function TreeTableInner<T>(
           ))}
         </Table.Row>
       </Table.Head>
-      <Table.Body ref={body} onKeyDown={onKeyDown} onFocus={onFocus}>
+      <Table.Body ref={body} onKeyDown={onKeyDown} onFocus={onFocus} onClick={onClick}>
         {nodes.map((node) => (
           <Table.Row
             key={node.id}
@@ -278,11 +293,8 @@ function TreeTableInner<T>(
                         className={styles.toggle}
                         tabIndex={-1}
                         aria-hidden="true"
+                        data-tree-toggle=""
                         data-leaf={node.expandable ? undefined : ''}
-                        onClick={() => {
-                          moveTo(node.id)
-                          setExpanded(node.id, !node.open)
-                        }}
                       >
                         <ChevronRightIcon className={styles.chevron} />
                       </button>

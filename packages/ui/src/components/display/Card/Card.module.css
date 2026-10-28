@@ -6,7 +6,7 @@
  *   --card-keyline-width default var(--space-1) — the categorical keyline of a `color` card
  *
  * The root is `position: relative`, so absolutely placed children (a corner <Stamp>)
- * anchor to the card.
+ * anchor to the card. A card with a corner stamp opens a band at its top for it.
  *
  * Responsive padding: the component writes --card-padding-{bp}; the root resolves them
  * into --card-inset per breakpoint. Slots (Media) read the *resolved* --card-inset and
@@ -39,6 +39,12 @@
     border-color var(--dur-1) var(--ease-out),
     box-shadow var(--dur-1) var(--ease-out),
     translate var(--dur-1) var(--ease-spring);
+}
+
+/* A corner stamp is out of flow, so the card makes room: the stamp sits in a band above the content
+   and can never cover a title or a date, however narrow the card or long the words. */
+.card:has(> [data-placement='corner']):not(:has(> .media:first-child:not([data-inset]))) {
+  padding-block-start: calc(var(--card-inset) + var(--space-6));
 }
 
 @media (min-width: 40em) {
@@ -235,6 +241,24 @@
 }
 .header > :first-child {
   min-inline-size: 0;
+}
+/* With a leading slot the header is one column: the slot, then the text under it, at every width. */
+.header[data-leading] {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: var(--space-3);
+}
+.leading {
+  display: flex;
+}
+.headerText {
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+  overflow-wrap: break-word;
 }
 
 .title {
