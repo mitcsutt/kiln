@@ -3,8 +3,10 @@ import {
   cloneLayout,
   getAllCollisions,
   getCompactor,
+  getFirstCollision,
   getLayoutItem,
   moveElement,
+  sortLayoutItemsByRowCol,
   type CompactType,
   type LayoutItem,
 } from '#grid/engine'
@@ -179,6 +181,33 @@ export function resizeInLayout<T extends GridItem>(
     }
   }
   return toPublic<T>(getCompactor(type).compact(working, columns))
+}
+
+/**
+ * The layout as it renders when item content needs more rows than the layout gives it:
+ * each item is at least `rows[i]` rows tall, what it now covers moves down below it, and
+ * the result is compacted. The layout keeps its own heights; this is only how it's drawn,
+ * so no item ever paints over another.
+ */
+export function fitLayout<T extends GridItem>(
+  layout: readonly T[],
+  rows: Readonly<Record<string, number>>,
+  options: CompactOptions,
+): T[] {
+  if (!layout.some((item) => (rows[item.i] ?? 0) > item.h)) return [...layout]
+  const grown = cloneLayout(layout).map((item) => ({
+    ...item,
+    h: Math.max(item.h, rows[item.i] ?? 0),
+  }))
+  // Static items stay put; the others move down past whatever they now cover.
+  const placed: LayoutItem[] = grown.filter((item) => item.static)
+  for (const item of sortLayoutItemsByRowCol(grown.filter((item) => !item.static))) {
+    for (let hit = getFirstCollision(placed, item); hit; hit = getFirstCollision(placed, item)) {
+      item.y = hit.y + hit.h
+    }
+    placed.push(item)
+  }
+  return toPublic<T>(getCompactor(compactType(options.compaction)).compact(grown, options.columns))
 }
 
 /** The number of rows a layout fills. */

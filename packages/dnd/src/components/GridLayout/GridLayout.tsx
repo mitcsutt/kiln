@@ -24,6 +24,7 @@ import { useDragSource } from '#core/useDragSource'
 import {
   appendItem,
   compactType,
+  fitLayout,
   previewLayout,
   stepInLayout,
   type GridCompaction,
@@ -99,6 +100,8 @@ interface Active {
   i: string
   mode: 'move' | 'resize'
   input: DragInput
+  /** Where the item was when it was picked up, as it renders. */
+  origin: GridItem
 }
 
 interface GridState {
@@ -262,6 +265,16 @@ const GridSurface = forwardRef(function GridSurface(
     )
   }, [editable, complete, cols, widest, steps, breakpoint, compaction])
 
+  /*
+   * Content sets a floor on each item's height: an item whose content needs more rows than
+   * its entry gives it renders taller, and what's below moves down, so nothing overlaps.
+   */
+  const [fits, setFits] = useState<Readonly<Record<string, number>>>({})
+  const fitted = useMemo(
+    () => fitLayout(display, fits, { columns: cols, compaction }),
+    [display, fits, cols, compaction],
+  )
+
   /* The drag in progress: its preview, and where it asked to be. */
   const [preview, setPreview] = useState<readonly GridItem[] | null>(null)
   const [active, setActive] = useState<Active | null>(null)
@@ -277,11 +290,54 @@ const GridSurface = forwardRef(function GridSurface(
   }, [landed])
 
   // The behaviours read the latest of all this through one ref, so they never go stale.
-  const latest = useRef({ display, cols, compaction, onChange, layout })
+  const latest = useRef({ display, fitted, cols, compaction, onChange, layout })
   useIsomorphicLayoutEffect(() => {
-    latest.current = { display, cols, compaction, onChange, layout }
+    latest.current = { display, fitted, cols, compaction, onChange, layout }
   })
   const probe = useRef<HTMLDivElement | null>(null)
+
+  // Measures every item at its content's own height (in the same frame, so it never paints)
+  // whenever the grid, an item or an item's content changes size.
+  useEffect(() => {
+    if (!element || typeof ResizeObserver === 'undefined') return
+    const nodes = () =>
+      latest.current.display.flatMap((item) => {
+        const node = controller.draggables.get(item.i)?.element
+        return node && !node.hidden ? [[item.i, node] as const] : []
+      })
+    const resize = new ResizeObserver(() => {
+      const unit = probe.current?.getBoundingClientRect()
+      if (!unit?.height) return
+      const items = nodes()
+      for (const [, node] of items) node.setAttribute('data-measuring', '')
+      const next = Object.fromEntries(
+        items.map(([i, node]) => {
+          const height = node.getBoundingClientRect().height
+          return [i, Math.ceil((height + unit.width) / (unit.height + unit.width) - 0.01)]
+        }),
+      )
+      for (const [, node] of items) node.removeAttribute('data-measuring')
+      setFits((last) => {
+        const keys = Object.keys(next)
+        const same =
+          keys.length === Object.keys(last).length && keys.every((i) => last[i] === next[i])
+        return same ? last : next
+      })
+    })
+    const observe = () => {
+      resize.observe(element)
+      for (const [, node] of nodes()) {
+        for (const child of node.children) resize.observe(child)
+      }
+    }
+    observe()
+    const mutations = new MutationObserver(observe)
+    mutations.observe(element, { childList: true, subtree: true })
+    return () => {
+      mutations.disconnect()
+      resize.disconnect()
+    }
+  }, [element, controller])
 
   const behavior = useCallback(
     (i: string, mode: 'move' | 'resize', getLabel: () => string): CustomBehavior => {
@@ -289,6 +345,7 @@ const GridSurface = forwardRef(function GridSurface(
       let request: GridRequest | null = null
       let current: readonly GridItem[] | null = null
       let lastCell = ''
+      let carried = { x: 0, y: 0 }
       const options = () => ({
         columns: latest.current.cols,
         compaction: latest.current.compaction,
@@ -307,6 +364,7 @@ const GridSurface = forwardRef(function GridSurface(
       }
       const describe = (fallback: GridItem) => placeOf(find(current) ?? fallback, getLabel())
       const reset = () => {
+        carried = { x: 0, y: 0 }
         translate(0, 0)
         setPreview(null)
         setActive(null)
@@ -317,10 +375,11 @@ const GridSurface = forwardRef(function GridSurface(
         blocked: () => (editable ? null : messages().gridLocked(getLabel())),
         lift(input) {
           start = find(latest.current.display) ?? null
-          if (!start) return ''
+          const origin = find(latest.current.fitted)
+          if (!start || !origin) return ''
           request = { x: start.x, y: start.y, w: start.w, h: start.h }
           lastCell = `${String(start.x)},${String(start.y)},${String(start.w)},${String(start.h)}`
-          setActive({ i, mode, input })
+          setActive({ i, mode, input, origin })
           show(latest.current.display)
           return messages().gridLifted(placeOf(start, getLabel()))
         },
@@ -367,10 +426,22 @@ const GridSurface = forwardRef(function GridSurface(
           const gapPx = gapAndRow.width
           const strideX = (grid.getBoundingClientRect().width - (count - 1) * gapPx) / count + gapPx
           const strideY = gapAndRow.height + gapPx
-          const dx = (rtl ? -move.delta.x : move.delta.x) / strideX
-          const dy = move.delta.y / strideY
           if (mode === 'move') {
-            translate(move.delta.x, move.delta.y)
+            // Carry the item with the pointer, but never past the grid's sides or top, so a
+            // drag can't widen the page. Offsets leave out the translate already applied.
+            carried = {
+              x: Math.min(
+                Math.max(move.delta.x, -node.offsetLeft),
+                grid.clientWidth - node.offsetLeft - node.offsetWidth,
+              ),
+              y: Math.max(move.delta.y, -node.offsetTop),
+            }
+            translate(carried.x, carried.y)
+          }
+          const delta = mode === 'move' ? carried : move.delta
+          const dx = (rtl ? -delta.x : delta.x) / strideX
+          const dy = delta.y / strideY
+          if (mode === 'move') {
             request = {
               ...request,
               x: start.x + Math.round(dx),
@@ -424,7 +495,10 @@ const GridSurface = forwardRef(function GridSurface(
     [controller, editable],
   )
 
-  const rendered = preview ?? display
+  const rendered = useMemo(
+    () => (preview ? fitLayout(preview, fits, { columns: cols, compaction }) : fitted),
+    [preview, fits, cols, compaction, fitted],
+  )
   const rows = bottom(rendered)
   const state = useMemo<GridState>(
     () => ({
@@ -501,6 +575,9 @@ const GridLayoutItem = forwardRef<HTMLDivElement, GridLayoutItemProps>(function 
   useIsomorphicLayoutEffect(() => register(id), [register, id])
 
   const item = layout.find((entry) => entry.i === id)
+  // A pointer carries the item from where it was picked up; the placeholder shows its cell.
+  const placed =
+    active?.i === id && active.input === 'pointer' && active.mode === 'move' ? active.origin : item
   // The behaviours read the label from the item's record, which is written after each
   // commit, so it's always the latest.
   const getLabel = useCallback(
@@ -541,7 +618,7 @@ const GridLayoutItem = forwardRef<HTMLDivElement, GridLayoutItemProps>(function 
         ref={ref}
         {...rest}
         className={cx(styles.item, className)}
-        style={{ ...(item ? positionVars(item) : {}), ...style }}
+        style={{ ...(placed ? positionVars(placed) : {}), ...style }}
         hidden={item ? rest.hidden : true}
         data-dragging={active?.i === id ? active.input : undefined}
         data-mode={mode}
@@ -598,7 +675,12 @@ function ResizeGrip({
  * store it as JSON. Each `GridLayout.Item` matches an entry by `id` and is dragged by the
  * `DragHandle` you put inside it; a grip in its corner resizes it. While an item is
  * dragged, a placeholder shows where it will land and the other items make room; the
- * layout changes once, on drop, through `onChange`.
+ * layout changes once, on drop, through `onChange`. A dragged item stays inside the grid:
+ * it never runs past its sides or top, so a drag can't widen the page.
+ *
+ * An item is never shorter than its content. When the content needs more rows than the
+ * layout gives it (text wraps as the grid narrows), the item renders taller and what's
+ * below moves down, so items never overlap; the layout you store keeps its own heights.
  *
  * By keyboard, Space or Enter on a handle picks the item up. The arrow keys move it one
  * cell, Shift and the arrow keys resize it one cell, Space or Enter drops it and Escape

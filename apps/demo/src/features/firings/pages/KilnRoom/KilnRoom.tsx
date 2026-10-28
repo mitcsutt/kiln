@@ -37,7 +37,7 @@ export function KilnRoom({ room }: { room: KilnRoomData }) {
         It&apos;s 52°C under the planned curve at 09:30. Check the bottom element before the next
         segment.
       </Alert>
-      <GridLayout label="Kiln room panels" defaultLayout={LAYOUT}>
+      <GridLayout label="Kiln room panels" defaultLayout={LAYOUT} columns={{ base: 1, sm: 12 }}>
         {room.kilns.map((kiln) => (
           <GridLayout.Item key={kiln.id} id={kiln.id} label={kiln.name}>
             <KilnCard kiln={kiln} temperature={readings[kiln.id] ?? kiln.temperature} />

@@ -313,6 +313,119 @@ export const PointerDrag: Story = {
   },
 }
 
+/**
+ * Pointer: the panel stays under the pointer and inside the grid. Carried past either side
+ * it stops at the edge, so a drag never widens the page or leaves it.
+ */
+export const PointerBounds: Story = {
+  render: () => <Dashboard />,
+  play: async ({ canvasElement }) => {
+    const root = storyRoot(canvasElement)
+    const canvas = within(root)
+    const grid = canvas.getByRole('group', { name: 'Sales dashboard' }).getBoundingClientRect()
+    const handle = canvas.getByRole('button', { name: 'Move Open tickets' })
+    const from = itemOf(root, 'Open tickets').getBoundingClientRect()
+    const start = handle.getBoundingClientRect()
+    const page = document.documentElement.scrollWidth
+    const y = start.top + start.height / 2
+    const drop = await drag(
+      handle,
+      { x: start.left + start.width / 2 + 40, y },
+      { keepHolding: true },
+    )
+    const carried = () => itemOf(root, 'Open tickets').getBoundingClientRect()
+    await expect(carried().left - from.left).toBeCloseTo(40, 0)
+
+    await moveTo({ x: window.innerWidth + 200, y })
+    await waitFor(async () => {
+      await expect(carried().right).toBeCloseTo(grid.right, 0)
+    })
+    await expect(document.documentElement.scrollWidth).toBe(page)
+    const placeholder = () =>
+      root.querySelector<HTMLElement>('[role="group"] > [aria-hidden="true"][style*="--_x"]')
+    await waitFor(async () => {
+      await expect(placeholder()?.style.getPropertyValue('--_x')).toBe('8')
+    })
+
+    await moveTo({ x: -200, y })
+    await waitFor(async () => {
+      await expect(carried().left).toBeCloseTo(grid.left, 0)
+    })
+    await expect(document.documentElement.scrollWidth).toBe(page)
+    await drop()
+    await waitFor(async () => {
+      await expect(itemOf(root, 'Open tickets')).not.toHaveAttribute('data-dragging')
+    })
+    await expect(place(itemOf(root, 'Open tickets'))[0]).toBe(0)
+  },
+}
+
+/**
+ * An item is never shorter than its content. Here the notes need more rows than their
+ * entry gives them, so they render taller and the panel below moves down.
+ */
+export const ContentFit: Story = {
+  render: () => (
+    <Container width="narrow">
+      <GridLayout
+        label="Shift notes"
+        rowHeight={8}
+        defaultLayout={[
+          { i: 'notes', x: 0, y: 0, w: 4, h: 1 },
+          { i: 'orders', x: 0, y: 1, w: 4, h: 2 },
+          { i: 'revenue', x: 4, y: 0, w: 8, h: 3 },
+        ]}
+      >
+        <GridLayout.Item id="notes" label="Notes">
+          <Panel title="Notes">
+            <Text size="sm">
+              Kiln 2 runs cool at the bottom shelf. Load the bisque there, and check the cones after
+              the second segment.
+            </Text>
+          </Panel>
+        </GridLayout.Item>
+        <GridLayout.Item id="orders" label="Orders">
+          <Panel title="Orders">
+            <Numeral value={1284} />
+          </Panel>
+        </GridLayout.Item>
+        <GridLayout.Item id="revenue" label="Revenue">
+          <Panel title="Revenue">
+            <Amount value={48210.4} currency="GBP" />
+          </Panel>
+        </GridLayout.Item>
+      </GridLayout>
+    </Container>
+  ),
+  play: async ({ canvasElement }) => {
+    const root = storyRoot(canvasElement)
+    const items = ['Notes', 'Orders', 'Revenue'].map((name) => itemOf(root, name))
+    const boxes = () =>
+      items.map((item) => (item.firstElementChild as HTMLElement).getBoundingClientRect())
+    // Each item holds its content and none overlaps, once they've moved into place.
+    await waitFor(async () => {
+      const now = boxes()
+      for (const [index, item] of items.entries()) {
+        await expect(now[index]?.bottom).toBeLessThanOrEqual(
+          item.getBoundingClientRect().bottom + 1,
+        )
+      }
+      const overlaps = now.flatMap((one, a) =>
+        now.filter(
+          (two, b) =>
+            b > a &&
+            one.left < two.right - 1 &&
+            two.left < one.right - 1 &&
+            one.top < two.bottom - 1 &&
+            two.top < one.bottom - 1,
+        ),
+      )
+      await expect(overlaps).toHaveLength(0)
+    })
+    await expect(place(items[1] as HTMLElement)[1]).toBeGreaterThan(1)
+  },
+}
+
 /** Pointer: the corner grip resizes, one cell at a time, and saves on release. */
 export const CornerResize: Story = {
   render: () => <Dashboard />,

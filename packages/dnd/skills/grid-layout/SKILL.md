@@ -22,7 +22,9 @@ Build grids of panels that move and resize by pointer and keyboard, stored as pl
 
 A dashboard grid: items you move and resize on a grid of columns and rows, by pointer, touch or keyboard.
 
-The layout is plain data, one `{ i, x, y, w, h }` per item in grid units, so you can store it as JSON. Each `GridLayout.Item` matches an entry by `id` and is dragged by the `DragHandle` you put inside it; a grip in its corner resizes it. While an item is dragged, a placeholder shows where it will land and the other items make room; the layout changes once, on drop, through `onChange`.
+The layout is plain data, one `{ i, x, y, w, h }` per item in grid units, so you can store it as JSON. Each `GridLayout.Item` matches an entry by `id` and is dragged by the `DragHandle` you put inside it; a grip in its corner resizes it. While an item is dragged, a placeholder shows where it will land and the other items make room; the layout changes once, on drop, through `onChange`. A dragged item stays inside the grid: it never runs past its sides or top, so a drag can't widen the page.
+
+An item is never shorter than its content. When the content needs more rows than the layout gives it (text wraps as the grid narrows), the item renders taller and what's below moves down, so items never overlap; the layout you store keeps its own heights.
 
 By keyboard, Space or Enter on a handle picks the item up. The arrow keys move it one cell, Shift and the arrow keys resize it one cell, Space or Enter drops it and Escape puts everything back. Each step is announced ("Revenue moved to row 2, column 7").
 
