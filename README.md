@@ -1,0 +1,1 @@
+Screenshots for the kiln-app-shell pull request (feedback items 1-6). full/ holds the original captures, small/ the 900px copies embedded in the PR body. Do not delete this branch: the PR body links here.
