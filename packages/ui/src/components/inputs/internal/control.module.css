@@ -8,7 +8,7 @@
  *   --field-radius        default var(--radius-field)
  *   --field-shadow        default none
  *
- * Focus is the neutral ink ring, outside the border — it never tints the border.
+ * Focus is the theme's focus ring, outside the border — it never tints the border.
  * Only validation (data-invalid) changes the border colour.
  */
 .box {

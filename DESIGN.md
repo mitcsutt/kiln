@@ -84,7 +84,7 @@ Beyond the checks, a theme has a subject, and each colour, face, radius and easi
 - **No left-border-accent callouts.** Alerts are a neutral hairline frame; the tone lives only in the glyph and a short tab on the top edge (`variant="soft"` for a tinted box when it must shout).
 - **Categorical colour marks who, never how.** A row or card with `color` draws a thin rail or a top keyline in `--color-cat-N`, matching that person's or team's `Tag` and `Avatar`. It's identity, not status or emphasis, so it's not the accent callout above; tones stay in badges and figures. A small colour beside a label is one shared `Swatch`, drawn by the `swatch` prop on `Badge`, `Tag`, `ToggleChip` and `Indicator` (and standalone where there's no host), so a team or a series looks the same in a chip, a tag and a legend.
 - **Empty states** mark their frame with printer's crop marks, not a dashed box. So does a placeholder `Card`, a slot not yet decided.
-- **Focus is neutral** (`--color-focus` = ink) and always visible on `:focus-visible`. Focus must never look like validation; only error/warning/success tint a field.
+- **Focus is always visible** on `:focus-visible`, and must never look like validation; only error/warning/success tint a field. `--color-focus` is the ink or the theme's own interactive hue ([ADR 0052](https://github.com/mitcsutt/kiln/blob/main/docs/adr/0052-focus-takes-the-theme-hue.md)): it reaches 3:1 on every fill a ring sits beside (canvas, surfaces, accent-soft, highlight), and stays ΔE_OK 0.1 and 60° of hue from the critical and positive tones. `themes/focus.test.ts` checks both.
 
 ### Motion
 
@@ -260,7 +260,7 @@ _A glass-cockpit flight display._ `import '@mitcsutt/kiln-ui/themes/flightdeck.c
 
 **Goal**: someone operating something live: dashboards, monitoring, developer tools, status at a glance.
 
-- **Colour**: cockpit colour convention, mapped onto Kiln's roles. **Cyan** is the accent: what the pilot sets and acts on. "You"/selected is a neutral **reverse-video box** (a brighter neutral with its text inverted), like the selected line of a flight-management display. Green, amber and red are the status tones, and info is steel blue. Neutrals are dark blue-grey display glass, never black. The light mode is the day mode of an electronic flight bag, with the cyan darkened for contrast.
+- **Colour**: cockpit colour convention, mapped onto Kiln's roles. **Cyan** is the accent: what the pilot sets and acts on. "You"/selected is a neutral **reverse-video box** (a brighter neutral with its text inverted), like the selected line of a flight-management display. Focus is the same cyan as a cursor, a step lighter than the fill at night. Green, amber and red are the status tones, and info is steel blue. Categorical colours keep off the status hues, and series one is blue, not cyan. Neutrals are dark blue-grey display glass, never black. The light mode is the day mode of an electronic flight bag, with the cyan darkened for contrast.
 - **Type**: **B612** for text, display and figures (its digits are already equal width, so columns align without a monospace), and **B612 Mono** for code. Both were designed for Airbus cockpit displays. B612 ships static 400 and 700 weights and a Latin subset only, so Latin Extended text falls back to system faces. No uppercase transforms.
 - **Shape**: square instrument bezels (small radii on actions, fields and surfaces), with pill chips as annunciator capsules.
 - **Depth**: hairlines, no shadow on static surfaces. Floating layers add a very subtle dark shadow, with no glow.

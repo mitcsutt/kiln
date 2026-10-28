@@ -55,5 +55,6 @@ Each record captures one decision: the context, what was decided, and what follo
 | [0049](0049-kiln-docs-pagefind.md)                      | kiln-docs searches with Pagefind by default                  | Accepted                                                   |
 | [0050](0050-demo-app.md)                                | A demo app that uses every export                            | Accepted                                                   |
 | [0051](0051-grid-items-fit-content.md)                  | Grid items fit their content; drags stay in the grid         | Accepted                                                   |
+| [0052](0052-focus-takes-the-theme-hue.md)               | Focus takes the theme's own hue                              | Accepted                                                   |
 
 New records use the next number and the same headings: Status, Context, Decision, Consequences.
