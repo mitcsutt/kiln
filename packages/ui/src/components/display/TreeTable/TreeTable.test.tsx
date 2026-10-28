@@ -150,6 +150,19 @@ describe('TreeTable', () => {
     expect(screen.queryByText('Docs session')).not.toBeInTheDocument()
   })
 
+  it('opens and closes a row from a click anywhere on it, but leaves links alone', async () => {
+    const user = userEvent.setup()
+    const onOpen = vi.fn()
+    render(<Demo onOpen={onOpen} />)
+    await user.click(screen.getByText('$41.20'))
+    expect(row('Release train')).toHaveAttribute('aria-expanded', 'true')
+    await user.click(screen.getByText('$41.20'))
+    expect(row('Release train')).toHaveAttribute('aria-expanded', 'false')
+    await user.click(screen.getByRole('link', { name: 'Release train' }))
+    expect(onOpen).toHaveBeenCalledWith('release')
+    expect(row('Release train')).toHaveAttribute('aria-expanded', 'false')
+  })
+
   it('stays on an open row whose children have not loaded', async () => {
     const user = userEvent.setup()
     render(

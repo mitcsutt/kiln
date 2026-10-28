@@ -33,6 +33,35 @@ describe('Card', () => {
     expect(link).toHaveAttribute('data-interactive')
   })
 
+  it('keeps a leading slot in its own block above the header text', () => {
+    render(
+      <Card>
+        <Card.Header leading={<span data-testid="avatar" />}>
+          <Card.Title>Ravi Chandrasekar</Card.Title>
+          <Card.Meta>Potter</Card.Meta>
+        </Card.Header>
+      </Card>,
+    )
+    const header = screen.getByRole('heading', { name: 'Ravi Chandrasekar' }).parentElement
+      ?.parentElement as HTMLElement
+    expect(header).toHaveAttribute('data-leading')
+    expect(header.firstElementChild).toContainElement(screen.getByTestId('avatar'))
+    expect(header.lastElementChild).toContainElement(screen.getByText('Potter'))
+  })
+
+  it('leaves a header without a leading slot as it was', () => {
+    render(
+      <Card>
+        <Card.Header>
+          <Card.Title>Atlas</Card.Title>
+        </Card.Header>
+      </Card>,
+    )
+    expect(screen.getByRole('heading', { name: 'Atlas' }).parentElement).not.toHaveAttribute(
+      'data-leading',
+    )
+  })
+
   it('sets the title element from level (default h3)', () => {
     render(
       <Card>

@@ -32,7 +32,7 @@ export function Invoices({ invoices }: { invoices: Invoice[] }) {
           </Card.Header>
           <Card.Body>
             <Stack gap={2}>
-              <Amount value={invoice.amount} currency="GBP" locale="en-GB" size="display-sm" />
+              <Amount value={invoice.amount} currency="GBP" locale="en-GB" size="2xl" />
               <Inline gap={2} align="center">
                 <Code>{invoice.id}</Code>
                 <Button

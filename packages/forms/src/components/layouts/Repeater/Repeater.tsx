@@ -158,6 +158,15 @@ type ArrayFieldComponent = ComponentType<{
   children: (field: AnyFieldApi) => ReactNode
 }>
 
+/**
+ * An action that is not offered on this item (no Move up on the first, no Remove at `min`) keeps
+ * its place as an empty, hidden button, so the actions column is as wide on every row and does not
+ * reflow when an item is added or moved.
+ */
+function ActionSlot() {
+  return <IconButton label="" icon={null} size="sm" disabled aria-hidden="true" tabIndex={-1} />
+}
+
 /** Top-level children, with fragments flattened — one table cell each. */
 function cellsOf(node: ReactNode): ReactNode[] {
   const out: ReactNode[] = []
@@ -513,9 +522,16 @@ function RepeaterBody({ field, props }: { field: AnyFieldApi; props: LooseProps 
 
   const actionsOf = (item: LooseItem) => {
     const itemName = labelOf(item.index)
+    const reorders = reorderable !== false
     return (
       <Inline gap={1} justify="end" wrap={false}>
-        {dragAndDrop && count > 1 ? <dragAndDrop.Handle data-repeater-action="drag" /> : null}
+        {dragAndDrop ? (
+          count > 1 ? (
+            <dragAndDrop.Handle data-repeater-action="drag" />
+          ) : (
+            <ActionSlot />
+          )
+        ) : null}
         {item.canMoveUp ? (
           <IconButton
             label={messages.moveUp(itemName)}
@@ -526,6 +542,8 @@ function RepeaterBody({ field, props }: { field: AnyFieldApi; props: LooseProps 
               move(item.index, item.index - 1, 'up')
             }}
           />
+        ) : reorders ? (
+          <ActionSlot />
         ) : null}
         {item.canMoveDown ? (
           <IconButton
@@ -537,6 +555,8 @@ function RepeaterBody({ field, props }: { field: AnyFieldApi; props: LooseProps 
               move(item.index, item.index + 1, 'down')
             }}
           />
+        ) : reorders ? (
+          <ActionSlot />
         ) : null}
         {item.canRemove ? (
           <IconButton
@@ -548,7 +568,9 @@ function RepeaterBody({ field, props }: { field: AnyFieldApi; props: LooseProps 
               remove(item.index)
             }}
           />
-        ) : null}
+        ) : (
+          <ActionSlot />
+        )}
       </Inline>
     )
   }
