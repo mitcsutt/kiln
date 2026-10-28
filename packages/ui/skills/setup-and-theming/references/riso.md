@@ -2,11 +2,11 @@
 
 # Riso
 
-> A two-drum risograph zine. Fluorescent pink and blue on white stock, screen tints instead of borders, and Shantell Sans.
+> A two-drum risograph zine. Fluorescent pink and blue on a blue-drum page, screen tints instead of borders, and Recursive Casual.
 
 Source: https://kiln.mitchellsutton.com/docs/ui/themes/riso
 
-_A two-drum risograph zine._ A riso print can't do gradients or soft shadows. It does flat spot ink, screen tints and the occasional misregistration, so that is all Riso uses: two inks on bright white stock, set in a typeface drawn from handwriting.
+_A two-drum risograph zine._ A riso print can't do gradients or soft shadows. It does flat spot ink, screen tints and the occasional misregistration, so that is all Riso uses: two inks on a blue-drum page, set in a brush-lettered typeface.
 
 
 ## Use it
@@ -25,8 +25,8 @@ Riso's face is declared in its own stylesheet, so it costs nothing unless you im
 
 ## The idea, applied
 
-- **Colour.** Two drums: fluorescent pink is the accent and blue is the text colour, on bright white stock. Surfaces are screen tints (a percentage of an ink) rather than borders. The highlight is an overprint: a pink tint under blue ink. Night mode is the same two inks printed on deep blue stock, not black.
-- **Type.** Shantell Sans for every role except code, drawn from the artist Shantell Martin's own handwriting. It has no tabular figures, so numerals are not column-aligned. Atkinson Hyperlegible Mono is for code. A 1.25 ratio.
+- **Colour.** Two drums: fluorescent pink is the accent and blue is the text colour, on a page that is a screen of the blue drum. Surfaces are screen tints (a percentage of an ink) rather than borders. The highlight is an overprint: a pink tint under blue ink. Night mode is the same two inks printed on deep blue stock, not black.
+- **Type.** Recursive Casual for every role except code: a casual, brush-drawn face that stays readable at text sizes and sets tabular figures, so columns line up. Atkinson Hyperlegible Mono is for code. A 1.25 ratio.
 - **Shape.** Hand-cut and mixed: generous radii on actions and surfaces, smaller radii on fields, and pill chips.
 - **Depth.** A fill change, with no shadow on static surfaces. The one misregistered moment is a hard pink offset on floating layers, as if the second drum printed slightly off.
 - **Motion.** A mild spring: things land with a small overshoot.

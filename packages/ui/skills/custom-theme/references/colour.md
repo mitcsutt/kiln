@@ -10,7 +10,7 @@ Colour in Kiln is a short list of roles. A theme gives each role a value for lig
 
 ## Surfaces, ink and lines
 
-Neutrals are tinted toward the theme's hue (chroma 0.004 to 0.02), never stock grey and never pure black or white. Paper is cool grey stock with white sheets; Monograph is blue slate; Flightdeck is dark blue-grey display glass; Ledger is white paper ruled in green; Fiesta is apricot poster stock; Riso is bright white stock printed in two inks.
+Neutrals are tinted toward the theme's hue (chroma 0.004 to 0.02), never stock grey and never pure black or white. Paper is achromatic grey stock with lighter grey sheets; Monograph is blue slate; Flightdeck is dark blue-grey display glass; Ledger is a green-grey pad ruled in green; Fiesta is apricot poster stock; Riso is a blue-drum page printed in two inks.
 
 
 
