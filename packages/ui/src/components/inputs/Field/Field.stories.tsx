@@ -125,7 +125,7 @@ export const CreateAWorkspace: Story = {
   ),
 }
 
-/** Only validation tints a control, and only its border. Focus is a separate ring outside it. */
+/** Only validation tints a control, and only its border. Focus stays the neutral ring. */
 export const Validation: Story = {
   render: () => (
     <Stack gap={5} style={formWidth}>

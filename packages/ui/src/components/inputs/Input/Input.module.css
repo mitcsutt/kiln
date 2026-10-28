@@ -14,7 +14,7 @@
   cursor: text;
 }
 
-/* Focus: the ring goes round the whole box, never onto the border. */
+/* Focus: the neutral ring goes round the whole box, never onto the border. */
 .root:focus-within {
   outline: 2px solid var(--color-focus);
   outline-offset: 2px;

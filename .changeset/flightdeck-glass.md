@@ -9,5 +9,3 @@ Flightdeck has new colours, with dark mode designed first. Check screens that de
 - **Focus is cyan, not ink.** `--color-focus` is the theme's cyan, a step lighter than the cyan fill at night (`oklch(0.86 0.12 208)`) and darkened by day (`oklch(0.52 0.092 215)`). It reaches at least 7.9:1 on every fill a ring sits beside at night and 3.6:1 by day, and stays clear of the green and red status tones.
 - **Data colours.** Categorical colours no longer use the status hues (green, amber, red) and series one is blue, not cyan. The sequential ramp is cyan, and the diverging ramp is magenta against cyan.
 - **Status tones** are refitted to AA on every ground, their soft fill and the highlight.
-
-DESIGN.md's "focus is neutral" rule is replaced by [ADR 0052](https://github.com/mitcsutt/kiln/blob/main/docs/adr/0052-focus-takes-the-theme-hue.md): a theme's focus may take its own hue, provided it reaches 3:1 on every fill it sits beside and can't be mistaken for validation. A new theme test checks both.
