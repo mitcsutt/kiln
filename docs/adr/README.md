@@ -15,7 +15,7 @@ Each record captures one decision: the context, what was decided, and what follo
 | [0009](0009-docs-and-storybook.md)                      | Fumadocs for public docs, Storybook as workbench             | Accepted, amended by 0034                                  |
 | [0010](0010-information-architecture.md)                | One nested tree for docs and Storybook                       | Accepted, amended by 0036                                  |
 | [0011](0011-ai-tooling.md)                              | Agent skills via TanStack Intent, plus llms.txt              | Accepted                                                   |
-| [0012](0012-design-standards.md)                        | Carry over the design and authoring standards                | Accepted, amended by 0030                                  |
+| [0012](0012-design-standards.md)                        | Carry over the design and authoring standards                | Accepted, amended by 0030 and 0052                         |
 | [0013](0013-licence-and-visibility.md)                  | MIT licence, written as public from the start                | Accepted, amended by 0032                                  |
 | [0014](0014-config-package-shape.md)                    | Shape of the shared config packages                          | Accepted                                                   |
 | [0015](0015-kiln-ui-port.md)                            | How `kiln-ui` was ported: theming, build, tests              | Accepted                                                   |
@@ -55,5 +55,6 @@ Each record captures one decision: the context, what was decided, and what follo
 | [0049](0049-kiln-docs-pagefind.md)                      | kiln-docs searches with Pagefind by default                  | Accepted                                                   |
 | [0050](0050-demo-app.md)                                | A demo app that uses every export                            | Accepted                                                   |
 | [0051](0051-grid-items-fit-content.md)                  | Grid items fit their content; drags stay in the grid         | Accepted                                                   |
+| [0052](0052-focus-takes-the-themes-hue.md)              | Focus takes the theme's own hue                              | Accepted                                                   |
 
 New records use the next number and the same headings: Status, Context, Decision, Consequences.
