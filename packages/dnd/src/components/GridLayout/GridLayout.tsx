@@ -312,6 +312,8 @@ const GridSurface = forwardRef(function GridSurface(
       // Measuring would cancel a running size transition; its end schedules another pass.
       const growing = items.some(([, node]) =>
         node
+          // jsdom has no getAnimations, though the DOM types say every element does.
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           .getAnimations?.()
           .some((a) => a instanceof CSSTransition && a.transitionProperty === 'block-size'),
       )
