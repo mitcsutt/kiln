@@ -83,7 +83,8 @@ async function ruleIds(linter: ESLint, file: string, code: string) {
 describe('base', () => {
   const linter = createLinter(base)
 
-  it('accepts clean, Prettier-formatted code', async () => {
+  // The first type-aware lint builds a TypeScript program, which can outlast the 5s default on a busy runner.
+  it('accepts clean, Prettier-formatted code', { timeout: 30_000 }, async () => {
     expect(await lint(linter, 'clean.ts', "export const greeting = 'hello'\n")).toEqual([])
   })
 
