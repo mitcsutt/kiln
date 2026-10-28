@@ -156,5 +156,5 @@ export const Monograph: Story = { render: () => <Specimen theme="monograph" /> }
 /** Quiet, dense and numeric: ruled green-grey paper and tabular figures. */
 export const Ledger: Story = { render: () => <Specimen theme="ledger" /> }
 
-/** A two-drum risograph zine: fluorescent inks and screen tints. */
+/** A two-drum risograph zine: blue and sunflower by day, a pink reverse print by night. */
 export const Riso: Story = { render: () => <Specimen theme="riso" /> }
