@@ -84,7 +84,7 @@ Beyond the checks, a theme has a subject, and each colour, face, radius and easi
 - **No left-border-accent callouts.** Alerts are a neutral hairline frame; the tone lives only in the glyph and a short tab on the top edge (`variant="soft"` for a tinted box when it must shout).
 - **Categorical colour marks who, never how.** A row or card with `color` draws a thin rail or a top keyline in `--color-cat-N`, matching that person's or team's `Tag` and `Avatar`. It's identity, not status or emphasis, so it's not the accent callout above; tones stay in badges and figures. A small colour beside a label is one shared `Swatch`, drawn by the `swatch` prop on `Badge`, `Tag`, `ToggleChip` and `Indicator` (and standalone where there's no host), so a team or a series looks the same in a chip, a tag and a legend.
 - **Empty states** mark their frame with printer's crop marks, not a dashed box. So does a placeholder `Card`, a slot not yet decided.
-- **Focus is neutral** (`--color-focus` = ink) and always visible on `:focus-visible`. Focus must never look like validation; only error/warning/success tint a field.
+- **Focus takes the theme's own hue** (`--color-focus`, never the ink) and is always visible on `:focus-visible`. It clears 3:1 against every fill a ring sits beside (canvas, surfaces, accent-soft, highlight) and sits at least 60° of hue from the critical and positive tones, so focus never looks like validation; only error/warning/success tint a field ([ADR 0052](https://github.com/mitcsutt/kiln/blob/main/docs/adr/0052-focus-takes-the-themes-hue.md)).
 
 ### Motion
 

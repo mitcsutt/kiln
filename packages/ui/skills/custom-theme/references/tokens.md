@@ -97,81 +97,81 @@ Colour:
 
 | Token | Paper |
 | --- | --- |
-| `--color-canvas` | `light-dark(oklch(0.952 0.006 250), oklch(0.17 0.008 250))` |
-| `--color-surface` | `light-dark(oklch(0.995 0.002 250), oklch(0.215 0.009 250))` |
-| `--color-surface-sunken` | `light-dark(oklch(0.935 0.006 250), oklch(0.14 0.008 250))` |
-| `--color-surface-raised` | `light-dark(oklch(0.998 0.002 250), oklch(0.25 0.009 250))` |
-| `--color-surface-inverse` | `light-dark(oklch(0.26 0.06 256), oklch(0.93 0.012 250))` |
-| `--color-ink` | `light-dark(oklch(0.26 0.06 256), oklch(0.94 0.01 250))` |
-| `--color-ink-muted` | `light-dark(oklch(0.42 0.06 256), oklch(0.77 0.015 250))` |
-| `--color-ink-subtle` | `light-dark(oklch(0.47 0.06 256), oklch(0.66 0.015 250))` |
-| `--color-ink-inverse` | `light-dark(oklch(0.96 0.006 250), oklch(0.2 0.05 256))` |
-| `--color-line` | `light-dark(oklch(0.9 0.006 250), oklch(0.3 0.01 250))` |
-| `--color-line-strong` | `light-dark(oklch(0.78 0.012 252), oklch(0.42 0.012 250))` |
-| `--color-accent` | `light-dark(oklch(0.37 0.1 255), oklch(0.86 0.06 250))` |
-| `--color-accent-hover` | `light-dark(oklch(0.31 0.095 255), oklch(0.92 0.045 250))` |
-| `--color-accent-ink` | `light-dark(oklch(0.985 0.005 250), oklch(0.2 0.05 256))` |
-| `--color-accent-text` | `light-dark(oklch(0.35 0.1 255), oklch(0.86 0.06 250))` |
-| `--color-accent-soft` | `light-dark(oklch(0.93 0.025 252), oklch(0.285 0.03 252))` |
-| `--color-highlight` | `light-dark(oklch(0.925 0.045 228), oklch(0.33 0.05 235))` |
+| `--color-canvas` | `light-dark(oklch(0.953 0.005 255), oklch(0.215 0.006 255))` |
+| `--color-surface` | `light-dark(oklch(0.995 0.002 255), oklch(0.26 0.006 255))` |
+| `--color-surface-sunken` | `light-dark(oklch(0.932 0.005 255), oklch(0.175 0.006 255))` |
+| `--color-surface-raised` | `light-dark(oklch(0.998 0.001 255), oklch(0.3 0.006 255))` |
+| `--color-surface-inverse` | `light-dark(oklch(0.25 0.045 258), oklch(0.93 0.004 255))` |
+| `--color-ink` | `light-dark(oklch(0.25 0.045 258), oklch(0.935 0.005 255))` |
+| `--color-ink-muted` | `light-dark(oklch(0.43 0.03 258), oklch(0.78 0.01 255))` |
+| `--color-ink-subtle` | `light-dark(oklch(0.515 0.02 258), oklch(0.68 0.01 255))` |
+| `--color-ink-inverse` | `light-dark(oklch(0.975 0.003 255), oklch(0.2 0.009 255))` |
+| `--color-line` | `light-dark(oklch(0.9 0.007 255), oklch(0.33 0.008 255))` |
+| `--color-line-strong` | `light-dark(oklch(0.79 0.008 255), oklch(0.47 0.01 255))` |
+| `--color-accent` | `light-dark(oklch(0.4 0.11 258), oklch(0.7 0.11 255))` |
+| `--color-accent-hover` | `light-dark(oklch(0.35 0.11 258), oklch(0.75 0.11 255))` |
+| `--color-accent-ink` | `light-dark(oklch(0.985 0.003 255), oklch(0.18 0.03 255))` |
+| `--color-accent-text` | `light-dark(oklch(0.4 0.11 258), oklch(0.82 0.08 255))` |
+| `--color-accent-soft` | `light-dark(oklch(0.935 0.03 255), oklch(0.3 0.04 255))` |
+| `--color-highlight` | `light-dark(oklch(0.925 0.045 230), oklch(0.33 0.045 235))` |
 | `--color-highlight-ink` | `var(--color-ink)` |
-| `--color-focus` | `var(--color-ink)` |
-| `--color-selection` | `light-dark(oklch(0.88 0.06 228), oklch(0.42 0.07 235))` |
-| `--color-scrim` | `light-dark(oklch(0.22 0.04 258 / 0.4), oklch(0.07 0.01 250 / 0.66))` |
-| `--tone-positive` | `light-dark(oklch(0.52 0.11 155), oklch(0.72 0.12 158))` |
-| `--tone-positive-soft` | `light-dark(oklch(0.94 0.035 155), oklch(0.28 0.045 158))` |
-| `--tone-positive-text` | `light-dark(oklch(0.45 0.1 155), oklch(0.78 0.11 158))` |
-| `--tone-positive-ink` | `light-dark(oklch(0.985 0.01 155), oklch(0.18 0.03 158))` |
-| `--tone-caution` | `light-dark(oklch(0.74 0.14 78), oklch(0.8 0.13 85))` |
-| `--tone-caution-soft` | `light-dark(oklch(0.95 0.05 88), oklch(0.3 0.05 80))` |
-| `--tone-caution-text` | `light-dark(oklch(0.5 0.1 70), oklch(0.84 0.11 88))` |
-| `--tone-caution-ink` | `light-dark(oklch(0.22 0.04 70), oklch(0.2 0.04 80))` |
-| `--tone-critical` | `light-dark(oklch(0.54 0.19 25), oklch(0.68 0.17 24))` |
-| `--tone-critical-soft` | `light-dark(oklch(0.94 0.035 22), oklch(0.29 0.06 24))` |
-| `--tone-critical-text` | `light-dark(oklch(0.5 0.18 25), oklch(0.76 0.14 24))` |
-| `--tone-critical-ink` | `light-dark(oklch(0.985 0.01 22), oklch(0.18 0.03 24))` |
-| `--tone-info` | `light-dark(oklch(0.52 0.09 240), oklch(0.72 0.09 238))` |
-| `--tone-info-soft` | `light-dark(oklch(0.94 0.025 240), oklch(0.28 0.04 240))` |
-| `--tone-info-text` | `light-dark(oklch(0.46 0.09 240), oklch(0.78 0.08 238))` |
-| `--tone-info-ink` | `light-dark(oklch(0.985 0.01 240), oklch(0.18 0.03 240))` |
-| `--color-cat-1` | `light-dark(oklch(0.8 0.06 228), oklch(0.7 0.07 228))` |
-| `--color-cat-2` | `light-dark(oklch(0.8 0.07 160), oklch(0.7 0.08 160))` |
-| `--color-cat-3` | `light-dark(oklch(0.82 0.08 75), oklch(0.72 0.09 75))` |
-| `--color-cat-4` | `light-dark(oklch(0.79 0.07 20), oklch(0.69 0.08 20))` |
-| `--color-cat-5` | `light-dark(oklch(0.8 0.05 300), oklch(0.7 0.06 300))` |
-| `--color-cat-6` | `light-dark(oklch(0.82 0.06 125), oklch(0.72 0.07 125))` |
-| `--color-cat-7` | `light-dark(oklch(0.8 0.05 195), oklch(0.7 0.06 195))` |
-| `--color-cat-8` | `light-dark(oklch(0.8 0.01 250), oklch(0.7 0.01 250))` |
-| `--color-cat-ink` | `oklch(0.21 0.03 258)` |
+| `--color-focus` | `light-dark(oklch(0.52 0.17 258), oklch(0.78 0.115 252))` |
+| `--color-selection` | `light-dark(oklch(0.88 0.06 230), oklch(0.42 0.07 240))` |
+| `--color-scrim` | `light-dark(oklch(0.2 0.03 255 / 0.4), oklch(0.08 0.01 255 / 0.66))` |
+| `--tone-positive` | `light-dark(oklch(0.52 0.12 150), oklch(0.75 0.13 150))` |
+| `--tone-positive-soft` | `light-dark(oklch(0.95 0.035 150), oklch(0.3 0.05 150))` |
+| `--tone-positive-text` | `light-dark(oklch(0.495 0.12 150), oklch(0.75 0.13 150))` |
+| `--tone-positive-ink` | `light-dark(oklch(0.985 0.002 255), oklch(0.18 0.04 150))` |
+| `--tone-caution` | `light-dark(oklch(0.635 0.133 78), oklch(0.81 0.13 80))` |
+| `--tone-caution-soft` | `light-dark(oklch(0.955 0.039 78), oklch(0.31 0.05 80))` |
+| `--tone-caution-text` | `light-dark(oklch(0.5 0.1 78), oklch(0.81 0.13 80))` |
+| `--tone-caution-ink` | `light-dark(oklch(0.2 0.04 78), oklch(0.18 0.04 80))` |
+| `--tone-critical` | `light-dark(oklch(0.55 0.19 25), oklch(0.68 0.16 25))` |
+| `--tone-critical-soft` | `light-dark(oklch(0.95 0.025 25), oklch(0.3 0.06 25))` |
+| `--tone-critical-text` | `light-dark(oklch(0.535 0.19 25), oklch(0.725 0.16 25))` |
+| `--tone-critical-ink` | `light-dark(oklch(0.985 0.002 255), oklch(0.18 0.04 25))` |
+| `--tone-info` | `light-dark(oklch(0.53 0.1 240), oklch(0.74 0.09 240))` |
+| `--tone-info-soft` | `light-dark(oklch(0.95 0.025 240), oklch(0.3 0.045 240))` |
+| `--tone-info-text` | `light-dark(oklch(0.505 0.1 240), oklch(0.74 0.09 240))` |
+| `--tone-info-ink` | `light-dark(oklch(0.985 0.002 255), oklch(0.18 0.04 240))` |
+| `--color-cat-1` | `light-dark(oklch(0.82 0.07 160), oklch(0.72 0.08 160))` |
+| `--color-cat-2` | `light-dark(oklch(0.82 0.07 300), oklch(0.72 0.08 300))` |
+| `--color-cat-3` | `light-dark(oklch(0.82 0.07 80), oklch(0.72 0.08 80))` |
+| `--color-cat-4` | `light-dark(oklch(0.82 0.07 235), oklch(0.72 0.08 235))` |
+| `--color-cat-5` | `light-dark(oklch(0.82 0.07 25), oklch(0.72 0.08 25))` |
+| `--color-cat-6` | `light-dark(oklch(0.82 0.07 130), oklch(0.72 0.08 130))` |
+| `--color-cat-7` | `light-dark(oklch(0.82 0.07 195), oklch(0.72 0.08 195))` |
+| `--color-cat-8` | `light-dark(oklch(0.82 0.005 255), oklch(0.72 0.006 255))` |
+| `--color-cat-ink` | `light-dark(oklch(0.21 0.03 258), oklch(0.2 0.02 255))` |
 
 Data:
 
 | Token | Paper |
 | --- | --- |
-| `--color-seq-1` | `light-dark(oklch(0.93 0.03 230), oklch(0.3 0.04 252))` |
-| `--color-seq-2` | `light-dark(oklch(0.85 0.055 233), oklch(0.39 0.06 250))` |
-| `--color-seq-3` | `light-dark(oklch(0.76 0.075 237), oklch(0.48 0.075 246))` |
-| `--color-seq-4` | `light-dark(oklch(0.66 0.09 242), oklch(0.57 0.085 242))` |
-| `--color-seq-5` | `light-dark(oklch(0.56 0.1 247), oklch(0.66 0.085 237))` |
-| `--color-seq-6` | `light-dark(oklch(0.46 0.1 251), oklch(0.76 0.075 232))` |
-| `--color-seq-7` | `light-dark(oklch(0.36 0.09 256), oklch(0.86 0.055 228))` |
-| `--color-div-neg-3` | `light-dark(oklch(0.5 0.15 25), oklch(0.72 0.13 25))` |
-| `--color-div-neg-2` | `light-dark(oklch(0.64 0.11 25), oklch(0.58 0.11 25))` |
-| `--color-div-neg-1` | `light-dark(oklch(0.79 0.06 25), oklch(0.44 0.07 25))` |
-| `--color-div-mid` | `light-dark(oklch(0.93 0.004 250), oklch(0.3 0.008 250))` |
-| `--color-div-pos-1` | `light-dark(oklch(0.79 0.045 245), oklch(0.44 0.05 245))` |
-| `--color-div-pos-2` | `light-dark(oklch(0.64 0.08 248), oklch(0.58 0.075 245))` |
-| `--color-div-pos-3` | `light-dark(oklch(0.5 0.1 252), oklch(0.72 0.085 245))` |
-| `--color-cat-1-stroke` | `light-dark(oklch(0.5 0.09 232), oklch(0.82 0.07 228))` |
-| `--color-cat-2-stroke` | `light-dark(oklch(0.5 0.09 160), oklch(0.82 0.08 160))` |
-| `--color-cat-3-stroke` | `light-dark(oklch(0.52 0.1 70), oklch(0.84 0.09 75))` |
-| `--color-cat-4-stroke` | `light-dark(oklch(0.5 0.12 22), oklch(0.81 0.08 20))` |
-| `--color-cat-5-stroke` | `light-dark(oklch(0.5 0.09 300), oklch(0.82 0.06 300))` |
-| `--color-cat-6-stroke` | `light-dark(oklch(0.5 0.09 125), oklch(0.84 0.08 125))` |
-| `--color-cat-7-stroke` | `light-dark(oklch(0.5 0.07 195), oklch(0.82 0.06 195))` |
-| `--color-cat-8-stroke` | `light-dark(oklch(0.5 0.015 250), oklch(0.8 0.012 250))` |
-| `--chart-grid` | `light-dark(oklch(0.89 0.008 250), oklch(0.31 0.01 250))` |
-| `--chart-axis` | `light-dark(oklch(0.58 0.03 256), oklch(0.6 0.015 250))` |
+| `--color-seq-1` | `light-dark(oklch(0.93 0.03 230), oklch(0.32 0.05 255))` |
+| `--color-seq-2` | `light-dark(oklch(0.835 0.06 234.7), oklch(0.413 0.067 251.2))` |
+| `--color-seq-3` | `light-dark(oklch(0.74 0.084 239.3), oklch(0.507 0.081 247.3))` |
+| `--color-seq-4` | `light-dark(oklch(0.645 0.098 244), oklch(0.6 0.089 243.5))` |
+| `--color-seq-5` | `light-dark(oklch(0.55 0.098 248.7), oklch(0.693 0.089 239.7))` |
+| `--color-seq-6` | `light-dark(oklch(0.455 0.086 253.3), oklch(0.787 0.082 235.8))` |
+| `--color-seq-7` | `light-dark(oklch(0.36 0.062 258), oklch(0.88 0.068 232))` |
+| `--color-div-neg-3` | `light-dark(oklch(0.5 0.147 25), oklch(0.73 0.147 25))` |
+| `--color-div-neg-2` | `light-dark(oklch(0.65 0.105 25), oklch(0.59 0.105 25))` |
+| `--color-div-neg-1` | `light-dark(oklch(0.8 0.063 25), oklch(0.45 0.063 25))` |
+| `--color-div-mid` | `light-dark(oklch(0.93 0.005 255), oklch(0.33 0.006 255))` |
+| `--color-div-pos-1` | `light-dark(oklch(0.8 0.063 250), oklch(0.45 0.063 250))` |
+| `--color-div-pos-2` | `light-dark(oklch(0.65 0.105 250), oklch(0.59 0.105 250))` |
+| `--color-div-pos-3` | `light-dark(oklch(0.5 0.142 250), oklch(0.73 0.146 250))` |
+| `--color-cat-1-stroke` | `light-dark(oklch(0.57 0.081 160), oklch(0.8 0.092 160))` |
+| `--color-cat-2-stroke` | `light-dark(oklch(0.57 0.081 300), oklch(0.8 0.092 300))` |
+| `--color-cat-3-stroke` | `light-dark(oklch(0.57 0.081 80), oklch(0.8 0.092 80))` |
+| `--color-cat-4-stroke` | `light-dark(oklch(0.57 0.081 235), oklch(0.8 0.092 235))` |
+| `--color-cat-5-stroke` | `light-dark(oklch(0.57 0.081 25), oklch(0.8 0.092 25))` |
+| `--color-cat-6-stroke` | `light-dark(oklch(0.57 0.081 130), oklch(0.8 0.092 130))` |
+| `--color-cat-7-stroke` | `light-dark(oklch(0.57 0.081 195), oklch(0.8 0.092 195))` |
+| `--color-cat-8-stroke` | `light-dark(oklch(0.57 0.01 255), oklch(0.8 0.012 255))` |
+| `--chart-grid` | `light-dark(oklch(0.9 0.007 255), oklch(0.335 0.008 255))` |
+| `--chart-axis` | `light-dark(oklch(0.58 0.01 255), oklch(0.62 0.012 255))` |
 | `--chart-label` | `var(--color-ink-muted)` |
 | `--chart-tooltip-surface` | `var(--color-surface-raised)` |
 | `--chart-tooltip-border` | `var(--color-line-strong)` |
