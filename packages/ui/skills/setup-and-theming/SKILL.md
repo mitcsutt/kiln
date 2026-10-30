@@ -234,7 +234,7 @@ Read a reference when its description matches the task:
 
 - [Paper](references/paper.md): The neutral default. An office that prints for everyone, with white sheets on grey stock, blue-black ink as the accent and Golos Text for type.
 - [Monograph](references/monograph.md): A scholarly monograph read under a desk lamp at night. Blue slate, one ember accent, a big serif display. Dark-first.
-- [Ledger](references/ledger.md): An accountant's columnar pad. A white sheet ruled in green, banknote-green actions, accounting red, and figures set condensed instead of in a monospace.
+- [Ledger](references/ledger.md): An accountant's columnar pad, worked in graphite. Ink actions on grey ruled sheets, green and red only on numbers, and figures set condensed instead of in a monospace.
 - [Fiesta](references/fiesta.md): A screen-printed festival poster. Flat spot inks, hard offsets, condensed signage numerals and springy motion.
 - [Flightdeck](references/flightdeck.md): A glass-cockpit flight display. Cyan for what you set, a reverse-video box for what you select, and green, amber and red for status, set in B612. Dark-first.
 - [Riso](references/riso.md): A two-drum risograph zine. Blue and sunflower on white stock by day, a fluorescent pink reverse print by night, and Shantell Sans.

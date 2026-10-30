@@ -33,7 +33,7 @@ Each record captures one decision: the context, what was decided, and what follo
 | [0027](0027-storybook-tests-without-isolation.md)       | Story tests share one page per worker, not one per file      | Accepted                                                   |
 | [0028](0028-docs-stories.md)                            | Docs examples are stories tagged `docs`, opted in one by one | Accepted                                                   |
 | [0029](0029-generated-reference-pages.md)               | Reference pages are generated from TSDoc and stories         | Accepted, amended by 0046                                  |
-| [0030](0030-theme-family-without-ai-tells.md)           | New themes without the second-order AI tells                 | Accepted, amended by 0045                                  |
+| [0030](0030-theme-family-without-ai-tells.md)           | New themes without the second-order AI tells                 | Accepted, amended by 0045 and 0053                         |
 | [0031](0031-storybook-theme-matrix-on-theme-changes.md) | Story tests run every theme only when themes change          | Accepted                                                   |
 | [0032](0032-public-before-1-0.md)                       | The repository goes public before `1.0.0`                    | Accepted                                                   |
 | [0033](0033-docs-sections.md)                           | The docs sidebar shows one package at a time                 | Accepted                                                   |
@@ -56,5 +56,6 @@ Each record captures one decision: the context, what was decided, and what follo
 | [0050](0050-demo-app.md)                                | A demo app that uses every export                            | Accepted                                                   |
 | [0051](0051-grid-items-fit-content.md)                  | Grid items fit their content; drags stay in the grid         | Accepted                                                   |
 | [0052](0052-focus-takes-the-themes-hue.md)              | Focus takes the theme's own hue                              | Accepted                                                   |
+| [0053](0053-ledger-graphite-and-ruling.md)              | Ledger: graphite and ruling, with ink actions                | Accepted                                                   |
 
 New records use the next number and the same headings: Status, Context, Decision, Consequences.

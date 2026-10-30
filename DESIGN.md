@@ -1,6 +1,6 @@
 # DESIGN.md: the Kiln design system
 
-> One component library, many personalities. `@mitcsutt/kiln-ui` is a single set of React components whose entire look (colour, type, shape, density, depth, motion) is decided by a theme applied at the root. The same `<Button>` is a blue-black office-print key in Paper, a banknote-green ledger key in Ledger, a square instrument key in Flightdeck and a hand-cut blue pill in Riso that prints fluorescent pink at night.
+> One component library, many personalities. `@mitcsutt/kiln-ui` is a single set of React components whose entire look (colour, type, shape, density, depth, motion) is decided by a theme applied at the root. The same `<Button>` is a blue-black office-print key in Paper, a solid graphite-ink ledger key in Ledger, a square instrument key in Flightdeck and a hand-cut blue pill in Riso that prints fluorescent pink at night.
 
 This document is the contract, and it is **binding** ([ADR 0012](docs/adr/0012-design-standards.md)): its principles, its anti-slop rules and its token contract apply to every component, theme, story and docs page in this repo. Read it before designing a screen, writing a component, or adding a theme. Component-authoring mechanics live in [`packages/ui/AGENTS.md`](packages/ui/AGENTS.md). To change a rule here, change the lint rule or test that enforces it in the same pull request.
 
@@ -232,14 +232,14 @@ _A scholarly monograph read under a desk lamp at night: "modern nostalgia"._ `im
 
 ### 4.3 Ledger: preset (light-first)
 
-_An accountant's columnar pad._ `import '@mitcsutt/kiln-ui/themes/ledger.css'`
+_An accountant's columnar pad, worked in graphite_ ([ADR 0053](docs/adr/0053-ledger-graphite-and-ruling.md)). `import '@mitcsutt/kiln-ui/themes/ledger.css'`
 
 **Goal**: numbers people have to trust: money, records, dense tables, reconciliation.
 
-- **Colour**: a white sheet with **green rules** (the lines carry the green, not the canvas), a **banknote-green** accent, **accounting red** for negatives and a flat **highlighter yellow** highlight. Dark mode is a blue-green carbon-copy night, not a green-screen terminal.
-- **Type**: **Archivo** throughout. Figures use its width axis to set condensed with tabular numerals, so a column of money reads like receipt tape without a monospace. **Atkinson Hyperlegible Mono** for code only. 15px base, 1.2 ratio.
-- **Shape**: tight radii everywhere, squarer chips, rounded-square avatars like ledger stamps; compact density (0.86).
-- **Depth**: hairlines in the ledger green; surfaces stay flat.
+- **Colour**: cool grey sheets ruled in **graphite** hairlines, with no brand colour: the primary action is **solid ink**. Colour appears only where a number means something: **green in**, **accounting red** out, and a flat **highlighter yellow** for the line you circled. No green in any line or divider. Focus is the auditor's **blue pencil**. Dark mode is the same pad under a desk lamp, a graphite sheet that is never black, not a green-screen terminal.
+- **Type**: **Archivo** throughout. Figures use its width axis to set condensed with tabular numerals, so a column of money reads like receipt tape without a monospace. **Atkinson Hyperlegible Mono** for code only. 16px base, 1.2 ratio.
+- **Shape**: tight radii everywhere (2px actions and fields, 4px surfaces), squarer chips, rounded-square avatars like ledger stamps; compact density (0.86 on a phone, 0.94 from 40em).
+- **Depth**: graphite hairlines and a double rule over totals; surfaces stay flat.
 - **Motion**: brief and flat, no bounce.
 
 ### 4.4 Fiesta: preset (light-first, deprecated)
