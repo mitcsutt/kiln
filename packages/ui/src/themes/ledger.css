@@ -51,7 +51,7 @@
     --prose-leading: 1.55;
 
     /* ── Structure & temperament ────────────────────────────────────────── */
-    --density: 0.94; /* compact like a pad's narrow lines, a step looser so 16px text has room */
+    --density: 0.86; /* pocket-pad compact on a phone, so the 16px text still leaves the app header one row; 0.94 from 40em below */
     --motion-scale: 0.8;
     /* Flat and brief: a pen stroke, not a bounce. */
     --ease-out: cubic-bezier(0.25, 1, 0.5, 1);
@@ -198,5 +198,12 @@
     --shadow-lift:
       0 2px 4px oklch(0.24 0.01 230 / 0.12), 0 14px 32px -8px oklch(0.24 0.01 230 / 0.26);
     --canvas-image: none;
+  }
+
+  /* From 40em the page has room: compact like a pad's narrow lines, a step looser so 16px text breathes. */
+  @media (min-width: 40em) {
+    [data-theme='ledger'] {
+      --density: 0.94;
+    }
   }
 }

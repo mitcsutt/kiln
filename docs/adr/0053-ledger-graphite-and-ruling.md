@@ -31,7 +31,7 @@ The maintainer chose Graphite and ruling over Ruled, because Ruled's green borde
   - **Goal and lead mode:** unchanged.
 - **Shape and size follow the lab direction:**
   - **Body type:** a 16px base, up from 15px, which was too small to read in dense tables.
-  - **Density:** 0.94.
+  - **Density:** 0.86 on a phone, so the 16px text still leaves the app header one row, and 0.94 from 40em.
   - **Radii:** 2px actions and fields, 4px surfaces.
 - **Not the generic dark dashboard.** A neutral grey palette with an ink primary is close to the common developer-tool default. Ledger keeps its own character through things that palette doesn't have:
   - the condensed Archivo figures;

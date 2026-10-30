@@ -27,6 +27,6 @@ Ledger is light-first. It suits screens that are mostly tables and totals: invoi
 
 - **Colour.** Cool grey sheets ruled in graphite, with no brand colour: the primary action is solid ink. Colour appears only where a number means something: green for money in, accounting red for money out, and a flat highlighter yellow for the line you circled. Focus is the auditor's blue pencil. Dark mode is the same pad under a desk lamp, a graphite sheet rather than black, not a green-screen terminal.
 - **Type.** Archivo throughout. Figures use its width axis to set condensed (`--numeric-stretch`) with tabular numerals, so they get receipt-tape narrowness without a monospace. Atkinson Hyperlegible Mono is for code only. A 16px base on a 1.2 ratio.
-- **Shape.** Tight radii on actions, fields and surfaces, squarer chips, and rounded-square avatars like ledger stamps. A compact density of 0.94, so every space step and control is a little smaller.
+- **Shape.** Tight radii on actions, fields and surfaces, squarer chips, and rounded-square avatars like ledger stamps. A compact density, 0.86 on a phone and 0.94 from 40em, so every space step and control is a little smaller.
 - **Depth.** Graphite hairlines, with flat surfaces, and a double rule above a table's footer (`--table-foot-rule`), as a ledger totals a column.
 - **Motion.** Brief and flat, with no bounce (`--motion-scale: 0.8`).

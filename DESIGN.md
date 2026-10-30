@@ -238,7 +238,7 @@ _An accountant's columnar pad, worked in graphite_ ([ADR 0053](docs/adr/0053-led
 
 - **Colour**: cool grey sheets ruled in **graphite** hairlines, with no brand colour: the primary action is **solid ink**. Colour appears only where a number means something: **green in**, **accounting red** out, and a flat **highlighter yellow** for the line you circled. No green in any line or divider. Focus is the auditor's **blue pencil**. Dark mode is the same pad under a desk lamp, a graphite sheet that is never black, not a green-screen terminal.
 - **Type**: **Archivo** throughout. Figures use its width axis to set condensed with tabular numerals, so a column of money reads like receipt tape without a monospace. **Atkinson Hyperlegible Mono** for code only. 16px base, 1.2 ratio.
-- **Shape**: tight radii everywhere (2px actions and fields, 4px surfaces), squarer chips, rounded-square avatars like ledger stamps; compact density (0.94).
+- **Shape**: tight radii everywhere (2px actions and fields, 4px surfaces), squarer chips, rounded-square avatars like ledger stamps; compact density (0.86 on a phone, 0.94 from 40em).
 - **Depth**: graphite hairlines and a double rule over totals; surfaces stay flat.
 - **Motion**: brief and flat, no bounce.
 
