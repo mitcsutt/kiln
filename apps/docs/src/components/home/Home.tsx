@@ -105,7 +105,7 @@ export function Home() {
               <Text size="xl" measure="text">
                 One React component library with many personalities. The same{' '}
                 <Code>{'<Button>'}</Code> is a blue-black office-print key in Paper and a hand-cut
-                pink pill in Riso: a theme decides everything you see, and a theme is one CSS file.
+                blue pill in Riso: a theme decides everything you see, and a theme is one CSS file.
               </Text>
               <Inline gap={3}>
                 <Button asChild>

@@ -1,6 +1,6 @@
 # DESIGN.md: the Kiln design system
 
-> One component library, many personalities. `@mitcsutt/kiln-ui` is a single set of React components whose entire look (colour, type, shape, density, depth, motion) is decided by a theme applied at the root. The same `<Button>` is a blue-black office-print key in Paper, a banknote-green ledger key in Ledger, a square instrument key in Flightdeck and a hand-cut fluorescent pink pill in Riso.
+> One component library, many personalities. `@mitcsutt/kiln-ui` is a single set of React components whose entire look (colour, type, shape, density, depth, motion) is decided by a theme applied at the root. The same `<Button>` is a blue-black office-print key in Paper, a banknote-green ledger key in Ledger, a square instrument key in Flightdeck and a hand-cut blue pill in Riso that prints fluorescent pink at night.
 
 This document is the contract, and it is **binding** ([ADR 0012](docs/adr/0012-design-standards.md)): its principles, its anti-slop rules and its token contract apply to every component, theme, story and docs page in this repo. Read it before designing a screen, writing a component, or adding a theme. Component-authoring mechanics live in [`packages/ui/AGENTS.md`](packages/ui/AGENTS.md). To change a rule here, change the lint rule or test that enforces it in the same pull request.
 
@@ -156,7 +156,7 @@ A theme never sets these: it sets the inputs they're derived from.
 
 Only some themes set these (Fiesta's gold-row inks, Ledger's table rule…). Every `[data-theme]` resets them in `tokens/foundation.css`, so a nested scope falls back to the component default instead of inheriting its parent theme's value. A new optional token goes in that reset list and here; `themes/themes.test.ts` fails if a theme sets a token the others neither set nor reset.
 
-`--badge-soft-ink`, `--canvas-image-size`, `--control-checked-border`, `--highlight-accent-text`, `--highlight-tone-positive-text`, `--highlight-tone-caution-text`, `--highlight-tone-critical-text`, `--highlight-tone-info-text`, `--marquee-edge`, `--numeral-scale`, `--numeral-weight`, `--section-divider-color`, `--stat-fit`, `--table-foot-rule`, `--table-head-font`.
+`--badge-soft-ink`, `--canvas-image-size`, `--control-checked-border`, `--highlight-accent-text`, `--highlight-tone-positive-text`, `--highlight-tone-caution-text`, `--highlight-tone-critical-text`, `--highlight-tone-info-text`, `--marquee-edge`, `--navlinks-current-bg`, `--navlinks-marker`, `--numeral-scale`, `--numeral-weight`, `--section-divider-color`, `--stat-fit`, `--table-foot-rule`, `--table-head-font`.
 
 ### 3.4 Axes and scoping
 
@@ -272,7 +272,7 @@ _A two-drum risograph zine._ `import '@mitcsutt/kiln-ui/themes/riso.css'`
 
 **Goal**: a product for people rather than operators: community, events, creative and personal projects. It holds the playful job Fiesta had.
 
-- **Colour**: two spot inks, **fluorescent pink** (the accent) and **blue** (the text colour), on bright white stock. Static structure is **screen tints** (a percentage of an ink) rather than borders. The highlight is an overprint: a pink tint with blue ink. Night mode is the same two inks on deep blue stock, not black.
+- **Colour**: spot inks on bright white stock. By day a deep blue is the text colour, **Blue 3005 U** is the accent, and **Sunflower 116 U** marks "you are here": the current page, the highlight and the selection. Cards are bare stock with a hairline edge; only sunken wells take a blue **screen tint**. Night is a **reverse print**: the blue drum floods the page, cards and type knock out to near-neutral stock, and the accent becomes **Fluorescent Pink 806 U**. Focus is the blue drum in both modes.
 - **Type**: **Shantell Sans** for every role except code, drawn from the artist Shantell Martin's own handwriting: the handmade element. It has no tabular figures, so numerals are not column-aligned. **Atkinson Hyperlegible Mono** for code. 1.25 ratio.
 - **Shape**: hand-cut and mixed: generous radii on actions and surfaces, small radii on fields, pill chips.
 - **Depth**: a fill change, with no shadow on static surfaces. The one misregistered moment is a hard pink offset on floating layers, as if the second drum printed slightly off.

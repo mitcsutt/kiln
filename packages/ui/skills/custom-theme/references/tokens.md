@@ -194,7 +194,7 @@ Edges & depth:
 
 Some themes set a few more: Fiesta's and Riso's inks for text on their tinted rows, Ledger's table rule. Every theme scope resets these first, so a theme nested inside another falls back to the component's default instead of inheriting its parent's value. Set them only when your theme's idea needs them:
 
-`--badge-soft-ink`, `--canvas-image-size`, `--control-checked-border`, `--highlight-accent-text`, `--highlight-tone-caution-text`, `--highlight-tone-critical-text`, `--highlight-tone-info-text`, `--highlight-tone-positive-text`, `--marquee-edge`, `--numeral-scale`, `--numeral-weight`, `--section-divider-color`, `--stat-fit`, `--table-foot-rule`, `--table-head-font`
+`--badge-soft-ink`, `--canvas-image-size`, `--control-checked-border`, `--highlight-accent-text`, `--highlight-tone-caution-text`, `--highlight-tone-critical-text`, `--highlight-tone-info-text`, `--highlight-tone-positive-text`, `--marquee-edge`, `--navlinks-current-bg`, `--navlinks-marker`, `--numeral-scale`, `--numeral-weight`, `--section-divider-color`, `--stat-fit`, `--table-foot-rule`, `--table-head-font`
 
 ## Component tokens
 
