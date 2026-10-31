@@ -1,5 +1,11 @@
 # @mitcsutt/kiln-docs
 
+## 0.1.1
+
+### Patch Changes
+
+- 771ef1c: The docs shell turns off `AppShell.Main`'s new default page padding, because each docs page already pads itself.
+
 ## 0.1.0
 
 ### Minor Changes
