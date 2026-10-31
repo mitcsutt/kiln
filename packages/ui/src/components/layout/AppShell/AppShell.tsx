@@ -54,7 +54,8 @@ export interface AppShellProps extends HTMLAttributes<HTMLDivElement> {
  * - **Main** is the `<main>` landmark and the skip link's target. It pads the top and the end of
  *   the page, so content never starts under the header's rule or ends flush with the bottom of
  *   the scroll, with less room on a phone, where the header and bottom bar already frame it. Lay
- *   the page out with `Page` inside a `Container`.
+ *   the page out with `Page` inside a `Container`. Add `flush` when the page brings its own
+ *   spacing, such as full-bleed `Section` bands, so Main adds none.
  * - **BottomBar** is pinned to the bottom of the viewport below `navBreakpoint`, and pads for the
  *   phone's home indicator.
  *
@@ -146,14 +147,20 @@ const Header = forwardRef<HTMLElement, AppShellHeaderProps>(function AppShellHea
   )
 })
 
-export type AppShellMainProps = Omit<HTMLAttributes<HTMLElement>, 'id'>
+export interface AppShellMainProps extends Omit<HTMLAttributes<HTMLElement>, 'id'> {
+  /**
+   * Drop Main's padding at the top and the end, for pages that space themselves, such as
+   * full-bleed `Section` bands. Default `false`.
+   */
+  flush?: boolean
+}
 
 /**
- * The page's `<main>` landmark and the skip link's target, padded at the top and the end. Its id
- * comes from `AppShell`.
+ * The page's `<main>` landmark and the skip link's target, padded at the top and the end unless
+ * `flush`. Its id comes from `AppShell`.
  */
 const Main = forwardRef<HTMLElement, AppShellMainProps>(function AppShellMain(
-  { className, ...rest },
+  { flush = false, className, ...rest },
   ref,
 ) {
   const ctx = useContext(ShellContext)
@@ -163,6 +170,7 @@ const Main = forwardRef<HTMLElement, AppShellMainProps>(function AppShellMain(
       id={ctx?.mainId}
       tabIndex={-1}
       className={cx(styles.main, className)}
+      data-flush={flush || undefined}
       {...rest}
     />
   )

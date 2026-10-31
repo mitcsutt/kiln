@@ -8,7 +8,8 @@
  *   --app-shell-main-padding    Main's block padding (default var(--space-5) var(--space-5) on a
  *                               phone, var(--space-6) var(--space-7) from md):
  *                               the page never starts under the header rule or ends flush
- *                               at the bottom of the scroll. 0 when each page pads itself.
+ *                               at the bottom of the scroll. 0 when each page pads itself,
+ *                               or set `flush` on Main, which drops it with no CSS.
  *   --app-shell-header-bg       default var(--color-canvas) — opaque, never glass
  *   --app-shell-bar-rule        rule under the header / above the bottom bar
  *                               (default var(--color-line-strong): these are the frame's edges)
@@ -91,6 +92,9 @@
   .main {
     padding-block: var(--app-shell-main-padding, var(--space-6) var(--space-7));
   }
+}
+.main[data-flush] {
+  padding-block: 0;
 }
 .main:focus {
   outline: none;

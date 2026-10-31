@@ -9,12 +9,12 @@ import {
   Inline,
   NavLinks,
   SearchIcon,
+  Section,
   Stack,
   SystemIcon,
   Text,
 } from '@mitcsutt/kiln-ui'
 import { expect, waitFor } from 'storybook/test'
-import { Section } from '#components/layout/Section'
 import { Split } from '#components/layout/Split'
 import { Grid } from '#components/layout/Grid'
 import { Divider } from '#components/layout/Divider'
@@ -375,6 +375,55 @@ export const Usage: Story = {
         </AppShell.BottomBar>
       </AppShell>
     )
+  },
+}
+
+/**
+ * `flush` drops Main's padding, so full-bleed `Section` bands meet the header and the footer
+ * edge to edge, and each band sets its own spacing.
+ */
+export const FlushMain: Story = {
+  tags: ['docs'],
+  parameters: { layout: 'fullscreen', docs: { story: { inline: false, height: '480px' } } },
+  render: () => (
+    <AppShell>
+      <AppShell.Header>
+        <Container>
+          <Text weight="strong">Bayline</Text>
+        </Container>
+      </AppShell.Header>
+      <AppShell.Main flush>
+        <Section space={{ base: 7, md: 9 }} surface="sunken" divider="bottom">
+          <Container>
+            <Stack gap={3}>
+              <Heading level={1} size="3xl">
+                Winter timetable
+              </Heading>
+              <Text tone="muted">From 3 November, the first boat leaves Kelso Bay at 07:35.</Text>
+            </Stack>
+          </Container>
+        </Section>
+        <Section space={{ base: 6, md: 8 }}>
+          <Container>
+            <Stack gap={2}>
+              <Text>07:35 Kelso Bay to Harbour Square</Text>
+              <Text>08:10 Harbour Square to North Point</Text>
+              <Text>08:40 North Point to Kelso Bay</Text>
+            </Stack>
+          </Container>
+        </Section>
+      </AppShell.Main>
+      <AppShell.Footer>
+        <Container>
+          <Text size="sm">Bayline ferries</Text>
+        </Container>
+      </AppShell.Footer>
+    </AppShell>
+  ),
+  play: async ({ canvas }) => {
+    const main = canvas.getByRole('main')
+    await expect(getComputedStyle(main).paddingBlockStart).toBe('0px')
+    await expect(getComputedStyle(main).paddingBlockEnd).toBe('0px')
   },
 }
 
