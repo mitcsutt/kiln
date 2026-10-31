@@ -59,7 +59,12 @@ const preview: Preview = {
         title: 'Theme',
         icon: 'paintbrush',
         items: [
-          ...THEMES.map((name) => ({ value: name, title: THEME_META[name].label })),
+          ...THEMES.map((name) => ({
+            value: name,
+            title: THEME_META[name].deprecated
+              ? `${THEME_META[name].label} (deprecated)`
+              : THEME_META[name].label,
+          })),
           { value: 'all', title: 'All themes, side by side' },
         ],
         dynamicTitle: true,

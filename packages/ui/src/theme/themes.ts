@@ -29,6 +29,11 @@ export interface ThemeMeta {
   description: string
   /** The stylesheet that defines the theme, or `null` when it's in the base stylesheet. */
   stylesheet: `@mitcsutt/kiln-ui/themes/${BuiltInThemeName}.css` | null
+  /**
+   * Set when the theme is on its way out: what to switch to, and when it goes. A deprecated
+   * theme still works until the release that removes it (ADR 0045).
+   */
+  deprecated?: string
 }
 
 export const THEME_META: Record<BuiltInThemeName, ThemeMeta> = {
@@ -43,6 +48,8 @@ export const THEME_META: Record<BuiltInThemeName, ThemeMeta> = {
     description:
       'A monograph read under a desk lamp at night. Blue-slate, one ember accent, a big serif display. Dark-first.',
     stylesheet: '@mitcsutt/kiln-ui/themes/monograph.css',
+    deprecated:
+      'Monograph leaves in the next minor release. Switch to Paper for a page or Flightdeck for a tool.',
   },
   flightdeck: {
     label: 'Flightdeck',
@@ -61,6 +68,8 @@ export const THEME_META: Record<BuiltInThemeName, ThemeMeta> = {
     description:
       'A screen-printed festival poster. Flat spot inks, hard offsets, chunky condensed type, springy motion.',
     stylesheet: '@mitcsutt/kiln-ui/themes/fiesta.css',
+    deprecated:
+      'Fiesta leaves in the next minor release. Switch to Riso, which now holds the playful job.',
   },
   riso: {
     label: 'Riso',

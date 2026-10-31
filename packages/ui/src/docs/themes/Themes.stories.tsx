@@ -46,7 +46,7 @@ const CROSSINGS: {
 ]
 
 function Specimen({ theme }: { theme: BuiltInThemeName }) {
-  const { label, description, stylesheet } = THEME_META[theme]
+  const { label, description, stylesheet, deprecated } = THEME_META[theme]
   return (
     <ThemeScope theme={theme}>
       <Box padding={{ base: 5, md: 8 }}>
@@ -63,6 +63,11 @@ function Specimen({ theme }: { theme: BuiltInThemeName }) {
                 ? `Import ${stylesheet} after the base stylesheet.`
                 : 'The default theme.'}
             </Text>
+            {deprecated && (
+              <Text size="sm" weight="strong">
+                Deprecated. {deprecated}
+              </Text>
+            )}
           </Stack>
 
           <Grid minItemWidth="sm" gap={6}>

@@ -1,6 +1,9 @@
 /*
  * FIESTA — preset (opt-in: import '@mitcsutt/kiln-ui/themes/fiesta.css')
  *
+ * DEPRECATED (ADR 0045): Fiesta leaves in the next minor release. Switch to Riso, which
+ * now holds the playful job.
+ *
  * Idea: a screen-printed festival poster / sticker album. Screen printing can't do
  * gradients, so neither do we: flat spot inks (coral, gold, teal) on apricot stock,
  * everything outlined in aubergine ink, and a hard misregistered offset instead of a
