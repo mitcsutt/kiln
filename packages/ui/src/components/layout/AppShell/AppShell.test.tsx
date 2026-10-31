@@ -56,6 +56,21 @@ describe('AppShell', () => {
     expect(screen.getByRole('banner')).not.toHaveAttribute('data-sticky')
   })
 
+  it('pads Main by default and lets it go flush', () => {
+    const { rerender } = render(
+      <AppShell>
+        <AppShell.Main>Open tasks</AppShell.Main>
+      </AppShell>,
+    )
+    expect(screen.getByRole('main')).not.toHaveAttribute('data-flush')
+    rerender(
+      <AppShell>
+        <AppShell.Main flush>Open tasks</AppShell.Main>
+      </AppShell>,
+    )
+    expect(screen.getByRole('main')).toHaveAttribute('data-flush')
+  })
+
   it('hands nav over at lg by default, or at md when asked', () => {
     const { container, rerender } = render(<Frame />)
     expect(container.firstElementChild).toHaveAttribute('data-nav-breakpoint', 'lg')
