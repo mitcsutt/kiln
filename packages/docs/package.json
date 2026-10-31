@@ -1,6 +1,6 @@
 {
   "name": "@mitcsutt/kiln-docs",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Kiln docs: Kiln chrome for fumadocs-core, a docs site foundation built with kiln-ui",
   "homepage": "https://kiln.mitchellsutton.com",
   "bugs": "https://github.com/mitcsutt/kiln/issues",

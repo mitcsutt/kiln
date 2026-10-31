@@ -1,5 +1,50 @@
 # @mitcsutt/kiln-ui
 
+## 0.11.0
+
+### Minor Changes
+
+- 8290fd3: `AppShell.Main` takes a `flush` prop that drops its default padding at the top and the end, for pages that space themselves (full-bleed `Section` bands, say), with no CSS. Without it, Main pads as before, and `--app-shell-main-padding` still sets the padding.
+- 771ef1c: App pages get a proper frame by default:
+
+  - **Side navigation.** `AppShell.Sidebar` sits on the sunken surface and is 18rem wide. In a vertical `NavLinks`, each top-level `NavLinksGroup` (and any link beside one) is a section: its label is in the heading face one step above the links, and a hairline rules it off from the section before. Every link is a full-width row with a hover fill and, for the current page, a soft accent fill as well as the dot. The keyboard focus ring is inset, so the sidebar's edge no longer clips it. New component tokens: `--navlinks-hover-bg`, `--navlinks-current-bg`, `--navlinks-section-rule` and `--app-shell-sidebar-bg`.
+  - **Page padding.** `AppShell.Main` pads the top and the end of the page (`--app-shell-main-padding`, default `var(--space-5) var(--space-5)` on a phone and `var(--space-6) var(--space-7)` from `md`), so content no longer sits flush against the end of the scroll. Set the token to `0` if your pages pad themselves.
+  - **`Page`.** A new layout for the content of an app screen: `Page.Header` (the `<h1>` title block), `Page.Section` (a `<section>` named by its `<h2>`), spaced at one rhythm.
+  - **Type scale.** The steps below body are now fixed fractions of `--type-base` instead of dividing by the theme's ratio: `--text-sm` is 0.875, `--text-xs` 0.75 and `--text-2xs` 0.6875 (14, 12 and 11px at a 16px base). Secondary text, table cells and small labels no longer drop to 12.5–12.8px beside body text. Every step is still in rem, so browser zoom scales all of them.
+  - **`PaletteIcon`.** A painter's palette for theme and colour-scheme pickers.
+
+- 0984a67: Polish for data display, from a review of the demo app.
+
+  - `TreeTable`: a click anywhere on an expandable row opens or closes it (links and buttons inside a row keep their own clicks), and the chevron has a larger target.
+  - `Table` and `TreeTable`: a new `bar` column width keeps room for a `Progress` or `Meter`, which have no width of their own and were squeezed to nothing in a shrink-wrapped column.
+  - `Table`: a cell that holds only a checkbox or radio centres it in the row, whatever the row's `valign`.
+  - `Card.Header` takes a `leading` slot, so an avatar sits above the title at every width and cards of one width look the same.
+  - `Card`: a card with a corner `Stamp` makes room for it, so the stamp no longer covers the title or the date.
+  - `ChartTooltip`: values are set in the theme's figures at normal width and the label weight, instead of Ledger's condensed receipt-tape figures.
+  - `Repeater`: actions that an item doesn't offer (Move up on the first item, Remove at `min`) keep their place as hidden slots, so a table's columns no longer reflow when a line is added.
+
+- 038a1f7: Deprecate the Monograph and Fiesta themes ([ADR 0045](https://github.com/mitcsutt/kiln/blob/main/docs/adr/0045-four-themes-each-with-a-goal.md)). Both still work in this release, and leave in the next minor release. Switch Fiesta to Riso, and Monograph to Paper for a page or Flightdeck for a tool. `THEME_META` gains an optional `deprecated` note, set on both, that says what to switch to.
+- 6f9b346: Flightdeck has new colours, with dark mode designed first. Check screens that depend on its old look.
+
+  - **Night glass.** The dark canvas is blue-grey glass at OKLCH L 0.19, with a deeper ladder (sunken 0.165, surface 0.225, raised 0.262), so a popover reads above a card without a shadow. Ink is held at L 0.94 instead of white so it doesn't halate.
+  - **Day mode.** A cool grey case (0.933) holds white sheets (0.993). It no longer shares a light canvas with Paper.
+  - **Focus is cyan, not ink.** `--color-focus` is the theme's cyan, a step lighter than the cyan fill at night (`oklch(0.86 0.12 208)`) and darkened by day (`oklch(0.52 0.092 215)`). It reaches at least 7.9:1 on every fill a ring sits beside at night and 3.6:1 by day, and stays clear of the green and red status tones.
+  - **Data colours.** Categorical colours no longer use the status hues (green, amber, red) and series one is blue, not cyan. The sequential ramp is cyan, and the diverging ramp is magenta against cyan.
+  - **Status tones** are refitted to AA on every ground, their soft fill and the highlight.
+
+- 01c5ff4: Redesign four form controls. `Stepper` draws a connector only between adjacent steps, with none after the last. `Switch` is now a pill with a round knob that carries a check when on. `NumberInput` puts the decrease button before the number and the increase button after it. The unfilled track of `Slider` and `RangeSlider` is thicker and tinted so it reads in every theme.
+- 7138040: Rework the Ledger theme as a columnar pad in graphite. Actions are solid ink instead of banknote green. Lines and dividers are graphite hairlines, with no green ruling. Green and red appear only on numbers, for money in and out, and focus is a blue-pencil ring in both modes. Body type grows from 15px to 16px, density stays 0.86 on a phone and goes to 0.94 from 40em, and radii are squarer. Archivo, the condensed figures and the double rule over totals stay. Check screens that relied on Ledger's green buttons or green rules.
+- 043f148: Paper, the default theme, is rebuilt as "Office ink": neutral grey stock with white sheets, and blue-black fountain-pen ink as its only hue, which is also the accent, so a brand colour can replace it without a fight.
+
+  - **Dark mode** is neutral graphite rather than blue-slate, with wider steps between layers (sunken, canvas, sheet, raised) so each one reads by lightness alone. The accent is a mid ink-blue with dark text on it, rather than a pastel.
+  - **Light mode** keeps grey stock under near-white sheets. The ink carries a little less blue, the accent is a step lighter and brighter, and the lines are a neutral grey.
+  - **Focus** is the fountain-pen ink at full saturation, blue rather than black, in both modes. It clears 3:1 against every fill a ring sits beside and keeps well clear of the red and green tones. DESIGN.md's focus rule changes to match: focus takes the theme's own hue, not its ink (ADR 0052). A new `themes/focus.test.ts` checks both rules for every built-in theme.
+  - **Tones, categorical colours, strokes, ramps and chart chrome** are retuned to the new neutrals. Categorical colours now sit at one lightness and chroma, ordered so neighbours sit far apart in hue.
+
+  Apps that set no theme, or `theme="paper"`, get the new look on upgrade. Fonts, type, radii, motion and shadows are unchanged.
+
+- 6057967: Riso has a new look. By day it is the classic two-drum print: Blue 3005 U for actions and Sunflower 116 U for "you are here", so the current navigation row now stands clear of the sidebar and its marker passes 3:1. Night stays a reverse print with fluorescent pink actions, now on a blue flood with cards and type knocked out to near-neutral stock. Focus rings are the blue drum in both modes instead of the ink colour. Two new optional tokens, `--navlinks-current-bg` and `--navlinks-marker`, are reset on every theme scope.
+
 ## 0.10.0
 
 ### Minor Changes
